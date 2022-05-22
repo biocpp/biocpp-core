@@ -1365,7 +1365,7 @@ public:
      * \tparam archive_t Type of `archive`; must satisfy seqan3::cereal_archive.
      * \param archive The archive being serialised from/to.
      *
-     * \attention These functions are never called directly, see \ref serialisation for more details.
+     * \attention These functions are never called directly, see \ref howto_use_cereal for more details.
      */
     template <cereal_archive archive_t>
     void CEREAL_SERIALIZE_FUNCTION_NAME(archive_t & archive)

@@ -7,11 +7,11 @@
 
 #include <benchmark/benchmark.h>
 
+#include <charconv>
 #include <cstring>
 #include <sstream>
 #include <string_view>
 
-#include <seqan3/std/charconv>
 
 // -----------------------------------------------------------------------------
 // from_char for integral types
@@ -128,6 +128,7 @@ BENCHMARK_TEMPLATE(from_boost, uint64_t);
 
 #endif // __has_include(<boost/spirit/include/qi.hpp>)
 
+#if 0 //TODO(bio)
 // -----------------------------------------------------------------------------
 // from_char for floating point types
 // -----------------------------------------------------------------------------
@@ -171,5 +172,6 @@ BENCHMARK_TEMPLATE(from_chars_to_float, float);
 BENCHMARK_TEMPLATE(from_chars_to_float, double);
 BENCHMARK_TEMPLATE(from_stream_to_float, float);
 BENCHMARK_TEMPLATE(from_stream_to_float, double);
+#endif
 
 BENCHMARK_MAIN();

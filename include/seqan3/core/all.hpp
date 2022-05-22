@@ -17,7 +17,6 @@
 // External concept implementations
 // ============================================================================
 
-#include <seqan3/core/algorithm/all.hpp>
 #include <seqan3/core/add_enum_bitwise_operators.hpp>
 #include <seqan3/core/concept/all.hpp>
 #include <seqan3/core/debug_stream.hpp>

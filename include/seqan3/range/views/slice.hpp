@@ -14,7 +14,6 @@
 
 #include <stdexcept>
 
-#include <seqan3/io/exception.hpp>
 #include <seqan3/range/concept.hpp>
 #include <seqan3/range/views/detail.hpp>
 #include <seqan3/range/views/drop.hpp>

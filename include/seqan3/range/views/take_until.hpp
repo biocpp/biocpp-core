@@ -16,7 +16,6 @@
 #include <seqan3/core/type_traits/iterator.hpp>
 #include <seqan3/core/type_traits/range.hpp>
 #include <seqan3/core/type_traits/transformation_trait_or.hpp>
-#include <seqan3/io/exception.hpp>
 #include <seqan3/range/concept.hpp>
 #include <seqan3/range/views/detail.hpp>
 #include <seqan3/range/detail/inherited_iterator_base.hpp>
@@ -379,7 +378,7 @@ public:
         if (*this->this_to_base() == rhs)
         {
             if constexpr (or_throw)
-                throw unexpected_end_of_input{"Reached end of input before functor evaluated to true."};
+                throw std::runtime_error{"Reached end of input before functor evaluated to true."};
             else
                 return true;
         }
@@ -471,7 +470,7 @@ public:
         if (lhs.base() == rhs.urng_sentinel)
         {
             if constexpr (or_throw)
-                throw unexpected_end_of_input{"Reached end of input before functor evaluated to true."};
+                throw std::runtime_error{"Reached end of input before functor evaluated to true."};
             else
                 return true;
         }
@@ -615,7 +614,7 @@ inline auto constexpr take_until = detail::take_until_fn<false, false>{};
 
 /*!\brief A view adaptor that returns elements from the underlying range until the functor evaluates to true
  *        (**throws** if the end of the underlying range is reached).
- * \throws seqan3::unexpected_end_of_input If the underlying range contains no element that satisfies the functor.
+ * \throws std::runtime_error If the underlying range contains no element that satisfies the functor.
  * \ingroup views
  *
  * \copydetails seqan3::views::take_until

@@ -11,7 +11,6 @@
 
 #include <vector>
 
-#include <seqan3/alignment/aligned_sequence/aligned_sequence_concept.hpp>
 #include <seqan3/alphabet/gap/gapped.hpp>
 #include <seqan3/alphabet/nucleotide/dna4.hpp>
 #include <seqan3/alphabet/nucleotide/dna15.hpp>
@@ -41,7 +40,8 @@ TYPED_TEST_SUITE(gapped_test, gapped_types, );
 
 TYPED_TEST(gapped_test, concept_check)
 {
-    EXPECT_TRUE((seqan3::aligned_sequence<std::vector<TypeParam>>));
+//TODO(bio)
+//    EXPECT_TRUE((seqan3::aligned_sequence<std::vector<TypeParam>>));
 }
 
 TEST(gapped_test, initialise_from_component_alphabet)

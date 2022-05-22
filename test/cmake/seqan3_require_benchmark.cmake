@@ -26,7 +26,7 @@ macro (seqan3_require_benchmark)
         gbenchmark_project
         PREFIX gbenchmark_project
         GIT_REPOSITORY "https://github.com/google/benchmark.git"
-        GIT_TAG "v1.5.0"
+        GIT_TAG "v1.6.1"
         SOURCE_DIR "${SEQAN3_BENCHMARK_CLONE_DIR}"
         CMAKE_ARGS "${gbenchmark_project_args}"
         BUILD_BYPRODUCTS "${gbenchmark_path}"

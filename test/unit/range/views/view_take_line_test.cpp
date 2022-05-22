@@ -138,7 +138,7 @@ TEST(view_take_line_or_throw, no_eol)
 {
     std::string vec{"foo"};
     EXPECT_THROW(std::string v = vec | seqan3::views::take_line_or_throw | seqan3::views::to<std::string>,
-                 seqan3::unexpected_end_of_input);
+                 std::runtime_error);
 }
 
 TEST(view_take_line_or_throw, concepts)

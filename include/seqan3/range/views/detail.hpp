@@ -354,7 +354,8 @@ public:
  *
  * From include/seqan3/range/views/kmer_hash.hpp:
  *
- * \snippet include/seqan3/range/views/kmer_hash.hpp adaptor_def
+ * TODO(bio)
+ * include/seqan3/range/views/kmer_hash.hpp adaptor_def
  *
  * This is the full proto-adaptor, first look at the second member function: it handles range and argument input and
  * delegates to the view's constructor. In other, simpler cases you could invoke other adaptors here.

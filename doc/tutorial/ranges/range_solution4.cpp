@@ -1,14 +1,16 @@
 #include <vector>
 
+#include <sharg/all.hpp>                                        // Optional: the sharg-parser
+
+#include <seqan3/core/debug_stream.hpp>
 #include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/argument_parser/all.hpp>                       // include argument parser
 #include <seqan3/range/container/bitcompressed_vector.hpp>      // include bitcompressed vector
 
 using seqan3::operator""_dna4;
 
 int main(int argc, char ** argv)
 {
-    seqan3::argument_parser myparser("Vector-implementations-comparison", argc, argv);
+    sharg::argument_parser myparser("Vector-implementations-comparison", argc, argv);
     size_t size{};
     bool use_bitvector{};
     myparser.add_positional_option(size, "Size of vector");
@@ -18,9 +20,9 @@ int main(int argc, char ** argv)
     {
          myparser.parse();
     }
-    catch (seqan3::argument_parser_error const & ext)                     // catch user errors
+    catch (sharg::argument_parser_error const & ext)                     // catch user errors
     {
-        seqan3::debug_stream << "[Error] " << ext.what() << "\n";
+        std::cerr << "[Error] " << ext.what() << "\n";
         return -1;
     }
 

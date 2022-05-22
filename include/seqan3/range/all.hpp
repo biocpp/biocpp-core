@@ -13,7 +13,6 @@
 #pragma once
 
 #include <seqan3/range/container/all.hpp>
-#include <seqan3/range/decorator/all.hpp>
 #include <seqan3/range/views/all.hpp>
 
 /*!\defgroup range Range
@@ -54,18 +53,11 @@
  * like `std::vector`, but also implements some custom containers. See the \link container container submodule \endlink
  * for more details.
  *
- * **Decorators** are ranges that are always defined on another range and decorate/annotate the underlying range
- * with additional information. They do not own the underlying range, but can contain member data of their own.
- * See the \link decorator decorator submodule \endlink for more details.
- *
  * **Views** are ranges that are usually defined on another range and transform the underlying range
  * via some algorithm or operation, however, some views are stand-alone, i.e. they are just an algorithm that
  * produces elements. Views do not own any data beyond their algorithm and possible parameters to it and they
  * can always be copied in constant time. The algorithm is required to be lazy-evaluated so it is feasible to
  * combine multiple views. See the \link views views submodule \endlink for more details.
- *
- * If you are confused about *decorators* vs *views*, think of decorators as "underlying range + data" and
- * views as "underlying range + algorithm".
  *
  * The storage behaviour is orthogonal to the range concepts defined by the iterators mentioned above, i.e. you
  * can have a container that satisfies std::ranges::random_access_range (e.g. `std::vector` does, but `std::list`

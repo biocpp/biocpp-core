@@ -5,7 +5,7 @@
 This tutorial introduces "C++ Concepts", a feature of C++20 (and available to some extent in older GCC versions).
 You will learn the terminology used in the context of concepts and how to use SeqAn's concepts in your application.
 
-\tutorial_head{Moderate, 60 min, \ref setup\, \ref tutorial_argument_parser,}
+\tutorial_head{Moderate, 60 min, \ref setup, }
 
 This tutorial teaches the very basics of working with concepts. For more background and information on how to implement
 your own concepts, we recommend:
@@ -238,78 +238,3 @@ But in fact both are constrained as the detailed documentation reveals.
 Now, follow the link to seqan3::validator. We will check in the next section whether you understand the
 documentation for the concept.
 
-# How to make your own type model a concept
-
-## seqan3::validator
-
-Remember the tutorial on \ref tutorial_argument_parser ? Let's implement our own validator that checks
-if a numeric argument is an integral square (i.e. the user shall only be allowed to enter 0, 1, 4, 9...).
-
-### Understanding the requirements
-
-In the previous section you analysed seqan3::validator.
-Do you understand the requirements formulated on that page?
-
-\hint
-In order to model the seqan3::validator, your custom validator must provide the following:
-
-  1. It needs to expose a `value_type` type member which identifies the type of variable the validator works on.
-     Currently, the SeqAn validators either have value_type `double` or `std::string`.
-     Since the validator works on every type that has a common reference type to `value_type`, it enables a validator
-     with `value_type = double` to work on all arithmetic values.
-     \attention In order to be chainable, the validators need to share the same value_type!
-  2. It has to be a [functor](https://stackoverflow.com/questions/356950/what-are-c-functors-and-their-uses), which
-     basically means it must provide `operator()`.
-  3. It has to have a member function `std::string get_help_page_message() const` that returns a string that can be
-     displayed on the help page.
-
-\endhint
-
-### Formally satisfying the requirements
-
-As we have noted previously, you can check if your type models seqan3::validator in the following way:
-
-```cpp
-struct custom_validator
-{
-    // ...
-};
-
-static_assert(seqan3::validator<custom_validator>);
-```
-
-To formally satisfy the requirements, your functions don't need the correct behaviour, yet.
-Only the signatures need to be fully specified.
-
-\assignment{Assignment 3: Custom validator I}
-Implement enough of the above mentioned `struct custom_validator` for it to model seqan3::validator and pass
-the check. You can use an empty `main()`-function for now.
-\endassignment
-\solution
-\include doc/tutorial/concepts/custom_validator_solution1.cpp
-\endsolution
-
-### Implementing the functionality
-
-The above implementation is of course not yet useful.
-It should be usable with this main function:
-
-\snippet doc/tutorial/concepts/custom_validator_solution2.cpp main
-
-Try to think of the correct behaviour of this program.
-
-It should print "Yeah!" for the arguments `-i 0`, `-i 4`, or `-i 144`; and/or `-j 0` or `-j 4`.
-
-It should fail for the arguments `-i 3`; and/or `-j 144` or `-j 3`.
-
-\assignment{Assignment 4: Custom validator II}
-Implement your validator fully, i.e. make it throw seqan3::validation_error if the number provided is not a
-square.
-Also give a nice description for the help page.
-
-\endassignment
-\solution
-\snippet doc/tutorial/concepts/custom_validator_solution2.cpp validator
-\endsolution
-
-You have now written your own type that is compatible with our constrained interfaces!

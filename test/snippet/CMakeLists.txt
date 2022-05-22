@@ -17,7 +17,7 @@ macro (seqan3_snippet test_name_prefix snippet snippet_base_path)
     set (target "${snippet_target_name}_snippet")
 
     add_executable (${target} "${snippet_base_path}/${snippet}")
-    target_link_libraries (${target} seqan3::test::unit)
+    target_link_libraries (${target} seqan3::test::unit sharg::sharg)
     target_compile_options (${target} PUBLIC "-Wno-unused")
     set_target_properties(${target}
         PROPERTIES
@@ -41,6 +41,7 @@ endmacro ()
 
 seqan3_require_ccache ()
 seqan3_require_test ()
+seqan3_require_sharg ()
 
 seqan3_snippets ("doc/snippet" "${CMAKE_SOURCE_DIR}/../../doc")
 seqan3_snippets ("snippet" "${CMAKE_SOURCE_DIR}")

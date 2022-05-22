@@ -198,63 +198,19 @@
 //  Workarounds
 // ============================================================================
 
+/*!\brief Warn about gcc 10.0 and gcc 10.1
+ * Known Issues:
+ * * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93983
+ * * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95371
+ * * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95578
+ */
+#if defined(__GNUC__) && (__GNUC__ == 10 && __GNUC_MINOR__ <= 1)
+#   pragma GCC warning "Be aware that gcc 10.0 and 10.1 are known to have several bugs that might make SeqAn3 fail to compile. Please use gcc >= 10.2."
+#endif // defined(__GNUC__) && (__GNUC__ == 10 && __GNUC_MINOR__ <= 1)
+
 #ifndef SEQAN3_WORKAROUND_VIEW_PERFORMANCE
 //!\brief Performance of views, especially filter and join is currently bad, especially in I/O.
 #   define SEQAN3_WORKAROUND_VIEW_PERFORMANCE 1
-#endif
-
-//!\brief See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87113
-#ifndef SEQAN3_WORKAROUND_GCC_87113
-#   if defined(__GNUC_MINOR__) && ((__GNUC__ == 7) || ((__GNUC__ == 8) && (__GNUC_MINOR__ < 3)))
-#       define SEQAN3_WORKAROUND_GCC_87113 1
-#   else
-#       define SEQAN3_WORKAROUND_GCC_87113 0
-#   endif
-#endif
-
-//!\brief See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90897
-#ifndef SEQAN3_WORKAROUND_GCC_90897
-#   if defined(__GNUC__) && (__GNUC__ == 8)
-#       define SEQAN3_WORKAROUND_GCC_90897 1
-#   else
-#       define SEQAN3_WORKAROUND_GCC_90897 0
-#   endif
-#endif
-
-//!\brief https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93983
-#ifndef SEQAN3_WORKAROUND_GCC_93983
-#   if defined(__GNUC__) && (__GNUC__ == 10 && __GNUC_MINOR__ <= 1)
-#       define SEQAN3_WORKAROUND_GCC_93983 1
-#   else
-#       define SEQAN3_WORKAROUND_GCC_93983 0
-#   endif
-#endif
-
-//!\brief https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95371
-#ifndef SEQAN3_WORKAROUND_GCC_95371 // regressed in gcc10, fixed for gcc10.2
-#   if defined(__GNUC__) && (__GNUC__ == 10 && __GNUC_MINOR__ < 2)
-#       define SEQAN3_WORKAROUND_GCC_95371 1
-#   else
-#       define SEQAN3_WORKAROUND_GCC_95371 0
-#   endif
-#endif
-
-//!\brief https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95578
-#ifndef SEQAN3_WORKAROUND_GCC_95578 // regressed in gcc10, fixed for gcc10.2
-#   if defined(__GNUC__) && (__GNUC__ == 10 && __GNUC_MINOR__ < 2)
-#       define SEQAN3_WORKAROUND_GCC_95578 1
-#   else
-#       define SEQAN3_WORKAROUND_GCC_95578 0
-#   endif
-#endif
-
-//!\brief Various concept problems only present in GCC7 and GCC8.
-#ifndef SEQAN3_WORKAROUND_GCC7_AND_8_CONCEPT_ISSUES
-#   if defined(__GNUC__) && ((__GNUC__ == 7) || (__GNUC__ == 8))
-#       define SEQAN3_WORKAROUND_GCC7_AND_8_CONCEPT_ISSUES 1
-#   else
-#       define SEQAN3_WORKAROUND_GCC7_AND_8_CONCEPT_ISSUES 0
-#   endif
 #endif
 
 //!\brief See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93467
@@ -267,11 +223,137 @@
 #endif
 
 //!\brief See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96070 and https://github.com/seqan/product_backlog/issues/151
-#ifndef SEQAN3_WORKAROUND_GCC_96070 // not yet fixed, this is a defect within the standard lib
-#   if defined(__GNUC__)
+#ifndef SEQAN3_WORKAROUND_GCC_96070 // fixed since gcc10.4
+#   if defined(__GNUC__) && (__GNUC__ == 10 && __GNUC_MINOR__ < 4)
 #       define SEQAN3_WORKAROUND_GCC_96070 1
 #   else
 #       define SEQAN3_WORKAROUND_GCC_96070 0
+#   endif
+#endif
+
+//!\brief See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99318
+#ifndef SEQAN3_WORKAROUND_GCC_99318 // fixed since gcc10.3
+#   if defined(__GNUC__) && (__GNUC__ == 10 && __GNUC_MINOR__ < 3)
+#       define SEQAN3_WORKAROUND_GCC_99318 1
+#   else
+#       define SEQAN3_WORKAROUND_GCC_99318 0
+#   endif
+#endif
+
+//!\brief See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100139
+//!       std::views::{take, drop} do not type-erase. This is a defect within the standard lib.
+#ifndef SEQAN3_WORKAROUND_GCC_100139 // not yet fixed
+#   if defined(__GNUC__)
+#       define SEQAN3_WORKAROUND_GCC_100139 1
+#   else
+#       define SEQAN3_WORKAROUND_GCC_100139 0
+#   endif
+#endif
+
+//!\brief See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100252
+//!       ICE in template instantiation.
+#ifndef SEQAN3_WORKAROUND_GCC_100252 // not yet fixed
+#   if defined(__GNUC__) && (__GNUC__ >= 12)
+#       define SEQAN3_WORKAROUND_GCC_100252 1
+#   else
+#       define SEQAN3_WORKAROUND_GCC_100252 0
+#   endif
+#endif
+
+/*!\brief This is needed to support CentOS 7 or RHEL 7; Newer CentOS's include a more modern default-gcc version making
+ *        this macro obsolete.
+ *
+ * In GCC 5 there was a bigger ABI change and modern systems compile with dual ABI, but some enterprise systems (those
+ * where gcc 4 is the standard compiler) don't support dual ABI. This has the effect that even community builds of gcc
+ * are build with --disable-libstdcxx-dual-abi. Only building the compiler yourself would solve this problem.
+ *
+ * \see https://github.com/seqan/seqan3/issues/2244
+ * \see https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_dual_abi.html
+ */
+#ifndef SEQAN3_WORKAROUND_GCC_NO_CXX11_ABI
+#   if defined(_GLIBCXX_USE_CXX11_ABI) && _GLIBCXX_USE_CXX11_ABI == 0
+#       define SEQAN3_WORKAROUND_GCC_NO_CXX11_ABI 1
+#   else
+#       define SEQAN3_WORKAROUND_GCC_NO_CXX11_ABI 0
+#   endif
+#endif
+
+#if SEQAN3_DOXYGEN_ONLY(1)0
+//!\brief This disables the warning you would get if -D_GLIBCXX_USE_CXX11_ABI=0 is set.
+#define SEQAN3_DISABLE_LEGACY_STD_DIAGNOSTIC
+#endif // SEQAN3_DOXYGEN_ONLY(1)0
+
+#if defined(_GLIBCXX_USE_CXX11_ABI) &&  _GLIBCXX_USE_CXX11_ABI == 0
+#   ifndef SEQAN3_DISABLE_LEGACY_STD_DIAGNOSTIC
+#       pragma GCC warning "We do not actively support compiler that have -D_GLIBCXX_USE_CXX11_ABI=0 set, and it might be that SeqAn does not compile due to this. It is known that all compiler of CentOS 7 / RHEL 7 set this flag by default (and that it cannot be overridden!). Note that these versions of the OSes are community-supported (see https://docs.seqan.de/seqan/3-master-user/about_api.html#platform_stability for more details). You can disable this warning by setting -DSEQAN3_DISABLE_LEGACY_STD_DIAGNOSTIC."
+#   endif // SEQAN3_DISABLE_LEGACY_STD_DIAGNOSTIC
+#endif // _GLIBCXX_USE_CXX11_ABI == 0
+
+/*!\brief https://eel.is/c++draft/range.take#view defines e.g. `constexpr auto size() requires sized_range<V>` without
+ *        any template. This syntax works since gcc-10, before that a dummy `template <typename = ...>` must be used.
+ */
+#ifndef SEQAN3_WORKAROUND_GCC_NON_TEMPLATE_REQUIRES
+#   if defined(__GNUC_MINOR__) && (__GNUC__ < 10) // fixed since gcc-10
+#       define SEQAN3_WORKAROUND_GCC_NON_TEMPLATE_REQUIRES 1
+#   else
+#       define SEQAN3_WORKAROUND_GCC_NON_TEMPLATE_REQUIRES 0
+#   endif
+#endif
+
+//!\brief Workaround to access the static id of the configuration elements inside of the concept definition
+//!       (fixed in gcc11).
+#ifndef SEQAN3_WORKAROUND_GCC_PIPEABLE_CONFIG_CONCEPT
+#   if defined(__GNUC__) && (__GNUC__ < 11)
+#       define SEQAN3_WORKAROUND_GCC_PIPEABLE_CONFIG_CONCEPT 1
+#   else
+#       define SEQAN3_WORKAROUND_GCC_PIPEABLE_CONFIG_CONCEPT 0
+#   endif
+#endif
+
+//!\brief A view does not need to be default constructible. This change is first implemented in gcc12.
+#ifndef SEQAN3_WORKAROUND_DEFAULT_CONSTRUCTIBLE_VIEW
+#   if defined(__GNUC__) && (__GNUC__ < 12)
+#       define SEQAN3_WORKAROUND_DEFAULT_CONSTRUCTIBLE_VIEW 1
+#   else
+#       define SEQAN3_WORKAROUND_DEFAULT_CONSTRUCTIBLE_VIEW 0
+#   endif
+#endif
+
+/*!\brief Workaround bogus memcpy errors in GCC 12.1. (Wrestrict and Wstringop-overflow)
+ * \see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105545
+ */
+#ifndef SEQAN3_WORKAROUND_GCC_BOGUS_MEMCPY
+#   if defined(__GNUC__) && (__GNUC__ == 12 && __GNUC_MINOR__ < 2)
+#       define SEQAN3_WORKAROUND_GCC_BOGUS_MEMCPY 1
+#   else
+#       define SEQAN3_WORKAROUND_GCC_BOGUS_MEMCPY 0
+#   endif
+#endif
+
+/*!\brief gcc only: Constrain friend declarations to limit access to internals.
+ *
+ * \details
+ *
+ * We have some instances where we constrain friend declarations to limit which class instance can
+ * access private information. For example
+ *
+ * ```
+ * template <typename type_t>
+ *     requires std::same_as<type_t, int>
+ * friend class std::tuple;
+ * ```
+ *
+ * would only allow `std::tuple<int>` to access the internals.
+ *
+ * It seems that this is not standard behaviour and more like a gcc-only extension, as neither clang nor msvc supports
+ * it. For now we will keep this code, but it should be removed if it turns out that this is non-standard. (i.e. a newer
+ * gcc release does not support it any more)
+ */
+#ifndef SEQAN3_WORKAROUND_FURTHER_CONSTRAIN_FRIEND_DECLARATION
+#   if defined(__clang__)
+#       define SEQAN3_WORKAROUND_FURTHER_CONSTRAIN_FRIEND_DECLARATION 1
+#   else
+#       define SEQAN3_WORKAROUND_FURTHER_CONSTRAIN_FRIEND_DECLARATION 0
 #   endif
 #endif
 

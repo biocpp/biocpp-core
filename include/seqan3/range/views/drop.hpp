@@ -13,7 +13,6 @@
 #pragma once
 
 #include <seqan3/core/type_traits/template_inspection.hpp>
-#include <seqan3/io/exception.hpp>
 #include <seqan3/range/concept.hpp>
 #include <seqan3/range/views/detail.hpp>
 #include <seqan3/std/concepts>

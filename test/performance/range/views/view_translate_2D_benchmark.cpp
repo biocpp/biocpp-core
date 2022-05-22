@@ -59,7 +59,7 @@ void sequential_read(benchmark::State & state)
     }
     else if constexpr (std::is_same_v<tag_t, translate_tag>)
     {
-        auto translated_aa_view = dna_sequence_collection | seqan3::views::translate | seqan3::views::join;
+        auto translated_aa_view = dna_sequence_collection | seqan3::views::translate | std::views::join;
         sequential_read_impl(state, translated_aa_view);
     }
     else

@@ -3,8 +3,8 @@ name: SeqAn3 CI
 on: [push, pull_request]
 
 env:
-  CMAKE_VERSION: 3.7.2
-  DOXYGEN_VERSION: 1.8.20
+  CMAKE_VERSION: 3.14.6
+  DOXYGEN_VERSION: 1.11.0
   SEQAN3_NO_VERSION_CHECK: 1
   TZ: Europe/Berlin
 
@@ -17,56 +17,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: "Coverage gcc7"
+          - name: "Coverage gcc10"
             os: ubuntu-20.04
             requires_toolchain: true
             requires_ccache: true
-            cxx: "g++-7"
-            cc: "gcc-7"
+            cxx: "g++-10"
+            cc: "gcc-10"
             build: coverage
             build_type: Debug
 
-          - name: "Unit gcc9 (c++2a) on Linux"
-            os: ubuntu-20.04
-            requires_toolchain: true
-            requires_ccache: true
-            cxx: "g++-9"
-            cc: "gcc-9"
-            build: unit
-            build_type: Release
-            cxx_flags: "-std=c++2a"
-
-          - name: "Unit gcc9 (c++2a) on macOS"
-            os: macos-10.15
-            requires_toolchain: true
-            requires_ccache: true
-            cxx: "g++-9"
-            cc: "gcc-9"
-            build: unit
-            build_type: Release
-            cxx_flags: "-std=c++2a"
-
-          - name: "Unit gcc10 (c++17) on Linux"
-            os: ubuntu-20.04
-            requires_toolchain: true
-            requires_ccache: true
-            cxx: "g++-10"
-            cc: "gcc-10"
-            build: unit
-            build_type: Release
-            cxx_flags: "-std=c++17 -fconcepts"
-
-          - name: "Unit gcc10 (c++17) on macOS"
-            os: macos-10.15
-            requires_toolchain: true
-            requires_ccache: true
-            cxx: "g++-10"
-            cc: "gcc-10"
-            build: unit
-            build_type: Release
-            cxx_flags: "-std=c++17 -fconcepts"
-
-          - name: "Unit gcc10 (c++20) on Linux"
+           - name: "Unit gcc10 on Linux"
             os: ubuntu-20.04
             requires_toolchain: true
             requires_ccache: true
@@ -75,7 +35,7 @@ jobs:
             build: unit
             build_type: Release
 
-          - name: "Unit gcc10 (c++20) on macOS"
+          - name: "Unit gcc10 on macOS"
             os: macos-10.15
             requires_toolchain: true
             requires_ccache: true
@@ -84,66 +44,48 @@ jobs:
             build: unit
             build_type: Release
 
-          - name: "Unit gcc8 on Linux"
+          - name: "Unit gcc11 on Linux"
             os: ubuntu-20.04
             requires_toolchain: true
             requires_ccache: true
-            cxx: "g++-8"
-            cc: "gcc-8"
+            cxx: "g++-11"
+            cc: "gcc-11"
             build: unit
             build_type: Release
 
-          - name: "Unit gcc8 on macOS"
+          - name: "Unit gcc11 on macOS"
             os: macos-10.15
             requires_toolchain: true
             requires_ccache: true
-            cxx: "g++-8"
-            cc: "gcc-8"
+            cxx: "g++-11"
+            cc: "gcc-11"
             build: unit
             build_type: Release
 
-          - name: "Unit gcc7 on Linux"
+          - name: "Performance gcc10"
             os: ubuntu-20.04
             requires_toolchain: true
             requires_ccache: true
-            cxx: "g++-7"
-            cc: "gcc-7"
-            build: unit
-            build_type: Release
-
-          - name: "Unit gcc7 on macOS"
-            os: macos-10.15
-            requires_toolchain: true
-            requires_ccache: true
-            cxx: "g++-7"
-            cc: "gcc-7"
-            build: unit
-            build_type: Release
-
-          - name: "Performance gcc7"
-            os: ubuntu-20.04
-            requires_toolchain: true
-            requires_ccache: true
-            cxx: "g++-7"
-            cc: "gcc-7"
+            cxx: "g++-10"
+            cc: "gcc-10"
             build: performance
             build_type: Release
 
-          - name: "Header gcc7"
+          - name: "Header gcc10"
             os: ubuntu-20.04
             requires_toolchain: true
             requires_ccache: true
-            cxx: "g++-7"
-            cc: "gcc-7"
+            cxx: "g++-10"
+            cc: "gcc-10"
             build: header
             build_type: Release
 
-          - name: "Snippet gcc7"
+          - name: "Snippet gcc10"
             os: ubuntu-20.04
             requires_toolchain: true
             requires_ccache: true
-            cxx: "g++-7"
-            cc: "gcc-7"
+            cxx: "g++-10"
+            cc: "gcc-10"
             build: snippet
             build_type: Release
 
@@ -297,20 +239,20 @@ jobs:
             fi
           fi
 
-      - name: Submit coverage build
-        if: matrix.build == 'coverage'
-        shell: bash
-        run: bash <(curl -s https://codecov.io/bash) -f ./seqan3-build/seqan3_coverage -R ./seqan3 || echo 'Codecov failed to upload'
+      #- name: Submit coverage build
+        #if: matrix.build == 'coverage'
+        #shell: bash
+        #run: bash <(curl -s https://codecov.io/bash) -f ./seqan3-build/seqan3_coverage -R ./seqan3 || echo 'Codecov failed to upload'
 
-      - name: Package documentation
-        if: matrix.build == 'documentation'
-        continue-on-error: true
-        run: tar -zcf documentation.tar.gz seqan3-build
+      #- name: Package documentation
+        #if: matrix.build == 'documentation'
+        #continue-on-error: true
+        #run: tar -zcf documentation.tar.gz seqan3-build
 
-      - name: Upload documentation
-        if: matrix.build == 'documentation'
-        continue-on-error: true
-        uses: actions/upload-artifact@v2
-        with:
-          name: documentation
-          path: documentation.tar.gz
+      #- name: Upload documentation
+        #if: matrix.build == 'documentation'
+        #continue-on-error: true
+        #uses: actions/upload-artifact@v2
+        #with:
+          #name: documentation
+          #path: documentation.tar.gz
