@@ -7,11 +7,10 @@
 
 #include <benchmark/benchmark.h>
 
+#include <charconv>
 #include <cstring>
 #include <sstream>
 #include <string_view>
-
-#include <seqan3/std/charconv>
 
 // -----------------------------------------------------------------------------
 // to_chars for integral types

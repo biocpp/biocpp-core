@@ -307,5 +307,5 @@ TEST(view_take_exactly_or_throw, underlying_is_shorter)
                      | seqan3::views::single_pass_input
                      | seqan3::views::take_exactly_or_throw(4)
                      | seqan3::views::to<std::string>),
-                   seqan3::unexpected_end_of_input); // full parsing on conversion, throw on conversion
+                   std::runtime_error); // full parsing on conversion, throw on conversion
 }

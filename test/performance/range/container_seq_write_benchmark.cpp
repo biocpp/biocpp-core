@@ -87,10 +87,12 @@ BENCHMARK_TEMPLATE(sequential_write, sdsl_int_vec, uint64_t);
 BENCHMARK_TEMPLATE(sequential_write, seqan3::bitcompressed_vector, char);
 BENCHMARK_TEMPLATE(sequential_write, seqan3::bitcompressed_vector, seqan3::gap);
 BENCHMARK_TEMPLATE(sequential_write, seqan3::bitcompressed_vector, seqan3::dna4);
-BENCHMARK_TEMPLATE(sequential_write, seqan3::bitcompressed_vector, seqan3::gapped<seqan3::dna4>);
+//TODO(bio): works on gcc10, fails on gc11
+// BENCHMARK_TEMPLATE(sequential_write, seqan3::bitcompressed_vector, seqan3::gapped<seqan3::dna4>);
 BENCHMARK_TEMPLATE(sequential_write, seqan3::bitcompressed_vector, seqan3::dna15);
 BENCHMARK_TEMPLATE(sequential_write, seqan3::bitcompressed_vector, seqan3::aa27);
-BENCHMARK_TEMPLATE(sequential_write, seqan3::bitcompressed_vector, seqan3::alphabet_variant<char, seqan3::dna4>);
+//TODO(bio): works on gcc10, fails on gc11
+// BENCHMARK_TEMPLATE(sequential_write, seqan3::bitcompressed_vector, seqan3::alphabet_variant<char, seqan3::dna4>);
 
 BENCHMARK_TEMPLATE(sequential_write, small_vec, char);
 BENCHMARK_TEMPLATE(sequential_write, small_vec, seqan3::gap);

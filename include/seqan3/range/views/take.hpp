@@ -23,7 +23,6 @@
 #include <seqan3/core/type_traits/range.hpp>
 #include <seqan3/core/type_traits/template_inspection.hpp>
 #include <seqan3/core/type_traits/transformation_trait_or.hpp>
-#include <seqan3/io/exception.hpp>
 #include <seqan3/range/concept.hpp>
 #include <seqan3/range/container/concept.hpp>
 #include <seqan3/range/views/detail.hpp>
@@ -91,7 +90,7 @@ public:
     /*!\brief Construct from another View.
      * \param[in] _urange The underlying range.
      * \param[in] _size   The desired size (after which to stop returning elements).
-     * \throws unexpected_end_of_input If `exactly && or_throw && seqan3::sized_range<urng_t>`.
+     * \throws std::runtime_error If `exactly && or_throw && seqan3::sized_range<urng_t>`.
      */
     constexpr view_take(urng_t _urange, size_t const _size)
         : urange{std::move(_urange)}, target_size{_size}
@@ -120,7 +119,7 @@ public:
      * \tparam rng_t      Type of the passed range; `urng_t` must be constructible from this.
      * \param[in] _urange The underlying range.
      * \param[in] _size   The desired size (after which to stop returning elements).
-     * \throws unexpected_end_of_input If `exactly && or_throw && seqan3::sized_range<urng_t>`.
+     * \throws std::runtime_error If `exactly && or_throw && seqan3::sized_range<urng_t>`.
      */
     template <std::ranges::viewable_range rng_t>
     //!\cond
@@ -395,7 +394,7 @@ public:
         if (*base_t::this_to_base() == rhs)
         {
             if constexpr (or_throw)
-                throw unexpected_end_of_input{"Reached end of input before designated size."};
+                throw std::runtime_error{"Reached end of input before designated size."};
 
             return true;
         }

@@ -15,7 +15,6 @@
 #include <seqan3/alphabet/concept.hpp>
 #include <seqan3/alphabet/mask/mask.hpp>
 #include <seqan3/core/detail/debug_stream_type.hpp>
-#include <seqan3/io/stream/concept.hpp>
 
 namespace seqan3
 {
@@ -31,7 +30,7 @@ namespace seqan3
 template <typename char_t, alphabet alphabet_t>
 inline debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & s, alphabet_t && l)
 //!\cond
-    requires (!output_stream_over<std::basic_ostream<char_t>, alphabet_t>)
+    requires (!requires { std::cout << l; })
 //!\endcond
 {
     return s << to_char(l);

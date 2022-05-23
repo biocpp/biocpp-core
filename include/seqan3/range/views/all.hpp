@@ -16,10 +16,8 @@
 #include <seqan3/range/views/complement.hpp>
 #include <seqan3/range/views/convert.hpp>
 #include <seqan3/range/views/deep.hpp>
-#include <seqan3/range/views/enforce_random_access.hpp>
 #include <seqan3/range/views/get.hpp>
 #include <seqan3/range/views/interleave.hpp>
-#include <seqan3/range/views/istreambuf.hpp>
 #include <seqan3/range/views/move.hpp>
 #include <seqan3/range/views/pairwise_combine.hpp>
 #include <seqan3/range/views/persist.hpp>

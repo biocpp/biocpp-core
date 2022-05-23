@@ -62,7 +62,6 @@ namespace seqan3::views
  *
  * \include test/snippet/range/views/move.cpp
  *
- * A more useful example can be found in \link sequence_file_section_fun_with_ranges the tutorial \endlink.
  * \hideinitializer
  */
 inline auto const move = std::views::transform(detail::multi_invocable

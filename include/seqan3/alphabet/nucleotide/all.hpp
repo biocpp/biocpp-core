@@ -98,8 +98,6 @@
  *
  * `char` values that are none of the IUPAC symbols, e.g. 'P', are always converted to the equivalent of assigning 'N',
  * i.e. they result in 'A' for seqan3::dna4 and seqan3::rna4, and in 'N' for the other alphabets.
- * If the special char conversion of IUPAC characters to seqan3::dna4 is not your desired behavior, refer to our
- * cookbook for an example of \ref cookbook_custom_dna4_alphabet to change the conversion behavior.
  *
  * ###Literals
  *
