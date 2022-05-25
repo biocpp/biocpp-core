@@ -13,8 +13,8 @@
 #include <seqan3/range/concept.hpp>
 #include <seqan3/range/views/complement.hpp>
 #include <seqan3/range/views/to.hpp>
-#include <seqan3/std/algorithm>
-#include <seqan3/std/ranges>
+#include <algorithm>
+#include <ranges>
 #include <seqan3/test/expect_range_eq.hpp>
 
 using seqan3::operator""_dna5;
@@ -24,29 +24,29 @@ TEST(view_complement, basic)
     seqan3::dna5_vector foo{"ACGTA"_dna5};
 
     // pipe notation
-    seqan3::dna5_vector v = foo | seqan3::views::complement | seqan3::views::to<std::vector>;
+    seqan3::dna5_vector v = foo | seqan3::views::complement | seqan3::views::to<std::vector>();
     EXPECT_EQ(v, "TGCAT"_dna5);
 
     // function notation
-    seqan3::dna5_vector v2(seqan3::views::complement(foo) | seqan3::views::to<std::vector>);
+    seqan3::dna5_vector v2(seqan3::views::complement(foo) | seqan3::views::to<std::vector>());
     EXPECT_EQ(v2, "TGCAT"_dna5);
 
     // combinability
-    seqan3::dna5_vector v3 = foo | seqan3::views::complement | std::views::reverse | seqan3::views::to<std::vector>;
+    seqan3::dna5_vector v3 = foo | seqan3::views::complement | std::views::reverse | seqan3::views::to<std::vector>();
     EXPECT_EQ(v3, "TACGT"_dna5);
 
     seqan3::dna5_vector const bar{"ACGTA"_dna5};
 
     // const pipe notation
-    seqan3::dna5_vector v4 = bar | seqan3::views::complement | seqan3::views::to<std::vector>;
+    seqan3::dna5_vector v4 = bar | seqan3::views::complement | seqan3::views::to<std::vector>();
     EXPECT_EQ(v4, "TGCAT"_dna5);
 
     // const function notation
-    seqan3::dna5_vector v5(seqan3::views::complement(bar) | seqan3::views::to<std::vector>);
+    seqan3::dna5_vector v5(seqan3::views::complement(bar) | seqan3::views::to<std::vector>());
     EXPECT_EQ(v5, "TGCAT"_dna5);
 
     // const combinability
-    seqan3::dna5_vector v6 = bar | seqan3::views::complement | std::views::reverse | seqan3::views::to<std::vector>;
+    seqan3::dna5_vector v6 = bar | seqan3::views::complement | std::views::reverse | seqan3::views::to<std::vector>();
     EXPECT_EQ(v6, "TACGT"_dna5);
 }
 

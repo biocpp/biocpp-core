@@ -1,8 +1,9 @@
+#include <ranges>                               // include all of the standard library's views
+
 #include <sharg/all.hpp>                        // Optional: the sharg-parser
 
 #include <seqan3/core/debug_stream.hpp>
 #include <seqan3/range/views/all.hpp>           // include all of SeqAn's views
-#include <seqan3/std/ranges>                    // include all of the standard library's views
 
 
 int main(int argc, char** argv)

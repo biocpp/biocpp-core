@@ -9,8 +9,6 @@
 
 #include <gtest/gtest.h>
 
-#include <range/v3/view/zip.hpp>
-
 #include <seqan3/alphabet/mask/masked.hpp>
 #include <seqan3/alphabet/quality/aliases.hpp>
 #include <seqan3/range/concept.hpp>
@@ -19,7 +17,7 @@
 #include <seqan3/range/views/to_char.hpp>
 #include <seqan3/range/views/to.hpp>
 #include <seqan3/range/views/zip.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 using seqan3::operator""_dna4;
 
@@ -34,24 +32,24 @@ TEST(view_get, basic)
     std::vector<seqan3::phred42> cmp1{seqan3::phred42{0}, seqan3::phred42{1}, seqan3::phred42{2}, seqan3::phred42{3}};
 
     //functor
-    seqan3::dna4_vector functor0 = seqan3::views::get<0>(qv) | seqan3::views::to<std::vector>;
-    std::vector<seqan3::phred42> functor1 = seqan3::views::get<1>(qv) | seqan3::views::to<std::vector>;
+    seqan3::dna4_vector functor0 = seqan3::views::get<0>(qv) | seqan3::views::to<std::vector>();
+    std::vector<seqan3::phred42> functor1 = seqan3::views::get<1>(qv) | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp0, functor0);
     EXPECT_EQ(cmp1, functor1);
 
     // pipe notation
-    seqan3::dna4_vector pipe0 = qv | seqan3::views::get<0> | seqan3::views::to<std::vector>;
-    std::vector<seqan3::phred42> pipe1 = qv | seqan3::views::get<1> | seqan3::views::to<std::vector>;
+    seqan3::dna4_vector pipe0 = qv | seqan3::views::get<0> | seqan3::views::to<std::vector>();
+    std::vector<seqan3::phred42> pipe1 = qv | seqan3::views::get<1> | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp0, pipe0);
     EXPECT_EQ(cmp1, pipe1);
 
     // combinability
     seqan3::dna4_vector cmp2{"TGCA"_dna4};
-    seqan3::dna4_vector comp = qv | seqan3::views::get<0> | seqan3::views::complement | seqan3::views::to<std::vector>;
+    seqan3::dna4_vector comp = qv | seqan3::views::get<0> | seqan3::views::complement | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp2, comp);
 
     std::string cmp3{"TGCA"};
-    std::string to_char_test = comp | seqan3::views::to_char | seqan3::views::to<std::string>;
+    std::string to_char_test = comp | seqan3::views::to_char | seqan3::views::to<std::string>();
     EXPECT_EQ(cmp3, to_char_test);
 
     // reference return check
@@ -74,25 +72,25 @@ TEST(view_get, advanced)
                                                    {'C'_dna4, seqan3::mask::UNMASKED},
                                                    {'G'_dna4, seqan3::mask::MASKED},
                                                    {'T'_dna4, seqan3::mask::UNMASKED}};
-    std::vector<seqan3::masked<seqan3::dna4>> functor0 = seqan3::views::get<0>(t) | seqan3::views::to<std::vector>;
+    std::vector<seqan3::masked<seqan3::dna4>> functor0 = seqan3::views::get<0>(t) | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp0, functor0);
 
     std::vector<seqan3::phred42> cmp1{seqan3::phred42{0}, seqan3::phred42{1}, seqan3::phred42{2}, seqan3::phred42{3}};
-    std::vector<seqan3::phred42> functor1 = seqan3::views::get<1>(t) | seqan3::views::to<std::vector>;
+    std::vector<seqan3::phred42> functor1 = seqan3::views::get<1>(t) | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp1, functor1);
 
     seqan3::dna4_vector cmp00{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
-    seqan3::dna4_vector functor00 = seqan3::views::get<0>(seqan3::views::get<0>(t)) | seqan3::views::to<std::vector>;
+    seqan3::dna4_vector functor00 = seqan3::views::get<0>(seqan3::views::get<0>(t)) | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp00, functor00);
 
     // pipe notation
-    std::vector<seqan3::masked<seqan3::dna4>> pipe0 = t | seqan3::views::get<0> | seqan3::views::to<std::vector>;
+    std::vector<seqan3::masked<seqan3::dna4>> pipe0 = t | seqan3::views::get<0> | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp0, pipe0);
 
-    std::vector<seqan3::phred42> pipe1 = t | seqan3::views::get<1> | seqan3::views::to<std::vector>;
+    std::vector<seqan3::phred42> pipe1 = t | seqan3::views::get<1> | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp1, pipe1);
 
-    seqan3::dna4_vector pipe00 = t | seqan3::views::get<0> | seqan3::views::get<0> | seqan3::views::to<std::vector>;
+    seqan3::dna4_vector pipe00 = t | seqan3::views::get<0> | seqan3::views::get<0> | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp00, pipe00);
 
     // combinability
@@ -103,7 +101,7 @@ TEST(view_get, advanced)
     std::vector<seqan3::masked<seqan3::dna4>> revtest = t
                                                       | seqan3::views::get<0>
                                                       | std::views::reverse
-                                                      | seqan3::views::to<std::vector>;
+                                                      | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmprev, revtest);
 
     seqan3::dna4_vector cmprev2{'T'_dna4, 'G'_dna4, 'C'_dna4, 'A'_dna4};
@@ -111,7 +109,7 @@ TEST(view_get, advanced)
                                  | seqan3::views::get<0>
                                  | seqan3::views::get<0>
                                  | std::views::reverse
-                                 | seqan3::views::to<std::vector>;
+                                 | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmprev2, revtest2);
 
     // reference check
@@ -130,8 +128,8 @@ TEST(view_get, tuple_pair)
 
     // functor notation
     std::vector<int> cmp{0, 1, 2, 3};
-    std::vector<int> pair_func = seqan3::views::get<0>(pair_test) | seqan3::views::to<std::vector>;
-    std::vector<int> tuple_func = seqan3::views::get<0>(tuple_test) | seqan3::views::to<std::vector>;
+    std::vector<int> pair_func = seqan3::views::get<0>(pair_test) | seqan3::views::to<std::vector>();
+    std::vector<int> tuple_func = seqan3::views::get<0>(tuple_test) | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp, pair_func);
     EXPECT_EQ(cmp, tuple_func);
 
@@ -144,8 +142,8 @@ TEST(view_get, tuple_pair)
 
     // pipe notation
     cmp[0] = 0;
-    std::vector<int> pair_pipe = pair_test | seqan3::views::get<0> | seqan3::views::to<std::vector>;
-    std::vector<int> tuple_pipe = tuple_test | seqan3::views::get<0> | seqan3::views::to<std::vector>;
+    std::vector<int> pair_pipe = pair_test | seqan3::views::get<0> | seqan3::views::to<std::vector>();
+    std::vector<int> tuple_pipe = tuple_test | seqan3::views::get<0> | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp, pair_pipe);
     EXPECT_EQ(cmp, tuple_pipe);
 }

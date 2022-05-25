@@ -12,7 +12,7 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/core/detail/pack_algorithm.hpp>
+#include <seqan3/core/type_pack/detail/type_pack_algorithm.hpp>
 #include <seqan3/alphabet/quality/all.hpp>
 
 template <typename T>

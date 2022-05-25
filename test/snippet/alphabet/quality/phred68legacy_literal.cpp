@@ -1,6 +1,6 @@
 #include <seqan3/alphabet/quality/phred68legacy.hpp>
 #include <seqan3/core/debug_stream.hpp>
-#include <seqan3/std/algorithm>
+#include <algorithm>
 
 int main()
 {

@@ -43,14 +43,14 @@ void algorithm(std::vector<seqan3::semialphabet_any<10> > & r, bool is_murphy)
 void algo_pre(seqan3::aa10li_vector const & v)
 {
     std::vector<seqan3::semialphabet_any<10> > tmp = v | seqan3::views::convert<seqan3::semialphabet_any<10>>
-                                                       | seqan3::views::to<std::vector>;
+                                                       | seqan3::views::to<std::vector>();
     algorithm(tmp, false);
 }
 
 void algo_pre(seqan3::aa10murphy_vector const & v)
 {
     std::vector<seqan3::semialphabet_any<10> > tmp = v | seqan3::views::convert<seqan3::semialphabet_any<10>>
-                                                       | seqan3::views::to<std::vector>;
+                                                       | seqan3::views::to<std::vector>();
     algorithm(tmp, true);
 }
 

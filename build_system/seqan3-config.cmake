@@ -15,9 +15,9 @@
 #
 # SeqAn has the following platform requirements:
 #
-#   C++17
+#   C++20
 #   C++ Concepts (either via Concepts TS or C++20)
-#   C++ Filesystem (part of C++17 but needs extra linking on some platforms)
+#   C++ Filesystem (part of C++20 but needs extra linking on some platforms)
 #   pthread
 #
 # SeqAn requires the following libraries:
@@ -186,156 +186,39 @@ elseif (SEQAN3_NO_CEREAL)
     set (SEQAN3_DEFINITIONS ${SEQAN3_DEFINITIONS} "-DSEQAN3_WITH_CEREAL=0")
 endif ()
 
-# Lemon is auto-detected by default, i.e. used if found, not used if not found.
-# You can optionally set a hard requirement so a build fails without Lemon,
-# or you can force-disable Lemon even if present on the system.
-option (SEQAN3_LEMON    "Require Lemon and fail if not present." OFF)
-option (SEQAN3_NO_LEMON "Don't use Lemon, even if present." OFF)
-
-if (SEQAN3_LEMON AND SEQAN3_NO_LEMON)
-    # this is always a user error, therefore we always error-out, even if SeqAn is not required
-    message (FATAL_ERROR "You may not specify SEQAN3_LEMON and SEQAN3_NO_LEMON at the same time.\n\
-                          You can specify neither (use auto-detection), or specify either to force on/off.")
-    return ()
-endif ()
-
-if (SEQAN3_LEMON)
-    set (SEQAN3_DEFINITIONS ${SEQAN3_DEFINITIONS} "-DSEQAN3_WITH_LEMON=1")
-elseif (SEQAN3_NO_LEMON)
-    set (SEQAN3_DEFINITIONS ${SEQAN3_DEFINITIONS} "-DSEQAN3_WITH_LEMON=0")
-endif ()
-
 # These two are "opt-in", because detected by CMake
 # If you want to force-require these, just do find_package (zlib REQUIRED) before find_package (seqan3)
 option (SEQAN3_NO_ZLIB  "Don't use ZLIB, even if present." OFF)
 option (SEQAN3_NO_BZIP2 "Don't use BZip2, even if present." OFF)
 
 # ----------------------------------------------------------------------------
-# Require C++17
+# Require C++20
 # ----------------------------------------------------------------------------
 
 set (CMAKE_REQUIRED_FLAGS_SAVE ${CMAKE_REQUIRED_FLAGS})
 
 set (CXXSTD_TEST_SOURCE
-    "#if !defined (__cplusplus) || (__cplusplus < 201703L)
-    #error NOCXX17
+    "#if !defined (__cplusplus) || (__cplusplus < 201709L)
+    #error NOCXX20
     #endif
     int main() {}")
 
-check_cxx_source_compiles ("${CXXSTD_TEST_SOURCE}" CXX17_BUILTIN)
+check_cxx_source_compiles ("${CXXSTD_TEST_SOURCE}" CXX20_BUILTIN)
 
-if (CXX17_BUILTIN)
-    seqan3_config_print ("C++ Standard-17 support:    builtin")
+if (CXX20_BUILTIN)
+    seqan3_config_print ("C++ Standard-20 support:    builtin")
 else ()
-    set (CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS_SAVE} -std=c++17")
+    set (CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS_SAVE} -std=c++20")
 
-    check_cxx_source_compiles ("${CXXSTD_TEST_SOURCE}" CXX17_FLAG)
+    check_cxx_source_compiles ("${CXXSTD_TEST_SOURCE}" CXX20_FLAG)
 
-    if (CXX17_FLAG)
-        seqan3_config_print ("C++ Standard-17 support:    via -std=c++17")
+    if (CXX20_FLAG)
+        seqan3_config_print ("C++ Standard-20 support:    via -std=c++20")
     else ()
-        seqan3_config_error ("SeqAn3 requires C++17, but your compiler does not support it.")
+        seqan3_config_print ("SeqAn3 requires C++20, but your compiler does not support it.")
     endif ()
 
-    set (SEQAN3_CXX_FLAGS "${SEQAN3_CXX_FLAGS} -std=c++17")
-endif ()
-
-# ----------------------------------------------------------------------------
-# Require C++ Concepts
-# ----------------------------------------------------------------------------
-
-set (CMAKE_REQUIRED_FLAGS_SAVE ${CMAKE_REQUIRED_FLAGS})
-
-set (CXXSTD_TEST_SOURCE
-    "static_assert (__cpp_concepts >= 201507);
-    int main() {}")
-
-check_cxx_source_compiles ("${CXXSTD_TEST_SOURCE}" CONCEPTS_BUILTIN)
-
-if (CONCEPTS_BUILTIN)
-    seqan3_config_print ("C++ Concepts support:       builtin")
-else ()
-    set (CONCEPTS_FLAG "")
-
-    foreach (_FLAG -std=c++20 -std=c++2a -fconcepts)
-        set (CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS_SAVE} ${_FLAG}")
-
-        check_cxx_source_compiles ("${CXXSTD_TEST_SOURCE}" CONCEPTS_FLAG${_FLAG})
-
-        if (CONCEPTS_FLAG${_FLAG})
-            set (SEQAN3_CXX_FLAGS "${SEQAN3_CXX_FLAGS} ${_FLAG}")
-            set (CONCEPTS_FLAG ${_FLAG})
-            break ()
-        endif ()
-    endforeach ()
-
-    if (CONCEPTS_FLAG)
-        seqan3_config_print ("C++ Concepts support:       via ${CONCEPTS_FLAG}")
-    else ()
-        seqan3_config_error ("SeqAn3 requires C++ Concepts, but your compiler does not support them.")
-    endif ()
-endif ()
-
-# ----------------------------------------------------------------------------
-# Require C++ Filesystem
-# ----------------------------------------------------------------------------
-
-# find the correct header
-check_include_file_cxx (filesystem _SEQAN3_HAVE_FILESYSTEM)
-check_include_file_cxx (experimental/filesystem _SEQAN3_HAVE_EXP_FILESYSTEM)
-
-if (_SEQAN3_HAVE_FILESYSTEM)
-    seqan3_config_print ("C++ Filesystem header:      <filesystem>")
-
-    set (CXXSTD_TEST_SOURCE
-        "#include <filesystem>
-        int main()
-        {
-            std::filesystem::path p{\"\tmp/\"};
-            throw std::filesystem::filesystem_error(\"Empty file name!\", std::make_error_code(std::errc::invalid_argument));
-        }")
-elseif (_SEQAN3_HAVE_EXP_FILESYSTEM)
-    seqan3_config_print ("C++ Filesystem header:      <experimental/filesystem>")
-
-    set (CXXSTD_TEST_SOURCE
-        "#include <experimental/filesystem>
-        int main()
-        {
-            std::experimental::filesystem::path p{\"/tmp/\"};
-            throw std::experimental::filesystem::filesystem_error(\"Empty file name!\", std::make_error_code(std::errc::invalid_argument));
-        }")
-else ()
-    seqan3_config_error ("SeqAn3 requires C++17 filesystem support, but the filesystem header was not found.")
-endif ()
-
-# check if library is required
-set (CMAKE_REQUIRED_LIBRARIES_SAVE ${CMAKE_REQUIRED_LIBRARIES})
-
-check_cxx_source_compiles ("${CXXSTD_TEST_SOURCE}" C++17FS_BUILTIN)
-
-if (C++17FS_BUILTIN)
-    seqan3_config_print ("C++ Filesystem library:     builtin")
-else ()
-    set (C++17FS_LIB "")
-
-    foreach (_LIB stdc++fs)
-        set (CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES_SAVE} ${_LIB})
-
-        check_cxx_source_compiles ("${CXXSTD_TEST_SOURCE}" C++17FS_LIB-l${_LIB})
-
-        if (C++17FS_LIB-l${_LIB})
-            set (SEQAN3_LIBRARIES ${SEQAN3_LIBRARIES} ${_LIB})
-            set (C++17FS_LIB ${_LIB})
-            break ()
-        endif ()
-        set (CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES_SAVE})
-    endforeach ()
-
-    if (C++17FS_LIB)
-        seqan3_config_print ("C++ Filesystem library:     via -l${C++17FS_LIB}")
-    else ()
-        seqan3_config_error ("SeqAn3 requires C++17 filesystem support, but your compiler does not offer it.")
-    endif ()
+    set (SEQAN3_CXX_FLAGS "${SEQAN3_CXX_FLAGS} -std=c++20")
 endif ()
 
 # ----------------------------------------------------------------------------
@@ -359,14 +242,6 @@ endif ()
 # ----------------------------------------------------------------------------
 # Require Ranges and SDSL
 # ----------------------------------------------------------------------------
-
-check_include_file_cxx (range/v3/version.hpp _SEQAN3_HAVE_RANGEV3)
-
-if (_SEQAN3_HAVE_RANGEV3)
-    seqan3_config_print ("Required dependency:        Range-V3 found.")
-else ()
-    seqan3_config_error ("The range-v3 library is required, but wasn't found. Get it from https://github.com/ericniebler/range-v3/")
-endif ()
 
 check_include_file_cxx (sdsl/version.hpp _SEQAN3_HAVE_SDSL)
 
@@ -396,70 +271,6 @@ if (NOT SEQAN3_NO_CEREAL)
             seqan3_config_print ("Optional dependency:        Cereal not found.")
         endif ()
     endif ()
-endif ()
-
-# ----------------------------------------------------------------------------
-# Lemon dependency is optional, but may set as required
-# ----------------------------------------------------------------------------
-
-if (NOT SEQAN3_NO_LEMON)
-    check_include_file_cxx (lemon/config.h _SEQAN3_HAVE_LEMON)
-
-    if (_SEQAN3_HAVE_LEMON)
-        if (SEQAN3_LEMON)
-            seqan3_config_print ("Required dependency:        Lemon found.")
-        else ()
-            seqan3_config_print ("Optional dependency:        Lemon found.")
-        endif ()
-    else ()
-        if (SEQAN3_LEMON)
-            seqan3_config_error ("The (optional) Lemon library was marked as required, but wasn't found.")
-        else ()
-            seqan3_config_print ("Optional dependency:        Lemon not found.")
-        endif ()
-    endif ()
-endif ()
-
-# ----------------------------------------------------------------------------
-# ZLIB dependency
-# ----------------------------------------------------------------------------
-
-if (NOT SEQAN3_NO_ZLIB)
-    find_package (ZLIB QUIET)
-endif ()
-
-if (ZLIB_FOUND)
-    set (SEQAN3_LIBRARIES         ${SEQAN3_LIBRARIES}         ${ZLIB_LIBRARIES})
-    set (SEQAN3_DEPENDENCY_INCLUDE_DIRS      ${SEQAN3_DEPENDENCY_INCLUDE_DIRS}      ${ZLIB_INCLUDE_DIRS})
-    set (SEQAN3_DEFINITIONS       ${SEQAN3_DEFINITIONS}       "-DSEQAN3_HAS_ZLIB=1")
-    seqan3_config_print ("Optional dependency:        ZLIB-${ZLIB_VERSION_STRING} found.")
-else ()
-    seqan3_config_print ("Optional dependency:        ZLIB not found.")
-endif ()
-
-# ----------------------------------------------------------------------------
-# BZip2 dependency
-# ----------------------------------------------------------------------------
-
-if (NOT SEQAN3_NO_BZIP2)
-    find_package (BZip2 QUIET)
-endif ()
-
-if (NOT ZLIB_FOUND AND BZIP2_FOUND)
-    # NOTE (marehr): iostream_bzip2 uses the type `uInt`, which is defined by
-    # `zlib`. Therefore, `bzip2` will cause a ton of errors without `zlib`.
-    message (AUTHOR_WARNING "Disabling BZip2 [which was successfully found], "
-                            "because ZLIB was not found. BZip2 depends on ZLIB.")
-    unset (BZIP2_FOUND)
-endif ()
-
-if (BZIP2_FOUND)
-    set (SEQAN3_LIBRARIES         ${SEQAN3_LIBRARIES}         ${BZIP2_LIBRARIES})
-    set (SEQAN3_DEPENDENCY_INCLUDE_DIRS      ${SEQAN3_DEPENDENCY_INCLUDE_DIRS}      ${BZIP2_INCLUDE_DIRS})
-    set (SEQAN3_DEFINITIONS       ${SEQAN3_DEFINITIONS}       "-DSEQAN3_HAS_BZIP2=1")
-    seqan3_config_print ("Optional dependency:        BZip2-${BZIP2_VERSION_STRING} found.")
-else ()
-    seqan3_config_print ("Optional dependency:        BZip2 not found.")
 endif ()
 
 # ----------------------------------------------------------------------------

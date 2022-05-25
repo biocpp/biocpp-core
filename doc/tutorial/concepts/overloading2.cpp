@@ -1,7 +1,5 @@
-#include <iostream>                 // for std::cout
-
-#include <seqan3/std/concepts>      // GCC7 - GCC9 or
-//#include <concepts>               // compilers with full C++20 support
+#include <concepts>
+#include <iostream>
 
 template <std::integral t>
 void print(t const v)

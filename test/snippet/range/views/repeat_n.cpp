@@ -2,7 +2,7 @@
 
 #include <seqan3/core/debug_stream.hpp>
 #include <seqan3/range/views/repeat_n.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 int main()
 {

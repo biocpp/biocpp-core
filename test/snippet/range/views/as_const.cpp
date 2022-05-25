@@ -1,7 +1,7 @@
 #include <string>
 
 #include <seqan3/range/views/as_const.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 template <std::ranges::random_access_range rng_t>
 void foobar(rng_t const & range)

@@ -15,7 +15,7 @@
 #include <seqan3/alphabet/concept.hpp>
 #include <seqan3/core/char_operations/transform.hpp>
 #include <seqan3/range/views/deep.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 namespace seqan3::views
 {

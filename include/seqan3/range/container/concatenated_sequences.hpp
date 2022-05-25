@@ -19,11 +19,10 @@
 #include <seqan3/range/container/concept.hpp>
 #include <seqan3/range/detail/random_access_iterator.hpp>
 #include <seqan3/range/views/as_const.hpp>
-#include <seqan3/range/views/join.hpp>
 #include <seqan3/range/views/repeat_n.hpp>
 #include <seqan3/range/views/slice.hpp>
-#include <seqan3/std/iterator>
-#include <seqan3/std/ranges>
+#include <iterator>
+#include <ranges>
 
 #if SEQAN3_WITH_CEREAL
 #include <cereal/types/vector.hpp>
@@ -660,8 +659,6 @@ public:
      * \returns An std::pair of the concatenated sequences and the delimiter string.
      *
      * \details
-     *
-     * \noapi
      *
      * The exact representation of the data is implementation defined. Do not rely on it for API stability.
      */

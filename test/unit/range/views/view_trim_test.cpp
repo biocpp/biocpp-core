@@ -14,7 +14,7 @@
 #include <seqan3/range/views/to_char.hpp>
 #include <seqan3/range/views/to.hpp>
 #include <seqan3/range/views/trim_quality.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 using seqan3::operator""_dna5;
 
@@ -28,18 +28,18 @@ TEST(view_trim, standalone)
 
     // trim by phred_value
     auto v1 = vec | seqan3::views::trim_quality(20u);                   // == ['I','I','?','5']
-    EXPECT_EQ(v1 | seqan3::views::to<std::vector>, cmp1);
+    EXPECT_EQ(v1 | seqan3::views::to<std::vector>(), cmp1);
 
     // trim by quality character
     auto v2 = vec | seqan3::views::trim_quality(seqan3::phred42{40});   // == ['I','I']
-    EXPECT_EQ(v2 | seqan3::views::to<std::vector>, cmp2);
+    EXPECT_EQ(v2 | seqan3::views::to<std::vector>(), cmp2);
 
     // function syntax
     auto v3 = seqan3::views::trim_quality(vec, 20u);                    // == ['I','I','?','5']
-    EXPECT_EQ(v3 | seqan3::views::to<std::vector>, cmp1);
+    EXPECT_EQ(v3 | seqan3::views::to<std::vector>(), cmp1);
 
     // combinability
-    std::string v4 = seqan3::views::trim_quality(vec, 20u) | seqan3::views::to_char | seqan3::views::to<std::string>; //=="II?5"
+    std::string v4 = seqan3::views::trim_quality(vec, 20u) | seqan3::views::to_char | seqan3::views::to<std::string>(); //=="II?5"
     EXPECT_EQ("II?5", v4);
 }
 
@@ -59,18 +59,18 @@ TEST(view_trim, qualified)
 
     // trim by phred_value
     auto v1 = vec | seqan3::views::trim_quality(20u);
-    EXPECT_EQ(v1 | seqan3::views::to<std::vector>, cmp1);
+    EXPECT_EQ(v1 | seqan3::views::to<std::vector>(), cmp1);
 
     // trim by quality character
     auto v2 = vec | seqan3::views::trim_quality(seqan3::dna5q{'C'_dna5, seqan3::phred42{40}});
-    EXPECT_EQ(v2 | seqan3::views::to<std::vector>, cmp2);
+    EXPECT_EQ(v2 | seqan3::views::to<std::vector>(), cmp2);
 
     // function syntax
     auto v3 = seqan3::views::trim_quality(vec, 20u);
-    EXPECT_EQ(v3 | seqan3::views::to<std::vector>, cmp1);
+    EXPECT_EQ(v3 | seqan3::views::to<std::vector>(), cmp1);
 
     // combinability
-    std::string v4 = seqan3::views::trim_quality(vec, 20u) | seqan3::views::to_char | seqan3::views::to<std::string>;
+    std::string v4 = seqan3::views::trim_quality(vec, 20u) | seqan3::views::to_char | seqan3::views::to<std::string>();
     EXPECT_EQ("AGGA", v4);
 }
 

@@ -14,7 +14,7 @@
 
 #include <seqan3/core/type_traits/transformation_trait_or.hpp>
 
-#include <seqan3/std/concepts>
+#include <concepts>
 
 namespace seqan3::detail
 {
@@ -161,6 +161,28 @@ struct is_type_specialisation_of<source_t, target_template> :
  */
 template <typename source_t, template <typename ...> typename target_template>
 inline constexpr bool is_type_specialisation_of_v = is_type_specialisation_of<source_t, target_template>::value;
+
+// ----------------------------------------------------------------------------
+// template_specialisation_of
+// ----------------------------------------------------------------------------
+
+/*!\interface seqan3::detail::template_specialisation_of <>
+ * \brief Provides concept `seqan3::template_specialisation_of<mytype, [...]>` for checking the type specialisation of
+ *        some type with a given template, for example a specialized `type_list<float>` with the `type_list` template.
+ * \ingroup core
+ *
+ * \tparam mytype           The query type.
+ * \tparam type_template    The type template you wish to compare against mytype.
+ *
+ * \see seqan3::detail::is_type_specialisation_of_v
+ *
+ * ### Example
+ *
+ * \include test/snippet/core/type_traits/template_inspection_usage_3.cpp
+ */
+//!\cond
+template <typename mytype, template <typename ...> typename type_template>
+concept template_specialisation_of = is_type_specialisation_of_v<mytype, type_template>;
 
 // ----------------------------------------------------------------------------
 // is_value_specialisation_of_v

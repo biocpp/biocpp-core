@@ -16,7 +16,7 @@
 #include <seqan3/core/detail/strong_type.hpp>
 #include <seqan3/core/pod_tuple.hpp>
 #include <seqan3/core/tuple_utility.hpp>
-#include <seqan3/std/concepts>
+#include <concepts>
 
 struct bar : public seqan3::detail::strong_type<unsigned, bar>
 {

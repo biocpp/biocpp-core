@@ -19,8 +19,8 @@
 #include <seqan3/range/container/small_string.hpp>
 #include <seqan3/range/detail/random_access_iterator.hpp>
 #include <seqan3/range/views/translate.hpp>
-#include <seqan3/std/concepts>
-#include <seqan3/std/ranges>
+#include <concepts>
+#include <ranges>
 
 namespace seqan3::detail
 {

@@ -1,13 +1,14 @@
 // -----------------------------------------------------------------------------------------------------
-// Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
-// Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
+// Copyright (c) 2006-2021, Knut Reinert & Freie Universität Berlin
+// Copyright (c) 2016-2021, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
 // shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/aminoacid/all.hpp>
+#include <seqan3/alphabet/aminoacid/aa10li.hpp>
+#include <seqan3/alphabet/aminoacid/aa10murphy.hpp>
 #include <seqan3/alphabet/composite/semialphabet_any.hpp>
 
 using seqan3::operator""_aa10li;

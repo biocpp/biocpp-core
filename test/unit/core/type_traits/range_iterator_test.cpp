@@ -6,13 +6,10 @@
 // -----------------------------------------------------------------------------------------------------
 
 #include <list>
-#include <seqan3/std/ranges>
+#include <ranges>
 #include <vector>
 
 #include <gtest/gtest.h>
-
-#include <meta/meta.hpp>
-
 
 #include <seqan3/core/detail/type_inspection.hpp>
 #include <seqan3/core/type_list/all.hpp>

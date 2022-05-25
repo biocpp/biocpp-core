@@ -18,7 +18,7 @@
 #include <seqan3/core/concept/core_language.hpp>
 #include <seqan3/core/type_traits/basic.hpp>
 #include <seqan3/core/type_traits/template_inspection.hpp>
-#include <seqan3/std/concepts>
+#include <concepts>
 
 namespace seqan3
 {
@@ -30,8 +30,6 @@ namespace seqan3
  * \ingroup alphabet
  *
  * \details
- *
- * \noapi
  *
  * Certain containers and other data structure hold alphabet values in a non-standard way so they can convert
  * to that alphabet when being accessed, but cannot return a reference to the held value. These data structures

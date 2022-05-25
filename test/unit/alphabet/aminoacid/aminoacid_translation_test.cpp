@@ -7,8 +7,6 @@
 
 #include <gtest/gtest.h>
 
-#include <range/v3/view/concat.hpp>
-
 #include <seqan3/alphabet/nucleotide/dna4.hpp>
 #include <seqan3/alphabet/nucleotide/dna15.hpp>
 #include <seqan3/alphabet/aminoacid/aa27.hpp>
@@ -40,22 +38,6 @@ TEST(translate_triplets, dna15)
     seqan3::aa27 t1{seqan3::translate_triplet<seqan3::genetic_code::CANONICAL, seqan3::dna15>(n1, n2, n3)};
 
     EXPECT_EQ(t1, c);
-}
-
-TEST(translate_triplets, random_access_range)
-{
-    seqan3::dna15 n1{'C'_dna15};
-    seqan3::dna15 n2{'T'_dna15};
-    seqan3::dna15 n3{'A'_dna15};
-    seqan3::aa27 c{'L'_aa27};
-
-    auto range_triplet = ranges::views::concat(std::views::single(n1), std::views::single(n2),
-                                               std::views::single(n3));
-    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-    seqan3::aa27 t2{seqan3::translate_triplet(range_triplet)};
-
-    EXPECT_TRUE(std::ranges::random_access_range<decltype(range_triplet)>);
-    EXPECT_EQ(t2, c);
 }
 
 TEST(translate_triplets, tuple)

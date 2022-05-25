@@ -2,7 +2,7 @@
 
 #include <seqan3/core/debug_stream.hpp>
 #include <seqan3/range/views/slice.hpp>     // provides views::slice
-#include <seqan3/std/ranges>                // provides std::views::reverse
+#include <ranges>                // provides std::views::reverse
 
 int main()
 {

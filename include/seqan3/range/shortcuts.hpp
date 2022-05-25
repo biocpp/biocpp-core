@@ -13,7 +13,7 @@
 #pragma once
 
 #include <seqan3/core/platform.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 namespace seqan3
 {

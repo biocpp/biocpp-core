@@ -13,8 +13,8 @@
 #pragma once
 
 #include <seqan3/core/concept/core_language.hpp>
-#include <seqan3/std/concepts>
-#include <seqan3/std/ranges>
+#include <concepts>
+#include <ranges>
 
 namespace seqan3::views
 {

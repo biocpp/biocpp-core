@@ -15,7 +15,7 @@ int main()
 
     std::vector<seqan3::dna5_vector> foo{"AAATTT"_dna5, "CCCGGG"_dna5};
 
-    auto t = foo | seqan3::views::take(1);                   // == [ [A,A,A,T,T,T] ]
+    auto t = foo | std::views::take(1);                   // == [ [A,A,A,T,T,T] ]
 
     auto d = foo | seqan3::views::deep{std::views::take}(1); // == [ [A], [C] ]
     // constructor arguments passed via {} and arguments to underlying view passed via ()

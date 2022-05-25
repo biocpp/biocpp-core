@@ -18,8 +18,8 @@
 #include <seqan3/core/type_traits/pre.hpp>
 #include <seqan3/core/type_traits/basic.hpp>
 #include <seqan3/core/type_traits/iterator.hpp>
-#include <seqan3/std/ranges>
-#include <seqan3/std/iterator>
+#include <ranges>
+#include <iterator>
 
 // TODO(h-2): add innermost_reference instead of or addition to range_innermost_value?
 
@@ -31,7 +31,7 @@ namespace seqan3::detail
 
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT has_range_value_type = requires { typename std::ranges::range_value_t<std::remove_cvref_t<t>>; };
+concept has_range_value_type = requires { typename std::ranges::range_value_t<std::remove_cvref_t<t>>; };
 //!\endcond
 
 } // namespace seqan3::detail
@@ -270,7 +270,7 @@ constexpr size_t range_dimension_v<t> = range_dimension_v<std::ranges::range_val
  */
 //!\cond
 template <typename t1, typename t2>
-SEQAN3_CONCEPT range_compatible = requires (t1, t2)
+concept range_compatible = requires (t1, t2)
 {
     requires (range_dimension_v<t1> == range_dimension_v<t2>);
 

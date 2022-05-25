@@ -2,7 +2,7 @@
 
 #include <seqan3/alphabet/nucleotide/dna5.hpp>
 #include <seqan3/range/views/deep.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 namespace my
 {

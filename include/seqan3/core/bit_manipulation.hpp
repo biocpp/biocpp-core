@@ -13,8 +13,6 @@
 
 #pragma once
 
-#include <meta/meta.hpp>
-
 #include <sdsl/bits.hpp>
 
 #include <climits>
@@ -29,7 +27,7 @@
 
 #include <seqan3/core/detail/endian.hpp>
 #include <seqan3/core/detail/int_types.hpp>
-#include <seqan3/std/concepts>
+#include <concepts>
 
 namespace seqan3::detail
 {

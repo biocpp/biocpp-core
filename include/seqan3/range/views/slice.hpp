@@ -16,13 +16,12 @@
 
 #include <seqan3/range/concept.hpp>
 #include <seqan3/range/views/detail.hpp>
-#include <seqan3/range/views/drop.hpp>
-#include <seqan3/range/views/take.hpp>
-#include <seqan3/std/concepts>
-#include <seqan3/std/iterator>
-#include <seqan3/std/ranges>
-#include <seqan3/std/span>
-#include <seqan3/std/type_traits>
+#include <seqan3/range/views/type_reduce.hpp>
+#include <concepts>
+#include <iterator>
+#include <ranges>
+#include <span>
+#include <type_traits>
 
 namespace seqan3::detail
 {
@@ -55,7 +54,10 @@ struct slice_fn
         if (end_pos < begin_pos)
             throw std::invalid_argument{"end_pos argument to seqan3::views::slice must be >= the begin_pos argument."};
 
-        return std::forward<urng_t>(urange) | views::drop(begin_pos) | views::take(end_pos - begin_pos);
+        return std::forward<urng_t>(urange)
+          | std::views::drop(begin_pos)
+          | std::views::take(end_pos - begin_pos)
+          | views::type_reduce;
     }
 
     // does not require special overloads, because views::drop and views::take handle the flattening.
@@ -109,10 +111,10 @@ namespace seqan3::views
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
- * This adaptor is a combination of seqan3::views::drop and seqan3::views::take.
+ * This adaptor is a combination of std::views::drop, std::views::take and seqan3::views::type_reduce.
  *
  * If `begin_pos` is larger than the size of the underlying range an empty range is returned.
- * If `end_pos` is larger than the size of the underlying range less elements are returned.
+ * If `end_pos` is larger than the size of the underlying range all elements are returned.
  *
  * If `end_pos < begin_pos` an exception of type std::invalid_argument is thrown.
  *

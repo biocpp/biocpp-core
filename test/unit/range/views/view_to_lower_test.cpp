@@ -14,7 +14,7 @@
 #include <seqan3/range/views/to_char.hpp>
 #include <seqan3/range/views/to_lower.hpp>
 #include <seqan3/range/views/to.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 using seqan3::operator""_dna5;
 
@@ -24,11 +24,11 @@ TEST(view_to_lower, basic)
     std::string cmp {"iamadnastring"};
 
     // pipe notation string
-    std::string s(input_string | seqan3::views::to_lower | seqan3::views::to<std::string>);
+    std::string s(input_string | seqan3::views::to_lower | seqan3::views::to<std::string>());
     EXPECT_EQ(cmp, s);
 
     // custom conversion operator
-    std::string s2(seqan3::views::to_lower(input_string) | seqan3::views::to<std::string>);
+    std::string s2(seqan3::views::to_lower(input_string) | seqan3::views::to<std::string>());
     EXPECT_EQ(cmp, s2);
 }
 
@@ -41,11 +41,11 @@ TEST(view_to_lower, combinability)
     std::string cmp2{"aggcgt"};
 
    // output combinability
-    std::string s(input_string | seqan3::views::to_lower | std::views::reverse | seqan3::views::to<std::string>);
+    std::string s(input_string | seqan3::views::to_lower | std::views::reverse | seqan3::views::to<std::string>());
     EXPECT_EQ(cmp, s);
 
     // input combinability
-    std::string s2(dna_vec | seqan3::views::to_char | seqan3::views::to_lower | seqan3::views::to<std::string>);
+    std::string s2(dna_vec | seqan3::views::to_char | seqan3::views::to_lower | seqan3::views::to<std::string>());
     EXPECT_EQ(cmp2, s2);
 }
 
@@ -54,7 +54,7 @@ TEST(view_to_lower, deep)
     std::vector<std::string> input_vec{"IAmADnaString", "IAmAProteinString"};
     std::vector<std::string> cmp{"iamadnastring", "iamaproteinstring"};
 
-    std::vector<std::string> s(input_vec | seqan3::views::to_lower | seqan3::views::to<std::vector<std::string>>);
+    std::vector<std::string> s(input_vec | seqan3::views::to_lower | seqan3::views::to<std::vector<std::string>>());
     EXPECT_EQ(cmp, s);
 }
 

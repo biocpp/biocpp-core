@@ -14,8 +14,8 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/std/algorithm>
-#include <seqan3/std/ranges>
+#include <algorithm>
+#include <ranges>
 
 #include <seqan3/core/detail/debug_stream_range.hpp>
 #include <seqan3/core/detail/to_string.hpp>
@@ -37,7 +37,7 @@ struct expect_range_eq
         for (auto && v : rng)
             rng_copy.push_back(std::move(v));
 #else // ^^^ workaround / no workaround vvv
-        std::ranges::copy(rng, std::cpp20::back_inserter(rng_copy));
+        std::ranges::copy(rng, std::back_inserter(rng_copy));
 #endif // SEQAN3_WORKAROUND_GCC_95578
         return rng_copy;
     }

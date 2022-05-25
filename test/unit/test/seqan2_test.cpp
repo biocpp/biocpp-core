@@ -7,7 +7,7 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/std/ranges>
+#include <ranges>
 #include <seqan3/test/seqan2.hpp>
 
 // Note: this file will only test regressions encountered with seqan2 compatibility and has no claim to be complete
@@ -87,10 +87,10 @@ TYPED_TEST(seqan2_container, std_iterator)
 }
 
 template <typename range_t>
-SEQAN3_CONCEPT SeqAn2Range = requires(range_t range)
+concept SeqAn2Range = requires(range_t range)
 {
-    SEQAN3_RETURN_TYPE_CONSTRAINT(seqan::begin(range), std::same_as, std::ranges::iterator_t<range_t>);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(seqan::end(range), std::same_as, std::ranges::iterator_t<range_t>);
+    { seqan::begin(range) } -> std::same_as<std::ranges::iterator_t<range_t>>;
+    { seqan::end(range) } -> std::same_as<std::ranges::iterator_t<range_t>>;
 };
 
 TYPED_TEST(seqan2_container, seqan_range_concept)

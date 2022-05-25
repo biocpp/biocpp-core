@@ -14,7 +14,7 @@
 #pragma once
 
 #include <seqan3/alphabet/concept.hpp>
-#include <seqan3/std/concepts>
+#include <concepts>
 
 // ============================================================================
 // complement()
@@ -126,7 +126,7 @@ inline constexpr auto complement = detail::adl_only::complement_fn{};
  */
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT nucleotide_alphabet = alphabet<t> && requires (t val)
+concept nucleotide_alphabet = alphabet<t> && requires (t val)
 {
     { seqan3::complement(val) };
 };

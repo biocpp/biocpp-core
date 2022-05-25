@@ -10,13 +10,11 @@
 #include <vector>
 #include <type_traits>
 
-#include <range/v3/view/slice.hpp>
-
 #include <seqan3/range/views/single_pass_input.hpp>
 #include <seqan3/range/views/persist.hpp>
 #include <seqan3/range/views/take.hpp>
 #include <seqan3/range/views/zip.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 template <typename rng_type>
 class single_pass_input : public ::testing::Test
@@ -321,7 +319,7 @@ TYPED_TEST(single_pass_input, fn_functional)
     // use case 1: functional;
     TypeParam p{this->data};
 
-    auto view = p | seqan3::views::single_pass_input | seqan3::views::take(3);
+    auto view = p | seqan3::views::single_pass_input | std::views::take(3);
     auto it = view.begin();
 
     if constexpr (std::is_same_v<std::ranges::range_value_t<TypeParam>, char>)
