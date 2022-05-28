@@ -1,3 +1,6 @@
+#include <string>
+#include <vector>
+
 #include <seqan3/core/type_traits/range.hpp>
 
 int main()

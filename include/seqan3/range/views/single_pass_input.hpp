@@ -13,9 +13,9 @@
 #pragma once
 
 #include <seqan3/range/views/detail.hpp>
-#include <seqan3/std/concepts>
-#include <seqan3/std/iterator>
-#include <seqan3/std/ranges>
+#include <concepts>
+#include <iterator>
+#include <ranges>
 
 //-----------------------------------------------------------------------------
 // Implementation of single pass input view.

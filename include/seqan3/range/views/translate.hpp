@@ -24,8 +24,8 @@
 #include <seqan3/range/detail/random_access_iterator.hpp>
 #include <seqan3/range/views/deep.hpp>
 #include <seqan3/range/views/detail.hpp>
-#include <seqan3/std/concepts>
-#include <seqan3/std/ranges>
+#include <concepts>
+#include <ranges>
 #include <seqan3/range/container/concept.hpp>
 
 // ============================================================================

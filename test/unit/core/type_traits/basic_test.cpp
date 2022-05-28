@@ -5,18 +5,9 @@
 // shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <list>
-#include <vector>
-
 #include <gtest/gtest.h>
 
-#include <meta/meta.hpp>
-
-#include <range/v3/view/iota.hpp>
-#include <range/v3/view/take_exactly.hpp>
-
 #include <seqan3/core/type_traits/basic.hpp>
-#include <seqan3/range/detail/random_access_iterator.hpp>
 
 //------------------------------------------------------------------------------
 // Tests for remove_cvref transformation trait

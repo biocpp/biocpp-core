@@ -1783,7 +1783,7 @@ public:
     template <typename char_t>
     friend debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & s, dynamic_bitset arg)
     {
-        s << (std::string_view{arg.to_string()} | views::interleave(4, std::string_view{"'"}) | views::to<std::string>);
+        s << (std::string_view{arg.to_string()} | views::interleave(4, std::string_view{"'"}) | views::to<std::string>());
         return s;
     }
     //!\}

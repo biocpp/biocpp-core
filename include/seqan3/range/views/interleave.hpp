@@ -14,17 +14,14 @@
 
 #include <cmath>
 
-#include <range/v3/view/chunk.hpp>
-
 #include <seqan3/core/type_traits/pre.hpp>
 #include <seqan3/core/type_traits/transformation_trait_or.hpp>
 #include <seqan3/range/detail/random_access_iterator.hpp>
 #include <seqan3/range/views/detail.hpp>
-#include <seqan3/range/views/join.hpp>
 #include <seqan3/range/views/persist.hpp>
 #include <seqan3/range/views/type_reduce.hpp>
-#include <seqan3/std/concepts>
-#include <seqan3/std/ranges>
+#include <concepts>
+#include <ranges>
 
 namespace seqan3::detail
 {
@@ -68,12 +65,12 @@ private:
     //!\brief This resolves to range_type::size_type as the underlying range is guaranteed to be sized.
     using size_type         = std::ranges::range_size_t<urng_t>;
     //!\brief The reference_type.
-    using reference         = ranges::common_reference_t<std::ranges::range_reference_t<urng_t>,
+    using reference         = std::common_reference_t<std::ranges::range_reference_t<urng_t>,
                                                          std::ranges::range_reference_t<inserted_rng_t>>;
     //!\brief The const_reference type is equal to the reference type.
     using const_reference   = detail::transformation_trait_or_t<
-                                ranges::common_reference<std::ranges::range_reference_t<urng_t const>,
-                                                         std::ranges::range_reference_t<inserted_rng_t const>>, void>;
+                                std::common_reference<std::ranges::range_reference_t<urng_t const>,
+                                                      std::ranges::range_reference_t<inserted_rng_t const>>, void>;
     //!\brief The value_type (which equals the reference_type with any references removed).
     using value_type        = std::ranges::range_value_t<urng_t>;
     //!\brief A signed integer type, usually std::ptrdiff_t.
@@ -279,24 +276,21 @@ struct interleave_fn
     template <std::ranges::range urng_t, std::ranges::range inserted_rng_t, std::integral size_type>
     constexpr auto operator()(urng_t && urange, size_type const size, inserted_rng_t && i) const noexcept
     {
-        static_assert(std::ranges::forward_range<urng_t>,
-            "The underlying range parameter in views::interleave must model std::ranges::forward_range.");
+        static_assert(std::ranges::random_access_range<urng_t>,
+            "The underlying range parameter in views::interleave must model std::ranges::random_access_range.");
         static_assert(std::ranges::viewable_range<urng_t>,
             "The underlying range parameter in views::interleave must model std::ranges::viewable_range.");
-        static_assert(std::ranges::forward_range<inserted_rng_t>,
+        static_assert(std::ranges::sized_range<urng_t>,
+            "The underlying range parameter in views::interleave must model std::ranges::sized_range.");
+
+        static_assert(std::ranges::random_access_range<inserted_rng_t>,
             "The range to be inserted by views::interleave must model std::ranges::forward_range.");
-        if constexpr (std::ranges::random_access_range<urng_t> && std::ranges::sized_range<urng_t> &&
-                      std::ranges::random_access_range<inserted_rng_t> && std::ranges::sized_range<inserted_rng_t>)
-        {
-            return detail::view_interleave{std::forward<urng_t>(urange),
-                                           static_cast<size_t>(size),
-                                           std::forward<inserted_rng_t>(i)};
-        }
-        else
-        {
-            return std::forward<urng_t>(urange) | ranges::views::chunk(static_cast<size_t>(size))
-                                                | views::join(std::forward<inserted_rng_t>(i));
-        }
+        static_assert(std::ranges::sized_range<inserted_rng_t>,
+            "The range to be inserted by views::interleave must model std::ranges::sized_range.");
+
+        return detail::view_interleave{std::forward<urng_t>(urange),
+                                       static_cast<size_t>(size),
+                                       std::forward<inserted_rng_t>(i)};
     }
 };
 

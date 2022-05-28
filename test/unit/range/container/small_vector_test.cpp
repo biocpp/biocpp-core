@@ -12,7 +12,7 @@
 
 #include <seqan3/range/container/concept.hpp>
 #include <seqan3/range/container/small_vector.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 #include <seqan3/test/cereal.hpp>
 
 #include "container_test_template.hpp"

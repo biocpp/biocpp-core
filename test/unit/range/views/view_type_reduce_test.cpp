@@ -14,9 +14,9 @@
 #include <gtest/gtest.h>
 
 #include <seqan3/range/views/type_reduce.hpp>
-#include <seqan3/std/concepts>
-#include <seqan3/std/algorithm>
-#include <seqan3/std/ranges>
+#include <concepts>
+#include <algorithm>
+#include <ranges>
 #include <seqan3/test/expect_range_eq.hpp>
 
 // ============================================================================

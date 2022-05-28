@@ -14,11 +14,10 @@
 
 #include <cmath>
 
-#include <seqan3/core/common_tuple.hpp>
 #include <seqan3/core/type_traits/transformation_trait_or.hpp>
 #include <seqan3/range/concept.hpp>
 #include <seqan3/range/views/detail.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 namespace seqan3::detail
 {
@@ -283,9 +282,9 @@ public:
     //!\brief The difference type.
     using difference_type = std::ptrdiff_t;
     //!\brief The value type.
-    using value_type = std::tuple<underlying_val_t, underlying_val_t>;
+    using value_type = std::tuple<underlying_ref_t, underlying_ref_t>;
     //!\brief The reference type.
-    using reference = common_tuple<underlying_ref_t, underlying_ref_t>;
+    using reference = std::tuple<underlying_ref_t, underlying_ref_t>;
     //!\brief The pointer type.
     using pointer = void;
     //!\brief The iterator category tag.

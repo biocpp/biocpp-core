@@ -23,9 +23,9 @@
 #include <seqan3/range/views/to_char.hpp>
 #include <seqan3/range/views/to_rank.hpp>
 #include <seqan3/range/views/convert.hpp>
-#include <seqan3/std/concepts>
-#include <seqan3/std/iterator>
-#include <seqan3/std/ranges>
+#include <concepts>
+#include <iterator>
+#include <ranges>
 
 namespace seqan3
 {
@@ -524,8 +524,6 @@ public:
      * \returns A reference to an SDSL bitvector.
      *
      * \details
-     *
-     * \noapi
      *
      * The exact representation of the data is implementation defined. Do not rely on it for API stability.
      */

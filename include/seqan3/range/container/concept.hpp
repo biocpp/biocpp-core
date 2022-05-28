@@ -19,8 +19,8 @@
 // remove if is_basic_string is not needed anymore
 #include <string>
 
-#include <seqan3/std/iterator>
-#include <seqan3/std/concepts>
+#include <iterator>
+#include <concepts>
 
 #include <seqan3/core/platform.hpp>
 
@@ -78,7 +78,7 @@ namespace seqan3
  */
 //!\cond
 template <typename type>
-SEQAN3_CONCEPT container = requires (type val, type val2, type const cval, typename type::iterator it)
+concept container = requires (type val, type val2, type const cval, typename type::iterator it)
 {
     // member types
     typename type::value_type;
@@ -88,7 +88,7 @@ SEQAN3_CONCEPT container = requires (type val, type val2, type const cval, typen
     typename type::iterator;
     requires std::forward_iterator<typename type::iterator>;
     // NOTE check whether iterator is const convertible
-    SEQAN3_RETURN_TYPE_CONSTRAINT(it, std::same_as, typename type::const_iterator);
+    { it } -> std::same_as<typename type::const_iterator>;
 
     typename type::const_iterator;
     requires std::forward_iterator<typename type::const_iterator>;
@@ -105,27 +105,27 @@ SEQAN3_CONCEPT container = requires (type val, type val2, type const cval, typen
     >;
 */
     // methods and operator
-    SEQAN3_RETURN_TYPE_CONSTRAINT(type{}, std::same_as, type); // default constructor
-    SEQAN3_RETURN_TYPE_CONSTRAINT(type{type{}}, std::same_as, type); // copy/move constructor
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val = val2, std::same_as, type &); // assignment
+    { type{} } -> std::same_as<type>; // default constructor
+    { type{type{}} } -> std::same_as<type>; // copy/move constructor
+    { val = val2 } -> std::same_as<type &>; // assignment
     { (&val)->~type() }; // destructor
 
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.begin(), std::same_as, typename type::iterator);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.end(), std::same_as, typename type::iterator);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(cval.begin(), std::same_as, typename type::const_iterator);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(cval.end(), std::same_as, typename type::const_iterator);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.cbegin(), std::same_as, typename type::const_iterator);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.cend(), std::same_as, typename type::const_iterator);
+    { val.begin() } -> std::same_as<typename type::iterator>;
+    { val.end() } -> std::same_as<typename type::iterator>;
+    { cval.begin() } -> std::same_as<typename type::const_iterator>;
+    { cval.end() } -> std::same_as<typename type::const_iterator>;
+    { val.cbegin() } -> std::same_as<typename type::const_iterator>;
+    { val.cend() } -> std::same_as<typename type::const_iterator>;
 
     requires !std::equality_comparable<typename type::value_type> || std::equality_comparable<type>;
 
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.swap(val2), std::same_as, void);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(swap(val, val2), std::same_as, void);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(std::swap(val, val2), std::same_as, void);
+    { val.swap(val2) } -> std::same_as<void>;
+    { swap(val, val2) } -> std::same_as<void>;
+    { std::swap(val, val2) } -> std::same_as<void>;
 
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.size(), std::same_as, typename type::size_type);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.max_size(), std::same_as, typename type::size_type);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.empty(), std::same_as, bool);
+    { val.size() } -> std::same_as<typename type::size_type>;
+    { val.max_size() } -> std::same_as<typename type::size_type>;
+    { val.empty() } -> std::same_as<bool>;
 };
 //!\endcond
 
@@ -143,7 +143,7 @@ SEQAN3_CONCEPT container = requires (type val, type val2, type const cval, typen
  */
 //!\cond
 template <typename type>
-SEQAN3_CONCEPT sequence_container = requires (type val, type val2, type const cval)
+concept sequence_container = requires (type val, type val2, type const cval)
 {
     requires container<type>;
 
@@ -151,7 +151,7 @@ SEQAN3_CONCEPT sequence_container = requires (type val, type val2, type const cv
     { type{typename type::size_type{}, typename type::value_type{}} };
     { type{val2.begin(), val2.end()}                                }; // NOTE that this could be any input iterator:
     { type{std::initializer_list<typename type::value_type>{}}      };
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val = std::initializer_list<typename type::value_type>{}, std::same_as, type &);
+    { val = std::initializer_list<typename type::value_type>{} } -> std::same_as<type &>;
 
     // assignment NOTE return type is type & for std::string and void for other stl containers:
     { val.assign(val2.begin(), val2.end())                                };
@@ -162,33 +162,31 @@ SEQAN3_CONCEPT sequence_container = requires (type val, type val2, type const cv
     // TODO: how do you model this?
     // SEQAN3_RETURN_TYPE_CONSTRAINT(val.emplace(typename type::const_iterator{}, ?),
     //                               std::same_as, typename type::iterator);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.insert(val.cbegin(), val2.front()), std::same_as, typename type::iterator);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.insert(val.cbegin(), typename type::value_type{}),
-                                  std::same_as, typename type::iterator);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.insert(val.cbegin(), typename type::size_type{}, typename type::value_type{}),
-                                  std::same_as, typename type::iterator);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.insert(val.cbegin(), val2.begin(), val2.end()),
-                                  std::same_as, typename type::iterator);
+    { val.insert(val.cbegin(), val2.front()) } -> std::same_as<typename type::iterator>;
+    { val.insert(val.cbegin(), typename type::value_type{}) } -> std::same_as<typename type::iterator>;
+    { val.insert(val.cbegin(), typename type::size_type{}, typename type::value_type{}) }
+        -> std::same_as<typename type::iterator>;
+    { val.insert(val.cbegin(), val2.begin(), val2.end()) } -> std::same_as<typename type::iterator>;
     requires detail::is_basic_string_v<type> || requires(type val)
     {
         // TODO this function is not defined on strings (https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83328)
-        SEQAN3_RETURN_TYPE_CONSTRAINT(val.insert(val.cbegin(), std::initializer_list<typename type::value_type>{}),
-                                      std::same_as, typename type::iterator);
+        { val.insert(val.cbegin(), std::initializer_list<typename type::value_type>{}) } ->
+            std::same_as<typename type::iterator>;
     };
 
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.erase(val.cbegin()), std::same_as, typename type::iterator);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.erase(val.cbegin(), val.cend()), std::same_as, typename type::iterator);
+    { val.erase(val.cbegin()) } -> std::same_as<typename type::iterator>;
+    { val.erase(val.cbegin(), val.cend()) } -> std::same_as<typename type::iterator>;
 
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.push_back(val.front()), std::same_as, void);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.push_back(typename type::value_type{}), std::same_as, void);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.pop_back(), std::same_as, void);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.clear(), std::same_as, void);
+    { val.push_back(val.front()) } -> std::same_as<void>;
+    { val.push_back(typename type::value_type{}) } -> std::same_as<void>;
+    { val.pop_back() } -> std::same_as<void>;
+    { val.clear() } -> std::same_as<void>;
 
     // access container
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.front(), std::same_as, typename type::reference);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(cval.front(), std::same_as, typename type::const_reference);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.back(), std::same_as, typename type::reference);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(cval.back(), std::same_as, typename type::const_reference);
+    { val.front() } -> std::same_as<typename type::reference>;
+    { cval.front() } -> std::same_as<typename type::const_reference>;
+    { val.back() } -> std::same_as<typename type::reference>;
+    { cval.back() } -> std::same_as<typename type::const_reference>;
 };
 //!\endcond
 
@@ -208,17 +206,17 @@ SEQAN3_CONCEPT sequence_container = requires (type val, type val2, type const cv
  */
 //!\cond
 template <typename type>
-SEQAN3_CONCEPT random_access_container = requires (type val)
+concept random_access_container = requires (type val)
 {
     requires sequence_container<type>;
 
     // access container
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val[0], std::same_as, typename type::reference);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.at(0), std::same_as, typename type::reference);
+    { val[0] } -> std::same_as<typename type::reference>;
+    { val.at(0) } -> std::same_as<typename type::reference>;
 
     // modify container
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.resize(0), std::same_as, void);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.resize(0, typename type::value_type{}), std::same_as, void);
+    { val.resize(0) } -> std::same_as<void>;
+    { val.resize(0, typename type::value_type{}) } -> std::same_as<void>;
 };
 //!\endcond
 
@@ -234,13 +232,13 @@ SEQAN3_CONCEPT random_access_container = requires (type val)
  */
 //!\cond
 template <typename type>
-SEQAN3_CONCEPT reservible_container = requires (type val)
+concept reservible_container = requires (type val)
 {
     requires random_access_container<type>;
 
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.capacity(), std::same_as, typename type::size_type);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.reserve(0), std::same_as, void);
-    SEQAN3_RETURN_TYPE_CONSTRAINT(val.shrink_to_fit(), std::same_as, void);
+    { val.capacity() } -> std::same_as<typename type::size_type>;
+    { val.reserve(0) } -> std::same_as<void>;
+    { val.shrink_to_fit() } -> std::same_as<void>;
 };
 //!\endcond
 

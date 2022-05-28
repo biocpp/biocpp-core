@@ -13,7 +13,7 @@
 #include <seqan3/range/concept.hpp>
 #include <seqan3/range/views/convert.hpp>
 #include <seqan3/range/views/to.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 using seqan3::operator""_dna4;
 using seqan3::operator""_dna5;
@@ -24,16 +24,16 @@ TEST(view_convert, basic)
     std::vector<bool> cmp{1, 1, 0, 1, 0, 0, 1, 1, 1};
 
     // pipe notation
-    std::vector<bool> v = vec | seqan3::views::convert<bool> | seqan3::views::to<std::vector>;
+    std::vector<bool> v = vec | seqan3::views::convert<bool> | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp, v);
 
     // function notation
-    std::vector<bool> v2(seqan3::views::convert<bool>(vec) | seqan3::views::to<std::vector>);
+    std::vector<bool> v2(seqan3::views::convert<bool>(vec) | seqan3::views::to<std::vector>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
     std::vector<bool> cmp2{1, 1, 1, 0, 0, 1, 0, 1, 1};
-    std::vector<bool> v3 = vec | seqan3::views::convert<bool> | std::views::reverse | seqan3::views::to<std::vector>;
+    std::vector<bool> v3 = vec | seqan3::views::convert<bool> | std::views::reverse | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp2, v3);
 }
 
@@ -43,11 +43,11 @@ TEST(view_convert, explicit_conversion)
     seqan3::dna4_vector cmp{"ACGATAGGA"_dna4};
 
     // pipe notation
-    seqan3::dna4_vector v = vec | seqan3::views::convert<seqan3::dna4> | seqan3::views::to<std::vector>;
+    seqan3::dna4_vector v = vec | seqan3::views::convert<seqan3::dna4> | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp, v);
 
     // function notation
-    seqan3::dna4_vector v2(seqan3::views::convert<seqan3::dna4>(vec) | seqan3::views::to<std::vector>);
+    seqan3::dna4_vector v2(seqan3::views::convert<seqan3::dna4>(vec) | seqan3::views::to<std::vector>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
@@ -55,7 +55,7 @@ TEST(view_convert, explicit_conversion)
     seqan3::dna4_vector v3 = vec
                            | seqan3::views::convert<seqan3::dna4>
                            | std::views::reverse
-                           | seqan3::views::to<std::vector>;
+                           | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp2, v3);
 }
 

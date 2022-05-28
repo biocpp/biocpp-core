@@ -13,7 +13,7 @@
 #include <seqan3/range/views/rank_to.hpp>
 #include <seqan3/range/views/to.hpp>
 #include <seqan3/range/concept.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 TEST(view_rank_to, basic)
 {
@@ -23,11 +23,11 @@ TEST(view_rank_to, basic)
     seqan3::dna5_vector cmp{"ACTTTGATA"_dna5};
 
     // pipe notation
-    seqan3::dna5_vector v = vec | seqan3::views::rank_to<seqan3::dna5> | seqan3::views::to<std::vector>;
+    seqan3::dna5_vector v = vec | seqan3::views::rank_to<seqan3::dna5> | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp, v);
 
     // function notation
-    seqan3::dna5_vector v2(seqan3::views::rank_to<seqan3::dna5>(vec) | seqan3::views::to<std::vector>);
+    seqan3::dna5_vector v2(seqan3::views::rank_to<seqan3::dna5>(vec) | seqan3::views::to<std::vector>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
@@ -35,7 +35,7 @@ TEST(view_rank_to, basic)
     seqan3::dna5_vector v3 = vec
                            | seqan3::views::rank_to<seqan3::dna5>
                            | std::views::reverse
-                           | seqan3::views::to<std::vector>;
+                           | seqan3::views::to<std::vector>();
     EXPECT_EQ(cmp2, v3);
 }
 

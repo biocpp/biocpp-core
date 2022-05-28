@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------------------------------
-// Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
-// Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
+// Copyright (c) 2006-2021, Knut Reinert & Freie Universität Berlin
+// Copyright (c) 2016-2021, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
 // shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
@@ -13,20 +13,21 @@
 #pragma once
 
 #include <seqan3/alphabet/concept.hpp>
+// #include <seqan3/alphabet/detail/concept.hpp>
 #include <seqan3/core/concept/core_language.hpp>
-#include <seqan3/core/type_list/traits.hpp>
+#include <seqan3/core/type_list/type_list.hpp>
 #include <seqan3/core/type_traits/lazy.hpp>
 
 namespace seqan3::detail
 {
 
 // ------------------------------------------------------------------
-// alphabet_tuple_base_specialisation
+// alphabet_tuple_like
 // ------------------------------------------------------------------
 
-/*!\interface seqan3::detail::alphabet_tuple_base_specialisation <>
+/*!\interface seqan3::detail::alphabet_tuple_like <>
  * \brief seqan3::alphabet_tuple_base and its derivates model this concept.
- * \ingroup composite
+ * \ingroup alphabet_composite
  *
  * \details
  *
@@ -35,9 +36,9 @@ namespace seqan3::detail
  */
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT alphabet_tuple_base_specialisation = requires
+concept alphabet_tuple_like = requires
 {
-    requires t::seqan3_alphabet_tuple_base_specialisation;
+    requires t::seqan3_alphabet_tuple_like;
 };
 //!\endcond
 
@@ -47,7 +48,7 @@ SEQAN3_CONCEPT alphabet_tuple_base_specialisation = requires
 
 /*!\brief A seqan3::type_list with types that the given type depends on.
  * \implements seqan3::transformation_trait
- * \ingroup composite
+ * \ingroup alphabet_composite
  *
  * \details
  *
@@ -64,7 +65,7 @@ struct required_types
 /*!\brief A seqan3::type_list with types that the given type depends on.
  *        [specialisation for seqan3::alphabet_variant and derivates of seqan3::alphabet_tuple_base].
  * \implements seqan3::transformation_trait
- * \ingroup composite
+ * \ingroup alphabet_composite
  *
  * \details
  *
@@ -94,7 +95,7 @@ using required_types_t = typename required_types<t>::type;
 
 /*!\brief Like seqan3::detail::required_types, but recursive.
  * \implements seqan3::transformation_trait
- * \ingroup composite
+ * \ingroup alphabet_composite
  */
 template <typename t>
 struct recursive_required_types
@@ -105,7 +106,7 @@ struct recursive_required_types
 
 /*!\brief Like seqan3::detail::required_types, but recursive.
  * \implements seqan3::transformation_trait
- * \ingroup composite
+ * \ingroup alphabet_composite
  */
 template <typename t>
 //!\cond
@@ -131,7 +132,8 @@ using recursive_required_types_t = typename recursive_required_types<t>::type;
 // ------------------------------------------------------------------
 
 /*!\brief 'Callable' helper class that is invokable by meta::invoke.
- * Returns an std::true_type if the `type` is constructable from `T`.
+ * \ingroup alphabet_composite
+ * Returns a std::true_type if the `type` is constructable from `T`.
  */
 template <typename T>
 struct constructible_from
@@ -142,7 +144,8 @@ struct constructible_from
 };
 
 /*!\brief 'Callable' helper class that is invokable by meta::invoke.
- * Returns an std::true_type if the `T` is implicitly convertible to `type`.
+ * \ingroup alphabet_composite
+ * Returns a std::true_type if the `T` is implicitly convertible to `type`.
  */
 template <typename T>
 struct implicitly_convertible_from
@@ -153,7 +156,8 @@ struct implicitly_convertible_from
 };
 
 /*!\brief 'Callable' helper class that is invokable by meta::invoke.
- * Returns an std::true_type if the `type` is assignable from `T`.
+ * \ingroup alphabet_composite
+ * Returns a std::true_type if the `type` is assignable from `T`.
  */
 template <typename T>
 struct assignable_from
@@ -164,7 +168,8 @@ struct assignable_from
 };
 
 /*!\brief 'Callable' helper class that is invokable by meta::invoke.
- * Returns an std::true_type if the `type` is weakly equality comparable to `T`.
+ * \ingroup alphabet_composite
+ * Returns a std::true_type if the `type` is weakly equality comparable to `T`.
  */
 template <typename T>
 struct weakly_equality_comparable_with_
@@ -175,7 +180,8 @@ struct weakly_equality_comparable_with_
 };
 
 /*!\brief 'Callable' helper class that is invokable by meta::invoke.
- * Returns an std::true_type if the `type` is comparable via <,<=,>,>= to `T`.
+ * \ingroup alphabet_composite
+ * Returns a std::true_type if the `type` is comparable via <,<=,>,>= to `T`.
  */
 template <typename T>
 struct weakly_ordered_with_
@@ -184,6 +190,25 @@ struct weakly_ordered_with_
     template <typename type>
     using invoke = std::integral_constant<bool, weakly_ordered_with<type, T>>;
 };
+
+// ------------------------------------------------------------------
+// Concept traits helper
+// ------------------------------------------------------------------
+
+/*!\brief Binary type trait that behaves like the seqan3::detail::weakly_equality_comparable_with concept.
+ * \ingroup alphabet_composite
+ */
+template <typename lhs_t, typename rhs_t>
+struct weakly_equality_comparable_with_trait :
+    std::integral_constant<bool, weakly_equality_comparable_with<lhs_t, rhs_t>>
+{};
+
+/*!\brief Binary type trait that behaves like the seqan3::detail::weakly_ordered_with concept.
+ * \ingroup alphabet_composite
+ */
+template <typename lhs_t, typename rhs_t>
+struct weakly_ordered_with_trait : std::integral_constant<bool, weakly_ordered_with<lhs_t, rhs_t>>
+{};
 
 } // namespace seqan3::detail
 
@@ -200,7 +225,6 @@ template <typename ...alternative_types>
     requires (detail::writable_constexpr_alphabet<alternative_types> && ...) &&
              (std::regular<alternative_types> && ...) &&
              (sizeof...(alternative_types) >= 2)
-             //TODO same char_type
 //!\endcond
 class alphabet_variant;
 

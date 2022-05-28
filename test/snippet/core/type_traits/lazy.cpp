@@ -2,7 +2,7 @@
 #include <forward_list>                         // std::forward_list
 #include <seqan3/core/type_traits/lazy.hpp>     // seqan3::lazy and seqan3::lazy_conditional_t
 #include <seqan3/core/type_traits/range.hpp>    // seqan3::size_type_t
-#include <seqan3/std/ranges>                    // std::ranges::input_range
+#include <ranges>                    // std::ranges::input_range
 
 template <std::ranges::input_range rng_t>
 void foobar(rng_t && range)

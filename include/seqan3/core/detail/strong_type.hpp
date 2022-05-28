@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <seqan3/std/concepts>
+#include <concepts>
 #include <type_traits>
 
 #include <seqan3/core/add_enum_bitwise_operators.hpp>
@@ -93,7 +93,7 @@ class strong_type;
  */
 //!\cond
 template <typename strong_type_t>
-SEQAN3_CONCEPT strong_type_specialisation = requires (strong_type_t && obj)
+concept strong_type_specialisation = requires (strong_type_t && obj)
 {
 //!\endcond
 

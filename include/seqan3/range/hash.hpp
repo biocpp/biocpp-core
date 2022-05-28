@@ -15,7 +15,7 @@
 #include <seqan3/alphabet/hash.hpp>
 #include <seqan3/core/type_traits/range.hpp>
 #include <seqan3/range/concept.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 namespace std
 {

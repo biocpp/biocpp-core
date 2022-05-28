@@ -11,7 +11,7 @@
 #include <vector>
 
 #include <seqan3/core/type_traits/lazy.hpp>
-#include <seqan3/std/concepts>
+#include <concepts>
 
 TEST(lazy, instantiate)
 {

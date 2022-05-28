@@ -16,7 +16,7 @@
 #include <seqan3/core/debug_stream.hpp>
 #include <seqan3/range/container/bitcompressed_vector.hpp>
 #include <seqan3/range/container/concatenated_sequences.hpp>
-#include <seqan3/std/filesystem>
+#include <filesystem>
 
 TEST(debug_stream_test, basic)
 {

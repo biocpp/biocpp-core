@@ -7,23 +7,23 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/std/concepts>
+#include <concepts>
 #include <forward_list>
-#include <seqan3/std/iterator>
+#include <iterator>
 #include <list>
-#include <seqan3/std/ranges>
+#include <ranges>
 #include <vector>
 
 #include <seqan3/core/type_traits/iterator.hpp>
 
 template <typename iterator_t>
-SEQAN3_CONCEPT iterator_traits_has_iterator_category = requires()
+concept iterator_traits_has_iterator_category = requires()
 {
     typename std::iterator_traits<iterator_t>::iterator_category;
 };
 
 template <typename iterator_t>
-SEQAN3_CONCEPT has_iterator_category_tag_t = requires()
+concept has_iterator_category_tag_t = requires()
 {
     typename seqan3::detail::iterator_category_tag_t<iterator_t>;
 };
@@ -96,7 +96,7 @@ TEST(iterator_category_tag_t, no_legacy_iterator)
 
 TEST(iterator_category_tag_t, output_iterator_tag)
 {
-    using iterator_t = std::cpp20::ostream_iterator<int>;
+    using iterator_t = std::ostream_iterator<int>;
     EXPECT_TRUE((std::same_as<seqan3::detail::iterator_category_tag_t<iterator_t>,
                               std::output_iterator_tag>));
 }
@@ -187,7 +187,7 @@ TEST(iterator_category_tag_t, random_access_iterator_tag)
 
 TEST(iterator_concept_tag_t, output_iterator_tag)
 {
-    using iterator_t = std::cpp20::ostream_iterator<int>;
+    using iterator_t = std::ostream_iterator<int>;
     EXPECT_TRUE((std::same_as<seqan3::detail::iterator_concept_tag_t<iterator_t>,
                               std::output_iterator_tag>));
 }

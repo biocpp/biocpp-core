@@ -16,8 +16,8 @@
 
 #include <seqan3/alphabet/concept.hpp>
 #include <seqan3/core/detail/customisation_point.hpp>
-#include <seqan3/std/concepts>
-#include <seqan3/std/type_traits>
+#include <concepts>
+#include <type_traits>
 
 // ============================================================================
 // is_pair_open()
@@ -485,7 +485,7 @@ namespace seqan3
  */
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT rna_structure_alphabet = seqan3::alphabet<t> && requires(t val)
+concept rna_structure_alphabet = seqan3::alphabet<t> && requires(t val)
 {
     { seqan3::is_pair_open(val) };
     { seqan3::is_pair_close(val) };

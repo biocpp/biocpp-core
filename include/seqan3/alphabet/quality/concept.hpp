@@ -227,7 +227,7 @@ namespace seqan3
  */
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT quality_alphabet = alphabet<t> && requires(t qual)
+concept quality_alphabet = alphabet<t> && requires(t qual)
 {
     { seqan3::to_phred(qual) };
 };
@@ -265,7 +265,7 @@ SEQAN3_CONCEPT quality_alphabet = alphabet<t> && requires(t qual)
  */
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT writable_quality_alphabet = writable_alphabet<t> &&
+concept writable_quality_alphabet = writable_alphabet<t> &&
                                          quality_alphabet<t> &&
                                          requires(t v, alphabet_phred_t<t> c)
 {

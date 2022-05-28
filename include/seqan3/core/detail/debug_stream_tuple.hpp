@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include <seqan3/std/concepts>
-#include <seqan3/std/ranges>
+#include <concepts>
+#include <ranges>
 
 #include <seqan3/alphabet/concept.hpp>
 #include <seqan3/core/concept/tuple.hpp>
@@ -51,7 +51,7 @@ void print_tuple(debug_stream_type<char_t> & s, tuple_t && t, std::index_sequenc
  */
 //!\cond
 template <typename tuple_t>
-SEQAN3_CONCEPT debug_streamable_tuple = !std::ranges::input_range<tuple_t> &&
+concept debug_streamable_tuple = !std::ranges::input_range<tuple_t> &&
                                         !alphabet<tuple_t> &&  // exclude alphabet_tuple_base
                                         tuple_like<std::remove_cvref_t<tuple_t>>;
 //!\endcond

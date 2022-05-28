@@ -32,9 +32,7 @@
 
 #ifdef SEQAN3_HAS_SEQAN2
 
-#include <seqan3/std/ranges>
-
-#include <range/v3/range_fwd.hpp>
+#include <ranges>
 
 #include <seqan/basic.h>
 

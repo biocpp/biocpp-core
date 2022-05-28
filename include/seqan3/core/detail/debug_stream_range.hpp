@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <seqan3/std/ranges>
+#include <ranges>
 
 #include <seqan3/alphabet/adaptation/char.hpp>
 #include <seqan3/alphabet/adaptation/uint.hpp>
@@ -37,7 +37,7 @@ namespace seqan3::detail
  * * `std::ranges::range_reference_t<rng_t>` is not `char`.
  */
 template <typename rng_t>
-SEQAN3_CONCEPT debug_stream_range_guard =
+concept debug_stream_range_guard =
     !std::same_as<std::remove_cvref_t<std::ranges::range_reference_t<rng_t>>,
                                 std::remove_cvref_t<rng_t>> && // prevent recursive instantiation
     // exclude null-terminated strings:

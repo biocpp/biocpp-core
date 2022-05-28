@@ -28,41 +28,13 @@
 
 // C++ standard [required]
 #ifdef __cplusplus
-    static_assert(__cplusplus >= 201703, "SeqAn3 requires C++17, make sure that you have set -std=c++17.");
+static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that you have set -std=c++20.");
 #else
-#   error "This is not a C++ compiler."
+#    error "This is not a C++ compiler."
 #endif
 
 #if __has_include(<version>)
 #   include <version>
-#endif
-
-// C++ Concepts [required]
-#ifdef __cpp_concepts
-#   if __cpp_concepts == 201507 // GCC and Concepts TS
-#       define SEQAN3_CONCEPT concept bool
-#   else
-        static_assert(__cpp_concepts >= 201507, "Your compiler supports Concepts, but the support is not recent enough.");
-#       define SEQAN3_CONCEPT concept
-#   endif
-#else
-#   error "SeqAn3 requires C++ Concepts, either vie the TS (flag: -fconcepts) or via C++20 (flag: -std=c++2a / -std=c++20)."
-#endif
-
-//!\brief Same as writing `{expression} -> concept_name<type1[, ...]>` in a concept definition.
-#if defined(__GNUC__) && (__GNUC__ < 10)
-#   define SEQAN3_RETURN_TYPE_CONSTRAINT(expression, concept_name, ...) \
-       {expression}; requires concept_name<decltype(expression), __VA_ARGS__>
-#else
-#   define SEQAN3_RETURN_TYPE_CONSTRAINT(expression, concept_name, ...) \
-       {expression} -> concept_name<__VA_ARGS__>
-#endif
-
-// filesystem [required]
-#if !__has_include(<filesystem>)
-#   if !__has_include(<experimental/filesystem>)
-#      error SeqAn3 requires C++17 filesystem support, but it was not found.
-#   endif
 #endif
 
 // ============================================================================
@@ -72,27 +44,6 @@
 // SeqAn [required]
 #if !__has_include(<seqan3/version.hpp>)
 #   error SeqAn3 include directory not set correctly. Forgot to add -I ${INSTALLDIR}/include to your CXXFLAGS?
-#endif
-
-// Ranges [required]
-#if __has_include(<range/v3/version.hpp>)
-#   define RANGE_V3_MINVERSION 1100
-#   define RANGE_V3_MAXVERSION 1199
-// TODO the following doesn't actually show the current version, only its formula. How'd you do it?
-#   define SEQAN3_MSG "Your version: " SEQAN3_STR(RANGE_V3_VERSION) \
-                      "; minimum version: " SEQAN3_STR(RANGE_V3_MINVERSION) \
-                      "; expected maximum version: " SEQAN3_STR(RANGE_V3_MAXVERSION)
-#   include <range/v3/version.hpp>
-#   if RANGE_V3_VERSION < RANGE_V3_MINVERSION
-#       error Your range-v3 library is too old.
-#       pragma message(SEQAN3_MSG)
-#   elif RANGE_V3_VERSION > RANGE_V3_MAXVERSION
-#       pragma GCC warning "Your range-v3 library is possibly too new. Some features might not work correctly."
-#       pragma message(SEQAN3_MSG)
-#   endif
-#   undef SEQAN3_MSG
-#else
-#   error The range-v3 library was not included correctly. Forgot to add -I ${INSTALLDIR}/include to your CXXFLAGS?
 #endif
 
 // SDSL [required]
@@ -142,38 +93,6 @@
      * \endcond
      */
 #endif
-
-// Lemon [optional]
-/*!\def SEQAN3_WITH_LEMON
- * \brief Whether Lemon support is available or not.
- * \ingroup core
- */
-#ifndef SEQAN3_WITH_LEMON
-#   if __has_include(<lemon/config.h>)
-#       define SEQAN3_WITH_LEMON 1
-#   else
-#       define SEQAN3_WITH_LEMON 0
-#   endif
-#elif SEQAN3_WITH_LEMON != 0
-#   if !__has_include(<lemon/config.h>)
-#       error Lemon was marked as required, but not found!
-#   endif
-#endif
-#if SEQAN3_WITH_LEMON == 1
-#   define LEMON_HAVE_LONG_LONG 1
-#   define LEMON_CXX11 1
-#   if defined(__unix__) || defined(__APPLE__)
-#       define LEMON_USE_PTHREAD 1
-#       define LEMON_USE_WIN32_THREADS 0
-#       define LEMON_WIN32 0
-#   else
-#       define LEMON_USE_PTHREAD 0
-#       define LEMON_USE_WIN32_THREADS 1
-#       define LEMON_WIN32 1
-#   endif
-#endif
-
-// TODO (doesn't have a version.hpp, yet)
 
 // ============================================================================
 //  Documentation

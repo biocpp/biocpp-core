@@ -12,12 +12,12 @@
 
 #pragma once
 
-#include <seqan3/std/algorithm>
-#include <seqan3/std/concepts>
-#include <seqan3/std/iterator>
-#include <seqan3/std/ranges>
-#include <seqan3/std/span>
-#include <seqan3/std/type_traits>
+#include <algorithm>
+#include <concepts>
+#include <iterator>
+#include <ranges>
+#include <span>
+#include <type_traits>
 
 #include <seqan3/core/type_traits/iterator.hpp>
 #include <seqan3/core/type_traits/range.hpp>
@@ -429,7 +429,7 @@ public:
     }
 
     //!\brief Checks whether `lhs` is not equal to `rhs`.
-    constexpr friend bool operator!=(sentinel_type const & lhs, basic_iterator const & rhs) 
+    constexpr friend bool operator!=(sentinel_type const & lhs, basic_iterator const & rhs)
         noexcept(noexcept(rhs != lhs))
     {
         return rhs != lhs;
@@ -541,74 +541,3 @@ struct take_fn
 };
 
 } // namespace seqan3::detail
-
-// ============================================================================
-//  views::take (adaptor instance definition)
-// ============================================================================
-
-namespace seqan3::views
-{
-
-/*!\name General purpose views
- * \{
- */
-
-/*!\brief               A view adaptor that returns the first `size` elements from the underlying range (or less if the
- *                      underlying range is shorter).
- * \tparam urng_t       The type of the range being processed. See below for requirements. [template parameter is
- *                      omitted in pipe notation]
- * \param[in] urange    The range being processed. [parameter is omitted in pipe notation]
- * \param[in] size      The target size of the view.
- * \returns             Up to `size` elements of the underlying range.
- * \ingroup views
- *
- * \details
- *
- * \header_file{seqan3/range/views/take.hpp}
- *
- * ### View properties
- *
- * | Concepts and traits              | `urng_t` (underlying range type)   | `rrng_t` (returned range type)         |
- * |----------------------------------|:----------------------------------:|:--------------------------------------:|
- * | std::ranges::input_range         | *required*                         | *preserved*                            |
- * | std::ranges::forward_range       |                                    | *preserved*                            |
- * | std::ranges::bidirectional_range |                                    | *preserved*                            |
- * | std::ranges::random_access_range |                                    | *preserved*                            |
- * | std::ranges::contiguous_range    |                                    | *preserved*                            |
- * |                                  |                                    |                                        |
- * | std::ranges::viewable_range      | *required*                         | *guaranteed*                           |
- * | std::ranges::view                |                                    | *guaranteed*                           |
- * | std::ranges::sized_range         |                                    | *preserved*                            |
- * | std::ranges::common_range        |                                    | *preserved*                            |
- * | std::ranges::output_range        |                                    | *preserved*                            |
- * | seqan3::const_iterable_range     |                                    | *preserved*                            |
- * |                                  |                                    |                                        |
- * | std::ranges::range_reference_t   |                                    | std::ranges::range_reference_t<urng_t> |
- *
- * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
- *
- * ### Return type
- *
- * | `urng_t` (underlying range type)                                                              | `rrng_t` (returned range type)  |
- * |:---------------------------------------------------------------------------------------------:|:-------------------------------:|
- * | `std::basic_string const &` *or* `std::basic_string_view`                                     | `std::basic_string_view`        |
- * | `std::ranges::borrowed_range && std::ranges::sized_range && std::ranges::contiguous_range`    | `std::span`                     |
- * | `std::ranges::borrowed_range && std::ranges::sized_range && std::ranges::random_access_range` | `std::ranges::subrange`         |
- * | *else*                                                                                        | *implementation defined type*   |
- *
- * This adaptor is different from std::views::take in that it performs type erasure for some underlying ranges.
- * It returns exactly the type specified above.
- *
- * Some benchmarks have shown that it is also faster than std::views::take for pure forward and input ranges.
- *
- * ### Example
- *
- * \include test/snippet/range/views/take.cpp
- *
- * \hideinitializer
- */
-inline auto constexpr take = detail::take_fn<false, false>{};
-
-//!\}
-
-} // namespace seqan3::views

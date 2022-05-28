@@ -17,9 +17,9 @@
 #include <seqan3/core/type_traits/template_inspection.hpp>
 #include <seqan3/range/concept.hpp>
 #include <seqan3/range/views/detail.hpp>
-#include <seqan3/std/concepts>
-#include <seqan3/std/ranges>
-#include <seqan3/std/span>
+#include <concepts>
+#include <ranges>
+#include <span>
 
 namespace seqan3::detail
 {
@@ -53,14 +53,11 @@ private:
         static_assert(std::ranges::viewable_range<urng_t>,
                       "The views::type_reduce adaptor can only be passed viewable_ranges, i.e. Views or &-to-non-View.");
 
-        // views are always passed as-is
-        if constexpr (std::ranges::view<std::remove_cvref_t<urng_t>>)
-        {
-            return std::views::all(std::forward<urng_t>(urange));
-        }
         // string const &
-        else if constexpr (is_type_specialisation_of_v<std::remove_cvref_t<urng_t>, std::basic_string> &&
-                           std::is_const_v<std::remove_reference_t<urng_t>>)
+        if constexpr (std::ranges::borrowed_range<urng_t> &&
+                           std::ranges::contiguous_range<urng_t> &&
+                           std::ranges::sized_range<urng_t> &&
+                           std::same_as<std::ranges::range_reference_t<urng_t>, char const &>)
         {
             return std::basic_string_view{std::ranges::data(urange), std::ranges::size(urange)};
         }
@@ -82,6 +79,11 @@ private:
                 std::ranges::begin(urange) + std::ranges::size(urange),
                 std::ranges::size(urange)
             };
+        }
+        // views are always passed as-is
+        else if constexpr (std::ranges::view<std::remove_cvref_t<urng_t>>)
+        {
+            return std::views::all(std::forward<urng_t>(urange));
         }
         // pass to std::views::all (will return ref-view)
         else

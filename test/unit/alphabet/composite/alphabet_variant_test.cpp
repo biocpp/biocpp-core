@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------------------------------
-// Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
-// Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
+// Copyright (c) 2006-2021, Knut Reinert & Freie Universität Berlin
+// Copyright (c) 2016-2021, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
 // shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
@@ -12,9 +12,11 @@
 #include <seqan3/alphabet/adaptation/char.hpp>
 #include <seqan3/alphabet/composite/alphabet_variant.hpp>
 #include <seqan3/alphabet/gap/gap.hpp>
-#include <seqan3/alphabet/gap/gapped.hpp>
-#include <seqan3/alphabet/nucleotide/all.hpp>
-#include <seqan3/core/detail/pack_algorithm.hpp>
+#include <seqan3/alphabet/nucleotide/dna4.hpp>
+#include <seqan3/alphabet/nucleotide/dna5.hpp>
+#include <seqan3/alphabet/nucleotide/rna4.hpp>
+#include <seqan3/alphabet/nucleotide/rna5.hpp>
+#include <seqan3/core/type_list/detail/type_list_algorithm.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"
@@ -280,9 +282,9 @@ TEST(alphabet_variant_test, convert_by_index)
     seqan3::alphabet_variant<seqan3::dna4, seqan3::dna5, seqan3::gap> u;
     u = 'C'_dna5;
 
-    EXPECT_FALSE(u.is_alternative<0>());
-    EXPECT_TRUE(u.is_alternative<1>());
-    EXPECT_FALSE(u.is_alternative<2>());
+    EXPECT_FALSE(u.holds_alternative<0>());
+    EXPECT_TRUE(u.holds_alternative<1>());
+    EXPECT_FALSE(u.holds_alternative<2>());
 
     EXPECT_THROW(u.convert_to<0>(), std::bad_variant_access);
     EXPECT_NO_THROW(u.convert_to<1>());
@@ -302,9 +304,9 @@ TEST(alphabet_variant_test, convert_by_type)
     seqan3::alphabet_variant<seqan3::dna4, seqan3::dna5, seqan3::gap> u;
     u = 'C'_dna5;
 
-    EXPECT_FALSE(u.is_alternative<seqan3::dna4>());
-    EXPECT_TRUE(u.is_alternative<seqan3::dna5>());
-    EXPECT_FALSE(u.is_alternative<seqan3::gap>());
+    EXPECT_FALSE(u.holds_alternative<seqan3::dna4>());
+    EXPECT_TRUE(u.holds_alternative<seqan3::dna5>());
+    EXPECT_FALSE(u.holds_alternative<seqan3::gap>());
 
     EXPECT_THROW(u.convert_to<seqan3::dna4>(), std::bad_variant_access);
     EXPECT_NO_THROW(u.convert_to<seqan3::dna5>());
@@ -333,15 +335,6 @@ TEST(alphabet_variant_test, two_different_variants)
 
     seqan3::alphabet_variant<seqan3::rna4, seqan3::gap> r2{'A'_rna4};
     EXPECT_EQ(l, r2); // this works because rna4 and dna4 are implicitly convertible to each other
-}
-
-TEST(alphabet_variant_test, char_is_valid_for_issue_1972)
-{
-    // see issue https://github.com/seqan/seqan3/issues/1972
-    EXPECT_TRUE(seqan3::char_is_valid_for<seqan3::gapped<seqan3::rna5>>('A')); // valid seqan3::rna5 char
-    EXPECT_TRUE(seqan3::char_is_valid_for<seqan3::gapped<seqan3::rna5>>('a')); // valid seqan3::rna5 char
-    EXPECT_TRUE(seqan3::char_is_valid_for<seqan3::gapped<seqan3::rna5>>('-')); // valid seqan3::gap char
-    EXPECT_FALSE(seqan3::char_is_valid_for<seqan3::gapped<seqan3::rna5>>('S')); // neither seqan3::rna5 nor seqan3::gap
 }
 
 TYPED_TEST(alphabet_variant_test, char_is_valid_for)

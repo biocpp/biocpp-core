@@ -12,8 +12,8 @@
 #include <seqan3/range/views/persist.hpp>
 #include <seqan3/range/views/repeat_n.hpp>
 #include <seqan3/range/views/take.hpp>
-#include <seqan3/std/algorithm>
-#include <seqan3/std/ranges>
+#include <algorithm>
+#include <ranges>
 #include <seqan3/test/expect_range_eq.hpp>
 
 TEST(general, construction)

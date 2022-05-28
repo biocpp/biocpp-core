@@ -18,7 +18,7 @@
 #include <seqan3/core/detail/customisation_point.hpp>
 #include <seqan3/core/detail/type_inspection.hpp>
 #include <seqan3/core/type_traits/basic.hpp>
-#include <seqan3/std/type_traits>
+#include <type_traits>
 
 // ============================================================================
 // forwards
@@ -455,7 +455,7 @@ public:
         {
             { impl(priority_tag<3>{}, a, dummy{}) };
             requires noexcept(impl(priority_tag<3>{}, a, dummy{}));
-            SEQAN3_RETURN_TYPE_CONSTRAINT(impl(priority_tag<3>{}, a, dummy{}), std::convertible_to, bool);
+            { impl(priority_tag<3>{}, a, dummy{}) } -> std::convertible_to<bool>;
         }
     //!\endcond
     constexpr bool operator()(alphabet_char_t<alph_t> const a) const noexcept
@@ -539,8 +539,8 @@ struct assign_char_strictly_to_fn
     //!\cond
         requires requires (alph_t a, seqan3::alphabet_char_t<alph_t> r)
         {
-            SEQAN3_RETURN_TYPE_CONSTRAINT(seqan3::assign_char_to(r, a), std::convertible_to, alph_t);
-            SEQAN3_RETURN_TYPE_CONSTRAINT(seqan3::char_is_valid_for<alph_t>(r), std::same_as, bool);
+            { seqan3::assign_char_to(r, a) } -> std::convertible_to<alph_t>;
+            { seqan3::char_is_valid_for<alph_t>(r) } -> std::same_as<bool>;
         }
     //!\endcond
     decltype(auto) operator()(seqan3::alphabet_char_t<alph_t> const r, alph_t & a) const
@@ -556,8 +556,8 @@ struct assign_char_strictly_to_fn
     //!\cond
         requires requires (alph_t a, seqan3::alphabet_char_t<alph_t> r)
         {
-            SEQAN3_RETURN_TYPE_CONSTRAINT(seqan3::assign_char_to(r, a), std::convertible_to, alph_t);
-            SEQAN3_RETURN_TYPE_CONSTRAINT(seqan3::char_is_valid_for<alph_t>(r), std::same_as, bool);
+            { seqan3::assign_char_to(r, a) } -> std::convertible_to<alph_t>;
+            { seqan3::char_is_valid_for<alph_t>(r) } -> std::same_as<bool>;
         }
     //!\endcond
     auto operator()(seqan3::alphabet_char_t<alph_t> const r, alph_t && a) const
@@ -751,7 +751,7 @@ inline constexpr auto alphabet_size = detail::adl_only::alphabet_size_obj<alph_t
  */
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT semialphabet =
+concept semialphabet =
     std::totally_ordered<t> &&
     std::copy_constructible<t> &&
     std::is_nothrow_copy_constructible_v<t> &&
@@ -800,7 +800,7 @@ SEQAN3_CONCEPT semialphabet =
  */
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT writable_semialphabet = semialphabet<t> && requires (t v, alphabet_rank_t<t> r)
+concept writable_semialphabet = semialphabet<t> && requires (t v, alphabet_rank_t<t> r)
 {
     { seqan3::assign_rank_to(r, v) };
 };
@@ -837,7 +837,7 @@ SEQAN3_CONCEPT writable_semialphabet = semialphabet<t> && requires (t v, alphabe
  */
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT alphabet = semialphabet<t> && requires (t v)
+concept alphabet = semialphabet<t> && requires (t v)
 {
     { seqan3::to_char(v) };
 };
@@ -884,7 +884,7 @@ SEQAN3_CONCEPT alphabet = semialphabet<t> && requires (t v)
  */
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires (t v, alphabet_char_t<t> c)
+concept writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires (t v, alphabet_char_t<t> c)
 {
     { seqan3::assign_char_to(c, v) };
 
@@ -964,7 +964,7 @@ namespace seqan3::detail
  */
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT constexpr_semialphabet = semialphabet<t> && requires
+concept constexpr_semialphabet = semialphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
     requires SEQAN3_IS_CONSTEXPR(to_rank(std::remove_reference_t<t>{}));
@@ -986,7 +986,7 @@ SEQAN3_CONCEPT constexpr_semialphabet = semialphabet<t> && requires
  */
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT writable_constexpr_semialphabet = constexpr_semialphabet<t> && writable_semialphabet<t> && requires
+concept writable_constexpr_semialphabet = constexpr_semialphabet<t> && writable_semialphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
     requires SEQAN3_IS_CONSTEXPR(seqan3::assign_rank_to(alphabet_rank_t<t>{}, std::remove_reference_t<t>{}));
@@ -1008,7 +1008,7 @@ SEQAN3_CONCEPT writable_constexpr_semialphabet = constexpr_semialphabet<t> && wr
  */
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT constexpr_alphabet = constexpr_semialphabet<t> && alphabet<t> && requires
+concept constexpr_alphabet = constexpr_semialphabet<t> && alphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
     requires SEQAN3_IS_CONSTEXPR(to_char(std::remove_reference_t<t>{}));
@@ -1032,7 +1032,7 @@ SEQAN3_CONCEPT constexpr_alphabet = constexpr_semialphabet<t> && alphabet<t> && 
  */
 //!\cond
 template <typename t>
-SEQAN3_CONCEPT writable_constexpr_alphabet =
+concept writable_constexpr_alphabet =
     constexpr_alphabet<t> && writable_constexpr_semialphabet<t> && writable_alphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to

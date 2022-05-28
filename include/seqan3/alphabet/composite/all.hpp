@@ -15,7 +15,7 @@
 #include <seqan3/alphabet/composite/alphabet_variant.hpp>
 #include <seqan3/alphabet/composite/semialphabet_any.hpp>
 
-/*!\defgroup composite Composite
+/*!\defgroup alphabet_composite Composite
  * \brief Provides templates for combining existing alphabets into new alphabet types.
  * \ingroup alphabet
  *

@@ -7,15 +7,13 @@
 
 #include <gtest/gtest.h>
 
-#include <meta/meta.hpp>
-
 #include <seqan3/alphabet/nucleotide/dna4.hpp>
 #include <seqan3/alphabet/nucleotide/dna5.hpp>
 #include <seqan3/alphabet/nucleotide/dna15.hpp>
 #include <seqan3/alphabet/nucleotide/rna4.hpp>
 #include <seqan3/alphabet/nucleotide/rna5.hpp>
 #include <seqan3/alphabet/nucleotide/rna15.hpp>
-#include <seqan3/core/detail/pack_algorithm.hpp>
+#include <seqan3/core/type_list/detail/type_list_algorithm.hpp>
 #include <seqan3/core/type_list/type_list.hpp>
 
 template <typename T>

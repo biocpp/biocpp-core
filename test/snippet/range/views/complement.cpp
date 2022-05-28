@@ -1,6 +1,6 @@
 #include <seqan3/alphabet/nucleotide/dna5.hpp>
 #include <seqan3/range/views/complement.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 int main()
 {

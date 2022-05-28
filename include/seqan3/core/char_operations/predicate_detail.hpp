@@ -18,7 +18,7 @@
 #include <stdexcept>
 #include <string>
 
-#include <seqan3/std/concepts>
+#include <concepts>
 
 #include <seqan3/alphabet/concept.hpp>
 #include <seqan3/core/detail/type_inspection.hpp>
@@ -105,7 +105,7 @@ struct char_predicate_base;
  */
 //!\cond
 template <typename condition_t>
-SEQAN3_CONCEPT char_predicate = requires
+concept char_predicate = requires
 {
     requires std::predicate<std::remove_reference_t<condition_t>, char>;
     requires std::is_base_of_v<char_predicate_base<std::remove_cvref_t<condition_t>>,
@@ -114,8 +114,8 @@ SEQAN3_CONCEPT char_predicate = requires
     std::remove_reference_t<condition_t>::msg;
 
     //The msg type can be added with a std::string.
-    SEQAN3_RETURN_TYPE_CONSTRAINT(std::string{} + std::remove_reference_t<condition_t>::msg,
-                                  std::convertible_to, decltype(std::remove_reference_t<condition_t>::msg));
+    { std::string{} + std::remove_reference_t<condition_t>::msg } ->
+        std::convertible_to<decltype(std::remove_reference_t<condition_t>::msg)>;
 };
 //!\endcond
 

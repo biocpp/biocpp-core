@@ -2,7 +2,7 @@
 
 #include <seqan3/alphabet/nucleotide/dna4.hpp>
 #include <seqan3/core/detail/strong_type.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 struct error : seqan3::detail::strong_type<unsigned, error>
 {

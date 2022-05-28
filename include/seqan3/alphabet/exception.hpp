@@ -16,7 +16,7 @@
 #include <string>
 
 #include <seqan3/core/char_operations/pretty_print.hpp>
-#include <seqan3/std/concepts>
+#include <concepts>
 
 namespace seqan3
 {

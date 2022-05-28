@@ -14,8 +14,7 @@
 
 #include <seqan3/alphabet/quality/qualified.hpp>
 #include <seqan3/range/views/deep.hpp>
-#include <seqan3/range/views/take_until.hpp>
-#include <seqan3/std/ranges>
+#include <ranges>
 
 namespace seqan3::detail
 {
@@ -54,17 +53,17 @@ struct trim_fn
                       "The threshold must either be a letter of the underlying alphabet or an integral type "
                       "in which case it is compared with the underlying phred type.");
 
-        return views::take_until(std::forward<irng_t>(irange), [threshold] (auto const value)
+        return std::views::take_while(std::forward<irng_t>(irange), [threshold] (auto const value)
         {
             if constexpr (std::same_as<std::remove_cvref_t<threshold_t>,
                           std::remove_cvref_t<std::ranges::range_reference_t<irng_t>>>)
             {
-                return to_phred(value) < to_phred(threshold);
+                return to_phred(value) >= to_phred(threshold);
             }
             else
             {
                 using c_t = std::common_type_t<decltype(to_phred(value)), threshold_t>;
-                return static_cast<c_t>(to_phred(value)) < static_cast<c_t>(threshold);
+                return static_cast<c_t>(to_phred(value)) >= static_cast<c_t>(threshold);
             }
         });
     }
