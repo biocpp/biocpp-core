@@ -1,9 +1,9 @@
 # Contributing {#about_contributing}
 
-First of all, thanks for wanting to contribute to SeqAn! Community is important to us and we strive to maintain a great
+First of all, thanks for wanting to contribute to BioC++ Community is important to us and we strive to maintain a great
 culture and atmosphere. Please have a look at our [Code of Conduct](\ref about_code_of_conduct).
 
-The following is a guide that helps stream-line the process of adding changes. If you haven't contributed to SeqAn
+The following is a guide that helps stream-line the process of adding changes. If you haven't contributed to BioC++
 before, don't worry about getting something wrong, that's absolutely OK. However, following this guide closely
 will reduce work for all of us and increases the chance of your changes being merged quickly.
 
@@ -72,18 +72,16 @@ work-in-progress.
 
 ### Request first review
 
-After opening a PR it goes through the review process. This is a two-step process, first a regular member of the team
-needs to approve your changes, then one of the project owners (`@h-2` or `@rrahn`) needs to approve and merge it. If you
-are a collaborator of the project and know the SeqAn team member best suitable for the review you can request a review
+After opening a PR it goes through the review process. At first a regular member of the team might be assigned your PR, but
+in any case one of the project owners (`@h-2`) needs to approve and merge it. If you
+are a collaborator of the project and know the BioC++ team member best suitable for the review you can request a review
 yourself. Otherwise wait for a reviewer to be assigned to the PR. Do not request reviews from a project owner at this
 point. Always only request review from one person at a time.
 
 ### Resolve comments
 
-If you have not contributed to SeqAn before, you will likely receive a lot of comments on the style of your code. This
-is not a sign that we don't appreciate your contribution, but we have high code quality standards and everything
-must conform to our [style guide](https://github.com/seqan/seqan3/wiki#library-coding-guide). In the future we hope
-to automate this step.
+If you have not contributed to BioC++ before, you will likely encounter some failures in the CI. In particular,
+you might have code style violations that you need to fix. You can check this locally with `clang-format`.
 After you have received the first review, go through all comments and clarify any suggestions and requests. When
 you are confident that you know how to address all comments, implement the changes and update your PR.
 

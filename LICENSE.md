@@ -2,7 +2,7 @@
 
 | Summary                   |                                                                                        |
 |---------------------------|----------------------------------------------------------------------------------------|
-| Copyright holders         | Knut Reinert, [FU-Berlin](https://fu-berlin.de), [MPI MolGen](https://molgen.mpg.de/)  |
+| Copyright holders         | deCODE Genetics, Knut Reinert, [FU-Berlin](https://fu-berlin.de), [MPI MolGen](https://molgen.mpg.de/)  |
 | Library source code       | ![](doc/about/copyright/bsdl_badge.svg)                                                |
 | Documentation             | ![](doc/about/copyright/ccby_badge.svg)                                                |
 | Snippets and examples     | ![](doc/about/copyright/cc0_badge.svg)                                                 |
@@ -11,9 +11,10 @@
 # Source code license
 
 The contents of this repository/directory, in particular the library
-source code of SeqAn3, are licensed under the following terms:
+source code, are licensed under the following terms:
 
 ```
+Copyright (c) 2021-2022, deCODE Genetics
 Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 All rights reserved.
@@ -58,10 +59,3 @@ additionally provided under the terms of the
 This includes:
   * source code files (`*.cpp`, `*.hpp`) in the `doc`-subfolder;
   * the contents of `test/snippet`.
-
-# Submodules
-
-This repository/directory may contain other projects' content in the
-`submodules`-subfolder. We try to ensure that all dependencies are
-permissively licensed (BSD/MIT/X11/ISC/Boost…), but please verify the
-respective license files yourself.

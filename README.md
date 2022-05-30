@@ -1,70 +1,60 @@
-# SeqAn3 -- the modern C++ library for sequence analysis
+# The BioC++ Core Library
 
-[![build status](https://github.com/seqan/seqan3/workflows/SeqAn3%20CI/badge.svg?branch=master)](https://github.com/seqan/seqan3/actions)
-[![codecov](https://codecov.io/gh/seqan/seqan3/branch/master/graph/badge.svg?logo=codecov)](https://codecov.io/gh/seqan/seqan3)
-[![license](https://img.shields.io/badge/license-BSD-green.svg)](https://docs.seqan.de/seqan/3-master-user/about_copyright.html)
-[![latest release](https://img.shields.io/github/release/seqan/seqan3.svg)](https://github.com/seqan/seqan3/releases/latest)
-[![platforms](https://img.shields.io/badge/platform-linux%20%7C%20bsd%20%7C%20osx-informational.svg)](https://docs.seqan.de/seqan/3-master-user/about_api.html)
-[![star](https://img.shields.io/github/stars/seqan/seqan3.svg?style=social)](https://github.com/seqan/seqan3/stargazers)
-[![follow](https://img.shields.io/twitter/follow/SeqAnLib.svg?label=follow&style=social)](https://twitter.com/seqanlib)
+This is the core library of the [BioC++ project](https://github.com/biocpp/biocpp). It provides the following modules:
 
-SeqAn3 is the new version of the popular SeqAn template library for the analysis of biological sequences.
-It enables the rapid development of high-performance solutions by providing generic algorithms and data structures
-for:
+  * Alphabet: data structures and utilities for representing single biological compounds like DNA, RNA and amino acids.
+  * Ranges: containers, views and utilities for storing and manipulating sequences of biological compounds.
+  * Meta: meta-programming and auxilliary data structures used by many BioC++ modules.
 
-  * sequence representation and transformation
-  * full-text indexing and efficient search
-  * sequence alignment
-  * input/output of common file formats
+The design of this module is heavily influenced by **C++ Ranges** and **C++ Concepts**.
+A short introduction into the topic can be found [here](https://hannes.hauswedell.net/post/2019/11/30/range_intro/).
 
-By leveraging *Modern C++* it provides unprecedented ease-of-use without sacrificing performance.
+## Example
 
-Please see the [online documentation](https://docs.seqan.de/seqan/3-master-user/) for more details.
+```cpp
+std::vector seq = "GATTACA"_dna4;
 
-## Quick facts
+auto translated = seq | bio::views::translate;
 
-  * C++ header-only library: easy to integrate with your app & easy to distribute
-  * liberal open source license: allows integration with any app or library, requires only attribution
-  * very high code quality standards: >97% unit test coverage, performance regression tests, ...
-  * extensive API documentation & tutorials: more lines of documentation than lines of code
-  * aims to support any 64-bit architecture running Linux/POSIX; currently big-endian CPU architectures
-    like s390x are less supported
+fmt::print("The six frames of \"{}\" are:\n{}\n", seq, translated);
+/*
+TODO
+*/
+fmt::print("The second amino acid in the third frame is: {}\n", translated[2][1]);
+/*
+TODO
+*/
+```
 
-## Dependencies
+Here `translated` appears like a vector of protein sequences, however, it is actually a "view", i.e. a light-weight, lazy-evaluated data structure.
+It's "elements" are computed on-the-fly and occupy no memory. It still supports random access like a vector.
 
-|                   | requirement                                          | version  | comment                                     |
-|-------------------|------------------------------------------------------|----------|---------------------------------------------|
-|**compiler**       | [GCC](https://gcc.gnu.org)                           | ≥ 7      | no other compiler is currently supported!   |
-|**build system**   | [CMake](https://cmake.org)                           | ≥ 3.4    | optional, but recommended                   |
-|**required libs**  | [SDSL](https://github.com/xxsds/sdsl-lite)           | ≥ 3      |                                             |
-|                   | [Range-V3](https://github.com/ericniebler/range-v3)  | ≥ 0.11.0 |                                             |
-|**optional libs**  | [cereal](https://github.com/USCiLab/cereal)          | ≥ 1.2.3  | required for serialisation and CTD support  |
-|                   | [zlib](https://github.com/madler/zlib)               | ≥ 1.2    | required for `*.gz` and `.bam` file support |
-|                   | [bzip2](http://www.bzip.org)                         | ≥ 1.0    | required for `*.bz2` file support           |
+## About
 
-## Usage
+  * General information on the **BioC++ project** can be found in the [main repository](https://github.com/biocpp/biocpp).
+  * The **full documention** (all BioC++ modules) can found here: (TODO).
+  * The documentation for just the core module can be found here: (TODO).
 
-We recommend that you use CMake to build your project:
+## Easy to use
 
-  * [Setup-Tutorial](https://docs.seqan.de/seqan/3-master-user/setup.html)
-  * Using CMake guarantees that all optional dependencies are automatically detected and activated.
+  * Header-only → just drop it in your source code or include it as a git submodule!
+  * Zero dependencies → keep complexity low!
+  * No build-system and no configure steps required.
+  * Optional CMake support available.
+  * Integrates well with the standard library and [fmt](https://github.com/fmtlib/fmt).
 
-Quick-Setup without CMake:
+## Quick-Setup
 
-  * Clone the repository with submodules: `git clone --recurse-submodules https://github.com/seqan/seqan3.git`
+  * Clone the repository with submodules: `git clone https://github.com/biocpp/biocpp-core.git`
   * Add the following to your compiler invocation:
-    * the include directories of SeqAn and its dependencies
-    * C++17 mode with concepts support
-    * Macros indicating the presence of zlib and bzip2 (set only if actually available in your paths!)
+    * the include directory of BioC++
+    * C++20 mode
   * The command could look like this:
 ```sh
-g++-7 -O3 -DNDEBUG -Wall -Wextra                                \
-    -std=c++17 -fconcepts                                       \
-    -I       /path/to/seqan3/include                            \
-    -isystem /path/to/seqan3/submodules/range-v3/include        \
-    -isystem /path/to/seqan3/submodules/sdsl-lite/include       \
-    -isystem /path/to/seqan3/submodules/cereal/include          \
-    -DSEQAN3_HAS_ZLIB=1 -DSEQAN3_HAS_BZIP2=1                    \
-    -lz -lbz2 -lstdc++fs -pthread                               \
+g++-10 -O3 -DNDEBUG -Wall -Wextra          \
+    -std=c++20                             \
+    -I       /path/to/biocpp-core/include  \
   your_file.cpp
 ```
+
+**Currently, GCC ≥ 10 is the only supported compiler.** Clang support is planned.
