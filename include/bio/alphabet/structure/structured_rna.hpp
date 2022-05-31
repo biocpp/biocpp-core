@@ -79,13 +79,13 @@ public:
     using base_type::base_type; // Inherit non-default constructors
 
     //!\copydoc alphabet_tuple_base::alphabet_tuple_base(component_type const alph)
-    SEQAN3_DOXYGEN_ONLY(( constexpr structured_rna(component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY(( constexpr structured_rna(component_type const alph) noexcept {} ))
     //!\copydoc alphabet_tuple_base::alphabet_tuple_base(indirect_component_type const alph)
-    SEQAN3_DOXYGEN_ONLY(( constexpr structured_rna(indirect_component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY(( constexpr structured_rna(indirect_component_type const alph) noexcept {} ))
     //!\copydoc alphabet_tuple_base::operator=(component_type const alph)
-    SEQAN3_DOXYGEN_ONLY(( constexpr structured_rna & operator=(component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY(( constexpr structured_rna & operator=(component_type const alph) noexcept {} ))
     //!\copydoc alphabet_tuple_base::operator=(indirect_component_type const alph)
-    SEQAN3_DOXYGEN_ONLY(( constexpr structured_rna & operator=(indirect_component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY(( constexpr structured_rna & operator=(indirect_component_type const alph) noexcept {} ))
     //!\}
 
     // Inherit operators from base

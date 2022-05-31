@@ -26,7 +26,7 @@
  * \ingroup type_traits
  * \returns true or false.
  */
-#define SEQAN3_IS_CONSTEXPR(...) std::integral_constant<bool, __builtin_constant_p((__VA_ARGS__, 0))>::value
+#define BIOCPP_IS_CONSTEXPR(...) std::integral_constant<bool, __builtin_constant_p((__VA_ARGS__, 0))>::value
 
 namespace bio
 {
@@ -43,7 +43,7 @@ namespace bio
  * \tparam t The type to operate on.
  */
 template <typename t>
-using remove_cvref_t SEQAN3_DEPRECATED_310 = std::remove_cv_t<std::remove_reference_t<t>>;
+using remove_cvref_t BIOCPP_DEPRECATED_310 = std::remove_cv_t<std::remove_reference_t<t>>;
 
 // ----------------------------------------------------------------------------
 // remove_rvalue_reference
@@ -88,7 +88,7 @@ template <typename t>
 //!\cond
     requires std::is_default_constructible_v<t>
 //!\endcond
-struct is_constexpr_default_constructible<t> : std::integral_constant<bool, SEQAN3_IS_CONSTEXPR(t{})>
+struct is_constexpr_default_constructible<t> : std::integral_constant<bool, BIOCPP_IS_CONSTEXPR(t{})>
 {};
 
 /*!\brief Whether a type std::is_default_constructible in `constexpr`-context (unary_type_trait shortcut).
@@ -153,7 +153,7 @@ constexpr bool decays_to_ignore_v = std::is_same_v<std::remove_cvref_t<t>, ignor
 } // namespace bio::detail
 
 // ----------------------------------------------------------------------------
-// SEQAN3_IS_SAME
+// BIOCPP_IS_SAME
 // ----------------------------------------------------------------------------
 
 /*!\brief A macro that behaves like std::is_same_v, except that it doesn't need to instantiate the template on GCC and
@@ -161,9 +161,9 @@ constexpr bool decays_to_ignore_v = std::is_same_v<std::remove_cvref_t<t>, ignor
  * \ingroup type_traits
  */
 #if defined(__clang__)
-#   define SEQAN3_IS_SAME(...)              __is_same(__VA_ARGS__)
+#   define BIOCPP_IS_SAME(...)              __is_same(__VA_ARGS__)
 #elif defined(__GNUC__)
-#   define SEQAN3_IS_SAME(...)              __is_same_as(__VA_ARGS__)
+#   define BIOCPP_IS_SAME(...)              __is_same_as(__VA_ARGS__)
 #else
-#   define SEQAN3_IS_SAME(...)              std::is_same_v<__VA_ARGS__>
+#   define BIOCPP_IS_SAME(...)              std::is_same_v<__VA_ARGS__>
 #endif

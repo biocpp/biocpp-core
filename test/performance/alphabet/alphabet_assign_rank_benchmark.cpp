@@ -13,7 +13,7 @@
 #include <bio/alphabet/all.hpp>
 #include <bio/test/seqan2.hpp>
 
-#if SEQAN3_HAS_SEQAN2
+#if BIOCPP_HAS_SEQAN2
 #include <seqan/align.h>
 #include <seqan/basic.h>
 #include <seqan/modifier.h>
@@ -66,7 +66,7 @@ BENCHMARK_TEMPLATE(assign_rank, bio::masked<bio::dna4>);
 BENCHMARK_TEMPLATE(assign_rank, bio::qualified<bio::dna4, bio::phred42>);
 BENCHMARK_TEMPLATE(assign_rank, bio::qualified<bio::dna5, bio::phred63>);
 
-#if SEQAN3_HAS_SEQAN2
+#if BIOCPP_HAS_SEQAN2
 template <typename alphabet_t>
 void assign_rank_seqan2(benchmark::State & state)
 {

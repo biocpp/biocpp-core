@@ -18,7 +18,7 @@
 #include <bio/alphabet/concept.hpp>
 #include <bio/test/seqan2.hpp>
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
 #include <seqan/basic.h>
 #include <seqan/sequence.h>
 #endif
@@ -91,7 +91,7 @@ auto generate_sequence_pairs(size_t const sequence_length,
     return vec;
 }
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
 template <typename alphabet_t>
 auto generate_sequence_seqan2(size_t const len = 500,
                               size_t const variance = 0,

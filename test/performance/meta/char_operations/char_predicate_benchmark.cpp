@@ -14,7 +14,7 @@
 #include <bio/meta/char_operations/predicate.hpp>
 #include <bio/test/seqan2.hpp>
 
-#if SEQAN3_HAS_SEQAN2
+#if BIOCPP_HAS_SEQAN2
 #include <seqan/stream.h>
 #endif
 
@@ -46,7 +46,7 @@ static void simple(benchmark::State & state)
             sum += std::isalpha(arr[i]);
         else if constexpr (id == tag::seqan3)
             sum += bio::is_alpha(arr[i]);
-#if SEQAN3_HAS_SEQAN2
+#if BIOCPP_HAS_SEQAN2
         else if constexpr (id == tag::seqan2)
             sum += seqan::IsAlpha{}(arr[i]);
 #endif
@@ -58,7 +58,7 @@ static void simple(benchmark::State & state)
 
 BENCHMARK_TEMPLATE(simple, tag::std);
 BENCHMARK_TEMPLATE(simple, tag::seqan3);
-#if SEQAN3_HAS_SEQAN2
+#if BIOCPP_HAS_SEQAN2
 BENCHMARK_TEMPLATE(simple, tag::seqan2);
 #endif
 
@@ -81,7 +81,7 @@ static void combined(benchmark::State & state)
             sum += (bio::is_alpha || bio::is_blank || bio::is_digit)(arr[i]);
         else if constexpr (id == tag::seqan3_serial)
             sum += bio::is_alpha(arr[i]) || bio::is_blank(arr[i]) || bio::is_digit(arr[i]);
-#if SEQAN3_HAS_SEQAN2
+#if BIOCPP_HAS_SEQAN2
         else if constexpr (id == tag::seqan2)
             sum += seqan::OrFunctor<seqan::OrFunctor<seqan::IsAlpha, seqan::IsBlank>, seqan::IsDigit>{}(arr[i]);
         else if constexpr (id == tag::seqan2_serial)
@@ -96,7 +96,7 @@ static void combined(benchmark::State & state)
 BENCHMARK_TEMPLATE(combined, tag::std);
 BENCHMARK_TEMPLATE(combined, tag::seqan3);
 BENCHMARK_TEMPLATE(combined, tag::seqan3_serial);
-#if SEQAN3_HAS_SEQAN2
+#if BIOCPP_HAS_SEQAN2
 BENCHMARK_TEMPLATE(combined, tag::seqan2);
 BENCHMARK_TEMPLATE(combined, tag::seqan2_serial);
 #endif

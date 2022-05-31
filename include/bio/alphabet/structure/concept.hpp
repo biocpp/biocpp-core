@@ -34,9 +34,9 @@ void is_pair_open(args_t ...) = delete;
 struct is_pair_open_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::is_pair_open(v)) // explicit customisation
-    SEQAN3_CPO_IMPL(1, is_pair_open(v)                                       ) // ADL
-    SEQAN3_CPO_IMPL(0, v.is_pair_open()                                      ) // member
+    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::is_pair_open(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, is_pair_open(v)                                       ) // ADL
+    BIOCPP_CPO_IMPL(0, v.is_pair_open()                                      ) // member
 
 public:
     //!\brief Operator definition.
@@ -113,9 +113,9 @@ void is_pair_close(args_t ...) = delete;
 struct is_pair_close_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::is_pair_close(v)) // explicit customisation
-    SEQAN3_CPO_IMPL(1, is_pair_close(v)                                       ) // ADL
-    SEQAN3_CPO_IMPL(0, v.is_pair_close()                                      ) // member
+    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::is_pair_close(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, is_pair_close(v)                                       ) // ADL
+    BIOCPP_CPO_IMPL(0, v.is_pair_close()                                      ) // member
 
 public:
     //!\brief Operator definition.
@@ -192,9 +192,9 @@ void is_unpaired(args_t ...) = delete;
 struct is_unpaired_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::is_unpaired(v)) // explicit customisation
-    SEQAN3_CPO_IMPL(1, is_unpaired(v)                                       ) // ADL
-    SEQAN3_CPO_IMPL(0, v.is_unpaired()                                      ) // member
+    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::is_unpaired(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, is_unpaired(v)                                       ) // ADL
+    BIOCPP_CPO_IMPL(0, v.is_unpaired()                                      ) // member
 
 public:
     //!\brief Operator definition.
@@ -280,9 +280,9 @@ template <typename alph_t,
 struct max_pseudoknot_depth_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::max_pseudoknot_depth)) // custom
-    SEQAN3_CPO_IMPL(1, (max_pseudoknot_depth(v)                                                             )) // ADL
-    SEQAN3_CPO_IMPL(0, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::max_pseudoknot_depth          )) // member
+    BIOCPP_CPO_IMPL(2, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::max_pseudoknot_depth)) // custom
+    BIOCPP_CPO_IMPL(1, (max_pseudoknot_depth(v)                                                             )) // ADL
+    BIOCPP_CPO_IMPL(0, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::max_pseudoknot_depth          )) // member
 
 public:
     //!\brief Operator definition.
@@ -296,7 +296,7 @@ public:
             "Only overloads that are marked noexcept are picked up by bio::max_pseudoknot_depth.");
         static_assert(std::constructible_from<size_t, decltype(impl(priority_tag<2>{}, s_alph_t{}))>,
             "The return type of your max_pseudoknot_depth implementation must be convertible to size_t.");
-        static_assert(SEQAN3_IS_CONSTEXPR(impl(priority_tag<2>{}, s_alph_t{})),
+        static_assert(BIOCPP_IS_CONSTEXPR(impl(priority_tag<2>{}, s_alph_t{})),
             "Only overloads that are marked constexpr are picked up by bio::max_pseudoknot_depth.");
 
         return impl(priority_tag<2>{}, s_alph_t{});
@@ -381,9 +381,9 @@ void pseudoknot_id(args_t ...) = delete;
 struct pseudoknot_id_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::pseudoknot_id(v)) // explicit customisation
-    SEQAN3_CPO_IMPL(1, pseudoknot_id(v)                                       ) // ADL
-    SEQAN3_CPO_IMPL(0, v.pseudoknot_id()                                      ) // member
+    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::pseudoknot_id(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, pseudoknot_id(v)                                       ) // ADL
+    BIOCPP_CPO_IMPL(0, v.pseudoknot_id()                                      ) // member
 
 public:
     //!\brief Operator definition.

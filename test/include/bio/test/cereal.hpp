@@ -21,13 +21,13 @@
 #include <bio/meta/type_traits/basic.hpp>
 #include <bio/test/tmp_filename.hpp>
 
-#if SEQAN3_WITH_CEREAL
+#if BIOCPP_WITH_CEREAL
 #include <cereal/archives/binary.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/archives/portable_binary.hpp>
 #include <cereal/archives/xml.hpp>
 #include <cereal/types/vector.hpp>
-#endif // SEQAN3_WITH_CEREAL
+#endif // BIOCPP_WITH_CEREAL
 
 namespace bio
 {
@@ -74,12 +74,12 @@ void do_cerealisation(value_t && l)
 template <typename value_t>
 void do_serialisation([[maybe_unused]] value_t && l)
 {
-#if SEQAN3_WITH_CEREAL
+#if BIOCPP_WITH_CEREAL
     do_cerealisation<cereal::BinaryInputArchive,         cereal::BinaryOutputArchive>        (l);
     do_cerealisation<cereal::PortableBinaryInputArchive, cereal::PortableBinaryOutputArchive>(l);
     do_cerealisation<cereal::JSONInputArchive,           cereal::JSONOutputArchive>          (l);
     do_cerealisation<cereal::XMLInputArchive,            cereal::XMLOutputArchive>           (l);
-#endif // SEQAN3_WITH_CEREAL
+#endif // BIOCPP_WITH_CEREAL
 }
 //!\endcond
 

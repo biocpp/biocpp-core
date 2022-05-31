@@ -30,7 +30,7 @@ namespace bio
 // value_type
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 /*!\brief Exposes the `value_type` of another type.
@@ -45,7 +45,7 @@ struct value_type<it_t>
     using type = std::iter_value_t<it_t>;
 };
 } // namespace bio::detail
-#endif // SEQAN3_DEPRECATED_310
+#endif // BIOCPP_DEPRECATED_310
 
 // see specialisation for ranges in core/type_traits/range.hpp
 
@@ -53,7 +53,7 @@ struct value_type<it_t>
 // reference
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 /*!\brief Exposes the `reference` type of another type.
@@ -68,7 +68,7 @@ struct reference<it_t>
     using type = std::iter_reference_t<it_t>;
 };
 } // namespace bio::detail
-#endif // SEQAN3_DEPRECATED_310
+#endif // BIOCPP_DEPRECATED_310
 
 // see specialisation for ranges in core/type_traits/range.hpp
 
@@ -76,7 +76,7 @@ struct reference<it_t>
 // rvalue_reference
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 /*!\brief Exposes the `rvalue_reference` type of another type.
@@ -91,7 +91,7 @@ struct rvalue_reference<it_t>
     using type = std::iter_rvalue_reference_t<it_t>;
 };
 } // namespace bio::detail
-#endif // SEQAN3_DEPRECATED_310
+#endif // BIOCPP_DEPRECATED_310
 
 // see specialisation for ranges in core/type_traits/range.hpp
 
@@ -105,7 +105,7 @@ struct rvalue_reference<it_t>
 // difference_type
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 /*!\brief Exposes the `difference_type` of another type.
@@ -120,7 +120,7 @@ struct difference_type<it_t>
     using type = std::iter_difference_t<it_t>;
 };
 } // namespace bio::detail
-#endif // SEQAN3_DEPRECATED_310
+#endif // BIOCPP_DEPRECATED_310
 
 // see specialisation for ranges in core/type_traits/range.hpp
 
@@ -128,7 +128,7 @@ struct difference_type<it_t>
 // size_type
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 /*!\brief Exposes the `size_type` of another type.
@@ -145,7 +145,7 @@ struct size_type<it_t>
     using type = std::make_unsigned_t<std::iter_difference_t<it_t>>;
 };
 } // namespace bio::detail
-#endif // SEQAN3_DEPRECATED_310
+#endif // BIOCPP_DEPRECATED_310
 
 // see specialisation for ranges in core/type_traits/range.hpp
 //!\}
@@ -154,7 +154,7 @@ struct size_type<it_t>
 
 namespace bio::detail
 {
-#if SEQAN3_WORKAROUND_GCC_96070
+#if BIOCPP_WORKAROUND_GCC_96070
 //!\cond
 template <typename it_t>
 struct iterator_category_tag
@@ -199,7 +199,7 @@ template <typename it_t>
     requires requires { typename std::iterator_traits<it_t>::iterator_category; }
 //!\endcond
 using iterator_category_tag_t = typename std::iterator_traits<it_t>::iterator_category;
-#endif // SEQAN3_WORKAROUND_GCC_96070
+#endif // BIOCPP_WORKAROUND_GCC_96070
 
 /*!\brief Exposes the
  * [iterator_concept](https://en.cppreference.com/w/cpp/iterator/iterator_tags) from the modelled concept.

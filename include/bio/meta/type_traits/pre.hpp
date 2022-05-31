@@ -25,7 +25,7 @@ namespace bio
 // value_type
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 //!\brief This is helper structure to deprecate bio::value_type and will be removed before SeqAn 3.1.
@@ -54,7 +54,7 @@ using value_type_t = typename value_type<t>::type;
  *             if `t` models std::input_iterator use std::iter_value_t instead.
  */
 template <typename t>
-struct SEQAN3_DEPRECATED_310 value_type : detail::value_type<t>
+struct BIOCPP_DEPRECATED_310 value_type : detail::value_type<t>
 {};
 
 /*!\brief Shortcut for bio::value_type (transformation_trait shortcut).
@@ -64,7 +64,7 @@ struct SEQAN3_DEPRECATED_310 value_type : detail::value_type<t>
  *             if `t` models std::input_iterator use std::iter_value_t instead.
  */
 template <typename t>
-using value_type_t SEQAN3_DEPRECATED_310 = typename detail::value_type_t<t>;
+using value_type_t BIOCPP_DEPRECATED_310 = typename detail::value_type_t<t>;
 
 // see specialisation for iterators in core/type_traits/iterator.hpp
 // see specialisation for ranges in core/type_traits/range.hpp
@@ -73,7 +73,7 @@ using value_type_t SEQAN3_DEPRECATED_310 = typename detail::value_type_t<t>;
 // reference
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 //!\brief This is helper structure to deprecate bio::reference and will be removed before SeqAn 3.1.
@@ -102,7 +102,7 @@ using reference_t = typename reference<t>::type;
  *             if `t` models std::input_iterator use std::iter_reference_t instead.
  */
 template <typename t>
-struct SEQAN3_DEPRECATED_310 reference : detail::reference<t>
+struct BIOCPP_DEPRECATED_310 reference : detail::reference<t>
 {};
 
 /*!\brief Shortcut for bio::reference (transformation_trait shortcut).
@@ -112,7 +112,7 @@ struct SEQAN3_DEPRECATED_310 reference : detail::reference<t>
  *             if `t` models std::input_iterator use std::iter_reference_t instead.
  */
 template <typename t>
-using reference_t SEQAN3_DEPRECATED_310 = typename detail::reference_t<t>;
+using reference_t BIOCPP_DEPRECATED_310 = typename detail::reference_t<t>;
 
 // see specialisation for iterators in core/type_traits/iterator.hpp
 // see specialisation for ranges in core/type_traits/range.hpp
@@ -121,7 +121,7 @@ using reference_t SEQAN3_DEPRECATED_310 = typename detail::reference_t<t>;
 // rvalue_reference
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 //!\brief This is helper structure to deprecate bio::rvalue_reference and will be removed before SeqAn 3.1.
@@ -150,7 +150,7 @@ using rvalue_reference_t = typename rvalue_reference<t>::type;
  *             if `t` models std::input_iterator use std::iter_rvalue_reference_t instead.
  */
 template <typename t>
-struct SEQAN3_DEPRECATED_310 rvalue_reference : detail::rvalue_reference<t>
+struct BIOCPP_DEPRECATED_310 rvalue_reference : detail::rvalue_reference<t>
 {};
 
 /*!\brief Shortcut for bio::rvalue_reference (transformation_trait shortcut).
@@ -160,7 +160,7 @@ struct SEQAN3_DEPRECATED_310 rvalue_reference : detail::rvalue_reference<t>
  *             if `t` models std::input_iterator use std::iter_rvalue_reference_t instead.
  */
 template <typename t>
-using rvalue_reference_t SEQAN3_DEPRECATED_310 = typename detail::rvalue_reference_t<t>;
+using rvalue_reference_t BIOCPP_DEPRECATED_310 = typename detail::rvalue_reference_t<t>;
 
 // see specialisation for iterators in core/type_traits/iterator.hpp
 // see specialisation for ranges in core/type_traits/range.hpp
@@ -169,7 +169,7 @@ using rvalue_reference_t SEQAN3_DEPRECATED_310 = typename detail::rvalue_referen
 // const_reference
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 //!\brief This is helper structure to deprecate bio::const_reference and will be removed before SeqAn 3.1.
@@ -200,7 +200,7 @@ using const_reference_t = typename const_reference<t>::type;
  *             if `t` models std::input_iterator use std::iter_reference_t<t const> instead.
  */
 template <typename t>
-struct SEQAN3_DEPRECATED_310 const_reference : detail::const_reference<t>
+struct BIOCPP_DEPRECATED_310 const_reference : detail::const_reference<t>
 {};
 
 
@@ -211,7 +211,7 @@ struct SEQAN3_DEPRECATED_310 const_reference : detail::const_reference<t>
  *             if `t` models std::input_iterator use std::iter_reference_t<t const> instead.
  */
 template <typename t>
-using const_reference_t SEQAN3_DEPRECATED_310 = typename detail::const_reference_t<t>;
+using const_reference_t BIOCPP_DEPRECATED_310 = typename detail::const_reference_t<t>;
 
 
 // no specialisation for iterators
@@ -221,7 +221,7 @@ using const_reference_t SEQAN3_DEPRECATED_310 = typename detail::const_reference
 // difference_type
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 //!\brief This is helper structure to deprecate bio::difference_type and will be removed before SeqAn 3.1.
@@ -250,7 +250,7 @@ using difference_type_t = typename difference_type<t>::type;
  *             if `t` models std::input_iterator use std::iter_difference_t instead.
  */
 template <typename t>
-struct SEQAN3_DEPRECATED_310 difference_type : detail::difference_type<t>
+struct BIOCPP_DEPRECATED_310 difference_type : detail::difference_type<t>
 {};
 
 
@@ -261,7 +261,7 @@ struct SEQAN3_DEPRECATED_310 difference_type : detail::difference_type<t>
  *             if `t` models std::input_iterator use std::iter_difference_t instead.
  */
 template <typename t>
-using difference_type_t SEQAN3_DEPRECATED_310 = typename detail::difference_type_t<t>;
+using difference_type_t BIOCPP_DEPRECATED_310 = typename detail::difference_type_t<t>;
 
 
 // see specialisation for iterators in core/type_traits/iterator.hpp
@@ -271,7 +271,7 @@ using difference_type_t SEQAN3_DEPRECATED_310 = typename detail::difference_type
 // size_type
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 //!\brief This is helper structure to deprecate bio::size_type and will be removed before SeqAn 3.1.
@@ -302,7 +302,7 @@ using size_type_t = typename size_type<t>::type;
  *
  */
 template <typename t>
-struct SEQAN3_DEPRECATED_310 size_type : detail::size_type<t>
+struct BIOCPP_DEPRECATED_310 size_type : detail::size_type<t>
 {};
 
 /*!\brief Shortcut for bio::size_type (transformation_trait shortcut).
@@ -313,7 +313,7 @@ struct SEQAN3_DEPRECATED_310 size_type : detail::size_type<t>
  *             has no std::iter_size_t.
  */
 template <typename t>
-using size_type_t SEQAN3_DEPRECATED_310 = typename detail::size_type_t<t>;
+using size_type_t BIOCPP_DEPRECATED_310 = typename detail::size_type_t<t>;
 
 // see specialisation for iterators in core/type_traits/iterator.hpp
 // see specialisation for ranges in core/type_traits/range.hpp

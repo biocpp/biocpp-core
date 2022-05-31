@@ -338,7 +338,7 @@ public:
     //!\}
 
 private:
-#if SEQAN3_WORKAROUND_GCC_87113
+#if BIOCPP_WORKAROUND_GCC_87113
     bool _bug_workaround{};
 #endif
 };

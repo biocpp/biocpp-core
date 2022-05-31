@@ -38,11 +38,11 @@ struct priority_tag<0>
 } // bio::detail
 
 // ============================================================================
-// SEQAN3_CPO_IMPL
+// BIOCPP_CPO_IMPL
 // ============================================================================
 
 //!\brief A macro that helps defining the overload set of a customisation point.
-#define SEQAN3_CPO_IMPL(PRIO, TERM)                                                                                  \
+#define BIOCPP_CPO_IMPL(PRIO, TERM)                                                                                  \
 /*!\brief A customisation point overload.*/                                                                          \
 template <typename t, typename ...arg_ts>                                                                            \
 static constexpr decltype(auto) impl(bio::detail::priority_tag<PRIO>,                                             \

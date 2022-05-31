@@ -78,9 +78,9 @@ void to_rank(args_t ...) = delete;
 struct to_rank_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_rank(v))    // explicit customisation
-    SEQAN3_CPO_IMPL(1, to_rank(v)                                       )    // ADL
-    SEQAN3_CPO_IMPL(0, v.to_rank()                                      )    // member
+    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_rank(v))    // explicit customisation
+    BIOCPP_CPO_IMPL(1, to_rank(v)                                       )    // ADL
+    BIOCPP_CPO_IMPL(0, v.to_rank()                                      )    // member
 
 public:
     //!\brief Operator definition.
@@ -169,9 +169,9 @@ void assign_rank_to(args_t ...) = delete;
 struct assign_rank_to_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_rank_to(args..., v))) // explicit customisation
-    SEQAN3_CPO_IMPL(1, (assign_rank_to(args..., v)                                       )) // ADL
-    SEQAN3_CPO_IMPL(0, (v.assign_rank(args...)                                           )) // member
+    BIOCPP_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_rank_to(args..., v))) // explicit customisation
+    BIOCPP_CPO_IMPL(1, (assign_rank_to(args..., v)                                       )) // ADL
+    BIOCPP_CPO_IMPL(0, (v.assign_rank(args...)                                           )) // member
 
 public:
     //!\brief Operator definition.
@@ -255,9 +255,9 @@ void to_char(args_t ...) = delete;
 struct to_char_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_char(v))    // explicit customisation
-    SEQAN3_CPO_IMPL(1, to_char(v)                                       )    // ADL
-    SEQAN3_CPO_IMPL(0, v.to_char()                                      )    // member
+    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_char(v))    // explicit customisation
+    BIOCPP_CPO_IMPL(1, to_char(v)                                       )    // ADL
+    BIOCPP_CPO_IMPL(0, v.to_char()                                      )    // member
 
 public:
     //!\brief Operator definition.
@@ -347,9 +347,9 @@ void assign_char_to(args_t ...) = delete;
 struct assign_char_to_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_char_to(args..., v))) // explicit customisation
-    SEQAN3_CPO_IMPL(1, (assign_char_to(args..., v)                                       )) // ADL
-    SEQAN3_CPO_IMPL(0, (v.assign_char(args...)                                           )) // member
+    BIOCPP_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_char_to(args..., v))) // explicit customisation
+    BIOCPP_CPO_IMPL(1, (assign_char_to(args..., v)                                       )) // ADL
+    BIOCPP_CPO_IMPL(0, (v.assign_char(args...)                                           )) // member
 
 public:
     //!\brief Operator definition.
@@ -442,10 +442,10 @@ public:
                                         std::remove_cvref_t<alph_t>,
                                         std::type_identity<alph_t>>;
 
-    SEQAN3_CPO_IMPL(3, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::char_is_valid(v))) // expl. cst.
-    SEQAN3_CPO_IMPL(2, (char_is_valid_for(v, s_alph_t{})                                                )) // ADL
-    SEQAN3_CPO_IMPL(1, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::char_is_valid(v)          )) // member
-    SEQAN3_CPO_IMPL(0, (bio::to_char(bio::assign_char_to(v, s_alph_t{})) == v                     )) // fallback
+    BIOCPP_CPO_IMPL(3, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::char_is_valid(v))) // expl. cst.
+    BIOCPP_CPO_IMPL(2, (char_is_valid_for(v, s_alph_t{})                                                )) // ADL
+    BIOCPP_CPO_IMPL(1, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::char_is_valid(v)          )) // member
+    BIOCPP_CPO_IMPL(0, (bio::to_char(bio::assign_char_to(v, s_alph_t{})) == v                     )) // fallback
 
 public:
     //!\brief Operator definition.
@@ -624,9 +624,9 @@ public:
                                         std::remove_cvref_t<alph_t>,
                                         std::type_identity<alph_t>>;
 
-    SEQAN3_CPO_IMPL(2, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::alphabet_size)) // expl. cst.
-    SEQAN3_CPO_IMPL(1, (alphabet_size(v)                                                             )) // ADL
-    SEQAN3_CPO_IMPL(0, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::alphabet_size          )) // member
+    BIOCPP_CPO_IMPL(2, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::alphabet_size)) // expl. cst.
+    BIOCPP_CPO_IMPL(1, (alphabet_size(v)                                                             )) // ADL
+    BIOCPP_CPO_IMPL(0, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::alphabet_size          )) // member
 
 public:
     //!\brief Operator definition.
@@ -643,7 +643,7 @@ public:
     {
         // The following cannot be added to the list of constraints, because it is not properly deferred
         // for incomplete types which leads to breakage.
-        static_assert(SEQAN3_IS_CONSTEXPR(impl(priority_tag<2>{}, s_alph_t{})),
+        static_assert(BIOCPP_IS_CONSTEXPR(impl(priority_tag<2>{}, s_alph_t{})),
             "Only overloads that are marked constexpr are picked up by bio::alphabet_size.");
         return impl(priority_tag<2>{}, s_alph_t{});
     }
@@ -967,7 +967,7 @@ template <typename t>
 concept constexpr_semialphabet = semialphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
-    requires SEQAN3_IS_CONSTEXPR(to_rank(std::remove_reference_t<t>{}));
+    requires BIOCPP_IS_CONSTEXPR(to_rank(std::remove_reference_t<t>{}));
 };
 //!\endcond
 
@@ -989,7 +989,7 @@ template <typename t>
 concept writable_constexpr_semialphabet = constexpr_semialphabet<t> && writable_semialphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
-    requires SEQAN3_IS_CONSTEXPR(bio::assign_rank_to(alphabet_rank_t<t>{}, std::remove_reference_t<t>{}));
+    requires BIOCPP_IS_CONSTEXPR(bio::assign_rank_to(alphabet_rank_t<t>{}, std::remove_reference_t<t>{}));
 };
 //!\endcond
 
@@ -1011,7 +1011,7 @@ template <typename t>
 concept constexpr_alphabet = constexpr_semialphabet<t> && alphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
-    requires SEQAN3_IS_CONSTEXPR(to_char(std::remove_reference_t<t>{}));
+    requires BIOCPP_IS_CONSTEXPR(to_char(std::remove_reference_t<t>{}));
 };
 //!\endcond
 
@@ -1036,8 +1036,8 @@ concept writable_constexpr_alphabet =
     constexpr_alphabet<t> && writable_constexpr_semialphabet<t> && writable_alphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
-    requires SEQAN3_IS_CONSTEXPR(bio::assign_char_to(alphabet_char_t<t>{}, std::remove_reference_t<t>{}));
-    requires SEQAN3_IS_CONSTEXPR(bio::char_is_valid_for<t>(alphabet_char_t<t>{}));
+    requires BIOCPP_IS_CONSTEXPR(bio::assign_char_to(alphabet_char_t<t>{}, std::remove_reference_t<t>{}));
+    requires BIOCPP_IS_CONSTEXPR(bio::char_is_valid_for<t>(alphabet_char_t<t>{}));
 };
 //!\endcond
 

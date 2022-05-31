@@ -12,7 +12,7 @@
 #  * TARGET_UNIQUE_NAME - the target name which includes the target_path (e.g. range-view-take)
 #  * TEST_NAME - the test name which includes the target_path (e.g. "range/views/take")
 #  * TARGET_PATH - the path to the target source (e.g. "range/view")
-macro (seqan3_test_component VAR target_source_file component_name_)
+macro (biocpp_test_component VAR target_source_file component_name_)
     string (TOUPPER "${component_name_}" component_name)
 
     get_filename_component (target_relative_path "${target_source_file}" DIRECTORY)

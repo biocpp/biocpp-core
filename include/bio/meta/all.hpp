@@ -36,7 +36,7 @@
  */
 
 /*!\namespace bio
- * \brief The main SeqAn3 namespace.
+ * \brief The main BioC++ namespace.
  */
 
 /*!\namespace bio::custom
@@ -46,7 +46,7 @@
 
 /*!\if DEV
  * \namespace bio::detail
- * \brief The internal SeqAn3 namespace.
+ * \brief The internal BioC++ namespace.
  * \details
  * The contents of this namespace are not visible to consumers of the library and the documentation is
  * only generated for developers.

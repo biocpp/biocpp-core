@@ -76,23 +76,23 @@ TEST(type_trait, is_constexpr_invocable)
     int i = 32;
     int constexpr j = 42;
 
-    EXPECT_TRUE((SEQAN3_IS_CONSTEXPR(constexpr_nonvoid_free_fun(3))));
-    EXPECT_TRUE((SEQAN3_IS_CONSTEXPR(constexpr_nonvoid_free_fun(j))));
-    EXPECT_TRUE((!SEQAN3_IS_CONSTEXPR(constexpr_nonvoid_free_fun(i))));
-    EXPECT_TRUE((!SEQAN3_IS_CONSTEXPR(nonconstexpr_nonvoid_free_fun(3))));
+    EXPECT_TRUE((BIOCPP_IS_CONSTEXPR(constexpr_nonvoid_free_fun(3))));
+    EXPECT_TRUE((BIOCPP_IS_CONSTEXPR(constexpr_nonvoid_free_fun(j))));
+    EXPECT_TRUE((!BIOCPP_IS_CONSTEXPR(constexpr_nonvoid_free_fun(i))));
+    EXPECT_TRUE((!BIOCPP_IS_CONSTEXPR(nonconstexpr_nonvoid_free_fun(3))));
 
-    EXPECT_TRUE((SEQAN3_IS_CONSTEXPR(constexpr_nonvoid_free_fun_const_ref(static_cast<int const &>(3)))));
-    EXPECT_TRUE((SEQAN3_IS_CONSTEXPR(constexpr_nonvoid_free_fun_const_ref(j))));
-    EXPECT_TRUE((!SEQAN3_IS_CONSTEXPR(constexpr_nonvoid_free_fun_const_ref(i))));
-    EXPECT_TRUE((!SEQAN3_IS_CONSTEXPR(nonconstexpr_nonvoid_free_fun_const_ref(static_cast<int const &>(3)))));
+    EXPECT_TRUE((BIOCPP_IS_CONSTEXPR(constexpr_nonvoid_free_fun_const_ref(static_cast<int const &>(3)))));
+    EXPECT_TRUE((BIOCPP_IS_CONSTEXPR(constexpr_nonvoid_free_fun_const_ref(j))));
+    EXPECT_TRUE((!BIOCPP_IS_CONSTEXPR(constexpr_nonvoid_free_fun_const_ref(i))));
+    EXPECT_TRUE((!BIOCPP_IS_CONSTEXPR(nonconstexpr_nonvoid_free_fun_const_ref(static_cast<int const &>(3)))));
 
-    EXPECT_TRUE((SEQAN3_IS_CONSTEXPR(constexpr_void_free_fun(3))));
-    EXPECT_TRUE((SEQAN3_IS_CONSTEXPR(constexpr_void_free_fun(j))));
-    EXPECT_TRUE((!SEQAN3_IS_CONSTEXPR(constexpr_void_free_fun(i))));
-    EXPECT_TRUE((!SEQAN3_IS_CONSTEXPR(nonconstexpr_void_free_fun(3))));
+    EXPECT_TRUE((BIOCPP_IS_CONSTEXPR(constexpr_void_free_fun(3))));
+    EXPECT_TRUE((BIOCPP_IS_CONSTEXPR(constexpr_void_free_fun(j))));
+    EXPECT_TRUE((!BIOCPP_IS_CONSTEXPR(constexpr_void_free_fun(i))));
+    EXPECT_TRUE((!BIOCPP_IS_CONSTEXPR(nonconstexpr_void_free_fun(3))));
 
-    EXPECT_TRUE((SEQAN3_IS_CONSTEXPR(constexpr_nonvoid_member_t{}.get_i(3))));
-    EXPECT_TRUE((SEQAN3_IS_CONSTEXPR(constexpr_void_member_t{}.get_i(3))));
-    EXPECT_TRUE((!SEQAN3_IS_CONSTEXPR(nonconstexpr_nonvoid_member_t{}.get_i(3))));
-    EXPECT_TRUE((!SEQAN3_IS_CONSTEXPR(nonconstexpr_void_member_t{}.get_i(3))));
+    EXPECT_TRUE((BIOCPP_IS_CONSTEXPR(constexpr_nonvoid_member_t{}.get_i(3))));
+    EXPECT_TRUE((BIOCPP_IS_CONSTEXPR(constexpr_void_member_t{}.get_i(3))));
+    EXPECT_TRUE((!BIOCPP_IS_CONSTEXPR(nonconstexpr_nonvoid_member_t{}.get_i(3))));
+    EXPECT_TRUE((!BIOCPP_IS_CONSTEXPR(nonconstexpr_void_member_t{}.get_i(3))));
 }

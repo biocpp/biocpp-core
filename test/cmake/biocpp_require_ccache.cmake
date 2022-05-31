@@ -10,7 +10,7 @@
 # See also
 # * https://ccache.dev/
 # * https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER_LAUNCHER.html
-macro (seqan3_require_ccache)
+macro (biocpp_require_ccache)
     find_program (CCACHE_PROGRAM ccache)
     find_package_message (CCACHE_PROGRAM_PRE "Finding program ccache" "[${CCACHE_PROGRAM}]")
 
@@ -28,7 +28,7 @@ macro (seqan3_require_ccache)
         endif ()
 
         # use ccache in external cmake projects
-        list (APPEND SEQAN3_EXTERNAL_PROJECT_CMAKE_ARGS "-DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}")
+        list (APPEND BIOCPP_EXTERNAL_PROJECT_CMAKE_ARGS "-DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}")
     endif ()
     unset (CCACHE_PROGRAM)
 endmacro ()

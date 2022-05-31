@@ -8,7 +8,7 @@
 # Finds all files relative to the `test_base_path_` which satisfy the given file pattern.
 #
 # Example:
-# seqan3_test_files (header_files "/seqan3/include" "*.hpp;*.h")
+# biocpp_test_files (header_files "/seqan3/include" "*.hpp;*.h")
 #
 # The variable `header_files` will contain:
 #   seqan3/alphabet/adaptation/all.hpp
@@ -18,7 +18,7 @@
 #   seqan3/alphabet/all.hpp
 #   seqan3/alphabet/dna5_detail.hpp
 #   ....
-macro (seqan3_test_files VAR test_base_path_ extension_wildcards)
+macro (biocpp_test_files VAR test_base_path_ extension_wildcards)
     # test_base_path is /home/.../seqan3/test/
     get_filename_component(test_base_path "${test_base_path_}" ABSOLUTE)
     file (RELATIVE_PATH test_base_path_relative "${CMAKE_SOURCE_DIR}" "${test_base_path}")

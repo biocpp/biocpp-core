@@ -47,7 +47,7 @@ namespace bio
 // value_type
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 /*!\brief Exposes the `value_type` of another type.
@@ -65,13 +65,13 @@ struct value_type<rng_t>
     using type = value_type_t<std::ranges::iterator_t<rng_t>>;
 };
 } // namespace bio::detail
-#endif // SEQAN3_DEPRECATED_310
+#endif // BIOCPP_DEPRECATED_310
 
 // ----------------------------------------------------------------------------
 // reference
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 /*!\brief Exposes the `reference` of another type.
@@ -89,13 +89,13 @@ struct reference<rng_t>
     using type = reference_t<std::ranges::iterator_t<rng_t>>;
 };
  } // namespace bio::detail
- #endif // SEQAN3_DEPRECATED_310
+ #endif // BIOCPP_DEPRECATED_310
 
 // ----------------------------------------------------------------------------
 // rvalue_reference
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 /*!\brief Exposes the `rvalue_reference` of another type.
@@ -113,13 +113,13 @@ struct rvalue_reference<rng_t>
     using type = rvalue_reference_t<std::ranges::iterator_t<rng_t>>;
 };
 } // namespace bio::detail
-#endif // SEQAN3_DEPRECATED_310
+#endif // BIOCPP_DEPRECATED_310
 
 // ----------------------------------------------------------------------------
 // const_reference
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 /*!\brief Exposes the `const_reference` of another type.
@@ -137,13 +137,13 @@ struct const_reference<rng_t>
     using type = std::iter_reference_t<std::ranges::iterator_t<rng_t const>>;
 };
 } // namespace bio::detail
-#endif // SEQAN3_DEPRECATED_310
+#endif // BIOCPP_DEPRECATED_310
 
 // ----------------------------------------------------------------------------
 // difference_type
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 /*!\brief Exposes the `difference_type` of another type.
@@ -161,13 +161,13 @@ struct difference_type<rng_t>
     using type = difference_type_t<std::ranges::iterator_t<rng_t>>;
 };
 } // namespace bio::detail
-#endif // SEQAN3_DEPRECATED_310
+#endif // BIOCPP_DEPRECATED_310
 
 // ----------------------------------------------------------------------------
 // size_type
 // ----------------------------------------------------------------------------
 
-#ifdef SEQAN3_DEPRECATED_310
+#ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
 /*!\brief Exposes the `size_type` of another type.
@@ -185,7 +185,7 @@ struct size_type<rng_t>
     using type = decltype(std::ranges::size(std::declval<rng_t &>()));
 };
 } // namespace bio::detail
-#endif // SEQAN3_DEPRECATED_310
+#endif // BIOCPP_DEPRECATED_310
 
 // ----------------------------------------------------------------------------
 // range_innermost_value

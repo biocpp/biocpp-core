@@ -6,10 +6,10 @@
 # -----------------------------------------------------------------------------------------------------
 
 # Exposes the google-test targets `gtest` and `gtest_main`.
-macro (seqan3_require_test)
+macro (biocpp_require_test)
     enable_testing ()
 
-    set (gtest_project_args ${SEQAN3_EXTERNAL_PROJECT_CMAKE_ARGS})
+    set (gtest_project_args ${BIOCPP_EXTERNAL_PROJECT_CMAKE_ARGS})
     list (APPEND gtest_project_args "-DBUILD_GMOCK=0")
 
     # force that libraries are installed to `lib/`, because GNUInstallDirs might install it into `lib64/`
@@ -35,10 +35,10 @@ macro (seqan3_require_test)
         # 03867b5389516a0f185af52672cf5472fa0c159c, which are still available
         # in "release-1.8.1", see https://github.com/google/googletest/issues/1419
         GIT_TAG "release-1.11.0"
-        SOURCE_DIR "${SEQAN3_TEST_CLONE_DIR}"
+        SOURCE_DIR "${BIOCPP_TEST_CLONE_DIR}"
         CMAKE_ARGS "${gtest_project_args}"
         BUILD_BYPRODUCTS "${gtest_main_path}" "${gtest_path}"
-        UPDATE_DISCONNECTED ${SEQAN3_TEST_BUILD_OFFLINE}
+        UPDATE_DISCONNECTED ${BIOCPP_TEST_BUILD_OFFLINE}
     )
     unset (gtest_project_args)
 

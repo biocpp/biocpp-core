@@ -11,10 +11,10 @@
 
 cmake_minimum_required (VERSION 3.4)
 
-find_path (SEQAN3_MODULE_PATH "seqan3-config.cmake" HINTS "${CMAKE_CURRENT_LIST_DIR}/build_system/")
-list (APPEND CMAKE_MODULE_PATH "${SEQAN3_MODULE_PATH}")
+find_path (BIOCPP_MODULE_PATH "biocpp-config.cmake" HINTS "${CMAKE_CURRENT_LIST_DIR}/build_system/")
+list (APPEND CMAKE_MODULE_PATH "${BIOCPP_MODULE_PATH}")
 
-include (seqan3-config-version)
+include (biocpp-config-version)
 
 if (CMAKE_VERSION VERSION_LESS 3.12)
     project (seqan3 LANGUAGES CXX VERSION "${PACKAGE_VERSION}")
@@ -26,11 +26,11 @@ else ()
     )
 endif ()
 
-find_package (SeqAn3 3.0 REQUIRED HINTS ${SEQAN3_MODULE_PATH})
+find_package (SeqAn3 3.0 REQUIRED HINTS ${BIOCPP_MODULE_PATH})
 
 option(INSTALL_SEQAN3 "Enable installation of seqan3. (Projects embedding seqan3 may want to turn this OFF.)" ON)
 
 if (INSTALL_SEQAN3)
-    include (seqan3-install)
-    include (seqan3-package)
+    include (biocpp-install)
+    include (biocpp-package)
 endif ()

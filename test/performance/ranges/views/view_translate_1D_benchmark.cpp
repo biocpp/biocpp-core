@@ -16,7 +16,7 @@
 #include <bio/test/performance/sequence_generator.hpp>
 #include <bio/test/seqan2.hpp>
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
 #include <seqan/sequence.h>
 #include <seqan/seq_io.h>
 #include <seqan/translation.h>
@@ -115,7 +115,7 @@ void copy_impl(benchmark::State & state, std::vector<bio::dna4> const & dna_sequ
     }
 }
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
 template <typename tag_t>
 void copy_impl_seqan2(benchmark::State & state, seqan::DnaString const & dna_sequence)
 {
@@ -125,36 +125,36 @@ void copy_impl_seqan2(benchmark::State & state, seqan::DnaString const & dna_seq
         seqan::translate(out, dna_sequence, seqan::SINGLE_FRAME, seqan::CANONICAL, tag_t{});
     }
 }
-#endif // SEQAN3_HAS_SEQAN2
+#endif // BIOCPP_HAS_SEQAN2
 
 template <typename tag_t>
 void copy(benchmark::State & state)
 {
     std::vector<bio::dna4> seqan3_dna_sequence{bio::test::generate_sequence<bio::dna4>(1000, 0, 0)};
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
     seqan::DnaString seqan2_dna_sequence{bio::test::generate_sequence_seqan2<seqan::Dna>(1000, 0, 0)};
-#endif // SEQAN3_HAS_SEQAN2
+#endif // BIOCPP_HAS_SEQAN2
 
     if constexpr (std::is_same_v<tag_t, translate_tag>)
     {
         auto adaptor = bio::views::translate_single;
         copy_impl(state, seqan3_dna_sequence, adaptor);
     }
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
     else
     {
         copy_impl_seqan2<tag_t>(state, seqan2_dna_sequence);
     }
-#endif // SEQAN3_HAS_SEQAN2
+#endif // BIOCPP_HAS_SEQAN2
 }
 
 BENCHMARK_TEMPLATE(copy, translate_tag);
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
 BENCHMARK_TEMPLATE(copy, seqan::Serial);
 BENCHMARK_TEMPLATE(copy, seqan::Parallel);
-#endif // SEQAN3_HAS_SEQAN2
+#endif // BIOCPP_HAS_SEQAN2
 
 // ============================================================================
 //  run

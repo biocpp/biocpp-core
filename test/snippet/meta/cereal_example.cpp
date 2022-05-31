@@ -1,4 +1,4 @@
-#if SEQAN3_WITH_CEREAL
+#if BIOCPP_WITH_CEREAL
 #include <fstream>
 #include <vector>
 

@@ -6,10 +6,10 @@
 # -----------------------------------------------------------------------------------------------------
 
 # Exposes the google-benchmark target `gbenchmark`.
-macro (seqan3_require_benchmark)
+macro (biocpp_require_benchmark)
     enable_testing ()
 
-    set (gbenchmark_project_args ${SEQAN3_EXTERNAL_PROJECT_CMAKE_ARGS})
+    set (gbenchmark_project_args ${BIOCPP_EXTERNAL_PROJECT_CMAKE_ARGS})
     list (APPEND gbenchmark_project_args "-DBENCHMARK_ENABLE_TESTING=false")
     # google-benchmarks suggest to use LTO (link-time optimisation), but we don't really need that because we are a
     # header only library. This option might be still interesting for external libraries benchmarks.
@@ -27,10 +27,10 @@ macro (seqan3_require_benchmark)
         PREFIX gbenchmark_project
         GIT_REPOSITORY "https://github.com/google/benchmark.git"
         GIT_TAG "v1.6.1"
-        SOURCE_DIR "${SEQAN3_BENCHMARK_CLONE_DIR}"
+        SOURCE_DIR "${BIOCPP_BENCHMARK_CLONE_DIR}"
         CMAKE_ARGS "${gbenchmark_project_args}"
         BUILD_BYPRODUCTS "${gbenchmark_path}"
-        UPDATE_DISCONNECTED ${SEQAN3_TEST_BUILD_OFFLINE}
+        UPDATE_DISCONNECTED ${BIOCPP_TEST_BUILD_OFFLINE}
     )
     unset (gbenchmark_project_args)
 

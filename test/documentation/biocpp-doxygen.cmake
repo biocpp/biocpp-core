@@ -17,20 +17,20 @@ endif ()
 
 if (NOT ${DOXYGEN_DOT_FOUND})
     message (STATUS "Could not find dot tool. Disabling dot support.")
-    set (SEQAN3_DOXYGEN_HAVE_DOT "NO")
+    set (BIOCPP_DOXYGEN_HAVE_DOT "NO")
 else ()
     message (STATUS "Found dot tool. Enabling dot support.")
-    set (SEQAN3_DOXYGEN_HAVE_DOT "YES")
+    set (BIOCPP_DOXYGEN_HAVE_DOT "YES")
 endif ()
 
 ### Configure doc/developer targets.
-set(SEQAN3_DOXYFILE_IN ${SEQAN3_DOXYGEN_INPUT_DIR}/seqan3_doxygen_cfg.in)
+set(BIOCPP_DOXYFILE_IN ${BIOCPP_DOXYGEN_INPUT_DIR}/biocpp_doxygen_cfg.in)
 
-option(SEQAN3_USER_DOC "Create build target and test for user documentation." ON)
-option(SEQAN3_DEV_DOC "Create build target and test for developer documentation." ON)
+option(BIOCPP_USER_DOC "Create build target and test for user documentation." ON)
+option(BIOCPP_DEV_DOC "Create build target and test for developer documentation." ON)
 
 ### Download and extract cppreference-doxygen-web.tag.xml for std:: documentation links
-set(SEQAN3_DOXYGEN_STD_TAGFILE "${PROJECT_BINARY_DIR}/cppreference-doxygen-web.tag.xml")
+set(BIOCPP_DOXYGEN_STD_TAGFILE "${PROJECT_BINARY_DIR}/cppreference-doxygen-web.tag.xml")
 include(ExternalProject)
 ExternalProject_Add (
     download-cppreference-doxygen-web-tag
@@ -46,41 +46,41 @@ ExternalProject_Add (
     INSTALL_COMMAND ""
 )
 
-if (SEQAN3_USER_DOC)
+if (BIOCPP_USER_DOC)
     message (STATUS "Configuring user doc.")
 
-    set (SEQAN3_DOXYGEN_OUTPUT_DIR "${PROJECT_BINARY_DIR}/doc_usr")
-    set (SEQAN3_DOXYGEN_SOURCE_DIR "${SEQAN3_CLONE_DIR}")
-    set (SEQAN3_DOXYGEN_EXCLUDE_SYMBOLS "detail seqan3::simd") #/""
-    set (SEQAN3_DOXYGEN_PREDEFINED_NDEBUG "-NDEBUG") #/""
-    set (SEQAN3_DOXYGEN_ENABLED_SECTIONS "") #/"DEV"
-    set (SEQAN3_DOXYGEN_EXTRACT_PRIVATE "NO") #/"YES":
+    set (BIOCPP_DOXYGEN_OUTPUT_DIR "${PROJECT_BINARY_DIR}/doc_usr")
+    set (BIOCPP_DOXYGEN_SOURCE_DIR "${BIOCPP_CLONE_DIR}")
+    set (BIOCPP_DOXYGEN_EXCLUDE_SYMBOLS "detail seqan3::simd") #/""
+    set (BIOCPP_DOXYGEN_PREDEFINED_NDEBUG "-NDEBUG") #/""
+    set (BIOCPP_DOXYGEN_ENABLED_SECTIONS "") #/"DEV"
+    set (BIOCPP_DOXYGEN_EXTRACT_PRIVATE "NO") #/"YES":
 
-    configure_file (${SEQAN3_DOXYFILE_IN} ${SEQAN3_DOXYGEN_OUTPUT_DIR}/Doxyfile)
+    configure_file (${BIOCPP_DOXYFILE_IN} ${BIOCPP_DOXYGEN_OUTPUT_DIR}/Doxyfile)
 
     add_custom_target(doc_usr ALL
                       COMMAND ${DOXYGEN_EXECUTABLE}
-                      WORKING_DIRECTORY ${SEQAN3_DOXYGEN_OUTPUT_DIR}
+                      WORKING_DIRECTORY ${BIOCPP_DOXYGEN_OUTPUT_DIR}
                       DEPENDS download-cppreference-doxygen-web-tag
                       COMMENT "Generating user API documentation with Doxygen"
                       VERBATIM)
 endif ()
 
-if (SEQAN3_DEV_DOC)
+if (BIOCPP_DEV_DOC)
     message(STATUS "Configuring devel doc.")
 
-    set(SEQAN3_DOXYGEN_OUTPUT_DIR "${PROJECT_BINARY_DIR}/doc_dev")
-    set(SEQAN3_DOXYGEN_SOURCE_DIR "${SEQAN3_CLONE_DIR}")
-    set(SEQAN3_DOXYGEN_EXCLUDE_SYMBOLS "")
-    set(SEQAN3_DOXYGEN_PREDEFINED_NDEBUG "")
-    set(SEQAN3_DOXYGEN_ENABLED_SECTIONS "DEV")
-    set(SEQAN3_DOXYGEN_EXTRACT_PRIVATE "YES")
+    set(BIOCPP_DOXYGEN_OUTPUT_DIR "${PROJECT_BINARY_DIR}/doc_dev")
+    set(BIOCPP_DOXYGEN_SOURCE_DIR "${BIOCPP_CLONE_DIR}")
+    set(BIOCPP_DOXYGEN_EXCLUDE_SYMBOLS "")
+    set(BIOCPP_DOXYGEN_PREDEFINED_NDEBUG "")
+    set(BIOCPP_DOXYGEN_ENABLED_SECTIONS "DEV")
+    set(BIOCPP_DOXYGEN_EXTRACT_PRIVATE "YES")
 
-    configure_file(${SEQAN3_DOXYFILE_IN} ${SEQAN3_DOXYGEN_OUTPUT_DIR}/Doxyfile)
+    configure_file(${BIOCPP_DOXYFILE_IN} ${BIOCPP_DOXYGEN_OUTPUT_DIR}/Doxyfile)
 
     add_custom_target(doc_dev ALL
                       COMMAND ${DOXYGEN_EXECUTABLE}
-                      WORKING_DIRECTORY ${SEQAN3_DOXYGEN_OUTPUT_DIR}
+                      WORKING_DIRECTORY ${BIOCPP_DOXYGEN_OUTPUT_DIR}
                       DEPENDS download-cppreference-doxygen-web-tag
                       COMMENT "Generating developer API documentation with Doxygen"
                       VERBATIM)

@@ -12,7 +12,7 @@
 
 // Note: this file will only test regressions encountered with seqan2 compatibility and has no claim to be complete
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
 #include <seqan/sequence.h>
 
 template <typename T>

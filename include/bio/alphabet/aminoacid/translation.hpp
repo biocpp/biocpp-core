@@ -102,7 +102,7 @@ template <genetic_code gc = genetic_code::CANONICAL, typename tuple_type>
              nucleotide_alphabet<std::tuple_element_t<1, tuple_type>> &&
              nucleotide_alphabet<std::tuple_element_t<2, tuple_type>>
 //!\endcond
-constexpr aa27 translate_triplet SEQAN3_DEPRECATED_310 (tuple_type const & input_tuple) noexcept
+constexpr aa27 translate_triplet BIOCPP_DEPRECATED_310 (tuple_type const & input_tuple) noexcept
 {
     return translate_triplet(std::get<0>(input_tuple), std::get<1>(input_tuple), std::get<2>(input_tuple));
 }
@@ -130,7 +130,7 @@ template <genetic_code gc = genetic_code::CANONICAL, std::ranges::input_range ra
 //!\cond
     requires nucleotide_alphabet<std::ranges::range_reference_t<std::decay_t<range_type>>>
 //!\endcond
-constexpr aa27 translate_triplet SEQAN3_DEPRECATED_310 (range_type && input_range)
+constexpr aa27 translate_triplet BIOCPP_DEPRECATED_310 (range_type && input_range)
 {
     auto n1 = std::ranges::begin(input_range);
     auto n2 = ++n1;
@@ -166,7 +166,7 @@ template <genetic_code gc = genetic_code::CANONICAL, std::ranges::random_access_
 //!\cond
     requires nucleotide_alphabet<std::ranges::range_reference_t<std::decay_t<rng_t>>>
 //!\endcond
-constexpr aa27 translate_triplet SEQAN3_DEPRECATED_310 (rng_t && input_range)
+constexpr aa27 translate_triplet BIOCPP_DEPRECATED_310 (rng_t && input_range)
 {
     assert(std::ranges::begin(input_range) != std::ranges::end(input_range));
     assert(std::ranges::begin(input_range) + 1 != std::ranges::end(input_range));

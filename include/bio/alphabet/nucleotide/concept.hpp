@@ -31,9 +31,9 @@ void complement(args_t ...) = delete;
 struct complement_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::complement(v)) // explicit customisation
-    SEQAN3_CPO_IMPL(1, complement(v)                                       ) // ADL
-    SEQAN3_CPO_IMPL(0, v.complement()                                      ) // member
+    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::complement(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, complement(v)                                       ) // ADL
+    BIOCPP_CPO_IMPL(0, v.complement()                                      ) // member
 
 public:
     //!\brief Operator definition.

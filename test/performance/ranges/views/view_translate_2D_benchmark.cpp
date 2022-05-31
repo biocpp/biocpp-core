@@ -17,7 +17,7 @@
 #include <bio/test/performance/sequence_generator.hpp>
 #include <bio/test/seqan2.hpp>
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
 #include <seqan/sequence.h>
 #include <seqan/seq_io.h>
 #include <seqan/translation.h>

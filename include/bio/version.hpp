@@ -17,26 +17,26 @@
  */
 
 //!\brief The major version as MACRO.
-#define SEQAN3_VERSION_MAJOR 3
+#define BIOCPP_VERSION_MAJOR 3
 //!\brief The minor version as MACRO.
-#define SEQAN3_VERSION_MINOR 0
+#define BIOCPP_VERSION_MINOR 0
 //!\brief The patch version as MACRO.
-#define SEQAN3_VERSION_PATCH 2
+#define BIOCPP_VERSION_PATCH 2
 
 //!\brief The full version as MACRO (number).
-#define SEQAN3_VERSION (SEQAN3_VERSION_MAJOR * 10000 \
-                     + SEQAN3_VERSION_MINOR * 100 \
-                     + SEQAN3_VERSION_PATCH)
+#define BIOCPP_VERSION (BIOCPP_VERSION_MAJOR * 10000 \
+                     + BIOCPP_VERSION_MINOR * 100 \
+                     + BIOCPP_VERSION_PATCH)
 
 namespace bio
 {
 
 //!\brief The major version.
-constexpr uint8_t seqan3_version_major = SEQAN3_VERSION_MAJOR;
+constexpr uint8_t seqan3_version_major = BIOCPP_VERSION_MAJOR;
 //!\brief The minor version.
-constexpr uint8_t seqan3_version_minor = SEQAN3_VERSION_MINOR;
+constexpr uint8_t seqan3_version_minor = BIOCPP_VERSION_MINOR;
 //!\brief The patch version.
-constexpr uint8_t seqan3_version_patch = SEQAN3_VERSION_PATCH;
+constexpr uint8_t seqan3_version_patch = BIOCPP_VERSION_PATCH;
 
 //!\brief The full version as `std::string`.
 std::string const seqan3_version = std::to_string(seqan3_version_major) + "." +

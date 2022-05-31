@@ -82,7 +82,7 @@ public:
      *
      * \include test/snippet/alphabet/cigar/cigar_value_construction.cpp
      */
-    SEQAN3_DOXYGEN_ONLY(( constexpr cigar(component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY(( constexpr cigar(component_type const alph) noexcept {} ))
 
     /*!\brief Assignment via a value of one of the components.
      * \tparam component_type One of the component types; must be uniquely contained in the type list of the composite.
@@ -90,7 +90,7 @@ public:
      *
      * \include test/snippet/alphabet/cigar/cigar_value_assignment.cpp
      */
-    SEQAN3_DOXYGEN_ONLY(( constexpr cigar & operator=(component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY(( constexpr cigar & operator=(component_type const alph) noexcept {} ))
     //!\}
 
     // Inherit operators from base
@@ -146,7 +146,7 @@ public:
      *
      * \include test/snippet/alphabet/cigar/cigar_get_index.cpp
      */
-    SEQAN3_DOXYGEN_ONLY(( template <size_t index> constexpr auto get(cigar & l) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY(( template <size_t index> constexpr auto get(cigar & l) noexcept {} ))
 
     /*!\copybrief get
      * \tparam type Return the element of specified type; only available if the type is unique in the set of components.
@@ -154,7 +154,7 @@ public:
      *
      * \include test/snippet/alphabet/cigar/cigar_get_type.cpp
      */
-    SEQAN3_DOXYGEN_ONLY(( template <typename type> constexpr auto get(cigar & l) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY(( template <typename type> constexpr auto get(cigar & l) noexcept {} ))
     //!\}
 };
 

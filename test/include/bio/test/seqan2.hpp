@@ -15,7 +15,7 @@
 #include <bio/meta/platform.hpp>
 
 // SeqAn 2 [optional]
-/*!\def SEQAN3_HAS_SEQAN2
+/*!\def BIOCPP_HAS_SEQAN2
  * \brief Whether SeqAn2 library is available or not.
  * \ingroup test
  */
@@ -25,12 +25,12 @@
 
 // Require minimum version of seqan2, see https://github.com/seqan/seqan3/issues/748
 #if SEQAN_VERSION_MAJOR == 2 && SEQAN_VERSION_MINOR >= 4
-#define SEQAN3_HAS_SEQAN2 1
+#define BIOCPP_HAS_SEQAN2 1
 #endif
 
 #endif
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
 
 #include <ranges>
 
@@ -65,4 +65,4 @@ struct indirectly_readable_traits<seqan::Iter<args_t...>>
 
 } // namespace std
 #endif //__cpp_lib_ranges
-#endif // SEQAN3_HAS_SEQAN2
+#endif // BIOCPP_HAS_SEQAN2

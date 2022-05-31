@@ -12,7 +12,7 @@
 
 #include <bio/meta/concept/cereal.hpp>
 
-#if SEQAN3_WITH_CEREAL
+#if BIOCPP_WITH_CEREAL
 #include <cereal/archives/xml.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/archives/binary.hpp>
@@ -21,7 +21,7 @@
 #include <cereal/types/array.hpp>
 #endif
 
-#if SEQAN3_WITH_CEREAL
+#if BIOCPP_WITH_CEREAL
 
 TEST(cereal, cereal_output_archive)
 {

@@ -8,10 +8,10 @@
 # This CMake module will try to find SeqAn and its dependencies.  You can use
 # it the same way you would use any other CMake module.
 #
-#   find_package (SeqAn3 [REQUIRED] ...)
+#   find_package (BioC++ [REQUIRED] ...)
 #
 # Since this makes a difference for CMAKE, pay attention to the case
-# ("SeqAn3", "SEQAN3" and "seqan3" are all valid, but other names not).
+# ("BioC++", "SEQAN3" and "seqan3" are all valid, but other names not).
 #
 # SeqAn has the following platform requirements:
 #
@@ -32,37 +32,37 @@
 #   Cereal    -- Serialisation library
 #   Lemon     -- Graph library
 #
-# If you don't wish for these to be detected (and used), you may define SEQAN3_NO_ZLIB,
-# SEQAN3_NO_BZIP2, SEQAN3_NO_CEREAL and SEQAN3_NO_LEMON respectively.
+# If you don't wish for these to be detected (and used), you may define BIOCPP_NO_ZLIB,
+# BIOCPP_NO_BZIP2, BIOCPP_NO_CEREAL and BIOCPP_NO_LEMON respectively.
 #
 # If you wish to require the presence of ZLIB or BZip2, just check for the module before
-# finding SeqAn3, e.g. "find_package (ZLIB REQUIRED)".
-# If you wish to require the presence of CEREAL, you may define SEQAN3_CEREAL.
-# If you wish to require the presence of LEMON, you may define SEQAN3_LEMON.
+# finding BioC++, e.g. "find_package (ZLIB REQUIRED)".
+# If you wish to require the presence of CEREAL, you may define BIOCPP_CEREAL.
+# If you wish to require the presence of LEMON, you may define BIOCPP_LEMON.
 #
 # Once the search has been performed, the following variables will be set.
 #
-#   SEQAN3_FOUND            -- Indicate whether SeqAn was found and requirements met.
+#   BIOCPP_FOUND            -- Indicate whether SeqAn was found and requirements met.
 #
-#   SEQAN3_VERSION          -- The version as string, e.g. "3.0.0"
-#   SEQAN3_VERSION_MAJOR    -- e.g. 3
-#   SEQAN3_VERSION_MINOR    -- e.g. 0
-#   SEQAN3_VERSION_PATCH    -- e.g. 0
+#   BIOCPP_VERSION          -- The version as string, e.g. "3.0.0"
+#   BIOCPP_VERSION_MAJOR    -- e.g. 3
+#   BIOCPP_VERSION_MINOR    -- e.g. 0
+#   BIOCPP_VERSION_PATCH    -- e.g. 0
 #
-#   SEQAN3_INCLUDE_DIRS     -- to be passed to include_directories ()
-#   SEQAN3_LIBRARIES        -- to be passed to target_link_libraries ()
-#   SEQAN3_DEFINITIONS      -- to be passed to add_definitions ()
-#   SEQAN3_CXX_FLAGS        -- to be added to CMAKE_CXX_FLAGS
+#   BIOCPP_INCLUDE_DIRS     -- to be passed to include_directories ()
+#   BIOCPP_LIBRARIES        -- to be passed to target_link_libraries ()
+#   BIOCPP_DEFINITIONS      -- to be passed to add_definitions ()
+#   BIOCPP_CXX_FLAGS        -- to be added to CMAKE_CXX_FLAGS
 #
 # Additionally, the following [IMPORTED][IMPORTED] targets are defined:
 #
 #   seqan3::seqan3          -- interface target where
 #                                  target_link_libraries(target seqan3::seqan3)
 #                              automatically sets
-#                                  target_include_directories(target $SEQAN3_INCLUDE_DIRS),
-#                                  target_link_libraries(target $SEQAN3_LIBRARIES),
-#                                  target_compile_definitions(target $SEQAN3_DEFINITIONS) and
-#                                  target_compile_options(target $SEQAN3_CXX_FLAGS)
+#                                  target_include_directories(target $BIOCPP_INCLUDE_DIRS),
+#                                  target_link_libraries(target $BIOCPP_LIBRARIES),
+#                                  target_compile_definitions(target $BIOCPP_DEFINITIONS) and
+#                                  target_compile_options(target $BIOCPP_CXX_FLAGS)
 #                              for a target.
 #
 #   [IMPORTED]: https://cmake.org/cmake/help/v3.10/prop_tgt/IMPORTED.html#prop_tgt:IMPORTED
@@ -88,7 +88,7 @@ set (ColourBold "${Esc}[1m")
 set (ColourReset "${Esc}[m")
 
 if (NOT ${CMAKE_FIND_PACKAGE_NAME}_FIND_QUIETLY)
-    message (STATUS "${ColourBold}Finding SeqAn3 and checking requirements:${ColourReset}")
+    message (STATUS "${ColourBold}Finding BioC++ and checking requirements:${ColourReset}")
 endif ()
 
 # ----------------------------------------------------------------------------
@@ -103,13 +103,13 @@ include (FindPackageHandleStandardArgs)
 # Pretty printing and error handling
 # ----------------------------------------------------------------------------
 
-macro (seqan3_config_print text)
+macro (biocpp_config_print text)
     if (NOT ${CMAKE_FIND_PACKAGE_NAME}_FIND_QUIETLY)
         message (STATUS "  ${text}")
     endif ()
 endmacro ()
 
-macro (seqan3_config_error text)
+macro (biocpp_config_error text)
     if (${CMAKE_FIND_PACKAGE_NAME}_FIND_REQUIRED)
         message (FATAL_ERROR ${text})
     else ()
@@ -121,34 +121,34 @@ macro (seqan3_config_error text)
 endmacro ()
 
 # ----------------------------------------------------------------------------
-# Find SeqAn3 include path
+# Find BioC++ include path
 # ----------------------------------------------------------------------------
 
-# Note that seqan3-config.cmake can be standalone and thus SEQAN3_CLONE_DIR might be empty.
-# * `SEQAN3_CLONE_DIR` was already found in seqan3-config-version.cmake
-# * `SEQAN3_INCLUDE_DIR` was already found in seqan3-config-version.cmake
-find_path (SEQAN3_SUBMODULES_DIR NAMES submodules/sdsl-lite HINTS "${SEQAN3_CLONE_DIR}" "${SEQAN3_INCLUDE_DIR}/seqan3")
+# Note that biocpp-config.cmake can be standalone and thus BIOCPP_CLONE_DIR might be empty.
+# * `BIOCPP_CLONE_DIR` was already found in biocpp-config-version.cmake
+# * `BIOCPP_INCLUDE_DIR` was already found in biocpp-config-version.cmake
+find_path (BIOCPP_SUBMODULES_DIR NAMES submodules/sdsl-lite HINTS "${BIOCPP_CLONE_DIR}" "${BIOCPP_INCLUDE_DIR}/seqan3")
 
-if (SEQAN3_INCLUDE_DIR)
-    seqan3_config_print ("SeqAn3 include dir found:   ${SEQAN3_INCLUDE_DIR}")
+if (BIOCPP_INCLUDE_DIR)
+    biocpp_config_print ("BioC++ include dir found:   ${BIOCPP_INCLUDE_DIR}")
 else ()
-    seqan3_config_error ("SeqAn3 include directory could not be found (SEQAN3_INCLUDE_DIR: '${SEQAN3_INCLUDE_DIR}')")
+    biocpp_config_error ("BioC++ include directory could not be found (BIOCPP_INCLUDE_DIR: '${BIOCPP_INCLUDE_DIR}')")
 endif ()
 
 # ----------------------------------------------------------------------------
 # Detect if we are a clone of repository and if yes auto-add submodules
 # ----------------------------------------------------------------------------
 
-if (SEQAN3_CLONE_DIR)
-    seqan3_config_print ("Detected as running from a repository checkout…")
+if (BIOCPP_CLONE_DIR)
+    biocpp_config_print ("Detected as running from a repository checkout…")
 endif ()
 
-if (SEQAN3_SUBMODULES_DIR)
-    file (GLOB submodules ${SEQAN3_SUBMODULES_DIR}/submodules/*/include)
+if (BIOCPP_SUBMODULES_DIR)
+    file (GLOB submodules ${BIOCPP_SUBMODULES_DIR}/submodules/*/include)
     foreach (submodule ${submodules})
         if (IS_DIRECTORY ${submodule})
-            seqan3_config_print ("  …adding submodule include:  ${submodule}")
-            set (SEQAN3_DEPENDENCY_INCLUDE_DIRS ${submodule} ${SEQAN3_DEPENDENCY_INCLUDE_DIRS})
+            biocpp_config_print ("  …adding submodule include:  ${submodule}")
+            set (BIOCPP_DEPENDENCY_INCLUDE_DIRS ${submodule} ${BIOCPP_DEPENDENCY_INCLUDE_DIRS})
         endif ()
     endforeach ()
 endif ()
@@ -160,7 +160,7 @@ endif ()
 # deactivate messages in check_*
 set (CMAKE_REQUIRED_QUIET       1)
 # use global variables in Check* calls
-set (CMAKE_REQUIRED_INCLUDES    ${CMAKE_INCLUDE_PATH} ${SEQAN3_INCLUDE_DIR} ${SEQAN3_DEPENDENCY_INCLUDE_DIRS})
+set (CMAKE_REQUIRED_INCLUDES    ${CMAKE_INCLUDE_PATH} ${BIOCPP_INCLUDE_DIR} ${BIOCPP_DEPENDENCY_INCLUDE_DIRS})
 set (CMAKE_REQUIRED_FLAGS       ${CMAKE_CXX_FLAGS})
 
 # ----------------------------------------------------------------------------
@@ -170,26 +170,26 @@ set (CMAKE_REQUIRED_FLAGS       ${CMAKE_CXX_FLAGS})
 # Cereal is auto-detected by default, i.e. used if found, not used if not found.
 # You can optionally set a hard requirement so a build fails without cereal,
 # or you can force-disable cereal even if present on the system.
-option (SEQAN3_CEREAL    "Require cereal and fail if not present." OFF)
-option (SEQAN3_NO_CEREAL "Don't use cereal, even if present." OFF)
+option (BIOCPP_CEREAL    "Require cereal and fail if not present." OFF)
+option (BIOCPP_NO_CEREAL "Don't use cereal, even if present." OFF)
 
-if (SEQAN3_CEREAL AND SEQAN3_NO_CEREAL)
+if (BIOCPP_CEREAL AND BIOCPP_NO_CEREAL)
     # this is always a user error, therefore we always error-out, even if SeqAn is not required
-    message (FATAL_ERROR "You may not specify SEQAN3_CEREAL and SEQAN3_NO_CEREAL at the same time.\n\
+    message (FATAL_ERROR "You may not specify BIOCPP_CEREAL and BIOCPP_NO_CEREAL at the same time.\n\
                           You can specify neither (use auto-detection), or specify either to force on/off.")
     return ()
 endif ()
 
-if (SEQAN3_CEREAL)
-    set (SEQAN3_DEFINITIONS ${SEQAN3_DEFINITIONS} "-DSEQAN3_WITH_CEREAL=1")
-elseif (SEQAN3_NO_CEREAL)
-    set (SEQAN3_DEFINITIONS ${SEQAN3_DEFINITIONS} "-DSEQAN3_WITH_CEREAL=0")
+if (BIOCPP_CEREAL)
+    set (BIOCPP_DEFINITIONS ${BIOCPP_DEFINITIONS} "-DBIOCPP_WITH_CEREAL=1")
+elseif (BIOCPP_NO_CEREAL)
+    set (BIOCPP_DEFINITIONS ${BIOCPP_DEFINITIONS} "-DBIOCPP_WITH_CEREAL=0")
 endif ()
 
 # These two are "opt-in", because detected by CMake
 # If you want to force-require these, just do find_package (zlib REQUIRED) before find_package (seqan3)
-option (SEQAN3_NO_ZLIB  "Don't use ZLIB, even if present." OFF)
-option (SEQAN3_NO_BZIP2 "Don't use BZip2, even if present." OFF)
+option (BIOCPP_NO_ZLIB  "Don't use ZLIB, even if present." OFF)
+option (BIOCPP_NO_BZIP2 "Don't use BZip2, even if present." OFF)
 
 # ----------------------------------------------------------------------------
 # Require C++20
@@ -206,19 +206,19 @@ set (CXXSTD_TEST_SOURCE
 check_cxx_source_compiles ("${CXXSTD_TEST_SOURCE}" CXX20_BUILTIN)
 
 if (CXX20_BUILTIN)
-    seqan3_config_print ("C++ Standard-20 support:    builtin")
+    biocpp_config_print ("C++ Standard-20 support:    builtin")
 else ()
     set (CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS_SAVE} -std=c++20")
 
     check_cxx_source_compiles ("${CXXSTD_TEST_SOURCE}" CXX20_FLAG)
 
     if (CXX20_FLAG)
-        seqan3_config_print ("C++ Standard-20 support:    via -std=c++20")
+        biocpp_config_print ("C++ Standard-20 support:    via -std=c++20")
     else ()
-        seqan3_config_print ("SeqAn3 requires C++20, but your compiler does not support it.")
+        biocpp_config_print ("BioC++ requires C++20, but your compiler does not support it.")
     endif ()
 
-    set (SEQAN3_CXX_FLAGS "${SEQAN3_CXX_FLAGS} -std=c++20")
+    set (BIOCPP_CXX_FLAGS "${BIOCPP_CXX_FLAGS} -std=c++20")
 endif ()
 
 # ----------------------------------------------------------------------------
@@ -229,46 +229,46 @@ set (THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package (Threads QUIET)
 
 if (Threads_FOUND)
-    set (SEQAN3_LIBRARIES ${SEQAN3_LIBRARIES} Threads::Threads)
+    set (BIOCPP_LIBRARIES ${BIOCPP_LIBRARIES} Threads::Threads)
     if ("${CMAKE_THREAD_LIBS_INIT}" STREQUAL "")
-        seqan3_config_print ("Thread support:             builtin.")
+        biocpp_config_print ("Thread support:             builtin.")
     else ()
-        seqan3_config_print ("Thread support:             via ${CMAKE_THREAD_LIBS_INIT}")
+        biocpp_config_print ("Thread support:             via ${CMAKE_THREAD_LIBS_INIT}")
     endif ()
 else ()
-    seqan3_config_print ("Thread support:             not found.")
+    biocpp_config_print ("Thread support:             not found.")
 endif ()
 
 # ----------------------------------------------------------------------------
 # Require Ranges and SDSL
 # ----------------------------------------------------------------------------
 
-check_include_file_cxx (sdsl/version.hpp _SEQAN3_HAVE_SDSL)
+check_include_file_cxx (sdsl/version.hpp _BIOCPP_HAVE_SDSL)
 
-if (_SEQAN3_HAVE_SDSL)
-    seqan3_config_print ("Required dependency:        SDSL found.")
+if (_BIOCPP_HAVE_SDSL)
+    biocpp_config_print ("Required dependency:        SDSL found.")
 else ()
-    seqan3_config_error ("The SDSL library is required, but wasn't found. Get it from https://github.com/xxsds/sdsl-lite")
+    biocpp_config_error ("The SDSL library is required, but wasn't found. Get it from https://github.com/xxsds/sdsl-lite")
 endif ()
 
 # ----------------------------------------------------------------------------
 # Cereal dependency is optional, but may set as required
 # ----------------------------------------------------------------------------
 
-if (NOT SEQAN3_NO_CEREAL)
-    check_include_file_cxx (cereal/cereal.hpp _SEQAN3_HAVE_CEREAL)
+if (NOT BIOCPP_NO_CEREAL)
+    check_include_file_cxx (cereal/cereal.hpp _BIOCPP_HAVE_CEREAL)
 
-    if (_SEQAN3_HAVE_CEREAL)
-        if (SEQAN3_CEREAL)
-            seqan3_config_print ("Required dependency:        Cereal found.")
+    if (_BIOCPP_HAVE_CEREAL)
+        if (BIOCPP_CEREAL)
+            biocpp_config_print ("Required dependency:        Cereal found.")
         else ()
-            seqan3_config_print ("Optional dependency:        Cereal found.")
+            biocpp_config_print ("Optional dependency:        Cereal found.")
         endif ()
     else ()
-        if (SEQAN3_CEREAL)
-            seqan3_config_error ("The (optional) cereal library was marked as required, but wasn't found.")
+        if (BIOCPP_CEREAL)
+            biocpp_config_error ("The (optional) cereal library was marked as required, but wasn't found.")
         else ()
-            seqan3_config_print ("Optional dependency:        Cereal not found.")
+            biocpp_config_print ("Optional dependency:        Cereal not found.")
         endif ()
     endif ()
 endif ()
@@ -281,19 +281,19 @@ endif ()
 if ((${CMAKE_SYSTEM_NAME} STREQUAL "Linux") OR
     (${CMAKE_SYSTEM_NAME} STREQUAL "kFreeBSD") OR
     (${CMAKE_SYSTEM_NAME} STREQUAL "GNU"))
-    set (SEQAN3_LIBRARIES ${SEQAN3_LIBRARIES} rt)
+    set (BIOCPP_LIBRARIES ${BIOCPP_LIBRARIES} rt)
 endif ()
 
 # libexecinfo -- implicit
-check_include_file_cxx (execinfo.h _SEQAN3_HAVE_EXECINFO)
-mark_as_advanced (_SEQAN3_HAVE_EXECINFO)
-if (_SEQAN3_HAVE_EXECINFO)
-    seqan3_config_print ("Optional dependency:        libexecinfo found.")
+check_include_file_cxx (execinfo.h _BIOCPP_HAVE_EXECINFO)
+mark_as_advanced (_BIOCPP_HAVE_EXECINFO)
+if (_BIOCPP_HAVE_EXECINFO)
+    biocpp_config_print ("Optional dependency:        libexecinfo found.")
     if ((${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD") OR (${CMAKE_SYSTEM_NAME} STREQUAL "OpenBSD"))
-        set (SEQAN3_LIBRARIES ${SEQAN3_LIBRARIES} execinfo elf)
+        set (BIOCPP_LIBRARIES ${BIOCPP_LIBRARIES} execinfo elf)
     endif ()
 else ()
-    seqan3_config_print ("Optional dependency:        libexecinfo not found.")
+    biocpp_config_print ("Optional dependency:        libexecinfo not found.")
 endif ()
 
 # ----------------------------------------------------------------------------
@@ -307,76 +307,76 @@ set (CXXSTD_TEST_SOURCE
 # using try_compile instead of check_cxx_source_compiles to capture output in case of failure
 file (WRITE "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/src.cxx" "${CXXSTD_TEST_SOURCE}\n")
 
-try_compile (SEQAN3_PLATFORM_TEST
+try_compile (BIOCPP_PLATFORM_TEST
              ${CMAKE_BINARY_DIR}
              ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/src.cxx
-             CMAKE_FLAGS         "-DCOMPILE_DEFINITIONS:STRING=${CMAKE_CXX_FLAGS} ${SEQAN3_CXX_FLAGS}"
-                                 "-DINCLUDE_DIRECTORIES:STRING=${CMAKE_INCLUDE_PATH};${SEQAN3_INCLUDE_DIR};${SEQAN3_DEPENDENCY_INCLUDE_DIRS}"
-             COMPILE_DEFINITIONS ${SEQAN3_DEFINITIONS}
-             LINK_LIBRARIES      ${SEQAN3_LIBRARIES}
-             OUTPUT_VARIABLE     SEQAN3_PLATFORM_TEST_OUTPUT)
+             CMAKE_FLAGS         "-DCOMPILE_DEFINITIONS:STRING=${CMAKE_CXX_FLAGS} ${BIOCPP_CXX_FLAGS}"
+                                 "-DINCLUDE_DIRECTORIES:STRING=${CMAKE_INCLUDE_PATH};${BIOCPP_INCLUDE_DIR};${BIOCPP_DEPENDENCY_INCLUDE_DIRS}"
+             COMPILE_DEFINITIONS ${BIOCPP_DEFINITIONS}
+             LINK_LIBRARIES      ${BIOCPP_LIBRARIES}
+             OUTPUT_VARIABLE     BIOCPP_PLATFORM_TEST_OUTPUT)
 
-if (SEQAN3_PLATFORM_TEST)
-    seqan3_config_print ("SeqAn3 platform.hpp build:  passed.")
+if (BIOCPP_PLATFORM_TEST)
+    biocpp_config_print ("BioC++ platform.hpp build:  passed.")
 else ()
-    seqan3_config_error ("SeqAn3 platform.hpp build:  failed!\n\
-                        ${SEQAN3_PLATFORM_TEST_OUTPUT}")
+    biocpp_config_error ("BioC++ platform.hpp build:  failed!\n\
+                        ${BIOCPP_PLATFORM_TEST_OUTPUT}")
 endif ()
 
 # ----------------------------------------------------------------------------
 # Export targets
 # ----------------------------------------------------------------------------
 
-separate_arguments (SEQAN3_CXX_FLAGS_LIST UNIX_COMMAND "${SEQAN3_CXX_FLAGS}")
+separate_arguments (BIOCPP_CXX_FLAGS_LIST UNIX_COMMAND "${BIOCPP_CXX_FLAGS}")
 
-add_library (seqan3_seqan3 INTERFACE)
-target_compile_definitions (seqan3_seqan3 INTERFACE ${SEQAN3_DEFINITIONS})
-target_compile_options (seqan3_seqan3 INTERFACE ${SEQAN3_CXX_FLAGS_LIST})
-target_link_libraries (seqan3_seqan3 INTERFACE "${SEQAN3_LIBRARIES}")
+add_library (biocpp_seqan3 INTERFACE)
+target_compile_definitions (biocpp_seqan3 INTERFACE ${BIOCPP_DEFINITIONS})
+target_compile_options (biocpp_seqan3 INTERFACE ${BIOCPP_CXX_FLAGS_LIST})
+target_link_libraries (biocpp_seqan3 INTERFACE "${BIOCPP_LIBRARIES}")
 # include seqan3/include/ as -I, because seqan3 should never produce warnings.
-target_include_directories (seqan3_seqan3 INTERFACE "${SEQAN3_INCLUDE_DIR}")
+target_include_directories (biocpp_seqan3 INTERFACE "${BIOCPP_INCLUDE_DIR}")
 # include everything except seqan3/include/ as -isystem, i.e.
 # a system header which suppresses warnings of external libraries.
-target_include_directories (seqan3_seqan3 SYSTEM INTERFACE "${SEQAN3_DEPENDENCY_INCLUDE_DIRS}")
-add_library (seqan3::seqan3 ALIAS seqan3_seqan3)
+target_include_directories (biocpp_seqan3 SYSTEM INTERFACE "${BIOCPP_DEPENDENCY_INCLUDE_DIRS}")
+add_library (seqan3::seqan3 ALIAS biocpp_seqan3)
 
-# propagate SEQAN3_INCLUDE_DIR into SEQAN3_INCLUDE_DIRS
-set (SEQAN3_INCLUDE_DIRS ${SEQAN3_INCLUDE_DIR} ${SEQAN3_DEPENDENCY_INCLUDE_DIRS})
+# propagate BIOCPP_INCLUDE_DIR into BIOCPP_INCLUDE_DIRS
+set (BIOCPP_INCLUDE_DIRS ${BIOCPP_INCLUDE_DIR} ${BIOCPP_DEPENDENCY_INCLUDE_DIRS})
 
 # ----------------------------------------------------------------------------
 # Finish find_package call
 # ----------------------------------------------------------------------------
 
-find_package_handle_standard_args (${CMAKE_FIND_PACKAGE_NAME} REQUIRED_VARS SEQAN3_INCLUDE_DIR)
+find_package_handle_standard_args (${CMAKE_FIND_PACKAGE_NAME} REQUIRED_VARS BIOCPP_INCLUDE_DIR)
 
-# Set SEQAN3_* variables with the content of ${CMAKE_FIND_PACKAGE_NAME}_(FOUND|...|VERSION)
-# This needs to be done, because `find_package(SeqAn3)` might be called in any case-sensitive way and we want to
-# guarantee that SEQAN3_* are always set.
+# Set BIOCPP_* variables with the content of ${CMAKE_FIND_PACKAGE_NAME}_(FOUND|...|VERSION)
+# This needs to be done, because `find_package(BioC++)` might be called in any case-sensitive way and we want to
+# guarantee that BIOCPP_* are always set.
 foreach (package_var FOUND DIR ROOT CONFIG VERSION VERSION_MAJOR VERSION_MINOR VERSION_PATCH VERSION_TWEAK VERSION_COUNT)
-    set (SEQAN3_${package_var} "${${CMAKE_FIND_PACKAGE_NAME}_${package_var}}")
+    set (BIOCPP_${package_var} "${${CMAKE_FIND_PACKAGE_NAME}_${package_var}}")
 endforeach ()
 
 set (CMAKE_REQUIRED_QUIET ${CMAKE_REQUIRED_QUIET_SAVE})
 
-if (SEQAN3_FIND_DEBUG)
+if (BIOCPP_FIND_DEBUG)
   message ("Result for ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt")
   message ("")
   message ("  CMAKE_BUILD_TYPE            ${CMAKE_BUILD_TYPE}")
   message ("  CMAKE_SOURCE_DIR            ${CMAKE_SOURCE_DIR}")
   message ("  CMAKE_INCLUDE_PATH          ${CMAKE_INCLUDE_PATH}")
-  message ("  SEQAN3_INCLUDE_DIR          ${SEQAN3_INCLUDE_DIR}")
+  message ("  BIOCPP_INCLUDE_DIR          ${BIOCPP_INCLUDE_DIR}")
   message ("")
   message ("  ${CMAKE_FIND_PACKAGE_NAME}_FOUND                ${${CMAKE_FIND_PACKAGE_NAME}_FOUND}")
-  message ("  SEQAN3_HAS_ZLIB             ${ZLIB_FOUND}")
-  message ("  SEQAN3_HAS_BZIP2            ${BZIP2_FOUND}")
+  message ("  BIOCPP_HAS_ZLIB             ${ZLIB_FOUND}")
+  message ("  BIOCPP_HAS_BZIP2            ${BZIP2_FOUND}")
   message ("")
-  message ("  SEQAN3_INCLUDE_DIRS         ${SEQAN3_INCLUDE_DIRS}")
-  message ("  SEQAN3_LIBRARIES            ${SEQAN3_LIBRARIES}")
-  message ("  SEQAN3_DEFINITIONS          ${SEQAN3_DEFINITIONS}")
-  message ("  SEQAN3_CXX_FLAGS            ${SEQAN3_CXX_FLAGS}")
+  message ("  BIOCPP_INCLUDE_DIRS         ${BIOCPP_INCLUDE_DIRS}")
+  message ("  BIOCPP_LIBRARIES            ${BIOCPP_LIBRARIES}")
+  message ("  BIOCPP_DEFINITIONS          ${BIOCPP_DEFINITIONS}")
+  message ("  BIOCPP_CXX_FLAGS            ${BIOCPP_CXX_FLAGS}")
   message ("")
-  message ("  SEQAN3_VERSION              ${SEQAN3_VERSION}")
-  message ("  SEQAN3_VERSION_MAJOR        ${SEQAN3_VERSION_MAJOR}")
-  message ("  SEQAN3_VERSION_MINORG       ${SEQAN3_VERSION_MINOR}")
-  message ("  SEQAN3_VERSION_PATCH        ${SEQAN3_VERSION_PATCH}")
+  message ("  BIOCPP_VERSION              ${BIOCPP_VERSION}")
+  message ("  BIOCPP_VERSION_MAJOR        ${BIOCPP_VERSION_MAJOR}")
+  message ("  BIOCPP_VERSION_MINORG       ${BIOCPP_VERSION_MINOR}")
+  message ("  BIOCPP_VERSION_PATCH        ${BIOCPP_VERSION_PATCH}")
 endif ()

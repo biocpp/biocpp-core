@@ -50,11 +50,11 @@ struct enable_aminoacid_dispatcher
 {
 public:
     // explicit customisation
-    SEQAN3_CPO_IMPL(2, std::bool_constant<bio::custom::alphabet<strip_type_identity_t<t>>::enable_aminoacid>::value)
+    BIOCPP_CPO_IMPL(2, std::bool_constant<bio::custom::alphabet<strip_type_identity_t<t>>::enable_aminoacid>::value)
     // ADL
-    SEQAN3_CPO_IMPL(1, std::bool_constant<enable_aminoacid(t{})>::value)
+    BIOCPP_CPO_IMPL(1, std::bool_constant<enable_aminoacid(t{})>::value)
     // default: derived from base class or not (valid for any type)
-    SEQAN3_CPO_IMPL(0, (std::is_base_of_v<bio::aminoacid_empty_base, strip_type_identity_t<t>>))
+    BIOCPP_CPO_IMPL(0, (std::is_base_of_v<bio::aminoacid_empty_base, strip_type_identity_t<t>>))
 
     //!\brief Main dispatching function.
     template <typename alph_t>

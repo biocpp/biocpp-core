@@ -30,9 +30,9 @@ void to_phred(args_t ...) = delete;
 struct to_phred_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_phred(v)) // explicit customisation
-    SEQAN3_CPO_IMPL(1, to_phred(v)                                       ) // ADL
-    SEQAN3_CPO_IMPL(0, v.to_phred()                                      ) // member
+    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_phred(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, to_phred(v)                                       ) // ADL
+    BIOCPP_CPO_IMPL(0, v.to_phred()                                      ) // member
 
 public:
     //!\brief Operator definition.
@@ -116,9 +116,9 @@ void assign_phred_to(args_t ...) = delete;
 struct assign_phred_to_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_phred_to(args..., v))) // explicit customisation
-    SEQAN3_CPO_IMPL(1, (assign_phred_to(args..., v)                                       )) // ADL
-    SEQAN3_CPO_IMPL(0, (v.assign_phred(args...)                                           )) // member
+    BIOCPP_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_phred_to(args..., v))) // explicit customisation
+    BIOCPP_CPO_IMPL(1, (assign_phred_to(args..., v)                                       )) // ADL
+    BIOCPP_CPO_IMPL(0, (v.assign_phred(args...)                                           )) // member
 
 public:
     //!\brief Operator definition for lvalues.

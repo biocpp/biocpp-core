@@ -179,13 +179,13 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr const_reference operator[](difference_type const SEQAN3_DOXYGEN_ONLY(n)) const noexcept
+    constexpr const_reference operator[](difference_type const BIOCPP_DOXYGEN_ONLY(n)) const noexcept
     {
         return *single_value.begin();
     }
 
     //!\copydoc operator[]()
-    constexpr reference operator[](difference_type const SEQAN3_DOXYGEN_ONLY(n)) noexcept
+    constexpr reference operator[](difference_type const BIOCPP_DOXYGEN_ONLY(n)) noexcept
     {
         return *single_value.begin();
     }

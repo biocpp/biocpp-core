@@ -77,7 +77,7 @@ public:
 
     using base_type::base_type; // Inherit non-default constructors
 
-#if SEQAN3_DOXYGEN_ONLY(1)0
+#if BIOCPP_DOXYGEN_ONLY(1)0
     //!\copydoc alphabet_tuple_base::alphabet_tuple_base(component_type const alph)
     template <typename component_type>
     constexpr structured_aa(component_type const alph) {}

@@ -70,7 +70,7 @@ public:
 
     //!\brief Allow implicit construction from dna/rna of the same size.
     constexpr rna4(dna4 const & r) noexcept
-#if SEQAN3_WORKAROUND_GCC_90897
+#if BIOCPP_WORKAROUND_GCC_90897
         requires true
 #endif
     {

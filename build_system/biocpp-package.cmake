@@ -5,7 +5,7 @@
 # shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
 # -----------------------------------------------------------------------------------------------------
 
-# This file describes how SeqAn3 will be packaged.
+# This file describes how BioC++ will be packaged.
 
 cmake_minimum_required (VERSION 3.7)
 
@@ -15,9 +15,9 @@ set (CPACK_PACKAGE_VENDOR "seqan")
 # A description of the project, used in places such as the introduction screen of CPack-generated Windows installers.
 # set (CPACK_PACKAGE_DESCRIPTION_FILE "") # TODO
 set (CPACK_PACKAGE_CHECKSUM "SHA256")
-set (CPACK_PACKAGE_ICON "${SEQAN3_CLONE_DIR}/test/documentation/seqan_logo.png")
-set (CPACK_RESOURCE_FILE_LICENSE "${SEQAN3_CLONE_DIR}/LICENSE.md")
-set (CPACK_RESOURCE_FILE_README "${SEQAN3_CLONE_DIR}/README.md")
+set (CPACK_PACKAGE_ICON "${BIOCPP_CLONE_DIR}/test/documentation/seqan_logo.png")
+set (CPACK_RESOURCE_FILE_LICENSE "${BIOCPP_CLONE_DIR}/LICENSE.md")
+set (CPACK_RESOURCE_FILE_README "${BIOCPP_CLONE_DIR}/README.md")
 
 # Source Package
 set (CPACK_SOURCE_GENERATOR "TXZ")

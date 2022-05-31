@@ -6,7 +6,7 @@
 # -----------------------------------------------------------------------------------------------------
 
 # Exposes the google-benchmark target `gbenchmark`.
-macro (seqan3_require_sharg)
+macro (biocpp_require_sharg)
     enable_testing ()
 
     include (FetchContent)

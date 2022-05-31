@@ -17,7 +17,7 @@
 #include <bio/test/performance/sequence_generator.hpp>
 #include <bio/test/seqan2.hpp>
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
 #include <seqan/sequence.h>
 #include <seqan/seq_io.h>
 #include <seqan/translation.h>
@@ -149,7 +149,7 @@ void copy_impl(benchmark::State & state,
     }
 }
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
 template <typename tag_t, typename stringset_t>
 void copy_impl_seqan2(benchmark::State & state, seqan::StringSet<seqan::DnaString> const & dna_sequence_collection)
 {
@@ -159,7 +159,7 @@ void copy_impl_seqan2(benchmark::State & state, seqan::StringSet<seqan::DnaStrin
         seqan::translate(out, dna_sequence_collection, seqan::SIX_FRAME, seqan::CANONICAL, tag_t{});
     }
 }
-#endif // SEQAN3_HAS_SEQAN2
+#endif // BIOCPP_HAS_SEQAN2
 
 template <typename tag_t>
 void copy(benchmark::State & state)
@@ -182,7 +182,7 @@ void copy(benchmark::State & state)
     }
 }
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
 template <typename tag_t, typename stringset_t>
 void copy(benchmark::State & state)
 {
@@ -196,17 +196,17 @@ void copy(benchmark::State & state)
 
     copy_impl_seqan2<tag_t, stringset_t>(state, dna_sequence_collection);
 }
-#endif // SEQAN3_HAS_SEQAN2
+#endif // BIOCPP_HAS_SEQAN2
 
 BENCHMARK_TEMPLATE(copy, translate_tag);
 BENCHMARK_TEMPLATE(copy, translate_join_tag);
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
 BENCHMARK_TEMPLATE(copy, seqan::Serial, seqan::Owner<>);
 BENCHMARK_TEMPLATE(copy, seqan::Serial, seqan::Owner<seqan::ConcatDirect<> >);
 BENCHMARK_TEMPLATE(copy, seqan::Parallel, seqan::Owner<>);
 BENCHMARK_TEMPLATE(copy, seqan::Parallel, seqan::Owner<seqan::ConcatDirect<> >);
-#endif // SEQAN3_HAS_SEQAN2
+#endif // BIOCPP_HAS_SEQAN2
 
 // ============================================================================
 //  run

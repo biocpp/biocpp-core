@@ -41,7 +41,7 @@ template <size_t beg,
 //!\cond
     requires tuple_like<tuple_t<ts...>> && tuple_like<tuple_t<>>
 //!\endcond
-constexpr auto tuple_split(tuple_t<ts...> const & t, std::index_sequence<Is...> const & SEQAN3_DOXYGEN_ONLY(idx))
+constexpr auto tuple_split(tuple_t<ts...> const & t, std::index_sequence<Is...> const & BIOCPP_DOXYGEN_ONLY(idx))
 {
     return tuple_t<std::tuple_element_t<beg + Is, tuple_t<ts...>>...>{std::get<beg + Is>(t)...};
 }
@@ -54,7 +54,7 @@ template <size_t beg,
 //!\cond
     requires tuple_like<tuple_t<ts...>> && tuple_like<tuple_t<>>
 //!\endcond
-constexpr auto tuple_split(tuple_t<ts...> && t, std::index_sequence<Is...> const & SEQAN3_DOXYGEN_ONLY(idx))
+constexpr auto tuple_split(tuple_t<ts...> && t, std::index_sequence<Is...> const & BIOCPP_DOXYGEN_ONLY(idx))
 {
     return tuple_t<std::tuple_element_t<beg + Is, tuple_t<ts...>>...>{std::move(std::get<beg + Is>(t))...};
 }

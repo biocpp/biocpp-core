@@ -160,7 +160,7 @@ concept sequence_container = requires (type val, type val2, type const cval)
 
     // modify container
     // TODO: how do you model this?
-    // SEQAN3_RETURN_TYPE_CONSTRAINT(val.emplace(typename type::const_iterator{}, ?),
+    // BIOCPP_RETURN_TYPE_CONSTRAINT(val.emplace(typename type::const_iterator{}, ?),
     //                               std::same_as, typename type::iterator);
     { val.insert(val.cbegin(), val2.front()) } -> std::same_as<typename type::iterator>;
     { val.insert(val.cbegin(), typename type::value_type{}) } -> std::same_as<typename type::iterator>;

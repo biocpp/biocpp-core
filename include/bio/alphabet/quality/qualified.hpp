@@ -90,13 +90,13 @@ public:
     using base_type::operator=;
 
     //!\copydoc alphabet_tuple_base::alphabet_tuple_base(component_type const alph)
-    SEQAN3_DOXYGEN_ONLY(( constexpr qualified(component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY(( constexpr qualified(component_type const alph) noexcept {} ))
     //!\copydoc alphabet_tuple_base::alphabet_tuple_base(indirect_component_type const alph)
-    SEQAN3_DOXYGEN_ONLY(( constexpr qualified(indirect_component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY(( constexpr qualified(indirect_component_type const alph) noexcept {} ))
     //!\copydoc alphabet_tuple_base::operator=(component_type const alph)
-    SEQAN3_DOXYGEN_ONLY(( constexpr qualified & operator=(component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY(( constexpr qualified & operator=(component_type const alph) noexcept {} ))
     //!\copydoc alphabet_tuple_base::operator=(indirect_component_type const alph)
-    SEQAN3_DOXYGEN_ONLY(( constexpr qualified & operator=(indirect_component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY(( constexpr qualified & operator=(indirect_component_type const alph) noexcept {} ))
     //!\}
 
     /*!\name Write functions

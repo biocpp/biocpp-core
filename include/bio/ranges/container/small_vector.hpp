@@ -15,9 +15,9 @@
 #include <array>
 #include <type_traits>
 
-#if SEQAN3_WITH_CEREAL
+#if BIOCPP_WITH_CEREAL
 #include <cereal/types/array.hpp>
-#endif // SEQAN3_WITH_CEREAL
+#endif // BIOCPP_WITH_CEREAL
 
 #include <bio/meta/concept/cereal.hpp>
 #include <bio/meta/detail/int_types.hpp>

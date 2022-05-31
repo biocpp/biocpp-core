@@ -1,1 +1,1 @@
-seqan3_test(char_predicate_test.cpp)
+biocpp_test(char_predicate_test.cpp)

@@ -28,7 +28,7 @@ concept has_iterator_category_tag_t = requires()
     typename bio::detail::iterator_category_tag_t<iterator_t>;
 };
 
-#if SEQAN3_WORKAROUND_GCC_96070
+#if BIOCPP_WORKAROUND_GCC_96070
 template <typename base_t>
 struct my_iterator : base_t
 {
@@ -64,7 +64,7 @@ struct my_iterator : inherit_iterator_tag<base_t>
     using reference = std::iter_reference_t<base_t>;
     using pointer = void;
 };
-#endif // SEQAN3_WORKAROUND_GCC_96070
+#endif // BIOCPP_WORKAROUND_GCC_96070
 
 #ifdef __cpp_lib_ranges // This is C++20 behaviour.
 TEST(iterator_category_tag_t, no_legacy_iterator)
@@ -72,24 +72,24 @@ TEST(iterator_category_tag_t, no_legacy_iterator)
     {
         using view_t = std::ranges::basic_istream_view<char, char, std::char_traits<char>>;
         using iterator_t = std::ranges::iterator_t<view_t>;
-#if SEQAN3_WORKAROUND_GCC_96070
+#if BIOCPP_WORKAROUND_GCC_96070
         EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>, void>));
 #else // ^^^ workaround / no workaround vvv
         EXPECT_FALSE(has_iterator_category_tag_t<iterator_t>);
-#endif // SEQAN3_WORKAROUND_GCC_96070
+#endif // BIOCPP_WORKAROUND_GCC_96070
         EXPECT_FALSE(iterator_traits_has_iterator_category<iterator_t>);
     }
 
     {
         using view_t = std::ranges::basic_istream_view<char, char, std::char_traits<char>>;
         using iterator_t = my_iterator<std::ranges::iterator_t<view_t>>;
-#if SEQAN3_WORKAROUND_GCC_96070
+#if BIOCPP_WORKAROUND_GCC_96070
         EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>, void>));
         EXPECT_TRUE((std::same_as<std::iterator_traits<iterator_t>::iterator_category, void>));
 #else // ^^^ workaround / no workaround vvv
         EXPECT_FALSE(has_iterator_category_tag_t<iterator_t>);
         EXPECT_FALSE(iterator_traits_has_iterator_category<iterator_t>);
-#endif // SEQAN3_WORKAROUND_GCC_96070
+#endif // BIOCPP_WORKAROUND_GCC_96070
     }
 }
 #endif // __cpp_lib_ranges

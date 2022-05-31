@@ -18,8 +18,8 @@
 
 // macro cruft
 //!\cond
-#define SEQAN3_STR_HELPER(x) #x
-#define SEQAN3_STR(x) SEQAN3_STR_HELPER(x)
+#define BIOCPP_STR_HELPER(x) #x
+#define BIOCPP_STR(x) BIOCPP_STR_HELPER(x)
 //!\endcond
 
 // ============================================================================
@@ -43,35 +43,35 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 
 // SeqAn [required]
 #if !__has_include(<bio/version.hpp>)
-#   error SeqAn3 include directory not set correctly. Forgot to add -I ${INSTALLDIR}/include to your CXXFLAGS?
+#   error BioC++ include directory not set correctly. Forgot to add -I ${INSTALLDIR}/include to your CXXFLAGS?
 #endif
 
 // SDSL [required]
 #if __has_include(<sdsl/version.hpp>)
 #   include <sdsl/version.hpp>
-    static_assert(sdsl::sdsl_version_major == 3, "Only version 3 of the SDSL is supported by SeqAn3.");
+    static_assert(sdsl::sdsl_version_major == 3, "Only version 3 of the SDSL is supported by BioC++.");
 #else
 #   error The sdsl library was not included correctly. Forgot to add -I ${INSTALLDIR}/include to your CXXFLAGS?
 #endif
 
 // Cereal [optional]
-/*!\def SEQAN3_WITH_CEREAL
+/*!\def BIOCPP_WITH_CEREAL
  * \brief Whether CEREAL support is available or not.
  * \ingroup core
  */
-#ifndef SEQAN3_WITH_CEREAL
+#ifndef BIOCPP_WITH_CEREAL
 #   if __has_include(<cereal/cereal.hpp>)
-#       define SEQAN3_WITH_CEREAL 1
+#       define BIOCPP_WITH_CEREAL 1
 #   else
-#       define SEQAN3_WITH_CEREAL 0
+#       define BIOCPP_WITH_CEREAL 0
 #   endif
-#elif SEQAN3_WITH_CEREAL != 0
+#elif BIOCPP_WITH_CEREAL != 0
 #   if ! __has_include(<cereal/cereal.hpp>)
 #       error Cereal was marked as required, but not found!
 #   endif
 #endif
 
-#if !SEQAN3_WITH_CEREAL
+#if !BIOCPP_WITH_CEREAL
     /*!\cond DEV
      * \name Cereal function macros
      * \ingroup core
@@ -100,8 +100,8 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 
 // Doxygen related
 // this macro is a NO-OP unless doxygen parses it, in which case it resolves to the argument
-#ifndef SEQAN3_DOXYGEN_ONLY
-#   define SEQAN3_DOXYGEN_ONLY(x)
+#ifndef BIOCPP_DOXYGEN_ONLY
+#   define BIOCPP_DOXYGEN_ONLY(x)
 #endif
 
 // ============================================================================
@@ -109,8 +109,8 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 // ============================================================================
 
 //!\brief Deprecation message for SeqAn 3.1.0 release.
-#if !defined(SEQAN3_DEPRECATED_310)
-#   define SEQAN3_DEPRECATED_310 [[deprecated("This will be removed in SeqAn-3.1.0; please see the documentation.")]]
+#if !defined(BIOCPP_DEPRECATED_310)
+#   define BIOCPP_DEPRECATED_310 [[deprecated("This will be removed in SeqAn-3.1.0; please see the documentation.")]]
 #endif
 
 // ============================================================================
@@ -124,58 +124,58 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
  * * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95578
  */
 #if defined(__GNUC__) && (__GNUC__ == 10 && __GNUC_MINOR__ <= 1)
-#   pragma GCC warning "Be aware that gcc 10.0 and 10.1 are known to have several bugs that might make SeqAn3 fail to compile. Please use gcc >= 10.2."
+#   pragma GCC warning "Be aware that gcc 10.0 and 10.1 are known to have several bugs that might make BioC++ fail to compile. Please use gcc >= 10.2."
 #endif // defined(__GNUC__) && (__GNUC__ == 10 && __GNUC_MINOR__ <= 1)
 
-#ifndef SEQAN3_WORKAROUND_VIEW_PERFORMANCE
+#ifndef BIOCPP_WORKAROUND_VIEW_PERFORMANCE
 //!\brief Performance of views, especially filter and join is currently bad, especially in I/O.
-#   define SEQAN3_WORKAROUND_VIEW_PERFORMANCE 1
+#   define BIOCPP_WORKAROUND_VIEW_PERFORMANCE 1
 #endif
 
 //!\brief See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93467
-#ifndef SEQAN3_WORKAROUND_GCC_93467 // fixed since gcc10.2
+#ifndef BIOCPP_WORKAROUND_GCC_93467 // fixed since gcc10.2
 #   if defined(__GNUC__) && ((__GNUC__ <= 9) || (__GNUC__ == 10 && __GNUC_MINOR__ < 2))
-#       define SEQAN3_WORKAROUND_GCC_93467 1
+#       define BIOCPP_WORKAROUND_GCC_93467 1
 #   else
-#       define SEQAN3_WORKAROUND_GCC_93467 0
+#       define BIOCPP_WORKAROUND_GCC_93467 0
 #   endif
 #endif
 
 //!\brief See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96070 and https://github.com/seqan/product_backlog/issues/151
-#ifndef SEQAN3_WORKAROUND_GCC_96070 // fixed since gcc10.4
+#ifndef BIOCPP_WORKAROUND_GCC_96070 // fixed since gcc10.4
 #   if defined(__GNUC__) && (__GNUC__ == 10 && __GNUC_MINOR__ < 4)
-#       define SEQAN3_WORKAROUND_GCC_96070 1
+#       define BIOCPP_WORKAROUND_GCC_96070 1
 #   else
-#       define SEQAN3_WORKAROUND_GCC_96070 0
+#       define BIOCPP_WORKAROUND_GCC_96070 0
 #   endif
 #endif
 
 //!\brief See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99318
-#ifndef SEQAN3_WORKAROUND_GCC_99318 // fixed since gcc10.3
+#ifndef BIOCPP_WORKAROUND_GCC_99318 // fixed since gcc10.3
 #   if defined(__GNUC__) && (__GNUC__ == 10 && __GNUC_MINOR__ < 3)
-#       define SEQAN3_WORKAROUND_GCC_99318 1
+#       define BIOCPP_WORKAROUND_GCC_99318 1
 #   else
-#       define SEQAN3_WORKAROUND_GCC_99318 0
+#       define BIOCPP_WORKAROUND_GCC_99318 0
 #   endif
 #endif
 
 //!\brief See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100139
 //!       std::views::{take, drop} do not type-erase. This is a defect within the standard lib.
-#ifndef SEQAN3_WORKAROUND_GCC_100139 // not yet fixed
+#ifndef BIOCPP_WORKAROUND_GCC_100139 // not yet fixed
 #   if defined(__GNUC__)
-#       define SEQAN3_WORKAROUND_GCC_100139 1
+#       define BIOCPP_WORKAROUND_GCC_100139 1
 #   else
-#       define SEQAN3_WORKAROUND_GCC_100139 0
+#       define BIOCPP_WORKAROUND_GCC_100139 0
 #   endif
 #endif
 
 //!\brief See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100252
 //!       ICE in template instantiation.
-#ifndef SEQAN3_WORKAROUND_GCC_100252 // not yet fixed
+#ifndef BIOCPP_WORKAROUND_GCC_100252 // not yet fixed
 #   if defined(__GNUC__) && (__GNUC__ >= 12)
-#       define SEQAN3_WORKAROUND_GCC_100252 1
+#       define BIOCPP_WORKAROUND_GCC_100252 1
 #   else
-#       define SEQAN3_WORKAROUND_GCC_100252 0
+#       define BIOCPP_WORKAROUND_GCC_100252 0
 #   endif
 #endif
 
@@ -189,63 +189,63 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
  * \see https://github.com/seqan/seqan3/issues/2244
  * \see https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_dual_abi.html
  */
-#ifndef SEQAN3_WORKAROUND_GCC_NO_CXX11_ABI
+#ifndef BIOCPP_WORKAROUND_GCC_NO_CXX11_ABI
 #   if defined(_GLIBCXX_USE_CXX11_ABI) && _GLIBCXX_USE_CXX11_ABI == 0
-#       define SEQAN3_WORKAROUND_GCC_NO_CXX11_ABI 1
+#       define BIOCPP_WORKAROUND_GCC_NO_CXX11_ABI 1
 #   else
-#       define SEQAN3_WORKAROUND_GCC_NO_CXX11_ABI 0
+#       define BIOCPP_WORKAROUND_GCC_NO_CXX11_ABI 0
 #   endif
 #endif
 
-#if SEQAN3_DOXYGEN_ONLY(1)0
+#if BIOCPP_DOXYGEN_ONLY(1)0
 //!\brief This disables the warning you would get if -D_GLIBCXX_USE_CXX11_ABI=0 is set.
-#define SEQAN3_DISABLE_LEGACY_STD_DIAGNOSTIC
-#endif // SEQAN3_DOXYGEN_ONLY(1)0
+#define BIOCPP_DISABLE_LEGACY_STD_DIAGNOSTIC
+#endif // BIOCPP_DOXYGEN_ONLY(1)0
 
 #if defined(_GLIBCXX_USE_CXX11_ABI) &&  _GLIBCXX_USE_CXX11_ABI == 0
-#   ifndef SEQAN3_DISABLE_LEGACY_STD_DIAGNOSTIC
-#       pragma GCC warning "We do not actively support compiler that have -D_GLIBCXX_USE_CXX11_ABI=0 set, and it might be that SeqAn does not compile due to this. It is known that all compiler of CentOS 7 / RHEL 7 set this flag by default (and that it cannot be overridden!). Note that these versions of the OSes are community-supported (see https://docs.seqan.de/seqan/3-master-user/about_api.html#platform_stability for more details). You can disable this warning by setting -DSEQAN3_DISABLE_LEGACY_STD_DIAGNOSTIC."
-#   endif // SEQAN3_DISABLE_LEGACY_STD_DIAGNOSTIC
+#   ifndef BIOCPP_DISABLE_LEGACY_STD_DIAGNOSTIC
+#       pragma GCC warning "We do not actively support compiler that have -D_GLIBCXX_USE_CXX11_ABI=0 set, and it might be that SeqAn does not compile due to this. It is known that all compiler of CentOS 7 / RHEL 7 set this flag by default (and that it cannot be overridden!). Note that these versions of the OSes are community-supported (see https://docs.seqan.de/seqan/3-master-user/about_api.html#platform_stability for more details). You can disable this warning by setting -DBIOCPP_DISABLE_LEGACY_STD_DIAGNOSTIC."
+#   endif // BIOCPP_DISABLE_LEGACY_STD_DIAGNOSTIC
 #endif // _GLIBCXX_USE_CXX11_ABI == 0
 
 /*!\brief https://eel.is/c++draft/range.take#view defines e.g. `constexpr auto size() requires sized_range<V>` without
  *        any template. This syntax works since gcc-10, before that a dummy `template <typename = ...>` must be used.
  */
-#ifndef SEQAN3_WORKAROUND_GCC_NON_TEMPLATE_REQUIRES
+#ifndef BIOCPP_WORKAROUND_GCC_NON_TEMPLATE_REQUIRES
 #   if defined(__GNUC_MINOR__) && (__GNUC__ < 10) // fixed since gcc-10
-#       define SEQAN3_WORKAROUND_GCC_NON_TEMPLATE_REQUIRES 1
+#       define BIOCPP_WORKAROUND_GCC_NON_TEMPLATE_REQUIRES 1
 #   else
-#       define SEQAN3_WORKAROUND_GCC_NON_TEMPLATE_REQUIRES 0
+#       define BIOCPP_WORKAROUND_GCC_NON_TEMPLATE_REQUIRES 0
 #   endif
 #endif
 
 //!\brief Workaround to access the static id of the configuration elements inside of the concept definition
 //!       (fixed in gcc11).
-#ifndef SEQAN3_WORKAROUND_GCC_PIPEABLE_CONFIG_CONCEPT
+#ifndef BIOCPP_WORKAROUND_GCC_PIPEABLE_CONFIG_CONCEPT
 #   if defined(__GNUC__) && (__GNUC__ < 11)
-#       define SEQAN3_WORKAROUND_GCC_PIPEABLE_CONFIG_CONCEPT 1
+#       define BIOCPP_WORKAROUND_GCC_PIPEABLE_CONFIG_CONCEPT 1
 #   else
-#       define SEQAN3_WORKAROUND_GCC_PIPEABLE_CONFIG_CONCEPT 0
+#       define BIOCPP_WORKAROUND_GCC_PIPEABLE_CONFIG_CONCEPT 0
 #   endif
 #endif
 
 //!\brief A view does not need to be default constructible. This change is first implemented in gcc12.
-#ifndef SEQAN3_WORKAROUND_DEFAULT_CONSTRUCTIBLE_VIEW
+#ifndef BIOCPP_WORKAROUND_DEFAULT_CONSTRUCTIBLE_VIEW
 #   if defined(__GNUC__) && (__GNUC__ < 12)
-#       define SEQAN3_WORKAROUND_DEFAULT_CONSTRUCTIBLE_VIEW 1
+#       define BIOCPP_WORKAROUND_DEFAULT_CONSTRUCTIBLE_VIEW 1
 #   else
-#       define SEQAN3_WORKAROUND_DEFAULT_CONSTRUCTIBLE_VIEW 0
+#       define BIOCPP_WORKAROUND_DEFAULT_CONSTRUCTIBLE_VIEW 0
 #   endif
 #endif
 
 /*!\brief Workaround bogus memcpy errors in GCC 12.1. (Wrestrict and Wstringop-overflow)
  * \see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105545
  */
-#ifndef SEQAN3_WORKAROUND_GCC_BOGUS_MEMCPY
+#ifndef BIOCPP_WORKAROUND_GCC_BOGUS_MEMCPY
 #   if defined(__GNUC__) && (__GNUC__ == 12 && __GNUC_MINOR__ < 2)
-#       define SEQAN3_WORKAROUND_GCC_BOGUS_MEMCPY 1
+#       define BIOCPP_WORKAROUND_GCC_BOGUS_MEMCPY 1
 #   else
-#       define SEQAN3_WORKAROUND_GCC_BOGUS_MEMCPY 0
+#       define BIOCPP_WORKAROUND_GCC_BOGUS_MEMCPY 0
 #   endif
 #endif
 
@@ -268,11 +268,11 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
  * it. For now we will keep this code, but it should be removed if it turns out that this is non-standard. (i.e. a newer
  * gcc release does not support it any more)
  */
-#ifndef SEQAN3_WORKAROUND_FURTHER_CONSTRAIN_FRIEND_DECLARATION
+#ifndef BIOCPP_WORKAROUND_FURTHER_CONSTRAIN_FRIEND_DECLARATION
 #   if defined(__clang__)
-#       define SEQAN3_WORKAROUND_FURTHER_CONSTRAIN_FRIEND_DECLARATION 1
+#       define BIOCPP_WORKAROUND_FURTHER_CONSTRAIN_FRIEND_DECLARATION 1
 #   else
-#       define SEQAN3_WORKAROUND_FURTHER_CONSTRAIN_FRIEND_DECLARATION 0
+#       define BIOCPP_WORKAROUND_FURTHER_CONSTRAIN_FRIEND_DECLARATION 0
 #   endif
 #endif
 
@@ -281,5 +281,5 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 // ============================================================================
 
 // macro cruft undefine
-#undef SEQAN3_STR
-#undef SEQAN3_STR_HELPER
+#undef BIOCPP_STR
+#undef BIOCPP_STR_HELPER

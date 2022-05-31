@@ -24,7 +24,7 @@
 #include <iterator>
 #include <ranges>
 
-#if SEQAN3_WITH_CEREAL
+#if BIOCPP_WITH_CEREAL
 #include <cereal/types/vector.hpp>
 #endif
 
@@ -675,14 +675,14 @@ public:
 
     //!\copydoc raw_data()
     //!\deprecated Use raw_data() instead.
-    SEQAN3_DEPRECATED_310 std::pair<decltype(data_values) &, decltype(data_delimiters) &> data()
+    BIOCPP_DEPRECATED_310 std::pair<decltype(data_values) &, decltype(data_delimiters) &> data()
     {
         return raw_data();
     }
 
     //!\copydoc raw_data()
     //!\deprecated Use raw_data() instead.
-    SEQAN3_DEPRECATED_310 std::pair<decltype(data_values) const &, decltype(data_delimiters) const &> data() const
+    BIOCPP_DEPRECATED_310 std::pair<decltype(data_values) const &, decltype(data_delimiters) const &> data() const
     {
         return raw_data();
     }

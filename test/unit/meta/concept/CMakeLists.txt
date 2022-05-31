@@ -1,1 +1,1 @@
-seqan3_test (cereal_test.cpp)
+biocpp_test (cereal_test.cpp)

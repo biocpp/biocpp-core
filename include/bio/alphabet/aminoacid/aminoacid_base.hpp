@@ -72,11 +72,11 @@ public:
     explicit constexpr aminoacid_base(other_aa_type const other) noexcept
     {
         if constexpr (is_constexpr_default_constructible_v<other_aa_type> &&
-#if SEQAN3_WORKAROUND_GCC7_AND_8_CONCEPT_ISSUES
+#if BIOCPP_WORKAROUND_GCC7_AND_8_CONCEPT_ISSUES
                       writable_alphabet<other_aa_type>
 #else
                       detail::writable_constexpr_alphabet<other_aa_type>
-#endif // SEQAN3_WORKAROUND_GCC7_AND_8_CONCEPT_ISSUES
+#endif // BIOCPP_WORKAROUND_GCC7_AND_8_CONCEPT_ISSUES
                      )
         {
             static_cast<derived_type &>(*this) =

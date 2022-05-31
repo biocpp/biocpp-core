@@ -6,14 +6,14 @@
 # -----------------------------------------------------------------------------------------------------
 
 cmake_minimum_required (VERSION 3.7)
-project (seqan3_test_snippet CXX)
+project (biocpp_test_snippet CXX)
 
-include (../seqan3-test.cmake)
+include (../biocpp-test.cmake)
 
-macro (seqan3_snippet test_name_prefix snippet snippet_base_path)
-    seqan3_test_component (snippet_target_name "${snippet}" TARGET_NAME)
-    seqan3_test_component (snippet_test_name "${snippet}" TEST_NAME)
-    seqan3_test_component (snippet_target_path "${snippet}" TARGET_PATH)
+macro (biocpp_snippet test_name_prefix snippet snippet_base_path)
+    biocpp_test_component (snippet_target_name "${snippet}" TARGET_NAME)
+    biocpp_test_component (snippet_test_name "${snippet}" TEST_NAME)
+    biocpp_test_component (snippet_target_path "${snippet}" TARGET_PATH)
     set (target "${snippet_target_name}_snippet")
 
     add_executable (${target} "${snippet_base_path}/${snippet}")
@@ -32,16 +32,16 @@ macro (seqan3_snippet test_name_prefix snippet snippet_base_path)
     unset (target)
 endmacro ()
 
-macro (seqan3_snippets test_name_prefix snippet_base_path)
-    seqan3_test_files (snippet_files "${snippet_base_path}" "*.cpp")
+macro (biocpp_snippets test_name_prefix snippet_base_path)
+    biocpp_test_files (snippet_files "${snippet_base_path}" "*.cpp")
     foreach (snippet ${snippet_files})
-        seqan3_snippet("${test_name_prefix}" "${snippet}" "${snippet_base_path}")
+        biocpp_snippet("${test_name_prefix}" "${snippet}" "${snippet_base_path}")
     endforeach ()
 endmacro ()
 
-seqan3_require_ccache ()
-seqan3_require_test ()
-seqan3_require_sharg ()
+biocpp_require_ccache ()
+biocpp_require_test ()
+biocpp_require_sharg ()
 
-seqan3_snippets ("doc/snippet" "${CMAKE_SOURCE_DIR}/../../doc")
-seqan3_snippets ("snippet" "${CMAKE_SOURCE_DIR}")
+biocpp_snippets ("doc/snippet" "${CMAKE_SOURCE_DIR}/../../doc")
+biocpp_snippets ("snippet" "${CMAKE_SOURCE_DIR}")
