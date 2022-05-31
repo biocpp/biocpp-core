@@ -9,9 +9,9 @@
 
 #include <bio/meta/detail/strong_type.hpp>
 
-struct my_type : seqan3::detail::strong_type<int, my_type>
+struct my_type : bio::detail::strong_type<int, my_type>
 {
-    using seqan3::detail::strong_type<int, my_type>::strong_type;
+    using bio::detail::strong_type<int, my_type>::strong_type;
 };
 
 TEST(strong_type, debug_stremable)
@@ -19,7 +19,7 @@ TEST(strong_type, debug_stremable)
     my_type obj{10};
 
     std::ostringstream buffer{};
-    seqan3::debug_stream_type stream{buffer};
+    bio::debug_stream_type stream{buffer};
     stream << obj;
     EXPECT_EQ(buffer.str(), "10");
 }

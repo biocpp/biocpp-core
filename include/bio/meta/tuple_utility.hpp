@@ -18,10 +18,10 @@
 #include <bio/meta/pod_tuple.hpp>
 #include <bio/meta/type_list/traits.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
-/*!\brief Helper function for seqan3::tuple_split.
+/*!\brief Helper function for bio::tuple_split.
  * \ingroup core
  *
  * \tparam    beg     A template value containing the start position from where to extract the values.
@@ -46,7 +46,7 @@ constexpr auto tuple_split(tuple_t<ts...> const & t, std::index_sequence<Is...> 
     return tuple_t<std::tuple_element_t<beg + Is, tuple_t<ts...>>...>{std::get<beg + Is>(t)...};
 }
 
-//!\copydoc seqan3::detail::tuple_split
+//!\copydoc bio::detail::tuple_split
 template <size_t beg,
           template <typename ...> typename tuple_t,
           size_t ... Is,
@@ -58,9 +58,9 @@ constexpr auto tuple_split(tuple_t<ts...> && t, std::index_sequence<Is...> const
 {
     return tuple_t<std::tuple_element_t<beg + Is, tuple_t<ts...>>...>{std::move(std::get<beg + Is>(t))...};
 }
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3
+namespace bio
 {
 /*!\name Tuple utility functions
  * \brief Helper functions for tuple like objects.
@@ -106,7 +106,7 @@ constexpr auto tuple_split(tuple_t<ts...> const & t)
                    detail::tuple_split<pivot_c>(t, std::make_index_sequence<sizeof...(ts) - pivot_c>{})};
 }
 
-//!\copydoc seqan3::tuple_split
+//!\copydoc bio::tuple_split
 template <size_t pivot_c, template <typename ...> typename tuple_t, typename ...ts>
 //!\cond
     requires tuple_like<tuple_t<ts...>>
@@ -184,4 +184,4 @@ constexpr auto tuple_pop_front(tuple_t && t)
 }
 //!\}
 
-} // namespace seqan3
+} // namespace bio

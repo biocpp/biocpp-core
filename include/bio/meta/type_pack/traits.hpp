@@ -18,13 +18,13 @@
 #include <bio/meta/type_list/type_list.hpp>
 
 // ----------------------------------------------------------------------------
-// seqan3::pack_traits::detail
+// bio::pack_traits::detail
 // ----------------------------------------------------------------------------
 
-namespace seqan3::pack_traits::detail
+namespace bio::pack_traits::detail
 {
 
-/*!\brief Implementation for seqan3::pack_traits::find.
+/*!\brief Implementation for bio::pack_traits::find.
  * \tparam query_t  The type you are searching for.
  * \tparam pack_t   The type pack.
  * \returns The position of the first occurrence of `query_t` in `pack_t` or `-1` if it is not contained.
@@ -37,7 +37,7 @@ constexpr ptrdiff_t find()
     return ((std::is_same_v<query_t, pack_t> ? false : ++i) && ...) ? -1 : i;
 }
 
-/*!\brief Implementation for seqan3::pack_traits::find_if.
+/*!\brief Implementation for bio::pack_traits::find_if.
  * \tparam pred_t   The predicate that is being evaluated.
  * \tparam pack_t   The type pack.
  * \returns The position of the first type `t` in `pack_t` for whom ``pred_t<t>::%value`` is true.
@@ -50,7 +50,7 @@ constexpr ptrdiff_t find_if()
     return ((pred_t<pack_t>::value ? false : ++i) && ...) ? -1 : i;
 }
 
-/*!\brief Implementation for seqan3::pack_traits::at.
+/*!\brief Implementation for bio::pack_traits::at.
  * \tparam idx      The index.
  * \tparam head_t   Currently viewed pack_t element.
  * \tparam tail_t   Rest of the type pack.
@@ -71,7 +71,7 @@ auto at()
         return at<sizeof...(tail_t) + 1 + idx, head_t, tail_t...>();
 }
 
-/*!\brief Implementation for seqan3::pack_traits::front.
+/*!\brief Implementation for bio::pack_traits::front.
  * \tparam head_t   Currently viewed pack_t element.
  * \tparam tail_t   Rest of the type pack.
  * \ingroup core_type_pack
@@ -79,7 +79,7 @@ auto at()
 template <typename head_t, typename ...tail_t>
 std::type_identity<head_t> front();
 
-/*!\brief Implementation for seqan3::pack_traits::drop_front.
+/*!\brief Implementation for bio::pack_traits::drop_front.
  * \tparam head_t   Currently viewed pack_t element.
  * \tparam tail_t   Rest of the type pack.
  * \ingroup core_type_pack
@@ -87,7 +87,7 @@ std::type_identity<head_t> front();
 template <typename head_t, typename ...tail_t>
 type_list<tail_t...> drop_front();
 
-/*!\brief Implementation for seqan3::pack_traits::split_after.
+/*!\brief Implementation for bio::pack_traits::split_after.
  * \tparam idx     The index to split the type pack at.
  * \tparam pack1_t The type pack before the split index.
  * \tparam head_t  The next type that is moved before split index.
@@ -107,7 +107,7 @@ auto split_after(type_list<pack1_t...>)
         return split_after<idx - 1, pack2_t...>(type_list<pack1_t..., head_t>{});
 }
 
-/*!\brief Implementation for seqan3::pack_traits::replace_at.
+/*!\brief Implementation for bio::pack_traits::replace_at.
  * \tparam replace_t The type replacing the old one.
  * \tparam idx The index of the type to replace.
  * \tparam pack_t The type pack to be modified.
@@ -120,13 +120,13 @@ template <typename replace_t,
           size_t ...i>
 auto replace_at(std::index_sequence<i...>) -> type_list<std::conditional_t<i == idx, replace_t, pack_t>...>;
 
-} // namespace seqan3::pack_traits::detail
+} // namespace bio::pack_traits::detail
 
 // ----------------------------------------------------------------------------
-// seqan3::pack_traits
+// bio::pack_traits
 // ----------------------------------------------------------------------------
 
-namespace seqan3::pack_traits
+namespace bio::pack_traits
 {
 
 /*!\name Type pack traits (return a value)
@@ -184,7 +184,7 @@ inline constexpr ptrdiff_t count =  (std::is_same_v<query_t, pack_t> + ... + 0);
  * \include test/snippet/core/type_list/pack_traits_find.cpp
  */
 template <typename query_t, typename ...pack_t>
-inline constexpr ptrdiff_t find = seqan3::pack_traits::detail::find<query_t, pack_t...>();
+inline constexpr ptrdiff_t find = bio::pack_traits::detail::find<query_t, pack_t...>();
 
 /*!\brief Get the index of the first type in a pack that satisfies the given predicate.
  * \tparam pred_t   The predicate that is being evaluated (a class template).
@@ -207,7 +207,7 @@ inline constexpr ptrdiff_t find = seqan3::pack_traits::detail::find<query_t, pac
  * \include test/snippet/core/type_list/pack_traits_find_if.cpp
  */
 template <template <typename> typename pred_t, typename ...pack_t>
-inline constexpr ptrdiff_t find_if = seqan3::pack_traits::detail::find_if<pred_t, pack_t...>();
+inline constexpr ptrdiff_t find_if = bio::pack_traits::detail::find_if<pred_t, pack_t...>();
 
 /*!\brief Whether a type occurs in a pack or not.
  * \tparam query_t  The type you are searching for.
@@ -285,7 +285,7 @@ using front = typename decltype(detail::front<pack_t...>())::type;
  * * Number of template instantiations: O(n) (possibly O(1))
  * * Other operations: O(1)
  *
- * Notably faster than `seqan3::pack_traits::at<size<pack...> - 1, pack...>` (no recursive template
+ * Notably faster than `bio::pack_traits::at<size<pack...> - 1, pack...>` (no recursive template
  * instantiations).
  *
  * \include test/snippet/core/type_list/pack_traits_back.cpp
@@ -302,7 +302,7 @@ using back = typename decltype((std::type_identity<pack_t>{}, ...))::type; // us
  * \{
  */
 
-/*!\brief Return a seqan3::type_list of all the types in the type pack, except the first.
+/*!\brief Return a bio::type_list of all the types in the type pack, except the first.
  * \tparam pack_t The type pack.
  * \ingroup core_type_pack
  *
@@ -321,7 +321,7 @@ template <typename ...pack_t>
 //!\endcond
 using drop_front = typename decltype(detail::drop_front<pack_t...>())::type;
 
-/*!\brief Apply a transformation trait to every type in the pack and return a seqan3::type_list of the results.
+/*!\brief Apply a transformation trait to every type in the pack and return a bio::type_list of the results.
  * \tparam trait_t The transformation trait, **can be an alias template**, e.g. a transformation trait shortcut.
  * \tparam pack_t  The type pack.
  * \ingroup core_type_pack
@@ -339,7 +339,7 @@ using drop_front = typename decltype(detail::drop_front<pack_t...>())::type;
  * \include test/snippet/core/type_list/pack_traits_transform.cpp
  */
 template <template <typename> typename trait_t, typename ...pack_t>
-using transform = seqan3::type_list<trait_t<pack_t>...>;
+using transform = bio::type_list<trait_t<pack_t>...>;
 
 //!\}
 
@@ -347,7 +347,7 @@ using transform = seqan3::type_list<trait_t<pack_t>...>;
  * \{
  */
 
-/*!\brief Return a seqan3::type_list of the first `n` types in the type pack.
+/*!\brief Return a bio::type_list of the first `n` types in the type pack.
  * \tparam i        The target size; must be >= 0 and <= the size of the type pack.
  * \tparam pack_t   The type pack.
  * \ingroup core_type_pack
@@ -367,7 +367,7 @@ template <ptrdiff_t i, typename ...pack_t>
 //!\endcond
 using take = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))::first_type;
 
-/*!\brief Return a seqan3::type_list of the types in the type pack, except the first `n`.
+/*!\brief Return a bio::type_list of the types in the type pack, except the first `n`.
  * \tparam i        The amount to drop; must be >= 0 and <= the size of the type pack.
  * \tparam pack_t   The type pack.
  * \ingroup core_type_pack
@@ -387,7 +387,7 @@ template <ptrdiff_t i, typename ...pack_t>
 //!\endcond
 using drop = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))::second_type;
 
-/*!\brief Return a seqan3::type_list of the last `n` types in the type pack.
+/*!\brief Return a bio::type_list of the last `n` types in the type pack.
  * \tparam i        The target size; must be >= 0 and <= the size of the type pack.
  * \tparam pack_t   The type pack.
  * \ingroup core_type_pack
@@ -407,7 +407,7 @@ template <ptrdiff_t i, typename ...pack_t>
 //!\endcond
 using take_last = drop<size<pack_t...> - i, pack_t...>;
 
-/*!\brief Return a seqan3::type_list of the types the type pack, except the last `n`.
+/*!\brief Return a bio::type_list of the types the type pack, except the last `n`.
  * \tparam i        The amount to drop; must be >= 0 and <= the size of the type pack.
  * \tparam pack_t   The type pack.
  * \ingroup core_type_pack
@@ -427,7 +427,7 @@ template <ptrdiff_t i, typename ...pack_t>
 //!\endcond
 using drop_last = take<size<pack_t...> - i, pack_t...>;
 
-/*!\brief Split a type pack into two parts returned as a pair of seqan3::type_list.
+/*!\brief Split a type pack into two parts returned as a pair of bio::type_list.
  * \tparam i        The number of elements after which to split; must be >= 0 and <= the size of the type pack.
  * \tparam pack_t   The type pack.
  * \ingroup core_type_pack
@@ -471,4 +471,4 @@ using replace_at = decltype(detail::replace_at<replace_t, i, pack_t...>(std::mak
 
 //!\}
 
-} // namespace seqan3::pack_traits
+} // namespace bio::pack_traits

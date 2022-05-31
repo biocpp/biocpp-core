@@ -17,7 +17,7 @@
 
 #include <bio/meta/type_traits/basic.hpp>
 
-namespace seqan3
+namespace bio
 {
 struct my_tuple
 {
@@ -56,7 +56,7 @@ struct my_tuple
 };
 
 template <size_t elem>
-constexpr auto & get(seqan3::my_tuple & t)
+constexpr auto & get(bio::my_tuple & t)
 {
     static_assert(elem < 2);
 
@@ -67,7 +67,7 @@ constexpr auto & get(seqan3::my_tuple & t)
 }
 
 template <size_t elem>
-constexpr auto const & get(seqan3::my_tuple const & t)
+constexpr auto const & get(bio::my_tuple const & t)
 {
     static_assert(elem < 2);
 
@@ -78,7 +78,7 @@ constexpr auto const & get(seqan3::my_tuple const & t)
 }
 
 template <size_t elem>
-constexpr auto && get(seqan3::my_tuple && t)
+constexpr auto && get(bio::my_tuple && t)
 {
     static_assert(elem < 2);
 
@@ -89,7 +89,7 @@ constexpr auto && get(seqan3::my_tuple && t)
 }
 
 template <size_t elem>
-constexpr auto const && get(seqan3::my_tuple const && t)
+constexpr auto const && get(bio::my_tuple const && t)
 {
     static_assert(elem < 2);
 
@@ -99,21 +99,21 @@ constexpr auto const && get(seqan3::my_tuple const && t)
         return std::move(t.el1);
 }
 
-} // namespace seqan3
+} // namespace bio
 
 namespace std
 {
 
 template <>
-struct tuple_size<seqan3::my_tuple>
+struct tuple_size<bio::my_tuple>
 {
     static constexpr size_t value = 2;
 };
 
 template <size_t elem_no>
-struct tuple_element<elem_no, seqan3::my_tuple>
+struct tuple_element<elem_no, bio::my_tuple>
 {
-    using type = std::remove_cvref_t<decltype(get<elem_no>(std::declval<seqan3::my_tuple>()))>;
+    using type = std::remove_cvref_t<decltype(get<elem_no>(std::declval<bio::my_tuple>()))>;
 };
 
 } // namespace std

@@ -14,10 +14,10 @@
 
 #include <bio/meta/debug_stream.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
-/*!\brief Streams all parameters via the seqan3::debug_stream and returns a concatenated string.
+/*!\brief Streams all parameters via the bio::debug_stream and returns a concatenated string.
  *
  * \tparam    value_type Must be streamable (stream << value).
  * \param[in] values     Variable number of parameters of any type that implement the stream operator.
@@ -32,4 +32,4 @@ std::string to_string(value_type && ...values)
     return stream.str();
 }
 
-} // namespace seqan3::detail
+} // namespace bio::detail

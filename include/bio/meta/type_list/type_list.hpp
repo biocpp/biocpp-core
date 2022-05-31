@@ -7,14 +7,14 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::type_list.
+ * \brief Provides bio::type_list.
  */
 
 #pragma once
 
 #include <bio/meta/type_traits/template_inspection.hpp>
 
-namespace seqan3
+namespace bio
 {
 
 // ----------------------------------------------------------------------------
@@ -37,4 +37,4 @@ struct type_list
     }
 };
 
-} // namespace seqan3
+} // namespace bio

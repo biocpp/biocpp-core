@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides the seqan3::detail::inherited_iterator_base template.
+ * \brief Provides the bio::detail::inherited_iterator_base template.
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
  */
 
@@ -19,7 +19,7 @@
 #include <bio/meta/type_traits/iterator.hpp>
 #include <iterator>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 /*!\brief A CRTP base template for creating iterators that inherit from other iterators.
@@ -422,4 +422,4 @@ private:
     }
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail

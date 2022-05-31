@@ -15,18 +15,18 @@
 #include <cassert>
 #include <bio/alphabet/alphabet_base.hpp>
 
-namespace seqan3
+namespace bio
 {
 /*!\brief Implementation of a masked alphabet to be used for tuple composites.
  * \ingroup mask
- * \implements seqan3::writable_semialphabet
- * \if DEV \implements seqan3::detail::Constexprwritable_semialphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::writable_semialphabet
+ * \if DEV \implements bio::detail::Constexprwritable_semialphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \details
- * This alphabet is not usually used directly, but instead via seqan3::masked.
+ * This alphabet is not usually used directly, but instead via bio::masked.
  * For more information see the \link mask Mask submodule \endlink.
  *
  * \include test/snippet/alphabet/mask/mask.cpp
@@ -37,7 +37,7 @@ private:
     //!\brief The base class.
     using base_t = alphabet_base<mask, 2, void>;
 
-    //!\brief Befriend seqan3::alphabet_base.
+    //!\brief Befriend bio::alphabet_base.
     friend base_t;
 
 public:
@@ -64,4 +64,4 @@ public:
 
 mask constexpr mask::UNMASKED{mask{}.assign_rank(0)};
 mask constexpr mask::MASKED  {mask{}.assign_rank(1)};
-} // namespace seqan3
+} // namespace bio

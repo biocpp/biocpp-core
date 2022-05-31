@@ -16,7 +16,7 @@
 #include <bio/ranges/views/to.hpp>
 #include <ranges>
 
-using seqan3::operator""_dna5;
+using bio::operator""_dna5;
 
 TEST(view_to_upper, basic)
 {
@@ -24,11 +24,11 @@ TEST(view_to_upper, basic)
     std::string cmp {"IAMADNASTRING"};
 
     // pipe notation string
-    std::string s(input_string | seqan3::views::to_upper | seqan3::views::to<std::string>());
+    std::string s(input_string | bio::views::to_upper | bio::views::to<std::string>());
     EXPECT_EQ(cmp, s);
 
     // custom conversion operator
-    std::string s2(seqan3::views::to_upper(input_string) | seqan3::views::to<std::string>());
+    std::string s2(bio::views::to_upper(input_string) | bio::views::to<std::string>());
     EXPECT_EQ(cmp, s2);
 }
 
@@ -37,15 +37,15 @@ TEST(view_to_upper, combinability)
     std::string input_string {"IAmADnaString"};
     std::string cmp{"GNIRTSANDAMAI"};
 
-    std::vector<seqan3::dna5> dna_vec {"aggcgt"_dna5};
+    std::vector<bio::dna5> dna_vec {"aggcgt"_dna5};
     std::string cmp2{"AGGCGT"};
 
     // output combinability
-    std::string s(input_string | seqan3::views::to_upper | std::views::reverse | seqan3::views::to<std::string>());
+    std::string s(input_string | bio::views::to_upper | std::views::reverse | bio::views::to<std::string>());
     EXPECT_EQ(cmp, s);
 
     // input combinability
-    std::string s2(dna_vec | seqan3::views::to_char | seqan3::views::to_upper | seqan3::views::to<std::string>());
+    std::string s2(dna_vec | bio::views::to_char | bio::views::to_upper | bio::views::to<std::string>());
     EXPECT_EQ(cmp2, s2);
 }
 
@@ -54,7 +54,7 @@ TEST(view_to_upper, deep)
     std::vector<std::string> input_vec{"IAmADnaString", "IAmAProteinString"};
     std::vector<std::string> cmp{"IAMADNASTRING", "IAMAPROTEINSTRING"};
 
-    std::vector<std::string> s(input_vec | seqan3::views::to_upper | seqan3::views::to<std::vector<std::string>>());
+    std::vector<std::string> s(input_vec | bio::views::to_upper | bio::views::to<std::vector<std::string>>());
     EXPECT_EQ(cmp, s);
 }
 
@@ -62,7 +62,7 @@ TEST(view_to_upper, concepts)
 {
     std::string input_string{"aeiou"};
     std::string & input_string_ref = input_string;
-    auto upper_view = input_string | seqan3::views::to_upper;
+    auto upper_view = input_string | bio::views::to_upper;
 
     // Required
     EXPECT_TRUE(std::ranges::input_range<decltype(input_string)>);
@@ -85,8 +85,8 @@ TEST(view_to_upper, concepts)
               std::ranges::sized_range<decltype(upper_view)>);
     EXPECT_EQ(std::ranges::common_range<decltype(input_string)>,
               std::ranges::common_range<decltype(upper_view)>);
-    EXPECT_EQ(seqan3::const_iterable_range<decltype(input_string)>,
-              seqan3::const_iterable_range<decltype(upper_view)>);
+    EXPECT_EQ(bio::const_iterable_range<decltype(input_string)>,
+              bio::const_iterable_range<decltype(upper_view)>);
     EXPECT_TRUE((std::same_as<std::remove_reference_t<std::ranges::range_reference_t<decltype(input_string)>>,
                               std::remove_reference_t<std::ranges::range_reference_t<decltype(upper_view)>>>));
 

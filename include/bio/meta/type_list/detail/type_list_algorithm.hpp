@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides algorithms for meta programming, parameter packs and seqan3::type_list.
+ * \brief Provides algorithms for meta programming, parameter packs and bio::type_list.
  * \author Rene Rahn <rene.rahn AT fu-berlin.de>
  */
 
@@ -19,7 +19,7 @@
 #include <bio/meta/type_list/type_list.hpp>
 #include <bio/meta/type_pack/detail/type_pack_algorithm.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 //!\cond
@@ -27,14 +27,14 @@ template <typename type_list_t>
 struct type_list_expander;
 //!\endcond
 
-/*!\brief Helper class to invoke a meta algorithm on the types contained in a seqan3::type_list.
+/*!\brief Helper class to invoke a meta algorithm on the types contained in a bio::type_list.
  * \ingroup core_type_list
  * \tparam type_list_t The type list given as a template template parameter.
  * \tparam args_t The template arguments contained in `type_list_t` to apply the target function on.
  *
  * \details
  *
- * The meta algorithms provide a parameter pack version and a seqan3::type_list version.
+ * The meta algorithms provide a parameter pack version and a bio::type_list version.
  * In the type list version the algorithm is called on the types contained in the enclosing type list after they have
  * been wrapped in std::type_identity. Thus, the type list version uses the parameter pack version to call the passed
  * function on the types.
@@ -74,14 +74,14 @@ struct type_list_expander<type_list_t<args_t...>>
 // all_of
 //-----------------------------------------------------------------------------
 
-/*!\brief Tests whether a given predicate evaluates to `true` for each type in a seqan3::type_list.
+/*!\brief Tests whether a given predicate evaluates to `true` for each type in a bio::type_list.
  * \ingroup core_type_list
  *
- * \tparam list_t A type list; must model seqan3::detail::template_specialisation_of a seqan3::type_list
+ * \tparam list_t A type list; must model bio::detail::template_specialisation_of a bio::type_list
  * \tparam unary_predicate_t The function type, like function pointers, functors and lambdas;
  *                           must model std::predicate expanded on each argument type wrapped in std::type_identity.
  *
- * \param[in] fn The predicate called for every type in the seqan3::type_list.
+ * \param[in] fn The predicate called for every type in the bio::type_list.
  *
  * \returns `true` if the predicate returns `true` for each type in the type list, `false` otherwise.
  *
@@ -92,7 +92,7 @@ struct type_list_expander<type_list_t<args_t...>>
  *
  *  * expand the types within the type list
  *  * wrap each type in std::identity and instantiate it (i.e. transform a type into a value)
- *  * call the parameter pack version of seqan3::detail::all_of with the instances of std::identity (as a pack).
+ *  * call the parameter pack version of bio::detail::all_of with the instances of std::identity (as a pack).
  *
  * Note that wrapping the types in std::type_identity is a technical trick to make a type representable as a value.
  * Instantiating a type might not work because they might not be std::default_initializable.
@@ -104,14 +104,14 @@ struct type_list_expander<type_list_t<args_t...>>
  *
  * ### Complexity
  *
- * Linear in the number of types in the seqan3::type_list.
+ * Linear in the number of types in the bio::type_list.
  *
  * [Compile-time complexity: Linear number of template instantiations.]
  */
 template <typename type_list_t, typename unary_predicate_t>
 [[nodiscard]] constexpr bool all_of(unary_predicate_t && fn)
 //!\cond
-    requires template_specialisation_of<type_list_t, seqan3::type_list>
+    requires template_specialisation_of<type_list_t, bio::type_list>
 //!\endcond
 {
     return type_list_expander<type_list_t>::invoke_on_type_identities([&] (auto && ...type_identities)
@@ -127,7 +127,7 @@ template <typename type_list_t, typename unary_predicate_t>
 /*!\brief Applies a function element wise to all types of a type list.
  * \ingroup core_type_list
  *
- * \tparam list_t A type list; must model seqan3::detail::template_specialisation_of a seqan3::type_list.
+ * \tparam list_t A type list; must model bio::detail::template_specialisation_of a bio::type_list.
  * \tparam unary_function_t The function type, like function pointers, functors and lambdas; must model
  *                          std::invocable on each type of the type list wrapped in std::type_identity.
  *
@@ -140,7 +140,7 @@ template <typename type_list_t, typename unary_predicate_t>
  *
  *  * expand the types within the type list
  *  * wrap each type in std::identity and instantiate it (i.e. transform a type into a value)
- *  * call the parameter pack version of seqan3::detail::for_each with the instances of std::identity (as a pack).
+ *  * call the parameter pack version of bio::detail::for_each with the instances of std::identity (as a pack).
  *
  * Note that wrapping the types in std::type_identity is a technical trick to make a type representable as a value.
  * Instantiating a type might not work because they might not be std::default_initializable.
@@ -152,15 +152,15 @@ template <typename type_list_t, typename unary_predicate_t>
  *
  * ### Complexity
  *
- * Linear in the number of types in the seqan3::type_list.
+ * Linear in the number of types in the bio::type_list.
  *
  * [Compile-time complexity: Linear number of template instantiations.]
  *
- * \sa seqan3::detail::for_each
+ * \sa bio::detail::for_each
  */
 template <typename type_list_t, typename unary_function_t>
 //!\cond
-    requires template_specialisation_of<type_list_t, seqan3::type_list>
+    requires template_specialisation_of<type_list_t, bio::type_list>
 //!\endcond
 constexpr void for_each(unary_function_t && fn)
 {
@@ -170,4 +170,4 @@ constexpr void for_each(unary_function_t && fn)
     });
 }
 
-}  // namespace seqan3::detail
+}  // namespace bio::detail

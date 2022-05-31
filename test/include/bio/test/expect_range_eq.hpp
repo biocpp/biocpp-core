@@ -21,10 +21,10 @@
 #include <bio/meta/detail/to_string.hpp>
 #include <bio/test/pretty_printing.hpp>
 
-namespace seqan3::test
+namespace bio::test
 {
 #define EXPECT_RANGE_EQ(val1, val2) \
-    EXPECT_PRED_FORMAT2(::seqan3::test::expect_range_eq{}, val1, val2);
+    EXPECT_PRED_FORMAT2(::bio::test::expect_range_eq{}, val1, val2);
 
 struct expect_range_eq
 {
@@ -56,4 +56,4 @@ struct expect_range_eq
     }
 };
 
-} // namespace seqan3::test
+} // namespace bio::test

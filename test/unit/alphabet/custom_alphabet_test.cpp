@@ -16,7 +16,7 @@
 
 //![my_alph]
 #include <cstddef>                      // for size_t
-#include <bio/alphabet/concept.hpp>  // for seqan3::alphabet
+#include <bio/alphabet/concept.hpp>  // for bio::alphabet
 
 namespace my_namespace
 {
@@ -70,7 +70,7 @@ constexpr my_alph & assign_char_to(char const c, my_alph & a) noexcept
 
 } // namespace my_namespace
 
-static_assert(seqan3::alphabet<my_namespace::my_alph>);
+static_assert(bio::alphabet<my_namespace::my_alph>);
 //![my_alph]
 
 INSTANTIATE_TYPED_TEST_SUITE_P(my_alph, alphabet, my_namespace::my_alph, );

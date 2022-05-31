@@ -16,14 +16,14 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 //!\addtogroup type_traits
 //!\{
 
 //!\brief Indicates whether the first template argument is contained in the remaining.
-//!\implements seqan3::unary_type_trait
+//!\implements bio::unary_type_trait
 template <typename target_t, typename ...pack>
 struct type_in_pack : std::false_type {};
 
@@ -35,11 +35,11 @@ template <typename target_t, typename pack1, typename ...pack>
 struct type_in_pack<target_t, pack1, pack...> : type_in_pack<target_t, pack...> {};
 //!\endcond
 
-//!\brief Shortcut for seqan3::detail::type_in_pack (unary_type_trait shortcut).
-//!\relates seqan3::detail::type_in_pack
+//!\brief Shortcut for bio::detail::type_in_pack (unary_type_trait shortcut).
+//!\relates bio::detail::type_in_pack
 template <typename target_t, typename ...pack>
 inline bool constexpr type_in_pack_v = type_in_pack<target_t, pack...>::value;
 
 //!\}
 
-} // namespace seqan3::detail
+} // namespace bio::detail

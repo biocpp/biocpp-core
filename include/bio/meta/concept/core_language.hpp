@@ -17,14 +17,14 @@
 #include <bio/meta/platform.hpp>
 #include <concepts>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 /*!\addtogroup concept
  * \{
  */
 
-/*!\interface   seqan3::detail::weakly_equality_comparable_with <>
+/*!\interface   bio::detail::weakly_equality_comparable_with <>
  * \tparam t1   The first type to compare.
  * \tparam t2   The second type to compare.
  * \brief       Requires the two operands to be comparable with `==` and `!=` in both directions.
@@ -42,7 +42,7 @@ concept weakly_equality_comparable_with =
     };
 //!\endcond
 
-/*!\interface   seqan3::detail::weakly_ordered_with <>
+/*!\interface   bio::detail::weakly_ordered_with <>
  * \tparam t1   The first type to compare.
  * \tparam t2   The second type to compare.
  * \brief       Requires the two operands to be comparable with `<`, `<=`, `>` and `>=` in both directions.
@@ -66,16 +66,16 @@ concept weakly_ordered_with = requires (std::remove_reference_t<t1> const & v1,
 
 //!\}
 
-} // seqan3::detail
+} // bio::detail
 
-namespace seqan3
+namespace bio
 {
 
 /*!\addtogroup concept
  * \{
  */
 
-/*!\interface   seqan3::implicitly_convertible_to <>
+/*!\interface   bio::implicitly_convertible_to <>
  * \brief       Resolves to `std::ranges::implicitly_convertible_to<type1, type2>()`.
  */
 //!\cond
@@ -83,7 +83,7 @@ template <typename t, typename u>
 concept implicitly_convertible_to = std::is_convertible_v<t, u>;
 //!\endcond
 
-/*!\interface   seqan3::explicitly_convertible_to <>
+/*!\interface   bio::explicitly_convertible_to <>
  * \brief       Resolves to `std::ranges::explicitly_convertible_to<type1, type2>()`.
  */
 //!\cond
@@ -91,7 +91,7 @@ template <typename t, typename u>
 concept explicitly_convertible_to = requires (t vt) { { static_cast<u>(vt)}; };
 //!\endcond
 
-/*!\interface   seqan3::arithmetic <>
+/*!\interface   bio::arithmetic <>
  * \brief       A type that satisfies std::is_arithmetic_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_arithmetic
  */
@@ -100,8 +100,8 @@ template <typename t>
 concept arithmetic = std::is_arithmetic_v<t>;
 //!\endcond
 
-/*!\interface   seqan3::floating_point <>
- * \extends     seqan3::arithmetic
+/*!\interface   bio::floating_point <>
+ * \extends     bio::arithmetic
  * \brief       An arithmetic type that also satisfies std::is_floating_point_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_floating_point
  */
@@ -110,7 +110,7 @@ template <typename t>
 concept floating_point = arithmetic<t> && std::is_floating_point_v<t>;
 //!\endcond
 
-/*!\interface   seqan3::builtin_character <>
+/*!\interface   bio::builtin_character <>
  * \extends     std::integral
  * \brief       This concept encompasses exactly the types `char`, `signed char`, `unsigned char`, `wchar_t`,
  *              `char16_t` and `char32_t`.
@@ -126,7 +126,7 @@ concept builtin_character = std::integral<t> &&
                        std::same_as<t, char16_t> || std::same_as<t, char32_t> || std::same_as<t, wchar_t>);
 //!\endcond
 
-/*!\interface   seqan3::trivially_destructible <>
+/*!\interface   bio::trivially_destructible <>
  * \extends     std::destructible
  * \brief       A type that satisfies std::is_trivially_destructible_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_destructible
@@ -136,7 +136,7 @@ template <typename t>
 concept trivially_destructible = std::destructible<t> && std::is_trivially_destructible_v<t>;
 //!\endcond
 
-/*!\interface   seqan3::trivially_copyable
+/*!\interface   bio::trivially_copyable
  * \brief       A type that satisfies std::is_trivially_copyable_v<t>.
  * \extends     std::copyable
  * \sa          https://en.cppreference.com/w/cpp/types/is_trivially_copyable
@@ -146,10 +146,10 @@ template <typename t>
 concept trivially_copyable = std::copyable<t> && std::is_trivially_copyable_v<t>;
 //!\endcond
 
-/*!\interface   seqan3::trivial
- * \brief       A type that satisfies seqan3::trivially_copyable and seqan3::trivially_destructible.
- * \extends     seqan3::trivially_copyable
- * \extends     seqan3::trivially_destructible
+/*!\interface   bio::trivial
+ * \brief       A type that satisfies bio::trivially_copyable and bio::trivially_destructible.
+ * \extends     bio::trivially_copyable
+ * \extends     bio::trivially_destructible
  * \sa          https://en.cppreference.com/w/cpp/types/is_trivial
  */
 //!\cond
@@ -157,7 +157,7 @@ template <typename t>
 concept trivial = trivially_copyable<t> && trivially_destructible<t> && std::is_trivial_v<t>;
 //!\endcond
 
-/*!\interface   seqan3::standard_layout
+/*!\interface   bio::standard_layout
  * \brief       Resolves to std::is_standard_layout_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_standard_layout
  */
@@ -166,7 +166,7 @@ template <typename t>
 concept standard_layout = std::is_standard_layout_v<t>;
 //!\endcond
 
-/*!\interface   seqan3::weakly_assignable_from
+/*!\interface   bio::weakly_assignable_from
  * \brief       Resolves to std::is_assignable_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_assignable
  *
@@ -180,4 +180,4 @@ template <typename t, typename u>
 concept weakly_assignable_from = std::is_assignable_v<t, u>;
 //!\endcond
 
-}  // namespace seqan3
+}  // namespace bio

@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::debug_stream and related types.
+ * \brief Provides bio::debug_stream and related types.
  */
 
 #pragma once
@@ -18,16 +18,16 @@
 #include <bio/meta/type_traits/basic.hpp>
 #include <bio/meta/type_traits/template_inspection.hpp>
 
-namespace seqan3
+namespace bio
 {
 /*!\name Formatted output overloads
  * \{
  */
 /*!\brief A std::variant can be printed by visiting the stream operator for the corresponding type.
  * \tparam    variant_type The type of the variant.
- * \param[in] s            The seqan3::debug_stream.
+ * \param[in] s            The bio::debug_stream.
  * \param[in] v            The variant.
- * \relates seqan3::debug_stream_type
+ * \relates bio::debug_stream_type
  *
  * \details
  *
@@ -48,4 +48,4 @@ inline debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & s, var
 
 //!\}
 
-} // namespace seqan3
+} // namespace bio

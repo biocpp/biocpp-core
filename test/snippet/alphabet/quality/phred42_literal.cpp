@@ -4,13 +4,13 @@
 
 int main()
 {
-    using seqan3::operator""_phred42;
+    using bio::operator""_phred42;
 
     // directly assign to a std::vector<phred42> using a string literal
-    std::vector<seqan3::phred42> qual_vec = "###!"_phred42;
+    std::vector<bio::phred42> qual_vec = "###!"_phred42;
 
     // This is the same as a sequence of char literals:
-    std::vector<seqan3::phred42> qual_vec2 = {'#'_phred42, '#'_phred42, '#'_phred42, '!'_phred42};
+    std::vector<bio::phred42> qual_vec2 = {'#'_phred42, '#'_phred42, '#'_phred42, '!'_phred42};
 
-    seqan3::debug_stream << std::ranges::equal(qual_vec, qual_vec2) << '\n'; // prints 1 (true)
+    bio::debug_stream << std::ranges::equal(qual_vec, qual_vec2) << '\n'; // prints 1 (true)
 }

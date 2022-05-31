@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Sara Hetzel <sara.hetzel AT fu-berlin.de>
- * \brief Provides seqan3::dna15, container aliases and string literals.
+ * \brief Provides bio::dna15, container aliases and string literals.
  */
 
 #pragma once
@@ -21,18 +21,18 @@
 // dna15
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
 class rna15;
 
 /*!\brief The 15 letter DNA alphabet, containing all IUPAC smybols minus the gap.
  * \ingroup nucleotide
- * \implements seqan3::nucleotide_alphabet
- * \implements seqan3::writable_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::nucleotide_alphabet
+ * \implements bio::writable_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \details
@@ -41,7 +41,7 @@ class rna15;
  *
  * Like most alphabets, this alphabet cannot be initialised directly from its character representation.
  * Instead initialise/assign from the character literal or use the
- * function seqan3::dna15::assign_char().
+ * function bio::dna15::assign_char().
  *
  *\include test/snippet/alphabet/nucleotide/dna15.cpp
  */
@@ -51,12 +51,12 @@ private:
     //!\brief The base class.
     using base_t = nucleotide_base<dna15, 15>;
 
-    //!\brief Befriend seqan3::nucleotide_base.
+    //!\brief Befriend bio::nucleotide_base.
     friend base_t;
-    //!\cond \brief Befriend seqan3::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet_base.
     friend base_t::base_t;
     //!\endcond
-    //!\brief Befriend seqan3::rna15 so it can copy #char_to_rank.
+    //!\brief Befriend bio::rna15 so it can copy #char_to_rank.
     friend rna15;
 
 public:
@@ -83,7 +83,7 @@ public:
 protected:
     //!\privatesection
 
-    //!\copydoc seqan3::dna4::rank_to_char
+    //!\copydoc bio::dna4::rank_to_char
     static constexpr char_type rank_to_char[alphabet_size]
     {
         'A',
@@ -103,7 +103,7 @@ protected:
         'Y'
     };
 
-    //!\copydoc seqan3::dna4::char_to_rank
+    //!\copydoc bio::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank
     {
         [] () constexpr
@@ -128,7 +128,7 @@ protected:
         }()
     };
 
-    //!\copydoc seqan3::dna4::complement_table
+    //!\copydoc bio::dna4::complement_table
     static const std::array<dna15, alphabet_size> complement_table;
 };
 
@@ -136,7 +136,7 @@ protected:
 // containers
 // ------------------------------------------------------------------
 
-//!\brief Alias for an std::vector of seqan3::dna15.
+//!\brief Alias for an std::vector of bio::dna15.
 //!\relates dna15
 using dna15_vector = std::vector<dna15>;
 
@@ -148,18 +148,18 @@ using dna15_vector = std::vector<dna15>;
  * \{
  */
 
-/*!\brief The seqan3::dna15 char literal.
- * \relates seqan3::dna15
- * \returns seqan3::dna15
+/*!\brief The bio::dna15 char literal.
+ * \relates bio::dna15
+ * \returns bio::dna15
  */
 constexpr dna15 operator""_dna15(char const c) noexcept
 {
     return dna15{}.assign_char(c);
 }
 
-/*!\brief The seqan3::dna15 string literal.
- * \relates seqan3::dna15
- * \returns seqan3::dna15_vector
+/*!\brief The bio::dna15 string literal.
+ * \relates bio::dna15
+ * \returns bio::dna15_vector
  *
  * You can use this string literal to easily assign to dna15_vector:
  *
@@ -201,4 +201,4 @@ constexpr std::array<dna15, dna15::alphabet_size> dna15::complement_table
     'R'_dna15     // complement of 'Y'_dna15
 };
 
-} // namespace seqan3
+} // namespace bio

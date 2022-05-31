@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Joshua Kim <joshua.kim AT fu-berlin.de>
- * \brief Provides seqan3::views::interleave.
+ * \brief Provides bio::views::interleave.
  */
 
 #pragma once
@@ -23,14 +23,14 @@
 #include <concepts>
 #include <ranges>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 // ============================================================================
 //  view_interleave
 // ============================================================================
 
-/*!\brief The type returned by seqan3::views::interleave.
+/*!\brief The type returned by bio::views::interleave.
  * \tparam urng_t The type of the underlying range, must model std::ranges::random_access_range.
  * \implements std::ranges::view
  * \implements std::ranges::random_access_range
@@ -59,7 +59,7 @@ private:
     inserted_rng_t inserted_range;
 
     /*!\name Associated types
-     * \brief These associated types are needed in seqan3::detail::random_access_iterator.
+     * \brief These associated types are needed in bio::detail::random_access_iterator.
      * \{
      */
     //!\brief This resolves to range_type::size_type as the underlying range is guaranteed to be sized.
@@ -240,7 +240,7 @@ public:
 };
 
 //!\brief Template argument type deduction guide for viewable_range inputs.
-//!\relates seqan3::detail::view_interleave
+//!\relates bio::detail::view_interleave
 template <std::ranges::random_access_range urng_t, std::ranges::random_access_range inserted_rng_t>
     //!\cond
     requires std::ranges::viewable_range<urng_t> && std::ranges::sized_range<urng_t> &&
@@ -294,13 +294,13 @@ struct interleave_fn
     }
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
 // ============================================================================
 //  views::interleave (adaptor instance definition)
 // ============================================================================
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\name General purpose views
@@ -340,13 +340,13 @@ namespace seqan3::views
  * | std::ranges::sized_range         | *required*                            | *preserved*                            |
  * | std::ranges::common_range        |                                       | *preserved*                            |
  * | std::ranges::output_range        |                                       | *preserved*                            |
- * | seqan3::const_iterable_range     |                                       | *preserved*                            |
+ * | bio::const_iterable_range     |                                       | *preserved*                            |
  * |                                  |                                       |                                        |
  * | std::ranges::range_reference_t   |                                       | std::ranges::range_reference_t<urng_t> |
  *
  *
  * If above requirements are not met, this adaptor forwards to
- * `| seqan3::views::chunk(step_size) | std::views::join(inserted_range)`
+ * `| bio::views::chunk(step_size) | std::views::join(inserted_range)`
  * which returns a view with the following properties:
  *
  * | Concepts and traits              | `urng_t` (underlying range type)      | `rrng_t` (returned range type)       |
@@ -362,7 +362,7 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                       | *lost*                               |
  * | std::ranges::common_range        |                                       | *lost*                               |
  * | std::ranges::output_range        |                                       | *lost*                               |
- * | seqan3::const_iterable_range     |                                       | *lost*                               |
+ * | bio::const_iterable_range     |                                       | *lost*                               |
  * |                                  |                                       |                                      |
  * | std::ranges::range_reference_t   |                                       | std::ranges::range_value_t<urng_t>   |
  *
@@ -379,4 +379,4 @@ inline constexpr auto interleave = detail::interleave_fn{};
 
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

@@ -45,7 +45,7 @@ static void simple(benchmark::State & state)
         if constexpr (id == tag::std)
             sum += std::isalpha(arr[i]);
         else if constexpr (id == tag::seqan3)
-            sum += seqan3::is_alpha(arr[i]);
+            sum += bio::is_alpha(arr[i]);
 #if SEQAN3_HAS_SEQAN2
         else if constexpr (id == tag::seqan2)
             sum += seqan::IsAlpha{}(arr[i]);
@@ -78,9 +78,9 @@ static void combined(benchmark::State & state)
         if constexpr (id == tag::std)
             sum += std::isalpha(arr[i]) || std::isblank(arr[i]) || std::isdigit(arr[i]);
         else if constexpr (id == tag::seqan3)
-            sum += (seqan3::is_alpha || seqan3::is_blank || seqan3::is_digit)(arr[i]);
+            sum += (bio::is_alpha || bio::is_blank || bio::is_digit)(arr[i]);
         else if constexpr (id == tag::seqan3_serial)
-            sum += seqan3::is_alpha(arr[i]) || seqan3::is_blank(arr[i]) || seqan3::is_digit(arr[i]);
+            sum += bio::is_alpha(arr[i]) || bio::is_blank(arr[i]) || bio::is_digit(arr[i]);
 #if SEQAN3_HAS_SEQAN2
         else if constexpr (id == tag::seqan2)
             sum += seqan::OrFunctor<seqan::OrFunctor<seqan::IsAlpha, seqan::IsBlank>, seqan::IsDigit>{}(arr[i]);

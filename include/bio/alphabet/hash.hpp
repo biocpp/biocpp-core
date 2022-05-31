@@ -18,23 +18,23 @@ namespace std
 {
 /*!\brief Struct for hashing a character.
  * \ingroup alphabet
- * \tparam alphabet_t The type of character to hash; must model seqan3::semialphabet.
+ * \tparam alphabet_t The type of character to hash; must model bio::semialphabet.
  */
 template <typename alphabet_t>
 //!\cond
-    requires seqan3::semialphabet<alphabet_t>
+    requires bio::semialphabet<alphabet_t>
 //!\endcond
 struct hash<alphabet_t>
 {
     /*!\brief Compute the hash for a character.
-     * \param[in] character The character to process; must model seqan3::semialphabet.
+     * \param[in] character The character to process; must model bio::semialphabet.
      *
      * \returns The rank of the character.
-     * \sa seqan3::to_rank.
+     * \sa bio::to_rank.
      */
     size_t operator()(alphabet_t const character) const noexcept
     {
-        return seqan3::to_rank(character);
+        return bio::to_rank(character);
     }
 };
 

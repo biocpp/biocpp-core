@@ -17,14 +17,14 @@
 #include <bio/alphabet/aminoacid/aa27.hpp>
 #include <bio/alphabet/aminoacid/translation_genetic_code.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 /*!\brief Generic translation table for canonical genetic code.
  * \tparam nucl_type The type of input nucleotides.
  *
  * \details  All nucleotides are casted to dna15 and the dna15 translation table is used for translation.
  */
-template <typename nucl_type, seqan3::genetic_code gc = seqan3::genetic_code::CANONICAL, typename void_type = void>
+template <typename nucl_type, bio::genetic_code gc = bio::genetic_code::CANONICAL, typename void_type = void>
 struct translation_table
 {
     //!\brief Holds the generic translation table.
@@ -57,7 +57,7 @@ struct translation_table
 
 //!\brief Translation table for canonical genetic code and dna15 alphabet.
 template <typename void_type>
-struct translation_table<dna15, seqan3::genetic_code::CANONICAL, void_type>
+struct translation_table<dna15, bio::genetic_code::CANONICAL, void_type>
 {
     //!\brief Holds the translation table for canonical genetic code and nucl16 alphabet.
     static constexpr aa27 VALUE[dna15::alphabet_size][dna15::alphabet_size][dna15::alphabet_size]

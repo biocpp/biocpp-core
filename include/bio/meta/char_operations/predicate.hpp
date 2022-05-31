@@ -20,7 +20,7 @@
 // General Purpose Char predicates
 // ----------------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
 /*!\name Char predicates
@@ -49,8 +49,8 @@ template <uint8_t interval_first, uint8_t interval_last>
 //!\endcond
 inline constexpr auto is_in_interval = detail::is_in_interval_type<interval_first, interval_last>{};
 
-/*!\brief Checks whether a given letter is valid for the specified seqan3::alphabet.
- * \tparam alphabet_t The alphabet to check; must model seqan3::alphabet.
+/*!\brief Checks whether a given letter is valid for the specified bio::alphabet.
+ * \tparam alphabet_t The alphabet to check; must model bio::alphabet.
  * \ingroup char_operations
  *
  * \details
@@ -328,10 +328,10 @@ inline auto constexpr is_xdigit = is_in_interval<'0', '9'> ||
  *
  * ### Custom predicates
  *
- * * seqan3::is_in_alphabet: Checks if the given character is part of the specified alphabet.
- * * seqan3::is_in_interval: Checks if the given character is within specified range of ASCII characters.
- * * seqan3::is_char: Checks if the character is equal to the specified ASCII character.
- * * seqan3::is_eof: Checks if a character is the end-of-file marker.
+ * * bio::is_in_alphabet: Checks if the given character is part of the specified alphabet.
+ * * bio::is_in_interval: Checks if the given character is within specified range of ASCII characters.
+ * * bio::is_char: Checks if the character is equal to the specified ASCII character.
+ * * bio::is_eof: Checks if a character is the end-of-file marker.
  *
  * ### Standard library predicates
  *
@@ -902,4 +902,4 @@ inline auto constexpr is_xdigit = is_in_interval<'0', '9'> ||
  * <br>
  */
 
-} // namespace seqan3
+} // namespace bio

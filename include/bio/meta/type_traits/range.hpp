@@ -26,7 +26,7 @@
 //NOTE(h-2): for the range overloads we explicitly forbid that the type is iteratoer
 // because some types are actually both (e.g. std::directory_iterator)
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 //!\cond
@@ -34,9 +34,9 @@ template <typename t>
 concept has_range_value_type = requires { typename std::ranges::range_value_t<std::remove_cvref_t<t>>; };
 //!\endcond
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3
+namespace bio
 {
 
 /*!\addtogroup type_traits
@@ -51,7 +51,7 @@ namespace seqan3
 namespace detail
 {
 /*!\brief Exposes the `value_type` of another type.
- * \implements seqan3::transformation_trait
+ * \implements bio::transformation_trait
  * \tparam t The type you wish to query; must model std::ranges::input_range.
  * \deprecated This is deprecated use std::ranges::range_value_t.
  */
@@ -64,7 +64,7 @@ struct value_type<rng_t>
     //!\brief Return the value_type member definition from the queried type's iterator.
     using type = value_type_t<std::ranges::iterator_t<rng_t>>;
 };
-} // namespace seqan3::detail
+} // namespace bio::detail
 #endif // SEQAN3_DEPRECATED_310
 
 // ----------------------------------------------------------------------------
@@ -75,7 +75,7 @@ struct value_type<rng_t>
 namespace detail
 {
 /*!\brief Exposes the `reference` of another type.
- * \implements seqan3::transformation_trait
+ * \implements bio::transformation_trait
  * \tparam t The type you wish to query; must model std::ranges::input_range.
  * \deprecated This is deprecated use std::ranges::range_reference_t.
  */
@@ -88,7 +88,7 @@ struct reference<rng_t>
     //!\brief Return the reference member definition from the queried type's iterator.
     using type = reference_t<std::ranges::iterator_t<rng_t>>;
 };
- } // namespace seqan3::detail
+ } // namespace bio::detail
  #endif // SEQAN3_DEPRECATED_310
 
 // ----------------------------------------------------------------------------
@@ -99,7 +99,7 @@ struct reference<rng_t>
 namespace detail
 {
 /*!\brief Exposes the `rvalue_reference` of another type.
- * \implements seqan3::transformation_trait
+ * \implements bio::transformation_trait
  * \tparam t The type you wish to query; must model std::ranges::input_range.
  * \deprecated This is deprecated use std::ranges::range_rvalue_reference_t.
  */
@@ -112,7 +112,7 @@ struct rvalue_reference<rng_t>
     //!\brief Return the rvalue_reference member definition from the queried type's iterator.
     using type = rvalue_reference_t<std::ranges::iterator_t<rng_t>>;
 };
-} // namespace seqan3::detail
+} // namespace bio::detail
 #endif // SEQAN3_DEPRECATED_310
 
 // ----------------------------------------------------------------------------
@@ -123,7 +123,7 @@ struct rvalue_reference<rng_t>
 namespace detail
 {
 /*!\brief Exposes the `const_reference` of another type.
- * \implements seqan3::transformation_trait
+ * \implements bio::transformation_trait
  * \tparam t The type you wish to query; must model std::ranges::input_range.
  * \deprecated This is deprecated use std::ranges::range_reference_t<rng_t const>.
  */
@@ -136,7 +136,7 @@ struct const_reference<rng_t>
     //!\brief Resolves to the reference type of the `const_iterator` of t (not the `const iterator`!).
     using type = std::iter_reference_t<std::ranges::iterator_t<rng_t const>>;
 };
-} // namespace seqan3::detail
+} // namespace bio::detail
 #endif // SEQAN3_DEPRECATED_310
 
 // ----------------------------------------------------------------------------
@@ -147,7 +147,7 @@ struct const_reference<rng_t>
 namespace detail
 {
 /*!\brief Exposes the `difference_type` of another type.
- * \implements seqan3::transformation_trait
+ * \implements bio::transformation_trait
  * \tparam t The type you wish to query; must model std::ranges::input_range.
  * \deprecated This is deprecated use std::ranges::range_difference_t.
  */
@@ -160,7 +160,7 @@ struct difference_type<rng_t>
     //!\brief Return the difference_type member definition from the queried type's iterator.
     using type = difference_type_t<std::ranges::iterator_t<rng_t>>;
 };
-} // namespace seqan3::detail
+} // namespace bio::detail
 #endif // SEQAN3_DEPRECATED_310
 
 // ----------------------------------------------------------------------------
@@ -171,7 +171,7 @@ struct difference_type<rng_t>
 namespace detail
 {
 /*!\brief Exposes the `size_type` of another type.
- * \implements seqan3::transformation_trait
+ * \implements bio::transformation_trait
  * \tparam t The type you wish to query; must model std::ranges::sized_range.
  * \deprecated This is deprecated use std::ranges::range_size_t.
  */
@@ -184,7 +184,7 @@ struct size_type<rng_t>
     //!\brief Return the size_type as returned by the size function.
     using type = decltype(std::ranges::size(std::declval<rng_t &>()));
 };
-} // namespace seqan3::detail
+} // namespace bio::detail
 #endif // SEQAN3_DEPRECATED_310
 
 // ----------------------------------------------------------------------------
@@ -194,7 +194,7 @@ struct size_type<rng_t>
 //NOTE(h-2): this could be moved to a separate file, because it also applies to iterators
 
 /*!\brief Recursively determines the `value_type` on containers and/or iterators.
- * \implements seqan3::transformation_trait
+ * \implements bio::transformation_trait
  * \tparam t The type to recurse on; must have `std::ranges::value_type_t<rng_t>`.
  *
  * \details
@@ -220,8 +220,8 @@ struct range_innermost_value<t>
 };
 //!\endcond
 
-//!\brief Shortcut for seqan3::range_innermost_value (transformation_trait shortcut).
-//!\see seqan3::range_innermost_value
+//!\brief Shortcut for bio::range_innermost_value (transformation_trait shortcut).
+//!\see bio::range_innermost_value
 template <typename t>
 using range_innermost_value_t = typename range_innermost_value<t>::type;
 
@@ -231,8 +231,8 @@ using range_innermost_value_t = typename range_innermost_value<t>::type;
 
 //NOTE(h-2): this could be moved to a separate file, because it also applies to iterators
 
-/*!\brief Returns the number of times you can call `seqan3::value_type_t` recursively on t (type trait).
- * \tparam t The type to be queried; must resolve `seqan3::value_type_t` at least once.
+/*!\brief Returns the number of times you can call `bio::value_type_t` recursively on t (type trait).
+ * \tparam t The type to be queried; must resolve `bio::value_type_t` at least once.
  *
  * \details
  *
@@ -257,8 +257,8 @@ constexpr size_t range_dimension_v<t> = range_dimension_v<std::ranges::range_val
 
 //NOTE(h-2): this could be moved to a separate file, because it also applies to iterators
 
-/*!\interface seqan3::range_compatible <>
- * \brief Two types are "compatible" if their seqan3::range_dimension_v and their seqan3::range_innermost_value_t are
+/*!\interface bio::range_compatible <>
+ * \brief Two types are "compatible" if their bio::range_dimension_v and their bio::range_innermost_value_t are
  * the same.
  *
  * \details
@@ -280,4 +280,4 @@ concept range_compatible = requires (t1, t2)
 
 //!\}
 
-} // namespace seqan3
+} // namespace bio

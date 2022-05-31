@@ -38,7 +38,7 @@
  * Leucine). See also https://en.wikipedia.org/wiki/Amino_acid for more information about the amino acid alphabet.
  *
  * ###Conversions
- * | Amino acid name            | Three letter code | One letter code | Remapped in\n seqan3::aa20      | Remapped in\n seqan3::aa10murphy | Remapped in\n seqan3::aa10li     |
+ * | Amino acid name            | Three letter code | One letter code | Remapped in\n bio::aa20      | Remapped in\n bio::aa10murphy | Remapped in\n bio::aa10li     |
  * |----------------------------|-------------------|-----------------|---------------------------------|----------------------------------|----------------------------------|
  * |    Alanine                 | Ala               | A               | A                               | A                                | A                                |
  * |    Arginine                | Arg               | R               | R                               | <span style="color:red">K</span> | <span style="color:red">K</span> |
@@ -71,7 +71,7 @@
  * All amino acid alphabets provide static value members (like an enum) for all amino acids in the form of the
  * one-letter representation.
  * As shown above, alphabets smaller than 27 internally represent multiple amino acids as one.\n
- * For most cases it is highly recommended to use seqan3::aa27 as seqan3::aa20 provides
+ * For most cases it is highly recommended to use bio::aa27 as bio::aa20 provides
  * no benefits in regard to space consumption (both need 5bits).
  * Use it only when you know you need to interface with other software of formats that only support the canonical set.
  */

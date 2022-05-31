@@ -16,7 +16,7 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 // ----------------------------------------------------------------------------
@@ -67,4 +67,4 @@ inline std::string make_printable(char const c)
     }
 }
 
-} // namespace seqan3::detail
+} // namespace bio::detail

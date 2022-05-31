@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Svenja Mehringer <svenja.mehringer AT fu-berlin.de>
- * \brief Provides seqan3::views::repeat_n.
+ * \brief Provides bio::views::repeat_n.
  */
 
 #pragma once
@@ -16,10 +16,10 @@
 #include <bio/ranges/views/take_exactly.hpp>
 #include <concepts>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
-/*!\brief The underlying type of seqan3::views::repeat_n.
+/*!\brief The underlying type of bio::views::repeat_n.
  * \ingroup views
  *
  * Under the hood this delegates to `views::repeat(value) | views::take_exactly(count)`.
@@ -41,9 +41,9 @@ struct repeat_n_fn
     }
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\name General purpose views
@@ -77,7 +77,7 @@ namespace seqan3::views
  * | std::ranges::sized_range         | *guaranteed*                                       |
  * | std::ranges::common_range        |                                                    |
  * | std::ranges::output_range        | *guaranteed*                                       |
- * | seqan3::const_iterable_range     | *guaranteed*                                       |
+ * | bio::const_iterable_range     | *guaranteed*                                       |
  * |                                  |                                                    |
  * | std::ranges::range_reference_t   | std::remove_reference_t<value_t> &                 |
  *
@@ -94,4 +94,4 @@ namespace seqan3::views
 constexpr inline auto repeat_n = detail::repeat_n_fn{};
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

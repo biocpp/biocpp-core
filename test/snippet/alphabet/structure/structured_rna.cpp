@@ -5,24 +5,24 @@
 
 int main()
 {
-    using seqan3::operator""_rna4;
-    using seqan3::operator""_db3;
-    using seqan3::get;
+    using bio::operator""_rna4;
+    using bio::operator""_db3;
+    using bio::get;
 
-    seqan3::structured_rna<seqan3::rna4, seqan3::dot_bracket3> letter{'G'_rna4, '('_db3};
-    seqan3::debug_stream << seqan3::to_rank(letter) << ' '
-                         << seqan3::to_rank(get<0>(letter)) << ' '
-                         << seqan3::to_rank(get<1>(letter)) << '\n';
+    bio::structured_rna<bio::rna4, bio::dot_bracket3> letter{'G'_rna4, '('_db3};
+    bio::debug_stream << bio::to_rank(letter) << ' '
+                         << bio::to_rank(get<0>(letter)) << ' '
+                         << bio::to_rank(get<1>(letter)) << '\n';
     // 6 2 1
 
-    seqan3::debug_stream << seqan3::to_char(letter) << ' '
-                         << seqan3::to_char(get<0>(letter)) << ' '
-                         << seqan3::to_char(get<1>(letter)) << '\n';
+    bio::debug_stream << bio::to_char(letter) << ' '
+                         << bio::to_char(get<0>(letter)) << ' '
+                         << bio::to_char(get<1>(letter)) << '\n';
     // G G (
 
     // modify via structured bindings and references:
     auto & [ seq_l, structure_l ] = letter;
     seq_l = 'U'_rna4;
-    seqan3::debug_stream << seqan3::to_char(letter) << '\n';
+    bio::debug_stream << bio::to_char(letter) << '\n';
     // U
 }

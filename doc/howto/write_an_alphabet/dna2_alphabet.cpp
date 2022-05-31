@@ -93,12 +93,12 @@ struct dna2
 //! [writable_alphabet]
 
 //! [writable_alphabet_concept]
-static_assert(seqan3::alphabet<dna2>);                   // ok
-static_assert(seqan3::writable_alphabet<dna2>);           // ok
+static_assert(bio::alphabet<dna2>);                   // ok
+static_assert(bio::writable_alphabet<dna2>);           // ok
 //! [writable_alphabet_concept]
 
 //! [dummy_requirement]
-template <seqan3::alphabet check_this_type>
+template <bio::alphabet check_this_type>
 void foo()
 {}
 

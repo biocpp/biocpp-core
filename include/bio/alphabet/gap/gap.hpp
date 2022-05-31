@@ -8,7 +8,7 @@
 /*!\file
  * \author Marcel Ehrhardt <marcel.ehrhardt AT fu-berlin.de>
  * \author David Heller <david.heller AT fu-berlin.de>
- * \brief Provides seqan3::gap.
+ * \brief Provides bio::gap.
  */
 
 #pragma once
@@ -17,15 +17,15 @@
 
 #include <bio/alphabet/alphabet_base.hpp>
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief The alphabet of a gap character '-'
  * \ingroup gap
- * \implements seqan3::writable_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::writable_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * The alphabet always has the same value ('-').
@@ -39,7 +39,7 @@ private:
     //!\brief The base class.
     using base_t = alphabet_base<gap, 1, char>;
 
-    //!\brief Befriend seqan3::alphabet_base.
+    //!\brief Befriend bio::alphabet_base.
     friend base_t;
 
     //!\brief The character that will be printed.

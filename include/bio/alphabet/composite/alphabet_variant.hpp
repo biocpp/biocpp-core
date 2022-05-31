@@ -9,7 +9,7 @@
  * \author Marcel Ehrhardt <marcel.ehrhardt AT fu-berlin.de>
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
  * \author David Heller <david.heller AT fu-berlin.de>
- * \brief Provides seqan3::alphabet_variant.
+ * \brief Provides bio::alphabet_variant.
  */
 
 #pragma once
@@ -25,7 +25,7 @@
 #include <bio/meta/type_list/traits.hpp>
 #include <bio/meta/type_traits/lazy.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 //!\brief Prevents wrong instantiations of std::alphabet_variant's constructors.
@@ -44,36 +44,36 @@ inline constexpr bool variant_comparison_guard =
                       (variant_general_guard<rhs_t, alternative_types...>)          &&
                       !(lhs_rhs_switched && is_type_specialisation_of_v<rhs_t, alphabet_variant>)
                       > || ...);
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief A combined alphabet that can hold values of either of its alternatives.
  * \ingroup alphabet_composite
  * \if DEV
  * \tparam ...alternative_types Types of possible values (at least 2); all must model
- *                              seqan3::detail::writable_constexpr_alphabet, std::regular and be unique.
- * \implements seqan3::detail::writable_constexpr_alphabet
+ *                              bio::detail::writable_constexpr_alphabet, std::regular and be unique.
+ * \implements bio::detail::writable_constexpr_alphabet
  * \else
- * \tparam ...alternative_types Types of possible values (at least 2); all must model seqan3::writable_alphabet,
+ * \tparam ...alternative_types Types of possible values (at least 2); all must model bio::writable_alphabet,
  *                              std::regular and must be unique; all required functions for
- *                              seqan3::writable_alphabet need to be callable in a `constexpr`-context.
+ *                              bio::writable_alphabet need to be callable in a `constexpr`-context.
  * \endif
- * \implements seqan3::writable_alphabet
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::writable_alphabet
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
 
  * \details
  *
  * The alphabet_variant represents the union of two or more alternative alphabets (e.g. the
  * four letter DNA alternative + the gap alternative). It behaves similar to a
  * [variant](https://en.cppreference.com/w/cpp/utility/variant) or std::variant, but it preserves the
- * seqan3::alphabet.
+ * bio::alphabet.
  *
  * Short description:
  *   * combines multiple different alphabets in an "either-or"-fashion;
- *   * is itself a seqan3::alphabet;
+ *   * is itself a bio::alphabet;
  *   * its alphabet size is the sum of the individual sizes;
  *   * default initialises to the the first alternative's default (no empty state like std::variant);
  *   * constructible, assignable and (in-)equality-comparable with each alternative type and also all types that
@@ -86,13 +86,13 @@ namespace seqan3
  *
  * ### The `char` representation of an alphabet_variant
  *
- * Part of the seqan3::alphabet concept requires that the alphabet_variant provides a char representation in addition
- * to the rank representation. For an object of seqan3::alphabet_variant, the `to_char()` member function will always
+ * Part of the bio::alphabet concept requires that the alphabet_variant provides a char representation in addition
+ * to the rank representation. For an object of bio::alphabet_variant, the `to_char()` member function will always
  * return the same character as if invoked on the respective alternative.
  * In contrast, the `assign_char()` member function might be ambiguous between the alternative alphabets in a variant.
  *
- * For example, assigning a '!' to seqan3::dna15 resolves to an object of rank 8 with char representation 'N' while
- * assigning '!' to seqan3::gap always resolves to rank 0, the gap symbol itself ('-'_gap).
+ * For example, assigning a '!' to bio::dna15 resolves to an object of rank 8 with char representation 'N' while
+ * assigning '!' to bio::gap always resolves to rank 0, the gap symbol itself ('-'_gap).
  * We tackle this ambiguousness by **defaulting unknown characters to the representation of the first alternative**
  * (e.g. `alphabet_variant<dna15, gap>{}.assign_char('!')` resolves to rank 8, representing `N`_dna15).
  *
@@ -130,10 +130,10 @@ private:
     //!\brief Befriend the base type.
     friend base_t;
 
-    //!\brief A seqan3::type_list of the types of each alternative in the composite
-    using alternatives = seqan3::type_list<alternative_types...>;
+    //!\brief A bio::type_list of the types of each alternative in the composite
+    using alternatives = bio::type_list<alternative_types...>;
 
-    static_assert(((seqan3::list_traits::count<alternative_types, alternatives> == 1) && ... && true),
+    static_assert(((bio::list_traits::count<alternative_types, alternatives> == 1) && ... && true),
                   "All types in a alphabet_variant must be distinct.");
 
     using typename base_t::char_type;
@@ -167,7 +167,7 @@ public:
     template <typename alternative_t>
     static constexpr bool is_alternative() noexcept
     {
-        return seqan3::pack_traits::contains<alternative_t, alternative_types...>;
+        return bio::pack_traits::contains<alternative_t, alternative_types...>;
     }
 
     /*!\name Constructors, destructor and assignment
@@ -212,7 +212,7 @@ public:
      *
      * \include test/snippet/alphabet/composite/alphabet_variant_conversion.cpp
      *
-     *   * seqan3::dna4 and seqan3::rna4 are implicitly convertible to each other so the variant accepts either.
+     *   * bio::dna4 and bio::rna4 are implicitly convertible to each other so the variant accepts either.
      *   * Construction via `{}` considers implicit and explicit conversions.
      *   * Construction via `=` considers only implicit conversions (but that is sufficient here).
      *
@@ -226,9 +226,9 @@ public:
     constexpr alphabet_variant(indirect_alternative_t const rhs) noexcept
     {
         using alternative_predicate = detail::implicitly_convertible_from<indirect_alternative_t>;
-        constexpr auto alternative_position = seqan3::list_traits::find_if<alternative_predicate::template invoke,
+        constexpr auto alternative_position = bio::list_traits::find_if<alternative_predicate::template invoke,
                                                                            alternatives>;
-        using alternative_t = seqan3::list_traits::at<alternative_position, alternatives>;
+        using alternative_t = bio::list_traits::at<alternative_position, alternatives>;
         assign_rank(rank_by_type_(alternative_t(rhs)));
     }
 
@@ -242,7 +242,7 @@ public:
      *
      * \include test/snippet/alphabet/composite/alphabet_variant_conversion_explicit.cpp
      *
-     *   * seqan3::dna4 and seqan3::dna5 are not implicitly convertible to each other, only explicitly.
+     *   * bio::dna4 and bio::dna5 are not implicitly convertible to each other, only explicitly.
      *   * Construction via `{}` considers implicit and explicit conversions so this works.
      *   * Construction via `=` considers only implicit conversions so it does not work.
      *
@@ -259,9 +259,9 @@ public:
     constexpr explicit alphabet_variant(indirect_alternative_t const rhs) noexcept
     {
         using alternative_predicate = detail::constructible_from<indirect_alternative_t>;
-        constexpr auto alternative_position = seqan3::list_traits::find_if<alternative_predicate::template invoke,
+        constexpr auto alternative_position = bio::list_traits::find_if<alternative_predicate::template invoke,
                                                                            alternatives>;
-        using alternative_t = seqan3::list_traits::at<alternative_position, alternatives>;
+        using alternative_t = bio::list_traits::at<alternative_position, alternatives>;
         assign_rank(rank_by_type_(alternative_t(rhs)));
     }
 
@@ -283,9 +283,9 @@ public:
     constexpr alphabet_variant & operator=(indirect_alternative_t const & rhs) noexcept
     {
         using alternative_predicate = detail::assignable_from<indirect_alternative_t>;
-        constexpr auto alternative_position = seqan3::list_traits::find_if<alternative_predicate::template invoke,
+        constexpr auto alternative_position = bio::list_traits::find_if<alternative_predicate::template invoke,
                                                                            alternatives>;
-        using alternative_t = seqan3::list_traits::at<alternative_position, alternatives>;
+        using alternative_t = bio::list_traits::at<alternative_position, alternatives>;
         alternative_t alternative{};
         alternative = rhs;
         assign_rank(rank_by_type_(alternative));
@@ -343,7 +343,7 @@ public:
         requires (is_alternative<alternative_t>())
     //!\endcond
     {
-        constexpr size_t index = seqan3::list_traits::find<alternative_t, alternatives>;
+        constexpr size_t index = bio::list_traits::find<alternative_t, alternatives>;
         return holds_alternative<index>();
     }
 
@@ -358,7 +358,7 @@ public:
         requires (is_alternative<alternative_t>())
     //!\endcond
     {
-        constexpr size_t index = seqan3::list_traits::find<alternative_t, alternatives>;
+        constexpr size_t index = bio::list_traits::find<alternative_t, alternatives>;
         return convert_impl<index, true>();
     }
 
@@ -372,15 +372,15 @@ public:
         requires (is_alternative<alternative_t>())
     //!\endcond
     {
-        constexpr size_t index = seqan3::list_traits::find<alternative_t, alternatives>;
+        constexpr size_t index = bio::list_traits::find<alternative_t, alternatives>;
         return convert_impl<index, false>();
     }
     //!\}
 
     /*!\name Comparison operators (against indirect alternatives)
      * \brief Defines comparison against types that are not subject to implicit construction/conversion but are
-     *        comparable against alternatives, e.g. `alphabet_variant<seqan3::rna4, seqan3::gap>` vs
-     *        `alphabet_variant<seqan3::dna4, seqan3::gap>`. Only (in-)equality comparison is defined as reasoning
+     *        comparable against alternatives, e.g. `alphabet_variant<bio::rna4, bio::gap>` vs
+     *        `alphabet_variant<bio::dna4, bio::gap>`. Only (in-)equality comparison is defined as reasoning
      *        about order of variants is inherently difficult.
      * \{
      */
@@ -407,9 +407,9 @@ public:
                             bool>
     {
         using alternative_predicate = detail::weakly_equality_comparable_with_<indirect_alternative_type>;
-        constexpr auto alternative_position = seqan3::list_traits::find_if<alternative_predicate::template invoke,
+        constexpr auto alternative_position = bio::list_traits::find_if<alternative_predicate::template invoke,
                                                                            alternatives>;
-        using alternative_t = seqan3::list_traits::at<alternative_position, alternatives>;
+        using alternative_t = bio::list_traits::at<alternative_position, alternatives>;
         return lhs.template holds_alternative<alternative_t>() && (lhs.template convert_unsafely_to<alternative_t>() == rhs);
     }
 
@@ -467,10 +467,10 @@ protected:
      * \tparam throws Whether to perform checks (and throw) or not.
      */
     template <size_t index, bool throws>
-    constexpr auto convert_impl() const noexcept(!throws) -> seqan3::list_traits::at<index, alternatives>
+    constexpr auto convert_impl() const noexcept(!throws) -> bio::list_traits::at<index, alternatives>
     {
         static_assert(index < alphabet_size, "The alphabet_variant contains less alternatives than you are checking.");
-        using alternative_t = seqan3::list_traits::at<index, alternatives>;
+        using alternative_t = bio::list_traits::at<index, alternatives>;
 
         if constexpr (throws)
         {
@@ -480,7 +480,7 @@ protected:
             }
         }
 
-        return seqan3::assign_rank_to(to_rank() - partial_sum_sizes[index], alternative_t{});
+        return bio::assign_rank_to(to_rank() - partial_sum_sizes[index], alternative_t{});
     }
 
     /*!\brief Compile-time generated lookup table which contains the partial
@@ -494,7 +494,7 @@ protected:
     {
         constexpr size_t N = sizeof...(alternative_types) + 1;
 
-        std::array<rank_type, N> partial_sum{0, seqan3::alphabet_size<alternative_types>...};
+        std::array<rank_type, N> partial_sum{0, bio::alphabet_size<alternative_types>...};
         for (size_t i = 1u; i < N; ++i)
             partial_sum[i] += partial_sum[i-1];
 
@@ -514,13 +514,13 @@ protected:
         // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84684
         auto assign_rank_to_char = [](auto alternative, size_t rank) constexpr
         {
-            return seqan3::to_char(seqan3::assign_rank_to(rank, alternative));
+            return bio::to_char(bio::assign_rank_to(rank, alternative));
         };
 
         auto assign_value_to_char = [assign_rank_to_char] (auto alternative, auto & value_to_char, auto & value) constexpr
         {
             using alternative_t = std::decay_t<decltype(alternative)>;
-            for (size_t i = 0u; i < seqan3::alphabet_size<alternative_t>; ++i, ++value)
+            for (size_t i = 0u; i < bio::alphabet_size<alternative_t>; ++i, ++value)
                 value_to_char[value] = assign_rank_to_char(alternative, i);
         };
 
@@ -546,7 +546,7 @@ protected:
     //!\endcond
     static constexpr rank_type rank_by_index_(alternative_t const & alternative) noexcept
     {
-        return partial_sum_sizes[index] + static_cast<rank_type>(seqan3::to_rank(alternative));
+        return partial_sum_sizes[index] + static_cast<rank_type>(bio::to_rank(alternative));
     }
 
     //!\brief Converts an object of one of the given alternatives into the internal representation.
@@ -559,7 +559,7 @@ protected:
     //!\endcond
     static constexpr rank_type rank_by_type_(alternative_t const & alternative) noexcept
     {
-        constexpr size_t index = seqan3::list_traits::find<alternative_t, alternatives>;
+        constexpr size_t index = bio::list_traits::find<alternative_t, alternatives>;
         return rank_by_index_<index>(alternative);
     }
 
@@ -624,4 +624,4 @@ protected:
     }();
 };
 
-} // namespace seqan3
+} // namespace bio

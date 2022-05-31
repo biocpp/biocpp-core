@@ -2,8 +2,8 @@
 
 int main()
 {
-    seqan3::is_char<'C'>('C');  // returns true
+    bio::is_char<'C'>('C');  // returns true
 
-    auto constexpr my_check = seqan3::is_char<'C'>;
+    auto constexpr my_check = bio::is_char<'C'>;
     my_check('c');  // returns false, because case is different
 }

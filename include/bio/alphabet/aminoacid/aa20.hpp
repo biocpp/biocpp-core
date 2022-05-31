@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Joshua Kim <joshua.kim AT fu-berlin.de>
- * \brief Provides seqan3::aa20, container aliases and string literals.
+ * \brief Provides bio::aa20, container aliases and string literals.
  */
 
 #pragma once
@@ -18,16 +18,16 @@
 #include <bio/alphabet/aminoacid/concept.hpp>
 #include <bio/meta/char_operations/transform.hpp>
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief The canonical amino acid alphabet.
  * \ingroup aminoacid
- * \implements seqan3::aminoacid_alphabet
- * \implements seqan3::writable_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::aminoacid_alphabet
+ * \implements bio::writable_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \details
@@ -64,9 +64,9 @@ private:
     //!\brief The base class.
     using base_t = aminoacid_base<aa20, 20>;
 
-    //!\brief Befriend seqan3::aminoacid_base.
+    //!\brief Befriend bio::aminoacid_base.
     friend base_t;
-    //!\cond \brief Befriend seqan3::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -140,35 +140,35 @@ protected:
     };
 };
 
-} // namespace seqan3
+} // namespace bio
 
 // ------------------------------------------------------------------
 // containers
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
-//!\brief Alias for an std::vector of seqan3::aa20.
+//!\brief Alias for an std::vector of bio::aa20.
 //!\relates aa20
 using aa20_vector = std::vector<aa20>;
 
-} // namespace seqan3
+} // namespace bio
 
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
 /*!\name Literals
  * \{
  */
 
-/*!\brief The seqan3::aa20 char literal.
+/*!\brief The bio::aa20 char literal.
  * \param[in] c The character to assign.
- * \relates seqan3::aa20
- * \returns seqan3::aa20
+ * \relates bio::aa20
+ * \returns bio::aa20
  *
  * \include test/snippet/alphabet/aminoacid/aa20_char_literal.cpp
  *
@@ -178,18 +178,18 @@ constexpr aa20 operator""_aa20(char const c) noexcept
     return aa20{}.assign_char(c);
 }
 
-/*!\brief The seqan3::aa20  string literal.
+/*!\brief The bio::aa20  string literal.
  * \param[in] s A pointer to the character string to assign.
  * \param[in] n The size of the character string to assign.
- * \relates seqan3::aa20
- * \returns seqan3::aa20_vector
+ * \relates bio::aa20
+ * \returns bio::aa20_vector
  *
  * You can use this string literal to easily assign to aa20_vector:
  *
  * \include test/snippet/alphabet/aminoacid/aa20_literal.cpp
  *
  * \attention
- * All seqan3 literals are in the namespace seqan3!
+ * All seqan3 literals are in the namespace bio!
  */
 
 inline aa20_vector operator""_aa20(const char * s, std::size_t n)
@@ -204,4 +204,4 @@ inline aa20_vector operator""_aa20(const char * s, std::size_t n)
 }
 //!\}
 
-} // namespace seqan3
+} // namespace bio

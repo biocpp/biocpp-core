@@ -27,7 +27,7 @@ static void memcpy_benchmark(benchmark::State & state) {
     for (auto _ : state)
         memcpy(dst, src, size);
 
-    state.counters["bytes_per_second"] = seqan3::test::bytes_per_second(size);
+    state.counters["bytes_per_second"] = bio::test::bytes_per_second(size);
     delete[] src;
     delete[] dst;
 }
@@ -41,7 +41,7 @@ static void copy_benchmark(benchmark::State & state) {
     for (auto _ : state)
         std::copy_n(src, size, dst);
 
-    state.counters["bytes_per_second"] = seqan3::test::bytes_per_second(size);
+    state.counters["bytes_per_second"] = bio::test::bytes_per_second(size);
     delete[] src;
     delete[] dst;
 }

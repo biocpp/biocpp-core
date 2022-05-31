@@ -50,11 +50,11 @@ TEST(range_and_iterator, sentinel)
 template <typename list1, typename list2, size_t pos = 0>
 void expect_same_types()
 {
-    constexpr bool val = std::is_same_v<seqan3::list_traits::at<pos, list1>, seqan3::list_traits::at<pos, list2>>;
+    constexpr bool val = std::is_same_v<bio::list_traits::at<pos, list1>, bio::list_traits::at<pos, list2>>;
     if constexpr (!val)
     {
-        std::cerr << "pos: " << pos << " \'" << seqan3::detail::type_name_as_string<seqan3::list_traits::at<pos, list1>>
-                  << "\' not equal to \'" << seqan3::detail::type_name_as_string<seqan3::list_traits::at<pos, list2>>
+        std::cerr << "pos: " << pos << " \'" << bio::detail::type_name_as_string<bio::list_traits::at<pos, list1>>
+                  << "\' not equal to \'" << bio::detail::type_name_as_string<bio::list_traits::at<pos, list2>>
                   << "\' \n";
     }
     EXPECT_TRUE(val);
@@ -66,17 +66,17 @@ void expect_same_types()
 TEST(range_and_iterator, value_type)
 {
     using iterator_of_int_vector = std::ranges::iterator_t<std::vector<int>>;
-    using foreign_iterator = seqan3::detail::random_access_iterator<std::vector<int>>;
+    using foreign_iterator = bio::detail::random_access_iterator<std::vector<int>>;
     auto v = std::views::iota(1);
 
-    using type_list_example = seqan3::type_list<std::ranges::range_value_t<std::vector<int>>, // short
+    using type_list_example = bio::type_list<std::ranges::range_value_t<std::vector<int>>, // short
                                                 typename std::vector<int>::value_type, // member type
                                                 std::ranges::range_value_t<std::vector<int> const>, // const container
                                                 std::iter_value_t<iterator_of_int_vector>, // iterator
                                                 std::iter_value_t<foreign_iterator>, // iterator2
                                                 std::ranges::range_value_t<decltype(v)>>; // range, no member
 
-    using comp_list = seqan3::type_list<int,
+    using comp_list = bio::type_list<int,
                                         int,
                                         int,
                                         int,
@@ -89,16 +89,16 @@ TEST(range_and_iterator, value_type)
 TEST(range_and_iterator, reference)
 {
     using iterator_of_int_vector = std::ranges::iterator_t<std::vector<int>>;
-    using foreign_iterator = seqan3::detail::random_access_iterator<std::vector<int>>;
+    using foreign_iterator = bio::detail::random_access_iterator<std::vector<int>>;
     auto v = std::views::iota(1);
-    using type_list_example = seqan3::type_list<std::ranges::range_reference_t<std::vector<int>>, // short
+    using type_list_example = bio::type_list<std::ranges::range_reference_t<std::vector<int>>, // short
                                                 typename std::vector<int>::reference, // member type
                                                 std::ranges::range_reference_t<std::vector<int> const>, // const container
                                                 std::iter_reference_t<iterator_of_int_vector>, // iterator
                                                 std::iter_reference_t<foreign_iterator>, // iterator2
                                                 std::ranges::range_reference_t<decltype(v)>>; // range, no member
 
-    using comp_list = seqan3::type_list<int &,
+    using comp_list = bio::type_list<int &,
                                         int &,
                                         int const &, // container is const
                                         int &,
@@ -111,9 +111,9 @@ TEST(range_and_iterator, reference)
 TEST(range_and_iterator, rvalue_reference)
 {
     using iterator_of_int_vector = std::ranges::iterator_t<std::vector<int>>;
-    using foreign_iterator = seqan3::detail::random_access_iterator<std::vector<int>>;
+    using foreign_iterator = bio::detail::random_access_iterator<std::vector<int>>;
     auto v = std::views::iota(1);
-    using type_list_example = seqan3::type_list<std::ranges::range_rvalue_reference_t<std::vector<int>>, // short
+    using type_list_example = bio::type_list<std::ranges::range_rvalue_reference_t<std::vector<int>>, // short
 // No types have member,yet:
 //                                              typename std::vector<int>::rvalue_reference, // member type
                                                 std::ranges::range_rvalue_reference_t<std::vector<int> const>, // const container
@@ -121,7 +121,7 @@ TEST(range_and_iterator, rvalue_reference)
                                                 std::iter_rvalue_reference_t<foreign_iterator>, // iterator2
                                                 std::ranges::range_rvalue_reference_t<decltype(v)>>; // range, no member
 
-    using comp_list = seqan3::type_list<int &&,
+    using comp_list = bio::type_list<int &&,
 //                                      int &&,
                                         int const &&,  // container is const
                                         int &&,
@@ -134,15 +134,15 @@ TEST(range_and_iterator, rvalue_reference)
 TEST(range_and_iterator, const_reference)
 {
     using const_iterator_of_int_vector = std::ranges::iterator_t<std::vector<int> const>;
-    using const_foreign_iterator = seqan3::detail::random_access_iterator<std::vector<int> const>;
+    using const_foreign_iterator = bio::detail::random_access_iterator<std::vector<int> const>;
     using const_iterator_of_view = std::ranges::iterator_t<decltype(std::views::iota(1)) const>;
-    using type_list_example = seqan3::type_list<std::ranges::range_reference_t<std::vector<int> const>, // short
+    using type_list_example = bio::type_list<std::ranges::range_reference_t<std::vector<int> const>, // short
                                                 typename std::vector<int>::const_reference, // member type
                                                 std::iter_reference_t<const_iterator_of_int_vector>, // iterator
                                                 std::iter_reference_t<const_foreign_iterator>, // iterator2
                                                 std::iter_reference_t<const_iterator_of_view>>; // range, no member
 
-    using comp_list = seqan3::type_list<int const &,
+    using comp_list = bio::type_list<int const &,
                                         int const &,
                                         int const &,
                                         int const &,
@@ -155,14 +155,14 @@ TEST(range_and_iterator, difference_type)
 {
     //TODO(h-2): add something that actually has a different difference_type
     using iterator_of_int_vector = std::ranges::iterator_t<std::vector<int>>;
-    using foreign_iterator = seqan3::detail::random_access_iterator<std::vector<int>>;
-    using type_list_example = seqan3::type_list<std::ranges::range_difference_t<std::vector<int>>, // short
+    using foreign_iterator = bio::detail::random_access_iterator<std::vector<int>>;
+    using type_list_example = bio::type_list<std::ranges::range_difference_t<std::vector<int>>, // short
                                                 typename std::vector<int>::difference_type, // member type
                                                 std::ranges::range_difference_t<std::vector<int> const>, // const container
                                                 std::iter_difference_t<iterator_of_int_vector>, // iterator
                                                 std::iter_difference_t<foreign_iterator>>; // range, no member
 
-    using comp_list = seqan3::type_list<std::ptrdiff_t,
+    using comp_list = bio::type_list<std::ptrdiff_t,
                                         std::ptrdiff_t,
                                         std::ptrdiff_t,
                                         std::ptrdiff_t,
@@ -190,13 +190,13 @@ TEST(range_and_iterator, size_type)
 {
     //TODO(h-2): add something that actually has a different size_type
 // iota is not a sized range, but take_exactly is
-    auto v = std::views::iota(0) | seqan3::views::take_exactly(2);
-    using type_list_example = seqan3::type_list<std::ranges::range_size_t<std::vector<int>>, // short
+    auto v = std::views::iota(0) | bio::views::take_exactly(2);
+    using type_list_example = bio::type_list<std::ranges::range_size_t<std::vector<int>>, // short
                                                 typename std::vector<int>::size_type, // member type
                                                 std::ranges::range_size_t<std::vector<int> const>, // const container
                                                 std::ranges::range_size_t<decltype(v)>>; // range, no member
 
-    using comp_list = seqan3::type_list<size_t,
+    using comp_list = bio::type_list<size_t,
                                         size_t,
                                         size_t,
                                         size_t>;
@@ -207,11 +207,11 @@ TEST(range_and_iterator, size_type)
 TEST(range_and_iterator, range_innermost_value)
 {
     using vector_of_int_vector = std::vector<std::vector<int>>;
-    using type_list_example = seqan3::type_list<typename seqan3::range_innermost_value<std::vector<int>>::type, // long
-                                                seqan3::range_innermost_value_t<std::vector<int>>, // short
-                                                seqan3::range_innermost_value_t<vector_of_int_vector>>; // two-level
+    using type_list_example = bio::type_list<typename bio::range_innermost_value<std::vector<int>>::type, // long
+                                                bio::range_innermost_value_t<std::vector<int>>, // short
+                                                bio::range_innermost_value_t<vector_of_int_vector>>; // two-level
 
-    using comp_list = seqan3::type_list<int,
+    using comp_list = bio::type_list<int,
                                         int,
                                         int,
                                         int,
@@ -222,25 +222,25 @@ TEST(range_and_iterator, range_innermost_value)
 
 TEST(range_and_iterator, dimension)
 {
-    EXPECT_EQ(1u, seqan3::range_dimension_v<std::vector<int>>);
-    EXPECT_EQ(2u, seqan3::range_dimension_v<std::vector<std::vector<int>>>);
+    EXPECT_EQ(1u, bio::range_dimension_v<std::vector<int>>);
+    EXPECT_EQ(2u, bio::range_dimension_v<std::vector<std::vector<int>>>);
 }
 
 TEST(range_and_iterator, range_compatible)
 {
     // true for "compatible" ranges
-    EXPECT_TRUE((seqan3::range_compatible<std::vector<int>, std::list<int>>));
-    EXPECT_TRUE((seqan3::range_compatible<std::list<std::vector<char>>, std::vector<std::string>>));
+    EXPECT_TRUE((bio::range_compatible<std::vector<int>, std::list<int>>));
+    EXPECT_TRUE((bio::range_compatible<std::list<std::vector<char>>, std::vector<std::string>>));
 
     // false for un-"compatible" ranges
-    EXPECT_FALSE((seqan3::range_compatible<std::list<std::vector<char>>, std::string>));
-    EXPECT_FALSE((seqan3::range_compatible<std::list<int>, int>));
-    EXPECT_FALSE((seqan3::range_compatible<std::vector<int>, std::string>));
+    EXPECT_FALSE((bio::range_compatible<std::list<std::vector<char>>, std::string>));
+    EXPECT_FALSE((bio::range_compatible<std::list<int>, int>));
+    EXPECT_FALSE((bio::range_compatible<std::vector<int>, std::string>));
 
     // compatible not defined on iterators
-    EXPECT_FALSE((seqan3::range_compatible<std::vector<int>, std::ranges::iterator_t<std::vector<int>>>));
-    EXPECT_FALSE((seqan3::range_compatible<std::vector<int>, std::ranges::iterator_t<std::vector<int> const>>));
-    EXPECT_FALSE((seqan3::range_compatible<std::list<std::vector<char>>,
+    EXPECT_FALSE((bio::range_compatible<std::vector<int>, std::ranges::iterator_t<std::vector<int>>>));
+    EXPECT_FALSE((bio::range_compatible<std::vector<int>, std::ranges::iterator_t<std::vector<int> const>>));
+    EXPECT_FALSE((bio::range_compatible<std::list<std::vector<char>>,
                                            std::ranges::iterator_t<std::vector<std::string>>>));
-    EXPECT_FALSE((seqan3::range_compatible<std::list<std::vector<char>>, std::ranges::iterator_t<std::string>>));
+    EXPECT_FALSE((bio::range_compatible<std::list<std::vector<char>>, std::ranges::iterator_t<std::string>>));
 }

@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Sara Hetzel <sara.hetzel AT fu-berlin.de>
- * \brief Provides seqan3::views::translate_join.
+ * \brief Provides bio::views::translate_join.
  */
 
 #pragma once
@@ -22,14 +22,14 @@
 #include <concepts>
 #include <ranges>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 // ============================================================================
 //  view_translate_join (range definition)
 // ============================================================================
 
-/*!\brief The return type of seqan3::views::translate_join.
+/*!\brief The return type of bio::views::translate_join.
  * \implements std::ranges::view
  * \implements std::ranges::sized_range
  * \implements std::ranges::random_access_range
@@ -49,7 +49,7 @@ private:
     small_vector<translation_frames, 6> selected_frames{};
 
     /*!\name Associated types iterator
-     * \brief These associated types are needed in seqan3::detail::random_access_iterator.
+     * \brief These associated types are needed in bio::detail::random_access_iterator.
      * \{
      */
     //!\brief The reference_type.
@@ -93,7 +93,7 @@ public:
                   "std::ranges::random_access_range.");
     static_assert(nucleotide_alphabet<std::ranges::range_reference_t<std::ranges::range_reference_t<urng_t>>>,
                   "The range parameter to views::translate_join must be over a range over elements of "
-                  "seqan3::nucleotide_alphabet.");
+                  "bio::nucleotide_alphabet.");
 
     /*!\name Constructors, destructor and assignment
      * \{
@@ -264,7 +264,7 @@ view_translate_join(urng_t &&, translation_frames const = translation_frames{}) 
 //  translate_fn (adaptor definition for both views)
 // ============================================================================
 
-//!\brief Definition of the range adaptor object type for seqan3::views::translate_join.
+//!\brief Definition of the range adaptor object type for bio::views::translate_join.
 struct translate_join_fn
 {
     //!\brief Store the argument and return a range adaptor closure object.
@@ -300,7 +300,7 @@ struct translate_join_fn
                       "std::ranges::random_access_range.");
         static_assert(nucleotide_alphabet<std::ranges::range_reference_t<std::ranges::range_reference_t<urng_t>>>,
                       "The range parameter to views::translate_join must be over a range over elements of "
-                      "seqan3::nucleotide_alphabet.");
+                      "bio::nucleotide_alphabet.");
 
         return detail::view_translate_join{std::forward<urng_t>(urange), tf};
     }
@@ -313,13 +313,13 @@ struct translate_join_fn
     }
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
 // ============================================================================
 //  translate (adaptor object)
 // ============================================================================
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\name Alphabet related views
@@ -329,7 +329,7 @@ namespace seqan3::views
 /*!\brief A view that translates nucleotide into aminoacid alphabet with 1, 2, 3 or 6 frames. Input and output range are always two-dimensional.
  * \tparam urng_t The type of the range being processed.
  * \param[in] urange The range being processed. Needs to be a range of ranges (two-dimensional).
- * \param[in] tf A value of seqan3::tanslation_frames that indicates the desired frames.
+ * \param[in] tf A value of bio::tanslation_frames that indicates the desired frames.
  * \returns A range of ranges containing frames with aminoacid sequence. See below for the properties of the returned range.
  * \ingroup views
  *
@@ -368,9 +368,9 @@ namespace seqan3::views
  * | std::ranges::sized_range         | *required*                            | *preserved*                                        |
  * | std::ranges::common_range        |                                       | *guaranteed*                                       |
  * | std::ranges::output_range        |                                       | *lost*                                             |
- * | seqan3::const_iterable_range     | *required*                            | *preserved*                                        |
+ * | bio::const_iterable_range     | *required*                            | *preserved*                                        |
  * |                                  |                                       |                                                    |
- * | std::ranges::range_reference_t   | seqan3::nucleotide_alphabet            | std::ranges::view && std::ranges::random_access_range && std::ranges::sized_range |
+ * | std::ranges::range_reference_t   | bio::nucleotide_alphabet            | std::ranges::view && std::ranges::random_access_range && std::ranges::sized_range |
  *
  * * `urng_t` is the type of the range modified by this view (input).
  * * `rrng_t` is the type of the range returned by this view.
@@ -378,11 +378,11 @@ namespace seqan3::views
  *
  * ### Example
  *
- * Operating on a range of seqan3::dna5:
+ * Operating on a range of bio::dna5:
  * \snippet test/snippet/range/views/translate_join.cpp example
  * \hideinitializer
  */
 inline constexpr auto translate_join = detail::translate_join_fn{};
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Marie Hoffmann <marie.hoffmann AT fu-berlin.de>
- * \brief Provides seqan3::phred42 quality scores.
+ * \brief Provides bio::phred42 quality scores.
  */
 
 #pragma once
@@ -18,14 +18,14 @@
 // phred42
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief Quality type for traditional Sanger and modern Illumina Phred scores (typical range).
- * \implements seqan3::writable_quality_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::writable_quality_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \ingroup quality
@@ -36,7 +36,7 @@ namespace seqan3
  * [0..41] mapped to the consecutive ASCII range ['!' .. 'J']. It therefore can
  * represent the Illumina 1.8+ standard and the original Sanger score. If you
  * intend to use phred scores exceeding 41, use the larger score type, namely
- * seqan3::phred63, otherwise on construction exceeding scores are mapped to 41.
+ * bio::phred63, otherwise on construction exceeding scores are mapped to 41.
  *
  * \include test/snippet/alphabet/quality/phred42.cpp
  */
@@ -46,9 +46,9 @@ private:
     //!\brief The base class.
     using base_t = quality_base<phred42, 42>;
 
-    //!\brief Befriend seqan3::quality_base.
+    //!\brief Befriend bio::quality_base.
     friend base_t;
-    //!\cond \brief Befriend seqan3::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -84,22 +84,22 @@ public:
 /*!\name Literals
  * \{
  */
-/*!\brief The seqan3::phred42 char literal.
- * \relates seqan3::phred42
- * \returns seqan3::phred42
+/*!\brief The bio::phred42 char literal.
+ * \relates bio::phred42
+ * \returns bio::phred42
  */
 constexpr phred42 operator""_phred42(char const c) noexcept
 {
     return phred42{}.assign_char(c);
 }
 
-/*!\brief The seqan3::phred42 string literal.
+/*!\brief The bio::phred42 string literal.
  * \param[in] s A pointer to the character sequence to assign from.
  * \param[in] n The length of the character sequence to assign from.
- * \relates seqan3::phred42
- * \returns seqan3::std::vector<seqan3::phred42>
+ * \relates bio::phred42
+ * \returns bio::std::vector<bio::phred42>
  *
- * You can use this string literal to easily assign to std::vector<seqan3::phred42>:
+ * You can use this string literal to easily assign to std::vector<bio::phred42>:
  *
  * \include test/snippet/alphabet/quality/phred42_literal.cpp
  */
@@ -115,4 +115,4 @@ inline std::vector<phred42> operator""_phred42(char const * s, std::size_t n)
 }
 //!\}
 
-} // namespace seqan3
+} // namespace bio

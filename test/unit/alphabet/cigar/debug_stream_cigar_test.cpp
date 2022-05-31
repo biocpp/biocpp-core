@@ -12,9 +12,9 @@
 TEST(debug_stream_test, cigar)
 {
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
-    seqan3::cigar c1{};
+    bio::cigar c1{};
     c1.assign_string("223M");
 
     my_stream << c1;

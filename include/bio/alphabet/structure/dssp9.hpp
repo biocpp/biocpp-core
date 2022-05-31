@@ -22,15 +22,15 @@
 // dssp9
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief The protein structure alphabet of the characters "HGIEBTSCX".
- * \implements seqan3::writable_alphabet
- * \implements seqan3::writable_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::writable_alphabet
+ * \implements bio::writable_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \ingroup structure
@@ -63,7 +63,7 @@ private:
     //!\brief The base class.
     using base_t = alphabet_base<dssp9, 9>;
 
-    //!\brief Befriend seqan3::alphabet_base.
+    //!\brief Befriend bio::alphabet_base.
     friend base_t;
 
 public:
@@ -112,13 +112,13 @@ protected:
 /*!\name Literals
  * \{
  */
-/*!\brief The seqan3::dssp9 string literal.
- * \relates seqan3::dssp9
+/*!\brief The bio::dssp9 string literal.
+ * \relates bio::dssp9
  * \param[in] str A pointer to the character string to assign.
  * \param[in] len The size of the character string to assign.
- * \returns std::vector<seqan3::dssp9>
+ * \returns std::vector<bio::dssp9>
  *
- * You can use this string literal to easily assign to a vector of seqan3::dssp9 characters:
+ * You can use this string literal to easily assign to a vector of bio::dssp9 characters:
  * \include test/snippet/alphabet/structure/dssp9_literal.cpp
  */
 inline std::vector<dssp9> operator""_dssp9(const char * str, std::size_t len)
@@ -132,12 +132,12 @@ inline std::vector<dssp9> operator""_dssp9(const char * str, std::size_t len)
     return vec;
 }
 
-/*!\brief The seqan3::dssp9 char literal.
- * \relates seqan3::dssp9
+/*!\brief The bio::dssp9 char literal.
+ * \relates bio::dssp9
  * \param[in] ch The character to represent as dssp.
- * \returns seqan3::dssp9
+ * \returns bio::dssp9
  *
- * You can use this string literal to assign a seqan3::dssp9 character:
+ * You can use this string literal to assign a bio::dssp9 character:
  * \include test/snippet/alphabet/structure/dssp9_char_literal.cpp
  */
 constexpr dssp9 operator""_dssp9(char const ch) noexcept
@@ -147,4 +147,4 @@ constexpr dssp9 operator""_dssp9(char const ch) noexcept
 
 //!\}
 
-} // namespace seqan3
+} // namespace bio

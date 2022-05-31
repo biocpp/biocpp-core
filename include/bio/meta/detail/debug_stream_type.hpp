@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::debug_stream and related types.
+ * \brief Provides bio::debug_stream and related types.
  */
 
 #pragma once
@@ -16,14 +16,14 @@
 
 #include <bio/meta/add_enum_bitwise_operators.hpp>
 
-namespace seqan3
+namespace bio
 {
 
 // ------------------------------------------------------------------
-// seqan3::fmtflags2
+// bio::fmtflags2
 // ------------------------------------------------------------------
 
-//!\brief Flags that change the behaviour of the seqan3::debug_stream.
+//!\brief Flags that change the behaviour of the bio::debug_stream.
 //!\ingroup stream
 enum fmtflags2
 {
@@ -34,23 +34,23 @@ enum fmtflags2
     default_            = small_int_as_number
 };
 
-//!\brief Overload bitwise operators for seqan3::fmtflags2.
+//!\brief Overload bitwise operators for bio::fmtflags2.
 template <>
 constexpr bool add_enum_bitwise_operators<fmtflags2> = true;
 
 // ------------------------------------------------------------------
-// seqan3::debug_stream_type
+// bio::debug_stream_type
 // ------------------------------------------------------------------
 
 /*!\brief A "pretty printer" for most SeqAn data structures and related types.
  * \ingroup core
  * \details
  *
- * A global instance of this type exists as seqan3::debug_stream. You can stream to it as you would to std::cout or
+ * A global instance of this type exists as bio::debug_stream. You can stream to it as you would to std::cout or
  * std::cerr, but the debug stream has special
  * overloads that make certain types streamable (that are not streamable to std::cout). Additionally some
  * data structures are visualised more elaborately via the debug stream and there are extra flags to configure it
- * (seqan3::fmtflags2).
+ * (bio::fmtflags2).
  *
  * # Example
  *
@@ -62,9 +62,9 @@ constexpr bool add_enum_bitwise_operators<fmtflags2> = true;
  *
  * \include test/snippet/core/debug_stream_flags.cpp
  *
- * See seqan3::fmtflags2 for more details.
+ * See bio::fmtflags2 for more details.
  *
- * \attention This class does not yet model seqan3::output_stream_over fully, \todo implement.
+ * \attention This class does not yet model bio::output_stream_over fully, \todo implement.
  */
 template <typename char_t = char>
 class debug_stream_type
@@ -186,7 +186,7 @@ public:
     }
     //!\}
 
-    /*!\name Format flags (seqan3::fmtflags2)
+    /*!\name Format flags (bio::fmtflags2)
      * \brief SeqAn specific debug flags for the debug stream.
      * \{
      */
@@ -239,4 +239,4 @@ debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & s, t && v)
     return s;
 }
 
-} // namespace seqan3
+} // namespace bio

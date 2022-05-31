@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Sara Hetzel <sara.hetzel AT fu-berlin.de>
- * \brief Provides seqan3::dna3bs, container aliases and string literals.
+ * \brief Provides bio::dna3bs, container aliases and string literals.
  */
 
 #pragma once
@@ -21,15 +21,15 @@
 // dna3bs
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 /*!\brief The three letter reduced DNA alphabet for bisulfite sequencing mode (A,G,T(=C)).
  * \ingroup nucleotide
- * \implements seqan3::nucleotide_alphabet
- * \implements seqan3::writable_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::nucleotide_alphabet
+ * \implements bio::writable_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \details
@@ -48,7 +48,7 @@ namespace seqan3
  *
  * Like most alphabets, this alphabet cannot be initialised directly from its character representation.
  * Instead initialise/assign from the character literal or use the
- * function seqan3::dna3bs::assign_char().
+ * function bio::dna3bs::assign_char().
  *
  * \include test/snippet/alphabet/nucleotide/dna3bs.cpp
  */
@@ -58,9 +58,9 @@ private:
     //!\brief The base class.
     using base_t = nucleotide_base<dna3bs, 3>;
 
-    //!\brief Befriend seqan3::nucleotide_base.
+    //!\brief Befriend bio::nucleotide_base.
     friend base_t;
-    //!\cond \brief Befriend seqan3::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -131,7 +131,7 @@ protected:
 // containers
 // ------------------------------------------------------------------
 
-//!\brief Alias for an std::vector of seqan3::dna3bs.
+//!\brief Alias for an std::vector of bio::dna3bs.
 //!\relates dna3bs
 using dna3bs_vector = std::vector<dna3bs>;
 
@@ -143,18 +143,18 @@ using dna3bs_vector = std::vector<dna3bs>;
  * \{
  */
 
-/*!\brief The seqan3::dna3bs char literal.
- * \relates seqan3::dna3bs
- * \returns seqan3::dna3bs
+/*!\brief The bio::dna3bs char literal.
+ * \relates bio::dna3bs
+ * \returns bio::dna3bs
  */
 constexpr dna3bs operator""_dna3bs(char const c) noexcept
 {
     return dna3bs{}.assign_char(c);
 }
 
-/*!\brief The seqan3::dna3bs string literal.
- * \relates seqan3::dna3bs
- * \returns seqan3::dna3bs_vector
+/*!\brief The bio::dna3bs string literal.
+ * \relates bio::dna3bs
+ * \returns bio::dna3bs_vector
  *
  * You can use this string literal to easily assign to dna3bs_vector:
  *
@@ -184,4 +184,4 @@ constexpr std::array<dna3bs, dna3bs::alphabet_size> dna3bs::complement_table
     'A'_dna3bs     // complement of 'T'_dna3bs
 };
 
-} // namespace seqan3
+} // namespace bio

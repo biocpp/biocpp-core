@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::dna4, container aliases and string literals.
+ * \brief Provides bio::dna4, container aliases and string literals.
  */
 
 #pragma once
@@ -20,18 +20,18 @@
 // dna4
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
 class rna4;
 
 /*!\brief The four letter DNA alphabet of A,C,G,T.
  * \ingroup nucleotide
- * \implements seqan3::nucleotide_alphabet
- * \implements seqan3::writable_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::nucleotide_alphabet
+ * \implements bio::writable_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \details
@@ -40,7 +40,7 @@ class rna4;
  *
  * Like most alphabets, this alphabet cannot be initialised directly from its character representation.
  * Instead initialise/assign from the character literal or use the
- * function seqan3::dna4::assign_char().
+ * function bio::dna4::assign_char().
  *
  * \include test/snippet/alphabet/nucleotide/dna4.cpp
  */
@@ -50,12 +50,12 @@ private:
     //!\brief The base class.
     using base_t = nucleotide_base<dna4, 4>;
 
-    //!\brief Befriend seqan3::nucleotide_base.
+    //!\brief Befriend bio::nucleotide_base.
     friend base_t;
-    //!\cond \brief Befriend seqan3::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet_base.
     friend base_t::base_t;
     //!\endcond
-    //!\brief Befriend seqan3::rna4 so it can copy #char_to_rank.
+    //!\brief Befriend bio::rna4 so it can copy #char_to_rank.
     friend rna4;
 
 public:
@@ -132,7 +132,7 @@ protected:
 // containers
 // ------------------------------------------------------------------
 
-//!\brief Alias for an std::vector of seqan3::dna4.
+//!\brief Alias for an std::vector of bio::dna4.
 //!\relates dna4
 using dna4_vector = std::vector<dna4>;
 
@@ -144,18 +144,18 @@ using dna4_vector = std::vector<dna4>;
  * \{
  */
 
-/*!\brief The seqan3::dna4 char literal.
- * \relates seqan3::dna4
- * \returns seqan3::dna4
+/*!\brief The bio::dna4 char literal.
+ * \relates bio::dna4
+ * \returns bio::dna4
  */
 constexpr dna4 operator""_dna4(char const c) noexcept
 {
     return dna4{}.assign_char(c);
 }
 
-/*!\brief The seqan3::dna4 string literal.
- * \relates seqan3::dna4
- * \returns seqan3::dna4_vector
+/*!\brief The bio::dna4 string literal.
+ * \relates bio::dna4
+ * \returns bio::dna4_vector
  *
  * You can use this string literal to easily assign to dna4_vector:
  *
@@ -186,4 +186,4 @@ constexpr std::array<dna4, dna4::alphabet_size> dna4::complement_table
     'A'_dna4     // complement of 'T'_dna4
 };
 
-} // namespace seqan3
+} // namespace bio

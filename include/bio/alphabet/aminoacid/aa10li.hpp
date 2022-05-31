@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Sara Hetzel <sara.hetzel AT fu-berlin.de>
- * \brief Provides seqan3::aa10li, container aliases and string literals.
+ * \brief Provides bio::aa10li, container aliases and string literals.
  */
 
 #pragma once
@@ -18,15 +18,15 @@
 #include <bio/alphabet/aminoacid/concept.hpp>
 #include <bio/meta/char_operations/transform.hpp>
 
-namespace seqan3
+namespace bio
 {
 /*!\brief The reduced Li amino acid alphabet.
  * \ingroup aminoacid
- * \implements seqan3::aminoacid_alphabet
- * \implements seqan3::writable_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::aminoacid_alphabet
+ * \implements bio::writable_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \details
@@ -83,9 +83,9 @@ private:
     //!\brief The base class.
     using base_t = aminoacid_base<aa10li, 10>;
 
-    //!\brief Befriend seqan3::aminoacid_base.
+    //!\brief Befriend bio::aminoacid_base.
     friend base_t;
-    //!\cond \brief Befriend seqan3::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -164,7 +164,7 @@ protected:
 // containers
 // ------------------------------------------------------------------
 
-//!\brief Alias for an std::vector of seqan3::aa10li.
+//!\brief Alias for an std::vector of bio::aa10li.
 //!\relates aa10li
 using aa10li_vector = std::vector<aa10li>;
 
@@ -176,26 +176,26 @@ using aa10li_vector = std::vector<aa10li>;
  * \{
  */
 
-/*!\brief The seqan3::aa10li char literal.
+/*!\brief The bio::aa10li char literal.
  * \param[in] c The character to assign.
- * \relates seqan3::aa10li
- * \returns seqan3::aa10li
+ * \relates bio::aa10li
+ * \returns bio::aa10li
  */
 constexpr aa10li operator""_aa10li(char const c) noexcept
 {
     return aa10li{}.assign_char(c);
 }
 
-/*!\brief The seqan3::aa10li  string literal.
+/*!\brief The bio::aa10li  string literal.
  * \param[in] s A pointer to the character string to assign.
  * \param[in] n The size of the character string to assign.
- * \relates seqan3::aa10li
- * \returns seqan3::aa10li_vector
+ * \relates bio::aa10li
+ * \returns bio::aa10li_vector
  *
  * You can use this string literal to easily assign to aa10li_vector:
  *
  * \attention
- * All seqan3 literals are in the namespace seqan3!
+ * All seqan3 literals are in the namespace bio!
  */
 
 inline aa10li_vector operator""_aa10li(char const * const s, size_t const n)
@@ -210,4 +210,4 @@ inline aa10li_vector operator""_aa10li(char const * const s, size_t const n)
 }
 //!\}
 
-} // namespace seqan3
+} // namespace bio

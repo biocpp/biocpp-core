@@ -28,7 +28,7 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace seqan3
+namespace bio
 {
 namespace test
 {
@@ -148,4 +148,4 @@ private:
 };
 /// \endcond
 } // namespace test
-} // namespace seqan3
+} // namespace bio

@@ -29,7 +29,7 @@
 #include <bio/meta/detail/int_types.hpp>
 #include <concepts>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 /*!\brief How many bits has a type?
@@ -275,4 +275,4 @@ constexpr type to_little_endian(type const in) noexcept
     }
 }
 
-} // namespace seqan3::detail
+} // namespace bio::detail

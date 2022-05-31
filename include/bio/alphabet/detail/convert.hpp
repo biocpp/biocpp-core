@@ -8,7 +8,7 @@
 /*!\cond DEV
  * \file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::detail::convert_through_char_representation.
+ * \brief Provides bio::detail::convert_through_char_representation.
  * \endcond
  */
 
@@ -22,13 +22,13 @@
 // conversion to/from char/rank types
 // ============================================================================
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 /*!\brief A precomputed conversion table for two alphabets based on their char representations.
  * \ingroup alphabet
- * \tparam out_t The type of the output, must satisfy seqan3::alphabet.
- * \tparam in_t The type of the input, must satisfy seqan3::alphabet.
+ * \tparam out_t The type of the output, must satisfy bio::alphabet.
+ * \tparam in_t The type of the input, must satisfy bio::alphabet.
  * \hideinitializer
  */
 template <alphabet out_t, alphabet in_t>
@@ -44,4 +44,4 @@ constexpr std::array<out_t, alphabet_size<in_t>> convert_through_char_representa
     }()
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail

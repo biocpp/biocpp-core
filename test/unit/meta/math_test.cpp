@@ -22,12 +22,12 @@ TYPED_TEST_SUITE(unsigned_operations, unsigned_types, );
 TYPED_TEST(unsigned_operations, floor_log2)
 {
     using unsigned_t = TypeParam;
-    constexpr size_t zero = seqan3::detail::floor_log2<unsigned_t>(0b0001);
-    constexpr size_t one1 = seqan3::detail::floor_log2<unsigned_t>(0b0010);
-    constexpr size_t one2 = seqan3::detail::floor_log2<unsigned_t>(0b0011);
-    constexpr size_t two1 = seqan3::detail::floor_log2<unsigned_t>(0b0101);
-    constexpr size_t two2 = seqan3::detail::floor_log2<unsigned_t>(0b0111);
-    constexpr size_t seven = seqan3::detail::floor_log2<unsigned_t>(0b10010010);
+    constexpr size_t zero = bio::detail::floor_log2<unsigned_t>(0b0001);
+    constexpr size_t one1 = bio::detail::floor_log2<unsigned_t>(0b0010);
+    constexpr size_t one2 = bio::detail::floor_log2<unsigned_t>(0b0011);
+    constexpr size_t two1 = bio::detail::floor_log2<unsigned_t>(0b0101);
+    constexpr size_t two2 = bio::detail::floor_log2<unsigned_t>(0b0111);
+    constexpr size_t seven = bio::detail::floor_log2<unsigned_t>(0b10010010);
     EXPECT_EQ(zero, 0u);
     EXPECT_EQ(one1, 1u);
     EXPECT_EQ(one2, 1u);
@@ -35,13 +35,13 @@ TYPED_TEST(unsigned_operations, floor_log2)
     EXPECT_EQ(two2, 2u);
     EXPECT_EQ(seven, 7u);
 
-    for (uint8_t log2_value = 0; log2_value < seqan3::detail::sizeof_bits<unsigned_t>; ++log2_value)
+    for (uint8_t log2_value = 0; log2_value < bio::detail::sizeof_bits<unsigned_t>; ++log2_value)
     {
         unsigned_t start = unsigned_t{1u} << log2_value;
         unsigned_t end = start << 1u;
         for (unsigned_t n = start, k = 0u; n < end && k < max_iterations; ++n, ++k)
         {
-            EXPECT_EQ(seqan3::detail::floor_log2(n), log2_value);
+            EXPECT_EQ(bio::detail::floor_log2(n), log2_value);
             EXPECT_EQ(std::floor(std::log2(n)), log2_value) << "If this fails this might be a floating point rounding "
                                                             << "error on your machine";
         }
@@ -51,12 +51,12 @@ TYPED_TEST(unsigned_operations, floor_log2)
 TYPED_TEST(unsigned_operations, ceil_log2)
 {
     using unsigned_t = TypeParam;
-    constexpr size_t zero = seqan3::detail::ceil_log2<unsigned_t>(0b0001);
-    constexpr size_t one = seqan3::detail::ceil_log2<unsigned_t>(0b0010);
-    constexpr size_t two = seqan3::detail::ceil_log2<unsigned_t>(0b0011);
-    constexpr size_t three1 = seqan3::detail::ceil_log2<unsigned_t>(0b0101);
-    constexpr size_t three2 = seqan3::detail::ceil_log2<unsigned_t>(0b0111);
-    constexpr size_t eight = seqan3::detail::ceil_log2<unsigned_t>(0b10010010);
+    constexpr size_t zero = bio::detail::ceil_log2<unsigned_t>(0b0001);
+    constexpr size_t one = bio::detail::ceil_log2<unsigned_t>(0b0010);
+    constexpr size_t two = bio::detail::ceil_log2<unsigned_t>(0b0011);
+    constexpr size_t three1 = bio::detail::ceil_log2<unsigned_t>(0b0101);
+    constexpr size_t three2 = bio::detail::ceil_log2<unsigned_t>(0b0111);
+    constexpr size_t eight = bio::detail::ceil_log2<unsigned_t>(0b10010010);
     EXPECT_EQ(zero, 0u);
     EXPECT_EQ(one, 1u);
     EXPECT_EQ(two, 2u);
@@ -64,20 +64,20 @@ TYPED_TEST(unsigned_operations, ceil_log2)
     EXPECT_EQ(three2, 3u);
     EXPECT_EQ(eight, 8u);
 
-    for (uint8_t log2_value = 0; log2_value < seqan3::detail::sizeof_bits<unsigned_t>; ++log2_value)
+    for (uint8_t log2_value = 0; log2_value < bio::detail::sizeof_bits<unsigned_t>; ++log2_value)
     {
         unsigned_t start = unsigned_t{1u} << log2_value;
         unsigned_t end = start << 1u;
-        EXPECT_EQ(seqan3::detail::ceil_log2(start), log2_value);
+        EXPECT_EQ(bio::detail::ceil_log2(start), log2_value);
         EXPECT_EQ(std::ceil(std::log2(start)), log2_value) << "ceil_log2 of " << start << " should be " << log2_value
                                                            << "; If this fails this might be a floating point rounding "
                                                            << "error on your machine.";
 
         for (unsigned_t n = start + 1u, k = 0u; n < end && k < max_iterations; ++n, ++k)
         {
-            EXPECT_EQ(seqan3::detail::ceil_log2(n), log2_value + 1u);
+            EXPECT_EQ(bio::detail::ceil_log2(n), log2_value + 1u);
 
-            if constexpr (seqan3::detail::sizeof_bits<unsigned_t> <= 32u) // known to fail for 64bit unsigned integers
+            if constexpr (bio::detail::sizeof_bits<unsigned_t> <= 32u) // known to fail for 64bit unsigned integers
             {
                 EXPECT_EQ(std::ceil(std::log2(n)), log2_value + 1u) << "ceil_log2 of " << start << " should be "
                                                                     << log2_value
@@ -90,39 +90,39 @@ TYPED_TEST(unsigned_operations, ceil_log2)
 
 TEST(pow, unsigned_base)
 {
-    EXPECT_EQ(0u, seqan3::pow(0u, 2u));
-    EXPECT_EQ(1u, seqan3::pow(2u, 0u));
-    EXPECT_EQ(8u, seqan3::pow(2u, 3u));
-    EXPECT_EQ(std::numeric_limits<uint64_t>::max(), seqan3::pow(std::numeric_limits<uint64_t>::max(), 1u));
+    EXPECT_EQ(0u, bio::pow(0u, 2u));
+    EXPECT_EQ(1u, bio::pow(2u, 0u));
+    EXPECT_EQ(8u, bio::pow(2u, 3u));
+    EXPECT_EQ(std::numeric_limits<uint64_t>::max(), bio::pow(std::numeric_limits<uint64_t>::max(), 1u));
 }
 
 TEST(pow, signed_base)
 {
-    EXPECT_EQ(0, seqan3::pow(0, 2u));
-    EXPECT_EQ(1, seqan3::pow(2, 0u));
-    EXPECT_EQ(8, seqan3::pow(2, 3u));
-    EXPECT_EQ(-8, seqan3::pow(-2, 3u));
-    EXPECT_EQ(std::numeric_limits<int64_t>::max(), seqan3::pow(std::numeric_limits<int64_t>::max(), 1u));
-    EXPECT_EQ(std::numeric_limits<int64_t>::min(), seqan3::pow(std::numeric_limits<int64_t>::min(), 1u));
+    EXPECT_EQ(0, bio::pow(0, 2u));
+    EXPECT_EQ(1, bio::pow(2, 0u));
+    EXPECT_EQ(8, bio::pow(2, 3u));
+    EXPECT_EQ(-8, bio::pow(-2, 3u));
+    EXPECT_EQ(std::numeric_limits<int64_t>::max(), bio::pow(std::numeric_limits<int64_t>::max(), 1u));
+    EXPECT_EQ(std::numeric_limits<int64_t>::min(), bio::pow(std::numeric_limits<int64_t>::min(), 1u));
 }
 
 TEST(pow, std)
 {
-    EXPECT_EQ(0.0, seqan3::pow(0u, 2));
-    EXPECT_EQ(1.0, seqan3::pow(2, 0));
-    EXPECT_EQ(27.0, seqan3::pow(3.0, 3u));
-    EXPECT_EQ(-8.0, seqan3::pow(-2.0, 3));
+    EXPECT_EQ(0.0, bio::pow(0u, 2));
+    EXPECT_EQ(1.0, bio::pow(2, 0));
+    EXPECT_EQ(27.0, bio::pow(3.0, 3u));
+    EXPECT_EQ(-8.0, bio::pow(-2.0, 3));
 }
 
 #ifndef NDEBUG
 TEST(pow, overflow)
 {
-    EXPECT_THROW(seqan3::pow(2u, 64u), std::overflow_error);
-    EXPECT_THROW(seqan3::pow(2, 63u), std::overflow_error);
+    EXPECT_THROW(bio::pow(2u, 64u), std::overflow_error);
+    EXPECT_THROW(bio::pow(2, 63u), std::overflow_error);
 }
 
 TEST(pow, underflow)
 {
-    EXPECT_THROW(seqan3::pow(-3, 50u), std::underflow_error);
+    EXPECT_THROW(bio::pow(-3, 50u), std::underflow_error);
 }
 #endif

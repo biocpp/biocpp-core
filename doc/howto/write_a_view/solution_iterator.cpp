@@ -4,14 +4,14 @@
 #include <vector>
 #include <bio/alphabet/nucleotide/all.hpp>
 
-using seqan3::operator""_dna5;
+using bio::operator""_dna5;
 
 template <std::ranges::forward_range urng_t> // the underlying range type
 struct my_iterator : std::ranges::iterator_t<urng_t>
 {
 //![start]
     //![static_assert]
-    static_assert(seqan3::nucleotide_alphabet<std::ranges::range_reference_t<urng_t>>,
+    static_assert(bio::nucleotide_alphabet<std::ranges::range_reference_t<urng_t>>,
                   "You can only iterate over ranges of nucleotides!");
     //![static_assert]
 
@@ -23,8 +23,8 @@ struct my_iterator : std::ranges::iterator_t<urng_t>
     using pointer               = typename std::iterator_traits<base_t>::pointer;
     //![solution1a]
     //![reference]
-    // If the value_type is seqan3::dna5, the reference type of the vector is
-    // seqan3::dna5 & and operator* returns this so you can change the values
+    // If the value_type is bio::dna5, the reference type of the vector is
+    // bio::dna5 & and operator* returns this so you can change the values
     // in the vector through it's iterator.
     // This won't work anymore, because now we are creating new values on access
     // so we now need to change this type to reflect that:
@@ -64,10 +64,10 @@ struct my_iterator : std::ranges::iterator_t<urng_t>
     //![dereference]
     // The operator* facilitates the access to the element.
     // This implementation calls the base class's implementation but passes the return value
-    // through the seqan3::complement() function before returning it.
+    // through the bio::complement() function before returning it.
     reference operator*() const
     {
-        return seqan3::complement(base_t::operator*());
+        return bio::complement(base_t::operator*());
     }
     //![dereference]
 
@@ -75,21 +75,21 @@ struct my_iterator : std::ranges::iterator_t<urng_t>
 };
 
 // verify that your type models the concept
-static_assert(std::forward_iterator<my_iterator<std::vector<seqan3::dna5>>>);
+static_assert(std::forward_iterator<my_iterator<std::vector<bio::dna5>>>);
 
 int main()
 {
-    std::vector<seqan3::dna5> vec{"GATTACA"_dna5};
+    std::vector<bio::dna5> vec{"GATTACA"_dna5};
 
     // instantiate the template over the underlying vector's iterator and sentinel
     // (for all standard containers the sentinel type is the same as the iterator type)
-    using my_it_concrete = my_iterator<std::vector<seqan3::dna5>>;
+    using my_it_concrete = my_iterator<std::vector<bio::dna5>>;
 
     // create an iterator that is constructed with vec.begin() as the underlying iterator
     my_it_concrete it{vec.begin()};
 
     // iterate over vec, but with your custom iterator
     while (it != vec.end())
-        std::cout << seqan3::to_char(*it++) << ' ';
+        std::cout << bio::to_char(*it++) << ' ';
 }
 //![end]

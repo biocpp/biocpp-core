@@ -24,7 +24,7 @@
 // forwards
 // ============================================================================
 
-namespace seqan3::custom
+namespace bio::custom
 {
 
 /*!\brief A type that can be specialised to provide customisation point implementations so that third party types
@@ -61,24 +61,24 @@ struct alphabet<t const &> : alphabet<t>
 {};
 //!\endcond
 
-} // namespace seqan3::custom
+} // namespace bio::custom
 
 // ============================================================================
 // to_rank()
 // ============================================================================
 
-namespace seqan3::detail::adl_only
+namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename ...args_t>
 void to_rank(args_t ...) = delete;
 
-//!\brief Functor definition for seqan3::to_rank.
+//!\brief Functor definition for bio::to_rank.
 struct to_rank_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, seqan3::custom::alphabet<decltype(v)>::to_rank(v))    // explicit customisation
+    SEQAN3_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_rank(v))    // explicit customisation
     SEQAN3_CPO_IMPL(1, to_rank(v)                                       )    // ADL
     SEQAN3_CPO_IMPL(0, v.to_rank()                                      )    // member
 
@@ -99,9 +99,9 @@ public:
     }
 };
 
-} // namespace seqan3::detail::adl_only
+} // namespace bio::detail::adl_only
 
-namespace seqan3
+namespace bio
 {
 
 /*!\name Function objects
@@ -119,7 +119,7 @@ namespace seqan3
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   1. A static member function `to_rank(your_type const a)` of the class `seqan3::custom::alphabet<your_type>`.
+ *   1. A static member function `to_rank(your_type const a)` of the class `bio::custom::alphabet<your_type>`.
  *   2. A free function `to_rank(your_type const a)` in the namespace of your type (or as `friend`).
  *   3. A member function called `to_rank()`.
  *
@@ -133,7 +133,7 @@ namespace seqan3
  * \include test/snippet/alphabet/to_rank.cpp
  *
  * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see seqan3::alphabet.
+ * see bio::alphabet.
  *
  * ### Customisation point
  *
@@ -143,33 +143,33 @@ namespace seqan3
 inline constexpr auto to_rank = detail::adl_only::to_rank_fn{};
 //!\}
 
-//!\brief The `rank_type` of the semi-alphabet; defined as the return type of seqan3::to_rank.
+//!\brief The `rank_type` of the semi-alphabet; defined as the return type of bio::to_rank.
 //!\ingroup alphabet
 template <typename semi_alphabet_type>
 //!\cond
-    requires requires { { seqan3::to_rank(std::declval<semi_alphabet_type>()) }; }
+    requires requires { { bio::to_rank(std::declval<semi_alphabet_type>()) }; }
 //!\endcond
-using alphabet_rank_t = decltype(seqan3::to_rank(std::declval<semi_alphabet_type>()));
+using alphabet_rank_t = decltype(bio::to_rank(std::declval<semi_alphabet_type>()));
 
-} // namespace seqan3
+} // namespace bio
 
 // ============================================================================
 // assign_rank_to()
 // ============================================================================
 
-namespace seqan3::detail::adl_only
+namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename ...args_t>
 void assign_rank_to(args_t ...) = delete;
 
-//!\brief Functor definition for seqan3::assign_rank_to.
+//!\brief Functor definition for bio::assign_rank_to.
 //!\ingroup alphabet
 struct assign_rank_to_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, (seqan3::custom::alphabet<decltype(v)>::assign_rank_to(args..., v))) // explicit customisation
+    SEQAN3_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_rank_to(args..., v))) // explicit customisation
     SEQAN3_CPO_IMPL(1, (assign_rank_to(args..., v)                                       )) // ADL
     SEQAN3_CPO_IMPL(0, (v.assign_rank(args...)                                           )) // member
 
@@ -177,22 +177,22 @@ public:
     //!\brief Operator definition.
     template <typename alph_t>
     //!\cond
-        requires requires (seqan3::alphabet_rank_t<alph_t> const r, alph_t & a)
+        requires requires (bio::alphabet_rank_t<alph_t> const r, alph_t & a)
             {
                 { impl(priority_tag<2>{}, a, r) };
                 requires noexcept(impl(priority_tag<2>{}, a, r));
                 requires std::same_as<alph_t &, decltype(impl(priority_tag<2>{}, a, r))>;
             }
     //!\endcond
-    constexpr alph_t operator()(seqan3::alphabet_rank_t<alph_t> const r, alph_t && a) const noexcept
+    constexpr alph_t operator()(bio::alphabet_rank_t<alph_t> const r, alph_t && a) const noexcept
     {
         return impl(priority_tag<2>{}, a, r);
     }
 };
 
-} // namespace seqan3::detail::adl_only
+} // namespace bio::detail::adl_only
 
-namespace seqan3
+namespace bio
 {
 
 /*!\name Function objects
@@ -201,7 +201,7 @@ namespace seqan3
 
 /*!\brief Assign a rank to an alphabet object.
  * \tparam your_type Type of the target object.
- * \param chr  The rank being assigned; must be of the seqan3::alphabet_rank_t of the target object.
+ * \param chr  The rank being assigned; must be of the bio::alphabet_rank_t of the target object.
  * \param alph The target object.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
  * \ingroup alphabet
@@ -213,7 +213,7 @@ namespace seqan3
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
  *   1. A static member function `assign_rank_to(rank_type const chr, your_type & a)` of the class
- *      `seqan3::custom::alphabet<your_type>`.
+ *      `bio::custom::alphabet<your_type>`.
  *   2. A free function `assign_rank_to(rank_type const chr, your_type & a)` in the namespace of your
  *      type (or as `friend`).
  *   3. A member function called `assign_rank(rank_type const chr)` (not `assign_rank_to`).
@@ -229,7 +229,7 @@ namespace seqan3
  * \include test/snippet/alphabet/assign_rank_to.cpp
  *
  * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see seqan3::alphabet.
+ * see bio::alphabet.
  *
  * ### Customisation point
  *
@@ -238,24 +238,24 @@ namespace seqan3
  */
 inline constexpr auto assign_rank_to = detail::adl_only::assign_rank_to_fn{};
 //!\}
-} // namespace seqan3
+} // namespace bio
 
 // ============================================================================
 // to_char()
 // ============================================================================
 
-namespace seqan3::detail::adl_only
+namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename ...args_t>
 void to_char(args_t ...) = delete;
 
-//!\brief Functor definition for seqan3::to_char.
+//!\brief Functor definition for bio::to_char.
 struct to_char_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, seqan3::custom::alphabet<decltype(v)>::to_char(v))    // explicit customisation
+    SEQAN3_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_char(v))    // explicit customisation
     SEQAN3_CPO_IMPL(1, to_char(v)                                       )    // ADL
     SEQAN3_CPO_IMPL(0, v.to_char()                                      )    // member
 
@@ -276,9 +276,9 @@ public:
     }
 };
 
-} // namespace seqan3::detail::adl_only
+} // namespace bio::detail::adl_only
 
-namespace seqan3
+namespace bio
 {
 
 /*!\name Function objects
@@ -297,12 +297,12 @@ namespace seqan3
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   2. A static member function `to_char(your_type const a)` of the class `seqan3::custom::alphabet<your_type>`.
+ *   2. A static member function `to_char(your_type const a)` of the class `bio::custom::alphabet<your_type>`.
  *   1. A free function `to_char(your_type const a)` in the namespace of your type (or as `friend`).
  *   3. A member function called `to_char()`.
  *
  * Functions are only considered for one of the above cases if they are marked `noexcept` (`constexpr` is not required,
- * but recommended) and if the returned type models seqan3::builtin_character.
+ * but recommended) and if the returned type models bio::builtin_character.
  *
  * Every alphabet type must provide one of the above.
  *
@@ -311,7 +311,7 @@ namespace seqan3
  * \include test/snippet/alphabet/to_char.cpp
  *
  * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see seqan3::alphabet.
+ * see bio::alphabet.
  *
  * ### Customisation point
  *
@@ -321,33 +321,33 @@ namespace seqan3
 inline constexpr auto to_char = detail::adl_only::to_char_fn{};
 //!\}
 
-//!\brief The `char_type` of the alphabet; defined as the return type of seqan3::to_char.
+//!\brief The `char_type` of the alphabet; defined as the return type of bio::to_char.
 //!\ingroup alphabet
 template <typename alphabet_type>
 //!\cond
-    requires requires (alphabet_type const a) { { seqan3::to_char(a) }; }
+    requires requires (alphabet_type const a) { { bio::to_char(a) }; }
 //!\endcond
-using alphabet_char_t = decltype(seqan3::to_char(std::declval<alphabet_type const>()));
+using alphabet_char_t = decltype(bio::to_char(std::declval<alphabet_type const>()));
 
-} // namespace seqan3
+} // namespace bio
 
 // ============================================================================
 // assign_char_to()
 // ============================================================================
 
-namespace seqan3::detail::adl_only
+namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename ...args_t>
 void assign_char_to(args_t ...) = delete;
 
-//!\brief Functor definition for seqan3::assign_char_to.
+//!\brief Functor definition for bio::assign_char_to.
 //!\ingroup alphabet
 struct assign_char_to_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, (seqan3::custom::alphabet<decltype(v)>::assign_char_to(args..., v))) // explicit customisation
+    SEQAN3_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_char_to(args..., v))) // explicit customisation
     SEQAN3_CPO_IMPL(1, (assign_char_to(args..., v)                                       )) // ADL
     SEQAN3_CPO_IMPL(0, (v.assign_char(args...)                                           )) // member
 
@@ -355,22 +355,22 @@ public:
     //!\brief Operator definition.
     template <typename alph_t>
     //!\cond
-        requires requires (seqan3::alphabet_char_t<alph_t> const r, alph_t & a)
+        requires requires (bio::alphabet_char_t<alph_t> const r, alph_t & a)
             {
                 { impl(priority_tag<2>{}, a, r) };
                 requires noexcept(impl(priority_tag<2>{}, a, r));
                 requires std::same_as<alph_t &, decltype(impl(priority_tag<2>{}, a, r))>;
             }
     //!\endcond
-    constexpr alph_t operator()(seqan3::alphabet_char_t<alph_t> const r, alph_t && a) const noexcept
+    constexpr alph_t operator()(bio::alphabet_char_t<alph_t> const r, alph_t && a) const noexcept
     {
         return impl(priority_tag<2>{}, a, r);
     }
 };
 
-} // namespace seqan3::detail::adl_only
+} // namespace bio::detail::adl_only
 
-namespace seqan3
+namespace bio
 {
 
 /*!\name Function objects
@@ -379,8 +379,8 @@ namespace seqan3
 
 /*!\brief Assign a character to an alphabet object.
  * \tparam your_type Type of the target object.
- * \param chr  The character being assigned; must be of the seqan3::alphabet_char_t of the target object.
- * \param alph The target object; its type must model seqan3::alphabet.
+ * \param chr  The character being assigned; must be of the bio::alphabet_char_t of the target object.
+ * \param alph The target object; its type must model bio::alphabet.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
  * \ingroup alphabet
  *
@@ -391,7 +391,7 @@ namespace seqan3
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
  *   1. A static member function `assign_char_to(char_type const chr, your_type & a)`
- *      of the class `seqan3::custom::alphabet<your_type>`.
+ *      of the class `bio::custom::alphabet<your_type>`.
  *   2. A free function `assign_char_to(char_type const chr, your_type & a)` in the namespace of your
  *      type (or as `friend`).
  *   3. A member function called `assign_char(char_type const chr)` (not `assign_char_to`).
@@ -407,7 +407,7 @@ namespace seqan3
  * \include test/snippet/alphabet/assign_char_to.cpp
  *
  * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see seqan3::alphabet.
+ * see bio::alphabet.
  *
  * ### Customisation point
  *
@@ -416,20 +416,20 @@ namespace seqan3
  */
 inline constexpr auto assign_char_to = detail::adl_only::assign_char_to_fn{};
 //!\}
-} // namespace seqan3
+} // namespace bio
 
 // ============================================================================
 // char_is_valid_for()
 // ============================================================================
 
-namespace seqan3::detail::adl_only
+namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename ...args_t>
 void char_is_valid_for(args_t ...) = delete;
 
-/*!\brief Functor definition for seqan3::char_is_valid_for.
+/*!\brief Functor definition for bio::char_is_valid_for.
  * \tparam alph_t   The alphabet type being queried.
  * \ingroup alphabet
  */
@@ -442,10 +442,10 @@ public:
                                         std::remove_cvref_t<alph_t>,
                                         std::type_identity<alph_t>>;
 
-    SEQAN3_CPO_IMPL(3, (deferred_type_t<seqan3::custom::alphabet<alph_t>, decltype(v)>::char_is_valid(v))) // expl. cst.
+    SEQAN3_CPO_IMPL(3, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::char_is_valid(v))) // expl. cst.
     SEQAN3_CPO_IMPL(2, (char_is_valid_for(v, s_alph_t{})                                                )) // ADL
     SEQAN3_CPO_IMPL(1, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::char_is_valid(v)          )) // member
-    SEQAN3_CPO_IMPL(0, (seqan3::to_char(seqan3::assign_char_to(v, s_alph_t{})) == v                     )) // fallback
+    SEQAN3_CPO_IMPL(0, (bio::to_char(bio::assign_char_to(v, s_alph_t{})) == v                     )) // fallback
 
 public:
     //!\brief Operator definition.
@@ -464,20 +464,20 @@ public:
     }
 };
 
-} // namespace seqan3::detail::adl_only
+} // namespace bio::detail::adl_only
 
-namespace seqan3
+namespace bio
 {
 
 /*!\name Function objects
  * \{
  */
 
-/*!\brief Returns whether a character is in the valid set of a seqan3::alphabet (usually implies a bijective mapping
+/*!\brief Returns whether a character is in the valid set of a bio::alphabet (usually implies a bijective mapping
  *        to an alphabet value).
  * \tparam your_type The alphabet type being queried.
- * \param  chr       The character being checked; must be convertible to `seqan3::alphabet_char_t<your_type>`.
- * \param  alph      The target object; its type must model seqan3::alphabet.
+ * \param  chr       The character being checked; must be convertible to `bio::alphabet_char_t<your_type>`.
+ * \param  alph      The target object; its type must model bio::alphabet.
  * \returns `true` or `false`.
  * \ingroup alphabet
  *
@@ -487,7 +487,7 @@ namespace seqan3
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   1. A static member function `char_is_valid(char_type const chr)` of the class `seqan3::custom::alphabet<your_type>`.
+ *   1. A static member function `char_is_valid(char_type const chr)` of the class `bio::custom::alphabet<your_type>`.
  *   2. A free function `char_is_valid_for(char_type const chr, your_type const &)` in the namespace of your
  *      type (or as `friend`).
  *   3. A `static` member function called `char_is_valid(char_type)` (not `char_is_valid_for`).
@@ -498,7 +498,7 @@ namespace seqan3
  * [argument-dependent lookup](https://en.cppreference.com/w/cpp/language/adl).
  *
  * An alphabet type *may* provide one of the above. If none is provided, this function will declare every character
- * `c` as valid for whom it holds that `seqan3::to_char(seqan3::assign_char_to(c, alph_t{})) == c`, i.e. converting
+ * `c` as valid for whom it holds that `bio::to_char(bio::assign_char_to(c, alph_t{})) == c`, i.e. converting
  * back and forth results in the same value.
  *
  * *Note* that if the alphabet type with cvref removed is not std::is_nothrow_default_constructible, this function
@@ -521,54 +521,54 @@ template <typename alph_t>
 //!\endcond
 inline constexpr auto char_is_valid_for = detail::adl_only::char_is_valid_for_fn<alph_t>{};
 //!\}
-} // namespace seqan3
+} // namespace bio
 
 // ============================================================================
 // assign_char_strictly_to()
 // ============================================================================
 
-namespace seqan3::detail::adl_only
+namespace bio::detail::adl_only
 {
 
-//!\brief Functor definition for seqan3::assign_char_strictly_to.
+//!\brief Functor definition for bio::assign_char_strictly_to.
 //!\ingroup alphabet
 struct assign_char_strictly_to_fn
 {
     //!\brief Operator overload for lvalues.
     template <typename alph_t>
     //!\cond
-        requires requires (alph_t a, seqan3::alphabet_char_t<alph_t> r)
+        requires requires (alph_t a, bio::alphabet_char_t<alph_t> r)
         {
-            { seqan3::assign_char_to(r, a) } -> std::convertible_to<alph_t>;
-            { seqan3::char_is_valid_for<alph_t>(r) } -> std::same_as<bool>;
+            { bio::assign_char_to(r, a) } -> std::convertible_to<alph_t>;
+            { bio::char_is_valid_for<alph_t>(r) } -> std::same_as<bool>;
         }
     //!\endcond
-    decltype(auto) operator()(seqan3::alphabet_char_t<alph_t> const r, alph_t & a) const
+    decltype(auto) operator()(bio::alphabet_char_t<alph_t> const r, alph_t & a) const
     {
-        if (!seqan3::char_is_valid_for<alph_t>(r))
-            throw seqan3::invalid_char_assignment{detail::type_name_as_string<alph_t>, r};
+        if (!bio::char_is_valid_for<alph_t>(r))
+            throw bio::invalid_char_assignment{detail::type_name_as_string<alph_t>, r};
 
-        return seqan3::assign_char_to(r, a);
+        return bio::assign_char_to(r, a);
     }
 
     //!\brief Operator overload for rvalues.
     template <typename alph_t>
     //!\cond
-        requires requires (alph_t a, seqan3::alphabet_char_t<alph_t> r)
+        requires requires (alph_t a, bio::alphabet_char_t<alph_t> r)
         {
-            { seqan3::assign_char_to(r, a) } -> std::convertible_to<alph_t>;
-            { seqan3::char_is_valid_for<alph_t>(r) } -> std::same_as<bool>;
+            { bio::assign_char_to(r, a) } -> std::convertible_to<alph_t>;
+            { bio::char_is_valid_for<alph_t>(r) } -> std::same_as<bool>;
         }
     //!\endcond
-    auto operator()(seqan3::alphabet_char_t<alph_t> const r, alph_t && a) const
+    auto operator()(bio::alphabet_char_t<alph_t> const r, alph_t && a) const
     {
         return operator()(r, a); // call above function but return by value
     }
 };
 
-} // namespace seqan3::detail::adl_only
+} // namespace bio::detail::adl_only
 
-namespace seqan3
+namespace bio
 {
 
 /*!\name Function objects
@@ -577,10 +577,10 @@ namespace seqan3
 
 /*!\brief Assign a character to an alphabet object, throw if the character is not valid.
  * \tparam your_type Type of the target object.
- * \param chr  The character being assigned; must be of the seqan3::alphabet_char_t of the target object.
- * \param alph The target object; its type must model seqan3::alphabet.
+ * \param chr  The character being assigned; must be of the bio::alphabet_char_t of the target object.
+ * \param alph The target object; its type must model bio::alphabet.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
- * \throws seqan3::invalid_char_assignment If `seqan3::char_is_valid_for<decltype(alph)>(chr) == false`.
+ * \throws bio::invalid_char_assignment If `bio::char_is_valid_for<decltype(alph)>(chr) == false`.
  * \ingroup alphabet
 
  * \details
@@ -588,7 +588,7 @@ namespace seqan3
  * This is a function object. Invoke it with the parameters specified above.
  *
  * Note that this is not a customisation point and it cannot be "overloaded".
- * It simply invokes seqan3::char_is_valid_for and seqan3::assign_char_to.
+ * It simply invokes bio::char_is_valid_for and bio::assign_char_to.
  *
  * ### Example
  *
@@ -597,20 +597,20 @@ namespace seqan3
  */
 inline constexpr auto assign_char_strictly_to = detail::adl_only::assign_char_strictly_to_fn{};
 //!\}
-} // namespace seqan3
+} // namespace bio
 
 // ============================================================================
 // alphabet_size
 // ============================================================================
 
-namespace seqan3::detail::adl_only
+namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename ...args_t>
 void alphabet_size(args_t ...) = delete;
 
-/*!\brief Functor definition used indirectly by for seqan3::detail::alphabet_size.
+/*!\brief Functor definition used indirectly by for bio::detail::alphabet_size.
  * \tparam alph_t   The type being queried.
  * \ingroup alphabet
  */
@@ -620,11 +620,11 @@ struct alphabet_size_fn
 public:
     //!\brief `alph_t` with cvref removed and possibly wrapped in std::type_identity.
     using s_alph_t = std::conditional_t<std::is_nothrow_default_constructible_v<std::remove_cvref_t<alph_t>> &&
-                                        seqan3::is_constexpr_default_constructible_v<std::remove_cvref_t<alph_t>>,
+                                        bio::is_constexpr_default_constructible_v<std::remove_cvref_t<alph_t>>,
                                         std::remove_cvref_t<alph_t>,
                                         std::type_identity<alph_t>>;
 
-    SEQAN3_CPO_IMPL(2, (deferred_type_t<seqan3::custom::alphabet<alph_t>, decltype(v)>::alphabet_size)) // expl. cst.
+    SEQAN3_CPO_IMPL(2, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::alphabet_size)) // expl. cst.
     SEQAN3_CPO_IMPL(1, (alphabet_size(v)                                                             )) // ADL
     SEQAN3_CPO_IMPL(0, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::alphabet_size          )) // member
 
@@ -644,7 +644,7 @@ public:
         // The following cannot be added to the list of constraints, because it is not properly deferred
         // for incomplete types which leads to breakage.
         static_assert(SEQAN3_IS_CONSTEXPR(impl(priority_tag<2>{}, s_alph_t{})),
-            "Only overloads that are marked constexpr are picked up by seqan3::alphabet_size.");
+            "Only overloads that are marked constexpr are picked up by bio::alphabet_size.");
         return impl(priority_tag<2>{}, s_alph_t{});
     }
 };
@@ -656,9 +656,9 @@ template <typename alph_t>
 inline constexpr auto alphabet_size_obj = alphabet_size_fn<alph_t>{};
 //!\endcond
 
-} // namespace seqan3::detail::adl_only
+} // namespace bio::detail::adl_only
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief A type trait that holds the size of a (semi-)alphabet.
@@ -671,7 +671,7 @@ namespace seqan3
  *
  * It is only defined for types that provide one of the following (checked in this order):
  *
- *   1. A `static constexpr` data member of `seqan3::custom::alphabet<your_type>` called `alphabet_size`.
+ *   1. A `static constexpr` data member of `bio::custom::alphabet<your_type>` called `alphabet_size`.
  *   2. A free function `alphabet_size(your_type const &)` in the namespace of your type (or as `friend`) that
  *      returns the size.
  *   3. A `static constexpr` data member of `your_type` called `alphabet_size`.
@@ -684,7 +684,7 @@ namespace seqan3
  * Every (semi-)alphabet type must provide one of the above.
  *
  * *Note* that if the (semi-)alphabet type with cvref removed is not std::is_nothrow_default_constructible or not
- * seqan3::is_constexpr_default_constructible, this object will instead look for
+ * bio::is_constexpr_default_constructible, this object will instead look for
  * `alphabet_size(std::type_identity<your_type> const &)` with the same semantics (in case 2.).
  *
  * ### Example
@@ -692,7 +692,7 @@ namespace seqan3
  * \include test/snippet/alphabet/alphabet_size.cpp
  *
  * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see seqan3::alphabet.
+ * see bio::alphabet.
  *
  * ### Customisation point
  *
@@ -710,8 +710,8 @@ inline constexpr auto alphabet_size = detail::adl_only::alphabet_size_obj<alph_t
 // semialphabet
 // ============================================================================
 
-/*!\interface seqan3::semialphabet <>
- * \brief The basis for seqan3::alphabet, but requires only rank interface (not char).
+/*!\interface bio::semialphabet <>
+ * \brief The basis for bio::alphabet, but requires only rank interface (not char).
  * \extends std::totally_ordered
  * \extends std::copy_constructible
  * \ingroup alphabet
@@ -726,18 +726,18 @@ inline constexpr auto alphabet_size = detail::adl_only::alphabet_size_obj<alph_t
  *     * `t` shall model std::copy_constructible and be std::is_nothrow_copy_constructible
  *     * move construction shall not be more efficient than copy construction; this implies no dynamic memory
  *       (de-)allocation [this is a semantic requirement that cannot be checked]
- *   3. seqan3::alphabet_size needs to be defined for `t`
- *   4. seqan3::to_rank needs to be defined for objects of type `t`
+ *   3. bio::alphabet_size needs to be defined for `t`
+ *   4. bio::to_rank needs to be defined for objects of type `t`
  *
  * See the documentation pages for the respective requirements.
- * The implications of 2. are that you can always take function arguments of types that model seqan3::semialphabet
+ * The implications of 2. are that you can always take function arguments of types that model bio::semialphabet
  * by value.
  *
  * It is highly recommended that non-reference types that model this concept, also model:
  *
  *   * std::regular
  *   * std::is_trivially_copyable
- *   * seqan3::standard_layout
+ *   * bio::standard_layout
  *
  * All alphabets available in SeqAn (with very few exceptions) do so.
  *
@@ -757,8 +757,8 @@ concept semialphabet =
     std::is_nothrow_copy_constructible_v<t> &&
     requires (t v)
 {
-    { seqan3::alphabet_size<t> };
-    { seqan3::to_rank(v) };
+    { bio::alphabet_size<t> };
+    { bio::to_rank(v) };
 };
 //!\endcond
 
@@ -766,12 +766,12 @@ concept semialphabet =
 // writable_semialphabet
 // ============================================================================
 
-/*!\interface seqan3::writable_semialphabet <>
- * \brief A refinement of seqan3::semialphabet that adds assignability.
- * \extends seqan3::semialphabet
+/*!\interface bio::writable_semialphabet <>
+ * \brief A refinement of bio::semialphabet that adds assignability.
+ * \extends bio::semialphabet
  * \ingroup alphabet
  *
- * This concept refines seqan3::semialphabet and adds the requirement to be able to change the value by
+ * This concept refines bio::semialphabet and adds the requirement to be able to change the value by
  * assigning a value of the rank representation.
  *
  * For a detailed overview of how the different alphabet concepts are related, see
@@ -779,8 +779,8 @@ concept semialphabet =
  *
  * ### Requirements
  *
- *   1. `t` shall model seqan3::semialphabet
- *   2. seqan3::assign_rank_to needs to be defined for objects of type `t`
+ *   1. `t` shall model bio::semialphabet
+ *   2. bio::assign_rank_to needs to be defined for objects of type `t`
  *
  * See the documentation pages for the respective requirements.
  *
@@ -802,7 +802,7 @@ concept semialphabet =
 template <typename t>
 concept writable_semialphabet = semialphabet<t> && requires (t v, alphabet_rank_t<t> r)
 {
-    { seqan3::assign_rank_to(r, v) };
+    { bio::assign_rank_to(r, v) };
 };
 //!\endcond
 
@@ -810,9 +810,9 @@ concept writable_semialphabet = semialphabet<t> && requires (t v, alphabet_rank_
 // alphabet
 // ============================================================================
 
-/*!\interface seqan3::alphabet <>
+/*!\interface bio::alphabet <>
  * \brief The generic alphabet concept that covers most data types used in ranges.
- * \extends seqan3::semialphabet
+ * \extends bio::semialphabet
  * \ingroup alphabet
  *
  * This is the core alphabet concept that many other alphabet concepts refine.
@@ -822,8 +822,8 @@ concept writable_semialphabet = semialphabet<t> && requires (t v, alphabet_rank_
  *
  * ### Requirements
  *
- *   1. `t` shall model seqan3::semialphabet ("has all rank representation")
- *   2. seqan3::to_char needs to be defined for objects of type `t`
+ *   1. `t` shall model bio::semialphabet ("has all rank representation")
+ *   2. bio::to_char needs to be defined for objects of type `t`
  *
  * See the documentation pages for the respective requirements.
  *
@@ -839,7 +839,7 @@ concept writable_semialphabet = semialphabet<t> && requires (t v, alphabet_rank_
 template <typename t>
 concept alphabet = semialphabet<t> && requires (t v)
 {
-    { seqan3::to_char(v) };
+    { bio::to_char(v) };
 };
 //!\endcond
 
@@ -847,13 +847,13 @@ concept alphabet = semialphabet<t> && requires (t v)
 // writable_alphabet
 // ============================================================================
 
-/*!\interface seqan3::writable_alphabet <>
- * \brief Refines seqan3::alphabet and adds assignability.
- * \extends seqan3::alphabet
- * \extends seqan3::writable_semialphabet
+/*!\interface bio::writable_alphabet <>
+ * \brief Refines bio::alphabet and adds assignability.
+ * \extends bio::alphabet
+ * \extends bio::writable_semialphabet
  * \ingroup alphabet
  *
- * This concept refines seqan3::alphabet and seqan3::writable_semialphabet and adds the requirement to be able to change
+ * This concept refines bio::alphabet and bio::writable_semialphabet and adds the requirement to be able to change
  * the value by assigning a value of the character representation.
  *
  * For a detailed overview of how the different alphabet concepts are related, see
@@ -861,10 +861,10 @@ concept alphabet = semialphabet<t> && requires (t v)
  *
  * ### Requirements
  *
- *   1. `t` shall model seqan3::alphabet
- *   2. `t` shall model seqan3::writable_semialphabet
- *   3. seqan3::assign_char_to needs to be defined for objects of type `t`
- *   4. seqan3::char_is_valid_for needs to be defined for type `t` and an argument of the character representation
+ *   1. `t` shall model bio::alphabet
+ *   2. `t` shall model bio::writable_semialphabet
+ *   3. bio::assign_char_to needs to be defined for objects of type `t`
+ *   4. bio::char_is_valid_for needs to be defined for type `t` and an argument of the character representation
  *
  * See the documentation pages for the respective requirements.
  *
@@ -886,9 +886,9 @@ concept alphabet = semialphabet<t> && requires (t v)
 template <typename t>
 concept writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires (t v, alphabet_char_t<t> c)
 {
-    { seqan3::assign_char_to(c, v) };
+    { bio::assign_char_to(c, v) };
 
-    { seqan3::char_is_valid_for<t>(c) };
+    { bio::char_is_valid_for<t>(c) };
 };
 //!\endcond
 
@@ -897,21 +897,21 @@ concept writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires 
 // ============================================================================
 
 /*!\cond DEV
- * \name Generic serialisation functions for all seqan3::semialphabet
- * \brief All types that satisfy seqan3::semialphabet can be serialised via Cereal.
+ * \name Generic serialisation functions for all bio::semialphabet
+ * \brief All types that satisfy bio::semialphabet can be serialised via Cereal.
  *
  * \{
  */
 /*!
  * \brief Save an alphabet letter to stream.
- * \tparam archive_t Must satisfy seqan3::cereal_output_archive.
- * \tparam alphabet_t Type of l; must satisfy seqan3::semialphabet.
+ * \tparam archive_t Must satisfy bio::cereal_output_archive.
+ * \tparam alphabet_t Type of l; must satisfy bio::semialphabet.
  * \param l The alphabet letter.
- * \relates seqan3::semialphabet
+ * \relates bio::semialphabet
  *
  * \details
  *
- * Delegates to seqan3::to_rank.
+ * Delegates to bio::to_rank.
  *
  * \attention These functions are never called directly, see the \ref alphabet module on how to use serialisation.
  */
@@ -922,15 +922,15 @@ alphabet_rank_t<alphabet_t> CEREAL_SAVE_MINIMAL_FUNCTION_NAME(archive_t const &,
 }
 
 /*!\brief Restore an alphabet letter from a saved rank.
- * \tparam archive_t Must satisfy seqan3::cereal_input_archive.
- * \tparam wrapped_alphabet_t A seqan3::semialphabet after Cereal mangles it up.
+ * \tparam archive_t Must satisfy bio::cereal_input_archive.
+ * \tparam wrapped_alphabet_t A bio::semialphabet after Cereal mangles it up.
  * \param l The alphabet letter (cereal wrapped).
  * \param r The assigned value.
- * \relates seqan3::semialphabet
+ * \relates bio::semialphabet
  *
  * \details
  *
- * Delegates to seqan3::assign_rank.
+ * Delegates to bio::assign_rank.
  *
  * \attention These functions are never called directly, see the \ref alphabet module on how to use serialisation.
  */
@@ -946,20 +946,20 @@ void CEREAL_LOAD_MINIMAL_FUNCTION_NAME(archive_t const &,
  * \endcond
  */
 
-} // namespace seqan3
+} // namespace bio
 
-namespace seqan3::detail
+namespace bio::detail
 {
 // ============================================================================
 // constexpr_semialphabet
 // ============================================================================
 
-/*!\interface seqan3::detail::constexpr_semialphabet <>
- * \brief A seqan3::semialphabet that has constexpr accessors.
- * \extends seqan3::semialphabet
+/*!\interface bio::detail::constexpr_semialphabet <>
+ * \brief A bio::semialphabet that has constexpr accessors.
+ * \extends bio::semialphabet
  * \ingroup alphabet
  *
- * The same as seqan3::semialphabet, except that all required functions are also required to be callable
+ * The same as bio::semialphabet, except that all required functions are also required to be callable
  * in a `constexpr`-context.
  */
 //!\cond
@@ -975,21 +975,21 @@ concept constexpr_semialphabet = semialphabet<t> && requires
 // writable_constexpr_semialphabet
 // ============================================================================
 
-/*!\interface seqan3::detail::writable_constexpr_semialphabet <>
- * \brief A seqan3::writable_semialphabet that has a constexpr assignment.
- * \extends seqan3::detail::constexpr_semialphabet
- * \extends seqan3::writable_semialphabet
+/*!\interface bio::detail::writable_constexpr_semialphabet <>
+ * \brief A bio::writable_semialphabet that has a constexpr assignment.
+ * \extends bio::detail::constexpr_semialphabet
+ * \extends bio::writable_semialphabet
  * \ingroup alphabet
  *
- * Refines seqan3::detail::constexpr_semialphabet and seqan3::writable_semialphabet and requires that the call to
- * seqan3::assign_rank_to can happen in a `constexpr`-context.
+ * Refines bio::detail::constexpr_semialphabet and bio::writable_semialphabet and requires that the call to
+ * bio::assign_rank_to can happen in a `constexpr`-context.
  */
 //!\cond
 template <typename t>
 concept writable_constexpr_semialphabet = constexpr_semialphabet<t> && writable_semialphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
-    requires SEQAN3_IS_CONSTEXPR(seqan3::assign_rank_to(alphabet_rank_t<t>{}, std::remove_reference_t<t>{}));
+    requires SEQAN3_IS_CONSTEXPR(bio::assign_rank_to(alphabet_rank_t<t>{}, std::remove_reference_t<t>{}));
 };
 //!\endcond
 
@@ -997,14 +997,14 @@ concept writable_constexpr_semialphabet = constexpr_semialphabet<t> && writable_
 // constexpr_alphabet
 // ============================================================================
 
-/*!\interface seqan3::detail::constexpr_alphabet <>
- * \brief A seqan3::alphabet that has constexpr accessors.
- * \extends seqan3::detail::constexpr_semialphabet
- * \extends seqan3::alphabet
+/*!\interface bio::detail::constexpr_alphabet <>
+ * \brief A bio::alphabet that has constexpr accessors.
+ * \extends bio::detail::constexpr_semialphabet
+ * \extends bio::alphabet
  * \ingroup alphabet
  *
- * Refines seqan3::detail::constexpr_semialphabet and seqan3::alphabet and requires that the call to
- * seqan3::to_char can happen in a `constexpr`-context.
+ * Refines bio::detail::constexpr_semialphabet and bio::alphabet and requires that the call to
+ * bio::to_char can happen in a `constexpr`-context.
  */
 //!\cond
 template <typename t>
@@ -1019,15 +1019,15 @@ concept constexpr_alphabet = constexpr_semialphabet<t> && alphabet<t> && require
 // writable_constexpr_alphabet
 // ============================================================================
 
-/*!\interface seqan3::detail::writable_constexpr_alphabet <>
- * \brief A seqan3::writable_alphabet that has constexpr accessors.
- * \extends seqan3::detail::constexpr_alphabet
- * \extends seqan3::detail::writable_constexpr_semialphabet
- * \extends seqan3::writable_alphabet
+/*!\interface bio::detail::writable_constexpr_alphabet <>
+ * \brief A bio::writable_alphabet that has constexpr accessors.
+ * \extends bio::detail::constexpr_alphabet
+ * \extends bio::detail::writable_constexpr_semialphabet
+ * \extends bio::writable_alphabet
  * \ingroup alphabet
  *
- * Refines seqan3::detail::constexpr_alphabet, seqan3::detail::writable_constexpr_semialphabet and
- * seqan3::writable_alphabet and requires that the calls to seqan3::assign_char_to and seqan3::char_is_valid_for
+ * Refines bio::detail::constexpr_alphabet, bio::detail::writable_constexpr_semialphabet and
+ * bio::writable_alphabet and requires that the calls to bio::assign_char_to and bio::char_is_valid_for
  * can happen in a `constexpr`-context.
  */
 //!\cond
@@ -1036,9 +1036,9 @@ concept writable_constexpr_alphabet =
     constexpr_alphabet<t> && writable_constexpr_semialphabet<t> && writable_alphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
-    requires SEQAN3_IS_CONSTEXPR(seqan3::assign_char_to(alphabet_char_t<t>{}, std::remove_reference_t<t>{}));
-    requires SEQAN3_IS_CONSTEXPR(seqan3::char_is_valid_for<t>(alphabet_char_t<t>{}));
+    requires SEQAN3_IS_CONSTEXPR(bio::assign_char_to(alphabet_char_t<t>{}, std::remove_reference_t<t>{}));
+    requires SEQAN3_IS_CONSTEXPR(bio::char_is_valid_for<t>(alphabet_char_t<t>{}));
 };
 //!\endcond
 
-} // namespace seqan3::detail
+} // namespace bio::detail

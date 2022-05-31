@@ -14,7 +14,7 @@
 #include <bio/test/expect_range_eq.hpp>
 #include <bio/test/pretty_printing.hpp>
 
-using seqan3::operator""_dna4;
+using bio::operator""_dna4;
 
 template <typename T>
 class container_over_dna4_test : public ::testing::Test
@@ -24,7 +24,7 @@ TYPED_TEST_SUITE_P(container_over_dna4_test);
 
 TYPED_TEST_P(container_over_dna4_test, concepts)
 {
-    EXPECT_TRUE(seqan3::reservible_container<TypeParam>);
+    EXPECT_TRUE(bio::reservible_container<TypeParam>);
 }
 
 TYPED_TEST_P(container_over_dna4_test, construction)
@@ -87,7 +87,7 @@ TYPED_TEST_P(container_over_dna4_test, assign)
     EXPECT_EQ(t6, t1);
 
     // direct from another container
-    if constexpr (!std::is_same_v<TypeParam, std::vector<seqan3::dna4>>)
+    if constexpr (!std::is_same_v<TypeParam, std::vector<bio::dna4>>)
     {
         TypeParam t7;
         t7.assign("ACCGT"_dna4);
@@ -175,7 +175,7 @@ TYPED_TEST_P(container_over_dna4_test, capacity)
     EXPECT_GE(t1.capacity(), t1.size());
     EXPECT_GE(t2.capacity(), t2.size());
 
-    if constexpr (!std::same_as<TypeParam, seqan3::small_vector<seqan3::dna4, 1000>>)
+    if constexpr (!std::same_as<TypeParam, bio::small_vector<bio::dna4, 1000>>)
     {
         // max_size
         EXPECT_GT(t0.max_size(), 1'000'000'000'000u);
@@ -311,7 +311,7 @@ TYPED_TEST_P(container_over_dna4_test, resize)
 TYPED_TEST_P(container_over_dna4_test, serialisation)
 {
     TypeParam t1{'A'_dna4, 'C'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
-    seqan3::test::do_serialisation(t1);
+    bio::test::do_serialisation(t1);
 }
 
 REGISTER_TYPED_TEST_SUITE_P(container_over_dna4_test,

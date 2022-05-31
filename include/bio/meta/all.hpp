@@ -35,17 +35,17 @@
  * to most users of the library.
  */
 
-/*!\namespace seqan3
+/*!\namespace bio
  * \brief The main SeqAn3 namespace.
  */
 
-/*!\namespace seqan3::custom
+/*!\namespace bio::custom
  * \brief A namespace for third party and standard library specialisations of SeqAn customisation points.
  * \see \ref about_customisation
  */
 
 /*!\if DEV
- * \namespace seqan3::detail
+ * \namespace bio::detail
  * \brief The internal SeqAn3 namespace.
  * \details
  * The contents of this namespace are not visible to consumers of the library and the documentation is

@@ -16,7 +16,7 @@
 
 #include <bio/meta/debug_stream.hpp>
 
-namespace seqan3
+namespace bio
 {
 
 //!\cond DEV
@@ -31,20 +31,20 @@ void PrintTo (t const & v, std::ostream * out)
 }
 //!\endcond
 
-} // namespace seqan3
+} // namespace bio
 
 namespace std
 {
 
 //!\brief Overload for the googletest PrintTo function that always delegates to our debug_stream.
-using ::seqan3::PrintTo;
+using ::bio::PrintTo;
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 //!\brief Overload for the googletest PrintTo function that always delegates to our debug_stream.
-using ::seqan3::PrintTo;
+using ::bio::PrintTo;
 
-} // namespace seqan3::detail
+} // namespace bio::detail

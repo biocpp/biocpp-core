@@ -3,8 +3,8 @@
 
 int main()
 {
-    seqan3::dynamic_bitset const t1{"10001100"};
-    seqan3::dynamic_bitset t2 = ~t1;
+    bio::dynamic_bitset const t1{"10001100"};
+    bio::dynamic_bitset t2 = ~t1;
 
-    seqan3::debug_stream << t2 << '\n'; // 0111'0011
+    bio::debug_stream << t2 << '\n'; // 0111'0011
 }

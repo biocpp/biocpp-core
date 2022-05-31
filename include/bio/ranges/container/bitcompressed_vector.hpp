@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides seqan3::bitcompressed_vector.
+ * \brief Provides bio::bitcompressed_vector.
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
  */
 
@@ -27,18 +27,18 @@
 #include <iterator>
 #include <ranges>
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief A space-optimised version of std::vector that compresses multiple letters into a single byte.
- * \tparam alphabet_type The value type of the container, must satisfy seqan3::writable_semialphabet and std::regular.
- * \implements seqan3::reservible_container
- * \implements seqan3::cerealisable
+ * \tparam alphabet_type The value type of the container, must satisfy bio::writable_semialphabet and std::regular.
+ * \implements bio::reservible_container
+ * \implements bio::cerealisable
  * \ingroup container
  *
  * This class template behaves just like std::vector<alphabet_type> but has an internal representation where
- * multiple values are packed into a single byte/word to save space, e.g. bitcompressed_vector<seqan3::dna4> uses a
- * quarter of of the memory that std::vector<seqan3::dna4> uses, because a single seqan3::dna4 letter can be represented
+ * multiple values are packed into a single byte/word to save space, e.g. bitcompressed_vector<bio::dna4> uses a
+ * quarter of of the memory that std::vector<bio::dna4> uses, because a single bio::dna4 letter can be represented
  * in two bits (instead of 8 which is the lower bound for a single object in C++).
  *
  * The disadvantages are slightly slower operations and unsafety towards parallel writes to adjacent positions
@@ -76,7 +76,7 @@ private:
     //!\brief The data storage.
     data_type data;
 
-    //!\brief Proxy data type returned by seqan3::bitcompressed_vector as reference to element unless the alphabet_type
+    //!\brief Proxy data type returned by bio::bitcompressed_vector as reference to element unless the alphabet_type
     //!       is uint8_t, uint16_t, uint32_t or uint64_t (in which case a regular & is returned).
     class reference_proxy_type : public alphabet_proxy<reference_proxy_type, alphabet_type>
     {
@@ -1021,7 +1021,7 @@ public:
 
     /*!\cond DEV
      * \brief Serialisation support function.
-     * \tparam archive_t Type of `archive`; must satisfy seqan3::cereal_archive.
+     * \tparam archive_t Type of `archive`; must satisfy bio::cereal_archive.
      * \param archive The archive being serialised from/to.
      *
      * \attention These functions are never called directly, see \ref howto_use_cereal for more details.
@@ -1034,4 +1034,4 @@ public:
     //!\endcond
 };
 
-} // namespace seqan3
+} // namespace bio

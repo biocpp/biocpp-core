@@ -23,7 +23,7 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 /*!\brief Defines the human-readable name of the given type using the
@@ -65,4 +65,4 @@ inline std::string const type_name_as_string = [] ()
     return demangled_name;
 }();
 
-}  // namespace seqan3::detail
+}  // namespace bio::detail

@@ -10,7 +10,7 @@
  * \brief Provides alphabet adaptations for standard uint types.
  * \details
  * This file provides function and type trait overloads so that the following types
- * fulfil the seqan3::alphabet:
+ * fulfil the bio::alphabet:
  *   * `uint8_t`
  *   * `uint16_t`
  *   * `uint32_t`
@@ -28,7 +28,7 @@
 #include <bio/alphabet/concept.hpp>
 #include <bio/meta/detail/int_types.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 //!\brief Whether a type is `uint8_t`, `uint16_t` or `uint32_t`.
 //!\ingroup adaptation
@@ -37,9 +37,9 @@ template <typename type>
 constexpr bool is_uint_adaptation_v = std::same_as<type, uint8_t>  ||
                                       std::same_as<type, uint16_t> ||
                                       std::same_as<type, uint32_t>;
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3::custom
+namespace bio::custom
 {
 
 /*!\brief Alphabet specific customisations for unsigned integral types.
@@ -48,7 +48,7 @@ namespace seqan3::custom
  */
 template <typename uint_type>
 //!\cond
-    requires seqan3::detail::is_uint_adaptation_v<uint_type>
+    requires bio::detail::is_uint_adaptation_v<uint_type>
 //!\endcond
 struct alphabet<uint_type>
 {
@@ -100,4 +100,4 @@ struct alphabet<uint_type>
     }
 };
 
-} // namespace seqan3::custom
+} // namespace bio::custom

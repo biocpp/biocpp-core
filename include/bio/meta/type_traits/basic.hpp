@@ -28,7 +28,7 @@
  */
 #define SEQAN3_IS_CONSTEXPR(...) std::integral_constant<bool, __builtin_constant_p((__VA_ARGS__, 0))>::value
 
-namespace seqan3
+namespace bio
 {
 
 /*!\addtogroup type_traits
@@ -50,9 +50,9 @@ using remove_cvref_t SEQAN3_DEPRECATED_310 = std::remove_cv_t<std::remove_refere
 // ----------------------------------------------------------------------------
 
 /*!\brief Return the input type with `&&` removed, but lvalue references preserved.
- * \implements seqan3::transformation_trait
+ * \implements bio::transformation_trait
  * \tparam t The type to operate on.
- * \see seqan3::remove_rvalue_reference_t
+ * \see bio::remove_rvalue_reference_t
  */
 template <typename t>
 struct remove_rvalue_reference
@@ -63,7 +63,7 @@ struct remove_rvalue_reference
 
 /*!\brief Return the input type with `&&` removed, but lvalue references preserved (transformation_trait shortcut).
  * \tparam t The type to operate on.
- * \see seqan3::remove_rvalue_reference
+ * \see bio::remove_rvalue_reference
  */
 template <typename t>
 using remove_rvalue_reference_t = typename remove_rvalue_reference<t>::type;
@@ -73,7 +73,7 @@ using remove_rvalue_reference_t = typename remove_rvalue_reference<t>::type;
 // ----------------------------------------------------------------------------
 
 /*!\brief Whether a type std::is_default_constructible in `constexpr`-context.
- * \implements seqan3::unary_type_trait
+ * \implements bio::unary_type_trait
  * \tparam t The type to operate on.
  */
 template <typename t>
@@ -82,7 +82,7 @@ struct is_constexpr_default_constructible : std::false_type
 
 /*!\brief Whether a type std::is_default_constructible in `constexpr`-context (unary_type_trait specialisation).
  * \tparam t A type that std::is_default_constructible.
- * \see seqan3::is_constexpr_default_constructible
+ * \see bio::is_constexpr_default_constructible
  */
 template <typename t>
 //!\cond
@@ -93,15 +93,15 @@ struct is_constexpr_default_constructible<t> : std::integral_constant<bool, SEQA
 
 /*!\brief Whether a type std::is_default_constructible in `constexpr`-context (unary_type_trait shortcut).
  * \tparam t The type to operate on.
- * \relates seqan3::is_constexpr_default_constructible
+ * \relates bio::is_constexpr_default_constructible
  */
 template <typename t>
 inline constexpr bool is_constexpr_default_constructible_v = is_constexpr_default_constructible<t>::value;
 
 //!\}
-} // namespace seqan3
+} // namespace bio
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 /*!\addtogroup type_traits
@@ -113,10 +113,10 @@ namespace seqan3::detail
 // ----------------------------------------------------------------------------
 
 /*!\brief Return the type identity; further arguments are ignored, but can make this type dependent if they are.
- * \implements seqan3::transformation_trait
+ * \implements bio::transformation_trait
  * \tparam t The type to operate on.
  * \tparam dependent_ts Any provided types are ignored.
- * \see seqan3::detail::deferred_type_t
+ * \see bio::detail::deferred_type_t
  */
 template <typename t, typename ...dependent_ts>
 struct deferred_type
@@ -129,7 +129,7 @@ struct deferred_type
  *        (transformation_trait shortcut).
  * \tparam t The type to operate on.
  * \tparam dependent_ts Any provided types are ignored.
- * \see seqan3::detail::deferred_type
+ * \see bio::detail::deferred_type
  */
 template <typename t, typename ...dependent_ts>
 using deferred_type_t = typename deferred_type<t, dependent_ts...>::type;
@@ -150,7 +150,7 @@ constexpr bool decays_to_ignore_v = std::is_same_v<std::remove_cvref_t<t>, ignor
 
 //!\}
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
 // ----------------------------------------------------------------------------
 // SEQAN3_IS_SAME

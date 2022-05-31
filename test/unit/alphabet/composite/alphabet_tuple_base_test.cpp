@@ -15,44 +15,44 @@
 #include "../semi_alphabet_test_template.hpp"
 #include "alphabet_tuple_base_test_template.hpp"
 
-using seqan3::operator""_dna4;
-using seqan3::operator""_dna5;
-using seqan3::operator""_rna4;
-using seqan3::operator""_rna5;
+using bio::operator""_dna4;
+using bio::operator""_dna5;
+using bio::operator""_rna4;
+using bio::operator""_rna5;
 
 template <typename type1, typename type2>
-struct test_composite : public seqan3::alphabet_tuple_base<test_composite<type1, type2>, type1, type2>
+struct test_composite : public bio::alphabet_tuple_base<test_composite<type1, type2>, type1, type2>
 {
-    using base_t = seqan3::alphabet_tuple_base<test_composite<type1, type2>, type1, type2>;
+    using base_t = bio::alphabet_tuple_base<test_composite<type1, type2>, type1, type2>;
     using base_t::base_t;
     using base_t::operator=;
 };
 
 template <>
-class alphabet_tuple_base_test<test_composite<seqan3::dna4, seqan3::dna5>> : public ::testing::Test
+class alphabet_tuple_base_test<test_composite<bio::dna4, bio::dna5>> : public ::testing::Test
 {
 public:
-    using T = test_composite<seqan3::dna4, seqan3::dna5>;
+    using T = test_composite<bio::dna4, bio::dna5>;
 
     T instance = T{value_1(), value_2()};
     T zero_instance = T{decltype(value_1()){}, decltype(value_2()){}};
     size_t tup_size{2};
 
-    // test_composite<seqan3::dna4, seqan3::dna5>
+    // test_composite<bio::dna4, bio::dna5>
     // -------------------------------------------------------------------------
-    seqan3::dna4 value_1()
+    bio::dna4 value_1()
     {
         return 'G'_dna4;
     }
-    seqan3::rna4 assignable_to_value_1()
+    bio::rna4 assignable_to_value_1()
     {
         return 'G'_rna4;
     }
-    seqan3::dna5 value_2()
+    bio::dna5 value_2()
     {
         return 'G'_dna5;
     }
-    seqan3::rna5 assignable_to_value_2()
+    bio::rna5 assignable_to_value_2()
     {
         return 'G'_rna5;
     }
@@ -64,7 +64,7 @@ public:
     }
 };
 
-using test_composite_types = ::testing::Types<test_composite<seqan3::dna4, seqan3::dna5>>;
+using test_composite_types = ::testing::Types<test_composite<bio::dna4, bio::dna5>>;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(test_composite, semi_alphabet_test, test_composite_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(test_composite, alphabet_tuple_base_test, test_composite_types, );

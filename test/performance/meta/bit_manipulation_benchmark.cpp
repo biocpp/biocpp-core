@@ -49,7 +49,7 @@ static void is_power_of_two_seqan3(benchmark::State & state) {
     for (auto _ : state)
     {
         n = std::rand();
-        benchmark::DoNotOptimize(seqan3::detail::is_power_of_two(n));
+        benchmark::DoNotOptimize(bio::detail::is_power_of_two(n));
     }
 }
 BENCHMARK(is_power_of_two_seqan3);
@@ -60,7 +60,7 @@ static void next_power_of_two_seqan3(benchmark::State & state) {
     for (auto _ : state)
     {
         n = std::rand();
-        benchmark::DoNotOptimize(seqan3::detail::next_power_of_two(n));
+        benchmark::DoNotOptimize(bio::detail::next_power_of_two(n));
     }
 }
 BENCHMARK(next_power_of_two_seqan3);

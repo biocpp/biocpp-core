@@ -15,30 +15,30 @@
 #include <bio/ranges/views/to.hpp>
 #include <ranges>
 
-using seqan3::operator""_dna5;
+using bio::operator""_dna5;
 
 TEST(view_to_char, basic)
 {
-    seqan3::dna5_vector vec{"ACTTTGATA"_dna5};
+    bio::dna5_vector vec{"ACTTTGATA"_dna5};
     std::string cmp{"ACTTTGATA"};
 
     // pipe notation
-    std::string v = vec | seqan3::views::to_char | seqan3::views::to<std::string>();
+    std::string v = vec | bio::views::to_char | bio::views::to<std::string>();
     EXPECT_EQ(cmp, v);
 
     // function notation
-    std::string v2(seqan3::views::to_char(vec) | seqan3::views::to<std::string>());
+    std::string v2(bio::views::to_char(vec) | bio::views::to<std::string>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
     std::string cmp2{"ATAGTTTCA"};
-    std::string v3 = vec | seqan3::views::to_char | std::views::reverse | seqan3::views::to<std::string>();
+    std::string v3 = vec | bio::views::to_char | std::views::reverse | bio::views::to<std::string>();
     EXPECT_EQ(cmp2, v3);
 }
 
 TEST(view_to_char, concepts)
 {
-    seqan3::dna5_vector vec{"ACTTTGATA"_dna5};
+    bio::dna5_vector vec{"ACTTTGATA"_dna5};
     EXPECT_TRUE(std::ranges::input_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(vec)>);
@@ -46,10 +46,10 @@ TEST(view_to_char, concepts)
     EXPECT_FALSE(std::ranges::view<decltype(vec)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(vec)>);
-    EXPECT_TRUE(seqan3::const_iterable_range<decltype(vec)>);
-    EXPECT_TRUE((std::ranges::output_range<decltype(vec), seqan3::dna5>));
+    EXPECT_TRUE(bio::const_iterable_range<decltype(vec)>);
+    EXPECT_TRUE((std::ranges::output_range<decltype(vec), bio::dna5>));
 
-    auto v1 = vec | seqan3::views::to_char;
+    auto v1 = vec | bio::views::to_char;
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);
@@ -57,7 +57,7 @@ TEST(view_to_char, concepts)
     EXPECT_TRUE(std::ranges::view<decltype(v1)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(v1)>);
-    EXPECT_TRUE(seqan3::const_iterable_range<decltype(v1)>);
-    EXPECT_FALSE((std::ranges::output_range<decltype(v1), seqan3::dna5>));
+    EXPECT_TRUE(bio::const_iterable_range<decltype(v1)>);
+    EXPECT_FALSE((std::ranges::output_range<decltype(v1), bio::dna5>));
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), char>));
 }

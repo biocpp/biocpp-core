@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides seqan3::add_enum_bitwise_operators.
+ * \brief Provides bio::add_enum_bitwise_operators.
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
  */
 
@@ -16,7 +16,7 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief Set to true for a scoped enum to have binary operators overloaded.
@@ -36,9 +36,9 @@ constexpr bool add_enum_bitwise_operators = false;
 
 /*!\name Binary operators for scoped enums
  * \brief Perform binary operations like on ints or weak enums. These overloads are available if
- * seqan3::add_enum_bitwise_operators is defined for your type.
+ * bio::add_enum_bitwise_operators is defined for your type.
  * \ingroup core
- * \see seqan3::add_enum_bitwise_operators
+ * \see bio::add_enum_bitwise_operators
  * \{
  */
 template <typename t>
@@ -94,4 +94,4 @@ constexpr t & operator^= (t & lhs, t rhs) noexcept
 }
 //!\}
 
-} // namespace seqan3
+} // namespace bio

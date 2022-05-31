@@ -7,11 +7,11 @@ int main()
 {
     auto fn = [](auto && a)
     {
-        seqan3::debug_stream << a;
+        bio::debug_stream << a;
     };
 
     // prints each argument, i.e. "0, 1, 2, 3\n"
-    seqan3::detail::for_each(fn, 0, ", ", 1.0, ", ", std::string{"2, 3"}, '\n');
+    bio::detail::for_each(fn, 0, ", ", 1.0, ", ", std::string{"2, 3"}, '\n');
 
     // is the same as explicitly writing
     fn(0);

@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::aminoacid_base.
+ * \brief Provides bio::aminoacid_base.
  */
 
 #pragma once
@@ -17,10 +17,10 @@
 #include <bio/alphabet/aminoacid/concept.hpp>
 #include <bio/meta/char_operations/transform.hpp>
 
-namespace seqan3
+namespace bio
 {
 
-/*!\brief A CRTP-base that refines seqan3::alphabet_base and is used by the amino acids.
+/*!\brief A CRTP-base that refines bio::alphabet_base and is used by the amino acids.
  * \ingroup aminoacid
  * \tparam derived_type The CRTP parameter type.
  * \tparam size         The size of the alphabet.
@@ -80,11 +80,11 @@ public:
                      )
         {
             static_cast<derived_type &>(*this) =
-                detail::convert_through_char_representation<derived_type, other_aa_type>[seqan3::to_rank(other)];
+                detail::convert_through_char_representation<derived_type, other_aa_type>[bio::to_rank(other)];
         }
         else
         {
-            seqan3::assign_char_to(seqan3::to_char(other), static_cast<derived_type &>(*this));
+            bio::assign_char_to(bio::to_char(other), static_cast<derived_type &>(*this));
         }
     }
     //!\}
@@ -93,7 +93,7 @@ public:
      *
      * \details
      *
-     * Models the seqan3::semialphabet::char_is_valid_for() requirement via the seqan3::char_is_valid_for()
+     * Models the bio::semialphabet::char_is_valid_for() requirement via the bio::char_is_valid_for()
      * wrapper.
      *
      * Behaviour specific to amino acids: True also for lower case letters that silently convert to their upper case.
@@ -132,4 +132,4 @@ private:
     };
 };
 
-} // namespace seqan3
+} // namespace bio

@@ -19,15 +19,15 @@
 // -----------------------------------------------------------------------------
 
 template <>
-struct iterator_fixture<seqan3::detail::random_access_iterator<std::vector<int>>> : public ::testing::Test
+struct iterator_fixture<bio::detail::random_access_iterator<std::vector<int>>> : public ::testing::Test
 {
     using iterator_tag = std::random_access_iterator_tag;
     static constexpr bool const_iterable = true;
 
     struct expose_iterator
     {
-        using iterator_type = seqan3::detail::random_access_iterator<std::vector<int>>;
-        using const_iterator_type = seqan3::detail::random_access_iterator<std::vector<int> const>;
+        using iterator_type = bio::detail::random_access_iterator<std::vector<int>>;
+        using const_iterator_type = bio::detail::random_access_iterator<std::vector<int> const>;
 
         std::vector<int> rng{1, 2, 3, 4, 5, 6, 7, 8};
 
@@ -41,7 +41,7 @@ struct iterator_fixture<seqan3::detail::random_access_iterator<std::vector<int>>
     expose_iterator test_range{};
 };
 
-using test_type = ::testing::Types<seqan3::detail::random_access_iterator<std::vector<int>>>;
+using test_type = ::testing::Types<bio::detail::random_access_iterator<std::vector<int>>>;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(iterator_fixture, iterator_fixture, test_type, );
 
@@ -80,8 +80,8 @@ protected:
 // default constructor
 TEST(random_access_iterator_test, default_constructor)
 {
-    [[maybe_unused]] seqan3::detail::random_access_iterator<std::vector<uint8_t>> it;
-    [[maybe_unused]] seqan3::detail::random_access_iterator<std::vector<uint8_t> const> it2;
+    [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t>> it;
+    [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t> const> it2;
 }
 
 // constructor with empty container reference
@@ -89,21 +89,21 @@ TEST(random_access_iterator_test, constructor_ref)
 {
     // non-const version
     std::vector<uint8_t> v_empty;
-    seqan3::detail::random_access_iterator<std::vector<uint8_t>> it(v_empty);
+    bio::detail::random_access_iterator<std::vector<uint8_t>> it(v_empty);
     // const version
     std::vector<uint8_t> const v_const_empty;
-    seqan3::detail::random_access_iterator<std::vector<uint8_t> const> it2(v_const_empty);
+    bio::detail::random_access_iterator<std::vector<uint8_t> const> it2(v_const_empty);
 }
 
 // test constructor call with non-empty container reference and subscript operator
 TEST_F(random_access_iterator_test_fixture, constructor_ref2)
 {
     // non-const version
-    seqan3::detail::random_access_iterator<std::vector<uint8_t>> it(v);
+    bio::detail::random_access_iterator<std::vector<uint8_t>> it(v);
     EXPECT_EQ('a', it[0]);
     EXPECT_EQ('t', it[1]);
     // const version
-    seqan3::detail::random_access_iterator<std::vector<uint8_t> const> it2(v_const);
+    bio::detail::random_access_iterator<std::vector<uint8_t> const> it2(v_const);
     EXPECT_EQ('a', it2[0]);
     EXPECT_EQ('t', it2[1]);
 }
@@ -112,11 +112,11 @@ TEST_F(random_access_iterator_test_fixture, constructor_ref2)
 TEST_F(random_access_iterator_test_fixture, constructor_ref3)
 {
     // non-const version
-    seqan3::detail::random_access_iterator<std::array<long int, 3>> it(a, 1);
+    bio::detail::random_access_iterator<std::array<long int, 3>> it(a, 1);
     EXPECT_EQ(22, it[0]);
     EXPECT_EQ(33, it[1]);
     // const version
-    seqan3::detail::random_access_iterator<std::array<long int, 3> const> it2(a_const, 1);
+    bio::detail::random_access_iterator<std::array<long int, 3> const> it2(a_const, 1);
     EXPECT_EQ(22, it2[0]);
     EXPECT_EQ(33, it2[1]);
 }
@@ -125,24 +125,24 @@ TEST_F(random_access_iterator_test_fixture, constructor_ref3)
 TEST_F(random_access_iterator_test_fixture, cp_constructor1)
 {
     // non-const container
-    seqan3::detail::random_access_iterator<std::vector<uint8_t>> it_base(v_empty);
-    [[maybe_unused]] seqan3::detail::random_access_iterator<std::vector<uint8_t>> it_derivate(it_base);
+    bio::detail::random_access_iterator<std::vector<uint8_t>> it_base(v_empty);
+    [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t>> it_derivate(it_base);
     // const container
-    seqan3::detail::random_access_iterator<std::vector<uint8_t> const> it_base2(v_const_empty);
-    [[maybe_unused]] seqan3::detail::random_access_iterator<std::vector<uint8_t> const> it_derivate2(it_base2);
+    bio::detail::random_access_iterator<std::vector<uint8_t> const> it_base2(v_const_empty);
+    [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t> const> it_derivate2(it_base2);
 }
 
 // copy constructor with non-empty container reference
 TEST_F(random_access_iterator_test_fixture, cp_constructor2)
 {
     // non-const
-    seqan3::detail::random_access_iterator<std::vector<uint8_t>> it_base(v);
-    seqan3::detail::random_access_iterator<std::vector<uint8_t>> it_derivate(it_base);
+    bio::detail::random_access_iterator<std::vector<uint8_t>> it_base(v);
+    bio::detail::random_access_iterator<std::vector<uint8_t>> it_derivate(it_base);
     EXPECT_EQ('a', it_base[0]);
     EXPECT_EQ('a', it_derivate[0]);
     // const
-    seqan3::detail::random_access_iterator<std::vector<uint8_t> const> it_base2(v_const);
-    seqan3::detail::random_access_iterator<std::vector<uint8_t> const> it_derivate2(it_base2);
+    bio::detail::random_access_iterator<std::vector<uint8_t> const> it_base2(v_const);
+    bio::detail::random_access_iterator<std::vector<uint8_t> const> it_derivate2(it_base2);
     EXPECT_EQ('a', it_base2[0]);
     EXPECT_EQ('a', it_derivate2[0]);
 
@@ -152,10 +152,10 @@ TEST_F(random_access_iterator_test_fixture, cp_constructor2)
 TEST_F(random_access_iterator_test_fixture, constructor_const_from_nonconst)
 {
     // non-const
-    seqan3::detail::random_access_iterator<std::vector<uint8_t>> it(v);
+    bio::detail::random_access_iterator<std::vector<uint8_t>> it(v);
     EXPECT_EQ('a', it[0]);
     // const
-    seqan3::detail::random_access_iterator<std::vector<uint8_t> const> cit(it);
+    bio::detail::random_access_iterator<std::vector<uint8_t> const> cit(it);
     EXPECT_EQ('a', cit[0]);
 }
 
@@ -163,24 +163,24 @@ TEST_F(random_access_iterator_test_fixture, constructor_const_from_nonconst)
 TEST_F(random_access_iterator_test_fixture, constructor_assign1)
 {
     // non-const
-    seqan3::detail::random_access_iterator<std::vector<uint8_t>> it_base(v_empty);
-    [[maybe_unused]] seqan3::detail::random_access_iterator<std::vector<uint8_t>> it_derived = it_base;
+    bio::detail::random_access_iterator<std::vector<uint8_t>> it_base(v_empty);
+    [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t>> it_derived = it_base;
     // const
-    seqan3::detail::random_access_iterator<std::vector<uint8_t> const> it_base2(v_const_empty);
-    [[maybe_unused]] seqan3::detail::random_access_iterator<std::vector<uint8_t> const> it_derived2 = it_base2;
+    bio::detail::random_access_iterator<std::vector<uint8_t> const> it_base2(v_const_empty);
+    [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t> const> it_derived2 = it_base2;
 }
 
 // test assignment construction with non-empty container reference and subscript
 TEST_F(random_access_iterator_test_fixture, constructor_assign2)
 {
     // non-const
-    seqan3::detail::random_access_iterator<std::vector<uint8_t>> it_base(v);
-    seqan3::detail::random_access_iterator<std::vector<uint8_t>> it_derivate = it_base;
+    bio::detail::random_access_iterator<std::vector<uint8_t>> it_base(v);
+    bio::detail::random_access_iterator<std::vector<uint8_t>> it_derivate = it_base;
     EXPECT_EQ('t', it_base[1]);
     EXPECT_EQ('t', it_derivate[1]);
     // const
-    seqan3::detail::random_access_iterator<std::vector<uint8_t> const> it_base2(v_const);
-    seqan3::detail::random_access_iterator<std::vector<uint8_t> const> it_derivate2 = it_base2;
+    bio::detail::random_access_iterator<std::vector<uint8_t> const> it_base2(v_const);
+    bio::detail::random_access_iterator<std::vector<uint8_t> const> it_derivate2 = it_base2;
     EXPECT_EQ('t', it_base2[1]);
     EXPECT_EQ('t', it_derivate2[1]);
 }
@@ -189,13 +189,13 @@ TEST_F(random_access_iterator_test_fixture, constructor_assign2)
 TEST_F(random_access_iterator_test_fixture, constructor_move)
 {
     // non-const
-    seqan3::detail::random_access_iterator<std::vector<uint8_t>> it1(v);
-    seqan3::detail::random_access_iterator<std::vector<uint8_t>> it2(std::move(it1));
+    bio::detail::random_access_iterator<std::vector<uint8_t>> it1(v);
+    bio::detail::random_access_iterator<std::vector<uint8_t>> it2(std::move(it1));
     EXPECT_EQ('a', it2[0]);
     EXPECT_EQ('t', it2[1]);
     // const
-    seqan3::detail::random_access_iterator<std::vector<uint8_t> const> it3(v_const);
-    seqan3::detail::random_access_iterator<std::vector<uint8_t> const> it4(std::move(it3));
+    bio::detail::random_access_iterator<std::vector<uint8_t> const> it3(v_const);
+    bio::detail::random_access_iterator<std::vector<uint8_t> const> it4(std::move(it3));
     EXPECT_EQ('a', it3[0]);
     EXPECT_EQ('t', it4[1]);
 }
@@ -204,10 +204,10 @@ TEST_F(random_access_iterator_test_fixture, constructor_move)
 TEST_F(random_access_iterator_test_fixture, move_assign)
 {
     // non-const
-    seqan3::detail::random_access_iterator<std::array<long int, 3>> it1, it2;
+    bio::detail::random_access_iterator<std::array<long int, 3>> it1, it2;
     it2 = std::move(it1);
     // const
-    seqan3::detail::random_access_iterator<std::array<long int, 3> const> it3, it4;
+    bio::detail::random_access_iterator<std::array<long int, 3> const> it3, it4;
     it4 = std::move(it3);
 }
 
@@ -215,12 +215,12 @@ TEST_F(random_access_iterator_test_fixture, move_assign)
 TEST_F(random_access_iterator_test_fixture, cp_destructor)
 {
     // non-const
-    using iterator_type = typename seqan3::detail::random_access_iterator<std::vector<uint8_t>>;
+    using iterator_type = typename bio::detail::random_access_iterator<std::vector<uint8_t>>;
     iterator_type it(v_empty);
     iterator_type * it_ptr = &it;
     it_ptr->iterator_type::~iterator_type();
     // const
-    using iterator_type2 = typename seqan3::detail::random_access_iterator<std::vector<uint8_t> const>;
+    using iterator_type2 = typename bio::detail::random_access_iterator<std::vector<uint8_t> const>;
     iterator_type2 it2(v_const_empty);
     iterator_type2 * it_ptr2 = &it2;
     it_ptr2->iterator_type2::~iterator_type2();

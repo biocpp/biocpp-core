@@ -7,37 +7,37 @@
 
 /*!\file
  * \author Svenja Mehringer <svenja.mehringer AT fu-berlin.de>
- * \brief Provides seqan3::sam_dna16.
+ * \brief Provides bio::sam_dna16.
  */
 
 #pragma once
 
 #include <bio/alphabet/nucleotide/nucleotide_base.hpp>
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief A 16 letter DNA alphabet, containing all IUPAC symbols minus the gap and plus an equality sign ('=').
  * \ingroup nucleotide
- * \implements seqan3::writable_alphabet
- * \implements seqan3::nucleotide_alphabet
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
+ * \implements bio::writable_alphabet
+ * \implements bio::nucleotide_alphabet
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
  *
  * \details
  *
- * The seqan3::sam_dna16 alphabet is the nucleotide alphabet used inside the SAM, BAM and CRAM formats.
- * It has all the letters of the seqan3::dna15 alphabet and the extra alphabet character '=' which denotes a
+ * The bio::sam_dna16 alphabet is the nucleotide alphabet used inside the SAM, BAM and CRAM formats.
+ * It has all the letters of the bio::dna15 alphabet and the extra alphabet character '=' which denotes a
  * nucleotide character identical to the reference.
  * Without the context of this reference sequence, no assumptions can be made about the actual value of '=' letter.
  *
  * Note that you can assign 'U' as a character to sam_dna16 and it will silently
  * be converted to 'T'.
- * Lower case letters are accepted when assigning from char (just like seqan3::dna15) and unknown characters are
+ * Lower case letters are accepted when assigning from char (just like bio::dna15) and unknown characters are
  * silently converted to 'N'.
  *
- * The complement is the same as for seqan3::dna15, with the addition that the complement of '=' is unknown and
+ * The complement is the same as for bio::dna15, with the addition that the complement of '=' is unknown and
  * therefore set to 'N'.
  *
  * \include test/snippet/alphabet/nucleotide/sam_dna16.cpp
@@ -48,9 +48,9 @@ private:
     //!\brief The base class.
     using base_t = nucleotide_base<sam_dna16, 16>;
 
-    //!\brief Befriend seqan3::nucleotide_base.
+    //!\brief Befriend bio::nucleotide_base.
     friend base_t;
-    //!\cond \brief Befriend seqan3::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -92,7 +92,7 @@ protected:
         'N'
     };
 
-    //!\copydoc seqan3::dna4::char_to_rank
+    //!\copydoc bio::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank
     {
         [] () constexpr
@@ -117,7 +117,7 @@ protected:
         }()
     };
 
-    //!\copydoc seqan3::dna4::complement_table
+    //!\copydoc bio::dna4::complement_table
     static const std::array<sam_dna16, alphabet_size> complement_table;
 };
 
@@ -125,7 +125,7 @@ protected:
 // containers
 // ------------------------------------------------------------------
 
-//!\brief Alias for an std::vector of seqan3::sam_dna16.
+//!\brief Alias for an std::vector of bio::sam_dna16.
 //!\relates sam_dna16
 using sam_dna16_vector = std::vector<sam_dna16>;
 
@@ -137,9 +137,9 @@ using sam_dna16_vector = std::vector<sam_dna16>;
  * \{
  */
 
-/*!\brief The seqan3::sam_dna16 char literal.
- * \relates seqan3::sam_dna16
- * \returns seqan3::sam_dna16
+/*!\brief The bio::sam_dna16 char literal.
+ * \relates bio::sam_dna16
+ * \returns bio::sam_dna16
  * \param[in] c The character to assign from.
  */
 constexpr sam_dna16 operator""_sam_dna16(char const c) noexcept
@@ -147,13 +147,13 @@ constexpr sam_dna16 operator""_sam_dna16(char const c) noexcept
     return sam_dna16{}.assign_char(c);
 }
 
-/*!\brief The seqan3::sam_dna16 string literal.
- * \relates seqan3::sam_dna16
- * \returns seqan3::sam_dna16_vector
+/*!\brief The bio::sam_dna16 string literal.
+ * \relates bio::sam_dna16
+ * \returns bio::sam_dna16_vector
  * \param[in] s The string literal to assign from.
  * \param[in] n The length of the string literal s.
  *
- * You can use this string literal to easily assign to seqan3::sam_dna16_vector:
+ * You can use this string literal to easily assign to bio::sam_dna16_vector:
  *
  * \include test/snippet/alphabet/nucleotide/sam_dna16_literal.cpp
  */
@@ -193,4 +193,4 @@ constexpr std::array<sam_dna16, sam_dna16::alphabet_size> sam_dna16::complement_
     'N'_sam_dna16     // complement of 'N'_sam_dna16
 };
 
-} // namespace seqan3
+} // namespace bio

@@ -21,12 +21,12 @@
 #include <cereal/archives/binary.hpp>
 #endif
 
-namespace seqan3
+namespace bio
 {
 
-/*!\interface seqan3::cereal_output_archive <>
+/*!\interface bio::cereal_output_archive <>
  * \brief All output archives of the Cereal library satisfy this.
- * \extends seqan3::cereal_archive
+ * \extends bio::cereal_archive
  * \ingroup core
  *
  * This includes cereal::BinaryOutputArchive, cereal::PortableBinaryOutputArchive, cereal::JSONOutputArchive,
@@ -45,9 +45,9 @@ concept cereal_output_archive = false;
 #endif
 //!\endcond
 
-/*!\interface seqan3::cereal_input_archive <>
+/*!\interface bio::cereal_input_archive <>
  * \brief All input archives of the Cereal library satisfy this.
- * \extends seqan3::cereal_archive
+ * \extends bio::cereal_archive
  * \ingroup core
  *
  * This includes cereal::BinaryInputArchive, cereal::PortableBinaryInputArchive, cereal::JSONInputArchive,
@@ -66,7 +66,7 @@ concept cereal_input_archive = false;
 #endif
 //!\endcond
 
-/*!\interface seqan3::cereal_archive <>
+/*!\interface bio::cereal_archive <>
  * \brief All archives of the Cereal library satisfy this.
  * \ingroup core
  *
@@ -83,9 +83,9 @@ concept cereal_archive = false;
 #endif
 //!\endcond
 
-/*!\interface seqan3::cereal_text_archive <>
+/*!\interface bio::cereal_text_archive <>
  * \brief All text archives of the Cereal library satisfy this.
- * \extends seqan3::cereal_archive
+ * \extends bio::cereal_archive
  * \ingroup core
  *
  * This includes cereal::JSONOutputArchive, cereal::XMLOutputArchive, cereal::JSONInputArchive,
@@ -104,7 +104,7 @@ concept cereal_text_archive = false;
 #endif
 //!\endcond
 
-/*!\interface seqan3::cerealisable <>
+/*!\interface bio::cerealisable <>
  * \ingroup core
  * \brief Specifies the requirements for types that are serialisable via Cereal.
  *
@@ -119,14 +119,14 @@ concept cereal_text_archive = false;
  * #include <bio/meta/concept/cereal.hpp>
  *
  * // fundamental types are serialisable
- * static_assert(seqan3::cerealisable<int>);
+ * static_assert(bio::cerealisable<int>);
  *
  * #include <array>
  * #include <cereal/types/array.hpp> // std::array is now serialisable
- * static_assert(seqan3::cerealisable<std::array<int, 12>>);
+ * static_assert(bio::cerealisable<std::array<int, 12>>);
  *
  * #include <bio/alphabet/nucleotide/dna4.hpp> // dna4 is serialisable
- * static_assert(seqan3::cerealisable<seqan3::dna4>);
+ * static_assert(bio::cerealisable<bio::dna4>);
  * ```
  *
  * ### Example
@@ -152,9 +152,9 @@ concept cerealisable = false;
 #endif
 //!\endcond
 
-} // namespace seqan3
+} // namespace bio
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 /*!\brief Removes type-mangling that Cereal does with certain types on loading.
@@ -169,4 +169,4 @@ template <typename type>
 using strip_cereal_wrapper_t = type;
 #endif
 
-} // namespace seqan3::detail
+} // namespace bio::detail

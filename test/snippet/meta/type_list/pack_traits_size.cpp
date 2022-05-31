@@ -3,5 +3,5 @@
 int main()
 {
     // Get the size of the pack.
-    static_assert(seqan3::pack_traits::size<int, float, bool, int> == 4);
+    static_assert(bio::pack_traits::size<int, float, bool, int> == 4);
 }

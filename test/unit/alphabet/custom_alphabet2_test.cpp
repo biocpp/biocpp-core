@@ -11,7 +11,7 @@
 
 //![my_alph]
 #include <cstddef>                      // for size_t
-#include <bio/alphabet/concept.hpp>  // for seqan3::alphabet
+#include <bio/alphabet/concept.hpp>  // for bio::alphabet
 #include <type_traits>       // for std::type_identity
 
 namespace my_namespace
@@ -81,11 +81,11 @@ constexpr bool char_is_valid_for(char const c, std::type_identity<my_alph> const
 
 } // namespace my_namespace
 
-static_assert(seqan3::alphabet_size<my_namespace::my_alph> == 2);
-static_assert(seqan3::char_is_valid_for<my_namespace::my_alph>('T'));
-static_assert(!seqan3::char_is_valid_for<my_namespace::my_alph>('!'));
-static_assert(seqan3::semialphabet<my_namespace::my_alph>);
-static_assert(seqan3::alphabet<my_namespace::my_alph>);
+static_assert(bio::alphabet_size<my_namespace::my_alph> == 2);
+static_assert(bio::char_is_valid_for<my_namespace::my_alph>('T'));
+static_assert(!bio::char_is_valid_for<my_namespace::my_alph>('!'));
+static_assert(bio::semialphabet<my_namespace::my_alph>);
+static_assert(bio::alphabet<my_namespace::my_alph>);
 //![my_alph]
 
 // Not tested with rest of test-suite because the test-suite relies on default-constructibility

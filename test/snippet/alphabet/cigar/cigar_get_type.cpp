@@ -4,15 +4,15 @@
 
 int main()
 {
-    using seqan3::get;
-    using seqan3::operator""_cigar_op;
+    using bio::get;
+    using bio::operator""_cigar_op;
 
-    seqan3::cigar letter{10, 'M'_cigar_op};
+    bio::cigar letter{10, 'M'_cigar_op};
 
     uint32_t size{get<uint32_t>(letter)};                       // Note this is equivalent to get<0>(letter)
-    seqan3::cigar_op cigar_char{get<seqan3::cigar_op>(letter)}; // Note this is equivalent to get<1>(letter)
+    bio::cigar_op cigar_char{get<bio::cigar_op>(letter)}; // Note this is equivalent to get<1>(letter)
 
-    seqan3::debug_stream << "Size is "       << size       << '\n';
-    seqan3::debug_stream << "Cigar char is " << cigar_char << '\n'; // seqan3::debug_stream converts to char on the fly.
+    bio::debug_stream << "Size is "       << size       << '\n';
+    bio::debug_stream << "Cigar char is " << cigar_char << '\n'; // bio::debug_stream converts to char on the fly.
 
 }

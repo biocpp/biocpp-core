@@ -14,7 +14,7 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace seqan3
+namespace bio
 {
 /*!\brief Genetic codes used for translation of nucleotides into amino acids.
  *

@@ -4,8 +4,8 @@
 
 int main()
 {
-    using seqan3::operator""_rna4;
+    using bio::operator""_rna4;
 
-    seqan3::alphabet_variant<seqan3::dna4, seqan3::gap> letter1{};
+    bio::alphabet_variant<bio::dna4, bio::gap> letter1{};
     letter1 = 'C'_rna4;
 }

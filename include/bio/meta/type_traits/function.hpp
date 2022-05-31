@@ -16,7 +16,7 @@
 
 #include <bio/meta/type_list/traits.hpp>
 
-namespace seqan3
+namespace bio
 {
 // ----------------------------------------------------------------------------
 // function_traits
@@ -34,7 +34,7 @@ struct function_traits;
  *
  * \details
  *
- * seqan3::function_traits is the type trait class that provides a uniform interface to the properties of
+ * bio::function_traits is the type trait class that provides a uniform interface to the properties of
  * a std::function type, a lambda type, a function type or a function pointer type.
  * This makes it possible to access the return type and the argument types of the stored target function.
  * The function types must be complete, i.e. all argument types and the return type must be known, otherwise
@@ -70,9 +70,9 @@ template <typename function_t>
 struct function_traits<function_t> : function_traits<decltype(std::function{std::declval<function_t>()})>
 {};
 //!\endcond
-} // namespace seqan3
+} // namespace bio
 
-namespace seqan3::detail
+namespace bio::detail
 {
 // ----------------------------------------------------------------------------
 // multi_invocable
@@ -89,8 +89,8 @@ struct multi_invocable : invocable_ts...
     using invocable_ts::operator()...;
 };
 
-//!\brief Deduction guides for seqan3::detail::multi_invocable.
+//!\brief Deduction guides for bio::detail::multi_invocable.
 template <typename ...invocable_ts>
 multi_invocable(invocable_ts...) -> multi_invocable<invocable_ts...>;
 
-} // namespace seqan3::detail
+} // namespace bio::detail

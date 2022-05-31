@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides the concepts seqan3::transformation_trait and seqan3::unary_type_trait.
+ * \brief Provides the concepts bio::transformation_trait and bio::unary_type_trait.
  * \author Svenja Mehringer <avenja.mehringer AT fu-berlin.de>
  */
 
@@ -16,10 +16,10 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace seqan3
+namespace bio
 {
 
-/*!\interface seqan3::transformation_trait
+/*!\interface bio::transformation_trait
  * \ingroup type_traits
  * \brief Concept for a transformation trait.
  *
@@ -30,7 +30,7 @@ template <typename t>
 concept transformation_trait = requires { typename t::type; };
 //!\endcond
 
-/*!\interface seqan3::unary_type_trait
+/*!\interface bio::unary_type_trait
  * \ingroup type_traits
  * \brief Concept for a unary traits type.
  *
@@ -41,4 +41,4 @@ template <typename t>
 concept unary_type_trait = std::is_base_of_v<std::integral_constant<typename t::value_type, t::value>, t>;
 //!\endcond
 
-} // namespace seqan3
+} // namespace bio

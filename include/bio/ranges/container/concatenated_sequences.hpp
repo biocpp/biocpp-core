@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides seqan3::concatenated_sequences.
+ * \brief Provides bio::concatenated_sequences.
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
  */
 
@@ -28,18 +28,18 @@
 #include <cereal/types/vector.hpp>
 #endif
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
-/*!\brief The reference type of seqan3::concatenated_sequences.
- * \tparam value_type The value_type of the seqan3::concatenated_sequences.
+/*!\brief The reference type of bio::concatenated_sequences.
+ * \tparam value_type The value_type of the bio::concatenated_sequences.
  * \tparam is_const_ref Reference type or const reference type.
  *
  * \details
  *
- * A light-weight type that inherits from the returned type of the seqan3::views::slice adaptor (std::span, std::ranges::subrange, ...),
+ * A light-weight type that inherits from the returned type of the bio::views::slice adaptor (std::span, std::ranges::subrange, ...),
  * but additionally provides implicit convertibility to the `value_type`. This is needed so that `value_type` and
- * `reference` type of seqan3::concatenated_sequences satisfy std::common_reference_with.
+ * `reference` type of bio::concatenated_sequences satisfy std::common_reference_with.
  *
  * The const version of this type additionally ensures deep constness to maintain container-like behaviour.
  */
@@ -61,7 +61,7 @@ struct concatenated_sequences_reference_proxy :
     //!\brief Construct from base type.
     concatenated_sequences_reference_proxy(base_t && rhs) : base_t{std::move(rhs)} {}
 
-    //!\brief Implicitly convert to the `value_type` of seqan3::concatenated_sequences.
+    //!\brief Implicitly convert to the `value_type` of bio::concatenated_sequences.
     operator value_type() const
     {
         value_type ret;
@@ -71,17 +71,17 @@ struct concatenated_sequences_reference_proxy :
     }
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief Container that stores sequences concatenated internally.
- * \tparam inner_type The type of sequences that will be stored. Must satisfy seqan3::reservible_container.
+ * \tparam inner_type The type of sequences that will be stored. Must satisfy bio::reservible_container.
  * \tparam data_delimiters_type A container that stores the begin/end positions in the inner_type. Must be
- * seqan3::reservible_container and have inner_type's size_type as value_type.
- * \implements seqan3::cerealisable
- * \implements seqan3::reservible_container
+ * bio::reservible_container and have inner_type's size_type as value_type.
+ * \implements bio::cerealisable
+ * \implements bio::reservible_container
  * \ingroup container
  *
  * This class may be used whenever you would usually use `std::vector<std::vector<some_alphabet>>` or
@@ -178,7 +178,7 @@ public:
 
 protected:
     /*!\name Compatibility
-     * \brief Static constexpr variables that emulate/encapsulate seqan3::range_compatible (which doesn't work for types during their definition).
+     * \brief Static constexpr variables that emulate/encapsulate bio::range_compatible (which doesn't work for types during their definition).
      * \{
      */
     //!\cond
@@ -196,13 +196,13 @@ protected:
     }
     //!\endcond
 
-    //!\brief Whether a type satisfies seqan3::range_compatible with this class's `value_type` or `reference` type.
+    //!\brief Whether a type satisfies bio::range_compatible with this class's `value_type` or `reference` type.
     //!\hideinitializer
     // we explicitly check same-ness, because these types may not be fully resolved, yet
     template <std::ranges::range t>
     static constexpr bool is_compatible_with_value_type = is_compatible_with_value_type_aux(std::type_identity<t>{});
 
-    //!\brief Whether a type satisfies seqan3::range_compatible with this class.
+    //!\brief Whether a type satisfies bio::range_compatible with this class.
     //!\hideinitializer
     // cannot use the concept, because this class is not yet fully defined
     template <typename t>
@@ -211,7 +211,7 @@ protected:
     //!\endcond
     static constexpr bool iter_value_t_is_compatible_with_value_type = true;
 
-    //!\brief Whether a type satisfies seqan3::range_compatible with this class.
+    //!\brief Whether a type satisfies bio::range_compatible with this class.
     //!\hideinitializer
     // cannot use the concept, because this class is not yet fully defined
     template <std::ranges::range t>
@@ -1359,7 +1359,7 @@ public:
 
     /*!\cond DEV
      * \brief Serialisation support function.
-     * \tparam archive_t Type of `archive`; must satisfy seqan3::cereal_archive.
+     * \tparam archive_t Type of `archive`; must satisfy bio::cereal_archive.
      * \param archive The archive being serialised from/to.
      *
      * \attention These functions are never called directly, see \ref howto_use_cereal for more details.
@@ -1372,4 +1372,4 @@ public:
     //!\endcond
 };
 
-} // namespace seqan3
+} // namespace bio

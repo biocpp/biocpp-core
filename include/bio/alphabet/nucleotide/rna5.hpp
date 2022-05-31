@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::rna5, container aliases and string literals.
+ * \brief Provides bio::rna5, container aliases and string literals.
  */
 
 #pragma once
@@ -21,25 +21,25 @@
 // rna5
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief The five letter RNA alphabet of A,C,G,U and the unknown character N.
  * \ingroup nucleotide
- * \implements seqan3::nucleotide_alphabet
- * \implements seqan3::writable_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::nucleotide_alphabet
+ * \implements bio::writable_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \details
- * This alphabet has the same internal representation as seqan3::dna5, the only difference is that it prints 'U' on
- * character conversion instead of 'T'. You can assign between values of seqan3::dna5 and seqan3::rna5.
+ * This alphabet has the same internal representation as bio::dna5, the only difference is that it prints 'U' on
+ * character conversion instead of 'T'. You can assign between values of bio::dna5 and bio::rna5.
  *
  * Like most alphabets, this alphabet cannot be initialised directly from its character representation.
  * Instead initialise/assign from the character literal or use the
- * function seqan3::rna5::assign_char().
+ * function bio::rna5::assign_char().
  *
  *\include test/snippet/alphabet/nucleotide/rna5.cpp
  */
@@ -51,7 +51,7 @@ private:
 
     //!\brief Befriend nucleotide_base.
     friend base_t;
-    //!\cond \brief Befriend seqan3::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -81,7 +81,7 @@ public:
 protected:
     //!\privatesection
 
-    //!\copydoc seqan3::dna4::rank_to_char
+    //!\copydoc bio::dna4::rank_to_char
     static constexpr char_type rank_to_char[alphabet_size]
     {
         'A',
@@ -91,10 +91,10 @@ protected:
         'U'
     };
 
-    //!\copydoc seqan3::dna4::char_to_rank
+    //!\copydoc bio::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank = dna5::char_to_rank;
 
-    //!\copydoc seqan3::dna4::complement_table
+    //!\copydoc bio::dna4::complement_table
     static const std::array<rna5, alphabet_size> complement_table;
 };
 
@@ -102,7 +102,7 @@ protected:
 // containers
 // ------------------------------------------------------------------
 
-//!\brief Alias for an std::vector of seqan3::rna5.
+//!\brief Alias for an std::vector of bio::rna5.
 //!\relates rna5
 using rna5_vector = std::vector<rna5>;
 
@@ -114,18 +114,18 @@ using rna5_vector = std::vector<rna5>;
  * \{
  */
 
-/*!\brief The seqan3::rna5 char literal.
- * \relates seqan3::rna5
- * \returns seqan3::rna5
+/*!\brief The bio::rna5 char literal.
+ * \relates bio::rna5
+ * \returns bio::rna5
  */
 constexpr rna5 operator""_rna5(char const c) noexcept
 {
     return rna5{}.assign_char(c);
 }
 
-/*!\brief The seqan3::rna5 string literal.
- * \relates seqan3::rna5
- * \returns seqan3::rna5_vector
+/*!\brief The bio::rna5 string literal.
+ * \relates bio::rna5
+ * \returns bio::rna5_vector
  *
  * You can use this string literal to easily assign to rna5_vector:
  *
@@ -157,4 +157,4 @@ constexpr std::array<rna5, rna5::alphabet_size> rna5::complement_table
     'A'_rna5     // complement of 'U'_rna5
 };
 
-} // namespace seqan3
+} // namespace bio

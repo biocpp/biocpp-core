@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::views::complement.
+ * \brief Provides bio::views::complement.
  */
 
 #pragma once
@@ -16,7 +16,7 @@
 #include <bio/ranges/views/deep.hpp>
 #include <ranges>
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\name Alphabet related views
@@ -34,7 +34,7 @@ namespace seqan3::views
  *
  * \header_file{seqan3/range/views/complement.hpp}
  *
- * Calls seqan3::nucleotide_alphabet::complement() on every element of the input range.
+ * Calls bio::nucleotide_alphabet::complement() on every element of the input range.
  *
  * ### View properties
  *
@@ -54,9 +54,9 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                       | *preserved*                                                     |
  * | std::ranges::common_range        |                                       | *preserved*                                                     |
  * | std::ranges::output_range        |                                       | *lost*                                                          |
- * | seqan3::const_iterable_range     |                                       | *preserved*                                                     |
+ * | bio::const_iterable_range     |                                       | *preserved*                                                     |
  * |                                  |                                       |                                                                 |
- * | std::ranges::range_reference_t   | seqan3::nucleotide_alphabet           | std::remove_reference_t<std::ranges::range_reference_t<urng_t>> |
+ * | std::ranges::range_reference_t   | bio::nucleotide_alphabet           | std::remove_reference_t<std::ranges::range_reference_t<urng_t>> |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
@@ -71,9 +71,9 @@ inline auto const complement = deep{std::views::transform([] (auto const in)
     static_assert(nucleotide_alphabet<decltype(in)>,
                   "The innermost value type must satisfy the nucleotide_alphabet.");
     // call element-wise complement from the nucleotide_alphabet
-    return seqan3::complement(in);
+    return bio::complement(in);
 })};
 
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

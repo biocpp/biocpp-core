@@ -24,7 +24,7 @@
 #include <bio/meta/detail/type_inspection.hpp>
 #include <bio/meta/type_traits/basic.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 // ----------------------------------------------------------------------------
@@ -74,7 +74,7 @@ public:
  * \tparam op               non-type template parameter specifying the separator character, e.g. '|'.
  * \tparam condition_head_t The first condition type in the message. Ensures that there is at least one type.
  * \tparam condition_ts     Remaining list of conditions separated by `op`.
- * \relates seqan3::detail::char_predicate
+ * \relates bio::detail::char_predicate
  */
 template <char op, typename condition_head_t, typename ...condition_ts>
 inline const std::string condition_message_v
@@ -94,8 +94,8 @@ template <typename condition_t>
 struct char_predicate_base;
 //!\endcond
 
-/*!\interface seqan3::detail::char_predicate <>
- * \brief An internal concept to check if an object fulfills the requirements of a seqan3::detail::char_predicate.
+/*!\interface bio::detail::char_predicate <>
+ * \brief An internal concept to check if an object fulfills the requirements of a bio::detail::char_predicate.
  * \ingroup stream
  *
  * \details
@@ -119,13 +119,13 @@ concept char_predicate = requires
 };
 //!\endcond
 
-/*!\name Requirements for seqan3::detail::char_predicate
- * \brief You can expect the variable and the predicate function on all types that satisfy seqan3::output_stream_over.
+/*!\name Requirements for bio::detail::char_predicate
+ * \brief You can expect the variable and the predicate function on all types that satisfy bio::output_stream_over.
  * \{
  */
 /*!\fn      bool operator()(char_type c);
  * \brief   predicate function to test if `c` satisfies the given condition.
- * \memberof seqan3::detail::char_predicate
+ * \memberof bio::detail::char_predicate
  * \param   c The character to be tested.
  * \returns `true` on success, `false` otherwise.
  *
@@ -134,7 +134,7 @@ concept char_predicate = requires
  */
 
 /*!\var static constexpr auto msg
- * \memberof seqan3::detail::char_predicate
+ * \memberof bio::detail::char_predicate
  * \brief Defines the condition msg. The type is deduced from the constant expression in the definition of the variable.
  */
 //!\}
@@ -156,7 +156,7 @@ struct char_predicate_negator;
  *        parse conditions to add logical disjunction and negation operator.
  * \ingroup stream
  * \tparam derived_t The parse condition type to be extended with the logical operators.
- *                   Must model seqan3::detail::char_predicate.
+ *                   Must model bio::detail::char_predicate.
  */
 template <typename derived_t>
 struct char_predicate_base
@@ -168,7 +168,7 @@ struct char_predicate_base
      * \brief Adds logical operators to allow logical disjunction, conjunction and negation on parse conditions.
      * \{
      */
-    //!\brief Combines the result of two seqan3::detail::char_predicate via logical disjunction.
+    //!\brief Combines the result of two bio::detail::char_predicate via logical disjunction.
     template <char_predicate rhs_t>
     constexpr auto operator||(rhs_t const &) const
     {
@@ -224,9 +224,9 @@ struct char_predicate_base
 // ----------------------------------------------------------------------------
 
 /*!\brief Logical disjunction operator for parse conditions.
- * \implements seqan3::detail::char_predicate
+ * \implements bio::detail::char_predicate
  * \tparam condition_ts Template parameter pack over all parse condition types. Must contain at least 2 template parameters.
- *                      Must model seqan3::detail::char_predicate.
+ *                      Must model bio::detail::char_predicate.
  * \ingroup stream
  */
 template <char_predicate... condition_ts>
@@ -248,9 +248,9 @@ struct char_predicate_combiner : public char_predicate_base<char_predicate_combi
 };
 
 /*!\brief Logical not operator for a parse condition.
- * \implements seqan3::detail::char_predicate
+ * \implements bio::detail::char_predicate
  * \tparam condition_t Template parameter to apply the not-operator for.
- *                     Must model seqan3::detail::char_predicate.
+ *                     Must model bio::detail::char_predicate.
  * \ingroup stream
  */
 template <char_predicate condition_t>
@@ -274,7 +274,7 @@ struct char_predicate_negator : public char_predicate_base<char_predicate_negato
 
 /*!\brief Parse condition that checks if a given value is in the range of `rng_beg` and `interval_last`.
  * \ingroup stream
- * \implements seqan3::detail::char_predicate
+ * \implements bio::detail::char_predicate
  * \tparam interval_first non-type template parameter denoting the begin of the allowed range.
  *                        Must be less than or equal to `interval_last`.
  * \tparam interval_last non-type template parameter denoting the end of the allowed range.
@@ -316,8 +316,8 @@ struct is_in_interval_type : public char_predicate_base<is_in_interval_type<inte
 
 /*!\brief Parse condition that checks if a given value is within the given alphabet `alphabet_t`.
  * \ingroup stream
- * \implements seqan3::detail::char_predicate
- * \tparam alphabet_t The alphabet type. Must model seqan3::alphabet.
+ * \implements bio::detail::char_predicate
+ * \tparam alphabet_t The alphabet type. Must model bio::alphabet.
  */
 template <detail::constexpr_alphabet alphabet_t>
 struct is_in_alphabet_type : public char_predicate_base<is_in_alphabet_type<alphabet_t>>
@@ -351,7 +351,7 @@ public:
 
 /*!\brief Parse condition that checks if a given value is equal to `char_v`.
  * \ingroup stream
- * \implements seqan3::detail::char_predicate
+ * \implements bio::detail::char_predicate
  * \tparam char_v non-type template parameter with the value that should be checked against.
  */
 template <int char_v>
@@ -385,4 +385,4 @@ struct is_char_type : public char_predicate_base<is_char_type<char_v>>
     }();
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail

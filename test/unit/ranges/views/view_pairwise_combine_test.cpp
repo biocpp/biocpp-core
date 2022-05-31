@@ -22,8 +22,8 @@ class pairwise_combine_base_test : public ::testing::Test
 {
 public:
 
-    using view_t       = decltype(seqan3::detail::pairwise_combine_view{std::views::all(std::declval<t &>())});
-    using const_view_t = decltype(seqan3::detail::pairwise_combine_view{
+    using view_t       = decltype(bio::detail::pairwise_combine_view{std::views::all(std::declval<t &>())});
+    using const_view_t = decltype(bio::detail::pairwise_combine_view{
                                     std::views::all(std::declval<t const &>())});
 
     auto create_view()
@@ -45,7 +45,7 @@ protected:
 
     void SetUp() override
     {
-        if constexpr (seqan3::detail::is_type_specialisation_of_v<t, std::forward_list>)
+        if constexpr (bio::detail::is_type_specialisation_of_v<t, std::forward_list>)
         {
             container.push_front('d');
             container.push_front('c');
@@ -430,7 +430,7 @@ TYPED_TEST(pairwise_combine_test, iterate_reverse)
 TYPED_TEST(pairwise_combine_test, issue_1945)
 {
     TypeParam container{};
-    seqan3::detail::pairwise_combine_view view{std::views::all(container)};
+    bio::detail::pairwise_combine_view view{std::views::all(container)};
     EXPECT_TRUE(std::ranges::empty(view));
 }
 
@@ -449,7 +449,7 @@ TEST(pairwise_combine_fn_test, filter_output)
 {
     std::vector orig{'a', 'b', 'x', 'c', 'd'};
 
-    auto v = orig | seqan3::views::pairwise_combine;
+    auto v = orig | bio::views::pairwise_combine;
 
     using ref_t = std::iter_reference_t<std::ranges::iterator_t<decltype(v)>>;
     std::vector<ref_t> cmp;
@@ -476,7 +476,7 @@ TEST(pairwise_combine_fn_test, filter_input)
     std::vector orig{'a', 'b', 'x', 'c', 'd'};
     auto v_filter = orig | std::views::filter([](char c) { return c != 'x'; });
 
-    auto v = v_filter | seqan3::views::pairwise_combine;
+    auto v = v_filter | bio::views::pairwise_combine;
 
     using ref_t = std::iter_reference_t<std::ranges::iterator_t<decltype(v)>>;
     std::vector<ref_t> cmp;
@@ -496,7 +496,7 @@ TEST(pairwise_combine_fn_test, filter_input)
 TEST(pairwise_combine_fn_test, output)
 {
     std::vector orig{'a', 'b', 'c', 'd'};
-    auto v = orig | seqan3::views::pairwise_combine;
+    auto v = orig | bio::views::pairwise_combine;
 
     *v.begin() = std::tuple{'x', 'y'};
 
@@ -513,7 +513,7 @@ TEST(pairwise_combine_fn_test, const_source)
 {
     std::vector orig{'a', 'b', 'c', 'd'};
     std::vector<char> const c_orig{orig};
-    auto v = c_orig | seqan3::views::pairwise_combine;
+    auto v = c_orig | bio::views::pairwise_combine;
 
     using ref_t = typename std::iterator_traits<std::ranges::iterator_t<decltype(v)>>::reference;
     std::vector<ref_t> cmp;

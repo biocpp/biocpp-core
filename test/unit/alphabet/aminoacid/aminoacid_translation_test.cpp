@@ -12,44 +12,44 @@
 #include <bio/alphabet/aminoacid/aa27.hpp>
 #include <bio/alphabet/aminoacid/translation.hpp>
 
-using seqan3::operator""_aa27;
-using seqan3::operator""_dna4;
-using seqan3::operator""_dna15;
+using bio::operator""_aa27;
+using bio::operator""_dna4;
+using bio::operator""_dna15;
 
 TEST(translate_triplets, dna4)
 {
-    seqan3::dna4 n1{'C'_dna4};
-    seqan3::dna4 n2{'T'_dna4};
-    seqan3::dna4 n3{'A'_dna4};
-    seqan3::aa27 c{'L'_aa27};
+    bio::dna4 n1{'C'_dna4};
+    bio::dna4 n2{'T'_dna4};
+    bio::dna4 n3{'A'_dna4};
+    bio::aa27 c{'L'_aa27};
 
-    seqan3::aa27 t1{seqan3::translate_triplet<seqan3::genetic_code::CANONICAL>(n1, n2, n3)};
+    bio::aa27 t1{bio::translate_triplet<bio::genetic_code::CANONICAL>(n1, n2, n3)};
 
     EXPECT_EQ(t1, c);
 }
 
 TEST(translate_triplets, dna15)
 {
-    seqan3::dna15 n1{'C'_dna15};
-    seqan3::dna15 n2{'T'_dna15};
-    seqan3::dna15 n3{'A'_dna15};
-    seqan3::aa27 c{'L'_aa27};
+    bio::dna15 n1{'C'_dna15};
+    bio::dna15 n2{'T'_dna15};
+    bio::dna15 n3{'A'_dna15};
+    bio::aa27 c{'L'_aa27};
 
-    seqan3::aa27 t1{seqan3::translate_triplet<seqan3::genetic_code::CANONICAL, seqan3::dna15>(n1, n2, n3)};
+    bio::aa27 t1{bio::translate_triplet<bio::genetic_code::CANONICAL, bio::dna15>(n1, n2, n3)};
 
     EXPECT_EQ(t1, c);
 }
 
 TEST(translate_triplets, tuple)
 {
-    seqan3::dna15 n1{'C'_dna15};
-    seqan3::dna15 n2{'T'_dna15};
-    seqan3::dna15 n3{'A'_dna15};
-    seqan3::aa27 c{'L'_aa27};
+    bio::dna15 n1{'C'_dna15};
+    bio::dna15 n2{'T'_dna15};
+    bio::dna15 n3{'A'_dna15};
+    bio::aa27 c{'L'_aa27};
 
     std::tuple tuple_triplet{n1, n2, n3};
     #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-    seqan3::aa27 t3{seqan3::translate_triplet(tuple_triplet)};
+    bio::aa27 t3{bio::translate_triplet(tuple_triplet)};
 
     EXPECT_EQ(t3, c);
 }

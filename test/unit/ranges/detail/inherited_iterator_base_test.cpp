@@ -16,12 +16,12 @@
 
 //! [inherited_iterator_base def]
 
-class skip_odd_numbers_it : public seqan3::detail::inherited_iterator_base<skip_odd_numbers_it,
+class skip_odd_numbers_it : public bio::detail::inherited_iterator_base<skip_odd_numbers_it,
                                                                            std::vector<int>::iterator>
 {
 private:
     using base_base_t = std::vector<int>::iterator;
-    using base_t      = seqan3::detail::inherited_iterator_base<skip_odd_numbers_it, std::vector<int>::iterator>;
+    using base_t      = bio::detail::inherited_iterator_base<skip_odd_numbers_it, std::vector<int>::iterator>;
 
 public:
     skip_odd_numbers_it() = default;

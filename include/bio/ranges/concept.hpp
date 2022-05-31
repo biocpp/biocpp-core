@@ -16,10 +16,10 @@
 
 #include <bio/alphabet/concept.hpp>
 
-namespace seqan3
+namespace bio
 {
 
-/*!\interface seqan3::const_iterable_range <>
+/*!\interface bio::const_iterable_range <>
  * \ingroup range
  * \extends std::input_range
  * \brief Specifies requirements of an input range type for which the `const` version of that type satisfies the
@@ -48,7 +48,7 @@ concept const_iterable_range =
     (std::ranges::random_access_range<std::remove_const_t<type>> == std::ranges::random_access_range<type const>);
 //!\endcond
 
-/*!\interface seqan3::pseudo_random_access_iterator <>
+/*!\interface bio::pseudo_random_access_iterator <>
  * \ingroup range
  * \extends   std::forward_iterator
  * \brief     This concept checks if an iterator type models pseudo random access.
@@ -67,7 +67,7 @@ concept const_iterable_range =
  * that needs linear time for non-random access iterators (e.g. bidirectional iterators and accordingly
  * pseudo random access iterators), and constant time otherwise, although it could be computed in sub-linear time when
  * using the pseudo randomness.
- * The seqan3::views::enforce_random_access adaptor can redeclare a pseudo random access iterator as a random access
+ * The bio::views::enforce_random_access adaptor can redeclare a pseudo random access iterator as a random access
  * iterator (while preserving the caveat of needing more than constant time for random access).
  * A rule-of-thumb is that all operations are at least as fast as when using the non-redeclared random access iterators,
  * but be aware that runtime guarantees of some algorithms are higher than advertised due to the non-constant access
@@ -99,14 +99,14 @@ concept pseudo_random_access_iterator =
 };
 //!\endcond
 
-/*!\interface seqan3::pseudo_random_access_range <>
+/*!\interface bio::pseudo_random_access_range <>
  * \ingroup range
  * \extends   std::ranges::forward_range
  * \brief     This concept checks if a type models a pseudo random access range.
  *
  * \details
  *
- * A pseudo random access range is a forward range whose iterator type models seqan3::pseudo_random_access_iterator.
+ * A pseudo random access range is a forward range whose iterator type models bio::pseudo_random_access_iterator.
  *
  * ### Concepts and doxygen
  *
@@ -120,14 +120,14 @@ concept pseudo_random_access_range =
     pseudo_random_access_iterator<std::ranges::iterator_t<rng_t>>;
 //!\endcond
 
-/*!\interface seqan3::sequence <>
+/*!\interface bio::sequence <>
  * \brief The generic concept for a sequence.
  * \ingroup range
  * \extends std::ranges::input_range
  *
- * We define a range over an seqan3::alphabet as a *sequence*.
- * A type models seqan3::sequence if it is at least an std::ranges::input_range
- * and its references type models seqan3::alphabet.
+ * We define a range over an bio::alphabet as a *sequence*.
+ * A type models bio::sequence if it is at least an std::ranges::input_range
+ * and its references type models bio::alphabet.
  *
  * ### Concepts and doxygen
  *
@@ -139,4 +139,4 @@ template <typename rng_t>
 concept sequence = std::ranges::input_range<rng_t> && alphabet<std::ranges::range_reference_t<rng_t>>;
 //!\endcond
 
-} // namespace seqan3
+} // namespace bio

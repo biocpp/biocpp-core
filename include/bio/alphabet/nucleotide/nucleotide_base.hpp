@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::nucleotide_base.
+ * \brief Provides bio::nucleotide_base.
  */
 
 #pragma once
@@ -17,10 +17,10 @@
 #include <bio/alphabet/nucleotide/concept.hpp>
 #include <bio/meta/char_operations/transform.hpp>
 
-namespace seqan3
+namespace bio
 {
 
-/*!\brief A CRTP-base that refines seqan3::alphabet_base and is used by the nucleotides.
+/*!\brief A CRTP-base that refines bio::alphabet_base and is used by the nucleotides.
  * \ingroup nucleotide
  * \tparam derived_type The CRTP parameter type.
  * \tparam size         The size of the alphabet.
@@ -28,9 +28,9 @@ namespace seqan3
  * \details
  *
  * You can use this class to define your own nucleotide alphabet, but types are not required to be based on it to model
- * seqan3::nucleotide_alphabet, it is purely a way to avoid code duplication.
+ * bio::nucleotide_alphabet, it is purely a way to avoid code duplication.
  *
- * In addition to the requirements of seqan3::alphabet_base, the derived type needs to define the following static
+ * In addition to the requirements of bio::alphabet_base, the derived type needs to define the following static
  * member variable (can be private):
  *
  *   * `static std::array<THAT_TYPE, alphabet_size> complement_table` that defines for every possible rank value
@@ -80,7 +80,7 @@ public:
     explicit constexpr nucleotide_base(other_nucl_type const & other) noexcept
     {
         static_cast<derived_type &>(*this) =
-            detail::convert_through_char_representation<derived_type, other_nucl_type>[seqan3::to_rank(other)];
+            detail::convert_through_char_representation<derived_type, other_nucl_type>[bio::to_rank(other)];
     }
     //!\}
 
@@ -94,7 +94,7 @@ public:
      *
      * See \ref nucleotide for the actual values.
      *
-     * Provides an implementation for seqan3::complement, required to model seqan3::nucleotide_alphabet.
+     * Provides an implementation for bio::complement, required to model bio::nucleotide_alphabet.
      *
      * ###Complexity
      *
@@ -114,11 +114,11 @@ public:
      *
      * \details
      *
-     * Satisfies the seqan3::semialphabet::char_is_valid_for() requirement via the seqan3::char_is_valid_for()
+     * Satisfies the bio::semialphabet::char_is_valid_for() requirement via the bio::char_is_valid_for()
      * wrapper.
      *
      * Behaviour specific to nucleotides: True also for lower case letters that silently convert to their upper case
-     * **and** true also for U/T respectively, e.g. 'U' is a valid character for seqan3::dna4, because its informational
+     * **and** true also for U/T respectively, e.g. 'U' is a valid character for bio::dna4, because its informational
      * content is identical to 'T'.
      *
      * ###Complexity
@@ -161,4 +161,4 @@ private:
     };
 };
 
-} // namespace seqan3
+} // namespace bio

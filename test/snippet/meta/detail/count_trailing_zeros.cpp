@@ -8,10 +8,10 @@ int main()
     uint32_t t2 = 0b0000'0000'0000'0000'1000'0000'0000'0000;
     uint64_t t3 = 0b0000'0000'0000'0000'0010'0000'0000'0000'0000'0000'0000'0000'0000'0000'0000'0000;
 
-    seqan3::debug_stream << seqan3::detail::count_trailing_zeros(t0) << '\n'; // 0
-    seqan3::debug_stream << seqan3::detail::count_trailing_zeros(t1) << '\n'; // 3
-    seqan3::debug_stream << seqan3::detail::count_trailing_zeros(t2) << '\n'; // 15
-    seqan3::debug_stream << seqan3::detail::count_trailing_zeros(t3) << '\n'; // 45
+    bio::debug_stream << bio::detail::count_trailing_zeros(t0) << '\n'; // 0
+    bio::debug_stream << bio::detail::count_trailing_zeros(t1) << '\n'; // 3
+    bio::debug_stream << bio::detail::count_trailing_zeros(t2) << '\n'; // 15
+    bio::debug_stream << bio::detail::count_trailing_zeros(t3) << '\n'; // 45
 
     return 0;
 }

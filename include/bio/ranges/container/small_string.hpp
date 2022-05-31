@@ -14,12 +14,12 @@
 
 #include <bio/ranges/container/small_vector.hpp>
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief Implements a small string that can be used for compile time computations.
  * \ingroup container
- * \implements seqan3::reservible_container
+ * \implements bio::reservible_container
  * \tparam capacity_ The capacity of the small string.
  *
  * This class provides a string type for small strings and compile-time contexts. It has fixed capacity, but variable
@@ -188,14 +188,14 @@ public:
     /*!\name Modifiers
      * \{
      */
-    //!\copydoc seqan3::small_vector::clear
+    //!\copydoc bio::small_vector::clear
     constexpr void clear() noexcept
     {
         sz = 0;
         data_[0] = '\0';
     }
 
-    //!\copydoc seqan3::small_vector::push_back(value_type const value)
+    //!\copydoc bio::small_vector::push_back(value_type const value)
     constexpr void push_back(char const value) noexcept
     {
         assert(sz < capacity_);
@@ -204,7 +204,7 @@ public:
         data_[sz] = '\0';
     }
 
-    //!\copydoc seqan3::small_vector::pop_back
+    //!\copydoc bio::small_vector::pop_back
     constexpr void pop_back() noexcept
     {
         assert(sz > 0);
@@ -212,13 +212,13 @@ public:
         data_[sz] = '\0';
     }
 
-    //!\copydoc seqan3::small_vector::resize(size_type const)
+    //!\copydoc bio::small_vector::resize(size_type const)
     constexpr void resize(size_type const count) noexcept
     {
         resize(count, '\0');
     }
 
-    //!\copydoc seqan3::small_vector::resize(size_type const, value_type const value)
+    //!\copydoc bio::small_vector::resize(size_type const, value_type const value)
     constexpr void resize(size_type const count, char const value) noexcept
     {
         assert(count <= capacity_);
@@ -322,7 +322,7 @@ public:
         return data_.data();
     }
 
-    /*!\brief Implicit conversion to std::string which delegates to seqan3::small_string::str().
+    /*!\brief Implicit conversion to std::string which delegates to bio::small_string::str().
      *
      * ### Exceptions
      *
@@ -342,9 +342,9 @@ public:
      * \{
      */
 
-    /*!\brief Formatted output for the seqan3::small_string.
+    /*!\brief Formatted output for the bio::small_string.
      * \param[in,out] os  The std::basic_ostream to write to.
-     * \param[in]     str The seqan3::small_string to read from.
+     * \param[in]     str The bio::small_string to read from.
      * \returns `os`.
      *
      * \details
@@ -357,14 +357,14 @@ public:
         return os;
     }
 
-    /*!\brief Formatted input for the seqan3::small_string.
+    /*!\brief Formatted input for the bio::small_string.
      * \param[in,out] is  The std::basic_istream to read from.
-     * \param[out]    str The seqan3::small_string to write to.
+     * \param[out]    str The bio::small_string to write to.
      * \returns `is`.
      *
      * \details
      *
-     * Reads at most seqan3::small_string::max_size characters from the stream.
+     * Reads at most bio::small_string::max_size characters from the stream.
      * If a stream error occurred or no characters could be extracted the std::ios_base::failbit is set.
      * This may throw an exception.
      */
@@ -416,4 +416,4 @@ small_string(std::array<char, N> const &) -> small_string<N>;
 small_string(char const) -> small_string<1>;
 //!\}
 
-} // namespace seqan3
+} // namespace bio

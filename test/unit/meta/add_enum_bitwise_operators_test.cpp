@@ -11,7 +11,7 @@
 
 #include <bio/meta/add_enum_bitwise_operators.hpp>
 
-namespace seqan3
+namespace bio
 {
 enum class my_enum
 {
@@ -20,37 +20,37 @@ enum class my_enum
     VAL2 = 2,
     COMB = 3
 };
-} // namespace seqan3
+} // namespace bio
 
 template <>
-constexpr bool seqan3::add_enum_bitwise_operators<seqan3::my_enum> = true;
+constexpr bool bio::add_enum_bitwise_operators<bio::my_enum> = true;
 
 
 TEST(add_enum_bitwise_operators, AND)
 {
-    seqan3::my_enum e = seqan3::my_enum::VAL1;
-    seqan3::my_enum e2 = e & seqan3::my_enum::VAL2;
-    EXPECT_EQ(e2, seqan3::my_enum::ZERO);
+    bio::my_enum e = bio::my_enum::VAL1;
+    bio::my_enum e2 = e & bio::my_enum::VAL2;
+    EXPECT_EQ(e2, bio::my_enum::ZERO);
 }
 
 TEST(add_enum_bitwise_operators, OR)
 {
-    seqan3::my_enum e = seqan3::my_enum::VAL1;
-    seqan3::my_enum e2 = e | seqan3::my_enum::VAL2;
-    EXPECT_EQ(e2, seqan3::my_enum::COMB);
+    bio::my_enum e = bio::my_enum::VAL1;
+    bio::my_enum e2 = e | bio::my_enum::VAL2;
+    EXPECT_EQ(e2, bio::my_enum::COMB);
 }
 
 TEST(add_enum_bitwise_operators, XOR)
 {
-    seqan3::my_enum e = seqan3::my_enum::VAL1;
-    seqan3::my_enum e2 = e ^ seqan3::my_enum::VAL2;
-    EXPECT_EQ(e2, seqan3::my_enum::COMB);
+    bio::my_enum e = bio::my_enum::VAL1;
+    bio::my_enum e2 = e ^ bio::my_enum::VAL2;
+    EXPECT_EQ(e2, bio::my_enum::COMB);
 }
 
 TEST(add_enum_bitwise_operators, NOT)
 {
-    seqan3::my_enum e = seqan3::my_enum::VAL1;
-    seqan3::my_enum e2 = ~e;
+    bio::my_enum e = bio::my_enum::VAL1;
+    bio::my_enum e2 = ~e;
     EXPECT_NE(e, e2);
     e2 = ~e2;
     EXPECT_EQ(e, e2);
@@ -58,21 +58,21 @@ TEST(add_enum_bitwise_operators, NOT)
 
 TEST(add_enum_bitwise_operators, AND_ASSIGN)
 {
-    seqan3::my_enum e = seqan3::my_enum::VAL1;
-    e &= seqan3::my_enum::VAL2;
-    EXPECT_EQ(e, seqan3::my_enum::ZERO);
+    bio::my_enum e = bio::my_enum::VAL1;
+    e &= bio::my_enum::VAL2;
+    EXPECT_EQ(e, bio::my_enum::ZERO);
 }
 
 TEST(add_enum_bitwise_operators, OR_ASSIGN)
 {
-    seqan3::my_enum e = seqan3::my_enum::VAL1;
-    e |= seqan3::my_enum::VAL2;
-    EXPECT_EQ(e, seqan3::my_enum::COMB);
+    bio::my_enum e = bio::my_enum::VAL1;
+    e |= bio::my_enum::VAL2;
+    EXPECT_EQ(e, bio::my_enum::COMB);
 }
 
 TEST(add_enum_bitwise_operators, XOR_ASSIGN)
 {
-    seqan3::my_enum e = seqan3::my_enum::VAL1;
-    e ^= seqan3::my_enum::VAL2;
-    EXPECT_EQ(e, seqan3::my_enum::COMB);
+    bio::my_enum e = bio::my_enum::VAL1;
+    e ^= bio::my_enum::VAL2;
+    EXPECT_EQ(e, bio::my_enum::COMB);
 }

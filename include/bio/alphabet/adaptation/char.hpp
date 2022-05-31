@@ -10,7 +10,7 @@
  * \brief Provides alphabet adaptations for standard char types.
  * \details
  * This file provides function and type trait overloads so that the following types
- * fulfil the seqan3::alphabet:
+ * fulfil the bio::alphabet:
  *   * `char`
  *   * `char16_t`
  *   * `char32_t`
@@ -28,7 +28,7 @@
 #include <bio/alphabet/concept.hpp>
 #include <bio/meta/detail/int_types.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 //!\brief Whether a type is `char`, `char16_t`, `char32_t` or `wchar_t` (type trait).
 //!\ingroup adaptation
@@ -38,9 +38,9 @@ constexpr bool is_char_adaptation_v = std::same_as<type, char>     ||
                                       std::same_as<type, char16_t> ||
                                       std::same_as<type, char32_t> ||
                                       std::same_as<type, wchar_t>;
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3::custom
+namespace bio::custom
 {
 
 /*!\brief Alphabet specific customisations for builtin char types.
@@ -97,4 +97,4 @@ struct alphabet<char_type>
     }
 };
 
-} // namespace seqan3::custom
+} // namespace bio::custom

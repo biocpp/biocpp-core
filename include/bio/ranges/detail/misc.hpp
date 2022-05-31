@@ -16,7 +16,7 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 /*!\brief Iterate over a range (consumes single-pass input ranges).
@@ -41,4 +41,4 @@ template <std::ranges::forward_range rng_t>
 constexpr void consume(rng_t &&)
 {}
 
-} // namespace seqan3::detail
+} // namespace bio::detail

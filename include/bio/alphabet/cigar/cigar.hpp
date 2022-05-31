@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides the seqan3::cigar alphabet.
+ * \brief Provides the bio::cigar alphabet.
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
  */
 
@@ -24,29 +24,29 @@
 // cigar
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
-/*!\brief The cigar semialphabet pairs a counter with a seqan3::cigar_op letter.
+/*!\brief The cigar semialphabet pairs a counter with a bio::cigar_op letter.
  * \ingroup cigar
- * \implements seqan3::writable_semialphabet
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::writable_semialphabet
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \details
  *
  * This semialphabet represents a unit in a CIGAR string, typically found in the
- * SAM and BAM formats. It consists of a number and a seqan3::cigar_op symbol.
+ * SAM and BAM formats. It consists of a number and a bio::cigar_op symbol.
  *
  * It has a "visual representation", but since this is a string and not a char,
- * the type only models seqan3::writable_semialphabet and not
- * seqan3::writable_alphabet.
+ * the type only models bio::writable_semialphabet and not
+ * bio::writable_alphabet.
  * Members for reading/writing the string are provided.
  *
  * To avoid confusion between string and char literal, this alphabet has
  * no user defined literal operators. Always assign from a pair of
- * uint32_t and seqan3::cigar_op.
+ * uint32_t and bio::cigar_op.
  *
  * ### Example
  *
@@ -58,7 +58,7 @@ private:
     //!\brief The base class.
     using base_t = alphabet_tuple_base<cigar, uint32_t, cigar_op>;
 
-    //!\cond \brief Befriend seqan3::alphabet_tuple_base.
+    //!\cond \brief Befriend bio::alphabet_tuple_base.
     friend base_t;
     //!\endcond
 
@@ -107,7 +107,7 @@ public:
 
         auto [ ptr, errc ] = std::to_chars(ret.data(), ret.data() + 10, get<0>(*this));
 
-        *ptr = seqan3::to_char(get<1>(*this));
+        *ptr = bio::to_char(get<1>(*this));
         (void)errc;
 
         ret.resize(ptr - ret.data() + 1);
@@ -158,7 +158,7 @@ public:
     //!\}
 };
 
-//!\brief Overload for the seqan3::debug_stream's operator.
+//!\brief Overload for the bio::debug_stream's operator.
 template <typename char_t>
 inline debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & s, cigar const c)
 {
@@ -166,4 +166,4 @@ inline debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & s, cig
     return s;
 }
 
-} // namespace seqan3
+} // namespace bio

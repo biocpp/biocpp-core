@@ -2,6 +2,6 @@
 
 int main()
 {
-    seqan3::debug_stream << "Hello world\n";
+    bio::debug_stream << "Hello world\n";
     return 0;
 }

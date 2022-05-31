@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Forward declares seqan3::detail::test_accessor.
+ * \brief Forward declares bio::detail::test_accessor.
  * \author Marcel Ehrhardt <marcel.ehrhardt AT fu-berlin.de>
  */
 
@@ -14,7 +14,7 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 /*!\brief Attorney-Client pattern for accessing private / protected class members in test cases.
@@ -23,4 +23,4 @@ namespace seqan3::detail
  */
 struct test_accessor;
 
-} // seqan3::detail
+} // bio::detail

@@ -19,7 +19,7 @@
 #include <bio/meta/type_traits/range.hpp>
 #include <ranges>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 // ============================================================================
@@ -49,7 +49,7 @@ class combined_adaptor;
  *   * Storage of args, including perfect forwarding and moving-out.
  *   * `operator()` that takes a range and passes the range and stored args to the derived_type.
  *   * `operator|` that also takes a range and passes the range and stored args to the derived_type.
- *   * `operator|` that takes another adaptor and returns seqan3::detail::combined_adaptor
+ *   * `operator|` that takes another adaptor and returns bio::detail::combined_adaptor
  *
  * # Examples
  *
@@ -60,19 +60,19 @@ class combined_adaptor;
  * \snippet include/seqan3/range/views/persist.hpp adaptor_def
  *
  * This adaptor directly derives from adaptor_base (instead of just using
- * `seqan3::detail::adaptor_for_view_without_args`) so that it can decide between
+ * `bio::detail::adaptor_for_view_without_args`) so that it can decide between
  * actually calling the respective view's constructor and delegating to a different view
  * (in this case `std::views::all`) based on the type of input.
  *
  * ## Derived templates
  *
- * * `seqan3::detail::combined_adaptor` : Combine two adaptor closure objects into a new one.
- * * `seqan3::detail::adaptor_for_view_without_args` : Create an adaptor closure object for a view that doesn't require
+ * * `bio::detail::combined_adaptor` : Combine two adaptor closure objects into a new one.
+ * * `bio::detail::adaptor_for_view_without_args` : Create an adaptor closure object for a view that doesn't require
  *   args.
- * * `seqan3::detail::adaptor_from_functor` : Create an adaptor closure object with possibly stored arguments that
+ * * `bio::detail::adaptor_from_functor` : Create an adaptor closure object with possibly stored arguments that
  *   delegates to a functor, usually a stored proto-adaptor (for view classes that require arguments or adaptors that
  *   just forward to other adaptors).
- * * `seqan3::views::deep` : Wraps an adaptor closure object or proto adaptor object and modifies the behaviour.
+ * * `bio::views::deep` : Wraps an adaptor closure object or proto adaptor object and modifies the behaviour.
  */
 template <typename derived_type, typename ...stored_args_ts>
 class adaptor_base
@@ -148,7 +148,7 @@ public:
      *
      * If the LHS models std::ranges::input_range this functions delegates to operator()
      * otherwise it assumes the LHS is another range adaptor closure object and it
-     * returns a seqan3::detail::combined_adaptor that wraps that adaptor and this one.
+     * returns a bio::detail::combined_adaptor that wraps that adaptor and this one.
      */
     template <typename arg_t>
     constexpr friend auto operator|(arg_t && arg, derived_type const & me)
@@ -177,7 +177,7 @@ public:
      * \details
      *
      * This operator assumes that the RHS is another range adaptor closure object and it
-     * returns a seqan3::detail::combined_adaptor that wraps that adaptor and this one.
+     * returns a bio::detail::combined_adaptor that wraps that adaptor and this one.
      *
      * Note that this operator takes adaptor_base and not derived_type as parameter type
      * so that an implicit conversion is required for invoking this function.
@@ -272,18 +272,18 @@ public:
  * \details
  *
  * Use this adaptor template when you always want to delegate to the view's constructor and you have no arguments.
- * Since it's a one-line it's easier than specialising seqan3::detail::adaptor_base.
+ * Since it's a one-line it's easier than specialising bio::detail::adaptor_base.
  *
  * # Example
  *
  * (from include/seqan3/range/views/single_pass_input.hpp)
  *
- * This is the signature of the view type template in namespace seqan3::detail:
+ * This is the signature of the view type template in namespace bio::detail:
  *
  * \snippet include/seqan3/range/views/single_pass_input.hpp view_def
  *
  * This is the definition of the range adaptor closure object, it will always delegate to the
- * constructor: seqan3::detail::single_pass_input_view::single_pass_input_view():
+ * constructor: bio::detail::single_pass_input_view::single_pass_input_view():
  *
  * \snippet include/seqan3/range/views/single_pass_input.hpp adaptor_def
  */
@@ -411,4 +411,4 @@ public:
     //!\}
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail

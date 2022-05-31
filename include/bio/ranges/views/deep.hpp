@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::views::deep.
+ * \brief Provides bio::views::deep.
  */
 
 #pragma once
@@ -15,7 +15,7 @@
 #include <bio/ranges/views/detail.hpp>
 #include <ranges>
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\brief   A wrapper type around an existing view adaptor that enables "deep view" behaviour for that view.
@@ -31,7 +31,7 @@ namespace seqan3::views
  * call std::views::reverse on a range-of-dna-ranges, it will revert *the order* of the dna-ranges, but leave
  * the dna-ranges themselves unchanged.
  *
- * In some cases this is not desirable or even possible, i.e. seqan3::views::complement performs it's operation on
+ * In some cases this is not desirable or even possible, i.e. bio::views::complement performs it's operation on
  * nucleotide-ranges and it would be logical to do so, even it is passed a range-of-nucleotide-ranges (it obviously
  * cannot transform the outer range). We call these views "deep views" as they always perform their operation on
  * the innermost ranges of a multi-dimensional range; in case the input is a one-dimensional range, deepness
@@ -39,7 +39,7 @@ namespace seqan3::views
  *
  * ### Using views::deep
  *
- * Strictly speaking, seqan3::views::deep is a view adaptor adaptor, i.e. it gets passed **another adaptor when being
+ * Strictly speaking, bio::views::deep is a view adaptor adaptor, i.e. it gets passed **another adaptor when being
  * constructed** (not via the pipe!) and returns an adaptor that behaves like the underlying one, except being deep.
  *
  * You can use it mostly like any other view (adaptor) with some subtle differences, illustrated in the examples below.
@@ -66,7 +66,7 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                       | *preserved*                                        |
  * | std::ranges::common_range        |                                       | *preserved*                                        |
  * | std::ranges::output_range        |                                       | *lost*                                             |
- * | seqan3::const_iterable_range     |                                       | *preserved*                                        |
+ * | bio::const_iterable_range     |                                       | *preserved*                                        |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   | std::ranges::input_range           | std::ranges::input_range + std::ranges::view |
  *
@@ -241,4 +241,4 @@ deep(underlying_adaptor_t && inner) -> deep<underlying_adaptor_t>;
 
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

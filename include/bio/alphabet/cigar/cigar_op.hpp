@@ -18,15 +18,15 @@
 // cigar_op
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief The (extended) cigar operation alphabet of M,D,I,H,N,P,S,X,=.
  * \ingroup cigar
- * \implements seqan3::writable_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::writable_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \details
@@ -37,8 +37,8 @@ namespace seqan3
  * only indicated the aligned status with an 'M', without further
  * information if the bases are actually equal or not.
  *
- * The main purpose of the seqan3::cigar_op alphabet is to be used in the
- * seqan3::cigar composition, where a cigar operation is paired with a count
+ * The main purpose of the bio::cigar_op alphabet is to be used in the
+ * bio::cigar composition, where a cigar operation is paired with a count
  * value.
  *
  * Example usage:
@@ -46,7 +46,7 @@ namespace seqan3
  *
  * \note Usually you do not want to manipulate cigar elements and vectors on
  *       your own but convert an alignment to a cigar and back. See
- *       seqan3::get_cigar_vector for how to convert two aligned sequences into
+ *       bio::get_cigar_vector for how to convert two aligned sequences into
  *       a cigar_vector.
  */
 class cigar_op : public alphabet_base<cigar_op, 9, char>
@@ -55,7 +55,7 @@ private:
     //!\brief The base class.
     using base_t = alphabet_base<cigar_op, 9, char>;
 
-    //!\cond \brief Befriend seqan3::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet_base.
     friend base_t;
     //!\endcond
 
@@ -114,13 +114,13 @@ protected:
  * \{
  */
 
-/*!\brief The seqan3::cigar_op char literal.
- * \relates seqan3::cigar_op
- * \returns seqan3::cigar_op
+/*!\brief The bio::cigar_op char literal.
+ * \relates bio::cigar_op
+ * \returns bio::cigar_op
  */
 inline cigar_op operator""_cigar_op(char const c) noexcept
 {
     return cigar_op{}.assign_char(c);
 }
 //!\}
-} // namespace seqan3
+} // namespace bio

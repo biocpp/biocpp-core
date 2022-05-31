@@ -14,11 +14,11 @@
 #include "../semi_alphabet_test_template.hpp"
 
 
-class alphabet_proxy_example : public seqan3::alphabet_proxy<alphabet_proxy_example, seqan3::dna4>
+class alphabet_proxy_example : public bio::alphabet_proxy<alphabet_proxy_example, bio::dna4>
 {
 private:
-    using alphabet_type = seqan3::dna4;
-    using base_t = seqan3::alphabet_proxy<alphabet_proxy_example, alphabet_type>;
+    using alphabet_type = bio::dna4;
+    using base_t = bio::alphabet_proxy<alphabet_proxy_example, alphabet_type>;
     friend base_t;
 
     constexpr void on_update() noexcept
@@ -105,15 +105,15 @@ constexpr my_alph & assign_char_to(char const c, my_alph & a) noexcept
 
 } // namespace my_namespace
 
-static_assert(seqan3::alphabet_size<my_namespace::my_alph> == 2);
-static_assert(seqan3::semialphabet<my_namespace::my_alph>);
-static_assert(seqan3::alphabet<my_namespace::my_alph>);
+static_assert(bio::alphabet_size<my_namespace::my_alph> == 2);
+static_assert(bio::semialphabet<my_namespace::my_alph>);
+static_assert(bio::alphabet<my_namespace::my_alph>);
 
-class alphabet_proxy_example2 : public seqan3::alphabet_proxy<alphabet_proxy_example2, my_namespace::my_alph>
+class alphabet_proxy_example2 : public bio::alphabet_proxy<alphabet_proxy_example2, my_namespace::my_alph>
 {
 private:
     using alphabet_type = my_namespace::my_alph;
-    using base_t = seqan3::alphabet_proxy<alphabet_proxy_example2, alphabet_type>;
+    using base_t = bio::alphabet_proxy<alphabet_proxy_example2, alphabet_type>;
     friend base_t;
 
     constexpr void on_update() noexcept

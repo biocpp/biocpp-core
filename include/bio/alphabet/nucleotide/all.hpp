@@ -33,7 +33,7 @@
  * to represent them in a regular std::string, it makes sense to have specialised data structures in most cases.
  * This sub-module offers multiple nucleotide alphabets that can be used with regular containers and ranges.
  *
- * | Letter   | Description            |                   seqan3::dna15        |                   seqan3::dna5         |                  seqan3::dna4          |                  seqan3::dna3bs        |                seqan3::rna15           |                    seqan3::rna5        |                 seqan3::rna4           |
+ * | Letter   | Description            |                   bio::dna15        |                   bio::dna5         |                  bio::dna4          |                  bio::dna3bs        |                bio::rna15           |                    bio::rna5        |                 bio::rna4           |
  * |:--------:|------------------------|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|
  * |   A      | Adenine                |                              A         |                              A         |                              A         |                              A         |                              A         |                              A         |                              A         |
  * |   C      | Cytosine               |                              C         |                              C         |                              C         | <span style="color:LightGrey">T</span> |                              C         |                              C         |                              C         |
@@ -62,42 +62,42 @@
  * `'U'` character, as well. See below for the details.
  *
  * Which alphabet to chose?
- *   1. in most cases, take seqan3::dna15 (includes all IUPAC characters)
- *   2. if you are memory constrained and sequence data is actually the main memory consumer, use seqan3::dna5
- *   3. if you use specialised algorithms that profit from a 2-bit representation, use seqan3::dna4
- *   4. if you are doing only RNA input/output, use the respective seqan3::rna* type
+ *   1. in most cases, take bio::dna15 (includes all IUPAC characters)
+ *   2. if you are memory constrained and sequence data is actually the main memory consumer, use bio::dna5
+ *   3. if you use specialised algorithms that profit from a 2-bit representation, use bio::dna4
+ *   4. if you are doing only RNA input/output, use the respective bio::rna* type
  *   5. to actually save space from using smaller alphabets, you need a compressed container (e.g.
- *      seqan3::bitcompressed_vector)
- *   6. if you are working with bisulfite data use seqan3::dna3bs
+ *      bio::bitcompressed_vector)
+ *   6. if you are working with bisulfite data use bio::dna3bs
  *
  * ###Printing and conversion to char
  *
  * As with all alphabets in SeqAn, none of the nucleotide alphabets can be directly converted to char or printed.
- * You need to explicitly call seqan3::to_char to convert to char. The only exception is seqan3::debug_stream
+ * You need to explicitly call bio::to_char to convert to char. The only exception is bio::debug_stream
  * which does this conversion to char automatically.
  *
  * `T` and `U` are represented by the same rank and you cannot differentiate between them. The only difference between
- * e.g. seqan3::dna4 and seqan3::rna4 is the output when calling to_char().
+ * e.g. bio::dna4 and bio::rna4 is the output when calling to_char().
  *
  * ###Assignment and conversions between nucleotide types
  *
  *   * Nucleotide types defined here are **implicitly** convertible to each other if they have the same size
- *     (e.g. seqan3::dna4 ↔ seqan3::rna4).
+ *     (e.g. bio::dna4 ↔ bio::rna4).
  *   * Other nucleotide types are **explicitly** convertible to each other through their character representation.
- *   * All ranges of nucleotide alphabets are convertible to each other via seqan3::views::convert.
+ *   * All ranges of nucleotide alphabets are convertible to each other via bio::views::convert.
  *   * None of the nucleotide alphabets can be directly converted or assigned from `char`. You need to explicitly call
  *     `assign_char` or use a literal (see below).
  *
  * When assigning from `char` or converting from a larger nucleotide alphabet to a smaller one, *loss of information*
- * can occur since obviously some bases are not available. When converting to seqan3::dna5 or seqan3::rna5,
+ * can occur since obviously some bases are not available. When converting to bio::dna5 or bio::rna5,
  * non-canonical bases
  * (letters other than A, C, G, T, U) are converted to `'N'` to preserve ambiguity at that position, while
- * for seqan3::dna4 and seqan3::rna4 they are converted to the first of the possibilities they represent (because
+ * for bio::dna4 and bio::rna4 they are converted to the first of the possibilities they represent (because
  * there is no letter `'N'` to represent ambiguity). See the greyed out values in the table at the top for
  * an overview of which conversions take place.
  *
  * `char` values that are none of the IUPAC symbols, e.g. 'P', are always converted to the equivalent of assigning 'N',
- * i.e. they result in 'A' for seqan3::dna4 and seqan3::rna4, and in 'N' for the other alphabets.
+ * i.e. they result in 'A' for bio::dna4 and bio::rna4, and in 'N' for the other alphabets.
  *
  * ###Literals
  *
@@ -107,8 +107,8 @@
  *
  * ###Concept
  *
- * The nucleotide submodule defines seqan3::nucleotide_alphabet which encompasses all the alphabets defined in the
- * submodule and refines seqan3::alphabet. The only additional requirement is that their values can be
+ * The nucleotide submodule defines bio::nucleotide_alphabet which encompasses all the alphabets defined in the
+ * submodule and refines bio::alphabet. The only additional requirement is that their values can be
  * complemented, see below.
  *
  * ###Complement
@@ -134,11 +134,11 @@
  *
  * In the typical structure of DNA molecules (or double-stranded RNA), each nucleotide has a complement that it
  * pairs with. To generate the complement value of a nucleotide letter, you can call an implementation of
- * seqan3::nucleotide_alphabet::complement() on it.
+ * bio::nucleotide_alphabet::complement() on it.
  *
- * The only exception to this table is the seqan3::dna3bs alphabet. The complement for 'G' is defined as 'T' since 'C' and 'T'
- * are treated as the same letters. However, it is not recommended to use the complement of seqan3::dna3bs but rather
- * use the complement of another dna alphabet and afterwards transform it into seqan3::dna3bs.
+ * The only exception to this table is the bio::dna3bs alphabet. The complement for 'G' is defined as 'T' since 'C' and 'T'
+ * are treated as the same letters. However, it is not recommended to use the complement of bio::dna3bs but rather
+ * use the complement of another dna alphabet and afterwards transform it into bio::dna3bs.
  *
  * For the ambiguous letters, the complement is the (possibly also ambiguous) letter representing the variant of the
  * individual complements.

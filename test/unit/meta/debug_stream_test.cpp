@@ -21,7 +21,7 @@
 TEST(debug_stream_test, basic)
 {
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
     my_stream << 'a';
     o.flush();
@@ -44,27 +44,27 @@ TEST(debug_stream_test, basic)
 TEST(debug_stream_test, capture_std_error)
 {
     testing::internal::CaptureStderr();
-    seqan3::debug_stream << 'a';
+    bio::debug_stream << 'a';
     EXPECT_EQ(testing::internal::GetCapturedStderr(), "a");
 
     testing::internal::CaptureStderr();
-    seqan3::debug_stream << "AGA";
+    bio::debug_stream << "AGA";
     EXPECT_EQ(testing::internal::GetCapturedStderr(), "AGA");
 
     testing::internal::CaptureStderr();
-    seqan3::debug_stream << 42;
+    bio::debug_stream << 42;
     EXPECT_EQ(testing::internal::GetCapturedStderr(), "42");
 
     testing::internal::CaptureStderr();
     int const i = 7;
-    seqan3::debug_stream << i;
+    bio::debug_stream << i;
     EXPECT_EQ(testing::internal::GetCapturedStderr(), "7");
 }
 
 TEST(debug_stream_test, range)
 {
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
     std::vector<int> vec{1, 4, 5, 7, 32, 321};
     my_stream << vec;
@@ -79,22 +79,22 @@ TEST(debug_stream_test, range)
 
 TEST(debug_stream_test, alphabet)
 {
-    using seqan3::operator""_dna4;
-    using seqan3::operator""_dna5;
+    using bio::operator""_dna4;
+    using bio::operator""_dna5;
 
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
     my_stream << 'A'_dna4;
     o.flush();
     EXPECT_EQ(o.str(), "A");
 
-    seqan3::dna5 d = 'N'_dna5;
+    bio::dna5 d = 'N'_dna5;
     my_stream << d;
     o.flush();
     EXPECT_EQ(o.str(), "AN");
 
-    seqan3::dna5 const d2 = 'N'_dna5;
+    bio::dna5 const d2 = 'N'_dna5;
     my_stream << d2;
     o.flush();
     EXPECT_EQ(o.str(), "ANN");
@@ -103,24 +103,24 @@ TEST(debug_stream_test, alphabet)
 TEST(debug_stream_test, mask_semialphabet)
 {
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
-    my_stream << seqan3::mask::MASKED;
+    my_stream << bio::mask::MASKED;
     o.flush();
     EXPECT_EQ(o.str(), "MASKED");
 
-    my_stream << seqan3::mask::UNMASKED;
+    my_stream << bio::mask::UNMASKED;
     o.flush();
     EXPECT_EQ(o.str(), "MASKEDUNMASKED");
 }
 
 TEST(debug_stream_test, range_of_alphabet)
 {
-    using seqan3::operator""_dna4;
-    using seqan3::operator""_dna5;
+    using bio::operator""_dna4;
+    using bio::operator""_dna5;
 
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
     // temporary
     my_stream << "AGGATAC"_dna5;
@@ -139,7 +139,7 @@ TEST(debug_stream_test, range_of_alphabet)
     o.flush();
     EXPECT_EQ(o.str(), "AGGATACAGGATACAGGATAC");
 
-    seqan3::concatenated_sequences<seqan3::bitcompressed_vector<seqan3::dna5>> const vec2 = {"ACGT"_dna5, "GAGGA"_dna5};
+    bio::concatenated_sequences<bio::bitcompressed_vector<bio::dna5>> const vec2 = {"ACGT"_dna5, "GAGGA"_dna5};
     my_stream << vec2;
     o.flush();
     EXPECT_EQ(o.str(), "AGGATACAGGATACAGGATAC[ACGT,GAGGA]");
@@ -148,7 +148,7 @@ TEST(debug_stream_test, range_of_alphabet)
 TEST(debug_stream_test, std_endl)
 {
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
     my_stream << "foo" << std::endl << "bar";
     o.flush();
@@ -158,7 +158,7 @@ TEST(debug_stream_test, std_endl)
 TEST(debug_stream_test, path)
 {
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
     std::filesystem::path p{"my/path/my_file.txt"};
 
@@ -170,7 +170,7 @@ TEST(debug_stream_test, path)
 TEST(debug_stream_test, tuple)
 {
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
     std::tuple<size_t, std::string> t0{32, "dummy"};
     my_stream << t0;
@@ -191,7 +191,7 @@ TEST(debug_stream_test, tuple)
 TEST(debug_stream_test, variant)
 {
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
     std::variant<double, std::string> v;
 
@@ -220,7 +220,7 @@ TEST(debug_stream_test, variant)
 TEST(debug_stream_test, optional)
 {
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
     std::optional<size_t> op;
 

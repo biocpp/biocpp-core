@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::rna4, container aliases and string literals.
+ * \brief Provides bio::rna4, container aliases and string literals.
  */
 
 #pragma once
@@ -21,25 +21,25 @@
 // rna4
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief The four letter RNA alphabet of A,C,G,U.
  * \ingroup nucleotide
- * \implements seqan3::nucleotide_alphabet
- * \implements seqan3::writable_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::nucleotide_alphabet
+ * \implements bio::writable_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \details
- * This alphabet has the same internal representation as seqan3::dna4, the only difference is that it prints 'U' on
- * character conversion instead of 'T'. You can assign between values of seqan3::dna4 and seqan3::rna4.
+ * This alphabet has the same internal representation as bio::dna4, the only difference is that it prints 'U' on
+ * character conversion instead of 'T'. You can assign between values of bio::dna4 and bio::rna4.
  *
  * Like most alphabets, this alphabet cannot be initialised directly from its character representation.
  * Instead initialise/assign from the character literal or use the
- * function seqan3::rna4::assign_char().
+ * function bio::rna4::assign_char().
  *
  *\include test/snippet/alphabet/nucleotide/rna4.cpp
  */
@@ -49,9 +49,9 @@ private:
     //!\brief The base class.
     using base_t = nucleotide_base<rna4, 4>;
 
-    //!\brief Befriend seqan3::nucleotide_base.
+    //!\brief Befriend bio::nucleotide_base.
     friend base_t;
-    //!\cond \brief Befriend seqan3::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -81,7 +81,7 @@ public:
 protected:
     //!\privatesection
 
-    //!\copydoc seqan3::dna4::rank_to_char
+    //!\copydoc bio::dna4::rank_to_char
     static constexpr char_type rank_to_char[alphabet_size]
     {
         'A',
@@ -90,10 +90,10 @@ protected:
         'U'
     };
 
-    //!\copydoc seqan3::dna4::char_to_rank
+    //!\copydoc bio::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank = dna4::char_to_rank;
 
-    //!\copydoc seqan3::dna4::complement_table
+    //!\copydoc bio::dna4::complement_table
     static const std::array<rna4, alphabet_size> complement_table;
 };
 
@@ -101,7 +101,7 @@ protected:
 // containers
 // ------------------------------------------------------------------
 
-//!\brief Alias for an std::vector of seqan3::rna4.
+//!\brief Alias for an std::vector of bio::rna4.
 //!\relates rna4
 using rna4_vector = std::vector<rna4>;
 
@@ -113,18 +113,18 @@ using rna4_vector = std::vector<rna4>;
  * \{
  */
 
-/*!\brief The seqan3::rna4 char literal.
- * \relates seqan3::rna4
- * \returns seqan3::rna4
+/*!\brief The bio::rna4 char literal.
+ * \relates bio::rna4
+ * \returns bio::rna4
  */
 constexpr rna4 operator""_rna4(char const c) noexcept
 {
     return rna4{}.assign_char(c);
 }
 
-/*!\brief The seqan3::rna4 string literal.
- * \relates seqan3::rna4
- * \returns seqan3::rna4_vector
+/*!\brief The bio::rna4 string literal.
+ * \relates bio::rna4
+ * \returns bio::rna4_vector
  *
  * You can use this string literal to easily assign to rna4_vector:
  *
@@ -155,4 +155,4 @@ constexpr std::array<rna4, rna4::alphabet_size> rna4::complement_table
     'A'_rna4     // complement of 'U'_rna4
 };
 
-} // namespace seqan3
+} // namespace bio

@@ -4,8 +4,8 @@
 
 int main()
 {
-    using seqan3::operator""_dna15;
+    using bio::operator""_dna15;
 
-    seqan3::dna15_vector vec2{"ACYGTN"_dna15};
-    auto v4 = vec2 | seqan3::views::convert<seqan3::dna5>; // == "ACNGTN"_dna5
+    bio::dna15_vector vec2{"ACYGTN"_dna15};
+    auto v4 = vec2 | bio::views::convert<bio::dna5>; // == "ACNGTN"_dna5
 }

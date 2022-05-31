@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Marcel Ehrhardt <marcel.ehrhardt AT fu-berlin.de>
- * \brief Provides seqan3::detail::transformation_trait_or.
+ * \brief Provides bio::detail::transformation_trait_or.
  */
 
 #pragma once
@@ -17,15 +17,15 @@
 #include <bio/meta/type_traits/concept.hpp>
 #include <type_traits>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 /*!\brief This gives a fallback type if *type_t::type* is not defined.
- * \implements seqan3::transformation_trait
+ * \implements bio::transformation_trait
  * \ingroup type_traits
  * \tparam type_t    The type to use if *type_t::type* is defined.
  * \tparam default_t The type to use otherwise.
- * \see seqan3::detail::transformation_trait_or_t
+ * \see bio::detail::transformation_trait_or_t
  *
  * \details
  *
@@ -37,18 +37,18 @@ namespace seqan3::detail
  * functionality.
  *
  * ###Helper types
- *   seqan3::detail::transformation_trait_or_t as a shorthand for *seqan3::detail::transformation_trait_or::type*
+ *   bio::detail::transformation_trait_or_t as a shorthand for *bio::detail::transformation_trait_or::type*
  */
 template <typename type_t, typename default_t>
 using transformation_trait_or = std::conditional_t<transformation_trait<type_t>,    // check if type_t::type exists
                                                    type_t,                          // if yes, return type_t
                                                    std::type_identity<default_t>>;  // else return default_t as trait
 
-/*!\brief Helper type of seqan3::detail::transformation_trait_or (transformation_trait shortcut).
+/*!\brief Helper type of bio::detail::transformation_trait_or (transformation_trait shortcut).
  * \ingroup type_traits
- * \see seqan3::detail::transformation_trait_or
+ * \see bio::detail::transformation_trait_or
  */
 template <typename type_t, typename default_t>
 using transformation_trait_or_t = typename transformation_trait_or<type_t, default_t>::type;
 
-} // namespace seqan3::detail
+} // namespace bio::detail

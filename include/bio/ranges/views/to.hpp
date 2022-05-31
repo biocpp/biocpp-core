@@ -12,7 +12,7 @@
 
 #include <bio/ranges/views/detail.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 //!\brief Functor that creates the given container from a range.
@@ -91,9 +91,9 @@ struct to_template_template_fn
     }
 };
 
-} //namespace seqan3::detail
+} //namespace bio::detail
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\brief Converts a range to a container.
@@ -133,4 +133,4 @@ constexpr auto to(rng_t && rng, args_t &&... args)
     return detail::adaptor_from_functor{detail::to_template_template_fn<container_t>{}, std::forward<args_t>(args)...}(std::forward<rng_t>(rng));
 }
 
-} // namespace seqan3::views
+} // namespace bio::views

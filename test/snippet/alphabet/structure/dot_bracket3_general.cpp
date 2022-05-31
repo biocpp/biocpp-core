@@ -5,16 +5,16 @@
 
 int main()
 {
-    using seqan3::operator""_db3;
+    using bio::operator""_db3;
 
     // create vector
-    std::vector<seqan3::dot_bracket3> vec{'.'_db3, ')'_db3, ')'_db3};
+    std::vector<bio::dot_bracket3> vec{'.'_db3, ')'_db3, ')'_db3};
 
     // modify and print
     vec[1] = '('_db3;
 
-    for (seqan3::dot_bracket3 chr : vec)
-        seqan3::debug_stream << seqan3::to_char(chr);  // .()
+    for (bio::dot_bracket3 chr : vec)
+        bio::debug_stream << bio::to_char(chr);  // .()
 
-    seqan3::debug_stream << "\n";
+    bio::debug_stream << "\n";
 }

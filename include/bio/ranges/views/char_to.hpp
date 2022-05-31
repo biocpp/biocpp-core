@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::views::char_to.
+ * \brief Provides bio::views::char_to.
  */
 
 #pragma once
@@ -17,7 +17,7 @@
 #include <bio/ranges/views/deep.hpp>
 #include <ranges>
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\name Alphabet related views
@@ -27,7 +27,7 @@ namespace seqan3::views
 /*!\brief               A view over an alphabet, given a range of characters.
  * \tparam urng_t       The type of the range being processed. See below for requirements. [template parameter is
  *                      omitted in pipe notation]
- * \tparam alphabet_t   The alphabet to convert to; must satisfy seqan3::alphabet.
+ * \tparam alphabet_t   The alphabet to convert to; must satisfy bio::alphabet.
  * \param[in] urange    The range being processed. [parameter is omitted in pipe notation]
  * \returns             A range of converted elements. See below for the properties of the returned range.
  * \ingroup views
@@ -54,9 +54,9 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                       | *preserved*                                        |
  * | std::ranges::common_range        |                                       | *preserved*                                        |
  * | std::ranges::output_range        |                                       | *lost*                                             |
- * | seqan3::const_iterable_range     |                                       | *preserved*                                        |
+ * | bio::const_iterable_range     |                                       | *preserved*                                        |
  * |                                  |                                       |                                                    |
- * | std::ranges::range_reference_t   | seqan3::alphabet_char_t<alphabet_t>   | `alphabet_t`                                       |
+ * | std::ranges::range_reference_t   | bio::alphabet_char_t<alphabet_t>   | `alphabet_t`                                       |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
@@ -76,4 +76,4 @@ inline auto const char_to = deep{std::views::transform([] (auto && in)
 
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

@@ -14,13 +14,13 @@
 #include <bio/alphabet/aminoacid/aa20.hpp>
 #include <bio/ranges/views/zip.hpp>
 
-using seqan3::operator""_aa20;
+using bio::operator""_aa20;
 
-INSTANTIATE_TYPED_TEST_SUITE_P(aa20, alphabet, seqan3::aa20, );
-INSTANTIATE_TYPED_TEST_SUITE_P(aa20, semi_alphabet_test, seqan3::aa20, );
-INSTANTIATE_TYPED_TEST_SUITE_P(aa20, alphabet_constexpr, seqan3::aa20, );
-INSTANTIATE_TYPED_TEST_SUITE_P(aa20, semi_alphabet_constexpr, seqan3::aa20, );
-INSTANTIATE_TYPED_TEST_SUITE_P(aa20, aminoacid, seqan3::aa20, );
+INSTANTIATE_TYPED_TEST_SUITE_P(aa20, alphabet, bio::aa20, );
+INSTANTIATE_TYPED_TEST_SUITE_P(aa20, semi_alphabet_test, bio::aa20, );
+INSTANTIATE_TYPED_TEST_SUITE_P(aa20, alphabet_constexpr, bio::aa20, );
+INSTANTIATE_TYPED_TEST_SUITE_P(aa20, semi_alphabet_constexpr, bio::aa20, );
+INSTANTIATE_TYPED_TEST_SUITE_P(aa20, aminoacid, bio::aa20, );
 
 TEST(aa20, assign_char)
 {
@@ -33,7 +33,7 @@ TEST(aa20, assign_char)
         '*', '!'
     };
 
-    std::vector<seqan3::aa20> alphabets
+    std::vector<bio::aa20> alphabets
     {
         'A'_aa20, 'D'_aa20, 'C'_aa20, 'D'_aa20, 'E'_aa20, 'F'_aa20, 'G'_aa20,
         'H'_aa20, 'I'_aa20, 'L'_aa20, 'K'_aa20, 'L'_aa20, 'M'_aa20,
@@ -46,8 +46,8 @@ TEST(aa20, assign_char)
         'W'_aa20, 'S'_aa20
     };
 
-    for (auto [ chr, alp ] : seqan3::views::zip(chars, alphabets))
-        EXPECT_EQ((seqan3::assign_char_to(chr, seqan3::aa20{})), alp);
+    for (auto [ chr, alp ] : bio::views::zip(chars, alphabets))
+        EXPECT_EQ((bio::assign_char_to(chr, bio::aa20{})), alp);
 }
 
 TEST(aa20, to_char)
@@ -59,7 +59,7 @@ TEST(aa20, to_char)
         'W', 'S'
     };
 
-    std::vector<seqan3::aa20> alphabets
+    std::vector<bio::aa20> alphabets
     {
         'A'_aa20, 'C'_aa20, 'D'_aa20, 'E'_aa20, 'F'_aa20, 'G'_aa20, 'H'_aa20,
         'I'_aa20, 'K'_aa20, 'L'_aa20, 'M'_aa20, 'N'_aa20, 'P'_aa20,
@@ -68,8 +68,8 @@ TEST(aa20, to_char)
         'W'_aa20, 'S'_aa20
     };
 
-    for (auto [ chr, alp ] : seqan3::views::zip(chars, alphabets))
-        EXPECT_EQ(seqan3::to_char(alp), chr);
+    for (auto [ chr, alp ] : bio::views::zip(chars, alphabets))
+        EXPECT_EQ(bio::to_char(alp), chr);
 }
 
 // ------------------------------------------------------------------
@@ -78,45 +78,45 @@ TEST(aa20, to_char)
 
 TEST(literals, char_literal)
 {
-    EXPECT_EQ(seqan3::to_char('A'_aa20), 'A');
-    EXPECT_EQ(seqan3::to_char('C'_aa20), 'C');
-    EXPECT_EQ(seqan3::to_char('D'_aa20), 'D');
-    EXPECT_EQ(seqan3::to_char('E'_aa20), 'E');
-    EXPECT_EQ(seqan3::to_char('F'_aa20), 'F');
-    EXPECT_EQ(seqan3::to_char('G'_aa20), 'G');
-    EXPECT_EQ(seqan3::to_char('H'_aa20), 'H');
-    EXPECT_EQ(seqan3::to_char('I'_aa20), 'I');
-    EXPECT_EQ(seqan3::to_char('K'_aa20), 'K');
-    EXPECT_EQ(seqan3::to_char('L'_aa20), 'L');
-    EXPECT_EQ(seqan3::to_char('M'_aa20), 'M');
-    EXPECT_EQ(seqan3::to_char('N'_aa20), 'N');
-    EXPECT_EQ(seqan3::to_char('P'_aa20), 'P');
-    EXPECT_EQ(seqan3::to_char('Q'_aa20), 'Q');
-    EXPECT_EQ(seqan3::to_char('R'_aa20), 'R');
-    EXPECT_EQ(seqan3::to_char('S'_aa20), 'S');
-    EXPECT_EQ(seqan3::to_char('T'_aa20), 'T');
-    EXPECT_EQ(seqan3::to_char('V'_aa20), 'V');
-    EXPECT_EQ(seqan3::to_char('W'_aa20), 'W');
-    EXPECT_EQ(seqan3::to_char('Y'_aa20), 'Y');
+    EXPECT_EQ(bio::to_char('A'_aa20), 'A');
+    EXPECT_EQ(bio::to_char('C'_aa20), 'C');
+    EXPECT_EQ(bio::to_char('D'_aa20), 'D');
+    EXPECT_EQ(bio::to_char('E'_aa20), 'E');
+    EXPECT_EQ(bio::to_char('F'_aa20), 'F');
+    EXPECT_EQ(bio::to_char('G'_aa20), 'G');
+    EXPECT_EQ(bio::to_char('H'_aa20), 'H');
+    EXPECT_EQ(bio::to_char('I'_aa20), 'I');
+    EXPECT_EQ(bio::to_char('K'_aa20), 'K');
+    EXPECT_EQ(bio::to_char('L'_aa20), 'L');
+    EXPECT_EQ(bio::to_char('M'_aa20), 'M');
+    EXPECT_EQ(bio::to_char('N'_aa20), 'N');
+    EXPECT_EQ(bio::to_char('P'_aa20), 'P');
+    EXPECT_EQ(bio::to_char('Q'_aa20), 'Q');
+    EXPECT_EQ(bio::to_char('R'_aa20), 'R');
+    EXPECT_EQ(bio::to_char('S'_aa20), 'S');
+    EXPECT_EQ(bio::to_char('T'_aa20), 'T');
+    EXPECT_EQ(bio::to_char('V'_aa20), 'V');
+    EXPECT_EQ(bio::to_char('W'_aa20), 'W');
+    EXPECT_EQ(bio::to_char('Y'_aa20), 'Y');
 
-    EXPECT_EQ(seqan3::to_char('*'_aa20), 'W');
-    EXPECT_EQ(seqan3::to_char('!'_aa20), 'S');
+    EXPECT_EQ(bio::to_char('*'_aa20), 'W');
+    EXPECT_EQ(bio::to_char('!'_aa20), 'S');
 }
 
 TEST(literals, vector)
 {
-    seqan3::aa20_vector v20;
+    bio::aa20_vector v20;
     v20.resize(5, 'B'_aa20);
     EXPECT_EQ(v20, "DDDDD"_aa20);
 
-    std::vector<seqan3::aa20> w20{'A'_aa20, 'B'_aa20, 'J'_aa20, 'O'_aa20, 'U'_aa20, 'X'_aa20, 'Z'_aa20, '!'_aa20,
+    std::vector<bio::aa20> w20{'A'_aa20, 'B'_aa20, 'J'_aa20, 'O'_aa20, 'U'_aa20, 'X'_aa20, 'Z'_aa20, '!'_aa20,
                                   '*'_aa20, '*'_aa20};
     EXPECT_EQ(w20, "ADLLCSESW*"_aa20);
 }
 
 TEST(aa20, char_is_valid)
 {
-    constexpr auto aa27_validator = (seqan3::is_alpha || seqan3::is_char<'*'>);
+    constexpr auto aa27_validator = (bio::is_alpha || bio::is_char<'*'>);
 
     for (char c : std::views::iota(std::numeric_limits<char>::min(), std::numeric_limits<char>::max()))
     {
@@ -132,6 +132,6 @@ TEST(aa20, char_is_valid)
                 break;
         }
 
-        EXPECT_EQ(seqan3::aa20::char_is_valid(c), expect);
+        EXPECT_EQ(bio::aa20::char_is_valid(c), expect);
     }
 }

@@ -3,8 +3,8 @@
 
 int main()
 {
-    seqan3::dynamic_bitset t1{"10001100"};
+    bio::dynamic_bitset t1{"10001100"};
 
     t1.flip();
-    seqan3::debug_stream << t1 << '\n'; // 0111'0011
+    bio::debug_stream << t1 << '\n'; // 0111'0011
 }

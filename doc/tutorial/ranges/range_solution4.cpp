@@ -6,7 +6,7 @@
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/ranges/container/bitcompressed_vector.hpp>      // include bitcompressed vector
 
-using seqan3::operator""_dna4;
+using bio::operator""_dna4;
 
 int main(int argc, char ** argv)
 {
@@ -28,14 +28,14 @@ int main(int argc, char ** argv)
 
     if (use_bitvector)
     {
-        seqan3::bitcompressed_vector<seqan3::dna4> vector;
+        bio::bitcompressed_vector<bio::dna4> vector;
         vector.resize(size, 'A'_dna4);
-        seqan3::debug_stream << "Allocated seqan3::bitcompressed_vector<seqan3::dna4> of size "
+        bio::debug_stream << "Allocated bio::bitcompressed_vector<bio::dna4> of size "
                              << vector.size() << '\n';
     }
     else
     {
-        std::vector<seqan3::dna4> vector{size};
-        seqan3::debug_stream << "Allocated std::vector<seqan3::dna4> of size " << vector.size() << '\n';
+        std::vector<bio::dna4> vector{size};
+        bio::debug_stream << "Allocated std::vector<bio::dna4> of size " << vector.size() << '\n';
     }
 }

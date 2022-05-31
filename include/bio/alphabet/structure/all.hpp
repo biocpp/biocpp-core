@@ -19,9 +19,9 @@
  *
  * Name                                     | Chars               | Description
  * ---------------------------------------- | ------------------------ | -----------
- * [Dot Bracket](@ref seqan3::dot_bracket3) | `().`                    | Simple annotation that defines base pairs. No pseudoknots allowed.
- * [WUSS](@ref seqan3::wuss)                | `.<>:,-_~;()[]{}AaBb...` | Annotation that provides further markups and pseudoknots.
- * [DSSP](@ref seqan3::dssp9)               | `HBEGITSCX`              | Structure encoding for proteins.
+ * [Dot Bracket](@ref bio::dot_bracket3) | `().`                    | Simple annotation that defines base pairs. No pseudoknots allowed.
+ * [WUSS](@ref bio::wuss)                | `.<>:,-_~;()[]{}AaBb...` | Annotation that provides further markups and pseudoknots.
+ * [DSSP](@ref bio::dssp9)               | `HBEGITSCX`              | Structure encoding for proteins.
  */
 
 #pragma once

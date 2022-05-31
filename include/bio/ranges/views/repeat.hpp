@@ -19,14 +19,14 @@
 #include <bio/meta/type_traits/range.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 // ---------------------------------------------------------------------------------------------------------------------
 // repeat_view class
 // ---------------------------------------------------------------------------------------------------------------------
 
-/*!\brief The type returned by seqan3::views::repeat.
+/*!\brief The type returned by bio::views::repeat.
  * \tparam value_t The type of value to repeat which is always wrapped in a std::views::single.
  * \implements std::ranges::view
  * \implements std::ranges::random_access_range
@@ -54,7 +54,7 @@ private:
     using single_value_t = decltype(std::views::single(std::declval<value_t>()));
 
     /*!\name Associated types
-     * These associated types are needed in seqan3::detail::random_access_iterator.
+     * These associated types are needed in bio::detail::random_access_iterator.
      * \{
      */
     //!\brief The value type (equals the value_t with any references removed).
@@ -291,7 +291,7 @@ public:
 //!\brief View factory definition for views::repeat.
 struct repeat_fn
 {
-    //!\brief Returns an instance of seqan3::detail::repeat_view constructed with \p value.
+    //!\brief Returns an instance of bio::detail::repeat_view constructed with \p value.
     template <std::copy_constructible value_type>
     constexpr auto operator()(value_type && value) const
     {
@@ -299,9 +299,9 @@ struct repeat_fn
     }
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3::views
+namespace bio::views
 {
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -338,7 +338,7 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                                    |
  * | std::ranges::common_range        |                                                    |
  * | std::ranges::output_range        | *guaranteed*                                       |
- * | seqan3::const_iterable_range     | *guaranteed*                                       |
+ * | bio::const_iterable_range     | *guaranteed*                                       |
  * |                                  |                                                    |
  * | std::ranges::range_reference_t   | std::remove_reference_t<value_t> &                 |
  *
@@ -355,4 +355,4 @@ namespace seqan3::views
 constexpr inline detail::repeat_fn repeat{};
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

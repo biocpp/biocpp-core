@@ -19,13 +19,13 @@
 #include <bio/meta/detail/debug_stream_type.hpp>
 #include <bio/meta/type_traits/basic.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 //------------------------------------------------------------------------------
 // enum strong_type_skill
 //------------------------------------------------------------------------------
 
-/*!\brief Enum class for all supported operations that can be added to a seqan3::detail::strong_type.
+/*!\brief Enum class for all supported operations that can be added to a bio::detail::strong_type.
  * \ingroup core
  */
 enum struct strong_type_skill
@@ -55,17 +55,17 @@ enum struct strong_type_skill
     bitwise_shift  = bitwise_lshift | bitwise_rshift,
     logic          = logical_and | logical_or | logical_not
 };
-}  //namespace seqan3::detail
+}  //namespace bio::detail
 
-namespace seqan3
+namespace bio
 {
 //!\cond
 template <>
-constexpr bool add_enum_bitwise_operators<seqan3::detail::strong_type_skill> = true;
+constexpr bool add_enum_bitwise_operators<bio::detail::strong_type_skill> = true;
 //!\endcond
 }
 
-namespace seqan3::detail
+namespace bio::detail
 {
 //!\cond
 // forward declared for the concept
@@ -77,18 +77,18 @@ class strong_type;
 // concept strong_type_specialisation
 //------------------------------------------------------------------------------
 
-/*!\interface seqan3::detail::strong_type_specialisation <>
+/*!\interface bio::detail::strong_type_specialisation <>
  * \brief Defines the requirements of a seqan::detail::strong_type specialisation.
  * \tparam strong_type_t The type the concept check is performed on (the putative strong type).
  * \ingroup core
  */
-/*!\name Requirements for seqan3::detail::strong_type_specialisation
- * \brief You can expect these members on all types that implement seqan3::detail::strong_type_specialisation.
- * \relates seqan3::detail::strong_type_specialisation
+/*!\name Requirements for bio::detail::strong_type_specialisation
+ * \brief You can expect these members on all types that implement bio::detail::strong_type_specialisation.
+ * \relates bio::detail::strong_type_specialisation
  *
  * \details
  *
- * A type that implements strong_type_specialisation must be a derived class of seqan3::detail::strong_type.
+ * A type that implements strong_type_specialisation must be a derived class of bio::detail::strong_type.
  * \{
  */
 //!\cond
@@ -102,7 +102,7 @@ concept strong_type_specialisation = requires (strong_type_t && obj)
      */
     typename std::remove_reference_t<strong_type_t>::value_type;
 
-    /*!\var static constexpr seqan3::detail::strong_type_skill skills;
+    /*!\var static constexpr bio::detail::strong_type_skill skills;
      * \brief The selected skills for this strong type.
      */
     { std::remove_reference_t<strong_type_t>::skills };
@@ -162,13 +162,13 @@ concept strong_type_specialisation = requires (strong_type_t && obj)
  *
  * In most cases it is sufficient to protect the user interface from misuse by using strong types. Within the
  * implementation the underlying value can then be extracted using the `getter`-member functions of the
- * seqan3::detail::strong_type class. However, there might be scenarios, where the strong type is exposed to the user
+ * bio::detail::strong_type class. However, there might be scenarios, where the strong type is exposed to the user
  * to work with, but with a restricted set of operations that can be applied to the type.
  * A familiar use case are the time typedefs of the [std::chrono](https://en.cppreference.com/w/cpp/header/chrono)
  * library. It is convenient for the user to subtract two time values representing, for example seconds, to get the
  * duration between two time points. But not all operations like modulo or multiplication are really useful for this.
- * In order to add skills to the seqan3::detail::strong_type the typedef can be further specialized with
- * operations from the seqan3::detail::strong_type_skill enum.
+ * In order to add skills to the bio::detail::strong_type the typedef can be further specialized with
+ * operations from the bio::detail::strong_type_skill enum.
  * For example, we could further specify our error type to support increment and decrement operations.
  *
  * \include test/snippet/core/detail/strong_type_adding_skills.cpp
@@ -227,7 +227,7 @@ public:
     //!\}
 
     /*!\name Arithmetic additive operators.
-     * \brief Only available if the corresponding skills from seqan3::detail::strong_type_skill are added and
+     * \brief Only available if the corresponding skills from bio::detail::strong_type_skill are added and
      *        the underlying type supports this operation.
      * \{
      */
@@ -251,7 +251,7 @@ public:
     //!\}
 
     /*!\name Arithmetic multiplicative operators.
-     * \brief Only available if the corresponding skills from seqan3::detail::strong_type_skill are added and
+     * \brief Only available if the corresponding skills from bio::detail::strong_type_skill are added and
      *        the underlying type supports this operation.
      * \{
      */
@@ -284,7 +284,7 @@ public:
     //!\}
 
     /*!\name Bitwise logic operators.
-     * \brief Only available if the corresponding skills from seqan3::detail::strong_type_skill are added and
+     * \brief Only available if the corresponding skills from bio::detail::strong_type_skill are added and
      *        the underlying type supports this operation.
      * \{
      */
@@ -327,7 +327,7 @@ public:
     //!\}
 
     /*!\name Bitwise shift operators.
-     * \brief Only available if the corresponding skills from seqan3::detail::strong_type_skill are added and
+     * \brief Only available if the corresponding skills from bio::detail::strong_type_skill are added and
      *        the underlying type supports this operation.
      * \{
      */
@@ -372,7 +372,7 @@ public:
     //!\}
 
     /*!\name Logical operators.
-     * \brief Only available if the corresponding skills from seqan3::detail::strong_type_skill are added and
+     * \brief Only available if the corresponding skills from bio::detail::strong_type_skill are added and
      *        the underlying type supports this operation.
      * \{
      */
@@ -406,7 +406,7 @@ public:
     //!\}
 
     /*!\name Increment and decrement operators.
-     * \brief Only available if the corresponding skills from seqan3::detail::strong_type_skill are added and
+     * \brief Only available if the corresponding skills from bio::detail::strong_type_skill are added and
      *        the underlying type supports this operation.
      * \{
      */
@@ -454,7 +454,7 @@ public:
     //!\}
 
     /*!\name Comparison operators
-     * \brief Only available if the corresponding skill from seqan3::detail::strong_type_skill is added.
+     * \brief Only available if the corresponding skill from bio::detail::strong_type_skill is added.
      *
      * \if DEV
      * Implemented as member functions because requires does not work on friends.
@@ -481,7 +481,7 @@ public:
     //!\}
 
     /*!\name Conversion operators.
-     * \brief Only available if the corresponding skill from seqan3::detail::strong_type_skill is added.
+     * \brief Only available if the corresponding skill from bio::detail::strong_type_skill is added.
      * \{
      */
 
@@ -505,13 +505,13 @@ private:
 //------------------------------------------------------------------------------
 
 /*!\name Formatted output
- * \relates seqan3::detail::strong_type
+ * \relates bio::detail::strong_type
  * \{
  */
 
-/*!\brief Formatted output to a seqan3::detail::debug_stream_type.
- * \tparam char_t The char type of the seqan3::detail::debug_stream_type.
- * \tparam strong_type_t The strong type to print; must model seqan3::detail::strong_type_specialisation.
+/*!\brief Formatted output to a bio::detail::debug_stream_type.
+ * \tparam char_t The char type of the bio::detail::debug_stream_type.
+ * \tparam strong_type_t The strong type to print; must model bio::detail::strong_type_specialisation.
  *
  * \param[in,out] stream The output stream.
  * \param[in] value The strong typed value to print.
@@ -530,4 +530,4 @@ debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & stream, stron
 }
 //!\}
 
-} // namespace seqan3::detail
+} // namespace bio::detail

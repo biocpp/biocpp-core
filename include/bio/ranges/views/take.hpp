@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::views::take.
+ * \brief Provides bio::views::take.
  */
 
 #pragma once
@@ -28,15 +28,15 @@
 #include <bio/ranges/views/detail.hpp>
 #include <bio/ranges/detail/inherited_iterator_base.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 // ============================================================================
 //  view_take
 // ============================================================================
 
-/*!\brief The type returned by seqan3::views::take and seqan3::views::take_or_throw.
- * \tparam urng_t    The type of the underlying ranges, must satisfy seqan3::views::concept.
+/*!\brief The type returned by bio::views::take and bio::views::take_or_throw.
+ * \tparam urng_t    The type of the underlying ranges, must satisfy bio::views::concept.
  * \tparam exactly   Whether to expose sized'ness on the view.
  * \tparam or_throw  Whether to throw an exception when the input is exhausted before the end of line is reached.
  * \implements std::ranges::view
@@ -90,7 +90,7 @@ public:
     /*!\brief Construct from another View.
      * \param[in] _urange The underlying range.
      * \param[in] _size   The desired size (after which to stop returning elements).
-     * \throws std::runtime_error If `exactly && or_throw && seqan3::sized_range<urng_t>`.
+     * \throws std::runtime_error If `exactly && or_throw && bio::sized_range<urng_t>`.
      */
     constexpr view_take(urng_t _urange, size_t const _size)
         : urange{std::move(_urange)}, target_size{_size}
@@ -119,7 +119,7 @@ public:
      * \tparam rng_t      Type of the passed range; `urng_t` must be constructible from this.
      * \param[in] _urange The underlying range.
      * \param[in] _size   The desired size (after which to stop returning elements).
-     * \throws std::runtime_error If `exactly && or_throw && seqan3::sized_range<urng_t>`.
+     * \throws std::runtime_error If `exactly && or_throw && bio::sized_range<urng_t>`.
      */
     template <std::ranges::viewable_range rng_t>
     //!\cond
@@ -219,7 +219,7 @@ public:
 };
 
 //!\brief Template argument type deduction guide that strips references.
-//!\relates seqan3::detail::view_take
+//!\relates bio::detail::view_take
 template <typename urng_t,
           bool exactly = false,
           bool or_throw = false>
@@ -298,7 +298,7 @@ public:
     //!\}
 
     /*!\name Arithmetic operators
-     * \brief seqan3::detail::inherited_iterator_base operators are used unless specialised here.
+     * \brief bio::detail::inherited_iterator_base operators are used unless specialised here.
      * \{
      */
 
@@ -437,7 +437,7 @@ public:
     //!\}
 
     /*!\name Reference/Dereference operators
-     * \brief seqan3::detail::inherited_iterator_base operators are used unless specialised here.
+     * \brief bio::detail::inherited_iterator_base operators are used unless specialised here.
      * \{
      */
 
@@ -473,7 +473,7 @@ struct take_fn
     }
 
     /*!\brief Type erase if possible and return view_take if not.
-     * \returns An instance of std::span, std::basic_string_view, std::ranges::subrange or seqan3::detail::view_take.
+     * \returns An instance of std::span, std::basic_string_view, std::ranges::subrange or bio::detail::view_take.
      */
     template <std::ranges::range urng_t>
     constexpr auto operator()(urng_t && urange, size_t target_size) const
@@ -540,4 +540,4 @@ struct take_fn
     }
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail

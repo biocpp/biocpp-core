@@ -36,15 +36,15 @@ public:
 // non-type template parameters (see base1), but non-type and type template parameters cannot be mixed in one
 // base class definition.
 template <typename ...deferred_bases_t>
-class derived : public seqan3::detail::invoke_deferred_crtp_base<deferred_bases_t, derived<deferred_bases_t...>>...
+class derived : public bio::detail::invoke_deferred_crtp_base<deferred_bases_t, derived<deferred_bases_t...>>...
 {};
 
 int main()
 {
     // Define deferred base with non-type template parameter
-    using deferred_base1 = seqan3::detail::deferred_crtp_base_vargs<base1, 10>;
+    using deferred_base1 = bio::detail::deferred_crtp_base_vargs<base1, 10>;
     // Define deferred base with type template parameter.
-    using deferred_base2 = seqan3::detail::deferred_crtp_base<base2, uint8_t, uint32_t>;
+    using deferred_base2 = bio::detail::deferred_crtp_base<base2, uint8_t, uint32_t>;
 
     // Instantiate the derived class with the deferred crtp base classes.
     derived<deferred_base1, deferred_base2> d{};

@@ -32,8 +32,8 @@ std::array<alphabet_t, 256> create_alphabet_array()
         }
         else
         {
-            using char_t = seqan3::alphabet_char_t<alphabet_t>;
-            seqan3::assign_char_to(char_t(c), a);
+            using char_t = bio::alphabet_char_t<alphabet_t>;
+            bio::assign_char_to(char_t(c), a);
         }
     };
 
@@ -44,40 +44,40 @@ std::array<alphabet_t, 256> create_alphabet_array()
     return alphabet_array;
 }
 
-template <seqan3::alphabet alphabet_t>
+template <bio::alphabet alphabet_t>
 void to_char(benchmark::State & state)
 {
     std::array<alphabet_t, 256> alphs = create_alphabet_array<alphabet_t, false>();
 
     for (auto _ : state)
         for (alphabet_t a : alphs)
-            benchmark::DoNotOptimize(seqan3::to_char(a));
+            benchmark::DoNotOptimize(bio::to_char(a));
 }
 
 /* regular alphabets, sorted by size */
-BENCHMARK_TEMPLATE(to_char, seqan3::gap);
-BENCHMARK_TEMPLATE(to_char, seqan3::dna4);
-BENCHMARK_TEMPLATE(to_char, seqan3::rna4);
-BENCHMARK_TEMPLATE(to_char, seqan3::dna5);
-BENCHMARK_TEMPLATE(to_char, seqan3::rna5);
-BENCHMARK_TEMPLATE(to_char, seqan3::dna15);
-BENCHMARK_TEMPLATE(to_char, seqan3::rna15);
-BENCHMARK_TEMPLATE(to_char, seqan3::aa20);
-BENCHMARK_TEMPLATE(to_char, seqan3::aa27);
-BENCHMARK_TEMPLATE(to_char, seqan3::phred42);
-BENCHMARK_TEMPLATE(to_char, seqan3::phred63);
+BENCHMARK_TEMPLATE(to_char, bio::gap);
+BENCHMARK_TEMPLATE(to_char, bio::dna4);
+BENCHMARK_TEMPLATE(to_char, bio::rna4);
+BENCHMARK_TEMPLATE(to_char, bio::dna5);
+BENCHMARK_TEMPLATE(to_char, bio::rna5);
+BENCHMARK_TEMPLATE(to_char, bio::dna15);
+BENCHMARK_TEMPLATE(to_char, bio::rna15);
+BENCHMARK_TEMPLATE(to_char, bio::aa20);
+BENCHMARK_TEMPLATE(to_char, bio::aa27);
+BENCHMARK_TEMPLATE(to_char, bio::phred42);
+BENCHMARK_TEMPLATE(to_char, bio::phred63);
 /* adaptations */
 BENCHMARK_TEMPLATE(to_char, char);
 BENCHMARK_TEMPLATE(to_char, char32_t);
 /* alphabet variant */
-BENCHMARK_TEMPLATE(to_char, seqan3::gapped<seqan3::dna4>);
-BENCHMARK_TEMPLATE(to_char, seqan3::alphabet_variant<seqan3::gap, seqan3::dna4, seqan3::dna5, seqan3::dna15,
-                                                     seqan3::rna15, seqan3::rna4, seqan3::rna5>);
-BENCHMARK_TEMPLATE(to_char, seqan3::alphabet_variant<seqan3::dna4, char>);
+BENCHMARK_TEMPLATE(to_char, bio::gapped<bio::dna4>);
+BENCHMARK_TEMPLATE(to_char, bio::alphabet_variant<bio::gap, bio::dna4, bio::dna5, bio::dna15,
+                                                     bio::rna15, bio::rna4, bio::rna5>);
+BENCHMARK_TEMPLATE(to_char, bio::alphabet_variant<bio::dna4, char>);
 /* alphabet tuple */
-BENCHMARK_TEMPLATE(to_char, seqan3::masked<seqan3::dna4>);
-BENCHMARK_TEMPLATE(to_char, seqan3::qualified<seqan3::dna4, seqan3::phred42>);
-BENCHMARK_TEMPLATE(to_char, seqan3::qualified<seqan3::dna5, seqan3::phred63>);
+BENCHMARK_TEMPLATE(to_char, bio::masked<bio::dna4>);
+BENCHMARK_TEMPLATE(to_char, bio::qualified<bio::dna4, bio::phred42>);
+BENCHMARK_TEMPLATE(to_char, bio::qualified<bio::dna5, bio::phred63>);
 
 #if SEQAN3_HAS_SEQAN2
 template <typename alphabet_t>

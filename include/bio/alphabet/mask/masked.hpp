@@ -17,21 +17,21 @@
 #include <bio/meta/char_operations/predicate.hpp>
 #include <bio/meta/char_operations/transform.hpp>
 
-namespace seqan3
+namespace bio
 {
 /*!\brief Implementation of a masked composite, which extends a given alphabet
  * with a mask.
  * \ingroup mask
- * \implements seqan3::writable_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::writable_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
- * \tparam sequence_alphabet_t Type of the first letter; must satisfy seqan3::writable_alphabet and std::regular.
+ * \tparam sequence_alphabet_t Type of the first letter; must satisfy bio::writable_alphabet and std::regular.
  *
  * \details
- * The masked composite represents a seqan3::alphabet_tuple_base of any given alphabet with the
+ * The masked composite represents a bio::alphabet_tuple_base of any given alphabet with the
  * masked alphabet. It allows one to specify which portions of a sequence should be masked,
  * without losing additional information by replacing the sequence directly.
  *
@@ -106,8 +106,8 @@ protected:
             for (size_t i = 0; i < alphabet_size; ++i)
             {
                 ret[i] = (i < alphabet_size / 2)
-                       ? seqan3::to_char(seqan3::assign_rank_to(i, sequence_alphabet_type{}))
-                       : to_lower(seqan3::to_char(seqan3::assign_rank_to(i / 2, sequence_alphabet_type{})));
+                       ? bio::to_char(bio::assign_rank_to(i, sequence_alphabet_type{}))
+                       : to_lower(bio::to_char(bio::assign_rank_to(i / 2, sequence_alphabet_type{})));
             }
 
             return ret;
@@ -126,8 +126,8 @@ protected:
                 char_type c = static_cast<char_type>(i);
 
                 ret[i] = is_lower(c)
-                       ? seqan3::to_rank(seqan3::assign_char_to(c, sequence_alphabet_type{})) * 2
-                       : seqan3::to_rank(seqan3::assign_char_to(c, sequence_alphabet_type{}));
+                       ? bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{})) * 2
+                       : bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{}));
             }
 
             return ret;
@@ -140,4 +140,4 @@ protected:
 template <typename sequence_alphabet_type>
 masked(sequence_alphabet_type &&, mask const &)
     -> masked<std::decay_t<sequence_alphabet_type>>;
-} //namespace seqan3
+} //namespace bio

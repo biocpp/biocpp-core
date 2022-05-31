@@ -33,5 +33,5 @@ auto fn = [](auto id)
         return false;
 };
 
-static_assert(seqan3::detail::all_of<seqan3::type_list<int, float, bool>>(fn)); // evalates to true
-static_assert(!seqan3::detail::all_of<seqan3::type_list<int, float, bool, incomplete::type>>(fn)); // evalates to false
+static_assert(bio::detail::all_of<bio::type_list<int, float, bool>>(fn)); // evalates to true
+static_assert(!bio::detail::all_of<bio::type_list<int, float, bool, incomplete::type>>(fn)); // evalates to false

@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Sara Hetzel <sara.hetzel AT fu-berlin.de>
- * \brief Provides seqan3::aa27, container aliases and string literals.
+ * \brief Provides bio::aa27, container aliases and string literals.
  */
 
 #pragma once
@@ -18,15 +18,15 @@
 #include <bio/alphabet/aminoacid/concept.hpp>
 #include <bio/meta/char_operations/transform.hpp>
 
-namespace seqan3
+namespace bio
 {
 /*!\brief The twenty-seven letter amino acid alphabet.
  * \ingroup aminoacid
- * \implements seqan3::aminoacid_alphabet
- * \implements seqan3::writable_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::aminoacid_alphabet
+ * \implements bio::writable_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \details
@@ -35,7 +35,7 @@ namespace seqan3
  *
  * Like most alphabets, this alphabet cannot be initialised directly from its character representation.
  * Instead initialise/assign from the character literal or use the
- * function seqan3::aa27::assign_char().
+ * function bio::aa27::assign_char().
  *
  * \include test/snippet/alphabet/aminoacid/aa27_construction.cpp
  */
@@ -46,9 +46,9 @@ private:
     //!\brief The base class.
     using base_t = aminoacid_base<aa27, 27>;
 
-    //!\brief Befriend seqan3::nucleotide_base.
+    //!\brief Befriend bio::nucleotide_base.
     friend base_t;
-    //!\cond \brief Befriend seqan3::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -122,35 +122,35 @@ protected:
     };
 };
 
-} // namespace seqan3
+} // namespace bio
 
 // ------------------------------------------------------------------
 // containers
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
-//!\brief Alias for an std::vector of seqan3::aa27.
+//!\brief Alias for an std::vector of bio::aa27.
 //!\relates aa27
 using aa27_vector = std::vector<aa27>;
 
-} // namespace seqan3
+} // namespace bio
 
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
 /*!\name Literals
  * \{
  */
 
-/*!\brief The seqan3::aa27 char literal.
+/*!\brief The bio::aa27 char literal.
  * \param[in] c The character to assign.
- * \relates seqan3::aa27
- * \returns seqan3::aa27
+ * \relates bio::aa27
+ * \returns bio::aa27
  *
  * \include test/snippet/alphabet/aminoacid/aa27_char_literal.cpp
  *
@@ -160,18 +160,18 @@ constexpr aa27 operator""_aa27(char const c) noexcept
     return aa27{}.assign_char(c);
 }
 
-/*!\brief The seqan3::aa27 string literal.
+/*!\brief The bio::aa27 string literal.
  * \param[in] s A pointer to the character string to assign.
  * \param[in] n The size of the character string to assign.
- * \relates seqan3::aa27
- * \returns seqan3::aa27_vector
+ * \relates bio::aa27
+ * \returns bio::aa27_vector
  *
  * You can use this string literal to easily assign to aa27_vector:
  *
  * \include test/snippet/alphabet/aminoacid/aa27_literal.cpp
  *
  * \attention
- * All seqan3 literals are in the namespace seqan3!
+ * All seqan3 literals are in the namespace bio!
  */
 
 inline aa27_vector operator""_aa27(const char * s, std::size_t n)
@@ -186,4 +186,4 @@ inline aa27_vector operator""_aa27(const char * s, std::size_t n)
 }
 //!\}
 
-} // namespace seqan3
+} // namespace bio

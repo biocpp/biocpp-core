@@ -18,7 +18,7 @@
 
 #include <bio/meta/bit_manipulation.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 /*!\brief Computes the floor of the logarithm to the base of two for unsigned integers.
@@ -86,12 +86,12 @@ template <std::unsigned_integral unsigned_t>
 constexpr unsigned_t ceil_log2(unsigned_t const n) noexcept
 {
     assert(n > 0u); // n == 0 is undefined behaviour
-    return (n == 1u) ? 0u : seqan3::detail::floor_log2(n - 1u) + 1u;
+    return (n == 1u) ? 0u : bio::detail::floor_log2(n - 1u) + 1u;
 }
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3
+namespace bio
 {
 /*!\brief Computes the value of `base` raised to the power `exp`.
  * \ingroup core
@@ -172,4 +172,4 @@ auto pow(base_t base, exp_t exp)
 }
 //!\endcond
 
-} // namespace seqan3
+} // namespace bio

@@ -14,97 +14,97 @@
 
 using namespace std::literals;
 
-namespace seqan3::detail
+namespace bio::detail
 {
 // Make operator| accessible by ADL for seqan3 namespace
-using seqan3::operator|;
-} // seqan3::detail
+using bio::operator|;
+} // bio::detail
 
-struct pure_type : seqan3::detail::strong_type<int, pure_type>
+struct pure_type : bio::detail::strong_type<int, pure_type>
 {
-    using seqan3::detail::strong_type<int, pure_type>::strong_type;
+    using bio::detail::strong_type<int, pure_type>::strong_type;
 };
-struct additive_type : seqan3::detail::strong_type<int, additive_type, seqan3::detail::strong_type_skill::additive>
+struct additive_type : bio::detail::strong_type<int, additive_type, bio::detail::strong_type_skill::additive>
 {
-    using seqan3::detail::strong_type<int, additive_type, seqan3::detail::strong_type_skill::additive>::strong_type;
+    using bio::detail::strong_type<int, additive_type, bio::detail::strong_type_skill::additive>::strong_type;
 };
 
-struct multiplicative_type : seqan3::detail::strong_type<int,
+struct multiplicative_type : bio::detail::strong_type<int,
                                                          multiplicative_type,
-                                                         seqan3::detail::strong_type_skill::multiplicative>
+                                                         bio::detail::strong_type_skill::multiplicative>
 {
-    using seqan3::detail::strong_type<int,
+    using bio::detail::strong_type<int,
                                       multiplicative_type,
-                                      seqan3::detail::strong_type_skill::multiplicative>::strong_type;
+                                      bio::detail::strong_type_skill::multiplicative>::strong_type;
 };
 
-struct bitwise_type : seqan3::detail::strong_type<unsigned,
+struct bitwise_type : bio::detail::strong_type<unsigned,
                                                   bitwise_type,
-                                                  seqan3::detail::strong_type_skill::bitwise_logic>
+                                                  bio::detail::strong_type_skill::bitwise_logic>
 {
-    using seqan3::detail::strong_type<unsigned,
+    using bio::detail::strong_type<unsigned,
                                       bitwise_type,
-                                      seqan3::detail::strong_type_skill::bitwise_logic>::strong_type;
+                                      bio::detail::strong_type_skill::bitwise_logic>::strong_type;
 };
 
-struct bitwise_shift_type : seqan3::detail::strong_type<unsigned,
+struct bitwise_shift_type : bio::detail::strong_type<unsigned,
                                                         bitwise_shift_type,
-                                                        seqan3::detail::strong_type_skill::bitwise_shift>
+                                                        bio::detail::strong_type_skill::bitwise_shift>
 {
-    using seqan3::detail::strong_type<unsigned,
+    using bio::detail::strong_type<unsigned,
                                       bitwise_shift_type,
-                                      seqan3::detail::strong_type_skill::bitwise_shift>::strong_type;
+                                      bio::detail::strong_type_skill::bitwise_shift>::strong_type;
 };
 
-struct logic_type : seqan3::detail::strong_type<bool, logic_type, seqan3::detail::strong_type_skill::logic>
+struct logic_type : bio::detail::strong_type<bool, logic_type, bio::detail::strong_type_skill::logic>
 {
-    using seqan3::detail::strong_type<bool, logic_type, seqan3::detail::strong_type_skill::logic>::strong_type;
+    using bio::detail::strong_type<bool, logic_type, bio::detail::strong_type_skill::logic>::strong_type;
 };
 
-struct inc_type : seqan3::detail::strong_type<int, inc_type, seqan3::detail::strong_type_skill::increment>
+struct inc_type : bio::detail::strong_type<int, inc_type, bio::detail::strong_type_skill::increment>
 {
-    using seqan3::detail::strong_type<int, inc_type, seqan3::detail::strong_type_skill::increment>::strong_type;
+    using bio::detail::strong_type<int, inc_type, bio::detail::strong_type_skill::increment>::strong_type;
 };
 
-struct dec_type : seqan3::detail::strong_type<int, dec_type, seqan3::detail::strong_type_skill::decrement>
+struct dec_type : bio::detail::strong_type<int, dec_type, bio::detail::strong_type_skill::decrement>
 {
-    using seqan3::detail::strong_type<int, dec_type, seqan3::detail::strong_type_skill::decrement>::strong_type;
+    using bio::detail::strong_type<int, dec_type, bio::detail::strong_type_skill::decrement>::strong_type;
 };
 
-struct lval_type : seqan3::detail::strong_type<std::reference_wrapper<std::string>, lval_type>
+struct lval_type : bio::detail::strong_type<std::reference_wrapper<std::string>, lval_type>
 {
-    using seqan3::detail::strong_type<std::reference_wrapper<std::string>, lval_type>::strong_type;
+    using bio::detail::strong_type<std::reference_wrapper<std::string>, lval_type>::strong_type;
 };
 
-struct convertible_type : seqan3::detail::strong_type<int, convertible_type, seqan3::detail::strong_type_skill::convert>
+struct convertible_type : bio::detail::strong_type<int, convertible_type, bio::detail::strong_type_skill::convert>
 {
-    using seqan3::detail::strong_type<int, convertible_type, seqan3::detail::strong_type_skill::convert>::strong_type;
+    using bio::detail::strong_type<int, convertible_type, bio::detail::strong_type_skill::convert>::strong_type;
 };
 
-struct comp_type : seqan3::detail::strong_type<int, comp_type, seqan3::detail::strong_type_skill::comparable>
+struct comp_type : bio::detail::strong_type<int, comp_type, bio::detail::strong_type_skill::comparable>
 {
-    using seqan3::detail::strong_type<int, comp_type, seqan3::detail::strong_type_skill::comparable>::strong_type;
+    using bio::detail::strong_type<int, comp_type, bio::detail::strong_type_skill::comparable>::strong_type;
 };
 
-struct multi_skill_type : seqan3::detail::strong_type<int,
+struct multi_skill_type : bio::detail::strong_type<int,
                                                       multi_skill_type,
-                                                      seqan3::detail::strong_type_skill::additive  |
-                                                      seqan3::detail::strong_type_skill::increment |
-                                                      seqan3::detail::strong_type_skill::decrement |
-                                                      seqan3::detail::strong_type_skill::convert>
+                                                      bio::detail::strong_type_skill::additive  |
+                                                      bio::detail::strong_type_skill::increment |
+                                                      bio::detail::strong_type_skill::decrement |
+                                                      bio::detail::strong_type_skill::convert>
 {
-    using seqan3::detail::strong_type<int, multi_skill_type, seqan3::detail::strong_type_skill::additive  |
-                                                             seqan3::detail::strong_type_skill::increment |
-                                                             seqan3::detail::strong_type_skill::decrement |
-                                                             seqan3::detail::strong_type_skill::convert>::strong_type;
+    using bio::detail::strong_type<int, multi_skill_type, bio::detail::strong_type_skill::additive  |
+                                                             bio::detail::strong_type_skill::increment |
+                                                             bio::detail::strong_type_skill::decrement |
+                                                             bio::detail::strong_type_skill::convert>::strong_type;
 };
 
 TEST(strong_type, concept)
 {
-    EXPECT_TRUE(seqan3::detail::strong_type_specialisation<pure_type &>);
-    EXPECT_TRUE(seqan3::detail::strong_type_specialisation<pure_type const &>);
-    EXPECT_TRUE(seqan3::detail::strong_type_specialisation<pure_type &&>);
-    EXPECT_TRUE(seqan3::detail::strong_type_specialisation<pure_type const &&>);
+    EXPECT_TRUE(bio::detail::strong_type_specialisation<pure_type &>);
+    EXPECT_TRUE(bio::detail::strong_type_specialisation<pure_type const &>);
+    EXPECT_TRUE(bio::detail::strong_type_specialisation<pure_type &&>);
+    EXPECT_TRUE(bio::detail::strong_type_specialisation<pure_type const &&>);
 }
 
 TEST(strong_type, pure_type)

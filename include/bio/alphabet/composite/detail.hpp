@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides implementation detail for seqan3::alphabet_variant and seqan3::alphabet_tuple_base.
+ * \brief Provides implementation detail for bio::alphabet_variant and bio::alphabet_tuple_base.
  */
 
 #pragma once
@@ -18,15 +18,15 @@
 #include <bio/meta/type_list/type_list.hpp>
 #include <bio/meta/type_traits/lazy.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 // ------------------------------------------------------------------
 // alphabet_tuple_like
 // ------------------------------------------------------------------
 
-/*!\interface seqan3::detail::alphabet_tuple_like <>
- * \brief seqan3::alphabet_tuple_base and its derivates model this concept.
+/*!\interface bio::detail::alphabet_tuple_like <>
+ * \brief bio::alphabet_tuple_base and its derivates model this concept.
  * \ingroup alphabet_composite
  *
  * \details
@@ -46,8 +46,8 @@ concept alphabet_tuple_like = requires
 // required_types
 // ------------------------------------------------------------------
 
-/*!\brief A seqan3::type_list with types that the given type depends on.
- * \implements seqan3::transformation_trait
+/*!\brief A bio::type_list with types that the given type depends on.
+ * \implements bio::transformation_trait
  * \ingroup alphabet_composite
  *
  * \details
@@ -62,14 +62,14 @@ struct required_types
     using type = type_list<>;
 };
 
-/*!\brief A seqan3::type_list with types that the given type depends on.
- *        [specialisation for seqan3::alphabet_variant and derivates of seqan3::alphabet_tuple_base].
- * \implements seqan3::transformation_trait
+/*!\brief A bio::type_list with types that the given type depends on.
+ *        [specialisation for bio::alphabet_variant and derivates of bio::alphabet_tuple_base].
+ * \implements bio::transformation_trait
  * \ingroup alphabet_composite
  *
  * \details
  *
- * Exposes for seqan3::alphabet_tuple_base its components and for seqan3::alphabet_variant its alternatives.
+ * Exposes for bio::alphabet_tuple_base its components and for bio::alphabet_variant its alternatives.
  */
 template <typename t>
 //!\cond
@@ -81,8 +81,8 @@ struct required_types<t>
     using type = typename t::seqan3_required_types;
 };
 
-/*!\brief A seqan3::type_list with types that the given type depends on. [Trait shortcut]
- * \relates seqan3::detail::required_types
+/*!\brief A bio::type_list with types that the given type depends on. [Trait shortcut]
+ * \relates bio::detail::required_types
  */
 template <typename t>
 using required_types_t = typename required_types<t>::type;
@@ -93,8 +93,8 @@ using required_types_t = typename required_types<t>::type;
 
 //TODO: This can be replaced with metaprogramming magic once a few more functions land in list_traits.
 
-/*!\brief Like seqan3::detail::required_types, but recursive.
- * \implements seqan3::transformation_trait
+/*!\brief Like bio::detail::required_types, but recursive.
+ * \implements bio::transformation_trait
  * \ingroup alphabet_composite
  */
 template <typename t>
@@ -104,8 +104,8 @@ struct recursive_required_types
     using type = type_list<>;
 };
 
-/*!\brief Like seqan3::detail::required_types, but recursive.
- * \implements seqan3::transformation_trait
+/*!\brief Like bio::detail::required_types, but recursive.
+ * \implements bio::transformation_trait
  * \ingroup alphabet_composite
  */
 template <typename t>
@@ -121,8 +121,8 @@ struct recursive_required_types<t>
     using type = typename t::seqan3_recursive_required_types;
 };
 
-/*!\brief Shortcut for seqan3::detail::recursive_required_types.
- * \relates seqan3::detail::recursive_required_types
+/*!\brief Shortcut for bio::detail::recursive_required_types.
+ * \relates bio::detail::recursive_required_types
  */
 template <typename t>
 using recursive_required_types_t = typename recursive_required_types<t>::type;
@@ -195,7 +195,7 @@ struct weakly_ordered_with_
 // Concept traits helper
 // ------------------------------------------------------------------
 
-/*!\brief Binary type trait that behaves like the seqan3::detail::weakly_equality_comparable_with concept.
+/*!\brief Binary type trait that behaves like the bio::detail::weakly_equality_comparable_with concept.
  * \ingroup alphabet_composite
  */
 template <typename lhs_t, typename rhs_t>
@@ -203,20 +203,20 @@ struct weakly_equality_comparable_with_trait :
     std::integral_constant<bool, weakly_equality_comparable_with<lhs_t, rhs_t>>
 {};
 
-/*!\brief Binary type trait that behaves like the seqan3::detail::weakly_ordered_with concept.
+/*!\brief Binary type trait that behaves like the bio::detail::weakly_ordered_with concept.
  * \ingroup alphabet_composite
  */
 template <typename lhs_t, typename rhs_t>
 struct weakly_ordered_with_trait : std::integral_constant<bool, weakly_ordered_with<lhs_t, rhs_t>>
 {};
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
 // ------------------------------------------------------------------
 // Forwards
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
 // forward
@@ -236,4 +236,4 @@ template <typename derived_type,
 //!\endcond
 class alphabet_tuple_base;
 
-} // namespace seqan3
+} // namespace bio

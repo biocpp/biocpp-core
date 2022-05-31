@@ -24,12 +24,12 @@
 #include <bio/meta/type_traits/template_inspection.hpp>
 #include <bio/ranges/views/repeat_n.hpp>
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief A constexpr vector implementation with dynamic size at compile time.
- * \implements seqan3::reservible_container
- * \implements seqan3::cerealisable
+ * \implements bio::reservible_container
+ * \implements bio::cerealisable
  * \ingroup container
  * \tparam value_type_ The underlying value type stored in the vector.
  * \tparam capacity_   The capacity of the constexpr vector.
@@ -317,13 +317,13 @@ public:
         return &data_[0];
     }
 
-    //!\copydoc seqan3::small_vector::begin()
+    //!\copydoc bio::small_vector::begin()
     constexpr const_iterator begin() const noexcept
     {
         return &data_[0];
     }
 
-    //!\copydoc seqan3::small_vector::begin()
+    //!\copydoc bio::small_vector::begin()
     constexpr const_iterator cbegin() const noexcept
     {
         return &data_[0];
@@ -335,13 +335,13 @@ public:
         return &data_[sz];
     }
 
-    //!\copydoc seqan3::small_vector::end()
+    //!\copydoc bio::small_vector::end()
     constexpr const_iterator end() const noexcept
     {
         return &data_[sz];
     }
 
-    //!\copydoc seqan3::small_vector::end()
+    //!\copydoc bio::small_vector::end()
     constexpr const_iterator cend() const noexcept
     {
         return &data_[sz];
@@ -931,7 +931,7 @@ public:
 public:
     //!\cond DEV
     /*!\brief Serialisation support function.
-     * \tparam archive_t Type of `archive`; must satisfy seqan3::cereal_archive.
+     * \tparam archive_t Type of `archive`; must satisfy bio::cereal_archive.
      * \param archive The archive being serialised from/to.
      *
      * \attention These functions are never called directly, see \ref howto_use_cereal for more details.
@@ -954,4 +954,4 @@ template <size_t capacity2, typename value_type>
 small_vector(const value_type (&array)[capacity2]) -> small_vector<value_type, capacity2>;
 //!\}
 
-} // namespace seqan3
+} // namespace bio

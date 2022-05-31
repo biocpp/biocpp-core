@@ -28,7 +28,7 @@
                      + SEQAN3_VERSION_MINOR * 100 \
                      + SEQAN3_VERSION_PATCH)
 
-namespace seqan3
+namespace bio
 {
 
 //!\brief The major version.
@@ -43,4 +43,4 @@ std::string const seqan3_version = std::to_string(seqan3_version_major) + "." +
                                    std::to_string(seqan3_version_minor) + "." +
                                    std::to_string(seqan3_version_patch);
 
-} // namespace seqan3
+} // namespace bio

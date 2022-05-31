@@ -3,14 +3,14 @@
 
 int main()
 {
-    using seqan3::operator""_aa20;
+    using bio::operator""_aa20;
 
-    seqan3::aa20 my_letter{'A'_aa20};
+    bio::aa20 my_letter{'A'_aa20};
     
     my_letter.assign_char('C');
 
     my_letter.assign_char('?'); // all unknown characters are converted to 'A'_aa20 implicitly
 
     if (my_letter.to_char() == 'A')
-        seqan3::debug_stream << "yeah\n"; // "yeah";
+        bio::debug_stream << "yeah\n"; // "yeah";
 }

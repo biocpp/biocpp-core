@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides seqan3::detail::deferred_crtp_base.
+ * \brief Provides bio::detail::deferred_crtp_base.
  * \author Rene Rahn <rene.rahn AT fu-berlin.de>
  */
 
@@ -14,7 +14,7 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 /*!\brief An invocable wrapper that defers the instantiation of a crtp_base class.
@@ -26,7 +26,7 @@ namespace seqan3::detail
  *
  * This transformation trait wrapper allows to defer the template instantiation of crtp-base classes. This can be useful
  * if the crtp_base class should be augmented with traits or other templates, especially when using variadic
- * crtp_bases. The help function seqan3::detail::invoke_deferred_crtp_base can be used to instantiate the
+ * crtp_bases. The help function bio::detail::invoke_deferred_crtp_base can be used to instantiate the
  * deferred crtp base with the respective derived type.
  *
  * ### Example
@@ -35,8 +35,8 @@ namespace seqan3::detail
  *
  * \include test/snippet/core/type_traits/deferred_crtp_base.cpp
  *
- * \see seqan3::detail::invoke_deferred_crtp_base
- * \see seqan3::detail::deferred_crtp_base_vargs
+ * \see bio::detail::invoke_deferred_crtp_base
+ * \see bio::detail::deferred_crtp_base_vargs
  */
 template <template <typename ...> typename crtp_base, typename ...args_t>
 struct deferred_crtp_base
@@ -57,9 +57,9 @@ struct deferred_crtp_base
  *
  * This transformation trait wrapper allows to defer the template instantiation of crtp-base classes. This can be useful
  * if the crtp_base class should be augmented with traits or other templates, especially when using variadic
- * crtp_bases. The help function seqan3::detail::invoke_deferred_crtp_base can be used to instantiate the
+ * crtp_bases. The help function bio::detail::invoke_deferred_crtp_base can be used to instantiate the
  * deferred crtp base with the respective derived type. This class wrapper can only be used to augment a crtp-base
- * class with non-type arguments. See seqan3::detail::deferred_crtp_base for a version that accepts type template
+ * class with non-type arguments. See bio::detail::deferred_crtp_base for a version that accepts type template
  * parameters.
  *
  * ### Example
@@ -68,8 +68,8 @@ struct deferred_crtp_base
  *
  * \include test/snippet/core/type_traits/deferred_crtp_base.cpp
  *
- * \see seqan3::detail::invoke_deferred_crtp_base
- * \see seqan3::detail::deferred_crtp_base
+ * \see bio::detail::invoke_deferred_crtp_base
+ * \see bio::detail::deferred_crtp_base
  */
 template <template <typename, auto ...> typename crtp_base, auto ...args>
 struct deferred_crtp_base_vargs
@@ -90,7 +90,7 @@ struct deferred_crtp_base_vargs
  *
  * Effectively declares the type resulting from `deferred_crtp_base_t::template invoke<derived_t>`.
  *
- * \see seqan3::detail::deferred_crtp_base
+ * \see bio::detail::deferred_crtp_base
  */
 template <typename deferred_crtp_base_t, typename derived_t>
 //!\cond
@@ -98,4 +98,4 @@ template <typename deferred_crtp_base_t, typename derived_t>
 //!\endcond
 using invoke_deferred_crtp_base = typename deferred_crtp_base_t::template invoke<derived_t>;
 
-} // namespace seqan3::detail
+} // namespace bio::detail

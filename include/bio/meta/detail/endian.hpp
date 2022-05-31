@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides seqan3::detail::endian.
+ * \brief Provides bio::detail::endian.
  * \author Rene Rahn <rene.rahn AT fu-berlin.de>
  */
 
@@ -14,7 +14,7 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 /*!\brief Indicates the endianness of all scalar types
@@ -37,4 +37,4 @@ enum class endian
 #endif
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail

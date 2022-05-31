@@ -20,20 +20,20 @@ TYPED_TEST_SUITE_P(alphabet);
 
 TYPED_TEST_P(alphabet, concept_check)
 {
-    EXPECT_TRUE(seqan3::alphabet<TypeParam>);
-    EXPECT_TRUE(seqan3::alphabet<TypeParam &>);
-    EXPECT_TRUE(seqan3::alphabet<TypeParam const>);
-    EXPECT_TRUE(seqan3::alphabet<TypeParam const &>);
+    EXPECT_TRUE(bio::alphabet<TypeParam>);
+    EXPECT_TRUE(bio::alphabet<TypeParam &>);
+    EXPECT_TRUE(bio::alphabet<TypeParam const>);
+    EXPECT_TRUE(bio::alphabet<TypeParam const &>);
 
-    EXPECT_TRUE(seqan3::writable_alphabet<TypeParam>);
-    EXPECT_TRUE(seqan3::writable_alphabet<TypeParam &>);
-    EXPECT_FALSE(seqan3::writable_alphabet<TypeParam const>);
-    EXPECT_FALSE(seqan3::writable_alphabet<TypeParam const &>);
+    EXPECT_TRUE(bio::writable_alphabet<TypeParam>);
+    EXPECT_TRUE(bio::writable_alphabet<TypeParam &>);
+    EXPECT_FALSE(bio::writable_alphabet<TypeParam const>);
+    EXPECT_FALSE(bio::writable_alphabet<TypeParam const &>);
 }
 
 TYPED_TEST_P(alphabet, assign_char_to)
 {
-    using char_t = seqan3::alphabet_char_t<TypeParam>;
+    using char_t = bio::alphabet_char_t<TypeParam>;
     if constexpr(std::integral<char_t>)
     {
         char_t i = std::numeric_limits<char_t>::min();
@@ -41,24 +41,24 @@ TYPED_TEST_P(alphabet, assign_char_to)
 
         TypeParam t0;
         for (size_t k = 0; i < j && k < max_iterations; ++i, ++k)
-            seqan3::assign_char_to(i, t0);
+            bio::assign_char_to(i, t0);
 
-        EXPECT_TRUE((std::is_same_v<decltype(seqan3::assign_char_to(0, t0)), TypeParam &>));
-        EXPECT_TRUE((std::is_same_v<decltype(seqan3::assign_char_to(0, TypeParam{})), TypeParam>));
+        EXPECT_TRUE((std::is_same_v<decltype(bio::assign_char_to(0, t0)), TypeParam &>));
+        EXPECT_TRUE((std::is_same_v<decltype(bio::assign_char_to(0, TypeParam{})), TypeParam>));
     }
 }
 
 TYPED_TEST_P(alphabet, char_is_valid_for) // only test negative example for most; more inside specialised tests
 {
-    if constexpr (seqan3::alphabet_size<TypeParam> < 255) // includes most of our alphabets, but not the adaptations!
+    if constexpr (bio::alphabet_size<TypeParam> < 255) // includes most of our alphabets, but not the adaptations!
     {
-        EXPECT_FALSE((seqan3::char_is_valid_for<TypeParam>(0))); // for none of our alphabets char{0} is valid
+        EXPECT_FALSE((bio::char_is_valid_for<TypeParam>(0))); // for none of our alphabets char{0} is valid
     }
 }
 
 TYPED_TEST_P(alphabet, assign_char_strictly_to)
 {
-    using char_t = seqan3::alphabet_char_t<TypeParam>;
+    using char_t = bio::alphabet_char_t<TypeParam>;
     if constexpr(std::integral<char_t>)
     {
         char_t i = std::numeric_limits<char_t>::min();
@@ -66,10 +66,10 @@ TYPED_TEST_P(alphabet, assign_char_strictly_to)
 
         for (size_t k = 0; i < j && k < max_iterations; ++i, ++k)
         {
-            if (seqan3::char_is_valid_for<TypeParam>(i))
-                EXPECT_NO_THROW(seqan3::assign_char_strictly_to(i, TypeParam{}));
+            if (bio::char_is_valid_for<TypeParam>(i))
+                EXPECT_NO_THROW(bio::assign_char_strictly_to(i, TypeParam{}));
             else
-                EXPECT_THROW(seqan3::assign_char_strictly_to(i, TypeParam{}), seqan3::invalid_char_assignment);
+                EXPECT_THROW(bio::assign_char_strictly_to(i, TypeParam{}), bio::invalid_char_assignment);
         }
     }
 }
@@ -77,7 +77,7 @@ TYPED_TEST_P(alphabet, assign_char_strictly_to)
 TYPED_TEST_P(alphabet, to_char)
 {
     TypeParam t0;
-    EXPECT_TRUE((std::is_same_v<decltype(seqan3::to_char(t0)), seqan3::alphabet_char_t<TypeParam>>));
+    EXPECT_TRUE((std::is_same_v<decltype(bio::to_char(t0)), bio::alphabet_char_t<TypeParam>>));
 
     // more elaborate tests are done in specific alphabets
 

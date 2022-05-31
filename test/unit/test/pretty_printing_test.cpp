@@ -13,7 +13,7 @@
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/test/pretty_printing.hpp>
 
-using seqan3::operator""_dna4;
+using bio::operator""_dna4;
 using namespace std::string_literals;
 
 // Returns a string as gtest would print the given value.
@@ -26,7 +26,7 @@ auto gtest_str = [](auto && v)
 auto debug_str = [](auto && v)
 {
     std::stringstream sstream{};
-    seqan3::debug_stream_type dstream{sstream};
+    bio::debug_stream_type dstream{sstream};
     dstream << v;
     return sstream.str();
 };
@@ -104,7 +104,7 @@ TEST(pretty_printing, gtest_mixed_seqan3_output)
     EXPECT_EQ(dna_sequence_tuple1, dna_sequence_tuple2); // change value to test
 }
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 struct my_type
@@ -122,9 +122,9 @@ struct my_type
     }
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3
+namespace bio
 {
 
 template <typename char_t, typename my_type>
@@ -135,36 +135,36 @@ inline debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & s, my_
     return s;
 }
 
-} // namespace seqan3
+} // namespace bio
 
 TEST(pretty_printing, seqan3_detail_output)
 {
     // seqan3 types should always produce the same result
-    EXPECT_EQ(gtest_str(seqan3::detail::my_type{"HALLO"s}), "HALLO"s);
-    EXPECT_EQ(debug_str(seqan3::detail::my_type{"HALLO"s}), "HALLO"s);
-    EXPECT_EQ(seqan3::detail::my_type{"HALLO"}, seqan3::detail::my_type{"HALLO"}); // change value to test
+    EXPECT_EQ(gtest_str(bio::detail::my_type{"HALLO"s}), "HALLO"s);
+    EXPECT_EQ(debug_str(bio::detail::my_type{"HALLO"s}), "HALLO"s);
+    EXPECT_EQ(bio::detail::my_type{"HALLO"}, bio::detail::my_type{"HALLO"}); // change value to test
 }
 
-namespace seqan3
+namespace bio
 {
 
 struct your_type : public detail::my_type
 {};
 
 template <typename char_t, typename your_type>
-    requires std::same_as<std::decay_t<your_type>, ::seqan3::your_type>
+    requires std::same_as<std::decay_t<your_type>, ::bio::your_type>
 inline debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & s, your_type && m)
 {
     s << m.str;
     return s;
 }
 
-} // namespace seqan3
+} // namespace bio
 
 TEST(pretty_printing, seqan3_detail_mixed_seqan3_output)
 {
     // seqan3 types should always produce the same result
-    EXPECT_EQ(gtest_str(seqan3::your_type{"HALLO"s}), "HALLO"s);
-    EXPECT_EQ(debug_str(seqan3::your_type{"HALLO"s}), "HALLO"s);
-    EXPECT_EQ(seqan3::your_type{"HALLO"}, seqan3::your_type{"HALLO"}); // change value to test
+    EXPECT_EQ(gtest_str(bio::your_type{"HALLO"s}), "HALLO"s);
+    EXPECT_EQ(debug_str(bio::your_type{"HALLO"s}), "HALLO"s);
+    EXPECT_EQ(bio::your_type{"HALLO"}, bio::your_type{"HALLO"}); // change value to test
 }

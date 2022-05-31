@@ -20,7 +20,7 @@
 #include <bio/meta/type_traits/range.hpp>
 #include <bio/meta/platform.hpp>
 
-namespace seqan3::test
+namespace bio::test
 {
 
 /*!\brief This returns a counter which represents how many bytes were processed per second.
@@ -57,4 +57,4 @@ inline benchmark::Counter cell_updates_per_second(size_t cells)
                               benchmark::Counter::OneK::kIs1000);
 }
 
-} // namespace seqan3::test
+} // namespace bio::test

@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::debug_stream and related types.
+ * \brief Provides bio::debug_stream and related types.
  */
 
 #pragma once
@@ -18,16 +18,16 @@
 #include <bio/meta/type_traits/basic.hpp>
 #include <bio/meta/type_traits/template_inspection.hpp>
 
-namespace seqan3
+namespace bio
 {
 /*!\name Formatted output overloads
  * \{
  */
 /*!\brief Make std::nullopt_t printable.
  * \tparam    optional_type This is std::nullopt_t.
- * \param[in] s             The seqan3::debug_stream.
+ * \param[in] s             The bio::debug_stream.
  * \param[in] arg           This is std::nullopt.
- * \relates seqan3::debug_stream_type
+ * \relates bio::debug_stream_type
  */
 template <typename char_t>
 inline debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & s, std::nullopt_t SEQAN3_DOXYGEN_ONLY(arg))
@@ -38,9 +38,9 @@ inline debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & s, std
 
 /*!\brief A std::optional can be printed by printing its value or nothing if valueless.
  * \tparam    optional_type The type of the optional.
- * \param[in] s             The seqan3::debug_stream.
+ * \param[in] s             The bio::debug_stream.
  * \param[in] arg           The std::optional.
- * \relates seqan3::debug_stream_type
+ * \relates bio::debug_stream_type
  */
 template <typename char_t, typename optional_type>
 //!\cond
@@ -57,4 +57,4 @@ inline debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & s, opt
 
 //!\}
 
-} // namespace seqan3
+} // namespace bio

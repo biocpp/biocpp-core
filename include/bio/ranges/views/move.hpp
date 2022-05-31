@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::views::move.
+ * \brief Provides bio::views::move.
  */
 
 #pragma once
@@ -15,7 +15,7 @@
 #include <bio/meta/type_traits/function.hpp>
 #include <ranges>
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\name General purpose views
@@ -49,7 +49,7 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                       | *preserved*                                        |
  * | std::ranges::common_range        |                                       | *preserved*                                        |
  * | std::ranges::output_range        |                                       | *lost*                                             |
- * | seqan3::const_iterable_range     |                                       | *preserved*                                        |
+ * | bio::const_iterable_range     |                                       | *preserved*                                        |
  * | std::semiregular                 |                                       | *preserved*                                        |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   |                                       | `t &` -> `t &&` but `t` -> `t`                     |
@@ -71,4 +71,4 @@ inline auto const move = std::views::transform(detail::multi_invocable
 });
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

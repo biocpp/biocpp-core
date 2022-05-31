@@ -23,17 +23,17 @@
 // wuss
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief The WUSS structure alphabet of the characters `.<>:,-_~;()[]{}AaBbCcDd`...
  * \tparam SIZE The alphabet size defaults to 51 and must be an odd number in range 15..67.
  *              It determines the allowed pseudoknot depth by adding characters AaBb..Zz to the alphabet.
- * \implements seqan3::rna_structure_alphabet
- * \implements seqan3::writable_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::rna_structure_alphabet
+ * \implements bio::writable_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \ingroup structure
@@ -63,7 +63,7 @@ private:
     //!\brief The base class.
     using base_t = alphabet_base<wuss<SIZE>, SIZE>;
 
-    //!\brief Befriend seqan3::alphabet_base.
+    //!\brief Befriend bio::alphabet_base.
     friend base_t;
 
 public:
@@ -120,7 +120,7 @@ public:
     /*!\brief Get an identifier for a pseudoknotted interaction,
      * where opening and closing brackets of the same type have the same id.
      * \returns The pseudoknot id, if alph denotes an interaction, and no value otherwise.
-     * It is guaranteed to be smaller than seqan3::max_pseudoknot_depth.
+     * It is guaranteed to be smaller than bio::max_pseudoknot_depth.
      */
     constexpr std::optional<uint8_t> pseudoknot_id() const noexcept
     {
@@ -211,20 +211,20 @@ constexpr std::array<int8_t, SIZE> wuss<SIZE>::interaction_tab = [] () constexpr
 } ();
 
 //!\brief Alias for the default type wuss51.
-//!\relates seqan3::wuss
+//!\relates bio::wuss
 using wuss51 = wuss<51>;
 
 /*!\name Literals
  * \{
  */
 
-/*!\brief The seqan3::wuss51 string literal.
- * \relates seqan3::wuss
+/*!\brief The bio::wuss51 string literal.
+ * \relates bio::wuss
  * \param[in] str A pointer to the character string to assign.
  * \param[in] len The size of the character string to assign.
- * \returns std::vector<seqan3::wuss51>
+ * \returns std::vector<bio::wuss51>
  *
- * You can use this string literal to easily assign to a vector of seqan3::wuss51 characters:
+ * You can use this string literal to easily assign to a vector of bio::wuss51 characters:
  * \include test/snippet/alphabet/structure/wuss_literal.cpp
  */
 inline std::vector<wuss51> operator""_wuss51(const char * str, std::size_t len)
@@ -238,12 +238,12 @@ inline std::vector<wuss51> operator""_wuss51(const char * str, std::size_t len)
     return vec;
 }
 
-/*!\brief The seqan3::wuss51 char literal.
- * \relates seqan3::wuss
+/*!\brief The bio::wuss51 char literal.
+ * \relates bio::wuss
  * \param[in] ch The character to represent as wuss.
- * \returns seqan3::wuss51
+ * \returns bio::wuss51
  *
- * You can use this string literal to assign a seqan3::wuss51 character.
+ * You can use this string literal to assign a bio::wuss51 character.
  * For different wuss alphabet sizes the `assign_char` function must be used.
  * \include test/snippet/alphabet/structure/wuss_char_literal.cpp
  */
@@ -254,4 +254,4 @@ constexpr wuss51 operator""_wuss51(char const ch) noexcept
 
 //!\}
 
-} // namespace seqan3
+} // namespace bio

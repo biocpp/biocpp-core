@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Marie Hoffmann <marie.hoffmann AT fu-berlin.de>
- * \brief Provides seqan3::phred63 quality scores.
+ * \brief Provides bio::phred63 quality scores.
  */
 
 #pragma once
@@ -18,14 +18,14 @@
 // phred63
 // ------------------------------------------------------------------
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief Quality type for traditional Sanger and modern Illumina Phred scores (full range).
- * \implements seqan3::writable_quality_alphabet
- * \if DEV \implements seqan3::detail::writable_constexpr_alphabet \endif
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::writable_quality_alphabet
+ * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  * \implements std::regular
  *
  * \ingroup quality
@@ -44,9 +44,9 @@ private:
     //!\brief The base class.
     using base_t = quality_base<phred63, 63>;
 
-    //!\brief Befriend seqan3::quality_base.
+    //!\brief Befriend bio::quality_base.
     friend base_t;
-    //!\cond \brief Befriend seqan3::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -82,22 +82,22 @@ public:
 /*!\name Literals
  * \{
  */
-/*!\brief The seqan3::phred63 char literal.
- * \relates seqan3::phred63
- * \returns seqan3::phred63
+/*!\brief The bio::phred63 char literal.
+ * \relates bio::phred63
+ * \returns bio::phred63
  */
 constexpr phred63 operator""_phred63(char const c) noexcept
 {
     return phred63{}.assign_char(c);
 }
 
-/*!\brief The seqan3::phred63 string literal.
+/*!\brief The bio::phred63 string literal.
  * \param[in] s A pointer to the character sequence to assign from.
  * \param[in] n The length of the character sequence to assign from.
- * \relates seqan3::phred63
- * \returns seqan3::std::vector<seqan3::phred63>
+ * \relates bio::phred63
+ * \returns bio::std::vector<bio::phred63>
  *
- * You can use this string literal to easily assign to std::vector<seqan3::phred63>:
+ * You can use this string literal to easily assign to std::vector<bio::phred63>:
  *
  * \include test/snippet/alphabet/quality/phred63_literal.cpp
  */
@@ -113,4 +113,4 @@ inline std::vector<phred63> operator""_phred63(char const * s, std::size_t n)
 }
 //!\}
 
-} // namespace seqan3
+} // namespace bio

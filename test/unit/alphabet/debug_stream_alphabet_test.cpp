@@ -13,22 +13,22 @@
 #include <bio/alphabet/quality/qualified.hpp>
 #include <bio/meta/detail/debug_stream_alphabet.hpp>
 
-using seqan3::operator""_dna4;
+using bio::operator""_dna4;
 
 template <typename T>
 using debug_stream_test = ::testing::Test;
 
-using alphabet_types = ::testing::Types<seqan3::dna4,
-                                        seqan3::qualified<seqan3::dna4,
-                                        seqan3::phred42>,
-                                        seqan3::gapped<seqan3::dna4>>;
+using alphabet_types = ::testing::Types<bio::dna4,
+                                        bio::qualified<bio::dna4,
+                                        bio::phred42>,
+                                        bio::gapped<bio::dna4>>;
 
 TYPED_TEST_SUITE(debug_stream_test, alphabet_types, );
 
 TYPED_TEST(debug_stream_test, alphabet)
 {
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
     TypeParam val{'C'_dna4};
     my_stream << val;

@@ -31,42 +31,42 @@
 // contains this fix
 //
 // [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83328
-namespace seqan3::detail
+namespace bio::detail
 {
 //!\privatesection
 
 //!\brief Returns whether `basic_string_t` is of type `std::basic_string<value_t, traits_t, allocator_t>`.
-//!\attention Will be deleted once seqan3::detail::sequence_container_modified_by_const_iterator_bug is fixed.
+//!\attention Will be deleted once bio::detail::sequence_container_modified_by_const_iterator_bug is fixed.
 template <typename basic_string_t>
 struct is_basic_string : std::false_type
 {};
 
 //!\brief Returns whether `basic_string_t` is of type `std::basic_string<value_t, traits_t, allocator_t>`.
-//!\attention Will be deleted once seqan3::detail::sequence_container_modified_by_const_iterator_bug is fixed.
+//!\attention Will be deleted once bio::detail::sequence_container_modified_by_const_iterator_bug is fixed.
 template <typename value_t, typename traits_t, typename allocator_t>
 struct is_basic_string<std::basic_string<value_t, traits_t, allocator_t>> : std::true_type
 {};
 
-//!\brief Shorthand of seqan3::detail::is_basic_string
-//!\attention Will be deleted once seqan3::detail::sequence_container_modified_by_const_iterator_bug is fixed.
+//!\brief Shorthand of bio::detail::is_basic_string
+//!\attention Will be deleted once bio::detail::sequence_container_modified_by_const_iterator_bug is fixed.
 template <typename basic_string_t>
 constexpr bool is_basic_string_v = is_basic_string<basic_string_t>::value;
 
 //!\publicsection
 
-} // seqan3::detail
+} // bio::detail
 
-namespace seqan3
+namespace bio
 {
 
 /*!\addtogroup container
  * \{
  */
-/*!\interface seqan3::container <>
+/*!\interface bio::container <>
  * \extends std::ranges::forward_range
  * \extends std::ranges::sized_range
  * \extends std::ranges::common_range
- * \extends seqan3::const_iterable_range
+ * \extends bio::const_iterable_range
  * \brief The (most general) container concept as defined by the standard library.
  * \details
  * The container concept is modelled as in the [STL](https://en.cppreference.com/w/cpp/named_req/Container), but
@@ -129,9 +129,9 @@ concept container = requires (type val, type val2, type const cval, typename typ
 };
 //!\endcond
 
-/*!\interface seqan3::sequence_container <>
- * \extends seqan3::container
- * \brief A more refined container concept than seqan3::container.
+/*!\interface bio::sequence_container <>
+ * \extends bio::container
+ * \brief A more refined container concept than bio::container.
  *
  * Includes constraints on constructors, `assign()`, `.insert()`, `.erase()`, `.push_back()`, `.pop_back`, `.clear()`,
  * `.size()`, `front()` and `.back()` member functions with corresponding signatures. Models the subset of the
@@ -190,10 +190,10 @@ concept sequence_container = requires (type val, type val2, type const cval)
 };
 //!\endcond
 
-/*!\interface seqan3::random_access_container <>
- * \extends seqan3::sequence_container
+/*!\interface bio::random_access_container <>
+ * \extends bio::sequence_container
  * \extends std::ranges::random_access_range
- * \brief A more refined container concept than seqan3::sequence_container.
+ * \brief A more refined container concept than bio::sequence_container.
  *
  * Adds requirements for `.at()`, `.resize()` and the subscript operator `[]`. Models the subset of the
  * [STL SequenceConcept](https://en.cppreference.com/w/cpp/named_req/SequenceContainer) that is supported
@@ -220,9 +220,9 @@ concept random_access_container = requires (type val)
 };
 //!\endcond
 
-/*!\interface seqan3::reservible_container <>
- * \extends seqan3::random_access_container
- * \brief A more refined container concept than seqan3::random_access_container.
+/*!\interface bio::reservible_container <>
+ * \extends bio::random_access_container
+ * \brief A more refined container concept than bio::random_access_container.
  *
  * Adds requirements for `.reserve()`, `.capacity()` and `.shrink_to_fit()`.
  * Satisfied by `std::vector` and `std::basic_string`.
@@ -244,4 +244,4 @@ concept reservible_container = requires (type val)
 
 //!\}
 
-} // namespace seqan3
+} // namespace bio

@@ -17,10 +17,10 @@
 #include <bio/meta/concept/core_language.hpp>
 #include <bio/meta/detail/int_types.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
-//!\brief Auxiliary table for seqan3::to_lower.
+//!\brief Auxiliary table for bio::to_lower.
 //!\ingroup char_operations
 template <typename char_type>
 inline std::array<char_type, detail::size_in_values_v<char_type>> constexpr to_lower_table
@@ -39,7 +39,7 @@ inline std::array<char_type, detail::size_in_values_v<char_type>> constexpr to_l
     } ()
 };
 
-//!\brief Auxiliary table for seqan3::to_upper.
+//!\brief Auxiliary table for bio::to_upper.
 //!\ingroup char_operations
 template <typename char_type>
 inline std::array<char_type, detail::size_in_values_v<char_type>> constexpr to_upper_table
@@ -58,9 +58,9 @@ inline std::array<char_type, detail::size_in_values_v<char_type>> constexpr to_u
     } ()
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3
+namespace bio
 {
 
 /*!\name Operations on characters
@@ -69,7 +69,7 @@ namespace seqan3
  */
 
 /*!\brief Converts 'A'-'Z' to 'a'-'z' respectively; other characters are returned as is.
- * \tparam char_type Type of the parameter; must model seqan3::builtin_character.
+ * \tparam char_type Type of the parameter; must model bio::builtin_character.
  * \param c The parameter.
  * \returns The character converted to lower case.
  *
@@ -85,7 +85,7 @@ constexpr char_type to_lower(char_type const c) noexcept
 }
 
 /*!\brief Converts 'a'-'z' to 'A'-'Z' respectively; other characters are returned as is.
- * \tparam char_type Type of the parameter; must model seqan3::builtin_character.
+ * \tparam char_type Type of the parameter; must model bio::builtin_character.
  * \param c The parameter.
  * \returns The character converted to upper case.
  *
@@ -101,4 +101,4 @@ constexpr char_type to_upper(char_type const c) noexcept
 }
 //!\}
 
-} // namespace seqan3
+} // namespace bio

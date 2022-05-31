@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Enrico Seiler <enrico.seiler AT fu-berlin.de>
- * \brief Provides seqan3::views::zip.
+ * \brief Provides bio::views::zip.
  */
 
 #pragma once
@@ -18,8 +18,8 @@
 #include <bio/ranges/views/detail.hpp>
 
 //!\cond
-// Contains helpers for seqan3::views::zip.
-namespace seqan3::detail::zip
+// Contains helpers for bio::views::zip.
+namespace bio::detail::zip
 {
 
 template <class range_t>
@@ -115,9 +115,9 @@ struct iterator_category_t<false>
 {};
 #endif
 
-} // namespace seqan3::detail::zip
+} // namespace bio::detail::zip
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 template <std::ranges::input_range... Views>
@@ -531,10 +531,10 @@ struct zip_fn
     }
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 //!\endcond
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\brief A view adaptor that produces a tuple-like value of all passed views.
@@ -544,6 +544,6 @@ namespace seqan3::views
  *
  * \sa https://en.cppreference.com/w/cpp/ranges/zip_view
  */
-inline constexpr auto zip = seqan3::detail::zip_fn{};
+inline constexpr auto zip = bio::detail::zip_fn{};
 
-} // namespace seqan3::views
+} // namespace bio::views

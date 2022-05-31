@@ -45,20 +45,20 @@
  * ### alphabet size
  *
  * All alphabets in SeqAn have a fixed size. It
- * can be queried via the seqan3::alphabet_size type trait and *optionally* also the `alphabet_size` static
+ * can be queried via the bio::alphabet_size type trait and *optionally* also the `alphabet_size` static
  * member of the alphabet (see below for "members VS free/global functions").
  *
- * In some areas we provide alphabets types with different sizes for the same purpose, e.g. seqan3::dna4
- * ('A', 'C', 'G', 'T'), seqan3::dna5 (plus 'N') and seqan3::dna15 (plus ambiguous characters defined by
- * IUPAC). By convention most of our alphabets carry their size in their name (seqan3::dna4 has size 4 a.s.o.).
+ * In some areas we provide alphabets types with different sizes for the same purpose, e.g. bio::dna4
+ * ('A', 'C', 'G', 'T'), bio::dna5 (plus 'N') and bio::dna15 (plus ambiguous characters defined by
+ * IUPAC). By convention most of our alphabets carry their size in their name (bio::dna4 has size 4 a.s.o.).
  *
  * A main reason for choosing a smaller alphabet over a bigger one is the possibility of **optimising for
  * space efficiency**. Note, however, that a single letter by itself can never be smaller than a byte for
  * architectural reasons. Actual space improvements are realised via secondary structures, e.g. when
- * using a `seqan3::bitcompressed_vector<seqan3::dna4>` instead of `std::vector<seqan3::dna4>`. Also
- * the single letter quality composite `seqan3::qualified<seqan3::dna4, seqan3::phred42>` fits into one byte, because
+ * using a `bio::bitcompressed_vector<bio::dna4>` instead of `std::vector<bio::dna4>`. Also
+ * the single letter quality composite `bio::qualified<bio::dna4, bio::phred42>` fits into one byte, because
  * the product of the alphabet sizes (4 * 42) is smaller than 256; whereas the same composite
- * with seqan3::dna15 requires two bytes per letter (15 * 42 > 256).
+ * with bio::dna15 requires two bytes per letter (15 * 42 > 256).
  *
  * ### Assigning and retrieving values
  *
@@ -76,16 +76,16 @@
  * To solve this problem, alphabets in SeqAn define two interfaces:
  *
  *   1. a **rank based interface** with
- *     * seqan3::to_rank to produce the numerical representation;
- *     * seqan3::assign_rank_to to assign from the numerical representation;
+ *     * bio::to_rank to produce the numerical representation;
+ *     * bio::assign_rank_to to assign from the numerical representation;
  *     * the numerical representation is an unsigned integral type like `size_t`; the exact type can be retrieved via
- *       the seqan3::alphabet_rank_t.
+ *       the bio::alphabet_rank_t.
  *   2. a **character based interface** with
- *     * seqan3::to_char to produce the visual representation;
- *     * seqan3::assign_char_to to assign from the visual representation;
- *     * seqan3::char_is_valid_for that checks whether a character value has a one-to-one mapping to an alphabet value;
+ *     * bio::to_char to produce the visual representation;
+ *     * bio::assign_char_to to assign from the visual representation;
+ *     * bio::char_is_valid_for that checks whether a character value has a one-to-one mapping to an alphabet value;
  *     * the visual representation is a character type (almost always `char`, but could be `char16_t` or `char32_t`,
- *       as well); the exact type can be retrieved via seqan3::alphabet_char_t.
+ *       as well); the exact type can be retrieved via bio::alphabet_char_t.
  *
  * To prevent the aforementioned ambiguity, you can neither assign from rank or char representation via `operator=`,
  * nor can you cast the alphabet to either of it's representation forms, **you need to explicitly use the
@@ -96,10 +96,10 @@
  * is generated via conversion tables. This is, however, not required as long as both interfaces are provided
  * and all functions operate in constant time.
  *
- * The same applies for printing characters although seqan3::debug_stream provides some convenience.
+ * The same applies for printing characters although bio::debug_stream provides some convenience.
  *
  * Here is an example of explicit assignment of a rank and char, and how it can be printed via std::cout and
- * seqan3::debug_stream:
+ * bio::debug_stream:
  * \include test/snippet/alphabet/all_nonambiguous.cpp
  *
  * To reduce the burden of calling `assign_char` often, most alphabets in SeqAn provide custom literals for
@@ -112,28 +112,28 @@
  * ### Different concepts
  *
  * All types that have valid implementations of the functions/functors described above model the concept
- * seqan3::writable_alphabet. This is the strongest (i.e. most refined) *general case* concept.
- * There are more refined concepts for specific biological applications (like seqan3::nucleotide_alphabet), and there are
+ * bio::writable_alphabet. This is the strongest (i.e. most refined) *general case* concept.
+ * There are more refined concepts for specific biological applications (like bio::nucleotide_alphabet), and there are
  * less refined concepts that only model part of an alphabet:
  *
- *   * seqan3::semialphabet and derived concepts only require the rank interface;
- *   * seqan3::alphabet (without `writable*`) and derived concepts only require readability and not assignability.
+ *   * bio::semialphabet and derived concepts only require the rank interface;
+ *   * bio::alphabet (without `writable*`) and derived concepts only require readability and not assignability.
  *
- * Typically you will use seqan3::alphabet in "read-only" situations (e.g. `const` parameters) and
- * seqan3::writable_alphabet whenever the values might be changed.
+ * Typically you will use bio::alphabet in "read-only" situations (e.g. `const` parameters) and
+ * bio::writable_alphabet whenever the values might be changed.
  * Semi-alphabets are less useful in application code.
  *
- * |                                                            | [semialphabet](@ref seqan3::semialphabet) | [writable_semialphabet](@ref seqan3::writable_semialphabet) | [alphabet](@ref seqan3::alphabet) | [writable_alphabet](@ref seqan3::writable_alphabet) | Aux |
+ * |                                                            | [semialphabet](@ref bio::semialphabet) | [writable_semialphabet](@ref bio::writable_semialphabet) | [alphabet](@ref bio::alphabet) | [writable_alphabet](@ref bio::writable_alphabet) | Aux |
  * |-----------------------------------------------------------:|:------------------------------------:|:------------------------------------------------------:|:----------------------------:|:----------------------------------------------:|:---:|
- * | [alphabet_size](@ref seqan3::alphabet_size)                     | ✅                                    | ✅                                                      | ✅                            | ✅                                               |     |
- * | [to_rank](@ref seqan3::to_rank)                                 | ✅                                    | ✅                                                      | ✅                            | ✅                                               |     |
- * | [alphabet_rank_t](@ref seqan3::alphabet_rank_t)                 | ✅                                    | ✅                                                      | ✅                            | ✅                                               |  🔗  |
- * | [assign_rank_to](@ref seqan3::assign_rank_to)                   |                                      | ✅                                                      |                              | ✅                                               |     |
- * | [to_char](@ref seqan3::to_char)                                 |                                      |                                                        | ✅                            | ✅                                               |     |
- * | [alphabet_char_t](@ref seqan3::alphabet_char_t)                 |                                      |                                                        | ✅                            | ✅                                               |  🔗  |
- * | [assign_char_to](@ref seqan3::assign_char_to)                   |                                      |                                                        |                              | ✅                                               |     |
- * | [char_is_valid_for](@ref seqan3::char_is_valid_for)             |                                      |                                                        |                              | ✅                                               |     |
- * | [assign_char_strictly_to](@ref seqan3::assign_char_strictly_to) |                                      |                                                        |                              | ✅                                               |  🔗  |
+ * | [alphabet_size](@ref bio::alphabet_size)                     | ✅                                    | ✅                                                      | ✅                            | ✅                                               |     |
+ * | [to_rank](@ref bio::to_rank)                                 | ✅                                    | ✅                                                      | ✅                            | ✅                                               |     |
+ * | [alphabet_rank_t](@ref bio::alphabet_rank_t)                 | ✅                                    | ✅                                                      | ✅                            | ✅                                               |  🔗  |
+ * | [assign_rank_to](@ref bio::assign_rank_to)                   |                                      | ✅                                                      |                              | ✅                                               |     |
+ * | [to_char](@ref bio::to_char)                                 |                                      |                                                        | ✅                            | ✅                                               |     |
+ * | [alphabet_char_t](@ref bio::alphabet_char_t)                 |                                      |                                                        | ✅                            | ✅                                               |  🔗  |
+ * | [assign_char_to](@ref bio::assign_char_to)                   |                                      |                                                        |                              | ✅                                               |     |
+ * | [char_is_valid_for](@ref bio::char_is_valid_for)             |                                      |                                                        |                              | ✅                                               |     |
+ * | [assign_char_strictly_to](@ref bio::assign_char_strictly_to) |                                      |                                                        |                              | ✅                                               |  🔗  |
  *
  * The above table shows all alphabet concepts and related functions and type traits.
  * The entities marked as "auxiliary" provide shortcuts to the other "essential" entities.
@@ -143,8 +143,8 @@
  * ### Members VS free/global functions
  *
  * The alphabet concept (as most concepts in SeqAn) looks for free/global functions, i.e. you need to be able
- * to call `seqan3::to_rank(my_letter)`, however *most* alphabets also provide a member function, i.e.
- * `my_letter.to_rank()`. The same is true for the type trait seqan3::alphabet_size vs the static data member
+ * to call `bio::to_rank(my_letter)`, however *most* alphabets also provide a member function, i.e.
+ * `my_letter.to_rank()`. The same is true for the type trait bio::alphabet_size vs the static data member
  * `alphabet_size`.
  *
  * Members are provided for convenience and if you are an application developer who works with a single concrete
@@ -155,7 +155,7 @@
  * # containers over alphabets
  *
  * In SeqAn it is recommended you use the STL container classes like std::vector for storing sequence data,
- * but you can use other class templates if they satisfy the respective seqan3::container, e.g. `std::deque` or
+ * but you can use other class templates if they satisfy the respective bio::container, e.g. `std::deque` or
  * <a href="https://github.com/facebook/folly/blob/master/folly/docs/FBVector.md" target="_blank">
  * <tt>folly::fbvector</tt></a> or even <a href="https://doc.qt.io/qt-5/qvector.html" target="_blank">
  * <tt>Qt::QVector</tt></a>.
@@ -166,7 +166,7 @@
  *
  * We provide specialised containers with certain properties in the \ref range module.
  *
- * A container over an seqan3::alphabet automatically models the seqan3::sequence concept.
+ * A container over an bio::alphabet automatically models the bio::sequence concept.
  */
 
 #pragma once

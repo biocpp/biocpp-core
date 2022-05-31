@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::debug_stream and related types.
+ * \brief Provides bio::debug_stream and related types.
  */
 
 #pragma once
@@ -29,15 +29,15 @@ extern ostream cerr;
 } // namespace std
 //!\endcond
 
-namespace seqan3
+namespace bio
 {
 
 // ------------------------------------------------------------------
-// seqan3::debug_stream
+// bio::debug_stream
 // ------------------------------------------------------------------
 
-//!\brief A global instance of seqan3::debug_stream_type.
+//!\brief A global instance of bio::debug_stream_type.
 //!\ingroup stream
 inline debug_stream_type debug_stream{std::cerr};
 
-} // namespace seqan3
+} // namespace bio

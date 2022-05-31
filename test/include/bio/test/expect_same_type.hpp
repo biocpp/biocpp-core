@@ -18,7 +18,7 @@
 
 #include <bio/meta/detail/type_inspection.hpp>
 
-namespace seqan3::test
+namespace bio::test
 {
 // https://stackoverflow.com/a/62984543
 #define EXPECT_SAME_TYPE_DEPAREN(X) EXPECT_SAME_TYPE_ESC(EXPECT_SAME_TYPE_ISH X)
@@ -28,7 +28,7 @@ namespace seqan3::test
 #define EXPECT_SAME_TYPE_VANEXPECT_SAME_TYPE_ISH
 
 #define EXPECT_SAME_TYPE(val1, val2)                                                                                   \
-    EXPECT_PRED_FORMAT2(::seqan3::test::expect_same_type{},                                                            \
+    EXPECT_PRED_FORMAT2(::bio::test::expect_same_type{},                                                            \
                         (std::type_identity<EXPECT_SAME_TYPE_DEPAREN(val1)>{}),                                        \
                         (std::type_identity<EXPECT_SAME_TYPE_DEPAREN(val2)>{}));
 
@@ -58,9 +58,9 @@ struct expect_same_type
 
         return ::testing::internal::CmpHelperEQFailure(remove_wrap_type_identity(lhs_expression).c_str(),
                                                        remove_wrap_type_identity(rhs_expression).c_str(),
-                                                       seqan3::detail::type_name_as_string<lhs_t>,
-                                                       seqan3::detail::type_name_as_string<rhs_t>);
+                                                       bio::detail::type_name_as_string<lhs_t>,
+                                                       bio::detail::type_name_as_string<rhs_t>);
     }
 };
 
-} // namespace seqan3::test
+} // namespace bio::test

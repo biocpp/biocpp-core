@@ -4,14 +4,14 @@ namespace your_namespace
 {
 
 // your own aminoacid definition
-struct your_aa : seqan3::aminoacid_empty_base
+struct your_aa : bio::aminoacid_empty_base
 {
     //...
 };
 
 }
 
-static_assert(seqan3::enable_aminoacid<your_namespace::your_aa> == true);
+static_assert(bio::enable_aminoacid<your_namespace::your_aa> == true);
 
 /***** OR *****/
 
@@ -31,4 +31,4 @@ constexpr bool enable_aminoacid(your_aa) noexcept
 
 }
 
-static_assert(seqan3::enable_aminoacid<your_namespace2::your_aa> == true);
+static_assert(bio::enable_aminoacid<your_namespace2::your_aa> == true);

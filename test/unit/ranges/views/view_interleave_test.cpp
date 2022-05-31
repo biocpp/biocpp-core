@@ -17,7 +17,7 @@
 
 #include <gtest/gtest.h>
 
-using seqan3::operator""_dna4;
+using bio::operator""_dna4;
 
 TEST(view_interleave, basic)
 {
@@ -29,31 +29,31 @@ TEST(view_interleave, basic)
     size_t cmpsize = 18;
 
     // pipe notation
-    // explicitly call seqan3::views::type_reduce
-    auto v0 = seqan3::views::type_reduce(u) | seqan3::views::interleave(s, seqan3::views::type_reduce(i));
+    // explicitly call bio::views::type_reduce
+    auto v0 = bio::views::type_reduce(u) | bio::views::interleave(s, bio::views::type_reduce(i));
     EXPECT_RANGE_EQ(cmp, v0);
     EXPECT_EQ(cmpsize, v0.size());
-    // don't call seqan3::views::type_reduce
-    auto v1 = u | seqan3::views::interleave(s, i);
+    // don't call bio::views::type_reduce
+    auto v1 = u | bio::views::interleave(s, i);
     EXPECT_RANGE_EQ(cmp, v1);
 
     // function notation
-    // explicitly call seqan3::views::type_reduce
-    auto v2{seqan3::views::interleave(seqan3::views::type_reduce(u), s, seqan3::views::type_reduce(i))};
+    // explicitly call bio::views::type_reduce
+    auto v2{bio::views::interleave(bio::views::type_reduce(u), s, bio::views::type_reduce(i))};
     EXPECT_RANGE_EQ(cmp, v2);
-    // don't call seqan3::views::type_reduce
-    auto v3{seqan3::views::interleave(u, s, i)};
+    // don't call bio::views::type_reduce
+    auto v3{bio::views::interleave(u, s, i)};
     EXPECT_RANGE_EQ(cmp, v3);
 
     //combinability
-    // explicitly call seqan3::views::type_reduce
-    auto v4 = seqan3::views::type_reduce(u)
-            | seqan3::views::interleave(s, seqan3::views::type_reduce(i))
+    // explicitly call bio::views::type_reduce
+    auto v4 = bio::views::type_reduce(u)
+            | bio::views::interleave(s, bio::views::type_reduce(i))
             | std::views::reverse
             | std::views::take(5);
     EXPECT_RANGE_EQ(cmp_rev, v4);
-    // don't call seqan3::views::type_reduce
-    auto v5 = u | seqan3::views::interleave(s, i) | std::views::reverse | std::views::take(5);
+    // don't call bio::views::type_reduce
+    auto v5 = u | bio::views::interleave(s, i) | std::views::reverse | std::views::take(5);
     EXPECT_RANGE_EQ(cmp_rev, v5);
 }
 
@@ -63,7 +63,7 @@ TEST(view_interleave, concepts)
     std::string u{"FOOBARBAXBAT"};
     std::string i{"in"};
     size_t s = 3;
-    auto v1 = seqan3::detail::view_interleave(seqan3::views::type_reduce(u), s, seqan3::views::type_reduce(i));
+    auto v1 = bio::detail::view_interleave(bio::views::type_reduce(u), s, bio::views::type_reduce(i));
 
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);

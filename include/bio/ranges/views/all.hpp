@@ -47,8 +47,8 @@
  *
  * See the \link range range module \endlink for how views relate to containers and decorators.
  *
- * Most views provided by SeqAn are specific to biological operations, like seqan3::views::trim_quality which trims
- * sequences based on the quality or seqan3::views::complement which generates the complement of a nucleotide sequence.
+ * Most views provided by SeqAn are specific to biological operations, like bio::views::trim_quality which trims
+ * sequences based on the quality or bio::views::complement which generates the complement of a nucleotide sequence.
  * But SeqAn also provides some general purpose views.
  *
  * ### Namespaces
@@ -56,7 +56,7 @@
  *   * [All views from the range-v3 libary](https://ericniebler.github.io/range-v3/index.html#range-views) are available
  * in the namespace `ranges::view`.
  *
- *   * All SeqAn views are available in the namespace `seqan3::views`.
+ *   * All SeqAn views are available in the namespace `bio::views`.
  *
  * ### Example
  *
@@ -104,7 +104,7 @@
  * **Deep views:** Some views are declared as "deeps views". This means, that in case they are given a range-of-range
  * as input (as opposed to just a range), they will apply their transformation on the innermost range (instead of
  * the outermost range which would be default). Most alphabet-based transformations are defined as deep, but
- * you can use seqan3::views::deep to make any view (adaptor) deep. See seqan3::views::deep for more details.
+ * you can use bio::views::deep to make any view (adaptor) deep. See bio::views::deep for more details.
  *
  * **For all views the following are documented:**
  *
@@ -121,7 +121,7 @@
  * | std::ranges::sized_range         | [required] <i>(or not)</i>       | [preserved\|lost\|guaranteed]                      |
  * | std::ranges::common_range        | [required] <i>(or not)</i>       | [preserved\|lost\|guaranteed]                      |
  * | std::ranges::output_range        | [required] <i>(or not)</i>       | [preserved\|lost\|guaranteed]                      |
- * | seqan3::const_iterable_range     | [required] <i>(or not)</i>       | [preserved\|lost]                                  |
+ * | bio::const_iterable_range     | [required] <i>(or not)</i>       | [preserved\|lost]                                  |
  * |                                  |                                  |                                                    |
  * | std::ranges::range_reference_t   | optionally a type or concept     | optionally a type or concept                       |
  *
@@ -152,15 +152,15 @@
  * accessed by
  * (since dereferencing an iterator or calling operator[] returns the reference type). The reference type may or may
  * not actually contain a `&` (see below). For many SeqAn specific views additional concept requirements are defined
- * for the input range's reference type, e.g. seqan3::views::complement can only operate on ranges whose elements are
- * nucleotides (meet seqan3::nucleotide_alphabet_check). In some case the type may even be a specific type or the result
+ * for the input range's reference type, e.g. bio::views::complement can only operate on ranges whose elements are
+ * nucleotides (meet bio::nucleotide_alphabet_check). In some case the type may even be a specific type or the result
  * of a type trait.
  *
  * **Returned range's reference type:** Conversely certain views make guarantees on the concepts satisfied by the
- * return range's reference type or even always have a fixed type, e.g. seqan3::views::complement operates on
+ * return range's reference type or even always have a fixed type, e.g. bio::views::complement operates on
  * nucleotides and of course also returns nucleotides and "std::ranges::range_reference_t<urng_t>" would imply that
  * the reference type is the same. However, and this is important to note, the reference type
- * of seqan3::views::complement has any actual `&` removed from the underlying ranges' reference type (if originally present),
+ * of bio::views::complement has any actual `&` removed from the underlying ranges' reference type (if originally present),
  * this goes hand-in-hand with std::ranges::output_range being lost → original elements cannot be written to through
  * this view.
  * This is because *new elements* are being generated. Other views like `views::reverse` also preserve the
@@ -173,7 +173,7 @@
  */
 
 /*!
- * \namespace seqan3::views
+ * \namespace bio::views
  * \brief The SeqAn namespace for views.
  *
  * Since views often have name clashes with regular functions and ranges they are implemented in the sub

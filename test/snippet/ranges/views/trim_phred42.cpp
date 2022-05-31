@@ -7,18 +7,18 @@
 
 int main()
 {
-    std::vector<seqan3::phred42> vec{seqan3::phred42{40}, seqan3::phred42{40}, seqan3::phred42{30},
-                                     seqan3::phred42{20}, seqan3::phred42{10}};
+    std::vector<bio::phred42> vec{bio::phred42{40}, bio::phred42{40}, bio::phred42{30},
+                                     bio::phred42{20}, bio::phred42{10}};
 
     // trim by phred_value
-    auto v1 = vec | seqan3::views::trim_quality(20u);                            // == ['I','I','?','5']
+    auto v1 = vec | bio::views::trim_quality(20u);                            // == ['I','I','?','5']
 
     // trim by quality character
-    auto v2 = vec | seqan3::views::trim_quality(seqan3::phred42{40});            // == ['I','I']
+    auto v2 = vec | bio::views::trim_quality(bio::phred42{40});            // == ['I','I']
 
     // function syntax
-    auto v3 = seqan3::views::trim_quality(vec, 20u);                             // == ['I','I','?','5']
+    auto v3 = bio::views::trim_quality(vec, 20u);                             // == ['I','I','?','5']
 
     // combinability
-    auto v4 = seqan3::views::trim_quality(vec, 20u) | seqan3::views::to_char;    // == "II?5"
+    auto v4 = bio::views::trim_quality(vec, 20u) | bio::views::to_char;    // == "II?5"
 }

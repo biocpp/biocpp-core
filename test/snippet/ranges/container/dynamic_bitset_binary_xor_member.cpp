@@ -3,9 +3,9 @@
 
 int main()
 {
-    seqan3::dynamic_bitset t1{"10001100"};
-    seqan3::dynamic_bitset const t2{0b1011'1000};
+    bio::dynamic_bitset t1{"10001100"};
+    bio::dynamic_bitset const t2{0b1011'1000};
 
     t1 ^= t2;
-    seqan3::debug_stream << t1 << '\n'; // 0011'0100
+    bio::debug_stream << t1 << '\n'; // 0011'0100
 }

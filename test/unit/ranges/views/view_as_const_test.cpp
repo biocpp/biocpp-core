@@ -19,33 +19,33 @@
 #include <ranges>
 #include <bio/test/expect_range_eq.hpp>
 
-using seqan3::operator""_dna5;
+using bio::operator""_dna5;
 
 TEST(view_as_const, basic)
 {
     std::string vec{"ACTTTGATA"};
 
     // pipe notation
-    auto v = vec | seqan3::views::as_const;
+    auto v = vec | bio::views::as_const;
     EXPECT_RANGE_EQ(vec, v);
 
     // function notation
-    auto v2(seqan3::views::as_const(vec));
+    auto v2(bio::views::as_const(vec));
     EXPECT_RANGE_EQ(vec, v2);
 
     // combinability
-    seqan3::dna5_vector vec2{"ACGTA"_dna5};
-    seqan3::dna5_vector v3 = vec2
-                           | seqan3::views::complement
-                           | seqan3::views::as_const
-                           | seqan3::views::to<std::vector>();
+    bio::dna5_vector vec2{"ACGTA"_dna5};
+    bio::dna5_vector v3 = vec2
+                           | bio::views::complement
+                           | bio::views::as_const
+                           | bio::views::to<std::vector>();
     EXPECT_EQ("TGCAT"_dna5, v3);
 }
 
 TEST(view_as_const, concepts)
 {
     std::string vec{"ACTTTGATA"};
-    auto v1 = vec | seqan3::views::as_const;
+    auto v1 = vec | bio::views::as_const;
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);
@@ -53,12 +53,12 @@ TEST(view_as_const, concepts)
     EXPECT_TRUE(std::ranges::view<decltype(v1)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(v1)>);
-    EXPECT_TRUE(seqan3::const_iterable_range<decltype(v1)>);
+    EXPECT_TRUE(bio::const_iterable_range<decltype(v1)>);
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), char>));
 
     EXPECT_TRUE((std::is_same_v<decltype(v1[0]), char const &>));
 
-    auto v2 = vec | seqan3::views::to_lower | seqan3::views::as_const; // to_lower generates values
+    auto v2 = vec | bio::views::to_lower | bio::views::as_const; // to_lower generates values
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);
@@ -66,7 +66,7 @@ TEST(view_as_const, concepts)
     EXPECT_TRUE(std::ranges::view<decltype(v1)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(v1)>);
-    EXPECT_TRUE(seqan3::const_iterable_range<decltype(v1)>);
+    EXPECT_TRUE(bio::const_iterable_range<decltype(v1)>);
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), char>));
 
     EXPECT_TRUE((std::is_same_v<decltype(v2[0]), char>)); // don't add const-ness to values

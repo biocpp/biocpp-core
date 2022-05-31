@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::views::type_reduce.
+ * \brief Provides bio::views::type_reduce.
  */
 
 #pragma once
@@ -21,7 +21,7 @@
 #include <ranges>
 #include <span>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 // ============================================================================
@@ -93,13 +93,13 @@ private:
     }
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
 // ============================================================================
 //  views::type_reduce (adaptor instance definition)
 // ============================================================================
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\name General purpose views
@@ -132,7 +132,7 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                   | *preserved*                            |
  * | std::ranges::common_range        |                                   | *preserved*                            |
  * | std::ranges::output_range        |                                   | *preserved*                            |
- * | seqan3::const_iterable_range     |                                   | *preserved*                            |
+ * | bio::const_iterable_range     |                                   | *preserved*                            |
  * |                                  |                                   |                                        |
  * | std::ranges::range_reference_t   |                                   | std::ranges::range_reference_t<urng_t> |
  *
@@ -161,11 +161,11 @@ inline constexpr auto type_reduce = detail::type_reduce_fn{};
 
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views
 
-namespace seqan3
+namespace bio
 {
-//!\brief Deduces the return value of seqan3::views::type_reduce.
+//!\brief Deduces the return value of bio::views::type_reduce.
 template <typename t>
 using type_reduce_view = decltype(views::type_reduce(std::declval<t>()));
 }

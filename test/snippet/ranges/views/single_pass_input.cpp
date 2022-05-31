@@ -6,12 +6,12 @@
 int main()
 {
     std::string str{"hello"};
-    auto v = str | seqan3::views::single_pass_input;
+    auto v = str | bio::views::single_pass_input;
     auto b = v.begin();
 
-    seqan3::debug_stream << *b << '\n';      // prints 'h'
-    seqan3::debug_stream << *(++b) << '\n';  // prints 'e'
-    seqan3::debug_stream << *(++b) << '\n';  // prints 'l'
-    seqan3::debug_stream << *(++b) << '\n';  // prints 'l'
-    seqan3::debug_stream << *(++b) << '\n';  // prints 'o'
+    bio::debug_stream << *b << '\n';      // prints 'h'
+    bio::debug_stream << *(++b) << '\n';  // prints 'e'
+    bio::debug_stream << *(++b) << '\n';  // prints 'l'
+    bio::debug_stream << *(++b) << '\n';  // prints 'l'
+    bio::debug_stream << *(++b) << '\n';  // prints 'o'
 }

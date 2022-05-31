@@ -13,16 +13,16 @@
 #include <bio/ranges/container/bitcompressed_vector.hpp>
 #include <bio/ranges/container/concatenated_sequences.hpp>
 
-using seqan3::operator""_dna4;
+using bio::operator""_dna4;
 
 template <typename T>
 class debug_stream_test : public ::testing::Test
 {};
 
 using container_of_container_types =
-    ::testing::Types<std::vector<std::vector<seqan3::dna4>>,
-                     seqan3::concatenated_sequences<std::vector<seqan3::dna4>>,
-                     seqan3::concatenated_sequences<seqan3::bitcompressed_vector<seqan3::dna4>>>;
+    ::testing::Types<std::vector<std::vector<bio::dna4>>,
+                     bio::concatenated_sequences<std::vector<bio::dna4>>,
+                     bio::concatenated_sequences<bio::bitcompressed_vector<bio::dna4>>>;
 
 TYPED_TEST_SUITE(debug_stream_test, container_of_container_types, );
 
@@ -31,7 +31,7 @@ TYPED_TEST(debug_stream_test, container_of_container)
     TypeParam t1{"ACGT"_dna4, "ACGT"_dna4, "GAGGA"_dna4};
 
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
     my_stream << TypeParam{};
 

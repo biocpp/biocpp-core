@@ -62,7 +62,7 @@
  * The storage behaviour is orthogonal to the range concepts defined by the iterators mentioned above, i.e. you
  * can have a container that satisfies std::ranges::random_access_range (e.g. `std::vector` does, but `std::list`
  * does not) and you can have views or decorators that do so or don't. For some combinations of iterator capabilities
- * and storage behaviour there are extra concept definitions, e.g. seqan3::random_access_container.
+ * and storage behaviour there are extra concept definitions, e.g. bio::random_access_container.
  *
  * \attention
  *

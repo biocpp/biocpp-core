@@ -1,7 +1,7 @@
 #include <bio/alphabet/alphabet_base.hpp>
 #include <bio/alphabet/concept.hpp>
 
-class ab : public seqan3::alphabet_base<ab, 2>
+class ab : public bio::alphabet_base<ab, 2>
 {
 private:
     // map 0 -> A and 1 -> B
@@ -27,4 +27,4 @@ private:
     friend alphabet_base<ab, 2>;
 };
 
-static_assert(seqan3::alphabet<ab>);
+static_assert(bio::alphabet<ab>);

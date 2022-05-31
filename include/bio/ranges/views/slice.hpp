@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::views::slice.
+ * \brief Provides bio::views::slice.
  */
 
 #pragma once
@@ -23,7 +23,7 @@
 #include <span>
 #include <type_traits>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 // ============================================================================
@@ -40,7 +40,7 @@ struct slice_fn
     }
 
     /*!\brief       Call the view's constructor with the underlying view as argument.
-     * \returns     An instance of seqan3::detail::view_slice.
+     * \returns     An instance of bio::detail::view_slice.
      */
     template <std::ranges::viewable_range urng_t>
     constexpr auto operator()(urng_t && urange, ptrdiff_t begin_pos, ptrdiff_t end_pos) const
@@ -52,7 +52,7 @@ struct slice_fn
         }
 
         if (end_pos < begin_pos)
-            throw std::invalid_argument{"end_pos argument to seqan3::views::slice must be >= the begin_pos argument."};
+            throw std::invalid_argument{"end_pos argument to bio::views::slice must be >= the begin_pos argument."};
 
         return std::forward<urng_t>(urange)
           | std::views::drop(begin_pos)
@@ -63,13 +63,13 @@ struct slice_fn
     // does not require special overloads, because views::drop and views::take handle the flattening.
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
 // ============================================================================
 //  views::slice (adaptor instance definition)
 // ============================================================================
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\name General purpose views
@@ -105,13 +105,13 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                   | *preserved*                            |
  * | std::ranges::common_range        |                                   | *preserved*                            |
  * | std::ranges::output_range        |                                   | *preserved*                            |
- * | seqan3::const_iterable_range     |                                   | *preserved*                            |
+ * | bio::const_iterable_range     |                                   | *preserved*                            |
  * |                                  |                                   |                                        |
  * | std::ranges::range_reference_t   |                                   | std::ranges::range_reference_t<urng_t> |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
- * This adaptor is a combination of std::views::drop, std::views::take and seqan3::views::type_reduce.
+ * This adaptor is a combination of std::views::drop, std::views::take and bio::views::type_reduce.
  *
  * If `begin_pos` is larger than the size of the underlying range an empty range is returned.
  * If `end_pos` is larger than the size of the underlying range all elements are returned.
@@ -131,7 +131,7 @@ namespace seqan3::views
  *
  * ### Complexity
  *
- * Construction of the returned view is in \f$ O(begin\_pos) \f$ for some views, see seqan3::views::drop.
+ * Construction of the returned view is in \f$ O(begin\_pos) \f$ for some views, see bio::views::drop.
  *
  * ### Example
  *
@@ -143,4 +143,4 @@ inline constexpr auto slice = detail::slice_fn{};
 
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

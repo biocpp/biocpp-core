@@ -9,7 +9,7 @@ int main()
     std::string i{"in"};
     size_t s = 3;
 
-    auto v = u | seqan3::views::interleave(s, i);
+    auto v = u | bio::views::interleave(s, i);
 
-    seqan3::debug_stream << v << '\n'; // prints FOOinBARinBAXinBAT
+    bio::debug_stream << v << '\n'; // prints FOOinBARinBAXinBAT
 }

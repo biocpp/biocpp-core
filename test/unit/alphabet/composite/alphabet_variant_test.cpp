@@ -23,14 +23,14 @@
 #include "../semi_alphabet_constexpr_test_template.hpp"
 #include "../semi_alphabet_test_template.hpp"
 
-using seqan3::operator""_dna4;
-using seqan3::operator""_dna5;
-using seqan3::operator""_rna4;
-using seqan3::operator""_rna5;
+using bio::operator""_dna4;
+using bio::operator""_dna5;
+using bio::operator""_rna4;
+using bio::operator""_rna5;
 
-using alphabet_variant_types = ::testing::Types<seqan3::alphabet_variant<seqan3::dna4, seqan3::gap>,
-                                                seqan3::alphabet_variant<seqan3::dna4, seqan3::dna5, seqan3::gap>,
-                                                seqan3::alphabet_variant<char, seqan3::gap>>;
+using alphabet_variant_types = ::testing::Types<bio::alphabet_variant<bio::dna4, bio::gap>,
+                                                bio::alphabet_variant<bio::dna4, bio::dna5, bio::gap>,
+                                                bio::alphabet_variant<char, bio::gap>>;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(alphabet_variant, alphabet, alphabet_variant_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(alphabet_variant, semi_alphabet_test, alphabet_variant_types, );
@@ -44,10 +44,10 @@ TYPED_TEST_SUITE(alphabet_variant_test, alphabet_variant_types, );
 
 TEST(alphabet_variant_test, initialise_from_component_alphabet)
 {
-    seqan3::dna5 l('A'_rna5);
+    bio::dna5 l('A'_rna5);
 
-    using alphabet_t = seqan3::alphabet_variant<seqan3::dna4, seqan3::dna5, seqan3::gap>;
-    using variant_t = std::variant<seqan3::dna4, seqan3::dna5, seqan3::gap>;
+    using alphabet_t = bio::alphabet_variant<bio::dna4, bio::dna5, bio::gap>;
+    using variant_t = std::variant<bio::dna4, bio::dna5, bio::gap>;
 
     constexpr variant_t variant0{'A'_dna4};
     constexpr alphabet_t letter0{'A'_dna4};
@@ -76,8 +76,8 @@ TEST(alphabet_variant_test, initialise_from_component_alphabet)
     variant_t variant8 = static_cast<variant_t>('T'_dna5);
     alphabet_t letter8 = static_cast<alphabet_t>('T'_dna5);
 
-    variant_t variant9 = {static_cast<variant_t>(seqan3::gap{})};
-    alphabet_t letter9 = {static_cast<alphabet_t>(seqan3::gap{})};
+    variant_t variant9 = {static_cast<variant_t>(bio::gap{})};
+    alphabet_t letter9 = {static_cast<alphabet_t>(bio::gap{})};
 
     EXPECT_EQ(letter0.to_rank(), 0);
     EXPECT_EQ(letter1.to_rank(), 1);
@@ -93,8 +93,8 @@ TEST(alphabet_variant_test, initialise_from_component_alphabet)
 
 TEST(alphabet_variant_test, initialise_from_component_alphabet_subtype)
 {
-    using alphabet_t = seqan3::alphabet_variant<seqan3::dna4, seqan3::dna5, seqan3::gap>;
-    using variant_t = std::variant<seqan3::dna4, seqan3::dna5, seqan3::gap>;
+    using alphabet_t = bio::alphabet_variant<bio::dna4, bio::dna5, bio::gap>;
+    using variant_t = std::variant<bio::dna4, bio::dna5, bio::gap>;
 
     variant_t variant0{'A'_rna4};
     alphabet_t letter0{'A'_rna4};
@@ -136,8 +136,8 @@ TEST(alphabet_variant_test, initialise_from_component_alphabet_subtype)
 
 TEST(alphabet_variant_test, assign_from_component_alphabet)
 {
-    using alphabet_t = seqan3::alphabet_variant<seqan3::dna4, seqan3::dna5, seqan3::gap>;
-    using variant_t = std::variant<seqan3::dna4, seqan3::dna5, seqan3::gap>;
+    using alphabet_t = bio::alphabet_variant<bio::dna4, bio::dna5, bio::gap>;
+    using variant_t = std::variant<bio::dna4, bio::dna5, bio::gap>;
     alphabet_t letter{};
     variant_t variant{};
 
@@ -175,14 +175,14 @@ TEST(alphabet_variant_test, assign_from_component_alphabet)
     letter = 'T'_dna5;
     EXPECT_EQ(letter.to_rank(), 8);
 
-    letter = seqan3::gap{};
+    letter = bio::gap{};
     EXPECT_EQ(letter.to_rank(), 9);
 }
 
 TEST(alphabet_variant_test, assign_from_component_alphabet_subtype)
 {
-    using alphabet_t = seqan3::alphabet_variant<seqan3::dna4, seqan3::dna5, seqan3::gap>;
-    using variant_t = std::variant<seqan3::dna4, seqan3::dna5, seqan3::gap>;
+    using alphabet_t = bio::alphabet_variant<bio::dna4, bio::dna5, bio::gap>;
+    using variant_t = std::variant<bio::dna4, bio::dna5, bio::gap>;
     alphabet_t letter{};
     variant_t variant{};
 
@@ -223,7 +223,7 @@ TEST(alphabet_variant_test, assign_from_component_alphabet_subtype)
 
 TEST(alphabet_variant_test, compare_to_component_alphabet)
 {
-    using alphabet_t = seqan3::alphabet_variant<seqan3::dna4, seqan3::dna5>;
+    using alphabet_t = bio::alphabet_variant<bio::dna4, bio::dna5>;
 
     constexpr alphabet_t letter0{'G'_dna4};
 
@@ -238,7 +238,7 @@ TEST(alphabet_variant_test, compare_to_component_alphabet)
 
 TEST(alphabet_variant_test, compare_to_component_alphabet_subtype)
 {
-    using alphabet_t = seqan3::alphabet_variant<seqan3::dna4, seqan3::dna5>;
+    using alphabet_t = bio::alphabet_variant<bio::dna4, bio::dna5>;
 
     constexpr alphabet_t letter0{'G'_dna4};
 
@@ -253,20 +253,20 @@ TEST(alphabet_variant_test, compare_to_component_alphabet_subtype)
 
 TEST(alphabet_variant_test, rank_type)
 {
-    using alphabet1_t = seqan3::alphabet_variant<seqan3::dna4, seqan3::dna5, seqan3::gap>;
-    using alphabet2_t = seqan3::alphabet_variant<seqan3::gap, seqan3::dna5, seqan3::dna4>;
-    using alphabet3_t = seqan3::alphabet_variant<char, seqan3::gap>;
+    using alphabet1_t = bio::alphabet_variant<bio::dna4, bio::dna5, bio::gap>;
+    using alphabet2_t = bio::alphabet_variant<bio::gap, bio::dna5, bio::dna4>;
+    using alphabet3_t = bio::alphabet_variant<char, bio::gap>;
 
-    EXPECT_TRUE((std::is_same_v<seqan3::alphabet_rank_t<alphabet1_t>, uint8_t>));
-    EXPECT_TRUE((std::is_same_v<seqan3::alphabet_rank_t<alphabet2_t>, uint8_t>));
-    EXPECT_TRUE((std::is_same_v<seqan3::alphabet_rank_t<alphabet3_t>, uint16_t>));
+    EXPECT_TRUE((std::is_same_v<bio::alphabet_rank_t<alphabet1_t>, uint8_t>));
+    EXPECT_TRUE((std::is_same_v<bio::alphabet_rank_t<alphabet2_t>, uint8_t>));
+    EXPECT_TRUE((std::is_same_v<bio::alphabet_rank_t<alphabet3_t>, uint16_t>));
 }
 
 TEST(alphabet_variant_test, alphabet_size)
 {
-    using alphabet1_t = seqan3::alphabet_variant<seqan3::dna4, seqan3::dna5, seqan3::gap>;
-    using alphabet2_t = seqan3::alphabet_variant<seqan3::gap, seqan3::dna5, seqan3::dna4>;
-    using alphabet3_t = seqan3::alphabet_variant<char, seqan3::gap>;
+    using alphabet1_t = bio::alphabet_variant<bio::dna4, bio::dna5, bio::gap>;
+    using alphabet2_t = bio::alphabet_variant<bio::gap, bio::dna5, bio::dna4>;
+    using alphabet3_t = bio::alphabet_variant<char, bio::gap>;
 
     EXPECT_TRUE((std::is_same_v<decltype(alphabet1_t::alphabet_size), const uint8_t>));
     EXPECT_TRUE((std::is_same_v<decltype(alphabet2_t::alphabet_size), const uint8_t>));
@@ -279,7 +279,7 @@ TEST(alphabet_variant_test, alphabet_size)
 
 TEST(alphabet_variant_test, convert_by_index)
 {
-    seqan3::alphabet_variant<seqan3::dna4, seqan3::dna5, seqan3::gap> u;
+    bio::alphabet_variant<bio::dna4, bio::dna5, bio::gap> u;
     u = 'C'_dna5;
 
     EXPECT_FALSE(u.holds_alternative<0>());
@@ -290,40 +290,40 @@ TEST(alphabet_variant_test, convert_by_index)
     EXPECT_NO_THROW(u.convert_to<1>());
     EXPECT_THROW(u.convert_to<2>(), std::bad_variant_access);
 
-    seqan3::dna5 out = u.convert_to<1>();
+    bio::dna5 out = u.convert_to<1>();
     EXPECT_EQ(out, 'C'_dna5);
 
-    u = seqan3::gap{};
+    u = bio::gap{};
 
-    seqan3::gap g = u.convert_unsafely_to<2>();
-    EXPECT_EQ(g, seqan3::gap{});
+    bio::gap g = u.convert_unsafely_to<2>();
+    EXPECT_EQ(g, bio::gap{});
 }
 
 TEST(alphabet_variant_test, convert_by_type)
 {
-    seqan3::alphabet_variant<seqan3::dna4, seqan3::dna5, seqan3::gap> u;
+    bio::alphabet_variant<bio::dna4, bio::dna5, bio::gap> u;
     u = 'C'_dna5;
 
-    EXPECT_FALSE(u.holds_alternative<seqan3::dna4>());
-    EXPECT_TRUE(u.holds_alternative<seqan3::dna5>());
-    EXPECT_FALSE(u.holds_alternative<seqan3::gap>());
+    EXPECT_FALSE(u.holds_alternative<bio::dna4>());
+    EXPECT_TRUE(u.holds_alternative<bio::dna5>());
+    EXPECT_FALSE(u.holds_alternative<bio::gap>());
 
-    EXPECT_THROW(u.convert_to<seqan3::dna4>(), std::bad_variant_access);
-    EXPECT_NO_THROW(u.convert_to<seqan3::dna5>());
-    EXPECT_THROW(u.convert_to<seqan3::gap>(), std::bad_variant_access);
+    EXPECT_THROW(u.convert_to<bio::dna4>(), std::bad_variant_access);
+    EXPECT_NO_THROW(u.convert_to<bio::dna5>());
+    EXPECT_THROW(u.convert_to<bio::gap>(), std::bad_variant_access);
 
-    seqan3::dna5 out = u.convert_to<seqan3::dna5>();
+    bio::dna5 out = u.convert_to<bio::dna5>();
     EXPECT_EQ(out, 'C'_dna5);
 
-    u = seqan3::gap{};
-    seqan3::gap g = u.convert_unsafely_to<seqan3::gap>();
-    EXPECT_EQ(g, seqan3::gap{});
+    u = bio::gap{};
+    bio::gap g = u.convert_unsafely_to<bio::gap>();
+    EXPECT_EQ(g, bio::gap{});
 }
 
 TEST(alphabet_variant_test, two_different_variants)
 {
-    seqan3::alphabet_variant<seqan3::dna4, seqan3::gap> l{seqan3::gap{}};
-    seqan3::alphabet_variant<seqan3::dna5, seqan3::gap> r{seqan3::gap{}};
+    bio::alphabet_variant<bio::dna4, bio::gap> l{bio::gap{}};
+    bio::alphabet_variant<bio::dna5, bio::gap> r{bio::gap{}};
 
     EXPECT_EQ(l, r);
 
@@ -333,7 +333,7 @@ TEST(alphabet_variant_test, two_different_variants)
 
     EXPECT_NE(l, r);
 
-    seqan3::alphabet_variant<seqan3::rna4, seqan3::gap> r2{'A'_rna4};
+    bio::alphabet_variant<bio::rna4, bio::gap> r2{'A'_rna4};
     EXPECT_EQ(l, r2); // this works because rna4 and dna4 are implicitly convertible to each other
 }
 
@@ -341,7 +341,7 @@ TYPED_TEST(alphabet_variant_test, char_is_valid_for)
 {
     using gapped_alphabet_t = TypeParam;
     using gapped_alphabet_bases_t = typename gapped_alphabet_t::seqan3_required_types;
-    using char_t = seqan3::alphabet_char_t<gapped_alphabet_t>;
+    using char_t = bio::alphabet_char_t<gapped_alphabet_t>;
 
     char_t i = std::numeric_limits<char_t>::min();
     char_t end = std::numeric_limits<char_t>::max();
@@ -350,11 +350,11 @@ TYPED_TEST(alphabet_variant_test, char_is_valid_for)
     for (; i_no_overflow <= static_cast<uint64_t>(end); ++i, ++i_no_overflow)
     {
         bool is_valid{};
-        seqan3::detail::for_each<gapped_alphabet_bases_t>([&is_valid, i](auto id)
+        bio::detail::for_each<gapped_alphabet_bases_t>([&is_valid, i](auto id)
         {
              using type = typename decltype(id)::type;
-             is_valid = is_valid || seqan3::char_is_valid_for<type>(i);
+             is_valid = is_valid || bio::char_is_valid_for<type>(i);
         });
-        EXPECT_EQ(seqan3::char_is_valid_for<gapped_alphabet_t>(i), is_valid);
+        EXPECT_EQ(bio::char_is_valid_for<gapped_alphabet_t>(i), is_valid);
     }
 }

@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides algorithms for meta programming, parameter packs and seqan3::type_list.
+ * \brief Provides algorithms for meta programming, parameter packs and bio::type_list.
  * \author Rene Rahn <rene.rahn AT fu-berlin.de>
  */
 
@@ -19,7 +19,7 @@
 #include <bio/meta/platform.hpp>
 #include <bio/meta/type_traits/template_inspection.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 //-----------------------------------------------------------------------------
@@ -105,4 +105,4 @@ constexpr void for_each(unary_function_t && fn, pack_t && ...args)
     (fn(std::forward<pack_t>(args)), ...);
 }
 
-}  // namespace seqan3::detail
+}  // namespace bio::detail

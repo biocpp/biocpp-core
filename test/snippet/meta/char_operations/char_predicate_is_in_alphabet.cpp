@@ -3,8 +3,8 @@
 
 int main()
 {
-    seqan3::is_in_alphabet<seqan3::dna4>('C');  // returns true
+    bio::is_in_alphabet<bio::dna4>('C');  // returns true
 
-    auto constexpr my_check = seqan3::is_in_alphabet<seqan3::dna4>;
+    auto constexpr my_check = bio::is_in_alphabet<bio::dna4>;
     my_check('U');  // returns false, because it comes out as 'T'
 }

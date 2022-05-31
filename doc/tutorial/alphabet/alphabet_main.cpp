@@ -6,16 +6,16 @@
 //! [create]
 #include <bio/alphabet/all.hpp> // for working with alphabets directly
 
-using seqan3::operator""_dna4;
+using bio::operator""_dna4;
 
 int main ()
 {
-    // Two objects of seqan3::dna4 alphabet constructed with a char literal.
-    seqan3::dna4 ade = 'A'_dna4;
-    seqan3::dna4 gua = 'G'_dna4;
+    // Two objects of bio::dna4 alphabet constructed with a char literal.
+    bio::dna4 ade = 'A'_dna4;
+    bio::dna4 gua = 'G'_dna4;
 
     // Two additional objects assigned explicitly from char or rank.
-    seqan3::dna4 cyt, thy;
+    bio::dna4 cyt, thy;
     cyt.assign_char('C');
     thy.assign_rank(3);
 
@@ -26,7 +26,7 @@ int main ()
 
 //! [rank]
     // Get the rank type of the alphabet (here uint8_t).
-    using rank_type = seqan3::alphabet_rank_t<seqan3::dna4>;
+    using rank_type = bio::alphabet_rank_t<bio::dna4>;
 
     // Retrieve the numerical representation (rank) of the objects.
     rank_type rank_a = ade.to_rank();   // => 0
@@ -37,7 +37,7 @@ int main ()
 
 //! [char]
     // Get the character type of the alphabet (here char).
-    using char_type = seqan3::alphabet_char_t<seqan3::dna4>;
+    using char_type = bio::alphabet_char_t<bio::dna4>;
 
     // Retrieve the character representation.
     char_type char_a = ade.to_char();   // => 'A'
@@ -48,15 +48,15 @@ int main ()
 
 //! [char_strict]
     // Assign from character with value check.
-    seqan3::assign_char_strictly_to('C', cyt);
+    bio::assign_char_strictly_to('C', cyt);
 
-    // seqan3::assign_char_strictly_to('X', thy); // would throw seqan3::invalid_char_assignment
+    // bio::assign_char_strictly_to('X', thy); // would throw bio::invalid_char_assignment
 //! [char_strict]
     assert(cyt == 'C'_dna4);
 
 //! [size]
     // Get the alphabet size as class member of the alphabet.
-    uint8_t const size1 = seqan3::dna4::alphabet_size;        // => 4
+    uint8_t const size1 = bio::dna4::alphabet_size;        // => 4
 //! [size]
     assert(size1 == 4u);
 
@@ -70,7 +70,7 @@ int main ()
     bool st  = (ade <  'C'_dna4); // true
 
     // Sort a vector of symbols.
-    std::vector<seqan3::dna4> some_nucl{"GTA"_dna4};
+    std::vector<bio::dna4> some_nucl{"GTA"_dna4};
     std::sort(some_nucl.begin(), some_nucl.end()); // some_nucl: "AGT"
 //! [compare]
     assert(eq && neq && geq && gt && seq && st);
@@ -78,24 +78,24 @@ int main ()
 
 //! [gapped]
     // Assign a gap symbol to a gapped RNA alphabet.
-    seqan3::gapped<seqan3::rna5> sym = seqan3::gap{};                         // => -
+    bio::gapped<bio::rna5> sym = bio::gap{};                         // => -
 
-    using seqan3::operator""_rna5;
-    // Each seqan3::rna5 symbol is still valid.
+    using bio::operator""_rna5;
+    // Each bio::rna5 symbol is still valid.
     sym = 'U'_rna5;                                   // => U
 
     // The alphabet size is six (AUGCN-).
-    uint8_t const size2 = seqan3::gapped<seqan3::rna5>::alphabet_size;   // => 6
+    uint8_t const size2 = bio::gapped<bio::rna5>::alphabet_size;   // => 6
 //! [gapped]
     assert(size2 == 6u);
 
 //! [containers]
-    using seqan3::operator""_dna5;
+    using bio::operator""_dna5;
 
     // Examples of different container types with SeqAn's alphabets.
-    std::vector<seqan3::dna5> dna_sequence{"GATTANAG"_dna5};
-    std::pair<seqan3::gapped<seqan3::dna4>, seqan3::gapped<seqan3::dna4>> alignment_column{seqan3::gap{}, thy};
-    std::set<seqan3::dna4> pyrimidines{'C'_dna4, 'T'_dna4};
+    std::vector<bio::dna5> dna_sequence{"GATTANAG"_dna5};
+    std::pair<bio::gapped<bio::dna4>, bio::gapped<bio::dna4>> alignment_column{bio::gap{}, thy};
+    std::set<bio::dna4> pyrimidines{'C'_dna4, 'T'_dna4};
 //! [containers]
 
     // Prevent -Wunused-variable warnings.

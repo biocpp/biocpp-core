@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Joshua Kim <joshua.kim AT fu-berlin.de>
- * \brief Provides seqan3::views::get.
+ * \brief Provides bio::views::get.
  */
 
 #pragma once
@@ -16,7 +16,7 @@
 #include <bio/meta/concept/tuple.hpp>
 #include <ranges>
 
-namespace seqan3::views
+namespace bio::views
 {
 /*!\name General purpose views
  * \{
@@ -50,9 +50,9 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                       | *preserved*                                                        |
  * | std::ranges::common_range        |                                       | *preserved*                                                        |
  * | std::ranges::output_range        |                                       | *preserved*                                                        |
- * | seqan3::const_iterable_range     |                                       | *preserved*                                                        |
+ * | bio::const_iterable_range     |                                       | *preserved*                                                        |
  * |                                  |                                       |                                                                    |
- * | std::ranges::range_reference_t   | seqan3::tuple_like                    | std::tuple_element_t<index, std::ranges::range_reference_t<urng_t>>|
+ * | std::ranges::range_reference_t   | bio::tuple_like                    | std::tuple_element_t<index, std::ranges::range_reference_t<urng_t>>|
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
@@ -65,7 +65,7 @@ template <auto index>
 inline auto const get = std::views::transform([] (auto && in) -> decltype(auto)
 {
     using std::get;
-    using seqan3::get;
+    using bio::get;
     static_assert(tuple_like<decltype(in)>,
                   "You may only pass ranges to views::get whose reference_t models the tuple_like.");
 
@@ -78,4 +78,4 @@ inline auto const get = std::views::transform([] (auto && in) -> decltype(auto)
 
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

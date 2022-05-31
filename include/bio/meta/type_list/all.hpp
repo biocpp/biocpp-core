@@ -11,7 +11,7 @@
  */
 
 /*!\defgroup core_type_list Type List
- * \brief Provides seqan3::type_list and metaprogramming utilities for working on type lists.
+ * \brief Provides bio::type_list and metaprogramming utilities for working on type lists.
  * \ingroup core
  * \see core
  *
@@ -21,8 +21,8 @@
  *
  */
 
-/*!\namespace seqan3::list_traits
- * \brief Namespace containing traits for working on seqan3::type_list.
+/*!\namespace bio::list_traits
+ * \brief Namespace containing traits for working on bio::type_list.
  */
 
 #pragma once

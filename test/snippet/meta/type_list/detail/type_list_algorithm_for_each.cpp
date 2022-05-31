@@ -27,27 +27,27 @@ int main()
         static_assert(std::is_same_v<id_t, std::type_identity<type>>, "id is of type std::type_identity<type>");
 
         if constexpr(std::is_same_v<type, bool>)
-            seqan3::debug_stream << "bool";
+            bio::debug_stream << "bool";
         else if constexpr(std::is_same_v<type, int>)
-            seqan3::debug_stream << "int";
+            bio::debug_stream << "int";
         else if constexpr(std::is_same_v<type, float>)
-            seqan3::debug_stream << "float";
+            bio::debug_stream << "float";
         else if constexpr(std::is_same_v<type, incomplete::type>)
-            seqan3::debug_stream << "incomplete::type";
+            bio::debug_stream << "incomplete::type";
 
-        seqan3::debug_stream << ", ";
+        bio::debug_stream << ", ";
     };
 
     // prints each type name, i.e. "int, float, bool, incomplete::type, \n"
-    using types = seqan3::type_list<int, float, bool, incomplete::type>;
-    seqan3::detail::for_each<types>(fn);
-    seqan3::debug_stream << "\n";
+    using types = bio::type_list<int, float, bool, incomplete::type>;
+    bio::detail::for_each<types>(fn);
+    bio::debug_stream << "\n";
 
     // is the same as explicitly writing
     fn(std::type_identity<int>{});
     fn(std::type_identity<float>{});
     fn(std::type_identity<bool>{});
     fn(std::type_identity<incomplete::type>{});
-    seqan3::debug_stream << "\n";
+    bio::debug_stream << "\n";
     return 0;
 }

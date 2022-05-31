@@ -2,8 +2,8 @@
 
 int main()
 {
-    seqan3::is_in_interval<'A', 'G'>('C'); // returns true
+    bio::is_in_interval<'A', 'G'>('C'); // returns true
 
-    auto constexpr my_check = seqan3::is_in_interval<'A', 'G'>;
+    auto constexpr my_check = bio::is_in_interval<'A', 'G'>;
     my_check('H');  // returns false
 }

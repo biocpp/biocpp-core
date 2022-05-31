@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::views::convert.
+ * \brief Provides bio::views::convert.
  */
 
 #pragma once
@@ -16,7 +16,7 @@
 #include <concepts>
 #include <ranges>
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\name General purpose views
@@ -49,9 +49,9 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                       | *preserved*                     |
  * | std::ranges::common_range        |                                       | *preserved*                     |
  * | std::ranges::output_range        |                                       | <i>lost</i>¹                    |
- * | seqan3::const_iterable_range     |                                       | *preserved*                     |
+ * | bio::const_iterable_range     |                                       | *preserved*                     |
  * |                                  |                                       |                                 |
- * | std::ranges::range_reference_t   | seqan3::convertible_to<out_t>         | `out_t`                         |
+ * | std::ranges::range_reference_t   | bio::convertible_to<out_t>         | `out_t`                         |
  *
  * ¹ These are preserved if `out_t` is the same as `std::ranges::range_reference_t<urng_t>`, i.e. no conversion
  * takes place.
@@ -63,7 +63,7 @@ namespace seqan3::views
  * Convert from `int` to `bool`:
  * \include test/snippet/range/views/convert_int_to_bool.cpp
  *
- * Convert from seqan3::dna15 to seqan3::dna5:
+ * Convert from bio::dna15 to bio::dna5:
  * \include test/snippet/range/views/convert_15_to_5.cpp
  * \hideinitializer
  */
@@ -81,4 +81,4 @@ auto const convert = std::views::transform([] (auto && in) -> out_t
 
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

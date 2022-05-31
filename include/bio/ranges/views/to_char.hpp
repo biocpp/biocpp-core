@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::views::to_char.
+ * \brief Provides bio::views::to_char.
  */
 
 #pragma once
@@ -16,14 +16,14 @@
 #include <bio/ranges/views/deep.hpp>
 #include <ranges>
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\name Alphabet related views
  * \{
  */
 
-/*!\brief               A view that calls seqan3::to_char() on each element in the input range.
+/*!\brief               A view that calls bio::to_char() on each element in the input range.
  * \tparam urng_t       The type of the range being processed. See below for requirements. [template parameter is
  *                      omitted in pipe notation]
  * \param[in] urange    The range being processed. [parameter is omitted in pipe notation]
@@ -52,9 +52,9 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                       | *preserved*                                                   |
  * | std::ranges::common_range        |                                       | *preserved*                                                   |
  * | std::ranges::output_range        |                                       | *lost*                                                        |
- * | seqan3::const_iterable_range     |                                       | *preserved*                                                   |
+ * | bio::const_iterable_range     |                                       | *preserved*                                                   |
  * |                                  |                                       |                                                               |
- * | std::ranges::range_reference_t   | seqan3::alphabet                      | seqan3::alphabet_char_t<std::ranges::range_value_t<urng_t>>   |
+ * | std::ranges::range_reference_t   | bio::alphabet                      | bio::alphabet_char_t<std::ranges::range_value_t<urng_t>>   |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
@@ -64,10 +64,10 @@ namespace seqan3::views
  */
 inline auto const to_char = deep{std::views::transform([] (auto const in) noexcept
 {
-    static_assert(alphabet<std::remove_cvref_t<decltype(in)>>, "The value type of seqan3::views::to_char must model the seqan3::alphabet.");
-    return seqan3::to_char(in);
+    static_assert(alphabet<std::remove_cvref_t<decltype(in)>>, "The value type of bio::views::to_char must model the bio::alphabet.");
+    return bio::to_char(in);
 })};
 
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

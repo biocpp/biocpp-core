@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides seqan3::views::pairwise_combine.
+ * \brief Provides bio::views::pairwise_combine.
  * \author Rene Rahn <rene.rahn AT fu-berlin.de>
  */
 
@@ -19,7 +19,7 @@
 #include <bio/ranges/views/detail.hpp>
 #include <ranges>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 /*!\brief Generates all pairwise combinations of the elements in the underlying range.
  * \ingroup views
@@ -119,7 +119,7 @@ public:
     }
 
     /*!\brief Constructs from a view.
-     * \tparam    other_range_t  The type of the range to be wrapped with seqan3::detail::pairwise_combine_view;
+     * \tparam    other_range_t  The type of the range to be wrapped with bio::detail::pairwise_combine_view;
      *                           must model std::ranges::viewable_range and underlying_range_type must be constructible
      *                           with other_range wrapped in std::views::all.
      * \param[in] range          The underlying range to be wrapped.
@@ -636,9 +636,9 @@ private:
     underlying_iterator_type end_it{};
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3::views
+namespace bio::views
 {
 /*!\name General purpose views
  * \{
@@ -685,7 +685,7 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                       | *preserved*                                                                                  |
  * | std::ranges::common_range        | *required*                            | *guaranteed*                                                                                 |
  * | std::ranges::output_range        |                                       | *preserved*                                                                                  |
- * | seqan3::const_iterable_range     |                                       | *preserved*                                                                                  |
+ * | bio::const_iterable_range     |                                       | *preserved*                                                                                  |
  * |                                  |                                       |                                                                                              |
  * | std::ranges::range_reference_t   |                                       | common_tuple<std::ranges::range_reference_t<urng_t>, std::ranges::range_reference_t<urng_t>> |
  *
@@ -707,4 +707,4 @@ namespace seqan3::views
 inline constexpr auto pairwise_combine = detail::adaptor_for_view_without_args<detail::pairwise_combine_view>{};
 
 //!\}
-} // namespace seqan3::views
+} // namespace bio::views

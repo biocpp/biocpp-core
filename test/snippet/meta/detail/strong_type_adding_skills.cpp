@@ -1,12 +1,12 @@
 #include <bio/meta/detail/strong_type.hpp>
 
-using seqan3::operator|;
+using bio::operator|;
 
-struct error : seqan3::detail::strong_type<unsigned, error, seqan3::detail::strong_type_skill::decrement |
-                                                            seqan3::detail::strong_type_skill::increment>
+struct error : bio::detail::strong_type<unsigned, error, bio::detail::strong_type_skill::decrement |
+                                                            bio::detail::strong_type_skill::increment>
 {
-    using seqan3::detail::strong_type<unsigned, error, seqan3::detail::strong_type_skill::decrement |
-                                                       seqan3::detail::strong_type_skill::increment>::strong_type;
+    using bio::detail::strong_type<unsigned, error, bio::detail::strong_type_skill::decrement |
+                                                       bio::detail::strong_type_skill::increment>::strong_type;
 };
 
 int main()

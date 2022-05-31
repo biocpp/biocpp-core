@@ -4,16 +4,16 @@
 
 int main()
 {
-    using seqan3::operator""_dna5;
+    using bio::operator""_dna5;
 
-    seqan3::dna5_vector foo{"ACGTA"_dna5};
+    bio::dna5_vector foo{"ACGTA"_dna5};
 
     // pipe notation
-    auto v = foo | seqan3::views::complement;                        // == "TGCAT"
+    auto v = foo | bio::views::complement;                        // == "TGCAT"
 
     // function notation
-    auto v2(seqan3::views::complement(foo));                         // == "TGCAT"
+    auto v2(bio::views::complement(foo));                         // == "TGCAT"
 
     // generate the reverse complement:
-    auto v3 = foo | seqan3::views::complement | std::views::reverse; // == "TACGT"
+    auto v3 = foo | bio::views::complement | std::views::reverse; // == "TACGT"
 }

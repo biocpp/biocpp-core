@@ -7,10 +7,10 @@
 int main()
 {
     std::string s{"foobar"};
-    auto v = s | seqan3::views::slice(1,4);
-    seqan3::debug_stream << v << '\n';      // "oob"
+    auto v = s | bio::views::slice(1,4);
+    bio::debug_stream << v << '\n';      // "oob"
 
-    auto v2 = s | std::views::reverse | seqan3::views::slice(1, 4);
-    seqan3::debug_stream << v2 << '\n';     // "abo"
+    auto v2 = s | std::views::reverse | bio::views::slice(1, 4);
+    bio::debug_stream << v2 << '\n';     // "abo"
 
 }

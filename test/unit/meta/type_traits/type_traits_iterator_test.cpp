@@ -25,7 +25,7 @@ concept iterator_traits_has_iterator_category = requires()
 template <typename iterator_t>
 concept has_iterator_category_tag_t = requires()
 {
-    typename seqan3::detail::iterator_category_tag_t<iterator_t>;
+    typename bio::detail::iterator_category_tag_t<iterator_t>;
 };
 
 #if SEQAN3_WORKAROUND_GCC_96070
@@ -37,8 +37,8 @@ struct my_iterator : base_t
     using reference = std::iter_reference_t<base_t>;
     using pointer = void;
 
-    using iterator_category = seqan3::detail::iterator_category_tag_t<base_t>;
-    using iterator_concept = seqan3::detail::iterator_concept_tag_t<base_t>;
+    using iterator_category = bio::detail::iterator_category_tag_t<base_t>;
+    using iterator_concept = bio::detail::iterator_concept_tag_t<base_t>;
 };
 #else // ^^^ workaround / no workaround vvv
 // See https://github.com/seqan/product_backlog/issues/151 how to make this right, depending on how the standard will
@@ -46,14 +46,14 @@ struct my_iterator : base_t
 template <typename base_t>
 struct inherit_iterator_tag : public base_t
 {
-    using iterator_concept = seqan3::detail::iterator_concept_tag_t<base_t>;
+    using iterator_concept = bio::detail::iterator_concept_tag_t<base_t>;
 };
 
 template <has_iterator_category_tag_t base_t>
 struct inherit_iterator_tag<base_t> : public base_t
 {
-    using iterator_category = seqan3::detail::iterator_category_tag_t<base_t>;
-    using iterator_concept = seqan3::detail::iterator_concept_tag_t<base_t>;
+    using iterator_category = bio::detail::iterator_category_tag_t<base_t>;
+    using iterator_concept = bio::detail::iterator_concept_tag_t<base_t>;
 };
 
 template <typename base_t>
@@ -73,7 +73,7 @@ TEST(iterator_category_tag_t, no_legacy_iterator)
         using view_t = std::ranges::basic_istream_view<char, char, std::char_traits<char>>;
         using iterator_t = std::ranges::iterator_t<view_t>;
 #if SEQAN3_WORKAROUND_GCC_96070
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_category_tag_t<iterator_t>, void>));
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>, void>));
 #else // ^^^ workaround / no workaround vvv
         EXPECT_FALSE(has_iterator_category_tag_t<iterator_t>);
 #endif // SEQAN3_WORKAROUND_GCC_96070
@@ -84,7 +84,7 @@ TEST(iterator_category_tag_t, no_legacy_iterator)
         using view_t = std::ranges::basic_istream_view<char, char, std::char_traits<char>>;
         using iterator_t = my_iterator<std::ranges::iterator_t<view_t>>;
 #if SEQAN3_WORKAROUND_GCC_96070
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_category_tag_t<iterator_t>, void>));
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>, void>));
         EXPECT_TRUE((std::same_as<std::iterator_traits<iterator_t>::iterator_category, void>));
 #else // ^^^ workaround / no workaround vvv
         EXPECT_FALSE(has_iterator_category_tag_t<iterator_t>);
@@ -97,7 +97,7 @@ TEST(iterator_category_tag_t, no_legacy_iterator)
 TEST(iterator_category_tag_t, output_iterator_tag)
 {
     using iterator_t = std::ostream_iterator<int>;
-    EXPECT_TRUE((std::same_as<seqan3::detail::iterator_category_tag_t<iterator_t>,
+    EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>,
                               std::output_iterator_tag>));
 }
 
@@ -105,7 +105,7 @@ TEST(iterator_category_tag_t, input_iterator_tag)
 {
     {
         using iterator_t = std::istream_iterator<int>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_category_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>,
                                   std::input_iterator_tag>));
         EXPECT_TRUE((std::same_as<typename my_iterator<iterator_t>::iterator_category,
                                   std::input_iterator_tag>));
@@ -119,7 +119,7 @@ TEST(iterator_category_tag_t, input_iterator_tag)
         auto lambda = [] (auto & element) -> auto { return element; };
         using view_t = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_category_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>,
                                   std::input_iterator_tag>));
     }
 #endif // __cpp_lib_ranges
@@ -130,7 +130,7 @@ TEST(iterator_category_tag_t, forward_iterator_tag)
     {
         using range_t = std::forward_list<int>;
         using iterator_t = std::ranges::iterator_t<range_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_category_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>,
                                   std::forward_iterator_tag>));
     }
 
@@ -140,7 +140,7 @@ TEST(iterator_category_tag_t, forward_iterator_tag)
         auto lambda = [] (auto & element) -> auto & { return element; };
         using view_t = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_category_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>,
                                   std::forward_iterator_tag>));
     }
 }
@@ -150,7 +150,7 @@ TEST(iterator_category_tag_t, bidirectional_iterator_tag)
     {
         using range_t = std::list<int>;
         using iterator_t = std::ranges::iterator_t<range_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_category_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>,
                                   std::bidirectional_iterator_tag>));
     }
 
@@ -160,7 +160,7 @@ TEST(iterator_category_tag_t, bidirectional_iterator_tag)
         auto lambda = [] (auto & element) -> auto & { return element; };
         using view_t = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_category_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>,
                                   std::bidirectional_iterator_tag>));
     }
 }
@@ -170,7 +170,7 @@ TEST(iterator_category_tag_t, random_access_iterator_tag)
     {
         using range_t = std::vector<int>;
         using iterator_t = std::ranges::iterator_t<range_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_category_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>,
                                   std::random_access_iterator_tag>));
     }
 
@@ -180,7 +180,7 @@ TEST(iterator_category_tag_t, random_access_iterator_tag)
         auto lambda = [] (auto & element) -> auto & { return element; };
         using view_t = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_category_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>,
                                   std::random_access_iterator_tag>));
     }
 }
@@ -188,7 +188,7 @@ TEST(iterator_category_tag_t, random_access_iterator_tag)
 TEST(iterator_concept_tag_t, output_iterator_tag)
 {
     using iterator_t = std::ostream_iterator<int>;
-    EXPECT_TRUE((std::same_as<seqan3::detail::iterator_concept_tag_t<iterator_t>,
+    EXPECT_TRUE((std::same_as<bio::detail::iterator_concept_tag_t<iterator_t>,
                               std::output_iterator_tag>));
 }
 
@@ -196,14 +196,14 @@ TEST(iterator_concept_tag_t, input_iterator_tag)
 {
     {
         using iterator_t = std::istream_iterator<int>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_concept_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_concept_tag_t<iterator_t>,
                                   std::input_iterator_tag>));
     }
 
     {
         using view_t = std::ranges::basic_istream_view<char, char, std::char_traits<char>>;
         using iterator_t = std::ranges::iterator_t<view_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_concept_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_concept_tag_t<iterator_t>,
                                   std::input_iterator_tag>));
     }
 }
@@ -213,7 +213,7 @@ TEST(iterator_concept_tag_t, forward_iterator_tag)
     {
         using range_t = std::forward_list<int>;
         using iterator_t = std::ranges::iterator_t<range_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_concept_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_concept_tag_t<iterator_t>,
                                   std::forward_iterator_tag>));
     }
 
@@ -223,7 +223,7 @@ TEST(iterator_concept_tag_t, forward_iterator_tag)
         auto lambda = [] (auto & element) -> auto & { return element; };
         using view_t = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_concept_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_concept_tag_t<iterator_t>,
                                   std::forward_iterator_tag>));
     }
 
@@ -233,7 +233,7 @@ TEST(iterator_concept_tag_t, forward_iterator_tag)
         auto lambda = [] (auto & element) -> auto { return element; };
         using view_t = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_concept_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_concept_tag_t<iterator_t>,
                                   std::forward_iterator_tag>));
     }
 }
@@ -243,7 +243,7 @@ TEST(iterator_concept_tag_t, bidirectional_iterator_tag)
     {
         using range_t = std::list<int>;
         using iterator_t = std::ranges::iterator_t<range_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_concept_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_concept_tag_t<iterator_t>,
                                   std::bidirectional_iterator_tag>));
     }
 
@@ -253,7 +253,7 @@ TEST(iterator_concept_tag_t, bidirectional_iterator_tag)
         auto lambda = [] (auto & element) -> auto & { return element; };
         using view_t = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_concept_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_concept_tag_t<iterator_t>,
                                   std::bidirectional_iterator_tag>));
     }
 
@@ -263,7 +263,7 @@ TEST(iterator_concept_tag_t, bidirectional_iterator_tag)
         auto lambda = [] (auto & element) -> auto { return element; };
         using view_t = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_concept_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_concept_tag_t<iterator_t>,
                                   std::bidirectional_iterator_tag>));
     }
 }
@@ -276,7 +276,7 @@ TEST(iterator_concept_tag_t, random_access_iterator_tag)
         auto lambda = [] (auto & element) -> auto & { return element; };
         using view_t = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_concept_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_concept_tag_t<iterator_t>,
                                   std::random_access_iterator_tag>));
     }
 
@@ -286,7 +286,7 @@ TEST(iterator_concept_tag_t, random_access_iterator_tag)
         auto lambda = [] (auto & element) -> auto { return element; };
         using view_t = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
-        EXPECT_TRUE((std::same_as<seqan3::detail::iterator_concept_tag_t<iterator_t>,
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_concept_tag_t<iterator_t>,
                                   std::random_access_iterator_tag>));
     }
 }
@@ -295,6 +295,6 @@ TEST(iterator_concept_tag_t, contiguous_iterator_tag)
 {
     using range_t = std::vector<int>;
     using iterator_t = std::ranges::iterator_t<range_t>;
-    EXPECT_TRUE((std::same_as<seqan3::detail::iterator_concept_tag_t<iterator_t>,
+    EXPECT_TRUE((std::same_as<bio::detail::iterator_concept_tag_t<iterator_t>,
                               std::contiguous_iterator_tag>));
 }

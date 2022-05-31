@@ -8,11 +8,11 @@ enum class my_enum
 };
 
 template <>
-constexpr bool seqan3::add_enum_bitwise_operators<my_enum> = true;
+constexpr bool bio::add_enum_bitwise_operators<my_enum> = true;
 
 int main()
 {
-    using seqan3::operator|;
+    using bio::operator|;
     
     my_enum e = my_enum::VAL1;
     my_enum e2 = e | my_enum::VAL2;

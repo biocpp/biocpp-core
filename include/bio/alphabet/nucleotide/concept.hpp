@@ -8,7 +8,7 @@
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
  * \author Jörg Winkler <j.winkler AT fu-berlin.de>
- * \brief Provides seqan3::nucleotide_alphabet.
+ * \brief Provides bio::nucleotide_alphabet.
  */
 
 #pragma once
@@ -20,18 +20,18 @@
 // complement()
 // ============================================================================
 
-namespace seqan3::detail::adl_only
+namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename ...args_t>
 void complement(args_t ...) = delete;
 
-//!\brief Functor definition for seqan3::complement.
+//!\brief Functor definition for bio::complement.
 struct complement_fn
 {
 public:
-    SEQAN3_CPO_IMPL(2, seqan3::custom::alphabet<decltype(v)>::complement(v)) // explicit customisation
+    SEQAN3_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::complement(v)) // explicit customisation
     SEQAN3_CPO_IMPL(1, complement(v)                                       ) // ADL
     SEQAN3_CPO_IMPL(0, v.complement()                                      ) // member
 
@@ -54,9 +54,9 @@ public:
     }
 };
 
-} // namespace seqan3::detail::adl_only
+} // namespace bio::detail::adl_only
 
-namespace seqan3
+namespace bio
 {
 
 /*!\name Function objects (Nucleotide)
@@ -74,7 +74,7 @@ namespace seqan3
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   1. A static member function `complement(your_type const a)` of the class `seqan3::custom::alphabet<your_type>`.
+ *   1. A static member function `complement(your_type const a)` of the class `bio::custom::alphabet<your_type>`.
  *   2. A free function `complement(your_type const a)` in the namespace of your type (or as `friend`).
  *   3. A member function called `complement()`.
  *
@@ -99,20 +99,20 @@ inline constexpr auto complement = detail::adl_only::complement_fn{};
 // nucleotide_alphabet concept
 // ============================================================================
 
-/*!\interface seqan3::nucleotide_alphabet <>
- * \extends seqan3::alphabet
+/*!\interface bio::nucleotide_alphabet <>
+ * \extends bio::alphabet
  * \brief A concept that indicates whether an alphabet represents nucleotides.
  * \ingroup nucleotide
  *
  * \details
  *
- * In addition to the requirements for seqan3::alphabet, the nucleotide_alphabet introduces
- * a requirement for a complement function: seqan3::nucleotide_alphabet::complement.
+ * In addition to the requirements for bio::alphabet, the nucleotide_alphabet introduces
+ * a requirement for a complement function: bio::nucleotide_alphabet::complement.
  *
  * ### Requirements
  *
- *   1. `t` shall model seqan3::alphabet
- *   2. seqan3::complement needs to be defined for objects of type `t`
+ *   1. `t` shall model bio::alphabet
+ *   2. bio::complement needs to be defined for objects of type `t`
  *
  * See the documentation pages for the respective requirements.
  *
@@ -128,8 +128,8 @@ inline constexpr auto complement = detail::adl_only::complement_fn{};
 template <typename t>
 concept nucleotide_alphabet = alphabet<t> && requires (t val)
 {
-    { seqan3::complement(val) };
+    { bio::complement(val) };
 };
 //!\endcond
 
-} // namespace seqan3
+} // namespace bio

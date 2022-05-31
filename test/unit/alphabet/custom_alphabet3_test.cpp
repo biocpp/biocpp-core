@@ -16,7 +16,7 @@
 
 //![third_party_type]
 #include <cstddef>                      // for size_t
-#include <bio/alphabet/concept.hpp>  // for seqan3::alphabet
+#include <bio/alphabet/concept.hpp>  // for bio::alphabet
 
 // this is from some other library:
 namespace third_party_ns
@@ -35,7 +35,7 @@ enum class third_party_type
 
 // this is in your code (no namespace):
 template <>
-struct seqan3::custom::alphabet<third_party_ns::third_party_type>
+struct bio::custom::alphabet<third_party_ns::third_party_type>
 {
 
     static constexpr size_t alphabet_size = 3;
@@ -76,7 +76,7 @@ struct seqan3::custom::alphabet<third_party_ns::third_party_type>
     }
 };
 
-static_assert(seqan3::alphabet<third_party_ns::third_party_type>);
+static_assert(bio::alphabet<third_party_ns::third_party_type>);
 //![third_party_type]
 
 INSTANTIATE_TYPED_TEST_SUITE_P(third_party_type, alphabet, third_party_ns::third_party_type, );

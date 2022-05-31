@@ -5,14 +5,14 @@
 
 int main()
 {
-    using seqan3::operator""_dna4;
-    using seqan3::operator""_rna4;
+    using bio::operator""_dna4;
+    using bio::operator""_rna4;
 
     // The following creates {'C'_dna4, phred42{0}}
-    seqan3::qualified<seqan3::dna4, seqan3::phred42> letter1{'C'_dna4};
-    // The following also creates {'C'_dna4, seqan3::phred42{0}}, since rna4 assignable to dna4
-    seqan3::qualified<seqan3::dna4, seqan3::phred42> letter2{'C'_rna4};
+    bio::qualified<bio::dna4, bio::phred42> letter1{'C'_dna4};
+    // The following also creates {'C'_dna4, bio::phred42{0}}, since rna4 assignable to dna4
+    bio::qualified<bio::dna4, bio::phred42> letter2{'C'_rna4};
 
     if (letter1 == letter2)
-        seqan3::debug_stream << "yeah\n"; // yeah
+        bio::debug_stream << "yeah\n"; // yeah
 }

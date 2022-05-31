@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::views::trim_quality.
+ * \brief Provides bio::views::trim_quality.
  */
 
 #pragma once
@@ -16,10 +16,10 @@
 #include <bio/ranges/views/deep.hpp>
 #include <ranges>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
-/*!\brief The underlying type of seqan3::views::trim_quality.
+/*!\brief The underlying type of bio::views::trim_quality.
  * \ingroup views
  *
  * Under the hood this delegates to views::take_until.
@@ -38,7 +38,7 @@ struct trim_fn
     }
 
     /*!\brief Trim based on minimum phred score.
-     * \tparam irng_t The type of the range being processed. See seqan3::views::trim_quality for requirements.
+     * \tparam irng_t The type of the range being processed. See bio::views::trim_quality for requirements.
      * \param irange The range being processed.
      * \param threshold The minimum quality as a phred score [integral type].
      */
@@ -46,7 +46,7 @@ struct trim_fn
     constexpr auto operator()(irng_t && irange, threshold_t const threshold) const
     {
         static_assert(quality_alphabet<std::remove_reference_t<std::ranges::range_reference_t<irng_t>>>,
-                      "views::trim_quality can only operate on ranges over seqan3::quality_alphabet.");
+                      "views::trim_quality can only operate on ranges over bio::quality_alphabet.");
         static_assert(std::same_as<std::remove_cvref_t<threshold_t>,
                      std::remove_cvref_t<std::ranges::range_reference_t<irng_t>>> ||
                       std::integral<std::remove_cvref_t<threshold_t>>,
@@ -69,19 +69,19 @@ struct trim_fn
     }
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\name Alphabet related views
  * \{
  */
 
-/*!\brief               A view that does quality-threshold trimming on a range of seqan3::quality_alphabet.
+/*!\brief               A view that does quality-threshold trimming on a range of bio::quality_alphabet.
  * \tparam urng_t       The type of the range being processed. See below for requirements.
  * \tparam threshold_t  Either std::ranges::range_value_t<urng_t> or
- *                      seqan3::alphabet_phred_t<std::ranges::range_value_t<urng_t>>.
+ *                      bio::alphabet_phred_t<std::ranges::range_value_t<urng_t>>.
  * \param[in] urange    The range being processed. [parameter is omitted in pipe notation]
  * \param[in] threshold The minimum quality.
  * \returns             A trimmed range. See below for the properties of the returned range.
@@ -109,24 +109,24 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                       | *lost*                                 |
  * | std::ranges::common_range        |                                       | *lost*                                 |
  * | std::ranges::output_range        |                                       | *preserved*                            |
- * | seqan3::const_iterable_range     |                                       | *preserved*                            |
+ * | bio::const_iterable_range     |                                       | *preserved*                            |
  * |                                  |                                       |                                        |
- * | std::ranges::range_reference_t   | seqan3::quality_alphabet              | std::ranges::range_reference_t<urng_t> |
+ * | std::ranges::range_reference_t   | bio::quality_alphabet              | std::ranges::range_reference_t<urng_t> |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
  * ###Example
  *
- * Operating on a range of seqan3::phred42:
+ * Operating on a range of bio::phred42:
  * \include test/snippet/range/views/trim_phred42.cpp
  *
- * Or operating on a range of seqan3::dna5q:
+ * Or operating on a range of bio::dna5q:
  * \include test/snippet/range/views/trim_dna5q.cpp
  * \hideinitializer
  */
 
-inline constexpr auto trim_quality = deep{seqan3::detail::trim_fn{}};
+inline constexpr auto trim_quality = deep{bio::detail::trim_fn{}};
 
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

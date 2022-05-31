@@ -29,16 +29,16 @@
 #include <cereal/types/vector.hpp>
 #endif // SEQAN3_WITH_CEREAL
 
-namespace seqan3
+namespace bio
 {
 
 namespace test
 {
 //!\cond DEV
 /*!\brief Tests if an object is cerealisable.
- * \tparam in_archive_t  Type of the cereal input archive. Must model seqan3::cereal_input_archive.
- * \tparam out_archive_t Type of the cereal output archive. Must model seqan3::cereal_output_archive.
- * \tparam value_t       The type to cerealise. Must model seqan3::cerealisable.
+ * \tparam in_archive_t  Type of the cereal input archive. Must model bio::cereal_input_archive.
+ * \tparam out_archive_t Type of the cereal output archive. Must model bio::cereal_output_archive.
+ * \tparam value_t       The type to cerealise. Must model bio::cerealisable.
  * \param l The object to cerealise.
  */
 template <cereal_input_archive in_archive_t, cereal_output_archive out_archive_t, typename value_t>
@@ -83,6 +83,6 @@ void do_serialisation([[maybe_unused]] value_t && l)
 }
 //!\endcond
 
-} // namespace seqan3::test
+} // namespace bio::test
 
-} //namespace seqan3
+} //namespace bio

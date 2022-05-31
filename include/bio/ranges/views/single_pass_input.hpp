@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Rene Rahn <rene.rahn AT fu-berlin.de>
- * \brief Provides seqan3::single_pass_input_view
+ * \brief Provides bio::single_pass_input_view
  */
 
 #pragma once
@@ -23,7 +23,7 @@
 // Implementation of single pass input view.
 //-----------------------------------------------------------------------------
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 //!\brief Forward declaration.
@@ -45,7 +45,7 @@ private:
     //!\brief The iterator type for the underlying range.
     using urng_iterator_type = std::ranges::iterator_t<urng_t>;
 
-    //!\brief Friend declaration for seqan3::detail::basic_iterator.
+    //!\brief Friend declaration for bio::detail::basic_iterator.
     template <typename view_t>
     friend class basic_iterator;
 
@@ -135,7 +135,7 @@ public:
 };
 
 /*!\name Deduction guide.
- * \relates seqan3::detail::single_pass_input_view
+ * \relates bio::detail::single_pass_input_view
  * \{
  */
 
@@ -144,13 +144,13 @@ template <std::ranges::viewable_range urng_t>
 single_pass_input_view(urng_t &&) ->
     single_pass_input_view<std::views::all_t<urng_t>>;
 //!\}
-} // seqan3::detail
+} // bio::detail
 
 //-----------------------------------------------------------------------------
 // Iterator for single pass input view.
 //-----------------------------------------------------------------------------
 
-namespace seqan3::detail
+namespace bio::detail
 {
 /*!\brief An input_iterator over the associated range.
  * \implements std::input_iterator
@@ -170,7 +170,7 @@ class basic_iterator<single_pass_input_view<view_type>>
     //!\brief The pointer to the associated view.
     single_pass_input_view<view_type> * view_ptr{};
 
-    //!\brief Friend declaration to give seqan3::detail::single_pass_input_sentinel access to members of this class.
+    //!\brief Friend declaration to give bio::detail::single_pass_input_sentinel access to members of this class.
     template <typename input_view_type>
     friend class basic_iterator;
 
@@ -210,7 +210,7 @@ public:
     //!\brief Destruction.
     ~basic_iterator() = default;
 
-    //!\brief Constructing from the underlying seqan3::single_pass_input_view.
+    //!\brief Constructing from the underlying bio::single_pass_input_view.
     basic_iterator(single_pass_input_view<view_type> & view) noexcept : view_ptr{&view}
     {}
     //!\}
@@ -301,14 +301,14 @@ protected:
         return view_ptr->state_ptr->cached_urng_iter;
     }
 };
-}  // seqan3::detail
+}  // bio::detail
 
 //-----------------------------------------------------------------------------
 // View shortcut for functor.
 //-----------------------------------------------------------------------------
 
 //![adaptor_def]
-namespace seqan3::views
+namespace bio::views
 {
 /*!\name General purpose views
  * \{
@@ -346,7 +346,7 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                       | *lost*                                             |
  * | std::ranges::common_range        |                                       | *lost*                                             |
  * | std::ranges::output_range        |                                       | *preserved*                                        |
- * | seqan3::const_iterable_range     |                                       | *lost*                                             |
+ * | bio::const_iterable_range     |                                       | *lost*                                             |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   |                                       | std::ranges::range_reference_t<urng_t>             |
  *
@@ -364,5 +364,5 @@ namespace seqan3::views
 inline constexpr auto single_pass_input = detail::adaptor_for_view_without_args<detail::single_pass_input_view>{};
 
 //!\}
-} // namespace seqan3::views
+} // namespace bio::views
 //![adaptor_def]

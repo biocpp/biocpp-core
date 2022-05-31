@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::views::as_const.
+ * \brief Provides bio::views::as_const.
  */
 
 #pragma once
@@ -15,10 +15,10 @@
 #include <bio/meta/type_traits/function.hpp>
 #include <ranges>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
-//!\brief Function object for seqan3::views::as_const.
+//!\brief Function object for bio::views::as_const.
 struct as_const_fn
 {
     //!\brief Operator that returns rvalues as rvalues.
@@ -36,9 +36,9 @@ struct as_const_fn
     }
 };
 
-} // namespace seqan3::detail
+} // namespace bio::detail
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\name General purpose views
@@ -72,7 +72,7 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                       | *preserved*                                        |
  * | std::ranges::common_range        |                                       | *preserved*                                        |
  * | std::ranges::output_range        |                                       | *lost*                                             |
- * | seqan3::const_iterable_range     |                                       | *preserved*                                        |
+ * | bio::const_iterable_range     |                                       | *preserved*                                        |
  * | std::semiregular                 |                                       | *preserved*                                        |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   |                                       | `t &` -> `t const &` but `t` -> `t`                |
@@ -84,7 +84,7 @@ namespace seqan3::views
  * \include test/snippet/range/views/as_const.cpp
  * \hideinitializer
  */
-inline auto const as_const = std::views::transform(seqan3::detail::as_const_fn{});
+inline auto const as_const = std::views::transform(bio::detail::as_const_fn{});
 //!\}
 
-} // namespace seqan3::views
+} // namespace bio::views

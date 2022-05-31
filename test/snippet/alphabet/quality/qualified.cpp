@@ -5,27 +5,27 @@
 
 int main()
 {
-    using seqan3::operator""_dna4;
-    using seqan3::get;
+    using bio::operator""_dna4;
+    using bio::get;
 
-    seqan3::qualified<seqan3::dna4, seqan3::phred42> letter{'A'_dna4, seqan3::phred42{7}};
-    seqan3::debug_stream << int(seqan3::to_rank(letter)) << ' '
-                         << int(seqan3::to_rank(get<0>(letter))) << ' '
-                         << int(seqan3::to_rank(get<1>(letter))) << '\n';
+    bio::qualified<bio::dna4, bio::phred42> letter{'A'_dna4, bio::phred42{7}};
+    bio::debug_stream << int(bio::to_rank(letter)) << ' '
+                         << int(bio::to_rank(get<0>(letter))) << ' '
+                         << int(bio::to_rank(get<1>(letter))) << '\n';
     // 28 0 7
 
-    seqan3::debug_stream << seqan3::to_char(letter) << ' '
-                         << seqan3::to_char(get<0>(letter)) << ' '
-                         << seqan3::to_char(get<1>(letter)) << '\n';
+    bio::debug_stream << bio::to_char(letter) << ' '
+                         << bio::to_char(get<0>(letter)) << ' '
+                         << bio::to_char(get<1>(letter)) << '\n';
     // A A (
 
-    seqan3::debug_stream << seqan3::to_phred(letter) << ' '
-                         << seqan3::to_phred(get<1>(letter)) << '\n';
+    bio::debug_stream << bio::to_phred(letter) << ' '
+                         << bio::to_phred(get<1>(letter)) << '\n';
     // 7 7
 
     // modify via structured bindings and references:
     auto & [ seq_l, qual_l ] = letter;
     seq_l = 'G'_dna4;
-    seqan3::debug_stream << seqan3::to_char(letter) << '\n';
+    bio::debug_stream << bio::to_char(letter) << '\n';
     // G
 }

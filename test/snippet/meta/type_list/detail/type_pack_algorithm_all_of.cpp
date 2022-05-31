@@ -22,5 +22,5 @@ auto fn = [](auto value)
         return false;
 };
 
-static_assert(seqan3::detail::all_of(fn, 3, 1.2, false)); // evalates to true
-static_assert(!seqan3::detail::all_of(fn, 3, 1.2, false, "something else")); // evalates to false
+static_assert(bio::detail::all_of(fn, 3, 1.2, false)); // evalates to true
+static_assert(!bio::detail::all_of(fn, 3, 1.2, false, "something else")); // evalates to false

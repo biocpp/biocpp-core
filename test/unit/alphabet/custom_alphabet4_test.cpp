@@ -31,9 +31,9 @@ struct non_writeable_alphabet
 // see issue https://github.com/seqan/seqan3/issues/1518
 TEST(non_writeable_alphabet_test, issue1518)
 {
-    EXPECT_TRUE(seqan3::semialphabet<non_writeable_alphabet>);
-    EXPECT_TRUE(seqan3::alphabet<non_writeable_alphabet>);
+    EXPECT_TRUE(bio::semialphabet<non_writeable_alphabet>);
+    EXPECT_TRUE(bio::alphabet<non_writeable_alphabet>);
 
-    EXPECT_FALSE(seqan3::writable_semialphabet<non_writeable_alphabet>);
-    EXPECT_FALSE(seqan3::writable_alphabet<non_writeable_alphabet>);
+    EXPECT_FALSE(bio::writable_semialphabet<non_writeable_alphabet>);
+    EXPECT_FALSE(bio::writable_alphabet<non_writeable_alphabet>);
 }

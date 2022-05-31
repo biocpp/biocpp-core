@@ -15,7 +15,7 @@
 #include <bio/meta/platform.hpp>
 #include <ranges>
 
-namespace seqan3
+namespace bio
 {
 
 //!\cond
@@ -56,4 +56,4 @@ SEQAN3_DEPRECATED_310 auto empty(t && v)
 }
 //!\endcond
 
-} // namespace seqan3
+} // namespace bio

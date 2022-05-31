@@ -1,27 +1,27 @@
 #include <iostream>                     // for std::cout
 #include <bio/alphabet/all.hpp>      // include all alphabet headers
 
-template <seqan3::alphabet t>
+template <bio::alphabet t>
 void print(t const v)
 {
-    std::cout << "I am an alphabet and my value as char is: " << seqan3::to_char(v) << '\n';
+    std::cout << "I am an alphabet and my value as char is: " << bio::to_char(v) << '\n';
 }
 
-template <seqan3::nucleotide_alphabet t>
+template <bio::nucleotide_alphabet t>
 void print(t const v)
 {
-    std::cout << "I am a nucleotide, my value as char is: " << seqan3::to_char(v)
-              << " and my complement is: " << seqan3::to_char(seqan3::complement(v)) << '\n';
+    std::cout << "I am a nucleotide, my value as char is: " << bio::to_char(v)
+              << " and my complement is: " << bio::to_char(bio::complement(v)) << '\n';
 }
 
-using seqan3::operator""_dna5;
-using seqan3::operator""_aa27;
+using bio::operator""_dna5;
+using bio::operator""_aa27;
 
 int main()
 {
     auto d = 'A'_dna5;
     auto a = 'L'_aa27;
-    auto g = seqan3::gap{};
+    auto g = bio::gap{};
 
     print(d);
     print(a);

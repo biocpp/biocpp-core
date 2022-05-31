@@ -22,7 +22,7 @@
  * All traits on a template parameter pack are defined in the header `<seqan3/core/type_pack/traits.hpp>`.
  */
 
-/*!\namespace seqan3::pack_traits
+/*!\namespace bio::pack_traits
  * \brief Namespace containing traits for working on type packs.
  */
 

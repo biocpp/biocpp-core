@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides test utilities for seqan3::simd::simd_type types.
+ * \brief Provides test utilities for bio::simd::simd_type types.
  * \author Marcel Ehrhardt <marcel.ehrhardt AT fu-berlin.de>
  */
 
@@ -23,7 +23,7 @@
 #include <seqan/sequence.h>
 #endif
 
-namespace seqan3::test
+namespace bio::test
 {
 
 template <typename alphabet_t>
@@ -132,4 +132,4 @@ auto generate_sequence_pairs_seqan2(size_t const sequence_length,
 }
 #endif // generate seqan2 data.
 
-} // namespace seqan3::test
+} // namespace bio::test

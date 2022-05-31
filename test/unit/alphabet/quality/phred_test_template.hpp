@@ -17,15 +17,15 @@ TYPED_TEST_SUITE_P(phred);
 // test provision of data type `phred_type` and phred converter.
 TYPED_TEST_P(phred, concept_check)
 {
-    EXPECT_TRUE(seqan3::quality_alphabet<TypeParam>);
-    EXPECT_TRUE(seqan3::quality_alphabet<TypeParam &>);
-    EXPECT_TRUE(seqan3::quality_alphabet<TypeParam const>);
-    EXPECT_TRUE(seqan3::quality_alphabet<TypeParam const &>);
+    EXPECT_TRUE(bio::quality_alphabet<TypeParam>);
+    EXPECT_TRUE(bio::quality_alphabet<TypeParam &>);
+    EXPECT_TRUE(bio::quality_alphabet<TypeParam const>);
+    EXPECT_TRUE(bio::quality_alphabet<TypeParam const &>);
 
-    EXPECT_TRUE(seqan3::writable_quality_alphabet<TypeParam>);
-    EXPECT_TRUE(seqan3::writable_quality_alphabet<TypeParam &>);
-    EXPECT_FALSE(seqan3::writable_quality_alphabet<TypeParam const>);
-    EXPECT_FALSE(seqan3::writable_quality_alphabet<TypeParam const &>);
+    EXPECT_TRUE(bio::writable_quality_alphabet<TypeParam>);
+    EXPECT_TRUE(bio::writable_quality_alphabet<TypeParam &>);
+    EXPECT_FALSE(bio::writable_quality_alphabet<TypeParam const>);
+    EXPECT_FALSE(bio::writable_quality_alphabet<TypeParam const &>);
 }
 
 // more elaborate test of assign_char and to_char, basic test is in alphabet_test.cpp

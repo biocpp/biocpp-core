@@ -40,10 +40,10 @@ struct copy_counter
 };
 
 struct adaptor_base_type_checker :
-    seqan3::detail::adaptor_base<adaptor_base_type_checker,
+    bio::detail::adaptor_base<adaptor_base_type_checker,
                                  copy_counter, copy_counter const, copy_counter &, copy_counter const &>
 {
-    using base_t = seqan3::detail::adaptor_base<adaptor_base_type_checker,
+    using base_t = bio::detail::adaptor_base<adaptor_base_type_checker,
                                                 copy_counter, copy_counter const, copy_counter &, copy_counter const &>;
     using base_t::base_t;
 
@@ -188,8 +188,8 @@ struct dummy_view
 
 TEST(adaptor_combination, constexpr_combine)
 {
-    constexpr auto adaptor1 = seqan3::detail::adaptor_for_view_without_args<dummy_view>{};
-    constexpr auto adaptor2 = seqan3::detail::adaptor_for_view_without_args<dummy_view>{};
+    constexpr auto adaptor1 = bio::detail::adaptor_for_view_without_args<dummy_view>{};
+    constexpr auto adaptor2 = bio::detail::adaptor_for_view_without_args<dummy_view>{};
 
     EXPECT_TRUE((SEQAN3_IS_CONSTEXPR(adaptor1 | adaptor2)));
 }

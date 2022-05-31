@@ -7,21 +7,21 @@
 
 /*!\file
  * \author Sara Hetzel <sara.hetzel AT fu-berlin.de>
- * \brief Provides seqan3::semialphabet_any.
+ * \brief Provides bio::semialphabet_any.
  */
 
 #pragma once
 
 #include <bio/alphabet/alphabet_base.hpp>
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief A semi-alphabet that type erases all other semi-alphabets of the same size.
  * \ingroup alphabet_composite
- * \implements seqan3::semialphabet
- * \implements seqan3::trivially_copyable
- * \implements seqan3::standard_layout
+ * \implements bio::semialphabet
+ * \implements bio::trivially_copyable
+ * \implements bio::standard_layout
  *
  * \details
  * This alphabet provides a generic representation for different alphabets of the same size by erasing
@@ -72,7 +72,7 @@ public:
     //!\endcond
     explicit semialphabet_any(other_alph_t const other)
     {
-        assign_rank(seqan3::to_rank(other));
+        assign_rank(bio::to_rank(other));
     }
     //!\}
 
@@ -89,4 +89,4 @@ public:
     }
 };
 
-} // namespace seqan3
+} // namespace bio

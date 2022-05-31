@@ -7,7 +7,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
- * \brief Provides seqan3::views::take_exactly and seqan3::views::take_exactly_or_throw.
+ * \brief Provides bio::views::take_exactly and bio::views::take_exactly_or_throw.
  */
 
 #pragma once
@@ -18,7 +18,7 @@
 //  views::take_exactly (adaptor instance definition)
 // ============================================================================
 
-namespace seqan3::views
+namespace bio::views
 {
 
 /*!\name General purpose views
@@ -53,18 +53,18 @@ namespace seqan3::views
  * | std::ranges::sized_range         |                                       | ***guaranteed***                                   |
  * | std::ranges::common_range        |                                       | *preserved*                                        |
  * | std::ranges::output_range        |                                       | *preserved* except if `urng_t` is std::basic_string|
- * | seqan3::const_iterable_range     |                                       | *preserved*                                        |
+ * | bio::const_iterable_range     |                                       | *preserved*                                        |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   |                                       | std::ranges::range_reference_t<urng_t>             |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
- * The difference to seqan3::views::take is that this view always exposes size information – even if the underlying
+ * The difference to bio::views::take is that this view always exposes size information – even if the underlying
  * range is not sized. You should only use this if you know that the underlying range will always be
  * at least `size` long.
  *
- * For seqan3::views::take_exactly if the underlying range is shorter than `size`, the behaviour is undefined.
- * seqan3::views::take_exactly_or_throw is a safer alternative, because it throws an exception when an iterator before
+ * For bio::views::take_exactly if the underlying range is shorter than `size`, the behaviour is undefined.
+ * bio::views::take_exactly_or_throw is a safer alternative, because it throws an exception when an iterator before
  * the `size`-th one compares equal to the end sentinel; and it also throws on construction if it knows that the
  * underlying range is smaller.
  *
@@ -82,13 +82,13 @@ inline auto constexpr take_exactly = detail::take_fn<true, false>{};
 
 /*!\brief A view adaptor that returns the first `size` elements from the underlying range and also exposes size
  *        information; throws if the underlying range is smaller than `size`.
- * \throws seqan3::unexpected_end_of_input If the underlying range is smaller than `size`.
+ * \throws bio::unexpected_end_of_input If the underlying range is smaller than `size`.
  * \ingroup views
  *
- * \copydetails seqan3::views::take_exactly
+ * \copydetails bio::views::take_exactly
  * \hideinitializer
  */
 inline auto constexpr take_exactly_or_throw = detail::take_fn<true, true>{};
 
 //!\}
-} // namespace seqan3::views
+} // namespace bio::views

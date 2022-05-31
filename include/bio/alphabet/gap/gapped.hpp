@@ -8,7 +8,7 @@
 /*!\file
  * \author Marcel Ehrhardt <marcel.ehrhardt AT fu-berlin.de>
  * \author David Heller <david.heller AT fu-berlin.de>
- * \brief Provides seqan3::gapped.
+ * \brief Provides bio::gapped.
  */
 
 #pragma once
@@ -16,20 +16,20 @@
 #include <bio/alphabet/gap/gap.hpp>
 #include <bio/alphabet/composite/alphabet_variant.hpp>
 
-namespace seqan3
+namespace bio
 {
 
 
 /*!\brief Extends a given alphabet with a gap character.
  * \ingroup gap
- * \tparam alphabet_t Type of the letter, e.g. dna4; must satisfy seqan3::writable_alphabet.
+ * \tparam alphabet_t Type of the letter, e.g. dna4; must satisfy bio::writable_alphabet.
  *
  * The gapped alphabet represents the variant of a given alphabet and the
- * seqan3::gap alphabet (e.g. the four letter DNA alphabet + a gap character).
+ * bio::gap alphabet (e.g. the four letter DNA alphabet + a gap character).
  *
  * The gapped alphabet may be brace initialized from the static letter members of the underlying alphabet and the
- * seqan3::gap alphabet. Note that you cannot assign the alphabet by using letters of type `char`, but you instead have
- * to use the function assign_char() of the underlying alphabet or seqan3::gap::assign_char().
+ * bio::gap alphabet. Note that you cannot assign the alphabet by using letters of type `char`, but you instead have
+ * to use the function assign_char() of the underlying alphabet or bio::gap::assign_char().
  *
  * \include test/snippet/alphabet/gap/gapped.cpp
  *
@@ -41,9 +41,9 @@ template <typename alphabet_t>
 //!\endcond
 using gapped = alphabet_variant<alphabet_t, gap>;
 
-} // namespace seqan3
+} // namespace bio
 
-namespace seqan3::detail
+namespace bio::detail
 {
 // ---------------------------------------------------------------------------------------------------------------------
 // is_gapped_alphabet constexpr variable
@@ -54,9 +54,9 @@ namespace seqan3::detail
 template <typename t>
 constexpr bool is_gapped_alphabet = false;
 
-//!\brief Helper variable to determine if an alphabet is gapped, true for specilisations of seqan3::gapped.
+//!\brief Helper variable to determine if an alphabet is gapped, true for specilisations of bio::gapped.
 //!\ingroup gap
 template <typename t>
 constexpr bool is_gapped_alphabet<gapped<t>> = true;
 
-} // namespace seqan3::detail
+} // namespace bio::detail

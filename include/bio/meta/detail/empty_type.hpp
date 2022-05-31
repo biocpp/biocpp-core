@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides seqan3::detail::empty_type.
+ * \brief Provides bio::detail::empty_type.
  * \author Rene Rahn <rene.rahn AT fu-berlin.de>
  */
 
@@ -14,7 +14,7 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace seqan3::detail
+namespace bio::detail
 {
 
 //!\brief An empty class type used in meta programming.
@@ -22,4 +22,4 @@ namespace seqan3::detail
 struct empty_type
 {};
 
-}  // namespace seqan3::detail
+}  // namespace bio::detail

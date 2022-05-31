@@ -4,17 +4,17 @@
 
 int main()
 {
-    using seqan3::operator""_dna4;
+    using bio::operator""_dna4;
 
-    seqan3::masked<seqan3::dna4> dna4_masked{};
-    seqan3::masked<seqan3::dna4> dna4_another_masked{'A'_dna4, seqan3::mask::UNMASKED};
+    bio::masked<bio::dna4> dna4_masked{};
+    bio::masked<bio::dna4> dna4_another_masked{'A'_dna4, bio::mask::UNMASKED};
     // create a dna4 masked alphabet with an unmasked A
 
     dna4_masked.assign_char('a'); // assigns a masked 'A'_dna4
 
     if (dna4_masked.to_char() != dna4_another_masked.to_char())
     {
-        seqan3::debug_stream << dna4_masked.to_char() << " is not the same as " <<
+        bio::debug_stream << dna4_masked.to_char() << " is not the same as " <<
                                 dna4_another_masked.to_char() << "\n";
     }
 }

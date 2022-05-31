@@ -19,12 +19,12 @@
 #include <bio/ranges/views/repeat_n.hpp>
 #include <bio/ranges/views/to.hpp>
 
-namespace seqan3
+namespace bio
 {
 
 /*!\brief A constexpr bitset implementation with dynamic size at compile time.
- * \implements seqan3::reservible_container
- * \implements seqan3::cerealisable
+ * \implements bio::reservible_container
+ * \implements bio::cerealisable
  * \ingroup container
  * \tparam bit_capacity The capacity of the dynamic bitset
  *
@@ -65,7 +65,7 @@ private:
     //!\brief Stores the actual data.
     bitfield data{0u, 0u}; // Specifying values prevents ICE on gcc < 9 when comparing to default constructed bitset
 
-    //!\brief Proxy data type returned by seqan3::dynamic_bitset as reference to the bit.
+    //!\brief Proxy data type returned by bio::dynamic_bitset as reference to the bit.
     class reference_proxy_type
     {
     public:
@@ -93,7 +93,7 @@ private:
         ~reference_proxy_type() noexcept = default; //!< Defaulted.
         //!\}
 
-        //!\brief Initialise from seqan3::dynamic_bitset's underlying data and a bit position.
+        //!\brief Initialise from bio::dynamic_bitset's underlying data and a bit position.
         constexpr reference_proxy_type(bitfield & internal_, size_t const pos) noexcept :
             internal{internal_}, mask{1ULL<<pos}
         {}
@@ -975,7 +975,7 @@ public:
     {
         if (i >= size()) // [[unlikely]]
             throw std::out_of_range{"Trying to access position " + std::to_string(i) +
-                                    " in a seqan3::dynamic_bitset of size " + std::to_string(size()) + "."};
+                                    " in a bio::dynamic_bitset of size " + std::to_string(size()) + "."};
         return (*this)[i];
     }
 
@@ -984,7 +984,7 @@ public:
     {
         if (i >= size()) // [[unlikely]]
             throw std::out_of_range{"Trying to access position " + std::to_string(i) +
-                                    " in a seqan3::dynamic_bitset of size " + std::to_string(size()) + "."};
+                                    " in a bio::dynamic_bitset of size " + std::to_string(size()) + "."};
         return (*this)[i];
     }
 
@@ -1632,7 +1632,7 @@ public:
      * \{
      */
     /*!\brief Converts the `dynamic_bitset` to a `std::string`.
-     * \tparam char_t Char type; must model seqan3::builtin_character.
+     * \tparam char_t Char type; must model bio::builtin_character.
      * \param[in] zero builtin_characteracter of type char_t representing `false`. Default <code>'0'</code>.
      * \param[in] one  builtin_characteracter of type char_t representing `true`. Default <code>'1'</code>.
      * \throws std::bad_alloc from the the std::string constructor.
@@ -1681,7 +1681,7 @@ public:
         if constexpr (std::numeric_limits<unsigned long>::max() < std::numeric_limits<size_t>::max())
         {
             if (data.bits > std::numeric_limits<unsigned long>::max())
-                throw std::overflow_error{"seqan3::dynamic_bitset cannot be represented as unsigned long."};
+                throw std::overflow_error{"bio::dynamic_bitset cannot be represented as unsigned long."};
         }
 
         return static_cast<unsigned long>(data.bits);
@@ -1706,7 +1706,7 @@ public:
         if constexpr (std::numeric_limits<unsigned long long>::max() < std::numeric_limits<size_t>::max())
         {
             if (data.bits >= std::numeric_limits<unsigned long long>::max())
-                throw std::overflow_error{"seqan3::dynamic_bitset cannot be represented as unsigned long long."};
+                throw std::overflow_error{"bio::dynamic_bitset cannot be represented as unsigned long long."};
         }
 
         return static_cast<unsigned long long>(data.bits);
@@ -1716,9 +1716,9 @@ public:
     /*!\name Input/output
      * \{
      */
-    /*!\brief Formatted output for the `seqan3::dynamic_bitset`.
+    /*!\brief Formatted output for the `bio::dynamic_bitset`.
      * \param[in,out] os  The `std::basic_ostream` to write to.
-     * \param[in]     arg The `seqan3::dynamic_bitset` to read from.
+     * \param[in]     arg The `bio::dynamic_bitset` to read from.
      * \returns `os`.
      *
      * \details
@@ -1731,14 +1731,14 @@ public:
         return os;
     }
 
-    /*!\brief Formatted input for the `seqan3::dynamic_bitset`.
+    /*!\brief Formatted input for the `bio::dynamic_bitset`.
      * \param[in,out] is  The `std::basic_istream` to read from.
-     * \param[out]    arg The `seqan3::dynamic_bitset` to write to.
+     * \param[out]    arg The `bio::dynamic_bitset` to write to.
      * \returns `is`.
      *
      * \details
      *
-     * Reads at most `seqan3::dynamic_bitset::max_size()` characters from the stream.
+     * Reads at most `bio::dynamic_bitset::max_size()` characters from the stream.
      * If a stream error occurred or no characters could be extracted the `std::ios_base::failbit` is set.
      * This may throw an exception.
      */
@@ -1771,9 +1771,9 @@ public:
         return is;
     }
 
-    /*!\brief Formatted debug output for the `seqan3::dynamic_bitset`.
-     * \param[in,out] s   The `seqan3::debug_stream` to write to.
-     * \param[in]     arg The `seqan3::dynamic_bitset` to read from.
+    /*!\brief Formatted debug output for the `bio::dynamic_bitset`.
+     * \param[in,out] s   The `bio::debug_stream` to write to.
+     * \param[in]     arg The `bio::dynamic_bitset` to read from.
      * \returns `s`.
      *
      * \details
@@ -1790,7 +1790,7 @@ public:
 
     //!\cond DEV
     /*!\brief Serialisation support function.
-     * \tparam archive_t Type of `archive`; must satisfy seqan3::cereal_archive.
+     * \tparam archive_t Type of `archive`; must satisfy bio::cereal_archive.
      * \param[in] archive The archive being serialised from/to.
      *
      * \details
@@ -1811,24 +1811,24 @@ public:
     //!\endcond
 };
 
-} // namespace seqan3
+} // namespace bio
 
 namespace std
 {
 
-/*!\brief Struct for hashing a `seqan3::dynamic_bitset`.
+/*!\brief Struct for hashing a `bio::dynamic_bitset`.
  * \ingroup container
- * \tparam cap Capacity of the `seqan3::dynamic_bitset`.
+ * \tparam cap Capacity of the `bio::dynamic_bitset`.
  */
 template <size_t cap>
-struct hash<seqan3::dynamic_bitset<cap>>
+struct hash<bio::dynamic_bitset<cap>>
 {
-    /*!\brief Compute the hash for a `seqan3::dynamic_bitset`.
-     * \param[in] arg The `seqan3::dynamic_bitset` to process.
+    /*!\brief Compute the hash for a `bio::dynamic_bitset`.
+     * \param[in] arg The `bio::dynamic_bitset` to process.
      * \returns `size_t`.
-     * \sa seqan3::dynamic_bitset.to_ullong().
+     * \sa bio::dynamic_bitset.to_ullong().
      */
-    size_t operator()(seqan3::dynamic_bitset<cap> const arg) const noexcept
+    size_t operator()(bio::dynamic_bitset<cap> const arg) const noexcept
     {
         return static_cast<size_t>(arg.to_ullong());
     }

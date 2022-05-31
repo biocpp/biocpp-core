@@ -1,7 +1,7 @@
 #include <vector>                               // std::vector
 #include <forward_list>                         // std::forward_list
-#include <bio/meta/type_traits/lazy.hpp>     // seqan3::lazy and seqan3::lazy_conditional_t
-#include <bio/meta/type_traits/range.hpp>    // seqan3::size_type_t
+#include <bio/meta/type_traits/lazy.hpp>     // bio::lazy and bio::lazy_conditional_t
+#include <bio/meta/type_traits/range.hpp>    // bio::size_type_t
 #include <ranges>                    // std::ranges::input_range
 
 template <std::ranges::input_range rng_t>
@@ -19,8 +19,8 @@ void foobar(rng_t && range)
 
     // This delays instantiation of std::ranges::range_size_t<rngt_t> until after the
     // conditional-decision is made:
-    using size_type = seqan3::detail::lazy_conditional_t<std::ranges::sized_range<rng_t>,
-                                                         seqan3::detail::lazy<std::ranges::range_size_t, rng_t>,
+    using size_type = bio::detail::lazy_conditional_t<std::ranges::sized_range<rng_t>,
+                                                         bio::detail::lazy<std::ranges::range_size_t, rng_t>,
                                                          void>;
 
     // DO SOMETHING with size_type

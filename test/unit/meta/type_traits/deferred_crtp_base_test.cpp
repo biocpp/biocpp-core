@@ -37,12 +37,12 @@ public:
 
 // The derived class that inherits from a variadic crtp pattern.
 template <typename ...bases_t>
-class derived : public seqan3::detail::invoke_deferred_crtp_base<bases_t, derived<bases_t...>>...
+class derived : public bio::detail::invoke_deferred_crtp_base<bases_t, derived<bases_t...>>...
 {};
 
 TEST(deferred_crtp_base, one_base_not_augmented)
 {
-    using deferred_base1 = seqan3::detail::deferred_crtp_base<base1>;
+    using deferred_base1 = bio::detail::deferred_crtp_base<base1>;
 
     derived<deferred_base1> d{};
 
@@ -51,8 +51,8 @@ TEST(deferred_crtp_base, one_base_not_augmented)
 
 TEST(deferred_crtp_base, multiple_base_not_augmented)
 {
-    using deferred_base1 = seqan3::detail::deferred_crtp_base<base1>;
-    using deferred_base2 = seqan3::detail::deferred_crtp_base<base2>;
+    using deferred_base1 = bio::detail::deferred_crtp_base<base1>;
+    using deferred_base2 = bio::detail::deferred_crtp_base<base2>;
 
     derived<deferred_base1, deferred_base2> d{};
 
@@ -62,7 +62,7 @@ TEST(deferred_crtp_base, multiple_base_not_augmented)
 
 TEST(deferred_crtp_base, one_base_augmented)
 {
-    using deferred_base1 = seqan3::detail::deferred_crtp_base<base1, std::vector<char>>;
+    using deferred_base1 = bio::detail::deferred_crtp_base<base1, std::vector<char>>;
 
     derived<deferred_base1> d{};
 
@@ -71,8 +71,8 @@ TEST(deferred_crtp_base, one_base_augmented)
 
 TEST(deferred_crtp_base, multiple_base_augmented)
 {
-    using deferred_base1 = seqan3::detail::deferred_crtp_base<base1, std::vector<char>>;
-    using deferred_base2 = seqan3::detail::deferred_crtp_base<base2, float, int8_t>;
+    using deferred_base1 = bio::detail::deferred_crtp_base<base1, std::vector<char>>;
+    using deferred_base2 = bio::detail::deferred_crtp_base<base2, float, int8_t>;
 
     derived<deferred_base1, deferred_base2> d{};
 

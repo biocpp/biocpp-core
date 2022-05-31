@@ -13,15 +13,15 @@
 #include <bio/ranges/container/bitcompressed_vector.hpp>
 #include <bio/ranges/container/small_vector.hpp>
 
-using seqan3::operator""_dna4;
+using bio::operator""_dna4;
 
 template <typename T>
 class debug_stream_test : public ::testing::Test
 {};
 
-using container_types = ::testing::Types<std::vector<seqan3::dna4>,
-                                         seqan3::bitcompressed_vector<seqan3::dna4>,
-                                         seqan3::small_vector<seqan3::dna4, 1000>>;
+using container_types = ::testing::Types<std::vector<bio::dna4>,
+                                         bio::bitcompressed_vector<bio::dna4>,
+                                         bio::small_vector<bio::dna4, 1000>>;
 
 TYPED_TEST_SUITE(debug_stream_test, container_types, );
 
@@ -30,7 +30,7 @@ TYPED_TEST(debug_stream_test, container)
     TypeParam t1{'A'_dna4, 'C'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
 
     std::ostringstream o;
-    seqan3::debug_stream_type my_stream{o};
+    bio::debug_stream_type my_stream{o};
 
     my_stream << TypeParam{};
 

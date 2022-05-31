@@ -19,7 +19,7 @@
 #include <bio/alphabet/aminoacid/translation_details.hpp>
 #include <bio/meta/type_traits/range.hpp>
 
-namespace seqan3
+namespace bio
 {
 
 // forwards:
@@ -55,7 +55,7 @@ constexpr aa27 translate_triplet(nucl_type const & n1, nucl_type const & n2, nuc
     if constexpr (std::same_as<nucl_type, dna4> || std::same_as<nucl_type, dna5> || std::same_as<nucl_type, dna15>)
     {
         // table exists for dna15 and is generated for dna4 and dna5 (compile time ok, because small)
-        return seqan3::detail::translation_table<nucl_type, gc>::VALUE[to_rank(n1)][to_rank(n2)][to_rank(n3)];
+        return bio::detail::translation_table<nucl_type, gc>::VALUE[to_rank(n1)][to_rank(n2)][to_rank(n3)];
     }
     else if constexpr (std::same_as<nucl_type, rna4> || std::same_as<nucl_type, rna5> || std::same_as<nucl_type, rna15>)
     {
@@ -64,13 +64,13 @@ constexpr aa27 translate_triplet(nucl_type const & n1, nucl_type const & n2, nuc
                           std::conditional_t<std::same_as<nucl_type, rna15>, dna15, void>>>;
 
         // we can use dna's tables, because ranks are identical
-        return seqan3::detail::translation_table<rna2dna_t, gc>::VALUE[to_rank(n1)][to_rank(n2)][to_rank(n3)];
+        return bio::detail::translation_table<rna2dna_t, gc>::VALUE[to_rank(n1)][to_rank(n2)][to_rank(n3)];
     }
     else // composites or user defined nucleotide
     {
         // we cast to dna15; slightly slower run-time, but lot's of compile time saved for large alphabets.
         // (nucleotide types can be converted to dna15 by definition)
-        return seqan3::detail::translation_table<dna15, gc>::VALUE[to_rank(static_cast<dna15>(n1))]
+        return bio::detail::translation_table<dna15, gc>::VALUE[to_rank(static_cast<dna15>(n1))]
                                                                   [to_rank(static_cast<dna15>(n2))]
                                                                   [to_rank(static_cast<dna15>(n3))];
     }
@@ -79,7 +79,7 @@ constexpr aa27 translate_triplet(nucl_type const & n1, nucl_type const & n2, nuc
 /*!\brief Translate one nucleotide triplet into single amino acid (tuple interface).
  * \ingroup aminoacid
  * \tparam tuple_type Type of `input_tuple`. Usually std::tuple, but similar types like std::array
- * and seqan3::pod_tuple are also supported.
+ * and bio::pod_tuple are also supported.
  * \param[in] input_tuple Triplet of nucleotides that should be converted to amino acid.
  * \details
  *
@@ -93,7 +93,7 @@ constexpr aa27 translate_triplet(nucl_type const & n1, nucl_type const & n2, nuc
  *
  * No-throw guarantee.
  *
- * \deprecated Use seqan3::translate_triplet(nucl_type const & n1, nucl_type const & n2, nucl_type const & n3) instead.
+ * \deprecated Use bio::translate_triplet(nucl_type const & n1, nucl_type const & n2, nucl_type const & n3) instead.
  */
 template <genetic_code gc = genetic_code::CANONICAL, typename tuple_type>
 //!\cond
@@ -124,7 +124,7 @@ constexpr aa27 translate_triplet SEQAN3_DEPRECATED_310 (tuple_type const & input
  *
  * Strong exception guarantee (never modifies data).
  *
- * \deprecated Use seqan3::translate_triplet(nucl_type const & n1, nucl_type const & n2, nucl_type const & n3) instead.
+ * \deprecated Use bio::translate_triplet(nucl_type const & n1, nucl_type const & n2, nucl_type const & n3) instead.
  */
 template <genetic_code gc = genetic_code::CANONICAL, std::ranges::input_range range_type>
 //!\cond
@@ -160,7 +160,7 @@ constexpr aa27 translate_triplet SEQAN3_DEPRECATED_310 (range_type && input_rang
  *
  * Strong exception guarantee (never modifies data).
  *
- * \deprecated Use seqan3::translate_triplet(nucl_type const & n1, nucl_type const & n2, nucl_type const & n3) instead.
+ * \deprecated Use bio::translate_triplet(nucl_type const & n1, nucl_type const & n2, nucl_type const & n3) instead.
  */
 template <genetic_code gc = genetic_code::CANONICAL, std::ranges::random_access_range rng_t>
 //!\cond
@@ -175,4 +175,4 @@ constexpr aa27 translate_triplet SEQAN3_DEPRECATED_310 (rng_t && input_range)
     return translate_triplet(input_range[0], input_range[1], input_range[2]);
 }
 
-} // namespace seqan3
+} // namespace bio
