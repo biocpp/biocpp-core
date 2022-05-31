@@ -2,7 +2,7 @@
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
@@ -318,7 +318,7 @@ namespace bio::views
  *
  * \details
  *
- * \header_file{seqan3/range/views/interleave.hpp}
+ * \header_file{bio/ranges/views/interleave.hpp}
  *
  * This view can be used to insert one range into another range at regular intervals. It behaves essentially like
  * `| std::views::chunk(step_size) | views::join(inserted_range)` except that for input that models

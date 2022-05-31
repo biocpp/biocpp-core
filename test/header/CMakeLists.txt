@@ -52,7 +52,7 @@ macro (biocpp_header_test component header_base_path exclude_regex)
 
     file (WRITE "${PROJECT_BINARY_DIR}/${target}.cpp" "")
     add_executable (${target} ${PROJECT_BINARY_DIR}/${target}.cpp)
-    target_link_libraries (${target} seqan3::test::header)
+    target_link_libraries (${target} biocpp::test::header)
     add_test (NAME "header/${target}" COMMAND ${target})
 
     foreach (header ${header_files})
@@ -104,15 +104,15 @@ static_assert(!private_bug<A>, \"See https://github.com/seqan/seqan3/issues/1317
             endif ()
 
             add_library (${header_target} OBJECT "${header_target_source}")
-            # NOTE: a simple target_link_libraries (${header_target} seqan3::test::header)
+            # NOTE: a simple target_link_libraries (${header_target} biocpp::test::header)
             # is not possible for OBJECT libraries before cmake 3.12
             if (CMAKE_VERSION VERSION_LESS 3.12)
-                target_compile_options (${header_target} PRIVATE $<TARGET_PROPERTY:seqan3::test::header,INTERFACE_COMPILE_OPTIONS>)
-                target_compile_definitions (${header_target} PRIVATE $<TARGET_PROPERTY:seqan3::test::header,INTERFACE_COMPILE_DEFINITIONS>)
-                target_include_directories (${header_target} PRIVATE $<TARGET_PROPERTY:seqan3::test::header,INTERFACE_INCLUDE_DIRECTORIES>)
+                target_compile_options (${header_target} PRIVATE $<TARGET_PROPERTY:biocpp::test::header,INTERFACE_COMPILE_OPTIONS>)
+                target_compile_definitions (${header_target} PRIVATE $<TARGET_PROPERTY:biocpp::test::header,INTERFACE_COMPILE_DEFINITIONS>)
+                target_include_directories (${header_target} PRIVATE $<TARGET_PROPERTY:biocpp::test::header,INTERFACE_INCLUDE_DIRECTORIES>)
                 add_dependencies (${header_target} gtest gbenchmark)
             else ()
-                target_link_libraries (${header_target} seqan3::test::header)
+                target_link_libraries (${header_target} biocpp::test::header)
             endif ()
 
             target_sources (${target} PRIVATE $<TARGET_OBJECTS:${header_target}>)

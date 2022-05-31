@@ -19,7 +19,7 @@ macro (biocpp_test unit_test_cpp)
     biocpp_test_component (test_name "${unit_test}" TEST_NAME)
 
     add_executable (${target} ${unit_test_cpp})
-    target_link_libraries (${target} seqan3::test::unit)
+    target_link_libraries (${target} biocpp::test::unit)
     if (BIOCPP_VERBOSE_TESTS AND NOT CMAKE_VERSION VERSION_LESS 3.10) # cmake >= 3.10
         gtest_discover_tests(${target} TEST_PREFIX "${test_name}::" PROPERTIES TIMEOUT "30")
     else ()

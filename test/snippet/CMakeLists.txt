@@ -17,7 +17,7 @@ macro (biocpp_snippet test_name_prefix snippet snippet_base_path)
     set (target "${snippet_target_name}_snippet")
 
     add_executable (${target} "${snippet_base_path}/${snippet}")
-    target_link_libraries (${target} seqan3::test::unit sharg::sharg)
+    target_link_libraries (${target} biocpp::test::unit sharg::sharg)
     target_compile_options (${target} PUBLIC "-Wno-unused")
     set_target_properties(${target}
         PROPERTIES

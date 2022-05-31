@@ -16,7 +16,7 @@ macro (biocpp_benchmark benchmark_cpp)
     biocpp_test_component (test_name "${benchmark}" TEST_NAME)
 
     add_executable (${target} ${benchmark_cpp})
-    target_link_libraries (${target} seqan3::test::performance)
+    target_link_libraries (${target} biocpp::test::performance)
     add_test (NAME "${test_name}" COMMAND ${target})
 
     unset (benchmark)

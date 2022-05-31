@@ -82,7 +82,7 @@ macro (biocpp_test unit_test_cpp)
     biocpp_test_component (test_name "${unit_test}" TEST_NAME)
 
     add_executable (${target} ${unit_test_cpp})
-    target_link_libraries (${target} seqan3::test::coverage)
+    target_link_libraries (${target} biocpp::test::coverage)
     add_test (NAME "${test_name}" COMMAND ${target})
 
     # any change of a target will invalidate the coverage result;

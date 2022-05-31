@@ -2,7 +2,7 @@
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
@@ -653,7 +653,7 @@ namespace bio::views
  *
  * \details
  *
- * \header_file{seqan3/range/views/pairwise_combine.hpp}
+ * \header_file{bio/ranges/views/pairwise_combine.hpp}
  *
  * This view generates two-element tuples representing all unique combinations of the elements of the underlying range
  * (the order of the elements is undefined). If the underlying range has less than two elements the returned range is

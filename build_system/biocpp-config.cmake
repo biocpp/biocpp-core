@@ -56,8 +56,8 @@
 #
 # Additionally, the following [IMPORTED][IMPORTED] targets are defined:
 #
-#   seqan3::seqan3          -- interface target where
-#                                  target_link_libraries(target seqan3::seqan3)
+#   biocpp::core          -- interface target where
+#                                  target_link_libraries(target biocpp::core)
 #                              automatically sets
 #                                  target_include_directories(target $BIOCPP_INCLUDE_DIRS),
 #                                  target_link_libraries(target $BIOCPP_LIBRARIES),
@@ -329,16 +329,16 @@ endif ()
 
 separate_arguments (BIOCPP_CXX_FLAGS_LIST UNIX_COMMAND "${BIOCPP_CXX_FLAGS}")
 
-add_library (biocpp_seqan3 INTERFACE)
-target_compile_definitions (biocpp_seqan3 INTERFACE ${BIOCPP_DEFINITIONS})
-target_compile_options (biocpp_seqan3 INTERFACE ${BIOCPP_CXX_FLAGS_LIST})
-target_link_libraries (biocpp_seqan3 INTERFACE "${BIOCPP_LIBRARIES}")
+add_library (biocpp_core INTERFACE)
+target_compile_definitions (biocpp_core INTERFACE ${BIOCPP_DEFINITIONS})
+target_compile_options (biocpp_core INTERFACE ${BIOCPP_CXX_FLAGS_LIST})
+target_link_libraries (biocpp_core INTERFACE "${BIOCPP_LIBRARIES}")
 # include seqan3/include/ as -I, because seqan3 should never produce warnings.
-target_include_directories (biocpp_seqan3 INTERFACE "${BIOCPP_INCLUDE_DIR}")
+target_include_directories (biocpp_core INTERFACE "${BIOCPP_INCLUDE_DIR}")
 # include everything except seqan3/include/ as -isystem, i.e.
 # a system header which suppresses warnings of external libraries.
-target_include_directories (biocpp_seqan3 SYSTEM INTERFACE "${BIOCPP_DEPENDENCY_INCLUDE_DIRS}")
-add_library (seqan3::seqan3 ALIAS biocpp_seqan3)
+target_include_directories (biocpp_core SYSTEM INTERFACE "${BIOCPP_DEPENDENCY_INCLUDE_DIRS}")
+add_library (biocpp::core ALIAS biocpp_core)
 
 # propagate BIOCPP_INCLUDE_DIR into BIOCPP_INCLUDE_DIRS
 set (BIOCPP_INCLUDE_DIRS ${BIOCPP_INCLUDE_DIR} ${BIOCPP_DEPENDENCY_INCLUDE_DIRS})

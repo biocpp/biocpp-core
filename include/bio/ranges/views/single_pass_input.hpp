@@ -2,7 +2,7 @@
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
@@ -322,7 +322,7 @@ namespace bio::views
  *
  * \details
  *
- * \header_file{seqan3/range/views/single_pass_input.hpp}
+ * \header_file{bio/ranges/views/single_pass_input.hpp}
  *
  * This view adds single-pass semantics to any input view. This means, that `begin` always returns the iterator
  * to the current location in the underlying range after `k` elements have been already consumed and not to the begin
