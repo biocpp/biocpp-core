@@ -2,7 +2,7 @@
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
 // -----------------------------------------------------------------------------------------------------
 
 #include <algorithm>
@@ -10,7 +10,7 @@
 
 #include <benchmark/benchmark.h>
 
-#include <seqan3/test/performance/units.hpp>
+#include <bio/test/performance/units.hpp>
 
 static void vector_copy_benchmark(benchmark::State & state) {
     std::vector<int> x = {15, 13, 12, 10};
@@ -27,7 +27,7 @@ static void memcpy_benchmark(benchmark::State & state) {
     for (auto _ : state)
         memcpy(dst, src, size);
 
-    state.counters["bytes_per_second"] = seqan3::test::bytes_per_second(size);
+    state.counters["bytes_per_second"] = bio::test::bytes_per_second(size);
     delete[] src;
     delete[] dst;
 }
@@ -41,7 +41,7 @@ static void copy_benchmark(benchmark::State & state) {
     for (auto _ : state)
         std::copy_n(src, size, dst);
 
-    state.counters["bytes_per_second"] = seqan3::test::bytes_per_second(size);
+    state.counters["bytes_per_second"] = bio::test::bytes_per_second(size);
     delete[] src;
     delete[] dst;
 }

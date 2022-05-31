@@ -2,23 +2,23 @@
 #include <iostream>
 #include <ranges>
 #include <vector>
-#include <seqan3/alphabet/nucleotide/all.hpp>
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/detail/inherited_iterator_base.hpp>
+#include <bio/alphabet/nucleotide/all.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/detail/inherited_iterator_base.hpp>
 
-using seqan3::operator""_dna5;
+using bio::operator""_dna5;
 
 /* The iterator template */
 template <std::ranges::forward_range urng_t>            // CRTP derivation ↓
-class my_iterator : public seqan3::detail::inherited_iterator_base<my_iterator<urng_t>,
+class my_iterator : public bio::detail::inherited_iterator_base<my_iterator<urng_t>,
                                                                    std::ranges::iterator_t<urng_t>>
 {
 private:
-    static_assert(seqan3::nucleotide_alphabet<std::ranges::range_reference_t<urng_t>>,
+    static_assert(bio::nucleotide_alphabet<std::ranges::range_reference_t<urng_t>>,
                   "You can only iterate over ranges of nucleotides!");
 
     // the immediate base type is the CRTP-layer
-    using base_t = seqan3::detail::inherited_iterator_base<my_iterator<urng_t>,
+    using base_t = bio::detail::inherited_iterator_base<my_iterator<urng_t>,
                                                            std::ranges::iterator_t<urng_t>>;
 
 public:
@@ -46,14 +46,14 @@ public:
     // only overload the operators that you actually wish to change:
     reference operator*() const noexcept
     {
-        return seqan3::complement(base_t::operator*());
+        return bio::complement(base_t::operator*());
     }
 
     // Since the reference type changed we might as well need to override the subscript-operator.
     reference operator[](difference_type const n) const noexcept
         requires std::random_access_iterator<std::ranges::iterator_t<urng_t>>
     {
-        return seqan3::complement(base_t::operator[](n));
+        return bio::complement(base_t::operator[](n));
     }
 
     // We delete arrow operator because of the temporary. An alternative could be to return the temporary
@@ -62,7 +62,7 @@ public:
 };
 
 // The inherited_iterator_base creates the necessary code so we also model RandomAccess now!
-static_assert(std::random_access_iterator<my_iterator<std::vector<seqan3::dna5>>>);
+static_assert(std::random_access_iterator<my_iterator<std::vector<bio::dna5>>>);
 //![iterator]
 
 //![view_header]
@@ -167,30 +167,30 @@ inline constexpr my_view_fn my{};
 //![main_it]
 int main()
 {
-    std::vector<seqan3::dna5> vec{"GATTACA"_dna5};
+    std::vector<bio::dna5> vec{"GATTACA"_dna5};
 
     /* try the iterator */
-    using my_it_concrete = my_iterator<std::vector<seqan3::dna5>>;
+    using my_it_concrete = my_iterator<std::vector<bio::dna5>>;
 
      my_it_concrete it{vec.begin()};
 
     // now you can use operator[] on the iterator
     for (size_t i = 0; i < 7; ++i)
-        std::cout << seqan3::to_char(it[i]) << ' ';
+        std::cout << bio::to_char(it[i]) << ' ';
 //![main_it]
 
 //![main_range]
     /* try the range */
     my_view v{vec};
     static_assert(std::ranges::random_access_range<decltype(v)>);
-    seqan3::debug_stream << '\n' << v << '\n';
+    bio::debug_stream << '\n' << v << '\n';
 //![main_range]
 
 //![main_adaptor]
     /* try the adaptor */
     auto v2 = vec | std::views::reverse | ::views::my;
     static_assert(std::ranges::random_access_range<decltype(v2)>);
-    seqan3::debug_stream << v2 << '\n';
+    bio::debug_stream << v2 << '\n';
 //![main_adaptor]
 
 //![end]

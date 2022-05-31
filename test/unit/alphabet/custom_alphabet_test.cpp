@@ -2,10 +2,10 @@
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <seqan3/core/platform.hpp>
+#include <bio/meta/platform.hpp>
 
 #include "alphabet_test_template.hpp"
 #include "alphabet_constexpr_test_template.hpp"
@@ -16,7 +16,7 @@
 
 //![my_alph]
 #include <cstddef>                      // for size_t
-#include <seqan3/alphabet/concept.hpp>  // for seqan3::alphabet
+#include <bio/alphabet/concept.hpp>  // for bio::alphabet
 
 namespace my_namespace
 {
@@ -70,7 +70,7 @@ constexpr my_alph & assign_char_to(char const c, my_alph & a) noexcept
 
 } // namespace my_namespace
 
-static_assert(seqan3::alphabet<my_namespace::my_alph>);
+static_assert(bio::alphabet<my_namespace::my_alph>);
 //![my_alph]
 
 INSTANTIATE_TYPED_TEST_SUITE_P(my_alph, alphabet, my_namespace::my_alph, );

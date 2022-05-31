@@ -2,30 +2,30 @@
 // Copyright (c) 2006-2021, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2021, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
 // -----------------------------------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/aminoacid/aa10li.hpp>
-#include <seqan3/alphabet/aminoacid/aa10murphy.hpp>
-#include <seqan3/alphabet/aminoacid/aa20.hpp>
-#include <seqan3/alphabet/aminoacid/aa27.hpp>
-#include <seqan3/core/type_list/detail/type_list_algorithm.hpp>
-#include <seqan3/core/type_list/type_list.hpp>
+#include <bio/alphabet/aminoacid/aa10li.hpp>
+#include <bio/alphabet/aminoacid/aa10murphy.hpp>
+#include <bio/alphabet/aminoacid/aa20.hpp>
+#include <bio/alphabet/aminoacid/aa27.hpp>
+#include <bio/meta/type_list/detail/type_list_algorithm.hpp>
+#include <bio/meta/type_list/type_list.hpp>
 
 template <typename T>
 using aminoacid_conversion = ::testing::Test;
 
-using aminoacid_types = seqan3::type_list<seqan3::aa10li, seqan3::aa10murphy, seqan3::aa20, seqan3::aa27>;
-using aminoacid_gtest_types = seqan3::detail::transfer_template_args_onto_t<aminoacid_types, ::testing::Types>;
+using aminoacid_types = bio::type_list<bio::aa10li, bio::aa10murphy, bio::aa20, bio::aa27>;
+using aminoacid_gtest_types = bio::detail::transfer_template_args_onto_t<aminoacid_types, ::testing::Types>;
 
 TYPED_TEST_SUITE(aminoacid_conversion, aminoacid_gtest_types, );
 
 // conversion to any other amino acid type
 TYPED_TEST(aminoacid_conversion, explicit_conversion)
 {
-    seqan3::detail::for_each<aminoacid_types>([&] (auto aa) constexpr
+    bio::detail::for_each<aminoacid_types>([&] (auto aa) constexpr
     {
         using out_type = std::decay_t<typename decltype(aa)::type>;
         EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('A')), out_type{}.assign_char('A'));
@@ -37,7 +37,7 @@ TYPED_TEST(aminoacid_conversion, explicit_conversion)
         EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('K')), out_type{}.assign_char('K'));
         EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('P')), out_type{}.assign_char('P'));
 
-        if (std::is_same_v<TypeParam, seqan3::aa27>)
+        if (std::is_same_v<TypeParam, bio::aa27>)
         {
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('D')), out_type{}.assign_char('D'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('E')), out_type{}.assign_char('E'));
@@ -60,7 +60,7 @@ TYPED_TEST(aminoacid_conversion, explicit_conversion)
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('*')), out_type{}.assign_char('*'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('!')), out_type{}.assign_char('!'));
         }
-        else if (std::is_same_v<TypeParam, seqan3::aa20>)
+        else if (std::is_same_v<TypeParam, bio::aa20>)
         {
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('D')), out_type{}.assign_char('D'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('E')), out_type{}.assign_char('E'));
@@ -83,7 +83,7 @@ TYPED_TEST(aminoacid_conversion, explicit_conversion)
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('*')), out_type{}.assign_char('W'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('!')), out_type{}.assign_char('S'));
         }
-        else if (std::is_same_v<TypeParam, seqan3::aa10murphy>)
+        else if (std::is_same_v<TypeParam, bio::aa10murphy>)
         {
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('D')), out_type{}.assign_char('B'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('E')), out_type{}.assign_char('B'));
@@ -105,7 +105,7 @@ TYPED_TEST(aminoacid_conversion, explicit_conversion)
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('*')), out_type{}.assign_char('F'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('!')), out_type{}.assign_char('S'));
         }
-        else if (std::is_same_v<TypeParam, seqan3::aa10li>)
+        else if (std::is_same_v<TypeParam, bio::aa10li>)
         {
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('D')), out_type{}.assign_char('B'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('E')), out_type{}.assign_char('B'));

@@ -2,13 +2,13 @@
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 //! [writable_alphabet]
 #include <cassert>
 
-#include <seqan3/alphabet/concept.hpp>                   // alphabet concept checks
+#include <bio/alphabet/concept.hpp>                   // alphabet concept checks
 
 struct dna2
 {
@@ -93,12 +93,12 @@ struct dna2
 //! [writable_alphabet]
 
 //! [writable_alphabet_concept]
-static_assert(seqan3::alphabet<dna2>);                   // ok
-static_assert(seqan3::writable_alphabet<dna2>);           // ok
+static_assert(bio::alphabet<dna2>);                   // ok
+static_assert(bio::writable_alphabet<dna2>);           // ok
 //! [writable_alphabet_concept]
 
 //! [dummy_requirement]
-template <seqan3::alphabet check_this_type>
+template <bio::alphabet check_this_type>
 void foo()
 {}
 

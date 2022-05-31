@@ -1,0 +1,5 @@
+biocpp_benchmark(view_all_benchmark.cpp)
+biocpp_benchmark(view_take_benchmark.cpp)
+biocpp_benchmark(view_translate_1D_benchmark.cpp)
+biocpp_benchmark(view_translate_2D_benchmark.cpp)
+biocpp_benchmark(view_translate_2D_1D_benchmark.cpp)

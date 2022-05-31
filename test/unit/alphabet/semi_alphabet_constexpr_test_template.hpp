@@ -2,12 +2,12 @@
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
 // -----------------------------------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/concept.hpp>
+#include <bio/alphabet/concept.hpp>
 
 template <typename t>
 using semi_alphabet_constexpr = ::testing::Test;
@@ -16,17 +16,17 @@ TYPED_TEST_SUITE_P(semi_alphabet_constexpr);
 
 TYPED_TEST_P(semi_alphabet_constexpr, concept_check)
 {
-    EXPECT_TRUE(seqan3::detail::constexpr_semialphabet<TypeParam>);
-    EXPECT_TRUE(seqan3::detail::constexpr_semialphabet<TypeParam &>);
+    EXPECT_TRUE(bio::detail::constexpr_semialphabet<TypeParam>);
+    EXPECT_TRUE(bio::detail::constexpr_semialphabet<TypeParam &>);
 
-    EXPECT_TRUE(seqan3::detail::constexpr_semialphabet<TypeParam const>);
-    EXPECT_TRUE(seqan3::detail::constexpr_semialphabet<TypeParam const &>);
+    EXPECT_TRUE(bio::detail::constexpr_semialphabet<TypeParam const>);
+    EXPECT_TRUE(bio::detail::constexpr_semialphabet<TypeParam const &>);
 
-    EXPECT_TRUE(seqan3::detail::writable_constexpr_semialphabet<TypeParam>);
-    EXPECT_TRUE(seqan3::detail::writable_constexpr_semialphabet<TypeParam &>);
+    EXPECT_TRUE(bio::detail::writable_constexpr_semialphabet<TypeParam>);
+    EXPECT_TRUE(bio::detail::writable_constexpr_semialphabet<TypeParam &>);
 
-    EXPECT_FALSE(seqan3::detail::writable_constexpr_semialphabet<TypeParam const>);
-    EXPECT_FALSE(seqan3::detail::writable_constexpr_semialphabet<TypeParam const &>);
+    EXPECT_FALSE(bio::detail::writable_constexpr_semialphabet<TypeParam const>);
+    EXPECT_FALSE(bio::detail::writable_constexpr_semialphabet<TypeParam const &>);
 }
 
 TYPED_TEST_P(semi_alphabet_constexpr, default_value_constructor)
@@ -36,22 +36,22 @@ TYPED_TEST_P(semi_alphabet_constexpr, default_value_constructor)
 
 TYPED_TEST_P(semi_alphabet_constexpr, assign_rank)
 {
-    constexpr size_t rank = 1 % seqan3::alphabet_size<TypeParam>;
-    [[maybe_unused]] constexpr TypeParam t0{seqan3::assign_rank_to(rank, TypeParam{})};
+    constexpr size_t rank = 1 % bio::alphabet_size<TypeParam>;
+    [[maybe_unused]] constexpr TypeParam t0{bio::assign_rank_to(rank, TypeParam{})};
 }
 
 TYPED_TEST_P(semi_alphabet_constexpr, to_rank)
 {
-    constexpr size_t rank = 1 % seqan3::alphabet_size<TypeParam>;
-    constexpr TypeParam t0{seqan3::assign_rank_to(rank, TypeParam{})};
-    constexpr bool b = (seqan3::to_rank(t0) == rank);
+    constexpr size_t rank = 1 % bio::alphabet_size<TypeParam>;
+    constexpr TypeParam t0{bio::assign_rank_to(rank, TypeParam{})};
+    constexpr bool b = (bio::to_rank(t0) == rank);
     EXPECT_TRUE(b);
 }
 
 TYPED_TEST_P(semi_alphabet_constexpr, copy_constructor)
 {
-    constexpr seqan3::alphabet_rank_t<TypeParam> rank = 1 % seqan3::alphabet_size<TypeParam>;
-    constexpr TypeParam t1{seqan3::assign_rank_to(rank, TypeParam{})};
+    constexpr bio::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet_size<TypeParam>;
+    constexpr TypeParam t1{bio::assign_rank_to(rank, TypeParam{})};
 
     constexpr TypeParam t2{t1};
     constexpr TypeParam t3(t1);
@@ -61,8 +61,8 @@ TYPED_TEST_P(semi_alphabet_constexpr, copy_constructor)
 
 TYPED_TEST_P(semi_alphabet_constexpr, move_constructor)
 {
-    constexpr seqan3::alphabet_rank_t<TypeParam> rank = 1 % seqan3::alphabet_size<TypeParam>;
-    constexpr TypeParam t0{seqan3::assign_rank_to(rank, TypeParam{})};
+    constexpr bio::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet_size<TypeParam>;
+    constexpr TypeParam t0{bio::assign_rank_to(rank, TypeParam{})};
     constexpr TypeParam t1{t0};
 
     constexpr TypeParam t2{std::move(t1)};
@@ -73,12 +73,12 @@ TYPED_TEST_P(semi_alphabet_constexpr, move_constructor)
 
 TYPED_TEST_P(semi_alphabet_constexpr, copy_assignment)
 {
-    constexpr size_t rank = 1 % seqan3::alphabet_size<TypeParam>;
-    constexpr TypeParam t0{seqan3::assign_rank_to(rank, TypeParam{})};
+    constexpr size_t rank = 1 % bio::alphabet_size<TypeParam>;
+    constexpr TypeParam t0{bio::assign_rank_to(rank, TypeParam{})};
     // constexpr context:
     constexpr TypeParam t3 = [&] () constexpr
     {
-        TypeParam t1{seqan3::assign_rank_to(rank, TypeParam{})};
+        TypeParam t1{bio::assign_rank_to(rank, TypeParam{})};
         TypeParam t2{};
         t2 = t1;
 
@@ -89,12 +89,12 @@ TYPED_TEST_P(semi_alphabet_constexpr, copy_assignment)
 
 TYPED_TEST_P(semi_alphabet_constexpr, move_assignment)
 {
-    constexpr size_t rank = 1 % seqan3::alphabet_size<TypeParam>;
-    constexpr TypeParam t0{seqan3::assign_rank_to(rank, TypeParam{})};
+    constexpr size_t rank = 1 % bio::alphabet_size<TypeParam>;
+    constexpr TypeParam t0{bio::assign_rank_to(rank, TypeParam{})};
     // constexpr context:
     constexpr TypeParam t3 = [&] () constexpr
     {
-        TypeParam t1{seqan3::assign_rank_to(rank, TypeParam{})};
+        TypeParam t1{bio::assign_rank_to(rank, TypeParam{})};
         TypeParam t2{};
         t2 = std::move(t1);
 
@@ -105,7 +105,7 @@ TYPED_TEST_P(semi_alphabet_constexpr, move_assignment)
 
 TYPED_TEST_P(semi_alphabet_constexpr, comparison_operators)
 {
-    if constexpr (seqan3::alphabet_size<TypeParam> == 1)
+    if constexpr (bio::alphabet_size<TypeParam> == 1)
     {
         constexpr TypeParam t0{};
         constexpr TypeParam t1{};
@@ -123,8 +123,8 @@ TYPED_TEST_P(semi_alphabet_constexpr, comparison_operators)
     }
     else
     {
-        constexpr TypeParam t0{seqan3::assign_rank_to(0, TypeParam{})};
-        constexpr TypeParam t1{seqan3::assign_rank_to(1, TypeParam{})};
+        constexpr TypeParam t0{bio::assign_rank_to(0, TypeParam{})};
+        constexpr TypeParam t1{bio::assign_rank_to(1, TypeParam{})};
         constexpr bool b1 = (t0 <  t1);
         constexpr bool b2 = (t0 <= t1);
         constexpr bool b3 = (t1 <= t1);

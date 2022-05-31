@@ -2,7 +2,7 @@
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
 // -----------------------------------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
@@ -11,7 +11,7 @@
 #include <span>
 #include <string_view>
 
-#include <seqan3/test/expect_range_eq.hpp>
+#include <bio/test/expect_range_eq.hpp>
 
 TEST(expect_range_eq, braces_with_many_commas)
 {
@@ -32,7 +32,7 @@ TEST(string_view, range_eq_pass)
     std::vector<char> expect{'H', 'e', 'l', 'l', 'o'};
     std::string_view result{"Hello"};
 
-    auto && expect_result = seqan3::test::expect_range_eq{}("expect", "result", expect, result);
+    auto && expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
     EXPECT_TRUE(expect_result);
     EXPECT_RANGE_EQ(expect, result);
 }
@@ -49,7 +49,7 @@ TEST(string_view, range_eq_fail)
     std::vector<char> expect{'H', 'e', 'l', '\n', 'l', 'o'};
     std::string_view result{"Hello!"};
 
-    auto && expect_result = seqan3::test::expect_range_eq{}("expect", "result", expect, result);
+    auto && expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
 
     EXPECT_FALSE(expect_result);
     EXPECT_STREQ(error_message, expect_result.message());
@@ -62,7 +62,7 @@ TEST(span, range_eq_pass)
     std::vector<int> source{-2, -1, 0, 1, 2, 3, 4, 5, 6};
     std::span result{source.begin() + 2, 5};
 
-    auto && expect_result = seqan3::test::expect_range_eq{}("expect", "result", expect, result);
+    auto && expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
     EXPECT_TRUE(expect_result);
     EXPECT_RANGE_EQ(expect, result);
 }
@@ -79,7 +79,7 @@ TEST(span, range_eq_fail)
     std::vector<int> source{-2, -1, 0, 1, 2, 3, 4, 5, 6};
     std::span result{source.begin() + 1, 7};
 
-    auto && expect_result = seqan3::test::expect_range_eq{}("expect", "result", expect, result);
+    auto && expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
 
     EXPECT_FALSE(expect_result);
     EXPECT_STREQ(error_message, expect_result.message());
@@ -118,7 +118,7 @@ TEST(input_range, range_eq_pass)
 
     {
         input_range result{};
-        auto && expect_result = seqan3::test::expect_range_eq{}("expect", "result", expect, result);
+        auto && expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
         EXPECT_TRUE(expect_result);
     }
 
@@ -140,7 +140,7 @@ TEST(input_range, range_eq_fail)
 
     {
         input_range result{};
-        auto && expect_result = seqan3::test::expect_range_eq{}("expect", "result", expect, result);
+        auto && expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
         EXPECT_FALSE(expect_result);
         EXPECT_STREQ(error_message, expect_result.message());
     }

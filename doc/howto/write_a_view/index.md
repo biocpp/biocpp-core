@@ -8,7 +8,7 @@ This HowTo documents how to write a view using the standard library and some hel
 
 \note
 Some of the links from this HowTo only resolve in the developer documentation because
-they refer to entities from the seqan3::detail namespace.
+they refer to entities from the bio::detail namespace.
 We recommend you open this tutorial from [the developer documentation](https://docs.seqan.de/seqan/3-master-dev/).
 
 # Motivation
@@ -115,8 +115,8 @@ Let's look at some examples!
 
 \assignment{Exercise 1: Your first custom adaptor object}
 In the alphabet module you learned that ranges of alphabets are not implicitly
-convertible to `char` so you **cannot** print a `std::vector<seqan3::dna5>` via `std::cout`¹.
-You also know that you can call `seqan3::to_char` on every object that models `seqan3::alphabet` which will convert it
+convertible to `char` so you **cannot** print a `std::vector<bio::dna5>` via `std::cout`¹.
+You also know that you can call `bio::to_char` on every object that models `bio::alphabet` which will convert it
 to `char` or a similar type.
 
 We want to do the following:
@@ -128,14 +128,14 @@ We want to do the following:
 \snippet doc/howto/write_a_view/view_exercise1.cpp end
 
 Define a *range adaptor object* using an existing adaptor which applies a concrete transformation
-(calling seqan3::to_char) on every element.
+(calling bio::to_char) on every element.
 
 \hint
 You need to need use `std::views::transform` and you need to set a fixed transformation function. `std::views::transform`
 takes an object that models `std::regular_invocable`, e.g. a lambda function with empty capture `[]`.
 \endhint
 
-<small>¹ You *can* print via `seqan3::debug_stream`, but let's ignore that for now. </small>
+<small>¹ You *can* print via `bio::debug_stream`, but let's ignore that for now. </small>
 \endassignment
 
 \solution
@@ -152,7 +152,7 @@ provides `operator()` and `operator|` that each return a specialisation of `std:
 
 \assignment{Exercise 2: Combining two existing adaptor objects}
 
-Study the `seqan3::nucleotide_alphabet`. It states that you can call `seqan3::complement` on all nucleotides
+Study the `bio::nucleotide_alphabet`. It states that you can call `bio::complement` on all nucleotides
 which will give you <tt>'A'_dna5</tt> for <tt>'T'_dna5</tt> a.s.o. Think about how you can adapt the previous solution
 to write a view that transforms ranges of nucleotides into their complement.
 
@@ -172,7 +172,7 @@ Define a *range adaptor object* that presents a view of the reverse complement o
 \include doc/howto/write_a_view/view_exercise2.cpp
 
 The adaptor consists of `std::views::reverse` combined with `std::views::transform`. This time the lambda just
-performs the call to `seqan3::complement`.
+performs the call to `bio::complement`.
 \endsolution
 
 # A full custom view implementation
@@ -260,7 +260,7 @@ In the previous assigment you have created a working – but pointless – itera
 It does not do anything differently from the original.
 
 Your task now is to implement the "complementing" behaviour, i.e.
-  * your iterator should only work on ranges of `seqan3::nucleotide_alphabet`
+  * your iterator should only work on ranges of `bio::nucleotide_alphabet`
   * when accessing an element through the iterator it should not return the element from the underlying range but
     instead its complement
 
@@ -275,7 +275,7 @@ of that operator as your transformation might make a change necessary.
 You could have done this via an additional template constraint, too, but `static_assert` gives you the opportunity
 to give a readable message in case of an error.¹
 
-2. The operator that needs to call the `seqan3::complement` function is `operator*`:
+2. The operator that needs to call the `bio::complement` function is `operator*`:
 \snippet doc/howto/write_a_view/solution_iterator.cpp dereference
 
 3. As previously noted, care needs to be taken with this function's return type:
@@ -315,7 +315,7 @@ other in memory (the elements of our view are created on demand and are not stor
 
 If you have looked at the `std::random_access_iterator`, you will have seen that it is quite a bit of work to implement
 all the operators, many of whom just need to be overloaded to fix the return type.
-To make this a little bit easier SeqAn provides `seqan3::detail::inherited_iterator_base`, it fixes the issue with the
+To make this a little bit easier SeqAn provides `bio::detail::inherited_iterator_base`, it fixes the issue with the
 return type via CRTP.
 A solution to the previous exercise looks like this:
 
@@ -435,11 +435,11 @@ complicated quickly. Therefore SeqAn provides some convenience templates for you
 ```cpp
 // in our example, this is all you need:
 //                                      your view type goes here ↓
-using my_view_fn = seqan3::detail::adaptor_for_view_without_args<my_view>;
+using my_view_fn = bio::detail::adaptor_for_view_without_args<my_view>;
 ```
 
-See `seqan3::detail::adaptor_base`, `seqan3::detail::adaptor_for_view_without_args` and
-`seqan3::detail::adaptor_from_functor` for more details.
+See `bio::detail::adaptor_base`, `bio::detail::adaptor_for_view_without_args` and
+`bio::detail::adaptor_from_functor` for more details.
 
 ### Adaptor object definition
 

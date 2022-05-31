@@ -57,7 +57,7 @@ You only need to re-run cmake if you add or remove unit tests in between your ch
 If you are working on a very specific piece of code, it might be beneficial to ensure that specific test builds and
 passes before re-building the entire set.
 
-This builds the test for seqan3::dna4:
+This builds the test for bio::dna4:
 
 ```bash
 make dna4_test

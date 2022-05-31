@@ -1,13 +1,13 @@
-#include <seqan3/alphabet/structure/wuss.hpp>
-#include <seqan3/core/debug_stream.hpp>
+#include <bio/alphabet/structure/wuss.hpp>
+#include <bio/meta/debug_stream.hpp>
 
 int main()
 {
-    using seqan3::operator""_wuss51;
+    using bio::operator""_wuss51;
 
     auto pk_opt = '.'_wuss51.pseudoknot_id();                       // std::optional -> false
-    pk_opt = seqan3::pseudoknot_id('{'_wuss51);                     // std::optional -> true: 3
+    pk_opt = bio::pseudoknot_id('{'_wuss51);                     // std::optional -> true: 3
 
     if (pk_opt)
-        seqan3::debug_stream << *pk_opt;                            // 3
+        bio::debug_stream << *pk_opt;                            // 3
 }

@@ -1,13 +1,13 @@
-#include <seqan3/alphabet/composite/alphabet_variant.hpp>
-#include <seqan3/alphabet/gap/gap.hpp>
-#include <seqan3/alphabet/nucleotide/all.hpp>
+#include <bio/alphabet/composite/alphabet_variant.hpp>
+#include <bio/alphabet/gap/gap.hpp>
+#include <bio/alphabet/nucleotide/all.hpp>
 #include <gtest/gtest.h>
 
 int main()
 {
-    using variant_t = seqan3::alphabet_variant<seqan3::dna5, seqan3::gap>;
+    using variant_t = bio::alphabet_variant<bio::dna5, bio::gap>;
 
-    static_assert(variant_t::is_alternative<seqan3::dna5>(), "dna5 is an alternative of variant_t");
-    static_assert(!variant_t::is_alternative<seqan3::dna4>(), "dna4 is not an alternative of variant_t");
-    static_assert(variant_t::is_alternative<seqan3::gap>(), "gap is an alternative of variant_t");
+    static_assert(variant_t::is_alternative<bio::dna5>(), "dna5 is an alternative of variant_t");
+    static_assert(!variant_t::is_alternative<bio::dna4>(), "dna4 is not an alternative of variant_t");
+    static_assert(variant_t::is_alternative<bio::gap>(), "gap is an alternative of variant_t");
 }

@@ -2,17 +2,17 @@
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
 // -----------------------------------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/alphabet/nucleotide/rna4.hpp>
-#include <seqan3/alphabet/nucleotide/rna5.hpp>
-#include <seqan3/alphabet/structure/dot_bracket3.hpp>
-#include <seqan3/alphabet/structure/structured_rna.hpp>
-#include <seqan3/alphabet/structure/wuss.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/nucleotide/rna4.hpp>
+#include <bio/alphabet/nucleotide/rna5.hpp>
+#include <bio/alphabet/structure/dot_bracket3.hpp>
+#include <bio/alphabet/structure/structured_rna.hpp>
+#include <bio/alphabet/structure/wuss.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"
@@ -21,18 +21,18 @@
 #include "../composite/alphabet_tuple_base_test_template.hpp"
 
 template <typename rna_type, typename structure_type>
-class alphabet_tuple_base_test<seqan3::structured_rna<rna_type, structure_type>> : public ::testing::Test
+class alphabet_tuple_base_test<bio::structured_rna<rna_type, structure_type>> : public ::testing::Test
 {
 public:
-    using T = seqan3::structured_rna<rna_type, structure_type>;
+    using T = bio::structured_rna<rna_type, structure_type>;
 
-    using dna_type = std::conditional_t<std::is_same_v<rna_type, seqan3::rna4>, seqan3::dna4, seqan3::dna5>;
+    using dna_type = std::conditional_t<std::is_same_v<rna_type, bio::rna4>, bio::dna4, bio::dna5>;
 
     T instance = T{value_1(), value_2()};
     T zero_instance = T{decltype(value_1()){}, decltype(value_2()){}};
     size_t tup_size{2};
 
-    // seqan3::structured_rna<rna_type, structure_type>
+    // bio::structured_rna<rna_type, structure_type>
     // -------------------------------------------------------------------------
     rna_type value_1()
     {
@@ -58,8 +58,8 @@ public:
     }
 };
 
-using structured_rna_types = ::testing::Types<seqan3::structured_rna<seqan3::rna5, seqan3::dot_bracket3>,
-                                              seqan3::structured_rna<seqan3::rna4, seqan3::wuss51>>;
+using structured_rna_types = ::testing::Types<bio::structured_rna<bio::rna5, bio::dot_bracket3>,
+                                              bio::structured_rna<bio::rna4, bio::wuss51>>;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(structured_rna, alphabet, structured_rna_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(structured_rna, semi_alphabet_test, structured_rna_types, );

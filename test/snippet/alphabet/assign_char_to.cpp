@@ -1,18 +1,18 @@
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/alphabet/adaptation/char.hpp>
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/adaptation/char.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
 
 int main()
 {
     char c = '!';
-    seqan3::assign_char_to('?', c);     // calls seqan3::custom::assign_char_to('A', c)
+    bio::assign_char_to('?', c);     // calls bio::custom::assign_char_to('A', c)
 
-    seqan3::dna5 d{};
-    seqan3::assign_char_to('A', d);     // calls .assign_char('A') member
+    bio::dna5 d{};
+    bio::assign_char_to('A', d);     // calls .assign_char('A') member
 
     // also works for temporaries:
-    seqan3::dna5 d2 = seqan3::assign_char_to('A', seqan3::dna5{});
+    bio::dna5 d2 = bio::assign_char_to('A', bio::dna5{});
 
     // invalid/unknown characters are converted:
-    seqan3::dna5 d3 = seqan3::assign_char_to('!', seqan3::dna5{}); // == 'N'_dna5
+    bio::dna5 d3 = bio::assign_char_to('!', bio::dna5{}); // == 'N'_dna5
 }

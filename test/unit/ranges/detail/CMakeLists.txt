@@ -1,0 +1,2 @@
+biocpp_test(inherited_iterator_base_test.cpp)
+biocpp_test(random_access_iterator_test.cpp)

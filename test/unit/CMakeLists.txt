@@ -6,21 +6,21 @@
 # -----------------------------------------------------------------------------------------------------
 
 cmake_minimum_required (VERSION 3.7)
-project (seqan3_test_unit CXX)
+project (biocpp_test_unit CXX)
 
-include (../seqan3-test.cmake)
+include (../biocpp-test.cmake)
 include (GoogleTest OPTIONAL)
 
-option (SEQAN3_VERBOSE_TESTS "Run each test case individually" ON)
+option (BIOCPP_VERBOSE_TESTS "Run each test case individually" ON)
 
-macro (seqan3_test unit_test_cpp)
+macro (biocpp_test unit_test_cpp)
     file (RELATIVE_PATH unit_test "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_LIST_DIR}/${unit_test_cpp}")
-    seqan3_test_component (target "${unit_test}" TARGET_NAME)
-    seqan3_test_component (test_name "${unit_test}" TEST_NAME)
+    biocpp_test_component (target "${unit_test}" TARGET_NAME)
+    biocpp_test_component (test_name "${unit_test}" TEST_NAME)
 
     add_executable (${target} ${unit_test_cpp})
-    target_link_libraries (${target} seqan3::test::unit)
-    if (SEQAN3_VERBOSE_TESTS AND NOT CMAKE_VERSION VERSION_LESS 3.10) # cmake >= 3.10
+    target_link_libraries (${target} biocpp::test::unit)
+    if (BIOCPP_VERBOSE_TESTS AND NOT CMAKE_VERSION VERSION_LESS 3.10) # cmake >= 3.10
         gtest_discover_tests(${target} TEST_PREFIX "${test_name}::" PROPERTIES TIMEOUT "30")
     else ()
         add_test (NAME "${test_name}" COMMAND ${target})
@@ -31,7 +31,7 @@ macro (seqan3_test unit_test_cpp)
     unset (test_name)
 endmacro ()
 
-seqan3_require_ccache ()
-seqan3_require_test ()
+biocpp_require_ccache ()
+biocpp_require_test ()
 
 add_subdirectories ()

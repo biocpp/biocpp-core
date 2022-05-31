@@ -2,17 +2,17 @@
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
 // -----------------------------------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
 
 #include <ranges>
-#include <seqan3/test/seqan2.hpp>
+#include <bio/test/seqan2.hpp>
 
 // Note: this file will only test regressions encountered with seqan2 compatibility and has no claim to be complete
 
-#ifdef SEQAN3_HAS_SEQAN2
+#ifdef BIOCPP_HAS_SEQAN2
 #include <seqan/sequence.h>
 
 template <typename T>

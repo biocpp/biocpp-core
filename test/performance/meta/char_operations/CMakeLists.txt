@@ -1,0 +1,1 @@
+biocpp_benchmark(char_predicate_benchmark.cpp)

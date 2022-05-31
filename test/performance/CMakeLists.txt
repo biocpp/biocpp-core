@@ -6,17 +6,17 @@
 # -----------------------------------------------------------------------------------------------------
 
 cmake_minimum_required (VERSION 3.7)
-project (seqan3_test_performance CXX)
+project (biocpp_test_performance CXX)
 
-include (../seqan3-test.cmake)
+include (../biocpp-test.cmake)
 
-macro (seqan3_benchmark benchmark_cpp)
+macro (biocpp_benchmark benchmark_cpp)
     file (RELATIVE_PATH benchmark "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_LIST_DIR}/${benchmark_cpp}")
-    seqan3_test_component (target "${benchmark}" TARGET_NAME)
-    seqan3_test_component (test_name "${benchmark}" TEST_NAME)
+    biocpp_test_component (target "${benchmark}" TARGET_NAME)
+    biocpp_test_component (test_name "${benchmark}" TEST_NAME)
 
     add_executable (${target} ${benchmark_cpp})
-    target_link_libraries (${target} seqan3::test::performance)
+    target_link_libraries (${target} biocpp::test::performance)
     add_test (NAME "${test_name}" COMMAND ${target})
 
     unset (benchmark)
@@ -24,7 +24,7 @@ macro (seqan3_benchmark benchmark_cpp)
     unset (test_name)
 endmacro ()
 
-seqan3_require_ccache ()
-seqan3_require_benchmark ()
+biocpp_require_ccache ()
+biocpp_require_benchmark ()
 
 add_subdirectories ()

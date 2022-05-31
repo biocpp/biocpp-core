@@ -2,15 +2,15 @@
 // Copyright (c) 2006-2021, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2021, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
 // -----------------------------------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/composite/alphabet_tuple_base.hpp>
-#include <seqan3/core/concept/tuple.hpp>
+#include <bio/alphabet/composite/alphabet_tuple_base.hpp>
+#include <bio/meta/concept/tuple.hpp>
 
-using seqan3::get;
+using bio::get;
 
 template <typename T>
 class alphabet_tuple_base_test : public ::testing::Test {};
@@ -19,7 +19,7 @@ TYPED_TEST_SUITE_P(alphabet_tuple_base_test);
 
 TYPED_TEST_P(alphabet_tuple_base_test, concept_check)
 {
-    EXPECT_TRUE(seqan3::tuple_like<TypeParam>);
+    EXPECT_TRUE(bio::tuple_like<TypeParam>);
 }
 
 // default/zero construction

@@ -21,8 +21,8 @@ SeqAn library. We call these "customisation points" (also known as "extension po
 
 # Customisation points
 
-One such customisation point is seqan3::to_rank. Instead of the seqan3::semialphabet concept looking directly for
-member functions or free functions in your namespace, it always checks for a valid definition of seqan3::to_rank which
+One such customisation point is bio::to_rank. Instead of the bio::semialphabet concept looking directly for
+member functions or free functions in your namespace, it always checks for a valid definition of bio::to_rank which
 in turn resolves to different possible implementations.
 
 To customise one of our customisation points, follow the instructions in its API documentation. Typically, you have the
@@ -31,7 +31,7 @@ choice between the following options:
   1. Provide functionality as members.
   2. Provide friends or free functions inside the namespace of your type (will be picked up via
      [argument dependent lookup](https://en.cppreference.com/w/cpp/language/adl)).
-  3. Specialise the respective template in `seqan3::custom::` for that type and provide the needed functionality as
+  3. Specialise the respective template in `bio::custom::` for that type and provide the needed functionality as
      static members of that specialisation (this is an "upload space" for specialisations).
 
 The priority is bottom to top (i.e. solutions to 3. will be preferred over 1. and 2.), but we strongly recommend to
@@ -40,7 +40,7 @@ add to that type's definition and/or namespace.
 
 \warning
 **Never** add anything (types, functions, variables...) to namespace `seqan3` and never explicitly specialise one
-of our templates (except those in seqan3::custom) or overload one of our functions.
+of our templates (except those in bio::custom) or overload one of our functions.
 
 The \link howto_write_an_alphabet HowTo on creating your own alphabet \endlink provides many examples of how to
 satisfy the requirements of customisation point objects.
