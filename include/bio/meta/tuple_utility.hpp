@@ -84,7 +84,7 @@ namespace bio
  *
  * ### example
  *
- * \include test/snippet/core/tuple_utility.cpp
+ * \include test/snippet/meta/tuple_utility.cpp
  *
  * ### Complexity
  *
@@ -135,7 +135,7 @@ constexpr auto tuple_split(tuple_t<ts...> && t)
  *
  * ### example
  *
- * \include test/snippet/core/tuple_utility.cpp
+ * \include test/snippet/meta/tuple_utility.cpp
  *
  * ### Complexity
  *

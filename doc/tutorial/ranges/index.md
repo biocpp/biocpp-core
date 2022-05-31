@@ -86,7 +86,7 @@ views as "underlying range + algorithm".
 The storage behaviour is orthogonal to the range concepts defined by the iterators mentioned above, i.e. you
 can have a container that satisfies std::ranges::random_access_range (e.g. `std::vector` does, but `std::list`
 does not) and you can have views or decorators that do so or don't. For some combinations of iterator capabilities
-and storage behaviour there are extra concept definitions, e.g. seqan3::random_access_container.
+and storage behaviour there are extra concept definitions, e.g. bio::random_access_container.
 
 # Views
 
@@ -235,8 +235,8 @@ We provide overview tables for all our view adaptors that document which concept
 ## Views in the standard library and in SeqAn
 
 The standard library in C++20 provides a number of useful views and SeqAn provides many views, as well.
-Most views provided by SeqAn3 are specific to biological operations, like seqan3::views::trim_quality which trims sequences
-based on the quality or seqan3::views::complement which generates the complement of a nucleotide sequence.
+Most views provided by SeqAn3 are specific to biological operations, like bio::views::trim_quality which trims sequences
+based on the quality or bio::views::complement which generates the complement of a nucleotide sequence.
 But SeqAn3 also provides some general purpose views.
 
 Have a look at the \link views views-submodule \endlink to get an overview of SeqAn's views and also read through the
@@ -245,7 +245,7 @@ detailed description on that page now that you had a more gentle introduction.
 \assignment{Assignment 3: Fun with views III}
 Create a small program that
   1. reads a string from the command line (first argument to the program)
-  2. "converts" the string to a range of seqan3::dna5 (Bonus: throw an exception if loss of information occurs)
+  2. "converts" the string to a range of bio::dna5 (Bonus: throw an exception if loss of information occurs)
   3. prints the string and it's reverse complement
   4. prints the six-frame translation of the string
 
@@ -263,21 +263,21 @@ For certain use-cases we have introduced our own containers, though.
 
 All standard library containers model std::ranges::forward_range (see above), but we have introduced container
 concepts that encompass more of a containers interface.
-Have a look at the API documentation of seqan3::container and unfold the inheritance diagram.
+Have a look at the API documentation of bio::container and unfold the inheritance diagram.
 What can you learn about the different refinements and their relation to the range concepts?
 
 ## The bitcompressed vector
 
-If you followed the alphabet tutorial closely, you will know that seqan3::dna4 needs only two bits to represent its state.
+If you followed the alphabet tutorial closely, you will know that bio::dna4 needs only two bits to represent its state.
 However, single objects are always at least a byte (eight bits) big in C++.
-To store sequences of small alphabets more space-efficiently, we have developed seqan3::bitcompressed_vector.
+To store sequences of small alphabets more space-efficiently, we have developed bio::bitcompressed_vector.
 
-Open the API documentation of seqan3::bitcompressed_vector, display the inheritance diagram and read through the
+Open the API documentation of bio::bitcompressed_vector, display the inheritance diagram and read through the
 interface overview and the detailed description.
 
 \assignment{Assignment 4: The bitcompressed vector}
-Create a small program that asks the user for a size and then creates a vector of seqan3::dna4 of that size.
-Add an argument parser flag that allows the user to decide whether std::vector or seqan3::bitcompressed_vector is used.
+Create a small program that asks the user for a size and then creates a vector of bio::dna4 of that size.
+Add an argument parser flag that allows the user to decide whether std::vector or bio::bitcompressed_vector is used.
 After creating the vector, print its size.
 
 Measure and compare the amount of main memory that your program uses depending on the vector implementation.

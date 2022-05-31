@@ -44,7 +44,7 @@ namespace bio::detail
  *
  * ### Example
  *
- * \include test/snippet/core/type_list/detail/type_pack_algorithm_all_of.cpp
+ * \include test/snippet/meta/type_list/detail/type_pack_algorithm_all_of.cpp
  *
  * ### Complexity
  *
@@ -84,7 +84,7 @@ constexpr bool all_of(unary_predicate_t && fn, pack_t && ...args)
  *
  * ### Example
  *
- * \include test/snippet/core/type_list/detail/type_pack_algorithm_for_each.cpp
+ * \include test/snippet/meta/type_list/detail/type_pack_algorithm_for_each.cpp
  *
  * ### Complexity
  *

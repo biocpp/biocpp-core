@@ -35,7 +35,7 @@ namespace bio
  *
  * Usage:
  *
- * \include test/snippet/range/container/small_string.cpp
+ * \include test/snippet/ranges/container/small_string.cpp
  *
  */
 template <size_t capacity_>

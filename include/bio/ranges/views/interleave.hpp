@@ -372,7 +372,7 @@ namespace bio::views
  *
  * ### Example
  *
- * \include test/snippet/range/views/interleave.cpp
+ * \include test/snippet/ranges/views/interleave.cpp
  * \hideinitializer
  */
 inline constexpr auto interleave = detail::interleave_fn{};

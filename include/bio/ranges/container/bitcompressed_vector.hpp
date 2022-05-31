@@ -46,7 +46,7 @@ namespace bio
  *
  * ### Example
  *
- * \include test/snippet/range/container/bitcompressed_vector.cpp
+ * \include test/snippet/ranges/container/bitcompressed_vector.cpp
  *
  * ### Thread safety
  *

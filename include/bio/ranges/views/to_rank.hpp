@@ -59,7 +59,7 @@ namespace bio::views
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
  * ###Example
- * \include test/snippet/range/views/range_view_to_rank.cpp
+ * \include test/snippet/ranges/views/range_view_to_rank.cpp
  * We also convert to unsigned here, because the bio::alphabet_rank_t is often `uint8_t` which is
  * often implemented as `unsigned char` and thus will not be printed as a number by default.
  * \hideinitializer

@@ -58,7 +58,7 @@ namespace bio::views
  *
  * ### Example
  *
- * \include test/snippet/range/views/get.cpp
+ * \include test/snippet/ranges/views/get.cpp
  * \hideinitializer
  */
 template <auto index>

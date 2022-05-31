@@ -358,7 +358,7 @@ namespace bio::views
  *
  * ### Example
  *
- * \include test/snippet/range/views/single_pass_input.cpp
+ * \include test/snippet/ranges/views/single_pass_input.cpp
  * \hideinitializer
  */
 inline constexpr auto single_pass_input = detail::adaptor_for_view_without_args<detail::single_pass_input_view>{};

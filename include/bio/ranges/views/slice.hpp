@@ -135,7 +135,7 @@ namespace bio::views
  *
  * ### Example
  *
- * \include test/snippet/range/views/slice.cpp
+ * \include test/snippet/ranges/views/slice.cpp
  *
  * \hideinitializer
  */

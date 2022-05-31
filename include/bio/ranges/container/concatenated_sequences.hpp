@@ -106,7 +106,7 @@ namespace bio
  *
  * ###Example
  *
- * \include test/snippet/range/container/concatenated_sequences.cpp
+ * \include test/snippet/ranges/container/concatenated_sequences.cpp
  *
  * ###Exceptions
  *
@@ -918,7 +918,7 @@ public:
      *
      * ###Example
      *
-     * \include test/snippet/range/container/concatenated_sequences_insert.cpp
+     * \include test/snippet/ranges/container/concatenated_sequences_insert.cpp
      */
     template <std::ranges::forward_range rng_type>
     iterator insert(const_iterator pos, rng_type && value)
@@ -952,7 +952,7 @@ public:
      *
      * ###Example
      *
-     * \include test/snippet/range/container/concatenated_sequences_insert2.cpp
+     * \include test/snippet/ranges/container/concatenated_sequences_insert2.cpp
      */
     template <std::ranges::forward_range rng_type>
     iterator insert(const_iterator pos, size_type const count, rng_type && value)

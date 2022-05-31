@@ -118,10 +118,10 @@ namespace bio::views
  * ###Example
  *
  * Operating on a range of bio::phred42:
- * \include test/snippet/range/views/trim_phred42.cpp
+ * \include test/snippet/ranges/views/trim_phred42.cpp
  *
  * Or operating on a range of bio::dna5q:
- * \include test/snippet/range/views/trim_dna5q.cpp
+ * \include test/snippet/ranges/views/trim_dna5q.cpp
  * \hideinitializer
  */
 

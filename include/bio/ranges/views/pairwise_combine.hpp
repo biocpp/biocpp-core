@@ -34,7 +34,7 @@ namespace bio::detail
  *
  * ### Example
  *
- * \include test/snippet/range/views/pairwise_combine.cpp
+ * \include test/snippet/ranges/views/pairwise_combine.cpp
  */
 template <std::ranges::view underlying_range_type>
 //!\cond
@@ -697,7 +697,7 @@ namespace bio::views
  *
  * ### Example
  *
- * \include test/snippet/range/views/pairwise_combine.cpp
+ * \include test/snippet/ranges/views/pairwise_combine.cpp
  *
  * \attention This view cannot be chained immediately with an infinite range, because upon construction it will
  *            take forever to reach the last element of the view.

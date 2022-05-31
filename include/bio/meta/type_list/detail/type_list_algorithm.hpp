@@ -100,7 +100,7 @@ struct type_list_expander<type_list_t<args_t...>>
  *
  * ### Example
  *
- * \include test/snippet/core/type_list/detail/type_list_algorithm_all_of.cpp
+ * \include test/snippet/meta/type_list/detail/type_list_algorithm_all_of.cpp
  *
  * ### Complexity
  *
@@ -148,7 +148,7 @@ template <typename type_list_t, typename unary_predicate_t>
  *
  * ### Example
  *
- * \include test/snippet/core/type_list/detail/type_list_algorithm_for_each.cpp
+ * \include test/snippet/meta/type_list/detail/type_list_algorithm_for_each.cpp
  *
  * ### Complexity
  *

@@ -153,7 +153,7 @@ namespace bio::views
  *
  * ### Example
  *
-* \include test/snippet/range/views/type_reduce.cpp
+* \include test/snippet/ranges/views/type_reduce.cpp
  *
  * \hideinitializer
  */

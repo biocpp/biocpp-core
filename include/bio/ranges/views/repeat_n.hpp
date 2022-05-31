@@ -87,7 +87,7 @@ namespace bio::views
  *
  * ### Example
  *
- * \include test/snippet/range/views/repeat_n.cpp
+ * \include test/snippet/ranges/views/repeat_n.cpp
  *
  * \hideinitializer
  */

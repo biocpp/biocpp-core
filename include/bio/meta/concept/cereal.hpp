@@ -131,7 +131,7 @@ concept cereal_text_archive = false;
  *
  * ### Example
  *
- * \include test/snippet/core/cereal_example.cpp
+ * \include test/snippet/meta/cereal_example.cpp
  *
  * \attention
  * The cereal library is an optional dependency of SeqAn, if it is not found **no types** satisfy this concept.

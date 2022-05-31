@@ -61,10 +61,10 @@ namespace bio::views
  * ### Example
  *
  * Convert from `int` to `bool`:
- * \include test/snippet/range/views/convert_int_to_bool.cpp
+ * \include test/snippet/ranges/views/convert_int_to_bool.cpp
  *
  * Convert from bio::dna15 to bio::dna5:
- * \include test/snippet/range/views/convert_15_to_5.cpp
+ * \include test/snippet/ranges/views/convert_15_to_5.cpp
  * \hideinitializer
  */
 template <typename out_t>

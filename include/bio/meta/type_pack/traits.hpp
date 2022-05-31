@@ -145,7 +145,7 @@ namespace bio::pack_traits
  * * Number of template instantiations: O(1)
  * * Other operations: O(1)
  *
- * \include test/snippet/core/type_list/pack_traits_size.cpp
+ * \include test/snippet/meta/type_list/pack_traits_size.cpp
  */
 template <typename ...pack_t>
 inline constexpr size_t size = sizeof...(pack_t);
@@ -163,7 +163,7 @@ inline constexpr size_t size = sizeof...(pack_t);
  * * Number of template instantiations: O(1)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/pack_traits_count.cpp
+ * \include test/snippet/meta/type_list/pack_traits_count.cpp
  */
 template <typename query_t, typename ...pack_t>
 inline constexpr ptrdiff_t count =  (std::is_same_v<query_t, pack_t> + ... + 0);
@@ -181,7 +181,7 @@ inline constexpr ptrdiff_t count =  (std::is_same_v<query_t, pack_t> + ... + 0);
  * * Number of template instantiations: O(1)
  * * Other operations: O(n), possibly == `i`, where `i` is the return value
  *
- * \include test/snippet/core/type_list/pack_traits_find.cpp
+ * \include test/snippet/meta/type_list/pack_traits_find.cpp
  */
 template <typename query_t, typename ...pack_t>
 inline constexpr ptrdiff_t find = bio::pack_traits::detail::find<query_t, pack_t...>();
@@ -204,7 +204,7 @@ inline constexpr ptrdiff_t find = bio::pack_traits::detail::find<query_t, pack_t
  *
  *  Only the predicate is instantiated.
  *
- * \include test/snippet/core/type_list/pack_traits_find_if.cpp
+ * \include test/snippet/meta/type_list/pack_traits_find_if.cpp
  */
 template <template <typename> typename pred_t, typename ...pack_t>
 inline constexpr ptrdiff_t find_if = bio::pack_traits::detail::find_if<pred_t, pack_t...>();
@@ -222,7 +222,7 @@ inline constexpr ptrdiff_t find_if = bio::pack_traits::detail::find_if<pred_t, p
  * * Number of template instantiations: O(1)
  * * Other operations: O(n), possibly == `i`, where `i` is the index of the first occurrence
  *
- * \include test/snippet/core/type_list/pack_traits_find.cpp
+ * \include test/snippet/meta/type_list/pack_traits_find.cpp
  */
 template <typename query_t, typename ...pack_t>
 inline constexpr bool contains = (find<query_t, pack_t...> != -1);
@@ -246,7 +246,7 @@ inline constexpr bool contains = (find<query_t, pack_t...> != -1);
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/pack_traits_at.cpp
+ * \include test/snippet/meta/type_list/pack_traits_at.cpp
  */
 template <ptrdiff_t idx, typename ...pack_t>
 //!\cond
@@ -266,7 +266,7 @@ using at = typename decltype(detail::at<idx, pack_t...>())::type;
  * * Number of template instantiations: O(1)
  * * Other operations: O(1)
  *
- * \include test/snippet/core/type_list/pack_traits_front.cpp
+ * \include test/snippet/meta/type_list/pack_traits_front.cpp
  */
 template <typename ...pack_t>
 //!\cond
@@ -288,7 +288,7 @@ using front = typename decltype(detail::front<pack_t...>())::type;
  * Notably faster than `bio::pack_traits::at<size<pack...> - 1, pack...>` (no recursive template
  * instantiations).
  *
- * \include test/snippet/core/type_list/pack_traits_back.cpp
+ * \include test/snippet/meta/type_list/pack_traits_back.cpp
  */
 template <typename ...pack_t>
 //!\cond
@@ -313,7 +313,7 @@ using back = typename decltype((std::type_identity<pack_t>{}, ...))::type; // us
  * * Number of template instantiations: O(1)
  * * Other operations: O(1)
  *
- * \include test/snippet/core/type_list/pack_traits_drop_front.cpp
+ * \include test/snippet/meta/type_list/pack_traits_drop_front.cpp
  */
 template <typename ...pack_t>
 //!\cond
@@ -336,7 +336,7 @@ using drop_front = typename decltype(detail::drop_front<pack_t...>())::type;
  * * Number of template instantiations: O(n)
  * * Other operations: O(1)
  *
- * \include test/snippet/core/type_list/pack_traits_transform.cpp
+ * \include test/snippet/meta/type_list/pack_traits_transform.cpp
  */
 template <template <typename> typename trait_t, typename ...pack_t>
 using transform = bio::type_list<trait_t<pack_t>...>;
@@ -359,7 +359,7 @@ using transform = bio::type_list<trait_t<pack_t>...>;
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/pack_traits_take.cpp
+ * \include test/snippet/meta/type_list/pack_traits_take.cpp
  */
 template <ptrdiff_t i, typename ...pack_t>
 //!\cond
@@ -379,7 +379,7 @@ using take = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/pack_traits_drop.cpp
+ * \include test/snippet/meta/type_list/pack_traits_drop.cpp
  */
 template <ptrdiff_t i, typename ...pack_t>
 //!\cond
@@ -399,7 +399,7 @@ using drop = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/pack_traits_take_last.cpp
+ * \include test/snippet/meta/type_list/pack_traits_take_last.cpp
  */
 template <ptrdiff_t i, typename ...pack_t>
 //!\cond
@@ -419,7 +419,7 @@ using take_last = drop<size<pack_t...> - i, pack_t...>;
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/pack_traits_take_last.cpp
+ * \include test/snippet/meta/type_list/pack_traits_take_last.cpp
  */
 template <ptrdiff_t i, typename ...pack_t>
 //!\cond
@@ -439,7 +439,7 @@ using drop_last = take<size<pack_t...> - i, pack_t...>;
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/pack_traits_take_last.cpp
+ * \include test/snippet/meta/type_list/pack_traits_take_last.cpp
  */
 template <ptrdiff_t i, typename ...pack_t>
 //!\cond
@@ -461,7 +461,7 @@ using split_after = decltype(detail::split_after<i, pack_t...>(type_list<>{}));
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/pack_traits_take_last.cpp
+ * \include test/snippet/meta/type_list/pack_traits_take_last.cpp
  */
 template <typename replace_t, std::ptrdiff_t i, typename ...pack_t>
 //!\cond

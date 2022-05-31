@@ -263,7 +263,7 @@ constexpr size_t range_dimension_v<t> = range_dimension_v<std::ranges::range_val
  *
  * \details
  *
- * \include test/snippet/core/type_traits/range.cpp
+ * \include test/snippet/meta/type_traits/range.cpp
  *
  * Attention, this concept implicitly removes cv-qualifiers and reference from the types it recurses on and
  * compares.

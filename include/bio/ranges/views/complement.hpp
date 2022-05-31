@@ -62,7 +62,7 @@ namespace bio::views
  *
  * ### Example
  *
- * \include test/snippet/range/views/complement.cpp
+ * \include test/snippet/ranges/views/complement.cpp
  * \hideinitializer
  */
 

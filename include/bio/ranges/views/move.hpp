@@ -60,7 +60,7 @@ namespace bio::views
  *
  * This is a slightly more verbose version of calling `std::ranges::move` on the range.
  *
- * \include test/snippet/range/views/move.cpp
+ * \include test/snippet/ranges/views/move.cpp
  *
  * \hideinitializer
  */

@@ -70,7 +70,7 @@ namespace bio::views
  *
  * ### Example
  *
- * \include test/snippet/range/views/take_exactly.cpp
+ * \include test/snippet/ranges/views/take_exactly.cpp
  *
  * \hideinitializer
  */

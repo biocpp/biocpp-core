@@ -225,7 +225,7 @@ namespace bio::views
  *
  * ### Example
  *
- * \include test/snippet/range/views/persist.cpp
+ * \include test/snippet/ranges/views/persist.cpp
  *
  * \hideinitializer
  */

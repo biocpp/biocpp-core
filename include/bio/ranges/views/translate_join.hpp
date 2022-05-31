@@ -379,7 +379,7 @@ namespace bio::views
  * ### Example
  *
  * Operating on a range of bio::dna5:
- * \snippet test/snippet/range/views/translate_join.cpp example
+ * \snippet test/snippet/ranges/views/translate_join.cpp example
  * \hideinitializer
  */
 inline constexpr auto translate_join = detail::translate_join_fn{};

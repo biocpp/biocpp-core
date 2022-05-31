@@ -114,7 +114,7 @@ find_package (SeqAn3 3.0.0 REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../seqan3/build_s
 
 add_executable (hello_world hello_world.cpp)
 
-target_link_libraries (hello_world seqan3::seqan3)
+target_link_libraries (hello_world bio::seqan3)
 ```
 
 The directories should now look like this:
@@ -168,6 +168,6 @@ find_package (SeqAn3 3.0.0 REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../seqan3/build_s
 add_executable (hello_world hello_world.cpp)
 add_executable (another_program another_program.cpp)
 
-target_link_libraries (hello_world seqan3::seqan3)
-target_link_libraries (another_program seqan3::seqan3)
+target_link_libraries (hello_world bio::seqan3)
+target_link_libraries (another_program bio::seqan3)
 ```

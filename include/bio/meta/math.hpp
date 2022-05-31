@@ -34,7 +34,7 @@ namespace bio::detail
  *
  * ### Example
  *
- * \include test/snippet/core/detail/floor_log2.cpp
+ * \include test/snippet/meta/detail/floor_log2.cpp
  *
  * ### Exception
  *
@@ -68,7 +68,7 @@ constexpr unsigned_t floor_log2(unsigned_t const n) noexcept
  *
  * ### Example
  *
- * \include test/snippet/core/detail/ceil_log2.cpp
+ * \include test/snippet/meta/detail/ceil_log2.cpp
  *
  * ### Exception
  *
@@ -113,7 +113,7 @@ namespace bio
  *
  * ### Example
  *
- * \include test/snippet/core/pow.cpp
+ * \include test/snippet/meta/pow.cpp
  */
 template <typename base_t, std::unsigned_integral exp_t>
 //!\cond

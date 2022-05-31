@@ -35,7 +35,7 @@ namespace bio::detail
  * you need to implement these in the range before you can make use of this iterator.
  *
  * Since the CRTP parameter is in fact a template template, CRTP instantiation looks a little different, e.g.:
- * \include test/snippet/range/detail/random_access_iterator.cpp
+ * \include test/snippet/ranges/detail/random_access_iterator.cpp
  */
 template <typename range_type, template <typename ...> typename derived_t_template>
 class random_access_iterator_base

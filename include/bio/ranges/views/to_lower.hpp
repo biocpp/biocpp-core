@@ -60,7 +60,7 @@ namespace bio::views
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
  * ### Example
- * \include test/snippet/range/views/to_lower.cpp
+ * \include test/snippet/ranges/views/to_lower.cpp
  * \hideinitializer
  */
 inline auto const to_lower = deep{std::views::transform([] (auto const in) noexcept

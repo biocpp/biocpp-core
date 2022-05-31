@@ -486,7 +486,7 @@ namespace bio::views
  * ### Example
  *
  * Operating on a range of bio::dna5:
- * \include test/snippet/range/views/translate_dna5.cpp
+ * \include test/snippet/ranges/views/translate_dna5.cpp
  * \hideinitializer
  */
 inline constexpr auto translate_single = deep{detail::translate_fn<true>{}};
@@ -774,7 +774,7 @@ namespace bio::views
  * ### Example
  *
  * Operating on a range of bio::dna5:
- * \include test/snippet/range/views/translate_usage.cpp
+ * \include test/snippet/ranges/views/translate_usage.cpp
  * \hideinitializer
  */
 inline constexpr auto translate = deep{detail::translate_fn<false>{}};

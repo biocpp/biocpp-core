@@ -81,7 +81,7 @@ namespace bio::views
  *
  * ### Example
  *
- * \include test/snippet/range/views/as_const.cpp
+ * \include test/snippet/ranges/views/as_const.cpp
  * \hideinitializer
  */
 inline auto const as_const = std::views::transform(bio::detail::as_const_fn{});

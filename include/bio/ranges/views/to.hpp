@@ -104,7 +104,7 @@ namespace bio::views
  * Both syntaxes support the explicit specification of the target container or
  * a specification with an deduced value type.
  *
- * \include snippet/range/views/to.cpp
+ * \include snippet/ranges/views/to.cpp
  */
 template <typename container_t, typename... args_t>
 constexpr auto to(args_t &&... args)

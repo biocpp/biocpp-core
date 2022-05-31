@@ -86,7 +86,7 @@ constexpr size_t next_power_of_two(size_t n)
 *
 * ### Example
 *
-* \include test/snippet/core/detail/popcount.cpp
+* \include test/snippet/meta/detail/popcount.cpp
 *
 * ### Exception
 *
@@ -126,7 +126,7 @@ constexpr uint8_t popcount(unsigned_t const n) noexcept
 *
 * ### Example
 *
-* \include test/snippet/core/detail/count_leading_zeros.cpp
+* \include test/snippet/meta/detail/count_leading_zeros.cpp
 *
 * ### Exception
 *
@@ -167,7 +167,7 @@ constexpr uint8_t count_leading_zeros(unsigned_t const n) noexcept
  *
  * ### Example
  *
- * \include test/snippet/core/detail/count_trailing_zeros.cpp
+ * \include test/snippet/meta/detail/count_trailing_zeros.cpp
  *
  * ### Exception
  *
@@ -208,7 +208,7 @@ constexpr uint8_t count_trailing_zeros(unsigned_t const n) noexcept
  *
  * ### Example
  *
- * \include test/snippet/core/detail/most_significant_bit_set.cpp
+ * \include test/snippet/meta/detail/most_significant_bit_set.cpp
  *
  * ### Exception
  *

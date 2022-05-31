@@ -40,7 +40,7 @@ namespace bio
  *
  * ### Example
  *
- * \include test/snippet/core/char_operations/char_predicate_is_in_interval.cpp
+ * \include test/snippet/meta/char_operations/char_predicate_is_in_interval.cpp
  * \hideinitializer
  */
 template <uint8_t interval_first, uint8_t interval_last>
@@ -60,7 +60,7 @@ inline constexpr auto is_in_interval = detail::is_in_interval_type<interval_firs
  * (but case is ignored).
  *
  * ### Example
- * \include test/snippet/core/char_operations/char_predicate_is_in_alphabet.cpp
+ * \include test/snippet/meta/char_operations/char_predicate_is_in_alphabet.cpp
  * \hideinitializer
  */
 template <alphabet alphabet_t>
@@ -76,7 +76,7 @@ inline constexpr auto is_in_alphabet = detail::is_in_alphabet_type<alphabet_t>{}
  *
  * ### Example
  *
- * \include test/snippet/core/char_operations/char_predicate_is_char.cpp
+ * \include test/snippet/meta/char_operations/char_predicate_is_char.cpp
  * \hideinitializer
  */
 template <int char_v>
@@ -90,7 +90,7 @@ inline constexpr auto is_char = detail::is_char_type<char_v>{};
  *
  * ### Example
  *
- * \snippet test/snippet/core/char_operations/char_predicate.cpp is_eof
+ * \snippet test/snippet/meta/char_operations/char_predicate.cpp is_eof
  */
 inline auto constexpr is_eof = is_char<EOF>;
 
@@ -105,7 +105,7 @@ inline auto constexpr is_eof = is_char<EOF>;
  *
  * ### Example
  *
- * \snippet test/snippet/core/char_operations/char_predicate.cpp is_cntrl
+ * \snippet test/snippet/meta/char_operations/char_predicate.cpp is_cntrl
  */
 inline auto constexpr is_cntrl = is_in_interval<'\0', static_cast<char>(31)> ||
                                  is_char<static_cast<char>(127)>;
@@ -120,7 +120,7 @@ inline auto constexpr is_cntrl = is_in_interval<'\0', static_cast<char>(31)> ||
  *
  * ### Example
  *
- * \snippet test/snippet/core/char_operations/char_predicate.cpp is_print
+ * \snippet test/snippet/meta/char_operations/char_predicate.cpp is_print
  */
 inline auto constexpr is_print = is_in_interval<' ', '~'> ;
 
@@ -141,7 +141,7 @@ inline auto constexpr is_print = is_in_interval<' ', '~'> ;
  *
  * ### Example
  *
- * \snippet test/snippet/core/char_operations/char_predicate.cpp is_space
+ * \snippet test/snippet/meta/char_operations/char_predicate.cpp is_space
  */
 inline auto constexpr is_space = is_in_interval<'\t', '\r'> || is_char<' '>;
 
@@ -158,7 +158,7 @@ inline auto constexpr is_space = is_in_interval<'\t', '\r'> || is_char<' '>;
  *
  * ### Example
  *
- * \snippet test/snippet/core/char_operations/char_predicate.cpp is_blank
+ * \snippet test/snippet/meta/char_operations/char_predicate.cpp is_blank
  */
 inline auto constexpr is_blank = is_char<'\t'> || is_char<' '>;
 
@@ -178,7 +178,7 @@ inline auto constexpr is_blank = is_char<'\t'> || is_char<' '>;
  *
  * ### Example
  *
- * \snippet test/snippet/core/char_operations/char_predicate.cpp is_graph
+ * \snippet test/snippet/meta/char_operations/char_predicate.cpp is_graph
  */
 inline auto constexpr is_graph = is_in_interval<'!', '~'>;
 
@@ -194,7 +194,7 @@ inline auto constexpr is_graph = is_in_interval<'!', '~'>;
  *
  * ### Example
  *
- * \snippet test/snippet/core/char_operations/char_predicate.cpp is_punct
+ * \snippet test/snippet/meta/char_operations/char_predicate.cpp is_punct
  */
 inline auto constexpr is_punct = is_in_interval<'!', '/'> ||
                                  is_in_interval<':', '@'> ||
@@ -215,7 +215,7 @@ inline auto constexpr is_punct = is_in_interval<'!', '/'> ||
  *
  * ### Example
  *
- * \snippet test/snippet/core/char_operations/char_predicate.cpp is_alnum
+ * \snippet test/snippet/meta/char_operations/char_predicate.cpp is_alnum
  */
 inline auto constexpr is_alnum = is_in_interval<'0','9'> ||
                                  is_in_interval<'A','Z'> ||
@@ -234,7 +234,7 @@ inline auto constexpr is_alnum = is_in_interval<'0','9'> ||
  *
  * ### Example
  *
- * \snippet test/snippet/core/char_operations/char_predicate.cpp is_alpha
+ * \snippet test/snippet/meta/char_operations/char_predicate.cpp is_alpha
  */
 inline auto constexpr is_alpha = is_in_interval<'A', 'Z'> || is_in_interval<'a', 'z'>;
 
@@ -250,7 +250,7 @@ inline auto constexpr is_alpha = is_in_interval<'A', 'Z'> || is_in_interval<'a',
  *
  * ### Example
  *
- * \snippet test/snippet/core/char_operations/char_predicate.cpp is_upper
+ * \snippet test/snippet/meta/char_operations/char_predicate.cpp is_upper
  */
 inline auto constexpr is_upper = is_in_interval<'A', 'Z'>;
 
@@ -266,7 +266,7 @@ inline auto constexpr is_upper = is_in_interval<'A', 'Z'>;
  *
  * ### Example
  *
- * \snippet test/snippet/core/char_operations/char_predicate.cpp is_lower
+ * \snippet test/snippet/meta/char_operations/char_predicate.cpp is_lower
  */
 inline auto constexpr is_lower = is_in_interval<'a', 'z'>;
 
@@ -282,7 +282,7 @@ inline auto constexpr is_lower = is_in_interval<'a', 'z'>;
  *
  * ### Example
  *
- * \snippet test/snippet/core/char_operations/char_predicate.cpp is_digit
+ * \snippet test/snippet/meta/char_operations/char_predicate.cpp is_digit
  */
 inline auto constexpr is_digit = is_in_interval<'0', '9'>;
 
@@ -300,7 +300,7 @@ inline auto constexpr is_digit = is_in_interval<'0', '9'>;
  *
  * ### Example
  *
- * \snippet test/snippet/core/char_operations/char_predicate.cpp is_xdigit
+ * \snippet test/snippet/meta/char_operations/char_predicate.cpp is_xdigit
  */
 inline auto constexpr is_xdigit = is_in_interval<'0', '9'> ||
                                   is_in_interval<'A', 'F'> ||
@@ -320,7 +320,7 @@ inline auto constexpr is_xdigit = is_in_interval<'0', '9'> ||
  * joined efficiently, maintaining constant-time evaluation independent of the number of checks. Functors can be
  * combined with the `||-operator` or negated via the `!-operator`:
  *
- * \include test/snippet/core/char_operations/char_predicate_is_operator.cpp
+ * \include test/snippet/meta/char_operations/char_predicate_is_operator.cpp
  *
  * Defining complex combinations and using them in e.g. input/output can increase speed significantly over checking
  * multiple functions: we measured speed-ups of 10x for a single check and speed-ups of

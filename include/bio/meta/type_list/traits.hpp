@@ -189,7 +189,7 @@ inline constexpr size_t size = 0;
  * \ingroup core_type_list
  * \copydetails bio::pack_traits::size
  *
- * \include test/snippet/core/type_list/list_traits_size.cpp
+ * \include test/snippet/meta/type_list/list_traits_size.cpp
  */
 template <typename ...pack_t>
 inline constexpr size_t size<type_list<pack_t...>> = sizeof...(pack_t);
@@ -204,7 +204,7 @@ inline constexpr ptrdiff_t count = -1;
  * \ingroup core_type_list
  * \copydetails bio::pack_traits::count
  *
- * \include test/snippet/core/type_list/list_traits_count.cpp
+ * \include test/snippet/meta/type_list/list_traits_count.cpp
  */
 template <typename query_t, typename ...pack_t>
 inline constexpr ptrdiff_t count<query_t, type_list<pack_t...>> =
@@ -220,7 +220,7 @@ inline constexpr ptrdiff_t find = -1;
  * \ingroup core_type_list
  * \copydetails bio::pack_traits::find
  *
- * \include test/snippet/core/type_list/list_traits_find.cpp
+ * \include test/snippet/meta/type_list/list_traits_find.cpp
  */
 template <typename query_t, typename ...pack_t>
 inline constexpr ptrdiff_t find<query_t, type_list<pack_t...>> =
@@ -236,7 +236,7 @@ inline constexpr ptrdiff_t find_if = -1;
  * \ingroup core_type_list
  * \copydetails bio::pack_traits::find_if
  *
- * \include test/snippet/core/type_list/list_traits_find_if.cpp
+ * \include test/snippet/meta/type_list/list_traits_find_if.cpp
  */
 template <template <typename> typename pred_t, typename ...pack_t>
 inline constexpr ptrdiff_t find_if<pred_t, type_list<pack_t...>> =
@@ -246,7 +246,7 @@ inline constexpr ptrdiff_t find_if<pred_t, type_list<pack_t...>> =
  * \ingroup core_type_list
  * \copydetails bio::pack_traits::contains
  *
- * \include test/snippet/core/type_list/list_traits_contains.cpp
+ * \include test/snippet/meta/type_list/list_traits_contains.cpp
  */
 template <typename query_t, typename list_t>
 //!\cond
@@ -274,7 +274,7 @@ inline constexpr bool contains = (find<query_t, list_t> != -1);
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/list_traits_at.cpp
+ * \include test/snippet/meta/type_list/list_traits_at.cpp
  */
 template <ptrdiff_t idx, typename list_t>
 //!\cond
@@ -294,7 +294,7 @@ using at = typename decltype(detail::at<idx>(list_t{}))::type;
  * * Number of template instantiations: O(1)
  * * Other operations: O(1)
  *
- * \include test/snippet/core/type_list/list_traits_front.cpp
+ * \include test/snippet/meta/type_list/list_traits_front.cpp
  */
 template <typename list_t>
 //!\cond
@@ -316,7 +316,7 @@ using front = typename decltype(detail::front(list_t{}))::type;
  * Notably faster than `bio::pack_traits::at<size<pack...> - 1, pack...>` (no recursive template
  * instantiations).
  *
- * \include test/snippet/core/type_list/list_traits_back.cpp
+ * \include test/snippet/meta/type_list/list_traits_back.cpp
  */
 template <typename list_t>
 //!\cond
@@ -344,7 +344,7 @@ using back = typename decltype(detail::back(list_t{}))::type;
  *
  * Complexity is independent of the number of types in each list.
  *
- * \include test/snippet/core/type_list/list_traits_concat.cpp
+ * \include test/snippet/meta/type_list/list_traits_concat.cpp
  */
 template <typename ...lists_t>
 //!\cond
@@ -363,7 +363,7 @@ using concat = decltype(detail::concat(lists_t{}...));
  * * Number of template instantiations: O(1)
  * * Other operations: O(1)
  *
- * \include test/snippet/core/type_list/list_traits_drop_front.cpp
+ * \include test/snippet/meta/type_list/list_traits_drop_front.cpp
  */
 template <typename list_t>
 //!\cond
@@ -383,7 +383,7 @@ using drop_front = decltype(detail::drop_front(list_t{}));
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/list_traits_take.cpp
+ * \include test/snippet/meta/type_list/list_traits_take.cpp
  */
 template <ptrdiff_t i, typename list_t>
 //!\cond
@@ -403,7 +403,7 @@ using take = typename decltype(detail::split_after<i>(list_t{}))::first_type;
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/list_traits_drop.cpp
+ * \include test/snippet/meta/type_list/list_traits_drop.cpp
  */
 template <ptrdiff_t i, typename list_t>
 //!\cond
@@ -423,7 +423,7 @@ using drop = typename decltype(detail::split_after<i>(list_t{}))::second_type;
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/list_traits_take_last.cpp
+ * \include test/snippet/meta/type_list/list_traits_take_last.cpp
  */
 template <ptrdiff_t i, typename list_t>
 //!\cond
@@ -443,7 +443,7 @@ using take_last = drop<size<list_t> - i, list_t>;
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/list_traits_drop_last.cpp
+ * \include test/snippet/meta/type_list/list_traits_drop_last.cpp
  */
 template <ptrdiff_t i, typename list_t>
 //!\cond
@@ -463,7 +463,7 @@ using drop_last = take<size<list_t> - i, list_t>;
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/list_traits_drop_last.cpp
+ * \include test/snippet/meta/type_list/list_traits_drop_last.cpp
  */
 template <ptrdiff_t i, typename list_t>
 //!\cond
@@ -486,7 +486,7 @@ using split_after = decltype(detail::split_after<i>(list_t{}));
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/list_traits_transform.cpp
+ * \include test/snippet/meta/type_list/list_traits_transform.cpp
  */
 template <template <typename> typename trait_t, typename list_t>
 //!\cond
@@ -507,7 +507,7 @@ using transform = decltype(detail::transform<trait_t>(list_t{}));
  * * Number of template instantiations: O(n)
  * * Other operations: O(n)
  *
- * \include test/snippet/core/type_list/list_traits_replace_at.cpp
+ * \include test/snippet/meta/type_list/list_traits_replace_at.cpp
  */
 template <typename replace_t, std::ptrdiff_t i, typename list_t>
 //!\cond

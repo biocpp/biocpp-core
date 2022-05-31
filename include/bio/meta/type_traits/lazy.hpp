@@ -140,7 +140,7 @@ inline constexpr auto instantiate_if_v = instantiate_if_t<t, condition>::value;
  *
  * ### Example
  *
- * \include test/snippet/core/type_traits/lazy.cpp
+ * \include test/snippet/meta/type_traits/lazy.cpp
  */
 template <bool decision, typename on_true_t, typename on_false_t>
 struct lazy_conditional : instantiate<std::conditional_t<decision, on_true_t, on_false_t>>
@@ -174,7 +174,7 @@ using lazy_conditional_t = instantiate_t<std::conditional_t<decision, on_true_t,
  *
  * ### Example
  *
- * \include test/snippet/core/type_traits/is_class_template_declarable_with.cpp
+ * \include test/snippet/meta/type_traits/is_class_template_declarable_with.cpp
  */
 template <template <typename ...> typename query_t, typename ...args_t>
 struct is_class_template_declarable_with :
