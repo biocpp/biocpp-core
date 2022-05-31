@@ -12,8 +12,8 @@
 #include <map>
 #include <vector>
 
-#include <seqan3/core/bit_manipulation.hpp>
-#include <seqan3/range/container/aligned_allocator.hpp>
+#include <bio/meta/bit_manipulation.hpp>
+#include <bio/ranges/container/aligned_allocator.hpp>
 
 // standard construction.
 TEST(aligned_allocator, standard_construction)

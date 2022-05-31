@@ -17,15 +17,15 @@
 // External concept implementations
 // ============================================================================
 
-#include <seqan3/core/add_enum_bitwise_operators.hpp>
-#include <seqan3/core/concept/all.hpp>
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/core/detail/all.hpp>
-#include <seqan3/core/type_traits/all.hpp>
-#include <seqan3/core/platform.hpp>
-#include <seqan3/core/pod_tuple.hpp>
-#include <seqan3/core/tuple_utility.hpp>
-#include <seqan3/core/type_list/type_list.hpp>
+#include <bio/meta/add_enum_bitwise_operators.hpp>
+#include <bio/meta/concept/all.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/meta/detail/all.hpp>
+#include <bio/meta/type_traits/all.hpp>
+#include <bio/meta/platform.hpp>
+#include <bio/meta/pod_tuple.hpp>
+#include <bio/meta/tuple_utility.hpp>
+#include <bio/meta/type_list/type_list.hpp>
 
 /*!\defgroup core Core
  * \brief Provides core functionality used by multiple modules.

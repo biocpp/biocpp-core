@@ -7,7 +7,7 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/quality/phred42.hpp>
+#include <bio/alphabet/quality/phred42.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"

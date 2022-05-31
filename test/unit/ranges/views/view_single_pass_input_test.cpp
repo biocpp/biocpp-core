@@ -10,10 +10,10 @@
 #include <vector>
 #include <type_traits>
 
-#include <seqan3/range/views/single_pass_input.hpp>
-#include <seqan3/range/views/persist.hpp>
-#include <seqan3/range/views/take.hpp>
-#include <seqan3/range/views/zip.hpp>
+#include <bio/ranges/views/single_pass_input.hpp>
+#include <bio/ranges/views/persist.hpp>
+#include <bio/ranges/views/take.hpp>
+#include <bio/ranges/views/zip.hpp>
 #include <ranges>
 
 template <typename rng_type>

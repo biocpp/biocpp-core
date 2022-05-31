@@ -1,4 +1,4 @@
-#include <seqan3/alphabet/aminoacid/aa20.hpp>
+#include <bio/alphabet/aminoacid/aa20.hpp>
 
 int main()
 {

@@ -1,6 +1,6 @@
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/alphabet/quality/phred42.hpp>
-#include <seqan3/alphabet/quality/qualified.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/quality/phred42.hpp>
+#include <bio/alphabet/quality/qualified.hpp>
 
 int main()
 {

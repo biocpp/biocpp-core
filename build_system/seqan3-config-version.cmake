@@ -13,10 +13,10 @@
 
 # Note that seqan3-config.cmake can be standalone and thus SEQAN3_CLONE_DIR might be empty.
 find_path (SEQAN3_CLONE_DIR NAMES build_system/seqan3-config.cmake HINTS "${CMAKE_CURRENT_LIST_DIR}/..")
-find_path (SEQAN3_INCLUDE_DIR NAMES seqan3/version.hpp HINTS "${SEQAN3_CLONE_DIR}/include")
+find_path (SEQAN3_INCLUDE_DIR NAMES bio/version.hpp HINTS "${SEQAN3_CLONE_DIR}/include")
 
 # extract version from seqan3/version.hpp header
-file(STRINGS "${SEQAN3_INCLUDE_DIR}/seqan3/version.hpp" SEQAN3_VERSION_HPP REGEX "#define SEQAN3_VERSION_(MAJOR|MINOR|PATCH)")
+file(STRINGS "${SEQAN3_INCLUDE_DIR}/bio/version.hpp" SEQAN3_VERSION_HPP REGEX "#define SEQAN3_VERSION_(MAJOR|MINOR|PATCH)")
 string(REGEX REPLACE "#define SEQAN3_VERSION_(MAJOR|MINOR|PATCH) " "" PACKAGE_VERSION "${SEQAN3_VERSION_HPP}")
 string(REGEX REPLACE ";" "." PACKAGE_VERSION "${PACKAGE_VERSION}")
 

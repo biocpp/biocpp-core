@@ -16,11 +16,11 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/range/views/repeat.hpp>
-#include <seqan3/range/views/zip.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/ranges/views/repeat.hpp>
+#include <bio/ranges/views/zip.hpp>
 
-#include "../../range/iterator_test_template.hpp"
+#include "../../ranges/iterator_test_template.hpp"
 
 using range_t = std::vector<int>;
 using other_range_t = std::vector<std::string>;

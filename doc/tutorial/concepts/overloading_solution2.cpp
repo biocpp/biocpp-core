@@ -1,5 +1,5 @@
 #include <iostream>                     // for std::cout
-#include <seqan3/alphabet/all.hpp>      // include all alphabet headers
+#include <bio/alphabet/all.hpp>      // include all alphabet headers
 
 template <seqan3::alphabet t>
 void print(t const v)

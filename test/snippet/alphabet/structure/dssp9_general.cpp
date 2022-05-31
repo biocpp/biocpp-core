@@ -1,7 +1,7 @@
 #include <vector>
 
-#include <seqan3/alphabet/structure/dssp9.hpp>
-#include <seqan3/core/debug_stream.hpp>
+#include <bio/alphabet/structure/dssp9.hpp>
+#include <bio/meta/debug_stream.hpp>
 
 int main()
 {

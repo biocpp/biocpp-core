@@ -20,9 +20,9 @@
 
 #include <concepts>
 
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/core/detail/type_inspection.hpp>
-#include <seqan3/core/type_traits/basic.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/meta/detail/type_inspection.hpp>
+#include <bio/meta/type_traits/basic.hpp>
 
 namespace seqan3::detail
 {

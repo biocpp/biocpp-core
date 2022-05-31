@@ -7,8 +7,8 @@
 
 //! [dna2]
 #include <array>                                         // std::array
-#include <seqan3/alphabet/alphabet_base.hpp>             // alphabet_base
-#include <seqan3/alphabet/concept.hpp>                   // alphabet concept checks
+#include <bio/alphabet/alphabet_base.hpp>             // alphabet_base
+#include <bio/alphabet/concept.hpp>                   // alphabet concept checks
 
 // derive from alphabet_base
 struct dna2 : public seqan3::alphabet_base<dna2, 2>

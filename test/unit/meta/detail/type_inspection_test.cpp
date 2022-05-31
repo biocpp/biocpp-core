@@ -7,9 +7,9 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/core/type_list/traits.hpp>
-#include <seqan3/core/type_list/type_list.hpp>
-#include <seqan3/core/detail/type_inspection.hpp>
+#include <bio/meta/type_list/traits.hpp>
+#include <bio/meta/type_list/type_list.hpp>
+#include <bio/meta/detail/type_inspection.hpp>
 
 // Some test namespace to check if namespace information are preserved within the naming.
 namespace foo

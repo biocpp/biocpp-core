@@ -1,6 +1,6 @@
 #include <vector>
 
-#include <seqan3/alphabet/structure/dssp9.hpp>
+#include <bio/alphabet/structure/dssp9.hpp>
 
 int main()
 {

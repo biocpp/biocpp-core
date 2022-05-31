@@ -16,7 +16,7 @@
 
 #include <type_traits>
 
-#include <seqan3/core/detail/type_inspection.hpp>
+#include <bio/meta/detail/type_inspection.hpp>
 
 namespace seqan3::test
 {

@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <seqan3/alphabet/nucleotide/nucleotide_base.hpp>
+#include <bio/alphabet/nucleotide/nucleotide_base.hpp>
 
 namespace seqan3
 {

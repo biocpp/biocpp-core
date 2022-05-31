@@ -2,9 +2,9 @@
 
 #include <sharg/all.hpp>                                        // Optional: the sharg-parser
 
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/range/container/bitcompressed_vector.hpp>      // include bitcompressed vector
+#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/ranges/container/bitcompressed_vector.hpp>      // include bitcompressed vector
 
 using seqan3::operator""_dna4;
 

@@ -7,7 +7,7 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/concept.hpp>
+#include <bio/alphabet/concept.hpp>
 
 struct non_writeable_alphabet
 {

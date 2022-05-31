@@ -1,5 +1,5 @@
-#include <seqan3/alphabet/alphabet_base.hpp>
-#include <seqan3/alphabet/concept.hpp>
+#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/concept.hpp>
 
 class ab : public seqan3::alphabet_base<ab, 2>
 {

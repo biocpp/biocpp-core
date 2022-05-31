@@ -26,9 +26,9 @@
 
 #pragma once
 
-#include <seqan3/alphabet/structure/concept.hpp>
-#include <seqan3/alphabet/structure/dot_bracket3.hpp>
-#include <seqan3/alphabet/structure/dssp9.hpp>
-#include <seqan3/alphabet/structure/structured_aa.hpp>
-#include <seqan3/alphabet/structure/structured_rna.hpp>
-#include <seqan3/alphabet/structure/wuss.hpp>
+#include <bio/alphabet/structure/concept.hpp>
+#include <bio/alphabet/structure/dot_bracket3.hpp>
+#include <bio/alphabet/structure/dssp9.hpp>
+#include <bio/alphabet/structure/structured_aa.hpp>
+#include <bio/alphabet/structure/structured_rna.hpp>
+#include <bio/alphabet/structure/wuss.hpp>

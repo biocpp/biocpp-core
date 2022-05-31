@@ -12,11 +12,11 @@
 
 #pragma once
 
+#include <algorithm>
 #include <random>
 
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/std/algorithm>
-#include <seqan3/test/seqan2.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/test/seqan2.hpp>
 
 #ifdef SEQAN3_HAS_SEQAN2
 #include <seqan/basic.h>

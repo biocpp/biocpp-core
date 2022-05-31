@@ -14,8 +14,8 @@
 
 #include <optional>
 
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/core/detail/customisation_point.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/meta/detail/customisation_point.hpp>
 #include <concepts>
 #include <type_traits>
 

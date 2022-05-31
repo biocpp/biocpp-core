@@ -1,5 +1,5 @@
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/core/char_operations/predicate.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/meta/char_operations/predicate.hpp>
 
 int main()
 {

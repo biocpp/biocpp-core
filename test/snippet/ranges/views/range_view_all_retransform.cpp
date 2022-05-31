@@ -1,6 +1,6 @@
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/range/views/complement.hpp>
-#include <seqan3/range/views/to.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/ranges/views/complement.hpp>
+#include <bio/ranges/views/to.hpp>
 #include <ranges>
 
 int main()

@@ -15,8 +15,8 @@
 #include <cassert>
 #include <type_traits>
 
-#include <seqan3/core/detail/empty_type.hpp>
-#include <seqan3/core/type_traits/iterator.hpp>
+#include <bio/meta/detail/empty_type.hpp>
+#include <bio/meta/type_traits/iterator.hpp>
 #include <iterator>
 
 namespace seqan3::detail

@@ -15,7 +15,7 @@
 #include <algorithm>
 #include <ranges>
 
-#include <seqan3/range/views/detail.hpp>
+#include <bio/ranges/views/detail.hpp>
 
 //!\cond
 // Contains helpers for seqan3::views::zip.

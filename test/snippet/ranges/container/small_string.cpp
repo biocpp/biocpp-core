@@ -1,5 +1,5 @@
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/container/small_string.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/container/small_string.hpp>
 
 int main()
 {

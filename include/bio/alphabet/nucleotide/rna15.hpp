@@ -14,8 +14,8 @@
 
 #include <vector>
 
-#include <seqan3/alphabet/nucleotide/dna15.hpp>
-#include <seqan3/alphabet/nucleotide/nucleotide_base.hpp>
+#include <bio/alphabet/nucleotide/dna15.hpp>
+#include <bio/alphabet/nucleotide/nucleotide_base.hpp>
 
 // ------------------------------------------------------------------
 // rna15

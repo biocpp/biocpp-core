@@ -14,8 +14,8 @@
 
 #include <type_traits>
 
-#include <seqan3/core/type_list/type_list.hpp>
-#include <seqan3/core/type_pack/traits.hpp>
+#include <bio/meta/type_list/type_list.hpp>
+#include <bio/meta/type_pack/traits.hpp>
 
 // ----------------------------------------------------------------------------
 // seqan3::list_traits::detail

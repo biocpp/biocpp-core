@@ -12,9 +12,9 @@
 
 #pragma once
 
-#include <seqan3/core/concept/cereal.hpp>
-#include <seqan3/core/concept/core_language.hpp>
-#include <seqan3/core/concept/tuple.hpp>
+#include <bio/meta/concept/cereal.hpp>
+#include <bio/meta/concept/core_language.hpp>
+#include <bio/meta/concept/tuple.hpp>
 
 /*!\defgroup concept Concept
  * \ingroup core

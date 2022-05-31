@@ -14,10 +14,10 @@
 
 #include <type_traits>
 
-#include <seqan3/core/platform.hpp>
-#include <seqan3/core/type_traits/pre.hpp>
-#include <seqan3/core/type_traits/basic.hpp>
-#include <seqan3/core/type_traits/iterator.hpp>
+#include <bio/meta/platform.hpp>
+#include <bio/meta/type_traits/pre.hpp>
+#include <bio/meta/type_traits/basic.hpp>
+#include <bio/meta/type_traits/iterator.hpp>
 #include <ranges>
 #include <iterator>
 

@@ -7,10 +7,10 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/nucleotide/concept.hpp>
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/range/views/complement.hpp>
-#include <seqan3/test/expect_range_eq.hpp>
+#include <bio/alphabet/nucleotide/concept.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/ranges/views/complement.hpp>
+#include <bio/test/expect_range_eq.hpp>
 
 #include "container_test_template.hpp"
 

@@ -11,9 +11,9 @@
  */
 #pragma once
 
-#include <seqan3/alphabet/composite/alphabet_tuple_base.hpp>
-#include <seqan3/alphabet/composite/alphabet_variant.hpp>
-#include <seqan3/alphabet/composite/semialphabet_any.hpp>
+#include <bio/alphabet/composite/alphabet_tuple_base.hpp>
+#include <bio/alphabet/composite/alphabet_variant.hpp>
+#include <bio/alphabet/composite/semialphabet_any.hpp>
 
 /*!\defgroup alphabet_composite Composite
  * \brief Provides templates for combining existing alphabets into new alphabet types.

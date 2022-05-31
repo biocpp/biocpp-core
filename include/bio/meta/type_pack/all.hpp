@@ -28,4 +28,4 @@
 
 #pragma once
 
-#include <seqan3/core/type_pack/traits.hpp>
+#include <bio/meta/type_pack/traits.hpp>

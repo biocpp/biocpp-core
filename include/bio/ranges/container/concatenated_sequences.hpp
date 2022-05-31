@@ -15,12 +15,12 @@
 #include <type_traits>
 #include <vector>
 
-#include <seqan3/core/concept/cereal.hpp>
-#include <seqan3/range/container/concept.hpp>
-#include <seqan3/range/detail/random_access_iterator.hpp>
-#include <seqan3/range/views/as_const.hpp>
-#include <seqan3/range/views/repeat_n.hpp>
-#include <seqan3/range/views/slice.hpp>
+#include <bio/meta/concept/cereal.hpp>
+#include <bio/ranges/container/concept.hpp>
+#include <bio/ranges/detail/random_access_iterator.hpp>
+#include <bio/ranges/views/as_const.hpp>
+#include <bio/ranges/views/repeat_n.hpp>
+#include <bio/ranges/views/slice.hpp>
 #include <iterator>
 #include <ranges>
 

@@ -5,9 +5,9 @@
 // shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <seqan3/alphabet/structure/concept.hpp>
-#include <seqan3/alphabet/structure/dot_bracket3.hpp>
-#include <seqan3/range/views/zip.hpp>
+#include <bio/alphabet/structure/concept.hpp>
+#include <bio/alphabet/structure/dot_bracket3.hpp>
+#include <bio/ranges/views/zip.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"

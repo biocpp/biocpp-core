@@ -9,7 +9,7 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/core/bit_manipulation.hpp>
+#include <bio/meta/bit_manipulation.hpp>
 
 static constexpr size_t max_iterations = 1 << 15;
 

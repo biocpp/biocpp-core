@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <seqan3/core/platform.hpp>
+#include <bio/meta/platform.hpp>
 
 // SeqAn 2 [optional]
 /*!\def SEQAN3_HAS_SEQAN2

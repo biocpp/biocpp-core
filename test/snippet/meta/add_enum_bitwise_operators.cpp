@@ -1,4 +1,4 @@
-#include <seqan3/core/add_enum_bitwise_operators.hpp>
+#include <bio/meta/add_enum_bitwise_operators.hpp>
 
 enum class my_enum
 {

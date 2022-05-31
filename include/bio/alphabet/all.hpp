@@ -171,12 +171,12 @@
 
 #pragma once
 
-#include <seqan3/alphabet/adaptation/all.hpp>
-#include <seqan3/alphabet/aminoacid/all.hpp>
-#include <seqan3/alphabet/composite/all.hpp>
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/alphabet/gap/all.hpp>
-#include <seqan3/alphabet/mask/all.hpp>
-#include <seqan3/alphabet/nucleotide/all.hpp>
-#include <seqan3/alphabet/quality/all.hpp>
-#include <seqan3/alphabet/structure/all.hpp>
+#include <bio/alphabet/adaptation/all.hpp>
+#include <bio/alphabet/aminoacid/all.hpp>
+#include <bio/alphabet/composite/all.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/gap/all.hpp>
+#include <bio/alphabet/mask/all.hpp>
+#include <bio/alphabet/nucleotide/all.hpp>
+#include <bio/alphabet/quality/all.hpp>
+#include <bio/alphabet/structure/all.hpp>

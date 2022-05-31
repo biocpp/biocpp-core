@@ -5,9 +5,9 @@
 
 #include <sharg/all.hpp>
 
-#include <seqan3/alphabet/all.hpp>
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/views/all.hpp>       // optional: use views to convert the input string to a dna5 sequence
+#include <bio/alphabet/all.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/views/all.hpp>       // optional: use views to convert the input string to a dna5 sequence
 
 using seqan3::operator""_dna5;
 

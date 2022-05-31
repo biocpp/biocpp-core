@@ -1,5 +1,5 @@
-#include <seqan3/alphabet/cigar/cigar_op.hpp>
-#include <seqan3/core/debug_stream.hpp>
+#include <bio/alphabet/cigar/cigar_op.hpp>
+#include <bio/meta/debug_stream.hpp>
 
 using seqan3::operator""_cigar_op;
 

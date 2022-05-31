@@ -15,10 +15,10 @@
 #include <vector>
 #include <stdexcept>
 
-#include <seqan3/core/type_traits/range.hpp>
-#include <seqan3/range/container/small_string.hpp>
-#include <seqan3/range/detail/random_access_iterator.hpp>
-#include <seqan3/range/views/translate.hpp>
+#include <bio/meta/type_traits/range.hpp>
+#include <bio/ranges/container/small_string.hpp>
+#include <bio/ranges/detail/random_access_iterator.hpp>
+#include <bio/ranges/views/translate.hpp>
 #include <concepts>
 #include <ranges>
 

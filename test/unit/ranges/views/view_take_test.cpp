@@ -13,16 +13,16 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/range/concept.hpp>
-#include <seqan3/range/container/concept.hpp>
-#include <seqan3/range/views/single_pass_input.hpp>
-#include <seqan3/range/views/take.hpp>
-#include <seqan3/range/views/take_exactly.hpp>
-#include <seqan3/range/views/to.hpp>
+#include <bio/ranges/concept.hpp>
+#include <bio/ranges/container/concept.hpp>
+#include <bio/ranges/views/single_pass_input.hpp>
+#include <bio/ranges/views/take.hpp>
+#include <bio/ranges/views/take_exactly.hpp>
+#include <bio/ranges/views/to.hpp>
 #include <algorithm>
 #include <concepts>
 #include <ranges>
-#include <seqan3/test/expect_range_eq.hpp>
+#include <bio/test/expect_range_eq.hpp>
 
 // ============================================================================
 //  test templates

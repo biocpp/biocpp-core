@@ -12,9 +12,9 @@
 
 #pragma once
 
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/core/type_traits/basic.hpp>
-#include <seqan3/range/views/deep.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/meta/type_traits/basic.hpp>
+#include <bio/ranges/views/deep.hpp>
 #include <ranges>
 
 namespace seqan3::views

@@ -1,5 +1,5 @@
-#include <seqan3/alphabet/quality/phred68legacy.hpp>
-#include <seqan3/core/debug_stream.hpp>
+#include <bio/alphabet/quality/phred68legacy.hpp>
+#include <bio/meta/debug_stream.hpp>
 
 int main()
 {

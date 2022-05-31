@@ -10,8 +10,8 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/core/type_traits/basic.hpp>
-#include <seqan3/range/views/detail.hpp>
+#include <bio/meta/type_traits/basic.hpp>
+#include <bio/ranges/views/detail.hpp>
 
 // The general capabilities of adaptor_base and derivates are tested thoroughly by the different views
 // this file checks the correct memory behaviour in regard to storing the elements

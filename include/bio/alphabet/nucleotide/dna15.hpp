@@ -14,8 +14,8 @@
 
 #include <vector>
 
-#include <seqan3/alphabet/nucleotide/nucleotide_base.hpp>
-#include <seqan3/core/char_operations/transform.hpp>
+#include <bio/alphabet/nucleotide/nucleotide_base.hpp>
+#include <bio/meta/char_operations/transform.hpp>
 
 // ------------------------------------------------------------------
 // dna15

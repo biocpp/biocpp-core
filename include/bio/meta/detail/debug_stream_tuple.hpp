@@ -15,9 +15,9 @@
 #include <concepts>
 #include <ranges>
 
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/core/concept/tuple.hpp>
-#include <seqan3/core/detail/debug_stream_type.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/meta/concept/tuple.hpp>
+#include <bio/meta/detail/debug_stream_type.hpp>
 
 namespace seqan3
 {

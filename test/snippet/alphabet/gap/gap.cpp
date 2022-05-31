@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include <seqan3/alphabet/gap/gap.hpp>
-#include <seqan3/core/debug_stream.hpp>
+#include <bio/alphabet/gap/gap.hpp>
+#include <bio/meta/debug_stream.hpp>
 
 int main()
 {

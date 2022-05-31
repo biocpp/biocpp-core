@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include <seqan3/alphabet/mask/mask.hpp>
-#include <seqan3/alphabet/mask/masked.hpp>
+#include <bio/alphabet/mask/mask.hpp>
+#include <bio/alphabet/mask/masked.hpp>
 
 /*!\defgroup mask Mask
  * \brief Provides the mask alphabet and functionality for creating masked composites.

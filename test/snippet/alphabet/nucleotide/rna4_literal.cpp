@@ -1,4 +1,4 @@
-#include <seqan3/alphabet/nucleotide/rna4.hpp>
+#include <bio/alphabet/nucleotide/rna4.hpp>
 
 int main()
 {

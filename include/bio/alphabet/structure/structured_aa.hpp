@@ -12,10 +12,10 @@
 
 #pragma once
 
-#include <seqan3/alphabet/aminoacid/aa27.hpp>
-#include <seqan3/alphabet/composite/alphabet_tuple_base.hpp>
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/alphabet/structure/dssp9.hpp>
+#include <bio/alphabet/aminoacid/aa27.hpp>
+#include <bio/alphabet/composite/alphabet_tuple_base.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/structure/dssp9.hpp>
 
 namespace seqan3
 {

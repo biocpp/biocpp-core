@@ -10,12 +10,12 @@
 #include <iostream>
 #include <string>
 
-#include <seqan3/alphabet/mask/mask.hpp>
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/container/bitcompressed_vector.hpp>
-#include <seqan3/range/container/concatenated_sequences.hpp>
+#include <bio/alphabet/mask/mask.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/container/bitcompressed_vector.hpp>
+#include <bio/ranges/container/concatenated_sequences.hpp>
 #include <filesystem>
 
 TEST(debug_stream_test, basic)

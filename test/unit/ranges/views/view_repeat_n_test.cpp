@@ -7,14 +7,14 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/core/type_traits/iterator.hpp>
-#include <seqan3/core/type_traits/range.hpp>
-#include <seqan3/range/views/persist.hpp>
-#include <seqan3/range/views/repeat_n.hpp>
-#include <seqan3/range/views/take.hpp>
+#include <bio/meta/type_traits/iterator.hpp>
+#include <bio/meta/type_traits/range.hpp>
+#include <bio/ranges/views/persist.hpp>
+#include <bio/ranges/views/repeat_n.hpp>
+#include <bio/ranges/views/take.hpp>
 #include <algorithm>
 #include <ranges>
-#include <seqan3/test/expect_range_eq.hpp>
+#include <bio/test/expect_range_eq.hpp>
 
 TEST(general, construction)
 {

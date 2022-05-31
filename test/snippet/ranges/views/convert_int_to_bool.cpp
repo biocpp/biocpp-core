@@ -1,9 +1,9 @@
 #include <vector>
 
-#include <seqan3/alphabet/nucleotide/dna15.hpp>
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/range/views/convert.hpp>
-#include <seqan3/range/views/to.hpp>
+#include <bio/alphabet/nucleotide/dna15.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
+#include <bio/ranges/views/convert.hpp>
+#include <bio/ranges/views/to.hpp>
 #include <ranges>
 
 int main()

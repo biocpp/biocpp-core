@@ -7,7 +7,7 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/concept.hpp>
+#include <bio/alphabet/concept.hpp>
 
 template <typename t>
 using semi_alphabet_constexpr = ::testing::Test;

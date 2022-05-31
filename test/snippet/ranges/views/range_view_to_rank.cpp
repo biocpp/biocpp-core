@@ -1,11 +1,11 @@
 #include <vector>
 
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/alphabet/quality/phred42.hpp>
-#include <seqan3/alphabet/quality/aliases.hpp>
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/views/to_rank.hpp>
-#include <seqan3/range/views/convert.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/quality/phred42.hpp>
+#include <bio/alphabet/quality/aliases.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/views/to_rank.hpp>
+#include <bio/ranges/views/convert.hpp>
 
 int main()
 {

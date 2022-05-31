@@ -1,7 +1,7 @@
 //![start]
 #include <ranges>
-#include <seqan3/alphabet/nucleotide/all.hpp>
-#include <seqan3/core/debug_stream.hpp>
+#include <bio/alphabet/nucleotide/all.hpp>
+#include <bio/meta/debug_stream.hpp>
 
 using seqan3::operator""_dna5;
 

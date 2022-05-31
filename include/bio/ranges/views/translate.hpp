@@ -15,18 +15,18 @@
 #include <vector>
 #include <stdexcept>
 
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/alphabet/aminoacid/aa27.hpp>
-#include <seqan3/alphabet/aminoacid/translation.hpp>
-#include <seqan3/core/add_enum_bitwise_operators.hpp>
-#include <seqan3/core/type_traits/range.hpp>
-#include <seqan3/range/container/small_string.hpp>
-#include <seqan3/range/detail/random_access_iterator.hpp>
-#include <seqan3/range/views/deep.hpp>
-#include <seqan3/range/views/detail.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
+#include <bio/alphabet/aminoacid/aa27.hpp>
+#include <bio/alphabet/aminoacid/translation.hpp>
+#include <bio/meta/add_enum_bitwise_operators.hpp>
+#include <bio/meta/type_traits/range.hpp>
+#include <bio/ranges/container/small_string.hpp>
+#include <bio/ranges/detail/random_access_iterator.hpp>
+#include <bio/ranges/views/deep.hpp>
+#include <bio/ranges/views/detail.hpp>
 #include <concepts>
 #include <ranges>
-#include <seqan3/range/container/concept.hpp>
+#include <bio/ranges/container/concept.hpp>
 
 // ============================================================================
 //  forwards

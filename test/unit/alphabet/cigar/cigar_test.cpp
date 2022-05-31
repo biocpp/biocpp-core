@@ -7,7 +7,7 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/cigar/cigar.hpp>
+#include <bio/alphabet/cigar/cigar.hpp>
 
 #include "../semi_alphabet_test_template.hpp"
 #include "../semi_alphabet_constexpr_test_template.hpp"

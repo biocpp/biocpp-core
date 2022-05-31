@@ -11,9 +11,9 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/range/concept.hpp>
-#include <seqan3/test/expect_range_eq.hpp>
-#include <seqan3/range/views/persist.hpp>
+#include <bio/ranges/concept.hpp>
+#include <bio/test/expect_range_eq.hpp>
+#include <bio/ranges/views/persist.hpp>
 
 // ============================================================================
 //  test templates

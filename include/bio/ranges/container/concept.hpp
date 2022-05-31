@@ -22,7 +22,7 @@
 #include <iterator>
 #include <concepts>
 
-#include <seqan3/core/platform.hpp>
+#include <bio/meta/platform.hpp>
 
 // TODO:
 // * remove is_basic_string

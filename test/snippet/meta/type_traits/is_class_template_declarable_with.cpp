@@ -1,7 +1,7 @@
 #include <type_traits>
 
-#include <seqan3/core/type_traits/lazy.hpp>
-#include <seqan3/core/debug_stream.hpp>
+#include <bio/meta/type_traits/lazy.hpp>
+#include <bio/meta/debug_stream.hpp>
 
 template <typename t>
     requires std::is_integral_v<t>

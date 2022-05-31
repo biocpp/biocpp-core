@@ -1,6 +1,6 @@
-#include <seqan3/alphabet/mask/masked.hpp>
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/core/debug_stream.hpp>
+#include <bio/alphabet/mask/masked.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/meta/debug_stream.hpp>
 
 int main()
 {

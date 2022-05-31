@@ -11,8 +11,8 @@
 #include "../semi_alphabet_test_template.hpp"
 #include "aminoacid_test_template.hpp"
 
-#include <seqan3/alphabet/aminoacid/aa27.hpp>
-#include <seqan3/range/views/zip.hpp>
+#include <bio/alphabet/aminoacid/aa27.hpp>
+#include <bio/ranges/views/zip.hpp>
 
 using seqan3::operator""_aa27;
 

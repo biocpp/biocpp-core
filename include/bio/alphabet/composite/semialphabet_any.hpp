@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <seqan3/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/alphabet_base.hpp>
 
 namespace seqan3
 {

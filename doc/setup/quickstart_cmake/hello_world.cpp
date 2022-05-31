@@ -1,4 +1,4 @@
-#include <seqan3/core/debug_stream.hpp>
+#include <bio/meta/debug_stream.hpp>
 
 int main()
 {

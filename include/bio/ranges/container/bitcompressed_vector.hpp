@@ -16,13 +16,13 @@
 
 #include <sdsl/int_vector.hpp>
 
-#include <seqan3/alphabet/detail/alphabet_proxy.hpp>
-#include <seqan3/core/math.hpp>
-#include <seqan3/core/concept/cereal.hpp>
-#include <seqan3/range/detail/random_access_iterator.hpp>
-#include <seqan3/range/views/to_char.hpp>
-#include <seqan3/range/views/to_rank.hpp>
-#include <seqan3/range/views/convert.hpp>
+#include <bio/alphabet/detail/alphabet_proxy.hpp>
+#include <bio/meta/math.hpp>
+#include <bio/meta/concept/cereal.hpp>
+#include <bio/ranges/detail/random_access_iterator.hpp>
+#include <bio/ranges/views/to_char.hpp>
+#include <bio/ranges/views/to_rank.hpp>
+#include <bio/ranges/views/convert.hpp>
 #include <concepts>
 #include <iterator>
 #include <ranges>

@@ -1,7 +1,7 @@
 #include <vector>
 
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/range/container/bitcompressed_vector.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/ranges/container/bitcompressed_vector.hpp>
 
 int main()
 {

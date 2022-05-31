@@ -1,6 +1,6 @@
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/range/views/persist.hpp>
-#include <seqan3/range/views/to_char.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/ranges/views/persist.hpp>
+#include <bio/ranges/views/to_char.hpp>
 
 int main()
 {

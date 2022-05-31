@@ -7,7 +7,7 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/core/detail/strong_type.hpp>
+#include <bio/meta/detail/strong_type.hpp>
 
 struct my_type : seqan3::detail::strong_type<int, my_type>
 {

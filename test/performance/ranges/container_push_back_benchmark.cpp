@@ -11,8 +11,8 @@
 
 #include <benchmark/benchmark.h>
 
-#include <seqan3/alphabet/all.hpp>
-#include <seqan3/range/container/all.hpp>
+#include <bio/alphabet/all.hpp>
+#include <bio/ranges/container/all.hpp>
 
 template <typename t>
 using sdsl_int_vec = sdsl::int_vector<sizeof(t) * 8>;

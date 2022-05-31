@@ -13,8 +13,8 @@
 
 #pragma once
 
-#include <seqan3/alphabet/gap/gap.hpp>
-#include <seqan3/alphabet/composite/alphabet_variant.hpp>
+#include <bio/alphabet/gap/gap.hpp>
+#include <bio/alphabet/composite/alphabet_variant.hpp>
 
 namespace seqan3
 {

@@ -14,9 +14,9 @@
 
 #include <cmath>
 
-#include <seqan3/core/type_traits/transformation_trait_or.hpp>
-#include <seqan3/range/concept.hpp>
-#include <seqan3/range/views/detail.hpp>
+#include <bio/meta/type_traits/transformation_trait_or.hpp>
+#include <bio/ranges/concept.hpp>
+#include <bio/ranges/views/detail.hpp>
 #include <ranges>
 
 namespace seqan3::detail

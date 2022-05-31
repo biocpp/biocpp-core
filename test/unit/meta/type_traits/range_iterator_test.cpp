@@ -11,11 +11,11 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/core/detail/type_inspection.hpp>
-#include <seqan3/core/type_list/all.hpp>
-#include <seqan3/core/type_traits/all.hpp>
-#include <seqan3/range/detail/random_access_iterator.hpp>
-#include <seqan3/range/views/take_exactly.hpp>
+#include <bio/meta/detail/type_inspection.hpp>
+#include <bio/meta/type_list/all.hpp>
+#include <bio/meta/type_traits/all.hpp>
+#include <bio/ranges/detail/random_access_iterator.hpp>
+#include <bio/ranges/views/take_exactly.hpp>
 
 TEST(range_and_iterator, iterator)
 {

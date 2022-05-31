@@ -7,13 +7,13 @@
 
 #include <deque>
 #include <list>
-#include <seqan3/std/ranges>
+#include <ranges>
 #include <string>
 #include <vector>
 
 #include <benchmark/benchmark.h>
 
-#include <seqan3/range/views/type_reduce.hpp>
+#include <bio/ranges/views/type_reduce.hpp>
 
 // ============================================================================
 //  sequential_read

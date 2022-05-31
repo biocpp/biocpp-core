@@ -1,4 +1,4 @@
-#include <seqan3/alphabet/structure/wuss.hpp>
+#include <bio/alphabet/structure/wuss.hpp>
 
 int main()
 {

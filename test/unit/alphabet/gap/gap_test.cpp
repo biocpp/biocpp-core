@@ -9,8 +9,8 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/alphabet/gap/gap.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/gap/gap.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"

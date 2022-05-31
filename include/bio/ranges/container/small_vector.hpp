@@ -19,10 +19,10 @@
 #include <cereal/types/array.hpp>
 #endif // SEQAN3_WITH_CEREAL
 
-#include <seqan3/core/concept/cereal.hpp>
-#include <seqan3/core/detail/int_types.hpp>
-#include <seqan3/core/type_traits/template_inspection.hpp>
-#include <seqan3/range/views/repeat_n.hpp>
+#include <bio/meta/concept/cereal.hpp>
+#include <bio/meta/detail/int_types.hpp>
+#include <bio/meta/type_traits/template_inspection.hpp>
+#include <bio/ranges/views/repeat_n.hpp>
 
 namespace seqan3
 {

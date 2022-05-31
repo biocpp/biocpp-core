@@ -1,9 +1,9 @@
 #include <string>
 #include <vector>
 
-#include <seqan3/alphabet/quality/phred42.hpp>
-#include <seqan3/range/views/trim_quality.hpp>
-#include <seqan3/range/views/to_char.hpp>
+#include <bio/alphabet/quality/phred42.hpp>
+#include <bio/ranges/views/trim_quality.hpp>
+#include <bio/ranges/views/to_char.hpp>
 
 int main()
 {

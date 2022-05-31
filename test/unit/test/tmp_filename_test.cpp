@@ -8,7 +8,7 @@
 #include <gtest/gtest.h>
 #include <fstream>
 
-#include <seqan3/test/tmp_filename.hpp>
+#include <bio/test/tmp_filename.hpp>
 
 namespace fs = std::filesystem;
 

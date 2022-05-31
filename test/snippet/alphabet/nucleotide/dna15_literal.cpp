@@ -1,4 +1,4 @@
-#include <seqan3/alphabet/nucleotide/dna15.hpp>
+#include <bio/alphabet/nucleotide/dna15.hpp>
 
 int main()
 {

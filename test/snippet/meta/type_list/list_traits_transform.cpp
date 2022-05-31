@@ -1,8 +1,8 @@
 #include <list>
 #include <vector>
 
-#include <seqan3/core/type_list/traits.hpp>
-#include <seqan3/core/type_traits/range.hpp>
+#include <bio/meta/type_list/traits.hpp>
+#include <bio/meta/type_traits/range.hpp>
 
 int main()
 {

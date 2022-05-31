@@ -1,5 +1,5 @@
-#include <seqan3/core/bit_manipulation.hpp>
-#include <seqan3/core/debug_stream.hpp>
+#include <bio/meta/bit_manipulation.hpp>
+#include <bio/meta/debug_stream.hpp>
 
 int main()
 {

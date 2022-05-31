@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <seqan3/core/concept/core_language.hpp>
+#include <bio/meta/concept/core_language.hpp>
 #include <concepts>
 #include <ranges>
 

@@ -16,12 +16,12 @@
 
 #include <sdsl/int_vector.hpp>
 
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/alphabet/quality/phred42.hpp>
-#include <seqan3/alphabet/quality/qualified.hpp>
-#include <seqan3/range/container/bitcompressed_vector.hpp>
-#include <seqan3/range/container/concatenated_sequences.hpp>
-#include <seqan3/range/container/concept.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/quality/phred42.hpp>
+#include <bio/alphabet/quality/qualified.hpp>
+#include <bio/ranges/container/bitcompressed_vector.hpp>
+#include <bio/ranges/container/concatenated_sequences.hpp>
+#include <bio/ranges/container/concept.hpp>
 
 TEST(range_concept, forward_range)
 {

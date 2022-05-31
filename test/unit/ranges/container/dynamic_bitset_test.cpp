@@ -7,9 +7,9 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/container/dynamic_bitset.hpp>
-#include <seqan3/test/cereal.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/container/dynamic_bitset.hpp>
+#include <bio/test/cereal.hpp>
 
 // Standard construction.
 TEST(dynamic_bitset, standard_construction)

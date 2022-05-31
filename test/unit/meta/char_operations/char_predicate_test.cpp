@@ -9,9 +9,9 @@
 
 #include <string>
 
-#include <seqan3/alphabet/all.hpp>
-#include <seqan3/core/char_operations/predicate.hpp>
-#include <seqan3/core/type_pack/detail/type_pack_algorithm.hpp>
+#include <bio/alphabet/all.hpp>
+#include <bio/meta/char_operations/predicate.hpp>
+#include <bio/meta/type_pack/detail/type_pack_algorithm.hpp>
 
 using namespace std::literals;
 

@@ -27,5 +27,5 @@
 
 #pragma once
 
-#include <seqan3/core/type_list/traits.hpp>
-#include <seqan3/core/type_list/type_list.hpp>
+#include <bio/meta/type_list/traits.hpp>
+#include <bio/meta/type_list/type_list.hpp>

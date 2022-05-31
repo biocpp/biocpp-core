@@ -6,8 +6,8 @@
 //! [binary_include]
 #include <cereal/types/vector.hpp>    // includes cerealisation support for std::vector
 
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/test/tmp_filename.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/test/tmp_filename.hpp>
 
 // Written for std::vector, other types also work.
 void load(std::vector<int16_t> & data, seqan3::test::tmp_filename & tmp_file)

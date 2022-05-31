@@ -1,4 +1,4 @@
-#include <seqan3/alphabet/nucleotide/rna5.hpp>
+#include <bio/alphabet/nucleotide/rna5.hpp>
 
 int main()
 {

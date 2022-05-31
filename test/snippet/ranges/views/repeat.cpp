@@ -1,5 +1,5 @@
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/views/repeat.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/views/repeat.hpp>
 #include <ranges>
 
 int main()

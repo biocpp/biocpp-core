@@ -7,9 +7,9 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/aminoacid/aa10li.hpp>
-#include <seqan3/alphabet/aminoacid/aa10murphy.hpp>
-#include <seqan3/alphabet/composite/semialphabet_any.hpp>
+#include <bio/alphabet/aminoacid/aa10li.hpp>
+#include <bio/alphabet/aminoacid/aa10murphy.hpp>
+#include <bio/alphabet/composite/semialphabet_any.hpp>
 
 using seqan3::operator""_aa10li;
 using seqan3::operator""_aa10murphy;

@@ -1,6 +1,6 @@
-#include <seqan3/alphabet/structure/structured_aa.hpp>
-#include <seqan3/alphabet/aminoacid/aa27.hpp>
-#include <seqan3/core/debug_stream.hpp>
+#include <bio/alphabet/structure/structured_aa.hpp>
+#include <bio/alphabet/aminoacid/aa27.hpp>
+#include <bio/meta/debug_stream.hpp>
 
 int main()
 {

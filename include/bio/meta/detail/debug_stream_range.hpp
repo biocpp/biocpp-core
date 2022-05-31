@@ -14,12 +14,12 @@
 
 #include <ranges>
 
-#include <seqan3/alphabet/adaptation/char.hpp>
-#include <seqan3/alphabet/adaptation/uint.hpp>
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/core/detail/debug_stream_type.hpp>
-#include <seqan3/core/type_traits/range.hpp>
-#include <seqan3/range/concept.hpp>
+#include <bio/alphabet/adaptation/char.hpp>
+#include <bio/alphabet/adaptation/uint.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/meta/detail/debug_stream_type.hpp>
+#include <bio/meta/type_traits/range.hpp>
+#include <bio/ranges/concept.hpp>
 
 namespace seqan3::detail
 {

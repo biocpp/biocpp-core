@@ -1,7 +1,7 @@
-#include <seqan3/alphabet/aminoacid/aa10murphy.hpp>
-#include <seqan3/alphabet/aminoacid/aa27.hpp>
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/views/convert.hpp>
+#include <bio/alphabet/aminoacid/aa10murphy.hpp>
+#include <bio/alphabet/aminoacid/aa27.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/views/convert.hpp>
 
 using seqan3::operator""_aa10murphy;
 using seqan3::operator""_aa27;

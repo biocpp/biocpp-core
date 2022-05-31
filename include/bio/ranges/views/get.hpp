@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include <seqan3/core/type_traits/basic.hpp>
-#include <seqan3/core/concept/tuple.hpp>
+#include <bio/meta/type_traits/basic.hpp>
+#include <bio/meta/concept/tuple.hpp>
 #include <ranges>
 
 namespace seqan3::views

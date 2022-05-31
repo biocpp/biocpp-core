@@ -12,12 +12,12 @@
 
 #pragma once
 
-#include <seqan3/range/container/aligned_allocator.hpp>
-#include <seqan3/range/container/bitcompressed_vector.hpp>
-#include <seqan3/range/container/concatenated_sequences.hpp>
-#include <seqan3/range/container/concept.hpp>
-#include <seqan3/range/container/small_string.hpp>
-#include <seqan3/range/container/small_vector.hpp>
+#include <bio/ranges/container/aligned_allocator.hpp>
+#include <bio/ranges/container/bitcompressed_vector.hpp>
+#include <bio/ranges/container/concatenated_sequences.hpp>
+#include <bio/ranges/container/concept.hpp>
+#include <bio/ranges/container/small_string.hpp>
+#include <bio/ranges/container/small_vector.hpp>
 
 /*!\defgroup container Container
  * \brief The container submodule contains special SeqAn containers and generic container concepts.

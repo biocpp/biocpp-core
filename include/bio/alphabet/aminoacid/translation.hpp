@@ -14,10 +14,10 @@
 
 #include <tuple>
 
-#include <seqan3/alphabet/aminoacid/aa27.hpp>
-#include <seqan3/alphabet/aminoacid/translation_genetic_code.hpp>
-#include <seqan3/alphabet/aminoacid/translation_details.hpp>
-#include <seqan3/core/type_traits/range.hpp>
+#include <bio/alphabet/aminoacid/aa27.hpp>
+#include <bio/alphabet/aminoacid/translation_genetic_code.hpp>
+#include <bio/alphabet/aminoacid/translation_details.hpp>
+#include <bio/meta/type_traits/range.hpp>
 
 namespace seqan3
 {

@@ -14,9 +14,9 @@
 
 #include <string_view>
 
-#include <seqan3/core/type_traits/template_inspection.hpp>
-#include <seqan3/range/concept.hpp>
-#include <seqan3/range/views/detail.hpp>
+#include <bio/meta/type_traits/template_inspection.hpp>
+#include <bio/ranges/concept.hpp>
+#include <bio/ranges/views/detail.hpp>
 #include <concepts>
 #include <ranges>
 #include <span>

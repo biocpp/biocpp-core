@@ -6,11 +6,11 @@
 
 #include <iostream>
 
-#include <seqan3/alphabet/aminoacid/all.hpp>
-#include <seqan3/alphabet/composite/semialphabet_any.hpp>
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/views/convert.hpp>
-#include <seqan3/range/views/to.hpp>
+#include <bio/alphabet/aminoacid/all.hpp>
+#include <bio/alphabet/composite/semialphabet_any.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/views/convert.hpp>
+#include <bio/ranges/views/to.hpp>
 
 using seqan3::operator""_aa10murphy;
 using seqan3::operator""_aa10li;

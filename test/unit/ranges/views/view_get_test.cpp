@@ -9,14 +9,14 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/mask/masked.hpp>
-#include <seqan3/alphabet/quality/aliases.hpp>
-#include <seqan3/range/concept.hpp>
-#include <seqan3/range/views/get.hpp>
-#include <seqan3/range/views/complement.hpp>
-#include <seqan3/range/views/to_char.hpp>
-#include <seqan3/range/views/to.hpp>
-#include <seqan3/range/views/zip.hpp>
+#include <bio/alphabet/mask/masked.hpp>
+#include <bio/alphabet/quality/aliases.hpp>
+#include <bio/ranges/concept.hpp>
+#include <bio/ranges/views/get.hpp>
+#include <bio/ranges/views/complement.hpp>
+#include <bio/ranges/views/to_char.hpp>
+#include <bio/ranges/views/to.hpp>
+#include <bio/ranges/views/zip.hpp>
 #include <ranges>
 
 using seqan3::operator""_dna4;

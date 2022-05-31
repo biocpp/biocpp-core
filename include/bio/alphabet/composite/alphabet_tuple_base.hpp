@@ -16,14 +16,14 @@
 #include <concepts>
 #include <utility>
 
-#include <seqan3/alphabet/alphabet_base.hpp>
-#include <seqan3/alphabet/composite/detail.hpp>
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/alphabet/detail/alphabet_proxy.hpp>
-#include <seqan3/core/type_list/detail/type_list_algorithm.hpp>
-#include <seqan3/core/type_list/traits.hpp>
-#include <seqan3/core/type_list/type_list.hpp>
-#include <seqan3/core/type_traits/template_inspection.hpp>
+#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/composite/detail.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/detail/alphabet_proxy.hpp>
+#include <bio/meta/type_list/detail/type_list_algorithm.hpp>
+#include <bio/meta/type_list/traits.hpp>
+#include <bio/meta/type_list/type_list.hpp>
+#include <bio/meta/type_traits/template_inspection.hpp>
 
 namespace seqan3::detail
 {

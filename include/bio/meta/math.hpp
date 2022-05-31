@@ -16,7 +16,7 @@
 #include <concepts>
 #include <stdexcept>
 
-#include <seqan3/core/bit_manipulation.hpp>
+#include <bio/meta/bit_manipulation.hpp>
 
 namespace seqan3::detail
 {

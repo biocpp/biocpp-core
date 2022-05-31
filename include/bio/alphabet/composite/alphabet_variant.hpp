@@ -20,10 +20,10 @@
 #include <utility>
 #include <variant>
 
-#include <seqan3/alphabet/alphabet_base.hpp>
-#include <seqan3/alphabet/composite/detail.hpp>
-#include <seqan3/core/type_list/traits.hpp>
-#include <seqan3/core/type_traits/lazy.hpp>
+#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/composite/detail.hpp>
+#include <bio/meta/type_list/traits.hpp>
+#include <bio/meta/type_traits/lazy.hpp>
 
 namespace seqan3::detail
 {

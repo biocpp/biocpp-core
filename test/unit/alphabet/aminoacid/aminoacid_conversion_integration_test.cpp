@@ -7,12 +7,12 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/aminoacid/aa10li.hpp>
-#include <seqan3/alphabet/aminoacid/aa10murphy.hpp>
-#include <seqan3/alphabet/aminoacid/aa20.hpp>
-#include <seqan3/alphabet/aminoacid/aa27.hpp>
-#include <seqan3/core/type_list/detail/type_list_algorithm.hpp>
-#include <seqan3/core/type_list/type_list.hpp>
+#include <bio/alphabet/aminoacid/aa10li.hpp>
+#include <bio/alphabet/aminoacid/aa10murphy.hpp>
+#include <bio/alphabet/aminoacid/aa20.hpp>
+#include <bio/alphabet/aminoacid/aa27.hpp>
+#include <bio/meta/type_list/detail/type_list_algorithm.hpp>
+#include <bio/meta/type_list/type_list.hpp>
 
 template <typename T>
 using aminoacid_conversion = ::testing::Test;

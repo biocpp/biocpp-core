@@ -1,6 +1,6 @@
 #include <vector>
 
-#include <seqan3/alphabet/structure/dot_bracket3.hpp>
+#include <bio/alphabet/structure/dot_bracket3.hpp>
 
 int main()
 {

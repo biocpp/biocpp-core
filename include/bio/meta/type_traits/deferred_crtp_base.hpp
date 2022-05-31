@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <seqan3/core/platform.hpp>
+#include <bio/meta/platform.hpp>
 
 namespace seqan3::detail
 {

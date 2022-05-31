@@ -14,7 +14,7 @@
 
 #include <type_traits>
 
-#include <seqan3/core/platform.hpp>
+#include <bio/meta/platform.hpp>
 
 #if SEQAN3_WITH_CEREAL
 #include <cereal/details/traits.hpp>
@@ -116,7 +116,7 @@ concept cereal_text_archive = false;
  * \sa https://uscilab.github.io/cereal/serialization_functions.html
  *
  * ```
- * #include <seqan3/core/concept/cereal.hpp>
+ * #include <bio/meta/concept/cereal.hpp>
  *
  * // fundamental types are serialisable
  * static_assert(seqan3::cerealisable<int>);
@@ -125,7 +125,7 @@ concept cereal_text_archive = false;
  * #include <cereal/types/array.hpp> // std::array is now serialisable
  * static_assert(seqan3::cerealisable<std::array<int, 12>>);
  *
- * #include <seqan3/alphabet/nucleotide/dna4.hpp> // dna4 is serialisable
+ * #include <bio/alphabet/nucleotide/dna4.hpp> // dna4 is serialisable
  * static_assert(seqan3::cerealisable<seqan3::dna4>);
  * ```
  *

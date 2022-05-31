@@ -14,9 +14,9 @@
 
 #include <vector>
 
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/alphabet/alphabet_base.hpp>
-#include <seqan3/core/char_operations/transform.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/meta/char_operations/transform.hpp>
 
 // ------------------------------------------------------------------
 // dssp9

@@ -9,14 +9,14 @@
 
 #include <variant>
 
-#include <seqan3/alphabet/adaptation/char.hpp>
-#include <seqan3/alphabet/composite/alphabet_variant.hpp>
-#include <seqan3/alphabet/gap/gap.hpp>
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/alphabet/nucleotide/rna4.hpp>
-#include <seqan3/alphabet/nucleotide/rna5.hpp>
-#include <seqan3/core/type_list/detail/type_list_algorithm.hpp>
+#include <bio/alphabet/adaptation/char.hpp>
+#include <bio/alphabet/composite/alphabet_variant.hpp>
+#include <bio/alphabet/gap/gap.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
+#include <bio/alphabet/nucleotide/rna4.hpp>
+#include <bio/alphabet/nucleotide/rna5.hpp>
+#include <bio/meta/type_list/detail/type_list_algorithm.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"

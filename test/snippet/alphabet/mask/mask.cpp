@@ -1,5 +1,5 @@
-#include <seqan3/alphabet/mask/mask.hpp>
-#include <seqan3/core/debug_stream.hpp>
+#include <bio/alphabet/mask/mask.hpp>
+#include <bio/meta/debug_stream.hpp>
 
 int main()
 {

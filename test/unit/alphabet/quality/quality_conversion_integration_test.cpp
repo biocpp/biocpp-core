@@ -12,8 +12,8 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/core/type_pack/detail/type_pack_algorithm.hpp>
-#include <seqan3/alphabet/quality/all.hpp>
+#include <bio/meta/type_pack/detail/type_pack_algorithm.hpp>
+#include <bio/alphabet/quality/all.hpp>
 
 template <typename T>
 using quality_conversion = ::testing::Test;

@@ -12,9 +12,9 @@
 
 #pragma once
 
-#include <seqan3/alphabet/composite/alphabet_tuple_base.hpp>
-#include <seqan3/alphabet/nucleotide/concept.hpp>
-#include <seqan3/alphabet/structure/concept.hpp>
+#include <bio/alphabet/composite/alphabet_tuple_base.hpp>
+#include <bio/alphabet/nucleotide/concept.hpp>
+#include <bio/alphabet/structure/concept.hpp>
 
 namespace seqan3
 {

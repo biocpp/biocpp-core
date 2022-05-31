@@ -1,5 +1,5 @@
-#include <seqan3/alphabet/composite/alphabet_variant.hpp>
-#include <seqan3/alphabet/nucleotide/all.hpp>
+#include <bio/alphabet/composite/alphabet_variant.hpp>
+#include <bio/alphabet/nucleotide/all.hpp>
 
 int main()
 {

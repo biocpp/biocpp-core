@@ -1,8 +1,8 @@
 #include <vector>
 
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/range/views/rank_to.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
+#include <bio/ranges/views/rank_to.hpp>
 
 int main()
 {

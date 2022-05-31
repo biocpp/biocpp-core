@@ -1,7 +1,7 @@
 #include <vector>
 
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/views/pairwise_combine.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/views/pairwise_combine.hpp>
 
 int main()
 {

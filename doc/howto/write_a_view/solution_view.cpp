@@ -2,9 +2,9 @@
 #include <iostream>
 #include <ranges>
 #include <vector>
-#include <seqan3/alphabet/nucleotide/all.hpp>
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/detail/inherited_iterator_base.hpp>
+#include <bio/alphabet/nucleotide/all.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/detail/inherited_iterator_base.hpp>
 
 using seqan3::operator""_dna5;
 

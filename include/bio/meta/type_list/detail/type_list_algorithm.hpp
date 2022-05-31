@@ -16,8 +16,8 @@
 #include <type_traits>
 #include <utility>
 
-#include <seqan3/core/type_list/type_list.hpp>
-#include <seqan3/core/type_pack/detail/type_pack_algorithm.hpp>
+#include <bio/meta/type_list/type_list.hpp>
+#include <bio/meta/type_pack/detail/type_pack_algorithm.hpp>
 
 namespace seqan3::detail
 {

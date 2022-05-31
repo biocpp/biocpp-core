@@ -1,7 +1,7 @@
 #include <vector>
 
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/core/detail/strong_type.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/meta/detail/strong_type.hpp>
 #include <ranges>
 
 struct error : seqan3::detail::strong_type<unsigned, error>

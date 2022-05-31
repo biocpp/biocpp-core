@@ -1,8 +1,8 @@
 #include <string>
 
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/range/views/char_to.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
+#include <bio/ranges/views/char_to.hpp>
 
 int main()
 {

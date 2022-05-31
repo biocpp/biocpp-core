@@ -14,9 +14,9 @@
 
 #include <vector>
 
-#include <seqan3/alphabet/alphabet_base.hpp>
-#include <seqan3/alphabet/structure/concept.hpp>
-#include <seqan3/core/char_operations/transform.hpp>
+#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/structure/concept.hpp>
+#include <bio/meta/char_operations/transform.hpp>
 
 // ------------------------------------------------------------------
 // dot_bracket3

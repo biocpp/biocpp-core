@@ -1,6 +1,6 @@
-#include <seqan3/alphabet/composite/alphabet_variant.hpp>
-#include <seqan3/alphabet/gap/gap.hpp>
-#include <seqan3/alphabet/nucleotide/all.hpp>
+#include <bio/alphabet/composite/alphabet_variant.hpp>
+#include <bio/alphabet/gap/gap.hpp>
+#include <bio/alphabet/nucleotide/all.hpp>
 #include <gtest/gtest.h>
 
 int main()

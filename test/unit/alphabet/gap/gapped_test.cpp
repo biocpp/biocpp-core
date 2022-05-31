@@ -11,11 +11,11 @@
 
 #include <vector>
 
-#include <seqan3/alphabet/gap/gapped.hpp>
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/alphabet/nucleotide/dna15.hpp>
-#include <seqan3/alphabet/quality/phred42.hpp>
-#include <seqan3/alphabet/quality/qualified.hpp>
+#include <bio/alphabet/gap/gapped.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/nucleotide/dna15.hpp>
+#include <bio/alphabet/quality/phred42.hpp>
+#include <bio/alphabet/quality/qualified.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"

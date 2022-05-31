@@ -1,6 +1,6 @@
 #include <vector>
 
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
 #include <ranges>
 
 namespace seqan3::detail

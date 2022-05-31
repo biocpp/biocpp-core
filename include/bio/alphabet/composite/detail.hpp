@@ -12,11 +12,11 @@
 
 #pragma once
 
-#include <seqan3/alphabet/concept.hpp>
-// #include <seqan3/alphabet/detail/concept.hpp>
-#include <seqan3/core/concept/core_language.hpp>
-#include <seqan3/core/type_list/type_list.hpp>
-#include <seqan3/core/type_traits/lazy.hpp>
+#include <bio/alphabet/concept.hpp>
+// #include <bio/alphabet/detail/concept.hpp>
+#include <bio/meta/concept/core_language.hpp>
+#include <bio/meta/type_list/type_list.hpp>
+#include <bio/meta/type_traits/lazy.hpp>
 
 namespace seqan3::detail
 {

@@ -14,7 +14,7 @@
 
 #include <type_traits>
 
-#include <seqan3/core/platform.hpp>
+#include <bio/meta/platform.hpp>
 #include <concepts>
 
 namespace seqan3::detail

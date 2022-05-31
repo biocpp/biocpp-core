@@ -11,14 +11,14 @@
  */
 #pragma once
 
-#include <seqan3/alphabet/aminoacid/aa10li.hpp>
-#include <seqan3/alphabet/aminoacid/aa10murphy.hpp>
-#include <seqan3/alphabet/aminoacid/aa20.hpp>
-#include <seqan3/alphabet/aminoacid/aa27.hpp>
-#include <seqan3/alphabet/aminoacid/concept.hpp>
-#include <seqan3/alphabet/aminoacid/translation.hpp>
-#include <seqan3/alphabet/aminoacid/translation_details.hpp>
-#include <seqan3/alphabet/aminoacid/translation_genetic_code.hpp>
+#include <bio/alphabet/aminoacid/aa10li.hpp>
+#include <bio/alphabet/aminoacid/aa10murphy.hpp>
+#include <bio/alphabet/aminoacid/aa20.hpp>
+#include <bio/alphabet/aminoacid/aa27.hpp>
+#include <bio/alphabet/aminoacid/concept.hpp>
+#include <bio/alphabet/aminoacid/translation.hpp>
+#include <bio/alphabet/aminoacid/translation_details.hpp>
+#include <bio/alphabet/aminoacid/translation_genetic_code.hpp>
 
 /*!\defgroup aminoacid Aminoacid
  * \brief Provides the amino acid alphabets and functionality for translation from nucleotide.

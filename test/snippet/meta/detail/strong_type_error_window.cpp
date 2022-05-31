@@ -1,4 +1,4 @@
-#include <seqan3/core/detail/strong_type.hpp>
+#include <bio/meta/detail/strong_type.hpp>
 
 struct error : seqan3::detail::strong_type<unsigned, error>
 {

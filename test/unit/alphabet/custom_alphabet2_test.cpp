@@ -5,13 +5,13 @@
 // shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <seqan3/core/platform.hpp>
+#include <bio/meta/platform.hpp>
 
 // Tests the ADL-capabilities of the alphabet customisation point objects; type that isn't default constructible
 
 //![my_alph]
 #include <cstddef>                      // for size_t
-#include <seqan3/alphabet/concept.hpp>  // for seqan3::alphabet
+#include <bio/alphabet/concept.hpp>  // for seqan3::alphabet
 #include <type_traits>       // for std::type_identity
 
 namespace my_namespace

@@ -1,8 +1,8 @@
 #include <vector>
 
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/range/views/deep.hpp>
-#include <seqan3/range/views/take.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
+#include <bio/ranges/views/deep.hpp>
+#include <bio/ranges/views/take.hpp>
 
 namespace my
 {

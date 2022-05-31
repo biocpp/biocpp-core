@@ -15,9 +15,9 @@
 #include <concepts>
 #include <type_traits>
 
-#include <seqan3/core/add_enum_bitwise_operators.hpp>
-#include <seqan3/core/detail/debug_stream_type.hpp>
-#include <seqan3/core/type_traits/basic.hpp>
+#include <bio/meta/add_enum_bitwise_operators.hpp>
+#include <bio/meta/detail/debug_stream_type.hpp>
+#include <bio/meta/type_traits/basic.hpp>
 
 namespace seqan3::detail
 {

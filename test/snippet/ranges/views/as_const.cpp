@@ -1,6 +1,6 @@
 #include <string>
 
-#include <seqan3/range/views/as_const.hpp>
+#include <bio/ranges/views/as_const.hpp>
 #include <ranges>
 
 template <std::ranges::random_access_range rng_t>

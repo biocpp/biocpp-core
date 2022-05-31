@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <seqan3/range/views/detail.hpp>
+#include <bio/ranges/views/detail.hpp>
 #include <ranges>
 
 namespace seqan3::views

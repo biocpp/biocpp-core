@@ -1,7 +1,7 @@
 #include <string>
 
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/views/repeat_n.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/views/repeat_n.hpp>
 #include <ranges>
 
 int main()

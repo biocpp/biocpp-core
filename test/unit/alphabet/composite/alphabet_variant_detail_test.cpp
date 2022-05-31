@@ -9,10 +9,10 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/composite/alphabet_variant.hpp>
-#include <seqan3/alphabet/gap/gap.hpp>
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
+#include <bio/alphabet/composite/alphabet_variant.hpp>
+#include <bio/alphabet/gap/gap.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
 
 template <typename ...alphabet_types>
 class detail_alphabet_variant : public seqan3::alphabet_variant<alphabet_types...>

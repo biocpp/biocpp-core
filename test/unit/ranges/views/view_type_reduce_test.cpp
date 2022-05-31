@@ -13,11 +13,11 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/range/views/type_reduce.hpp>
+#include <bio/ranges/views/type_reduce.hpp>
 #include <concepts>
 #include <algorithm>
 #include <ranges>
-#include <seqan3/test/expect_range_eq.hpp>
+#include <bio/test/expect_range_eq.hpp>
 
 // ============================================================================
 //  test templates

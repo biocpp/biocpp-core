@@ -5,7 +5,7 @@
 // shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <seqan3/core/platform.hpp>
+#include <bio/meta/platform.hpp>
 
 #include "alphabet_test_template.hpp"
 #include "alphabet_constexpr_test_template.hpp"
@@ -16,7 +16,7 @@
 
 //![third_party_type]
 #include <cstddef>                      // for size_t
-#include <seqan3/alphabet/concept.hpp>  // for seqan3::alphabet
+#include <bio/alphabet/concept.hpp>  // for seqan3::alphabet
 
 // this is from some other library:
 namespace third_party_ns

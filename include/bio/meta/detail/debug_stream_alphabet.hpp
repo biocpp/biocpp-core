@@ -12,9 +12,9 @@
 
 #pragma once
 
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/alphabet/mask/mask.hpp>
-#include <seqan3/core/detail/debug_stream_type.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/mask/mask.hpp>
+#include <bio/meta/detail/debug_stream_type.hpp>
 
 namespace seqan3
 {

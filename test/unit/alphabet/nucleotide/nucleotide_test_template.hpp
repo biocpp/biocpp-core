@@ -9,8 +9,8 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/alphabet/nucleotide/concept.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/nucleotide/concept.hpp>
 
 template <typename t>
 using nucleotide = ::testing::Test;

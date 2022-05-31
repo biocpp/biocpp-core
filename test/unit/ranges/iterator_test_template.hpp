@@ -12,7 +12,7 @@
 #include <iterator>
 #include <ranges>
 
-#include <seqan3/core/platform.hpp>
+#include <bio/meta/platform.hpp>
 
 template <typename T>
 struct iterator_fixture : public ::testing::Test

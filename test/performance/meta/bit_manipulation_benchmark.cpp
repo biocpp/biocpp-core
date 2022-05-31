@@ -9,7 +9,7 @@
 
 #include <benchmark/benchmark.h>
 
-#include <seqan3/core/bit_manipulation.hpp>
+#include <bio/meta/bit_manipulation.hpp>
 
 template <typename size_type>
 static void is_power_of_two_popcount(benchmark::State & state) {

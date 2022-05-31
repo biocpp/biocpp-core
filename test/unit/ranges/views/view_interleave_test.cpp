@@ -7,13 +7,13 @@
 
 #include <forward_list>
 
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/range/views/interleave.hpp>
-#include <seqan3/range/views/take.hpp>
-#include <seqan3/range/views/type_reduce.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/ranges/views/interleave.hpp>
+#include <bio/ranges/views/take.hpp>
+#include <bio/ranges/views/type_reduce.hpp>
 #include <ranges>
-#include <seqan3/test/expect_range_eq.hpp>
-#include <seqan3/test/pretty_printing.hpp>
+#include <bio/test/expect_range_eq.hpp>
+#include <bio/test/pretty_printing.hpp>
 
 #include <gtest/gtest.h>
 

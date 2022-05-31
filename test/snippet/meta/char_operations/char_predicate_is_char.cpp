@@ -1,4 +1,4 @@
-#include <seqan3/core/char_operations/predicate.hpp>
+#include <bio/meta/char_operations/predicate.hpp>
 
 int main()
 {

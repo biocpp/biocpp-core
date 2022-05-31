@@ -9,9 +9,9 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/alphabet/aminoacid/all.hpp>
-#include <seqan3/core/char_operations/predicate.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/aminoacid/all.hpp>
+#include <bio/meta/char_operations/predicate.hpp>
 
 template <typename T>
 using aminoacid = ::testing::Test;

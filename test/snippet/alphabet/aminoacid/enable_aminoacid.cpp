@@ -1,4 +1,4 @@
-#include <seqan3/alphabet/aminoacid/concept.hpp>
+#include <bio/alphabet/aminoacid/concept.hpp>
 
 namespace your_namespace
 {

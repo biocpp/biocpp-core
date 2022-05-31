@@ -9,7 +9,7 @@
 
 #include <string>
 
-#include <seqan3/core/platform.hpp>
+#include <bio/meta/platform.hpp>
 
 /*!\file
  * \brief Provides SeqAn version macros and global variables.

@@ -7,7 +7,7 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/cigar/cigar.hpp>
+#include <bio/alphabet/cigar/cigar.hpp>
 
 TEST(debug_stream_test, cigar)
 {

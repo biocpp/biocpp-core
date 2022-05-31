@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include <seqan3/alphabet/adaptation/char.hpp>
-#include <seqan3/alphabet/adaptation/uint.hpp>
+#include <bio/alphabet/adaptation/char.hpp>
+#include <bio/alphabet/adaptation/uint.hpp>
 
 /*!\defgroup adaptation Adaptation
  * \brief Provides alphabet adaptions of some standard char and uint types.

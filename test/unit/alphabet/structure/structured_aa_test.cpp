@@ -7,10 +7,10 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/alphabet/nucleotide/rna4.hpp>
-#include <seqan3/alphabet/nucleotide/rna5.hpp>
-#include <seqan3/alphabet/structure/all.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/nucleotide/rna4.hpp>
+#include <bio/alphabet/nucleotide/rna5.hpp>
+#include <bio/alphabet/structure/all.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"

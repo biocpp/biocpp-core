@@ -9,7 +9,7 @@
 
 #include <string>
 
-#include <seqan3/core/type_traits/function.hpp>
+#include <bio/meta/type_traits/function.hpp>
 
 std::function test_function_object = [] (size_t arg1, std::string & arg2)
 {

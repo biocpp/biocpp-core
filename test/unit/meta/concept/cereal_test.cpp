@@ -10,7 +10,7 @@
 #include <array>
 #include <vector>
 
-#include <seqan3/core/concept/cereal.hpp>
+#include <bio/meta/concept/cereal.hpp>
 
 #if SEQAN3_WITH_CEREAL
 #include <cereal/archives/xml.hpp>

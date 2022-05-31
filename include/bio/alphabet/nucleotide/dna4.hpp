@@ -14,7 +14,7 @@
 
 #include <vector>
 
-#include <seqan3/alphabet/nucleotide/nucleotide_base.hpp>
+#include <bio/alphabet/nucleotide/nucleotide_base.hpp>
 
 // ------------------------------------------------------------------
 // dna4

@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <seqan3/alphabet/quality/quality_base.hpp>
+#include <bio/alphabet/quality/quality_base.hpp>
 
 // ------------------------------------------------------------------
 // phred42

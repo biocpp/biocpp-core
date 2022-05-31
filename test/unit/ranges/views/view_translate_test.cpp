@@ -11,17 +11,17 @@
 #include <string>
 #include <vector>
 
-#include <seqan3/alphabet/nucleotide/all.hpp>
-#include <seqan3/alphabet/aminoacid/aa27.hpp>
-#include <seqan3/range/concept.hpp>
-#include <seqan3/range/container/concatenated_sequences.hpp>
-#include <seqan3/range/views/char_to.hpp>
-#include <seqan3/range/views/complement.hpp>
-#include <seqan3/range/views/to.hpp>
-#include <seqan3/range/views/translate.hpp>
+#include <bio/alphabet/nucleotide/all.hpp>
+#include <bio/alphabet/aminoacid/aa27.hpp>
+#include <bio/ranges/concept.hpp>
+#include <bio/ranges/container/concatenated_sequences.hpp>
+#include <bio/ranges/views/char_to.hpp>
+#include <bio/ranges/views/complement.hpp>
+#include <bio/ranges/views/to.hpp>
+#include <bio/ranges/views/translate.hpp>
 #include <algorithm>
 #include <ranges>
-#include <seqan3/test/expect_range_eq.hpp>
+#include <bio/test/expect_range_eq.hpp>
 
 using seqan3::operator""_aa27;
 

@@ -14,9 +14,9 @@
 
 #include <vector>
 
-#include <seqan3/alphabet/aminoacid/aminoacid_base.hpp>
-#include <seqan3/alphabet/aminoacid/concept.hpp>
-#include <seqan3/core/char_operations/transform.hpp>
+#include <bio/alphabet/aminoacid/aminoacid_base.hpp>
+#include <bio/alphabet/aminoacid/concept.hpp>
+#include <bio/meta/char_operations/transform.hpp>
 
 namespace seqan3
 {

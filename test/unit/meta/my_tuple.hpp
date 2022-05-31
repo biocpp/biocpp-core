@@ -15,7 +15,7 @@
 #include <tuple>
 #include <utility>
 
-#include <seqan3/core/type_traits/basic.hpp>
+#include <bio/meta/type_traits/basic.hpp>
 
 namespace seqan3
 {

@@ -16,8 +16,8 @@
 #include <type_traits>
 #include <utility>
 
-#include <seqan3/core/platform.hpp>
-#include <seqan3/core/type_traits/template_inspection.hpp>
+#include <bio/meta/platform.hpp>
+#include <bio/meta/type_traits/template_inspection.hpp>
 
 namespace seqan3::detail
 {

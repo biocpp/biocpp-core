@@ -14,9 +14,11 @@
 
 #include <benchmark/benchmark.h>
 
-#include <seqan3/range/views/single_pass_input.hpp>
-#include <seqan3/range/views/take.hpp>
-#include <seqan3/range/views/take_exactly.hpp>
+#include <bio/ranges/views/single_pass_input.hpp>
+#include <bio/ranges/views/take.hpp>
+#include <bio/ranges/views/take_exactly.hpp>
+
+inline auto constexpr views_take = seqan3::detail::take_fn<false, false>{};
 
 // ============================================================================
 //  sequential_read
@@ -64,43 +66,43 @@ void sequential_read(benchmark::State & state)
 
 BENCHMARK_TEMPLATE(sequential_read, std::string, void);
 BENCHMARK_TEMPLATE(sequential_read, std::string, decltype(std::views::take));
-BENCHMARK_TEMPLATE(sequential_read, std::string, decltype(seqan3::views::take));
+BENCHMARK_TEMPLATE(sequential_read, std::string, decltype(views_take));
 BENCHMARK_TEMPLATE(sequential_read, std::string, decltype(seqan3::views::take_exactly));
 BENCHMARK_TEMPLATE(sequential_read, std::string, decltype(seqan3::views::take_exactly_or_throw));
 
 BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, void);
 BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, decltype(std::views::take));
-BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, decltype(seqan3::views::take));
+BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, decltype(views_take));
 BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, decltype(seqan3::views::take_exactly));
 BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, decltype(seqan3::views::take_exactly_or_throw));
 
 BENCHMARK_TEMPLATE(sequential_read, std::deque<uint8_t>, void);
 BENCHMARK_TEMPLATE(sequential_read, std::deque<uint8_t>, decltype(std::views::take));
-BENCHMARK_TEMPLATE(sequential_read, std::deque<uint8_t>, decltype(seqan3::views::take));
+BENCHMARK_TEMPLATE(sequential_read, std::deque<uint8_t>, decltype(views_take));
 BENCHMARK_TEMPLATE(sequential_read, std::deque<uint8_t>, decltype(seqan3::views::take_exactly));
 BENCHMARK_TEMPLATE(sequential_read, std::deque<uint8_t>, decltype(seqan3::views::take_exactly_or_throw));
 
 BENCHMARK_TEMPLATE(sequential_read, std::list<uint8_t>, void);
 BENCHMARK_TEMPLATE(sequential_read, std::list<uint8_t>, decltype(std::views::take));
-BENCHMARK_TEMPLATE(sequential_read, std::list<uint8_t>, decltype(seqan3::views::take));
+BENCHMARK_TEMPLATE(sequential_read, std::list<uint8_t>, decltype(views_take));
 BENCHMARK_TEMPLATE(sequential_read, std::list<uint8_t>, decltype(seqan3::views::take_exactly));
 BENCHMARK_TEMPLATE(sequential_read, std::list<uint8_t>, decltype(seqan3::views::take_exactly_or_throw));
 
 BENCHMARK_TEMPLATE(sequential_read, std::forward_list<uint8_t>, void);
 BENCHMARK_TEMPLATE(sequential_read, std::forward_list<uint8_t>, decltype(std::views::take));
-BENCHMARK_TEMPLATE(sequential_read, std::forward_list<uint8_t>, decltype(seqan3::views::take));
+BENCHMARK_TEMPLATE(sequential_read, std::forward_list<uint8_t>, decltype(views_take));
 BENCHMARK_TEMPLATE(sequential_read, std::forward_list<uint8_t>, decltype(seqan3::views::take_exactly));
 BENCHMARK_TEMPLATE(sequential_read, std::forward_list<uint8_t>, decltype(seqan3::views::take_exactly_or_throw));
 
 BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, void,                                           true);
 BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, decltype(std::views::take),              true);
-BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, decltype(seqan3::views::take),                   true);
+BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, decltype(views_take),                   true);
 BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, decltype(seqan3::views::take_exactly),           true);
 BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, decltype(seqan3::views::take_exactly_or_throw),  true);
 
 BENCHMARK_TEMPLATE(sequential_read, std::forward_list<uint8_t>, void, true);
 BENCHMARK_TEMPLATE(sequential_read, std::forward_list<uint8_t>, decltype(std::views::take),             true);
-BENCHMARK_TEMPLATE(sequential_read, std::forward_list<uint8_t>, decltype(seqan3::views::take),                  true);
+BENCHMARK_TEMPLATE(sequential_read, std::forward_list<uint8_t>, decltype(views_take),                  true);
 BENCHMARK_TEMPLATE(sequential_read, std::forward_list<uint8_t>, decltype(seqan3::views::take_exactly),          true);
 BENCHMARK_TEMPLATE(sequential_read, std::forward_list<uint8_t>, decltype(seqan3::views::take_exactly_or_throw), true);
 
@@ -153,19 +155,19 @@ void random_access(benchmark::State & state)
 
 BENCHMARK_TEMPLATE(random_access, std::string, void);
 BENCHMARK_TEMPLATE(random_access, std::string, decltype(std::views::take));
-BENCHMARK_TEMPLATE(random_access, std::string, decltype(seqan3::views::take));
+BENCHMARK_TEMPLATE(random_access, std::string, decltype(views_take));
 BENCHMARK_TEMPLATE(random_access, std::string, decltype(seqan3::views::take_exactly));
 BENCHMARK_TEMPLATE(random_access, std::string, decltype(seqan3::views::take_exactly_or_throw));
 
 BENCHMARK_TEMPLATE(random_access, std::vector<uint8_t>, void);
 BENCHMARK_TEMPLATE(random_access, std::vector<uint8_t>, decltype(std::views::take));
-BENCHMARK_TEMPLATE(random_access, std::vector<uint8_t>, decltype(seqan3::views::take));
+BENCHMARK_TEMPLATE(random_access, std::vector<uint8_t>, decltype(views_take));
 BENCHMARK_TEMPLATE(random_access, std::vector<uint8_t>, decltype(seqan3::views::take_exactly));
 BENCHMARK_TEMPLATE(random_access, std::vector<uint8_t>, decltype(seqan3::views::take_exactly_or_throw));
 
 BENCHMARK_TEMPLATE(random_access, std::deque<uint8_t>, void);
 BENCHMARK_TEMPLATE(random_access, std::deque<uint8_t>, decltype(std::views::take));
-BENCHMARK_TEMPLATE(random_access, std::deque<uint8_t>, decltype(seqan3::views::take));
+BENCHMARK_TEMPLATE(random_access, std::deque<uint8_t>, decltype(views_take));
 BENCHMARK_TEMPLATE(random_access, std::deque<uint8_t>, decltype(seqan3::views::take_exactly));
 BENCHMARK_TEMPLATE(random_access, std::deque<uint8_t>, decltype(seqan3::views::take_exactly_or_throw));
 

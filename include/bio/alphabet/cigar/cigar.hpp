@@ -14,11 +14,11 @@
 
 #include <charconv>
 
-#include <seqan3/alphabet/adaptation/uint.hpp>
-#include <seqan3/alphabet/cigar/cigar_op.hpp>
-#include <seqan3/alphabet/composite/alphabet_tuple_base.hpp>
-#include <seqan3/core/detail/debug_stream_type.hpp>
-#include <seqan3/range/container/small_string.hpp>
+#include <bio/alphabet/adaptation/uint.hpp>
+#include <bio/alphabet/cigar/cigar_op.hpp>
+#include <bio/alphabet/composite/alphabet_tuple_base.hpp>
+#include <bio/meta/detail/debug_stream_type.hpp>
+#include <bio/ranges/container/small_string.hpp>
 
 // ------------------------------------------------------------------
 // cigar

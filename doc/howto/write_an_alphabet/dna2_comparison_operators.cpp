@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 //! [comparison]
-#include <seqan3/alphabet/concept.hpp>                   // alphabet concept checks
+#include <bio/alphabet/concept.hpp>                   // alphabet concept checks
 
 struct dna2
 {

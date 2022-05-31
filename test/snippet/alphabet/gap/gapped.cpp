@@ -1,5 +1,5 @@
-#include <seqan3/alphabet/gap/gapped.hpp>
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/gap/gapped.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
 
 int main()
 {

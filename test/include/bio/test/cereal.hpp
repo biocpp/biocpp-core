@@ -16,10 +16,10 @@
 
 #include <fstream>
 
-#include <seqan3/core/concept/cereal.hpp>
-#include <seqan3/core/platform.hpp>
-#include <seqan3/core/type_traits/basic.hpp>
-#include <seqan3/test/tmp_filename.hpp>
+#include <bio/meta/concept/cereal.hpp>
+#include <bio/meta/platform.hpp>
+#include <bio/meta/type_traits/basic.hpp>
+#include <bio/test/tmp_filename.hpp>
 
 #if SEQAN3_WITH_CEREAL
 #include <cereal/archives/binary.hpp>

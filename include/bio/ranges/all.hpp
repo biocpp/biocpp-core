@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include <seqan3/range/container/all.hpp>
-#include <seqan3/range/views/all.hpp>
+#include <bio/ranges/container/all.hpp>
+#include <bio/ranges/views/all.hpp>
 
 /*!\defgroup range Range
  * \brief The range module provides general purpose containers, decorators and views.

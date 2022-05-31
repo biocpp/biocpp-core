@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-#include <seqan3/core/type_traits/range.hpp>
+#include <bio/meta/type_traits/range.hpp>
 
 int main()
 {

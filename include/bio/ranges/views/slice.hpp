@@ -14,9 +14,9 @@
 
 #include <stdexcept>
 
-#include <seqan3/range/concept.hpp>
-#include <seqan3/range/views/detail.hpp>
-#include <seqan3/range/views/type_reduce.hpp>
+#include <bio/ranges/concept.hpp>
+#include <bio/ranges/views/detail.hpp>
+#include <bio/ranges/views/type_reduce.hpp>
 #include <concepts>
 #include <iterator>
 #include <ranges>

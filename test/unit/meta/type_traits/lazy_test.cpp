@@ -10,7 +10,7 @@
 #include <list>
 #include <vector>
 
-#include <seqan3/core/type_traits/lazy.hpp>
+#include <bio/meta/type_traits/lazy.hpp>
 #include <concepts>
 
 TEST(lazy, instantiate)

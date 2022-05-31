@@ -25,8 +25,8 @@
     #include <sys/endian.h>
 #endif // __has_include(endian.h)
 
-#include <seqan3/core/detail/endian.hpp>
-#include <seqan3/core/detail/int_types.hpp>
+#include <bio/meta/detail/endian.hpp>
+#include <bio/meta/detail/int_types.hpp>
 #include <concepts>
 
 namespace seqan3::detail

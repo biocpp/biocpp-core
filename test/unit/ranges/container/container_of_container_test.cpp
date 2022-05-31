@@ -7,12 +7,12 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/range/container/bitcompressed_vector.hpp>
-#include <seqan3/range/container/concatenated_sequences.hpp>
-#include <seqan3/test/cereal.hpp>
-#include <seqan3/test/expect_range_eq.hpp>
-#include <seqan3/test/pretty_printing.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/ranges/container/bitcompressed_vector.hpp>
+#include <bio/ranges/container/concatenated_sequences.hpp>
+#include <bio/test/cereal.hpp>
+#include <bio/test/expect_range_eq.hpp>
+#include <bio/test/pretty_printing.hpp>
 
 using seqan3::operator""_dna4;
 

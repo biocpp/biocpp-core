@@ -2,7 +2,7 @@
 #include <functional>
 #include <string>
 
-#include <seqan3/core/type_traits/function.hpp>
+#include <bio/meta/type_traits/function.hpp>
 #include <concepts>
 
 std::function my_caller = [] (size_t position, std::string & sequence)

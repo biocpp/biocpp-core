@@ -7,15 +7,15 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/core/type_traits/iterator.hpp>
-#include <seqan3/core/type_traits/range.hpp>
-#include <seqan3/range/views/persist.hpp>
-#include <seqan3/range/views/repeat.hpp>
-#include <seqan3/range/views/take.hpp>
-#include <seqan3/range/views/take_exactly.hpp>
+#include <bio/meta/type_traits/iterator.hpp>
+#include <bio/meta/type_traits/range.hpp>
+#include <bio/ranges/views/persist.hpp>
+#include <bio/ranges/views/repeat.hpp>
+#include <bio/ranges/views/take.hpp>
+#include <bio/ranges/views/take_exactly.hpp>
 #include <algorithm>
 #include <ranges>
-#include <seqan3/test/expect_range_eq.hpp>
+#include <bio/test/expect_range_eq.hpp>
 
 TEST(repeat_view, deduction_guide)
 {

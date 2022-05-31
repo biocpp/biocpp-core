@@ -13,9 +13,9 @@
 
 #include "my_tuple.hpp"
 
-#include <seqan3/core/detail/strong_type.hpp>
-#include <seqan3/core/pod_tuple.hpp>
-#include <seqan3/core/tuple_utility.hpp>
+#include <bio/meta/detail/strong_type.hpp>
+#include <bio/meta/pod_tuple.hpp>
+#include <bio/meta/tuple_utility.hpp>
 #include <concepts>
 
 struct bar : public seqan3::detail::strong_type<unsigned, bar>

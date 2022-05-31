@@ -12,10 +12,12 @@
 
 #pragma once
 
-#include <seqan3/range/views/detail.hpp>
 #include <concepts>
 #include <iterator>
+#include <memory>
 #include <ranges>
+
+#include <bio/ranges/views/detail.hpp>
 
 //-----------------------------------------------------------------------------
 // Implementation of single pass input view.

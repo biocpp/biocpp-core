@@ -1,4 +1,4 @@
-#include <seqan3/core/type_list/traits.hpp>
+#include <bio/meta/type_list/traits.hpp>
 
 int main()
 {

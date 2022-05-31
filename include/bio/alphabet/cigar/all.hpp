@@ -12,7 +12,7 @@
 
  #pragma once
 
- #include <seqan3/alphabet/cigar/cigar_op.hpp>
+ #include <bio/alphabet/cigar/cigar_op.hpp>
 
  /*!\defgroup cigar CIGAR
   * \brief Provides (semi-)alphabets for representing elements in CIGAR strings.

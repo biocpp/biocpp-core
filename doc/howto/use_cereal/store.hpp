@@ -8,8 +8,8 @@
 #include <cereal/types/vector.hpp>    // includes cerealisation support for std::vector
 //! [vector_include]
 
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/test/tmp_filename.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/test/tmp_filename.hpp>
 
 // Written for std::vector, other types also work.
 void store(std::vector<int16_t> const & data, seqan3::test::tmp_filename & tmp_file)

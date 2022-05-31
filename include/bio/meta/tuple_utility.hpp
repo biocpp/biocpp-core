@@ -14,9 +14,9 @@
 
 #include <utility>
 
-#include <seqan3/core/concept/tuple.hpp>
-#include <seqan3/core/pod_tuple.hpp>
-#include <seqan3/core/type_list/traits.hpp>
+#include <bio/meta/concept/tuple.hpp>
+#include <bio/meta/pod_tuple.hpp>
+#include <bio/meta/type_list/traits.hpp>
 
 namespace seqan3::detail
 {

@@ -12,12 +12,13 @@
 
 #pragma once
 
+#include <ranges>
+
 #include <benchmark/benchmark.h>
 
-#include <seqan3/core/concept/tuple.hpp>
-#include <seqan3/core/type_traits/range.hpp>
-#include <seqan3/core/platform.hpp>
-#include <seqan3/std/ranges>
+#include <bio/meta/concept/tuple.hpp>
+#include <bio/meta/type_traits/range.hpp>
+#include <bio/meta/platform.hpp>
 
 namespace seqan3::test
 {

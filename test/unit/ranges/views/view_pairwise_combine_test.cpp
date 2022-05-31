@@ -12,10 +12,10 @@
 #include <utility>
 #include <vector>
 
-#include <seqan3/core/type_traits/range.hpp>
-#include <seqan3/range/views/pairwise_combine.hpp>
-#include <seqan3/range/views/take.hpp>
-#include <seqan3/test/pretty_printing.hpp>
+#include <bio/meta/type_traits/range.hpp>
+#include <bio/ranges/views/pairwise_combine.hpp>
+#include <bio/ranges/views/take.hpp>
+#include <bio/test/pretty_printing.hpp>
 
 template <typename t>
 class pairwise_combine_base_test : public ::testing::Test

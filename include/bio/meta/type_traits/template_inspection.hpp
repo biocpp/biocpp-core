@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <seqan3/core/type_traits/transformation_trait_or.hpp>
+#include <bio/meta/type_traits/transformation_trait_or.hpp>
 
 #include <concepts>
 

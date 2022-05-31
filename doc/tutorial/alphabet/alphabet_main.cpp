@@ -4,7 +4,7 @@
 #include <vector>
 
 //! [create]
-#include <seqan3/alphabet/all.hpp> // for working with alphabets directly
+#include <bio/alphabet/all.hpp> // for working with alphabets directly
 
 using seqan3::operator""_dna4;
 

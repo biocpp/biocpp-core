@@ -1,12 +1,12 @@
 #include <string>
 #include <vector>
 
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/alphabet/quality/aliases.hpp>
-#include <seqan3/alphabet/quality/phred42.hpp>
-#include <seqan3/range/views/trim_quality.hpp>
-#include <seqan3/range/views/to_char.hpp>
-#include <seqan3/range/views/to.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
+#include <bio/alphabet/quality/aliases.hpp>
+#include <bio/alphabet/quality/phred42.hpp>
+#include <bio/ranges/views/trim_quality.hpp>
+#include <bio/ranges/views/to_char.hpp>
+#include <bio/ranges/views/to.hpp>
 
 int main()
 {

@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <ranges>
 
-#include <seqan3/range/views/detail.hpp>
+#include <bio/ranges/views/detail.hpp>
 
 namespace seqan3::detail
 {

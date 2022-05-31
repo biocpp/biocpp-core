@@ -301,7 +301,7 @@ endif ()
 # ----------------------------------------------------------------------------
 
 set (CXXSTD_TEST_SOURCE
-     "#include <seqan3/core/platform.hpp>
+     "#include <bio/meta/platform.hpp>
      int main() {}")
 
 # using try_compile instead of check_cxx_source_compiles to capture output in case of failure

@@ -12,10 +12,10 @@
 
 #pragma once
 
-#include <seqan3/alphabet/alphabet_base.hpp>
-#include <seqan3/alphabet/detail/convert.hpp>
-#include <seqan3/alphabet/aminoacid/concept.hpp>
-#include <seqan3/core/char_operations/transform.hpp>
+#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/detail/convert.hpp>
+#include <bio/alphabet/aminoacid/concept.hpp>
+#include <bio/meta/char_operations/transform.hpp>
 
 namespace seqan3
 {

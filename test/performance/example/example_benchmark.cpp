@@ -10,7 +10,7 @@
 
 #include <benchmark/benchmark.h>
 
-#include <seqan3/test/performance/units.hpp>
+#include <bio/test/performance/units.hpp>
 
 static void vector_copy_benchmark(benchmark::State & state) {
     std::vector<int> x = {15, 13, 12, 10};

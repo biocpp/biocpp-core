@@ -1,10 +1,10 @@
 //! [example]
 #include <iostream>
 
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/views/char_to.hpp>
-#include <seqan3/range/views/translate_join.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/views/char_to.hpp>
+#include <bio/ranges/views/translate_join.hpp>
 
 using seqan3::operator""_dna4;
 

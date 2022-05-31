@@ -7,8 +7,8 @@
 
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/composite/alphabet_tuple_base.hpp>
-#include <seqan3/core/concept/tuple.hpp>
+#include <bio/alphabet/composite/alphabet_tuple_base.hpp>
+#include <bio/meta/concept/tuple.hpp>
 
 using seqan3::get;
 

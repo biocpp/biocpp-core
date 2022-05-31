@@ -1,7 +1,7 @@
 #include <vector>
 
-#include <seqan3/core/type_traits/template_inspection.hpp>
-#include <seqan3/core/type_list/type_list.hpp>
+#include <bio/meta/type_traits/template_inspection.hpp>
+#include <bio/meta/type_list/type_list.hpp>
 
 int main()
 {

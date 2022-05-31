@@ -9,8 +9,8 @@
 
 #include <benchmark/benchmark.h>
 
-#include <seqan3/alphabet/all.hpp>
-#include <seqan3/test/seqan2.hpp>
+#include <bio/alphabet/all.hpp>
+#include <bio/test/seqan2.hpp>
 
 #if SEQAN3_HAS_SEQAN2
 #include <seqan/align.h>

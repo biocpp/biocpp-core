@@ -9,9 +9,9 @@
 
 #include <sstream>
 
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/core/type_list/detail/type_list_algorithm.hpp>
-#include <seqan3/core/type_list/type_list.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/meta/type_list/detail/type_list_algorithm.hpp>
+#include <bio/meta/type_list/type_list.hpp>
 
 //-----------------------------------------------------------------------------
 // all_of

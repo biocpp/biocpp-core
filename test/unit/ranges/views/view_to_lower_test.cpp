@@ -9,11 +9,11 @@
 
 #include <iostream>
 
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/range/concept.hpp>
-#include <seqan3/range/views/to_char.hpp>
-#include <seqan3/range/views/to_lower.hpp>
-#include <seqan3/range/views/to.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
+#include <bio/ranges/concept.hpp>
+#include <bio/ranges/views/to_char.hpp>
+#include <bio/ranges/views/to_lower.hpp>
+#include <bio/ranges/views/to.hpp>
 #include <ranges>
 
 using seqan3::operator""_dna5;

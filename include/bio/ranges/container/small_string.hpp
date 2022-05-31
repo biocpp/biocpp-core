@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <seqan3/range/container/small_vector.hpp>
+#include <bio/ranges/container/small_vector.hpp>
 
 namespace seqan3
 {

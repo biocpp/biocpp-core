@@ -12,12 +12,12 @@
 
 #pragma once
 
-#include <seqan3/alphabet/exception.hpp>
-#include <seqan3/core/concept/cereal.hpp>
-#include <seqan3/core/concept/core_language.hpp>
-#include <seqan3/core/detail/customisation_point.hpp>
-#include <seqan3/core/detail/type_inspection.hpp>
-#include <seqan3/core/type_traits/basic.hpp>
+#include <bio/alphabet/exception.hpp>
+#include <bio/meta/concept/cereal.hpp>
+#include <bio/meta/concept/core_language.hpp>
+#include <bio/meta/detail/customisation_point.hpp>
+#include <bio/meta/detail/type_inspection.hpp>
+#include <bio/meta/type_traits/basic.hpp>
 #include <type_traits>
 
 // ============================================================================

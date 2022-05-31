@@ -1,5 +1,5 @@
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/range/views/complement.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
+#include <bio/ranges/views/complement.hpp>
 #include <ranges>
 
 int main()

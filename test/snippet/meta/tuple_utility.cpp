@@ -1,4 +1,4 @@
-#include <seqan3/core/tuple_utility.hpp>
+#include <bio/meta/tuple_utility.hpp>
 
 int main()
 {

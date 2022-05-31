@@ -1,8 +1,8 @@
 #include <string>
 #include <vector>
 
-#include <seqan3/core/debug_stream.hpp>
-#include <seqan3/range/views/to_upper.hpp>
+#include <bio/meta/debug_stream.hpp>
+#include <bio/ranges/views/to_upper.hpp>
 
 int main()
 {

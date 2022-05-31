@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include <seqan3/alphabet/gap/gap.hpp>
-#include <seqan3/alphabet/gap/gapped.hpp>
+#include <bio/alphabet/gap/gap.hpp>
+#include <bio/alphabet/gap/gapped.hpp>
 
 /*!\defgroup gap Gap
  * \brief Provides the gap alphabet and functionality to make an alphabet a gapped alphabet.

@@ -25,8 +25,8 @@
 
 #pragma once
 
-#include <seqan3/alphabet/concept.hpp>
-#include <seqan3/core/detail/int_types.hpp>
+#include <bio/alphabet/concept.hpp>
+#include <bio/meta/detail/int_types.hpp>
 
 namespace seqan3::detail
 {

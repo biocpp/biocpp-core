@@ -15,7 +15,7 @@
 #include <stdexcept>
 #include <string>
 
-#include <seqan3/core/char_operations/pretty_print.hpp>
+#include <bio/meta/char_operations/pretty_print.hpp>
 #include <concepts>
 
 namespace seqan3

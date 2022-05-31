@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <seqan3/alphabet/concept.hpp>
+#include <bio/alphabet/concept.hpp>
 #include <concepts>
 
 // ============================================================================

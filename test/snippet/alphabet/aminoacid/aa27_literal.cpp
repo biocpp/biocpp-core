@@ -1,4 +1,4 @@
-#include <seqan3/alphabet/aminoacid/aa27.hpp>
+#include <bio/alphabet/aminoacid/aa27.hpp>
 
 int main()
 {

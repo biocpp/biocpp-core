@@ -14,7 +14,7 @@
 #include <ranges>
 #include <vector>
 
-#include <seqan3/core/type_traits/iterator.hpp>
+#include <bio/meta/type_traits/iterator.hpp>
 
 template <typename iterator_t>
 concept iterator_traits_has_iterator_category = requires()

@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <seqan3/core/type_traits/template_inspection.hpp>
+#include <bio/meta/type_traits/template_inspection.hpp>
 
 namespace seqan3
 {

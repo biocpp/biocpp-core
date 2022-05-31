@@ -14,12 +14,12 @@
 
 #include <cmath>
 
-#include <seqan3/core/type_traits/pre.hpp>
-#include <seqan3/core/type_traits/transformation_trait_or.hpp>
-#include <seqan3/range/detail/random_access_iterator.hpp>
-#include <seqan3/range/views/detail.hpp>
-#include <seqan3/range/views/persist.hpp>
-#include <seqan3/range/views/type_reduce.hpp>
+#include <bio/meta/type_traits/pre.hpp>
+#include <bio/meta/type_traits/transformation_trait_or.hpp>
+#include <bio/ranges/detail/random_access_iterator.hpp>
+#include <bio/ranges/views/detail.hpp>
+#include <bio/ranges/views/persist.hpp>
+#include <bio/ranges/views/type_reduce.hpp>
 #include <concepts>
 #include <ranges>
 

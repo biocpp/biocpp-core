@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include <seqan3/alphabet/quality/qualified.hpp>
-#include <seqan3/range/views/deep.hpp>
+#include <bio/alphabet/quality/qualified.hpp>
+#include <bio/ranges/views/deep.hpp>
 #include <ranges>
 
 namespace seqan3::detail

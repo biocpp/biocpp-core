@@ -12,12 +12,12 @@
 
 #pragma once
 
-#include <seqan3/alphabet/alphabet_base.hpp>
-#include <seqan3/alphabet/nucleotide/concept.hpp>
-#include <seqan3/alphabet/quality/concept.hpp>
-#include <seqan3/core/concept/core_language.hpp>
-#include <seqan3/core/type_traits/basic.hpp>
-#include <seqan3/core/type_traits/template_inspection.hpp>
+#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/nucleotide/concept.hpp>
+#include <bio/alphabet/quality/concept.hpp>
+#include <bio/meta/concept/core_language.hpp>
+#include <bio/meta/type_traits/basic.hpp>
+#include <bio/meta/type_traits/template_inspection.hpp>
 #include <concepts>
 
 namespace seqan3

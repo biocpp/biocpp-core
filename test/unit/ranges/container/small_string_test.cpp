@@ -10,10 +10,10 @@
 #include <string>
 #include <utility>
 
-#include <seqan3/range/container/concept.hpp>
-#include <seqan3/range/container/small_string.hpp>
+#include <bio/ranges/container/concept.hpp>
+#include <bio/ranges/container/small_string.hpp>
 #include <ranges>
-#include <seqan3/test/pretty_printing.hpp>
+#include <bio/test/pretty_printing.hpp>
 
 using namespace std::literals;
 

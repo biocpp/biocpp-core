@@ -8,7 +8,7 @@
 #include <gtest/gtest.h>
 
 #include <ranges>
-#include <seqan3/test/seqan2.hpp>
+#include <bio/test/seqan2.hpp>
 
 // Note: this file will only test regressions encountered with seqan2 compatibility and has no claim to be complete
 

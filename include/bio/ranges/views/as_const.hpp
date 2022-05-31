@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <seqan3/core/type_traits/function.hpp>
+#include <bio/meta/type_traits/function.hpp>
 #include <ranges>
 
 namespace seqan3::detail

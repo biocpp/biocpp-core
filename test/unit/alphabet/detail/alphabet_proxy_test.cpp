@@ -5,8 +5,8 @@
 // shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <seqan3/alphabet/detail/alphabet_proxy.hpp>
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/detail/alphabet_proxy.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"

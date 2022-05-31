@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include <seqan3/range/views/repeat.hpp>
-#include <seqan3/range/views/take_exactly.hpp>
+#include <bio/ranges/views/repeat.hpp>
+#include <bio/ranges/views/take_exactly.hpp>
 #include <concepts>
 
 namespace seqan3::detail

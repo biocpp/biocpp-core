@@ -11,7 +11,7 @@
 #include <span>
 #include <string_view>
 
-#include <seqan3/test/expect_range_eq.hpp>
+#include <bio/test/expect_range_eq.hpp>
 
 TEST(expect_range_eq, braces_with_many_commas)
 {

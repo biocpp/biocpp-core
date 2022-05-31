@@ -12,12 +12,12 @@
 
 #pragma once
 
-#include <seqan3/core/bit_manipulation.hpp>
-#include <seqan3/core/concept/cereal.hpp>
-#include <seqan3/core/detail/debug_stream_type.hpp>
-#include <seqan3/range/views/interleave.hpp>
-#include <seqan3/range/views/repeat_n.hpp>
-#include <seqan3/range/views/to.hpp>
+#include <bio/meta/bit_manipulation.hpp>
+#include <bio/meta/concept/cereal.hpp>
+#include <bio/meta/detail/debug_stream_type.hpp>
+#include <bio/ranges/views/interleave.hpp>
+#include <bio/ranges/views/repeat_n.hpp>
+#include <bio/ranges/views/to.hpp>
 
 namespace seqan3
 {

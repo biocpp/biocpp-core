@@ -14,9 +14,9 @@
 
 #include <variant>
 
-#include <seqan3/core/detail/debug_stream_type.hpp>
-#include <seqan3/core/type_traits/basic.hpp>
-#include <seqan3/core/type_traits/template_inspection.hpp>
+#include <bio/meta/detail/debug_stream_type.hpp>
+#include <bio/meta/type_traits/basic.hpp>
+#include <bio/meta/type_traits/template_inspection.hpp>
 
 namespace seqan3
 {

@@ -11,8 +11,8 @@
 
 #include <benchmark/benchmark.h>
 
-#include <seqan3/core/char_operations/predicate.hpp>
-#include <seqan3/test/seqan2.hpp>
+#include <bio/meta/char_operations/predicate.hpp>
+#include <bio/test/seqan2.hpp>
 
 #if SEQAN3_HAS_SEQAN2
 #include <seqan/stream.h>

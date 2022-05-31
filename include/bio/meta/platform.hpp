@@ -42,7 +42,7 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 // ============================================================================
 
 // SeqAn [required]
-#if !__has_include(<seqan3/version.hpp>)
+#if !__has_include(<bio/version.hpp>)
 #   error SeqAn3 include directory not set correctly. Forgot to add -I ${INSTALLDIR}/include to your CXXFLAGS?
 #endif
 

@@ -10,8 +10,8 @@
 #include <ostream>
 #include <variant>
 
-#include <seqan3/alphabet/nucleotide/dna4.hpp>
-#include <seqan3/test/pretty_printing.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/test/pretty_printing.hpp>
 
 using seqan3::operator""_dna4;
 using namespace std::string_literals;
