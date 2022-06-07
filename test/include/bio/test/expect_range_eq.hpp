@@ -17,6 +17,8 @@
 #include <algorithm>
 #include <ranges>
 
+#include <bio/meta/platform.hpp>
+
 namespace bio::test
 {
 #define EXPECT_RANGE_EQ(val1, val2) \
