@@ -13,7 +13,6 @@
 #include <bio/ranges/views/type_reduce.hpp>
 #include <ranges>
 #include <bio/test/expect_range_eq.hpp>
-#include <bio/test/pretty_printing.hpp>
 
 #include <gtest/gtest.h>
 

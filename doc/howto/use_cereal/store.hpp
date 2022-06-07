@@ -8,7 +8,6 @@
 #include <cereal/types/vector.hpp>    // includes cerealisation support for std::vector
 //! [vector_include]
 
-#include <bio/meta/debug_stream.hpp>
 #include <bio/test/tmp_filename.hpp>
 
 // Written for std::vector, other types also work.

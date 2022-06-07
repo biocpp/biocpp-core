@@ -1,6 +1,6 @@
 #include <string>
 
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/meta/type_list/detail/type_list_algorithm.hpp>
 #include <bio/meta/type_list/type_list.hpp>
 
@@ -27,27 +27,27 @@ int main()
         static_assert(std::is_same_v<id_t, std::type_identity<type>>, "id is of type std::type_identity<type>");
 
         if constexpr(std::is_same_v<type, bool>)
-            bio::debug_stream << "bool";
+            fmt::print("{}", "bool");
         else if constexpr(std::is_same_v<type, int>)
-            bio::debug_stream << "int";
+            fmt::print("{}", "int");
         else if constexpr(std::is_same_v<type, float>)
-            bio::debug_stream << "float";
+            fmt::print("{}", "float");
         else if constexpr(std::is_same_v<type, incomplete::type>)
-            bio::debug_stream << "incomplete::type";
+            fmt::print("{}", "incomplete::type");
 
-        bio::debug_stream << ", ";
+        fmt::print(", ");
     };
 
     // prints each type name, i.e. "int, float, bool, incomplete::type, \n"
     using types = bio::type_list<int, float, bool, incomplete::type>;
     bio::detail::for_each<types>(fn);
-    bio::debug_stream << "\n";
+    fmt::print("\n");
 
     // is the same as explicitly writing
     fn(std::type_identity<int>{});
     fn(std::type_identity<float>{});
     fn(std::type_identity<bool>{});
     fn(std::type_identity<incomplete::type>{});
-    bio::debug_stream << "\n";
+    fmt::print("\n");
     return 0;
 }

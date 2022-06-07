@@ -1,4 +1,4 @@
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/container/dynamic_bitset.hpp>
 
 int main()
@@ -7,5 +7,5 @@ int main()
 
     t1.reset(2);
     t1.reset(3);
-    bio::debug_stream << t1 << '\n'; // 1000'0000
+    fmt::print("{}\n", t1); // 1000'0000
 }

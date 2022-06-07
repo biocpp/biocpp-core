@@ -1,5 +1,5 @@
 #include <bio/alphabet/nucleotide/dna3bs.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 int main()
 {
@@ -9,11 +9,11 @@ int main()
 
     my_letter.assign_char('C'); // all C will be converted to T.
     if (my_letter.to_char() == 'T')
-        bio::debug_stream << "yeah\n"; // "yeah";
+        fmt::print("{}", "yeah\n"); // "yeah";
 
     my_letter.assign_char('F'); // unknown characters are implicitly converted to A.
     if (my_letter.to_char() == 'A')
-        bio::debug_stream << "yeah\n"; // "yeah";
+        fmt::print("{}", "yeah\n"); // "yeah";
 
     return 0;
 }

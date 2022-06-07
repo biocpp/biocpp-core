@@ -1,5 +1,5 @@
 #include <bio/alphabet/quality/phred68legacy.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <algorithm>
 
 int main()
@@ -13,5 +13,5 @@ int main()
     std::vector<bio::phred68legacy> qual_vec2 = {'#'_phred68legacy, '#'_phred68legacy,
                                                     '#'_phred68legacy, '!'_phred68legacy};
 
-    bio::debug_stream << std::ranges::equal(qual_vec, qual_vec2) << '\n'; // prints 1 (true)
+    fmt::print("{}\n", std::ranges::equal(qual_vec, qual_vec2)); // prints 1 (true)
 }

@@ -1,5 +1,5 @@
 #include <bio/alphabet/nucleotide/dna4.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/container/concatenated_sequences.hpp>
 
 int main()
@@ -8,5 +8,5 @@ int main()
 
     bio::concatenated_sequences<bio::dna4_vector> foobar;
     foobar.insert(foobar.end(), "ACGT"_dna4);
-    bio::debug_stream << foobar[0] << '\n'; // "ACGT"
+    fmt::print("{}\n", foobar[0]); // "ACGT"
 }

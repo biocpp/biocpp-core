@@ -1,4 +1,4 @@
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/container/dynamic_bitset.hpp>
 
 int main()
@@ -6,5 +6,5 @@ int main()
     bio::dynamic_bitset const t1{"10001100"};
     bio::dynamic_bitset t2 = ~t1;
 
-    bio::debug_stream << t2 << '\n'; // 0111'0011
+    fmt::print("{}\n", t2); // 0111'0011
 }

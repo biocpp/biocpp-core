@@ -19,7 +19,6 @@
 
 #include <bio/meta/add_enum_bitwise_operators.hpp>
 #include <bio/meta/concept/all.hpp>
-#include <bio/meta/debug_stream.hpp>
 #include <bio/meta/detail/all.hpp>
 #include <bio/meta/type_traits/all.hpp>
 #include <bio/meta/platform.hpp>
@@ -27,7 +26,7 @@
 #include <bio/meta/tuple_utility.hpp>
 #include <bio/meta/type_list/type_list.hpp>
 
-/*!\defgroup core Core
+/*!\defgroup core Meta
  * \brief Provides core functionality used by multiple modules.
  *
  * The core module contains concepts, functions and some classes that
@@ -52,8 +51,4 @@
  * only generated for developers.
  * \sa https://github.com/seqan/seqan3/wiki/Documentation
  * \endif
- */
-
-/*!\namespace std
- * \brief SeqAn specific customisations in the standard namespace.
  */

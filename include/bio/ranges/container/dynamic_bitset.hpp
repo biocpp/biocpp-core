@@ -14,10 +14,112 @@
 
 #include <bio/meta/bit_manipulation.hpp>
 #include <bio/meta/concept/cereal.hpp>
-#include <bio/meta/detail/debug_stream_type.hpp>
 #include <bio/ranges/views/interleave.hpp>
 #include <bio/ranges/views/repeat_n.hpp>
 #include <bio/ranges/views/to.hpp>
+
+namespace bio::detail
+{
+
+//!\brief A bit field representing size and bit information stored in one `uint64_t`.
+struct dynamic_bitset_bitfield
+{
+    //!\brief 6 bits representing the size information.
+    uint64_t size : 6u;
+    //!\brief 58 bits representing the bit information.
+    uint64_t bits : 58u;
+};
+
+//!\brief Proxy data type returned by bio::dynamic_bitset as reference to the bit.
+class dynamic_bitset_reference_proxy
+{
+public:
+    /*!\name Constructors, destructor and assignment
+        * \{
+        */
+    constexpr dynamic_bitset_reference_proxy() noexcept = default; //!< Defaulted.
+    constexpr dynamic_bitset_reference_proxy(dynamic_bitset_reference_proxy const &) noexcept = default; //!< Defaulted.
+    constexpr dynamic_bitset_reference_proxy(dynamic_bitset_reference_proxy &&) noexcept = default; //!< Defaulted.
+
+    //!\brief Assign the value of the bit.
+    constexpr dynamic_bitset_reference_proxy & operator=(dynamic_bitset_reference_proxy const rhs) noexcept
+    {
+        rhs ? set() : reset();
+        return *this;
+    }
+
+    //!\brief Sets the referenced bit to `value`.
+    constexpr dynamic_bitset_reference_proxy & operator=(bool const value) noexcept
+    {
+        value ? set() : reset();
+        return *this;
+    }
+
+    ~dynamic_bitset_reference_proxy() noexcept = default; //!< Defaulted.
+    //!\}
+
+    //!\brief Initialise from bio::dynamic_bitset's underlying data and a bit position.
+    constexpr dynamic_bitset_reference_proxy(dynamic_bitset_bitfield & internal_, size_t const pos) noexcept :
+        internal{internal_}, mask{1ULL<<pos}
+    {}
+
+    //!\brief Returns the value of the referenced bit.
+    constexpr operator bool() const noexcept
+    {
+        return static_cast<bool>(internal.bits & mask);
+    }
+
+    //!\brief Returns the inverted value of the referenced bit.
+    constexpr bool operator~() const noexcept
+    {
+        return !static_cast<bool>(internal.bits & mask);
+    }
+
+    //!\brief Sets the referenced bit to the result of a binary OR with `value`.
+    constexpr dynamic_bitset_reference_proxy & operator|=(bool const value)
+    {
+        if (value)
+            set();
+
+        return *this;
+    }
+
+    //!\brief Sets the referenced bit to the result of a binary AND with `value`.
+    constexpr dynamic_bitset_reference_proxy & operator&=(bool const value)
+    {
+        if (!value)
+            reset();
+
+        return *this;
+    }
+
+    //!\brief Sets the referenced bit to the result of a binary XOR with `value`.
+    constexpr dynamic_bitset_reference_proxy & operator^=(bool const value)
+    {
+        operator bool() && value ? reset() : set();
+        return *this;
+    }
+
+private:
+    //!\brief The proxy of the underlying data type.
+    dynamic_bitset_bitfield & internal;
+    //!\brief Bitmask to access one specific bit.
+    uint64_t mask;
+
+    //!\brief Sets the referenced bit to `1`.
+    constexpr void set() noexcept
+    {
+        internal.bits |= mask;
+    }
+
+    //!\brief Sets the referenced bit to `0`.
+    constexpr void reset() noexcept
+    {
+        internal.bits &= ~mask;
+    }
+};
+
+} // namespace bio::detail
 
 namespace bio
 {
@@ -53,106 +155,8 @@ private:
     template <size_t>
     friend class dynamic_bitset;
 
-    //!\brief A bit field representing size and bit information stored in one `uint64_t`.
-    struct bitfield
-    {
-        //!\brief 6 bits representing the size information.
-        uint64_t size : 6u;
-        //!\brief 58 bits representing the bit information.
-        uint64_t bits : 58u;
-    };
-
     //!\brief Stores the actual data.
-    bitfield data{0u, 0u}; // Specifying values prevents ICE on gcc < 9 when comparing to default constructed bitset
-
-    //!\brief Proxy data type returned by bio::dynamic_bitset as reference to the bit.
-    class reference_proxy_type
-    {
-    public:
-        /*!\name Constructors, destructor and assignment
-         * \{
-         */
-        constexpr reference_proxy_type() noexcept = default; //!< Defaulted.
-        constexpr reference_proxy_type(reference_proxy_type const &) noexcept = default; //!< Defaulted.
-        constexpr reference_proxy_type(reference_proxy_type &&) noexcept = default; //!< Defaulted.
-
-        //!\brief Assign the value of the bit.
-        constexpr reference_proxy_type & operator=(reference_proxy_type const rhs) noexcept
-        {
-            rhs ? set() : reset();
-            return *this;
-        }
-
-        //!\brief Sets the referenced bit to `value`.
-        constexpr reference_proxy_type & operator=(bool const value) noexcept
-        {
-            value ? set() : reset();
-            return *this;
-        }
-
-        ~reference_proxy_type() noexcept = default; //!< Defaulted.
-        //!\}
-
-        //!\brief Initialise from bio::dynamic_bitset's underlying data and a bit position.
-        constexpr reference_proxy_type(bitfield & internal_, size_t const pos) noexcept :
-            internal{internal_}, mask{1ULL<<pos}
-        {}
-
-        //!\brief Returns the value of the referenced bit.
-        constexpr operator bool() const noexcept
-        {
-            return static_cast<bool>(internal.bits & mask);
-        }
-
-        //!\brief Returns the inverted value of the referenced bit.
-        constexpr bool operator~() const noexcept
-        {
-            return !static_cast<bool>(internal.bits & mask);
-        }
-
-        //!\brief Sets the referenced bit to the result of a binary OR with `value`.
-        constexpr reference_proxy_type & operator|=(bool const value)
-        {
-            if (value)
-                set();
-
-            return *this;
-        }
-
-        //!\brief Sets the referenced bit to the result of a binary AND with `value`.
-        constexpr reference_proxy_type & operator&=(bool const value)
-        {
-            if (!value)
-                reset();
-
-            return *this;
-        }
-
-        //!\brief Sets the referenced bit to the result of a binary XOR with `value`.
-        constexpr reference_proxy_type & operator^=(bool const value)
-        {
-            operator bool() && value ? reset() : set();
-            return *this;
-        }
-
-    private:
-        //!\brief The proxy of the underlying data type.
-        bitfield & internal;
-        //!\brief Bitmask to access one specific bit.
-        uint64_t mask;
-
-        //!\brief Sets the referenced bit to `1`.
-        constexpr void set() noexcept
-        {
-            internal.bits |= mask;
-        }
-
-        //!\brief Sets the referenced bit to `0`.
-        constexpr void reset() noexcept
-        {
-            internal.bits &= ~mask;
-        }
-    };
+    detail::dynamic_bitset_bitfield data{0u, 0u}; // Specifying values prevents ICE on gcc < 9 when comparing to default constructed bitset
 
 public:
     static_assert(bit_capacity <= 58, "The capacity of the dynamic_bitset exceeds the limit of 58.");
@@ -163,7 +167,7 @@ public:
     //!\brief Equals `bool`.
     using value_type      = bool;
     //!\brief A proxy type that enables assignment.
-    using reference       = reference_proxy_type;
+    using reference       = detail::dynamic_bitset_reference_proxy;
     //!\brief Equals the value_type.
     using const_reference = bool;
     //!\brief The iterator type of this container (a random access iterator).
@@ -1086,13 +1090,13 @@ public:
     }
 
     //!\brief Direct access to the underlying bit field.
-    constexpr bitfield * raw_data() noexcept
+    constexpr detail::dynamic_bitset_bitfield * raw_data() noexcept
     {
         return &data;
     }
 
     //!\copydoc raw_data()
-    constexpr bitfield const * raw_data() const noexcept
+    constexpr detail::dynamic_bitset_bitfield const * raw_data() const noexcept
     {
         return &data;
     }
@@ -1486,7 +1490,7 @@ public:
      */
     constexpr void swap(dynamic_bitset & rhs) noexcept
     {
-        bitfield tmp = std::move(data);
+        detail::dynamic_bitset_bitfield tmp = std::move(data);
         data = std::move(rhs.data);
         rhs.data = std::move(tmp);
     }
@@ -1631,37 +1635,6 @@ public:
     /*!\name Conversions
      * \{
      */
-    /*!\brief Converts the `dynamic_bitset` to a `std::string`.
-     * \tparam char_t Char type; must model bio::builtin_character.
-     * \param[in] zero builtin_characteracter of type char_t representing `false`. Default <code>'0'</code>.
-     * \param[in] one  builtin_characteracter of type char_t representing `true`. Default <code>'1'</code>.
-     * \throws std::bad_alloc from the the std::string constructor.
-     * \returns A `std::string` representing the `dynamic_bitset`.
-     *
-     * \details
-     *
-     * \attention
-     * This is the only function of this class that is **not** constexpr because `std::string` is not constexpr.
-     *
-     * ### Complexity
-     *
-     * Linear in `size()`.
-     *
-     * ### Exceptions
-     *
-     * Throws std::bad_alloc from the `std::string` constructor.
-     */
-    template <typename char_t = char>
-    std::string to_string(char_t zero = char_t{'0'}, char_t one = char_t{'1'}) const
-    {
-        std::string str{};
-        str.reserve(size());
-        for (bool const bit : std::views::reverse(*this))
-            bit ? str.push_back(one) : str.push_back(zero);
-
-        return str;
-    }
-
     /*!\brief Converts the `dynamic_bitset` to an `unsigned long` integer.
      * \throws std::overflow_error if the value cannot be represented in `unsigned long`.
      * \returns A `unsigned long` representing the `dynamic_bitset`.
@@ -1713,81 +1686,6 @@ public:
     }
     //!\}
 
-    /*!\name Input/output
-     * \{
-     */
-    /*!\brief Formatted output for the `bio::dynamic_bitset`.
-     * \param[in,out] os  The `std::basic_ostream` to write to.
-     * \param[in]     arg The `bio::dynamic_bitset` to read from.
-     * \returns `os`.
-     *
-     * \details
-     *
-     * Internally calls <code>os << \ref to_string() "arg.to_string()"</code>.
-     */
-    friend std::ostream & operator<<(std::ostream & os, dynamic_bitset const & arg)
-    {
-        os << arg.to_string();
-        return os;
-    }
-
-    /*!\brief Formatted input for the `bio::dynamic_bitset`.
-     * \param[in,out] is  The `std::basic_istream` to read from.
-     * \param[out]    arg The `bio::dynamic_bitset` to write to.
-     * \returns `is`.
-     *
-     * \details
-     *
-     * Reads at most `bio::dynamic_bitset::max_size()` characters from the stream.
-     * If a stream error occurred or no characters could be extracted the `std::ios_base::failbit` is set.
-     * This may throw an exception.
-     */
-    friend std::istream & operator>>(std::istream & is, dynamic_bitset & arg)
-    {
-        // Check if stream is ok and skip leading whitespaces.
-        std::istream::sentry s(is);
-        if (s)
-        {
-            arg.clear(); // clear the bitset
-            std::streamsize num_char = (is.width() > 0)
-                ? std::min<std::streamsize>(is.width(), arg.max_size())
-                : arg.max_size();
-            assert(num_char > 0);
-            std::vector<bool> tmp{};
-            tmp.reserve(num_char);
-            for (std::streamsize n = num_char; n > 0 && (is.peek() == is.widen('0') || is.peek() == is.widen('1')); --n)
-            {
-                char c = is.get();
-                c == is.widen('0') ? tmp.push_back(false) : tmp.push_back(true);
-            }
-
-            arg.assign(std::views::reverse(tmp));
-
-            if (arg.size() == 0) // nothing extracted so we set the fail bit.
-                is.setstate(std::ios_base::failbit); // LCOV_EXCL_LINE
-
-            is.width(0); // cancel the effects of std::setw, if any.
-        }
-        return is;
-    }
-
-    /*!\brief Formatted debug output for the `bio::dynamic_bitset`.
-     * \param[in,out] s   The `bio::debug_stream` to write to.
-     * \param[in]     arg The `bio::dynamic_bitset` to read from.
-     * \returns `s`.
-     *
-     * \details
-     *
-     * Internally calls \ref to_string() "arg.to_string()" and inserts a <code>'</code> at every fourth position.
-     */
-    template <typename char_t>
-    friend debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & s, dynamic_bitset arg)
-    {
-        s << (std::string_view{arg.to_string()} | views::interleave(4, std::string_view{"'"}) | views::to<std::string>());
-        return s;
-    }
-    //!\}
-
     //!\cond DEV
     /*!\brief Serialisation support function.
      * \tparam archive_t Type of `archive`; must satisfy bio::cereal_archive.
@@ -1835,3 +1733,39 @@ struct hash<bio::dynamic_bitset<cap>>
 };
 
 } //namespace std
+
+
+#if __has_include(<fmt/format.h>)
+
+#include <fmt/ranges.h>
+
+template <>
+struct fmt::formatter<bio::detail::dynamic_bitset_reference_proxy> : fmt::formatter<bool>
+{
+    constexpr auto format(bio::detail::dynamic_bitset_reference_proxy const a, auto & ctx) const
+    {
+        return fmt::formatter<bool>::format(static_cast<bool>(a), ctx);
+    }
+};
+
+template <size_t bit_capacity>
+struct fmt::is_range<bio::dynamic_bitset<bit_capacity>, char> : std::false_type
+{};
+
+template <size_t bit_capacity>
+struct fmt::formatter<bio::dynamic_bitset<bit_capacity>> : fmt::formatter<std::string>
+{
+    constexpr auto format(bio::dynamic_bitset<bit_capacity> const s, auto & ctx) const
+    {
+        std::string str{"0b"};
+        str.reserve(s.size()); // TODO fix me
+        auto v = s
+               | std::views::reverse
+               | std::views::transform([] (bool const bit) { return bit ? '1' : '0'; })
+               | bio::views::interleave(4, std::string_view{"'"});
+        std::ranges::copy(v, std::back_inserter(str));
+        return fmt::formatter<std::string>::format(str, ctx);
+    }
+};
+
+#endif

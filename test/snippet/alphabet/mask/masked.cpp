@@ -1,6 +1,6 @@
 #include <bio/alphabet/mask/masked.hpp>
 #include <bio/alphabet/nucleotide/dna4.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 int main()
 {
@@ -13,8 +13,5 @@ int main()
     dna4_masked.assign_char('a'); // assigns a masked 'A'_dna4
 
     if (dna4_masked.to_char() != dna4_another_masked.to_char())
-    {
-        bio::debug_stream << dna4_masked.to_char() << " is not the same as " <<
-                                dna4_another_masked.to_char() << "\n";
-    }
+        fmt::print("{} is not the same as {}\n", dna4_masked.to_char(), dna4_another_masked.to_char());
 }

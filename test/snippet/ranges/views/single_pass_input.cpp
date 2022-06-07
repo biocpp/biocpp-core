@@ -1,6 +1,6 @@
 #include <string>
 
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/views/single_pass_input.hpp>
 
 int main()
@@ -9,9 +9,9 @@ int main()
     auto v = str | bio::views::single_pass_input;
     auto b = v.begin();
 
-    bio::debug_stream << *b << '\n';      // prints 'h'
-    bio::debug_stream << *(++b) << '\n';  // prints 'e'
-    bio::debug_stream << *(++b) << '\n';  // prints 'l'
-    bio::debug_stream << *(++b) << '\n';  // prints 'l'
-    bio::debug_stream << *(++b) << '\n';  // prints 'o'
+    fmt::print("{}\n", *b);      // prints 'h'
+    fmt::print("{}\n", *(++b));  // prints 'e'
+    fmt::print("{}\n", *(++b));  // prints 'l'
+    fmt::print("{}\n", *(++b));  // prints 'l'
+    fmt::print("{}\n", *(++b));  // prints 'o'
 }

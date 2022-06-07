@@ -1,7 +1,7 @@
 #include <vector>
 
 #include <bio/alphabet/structure/dot_bracket3.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 int main()
 {
@@ -14,7 +14,7 @@ int main()
     vec[1] = '('_db3;
 
     for (bio::dot_bracket3 chr : vec)
-        bio::debug_stream << bio::to_char(chr);  // .()
+        fmt::print("{}", bio::to_char(chr));  // .()
 
-    bio::debug_stream << "\n";
+    fmt::print("\n");
 }

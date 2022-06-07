@@ -1,7 +1,7 @@
 #include <vector>
 
 #include <bio/alphabet/structure/dssp9.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 int main()
 {
@@ -14,7 +14,7 @@ int main()
     vec[1] = 'C'_dssp9;
 
     for (bio::dssp9 chr : vec)
-        bio::debug_stream << bio::to_char(chr);  // ECHHTG
-        
-    bio::debug_stream << "\n";
+        fmt::print("{}", bio::to_char(chr));  // ECHHTG
+
+    fmt::print("\n");
 }

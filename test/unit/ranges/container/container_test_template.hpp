@@ -12,7 +12,6 @@
 #include <bio/ranges/container/small_vector.hpp>
 #include <bio/test/cereal.hpp>
 #include <bio/test/expect_range_eq.hpp>
-#include <bio/test/pretty_printing.hpp>
 
 using bio::operator""_dna4;
 

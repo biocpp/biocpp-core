@@ -1,5 +1,5 @@
 #include <bio/alphabet/nucleotide/sam_dna16.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 int main()
 {
@@ -10,5 +10,5 @@ int main()
     my_letter.assign_char('=');
 
     my_letter.assign_char('F'); // unknown characters are implicitly converted to N.
-    bio::debug_stream << my_letter << '\n'; // "N";
+    fmt::print("{}\n", my_letter); // "N";
 }

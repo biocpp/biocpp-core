@@ -10,7 +10,6 @@
 #include <bio/alphabet/composite/alphabet_tuple_base.hpp>
 #include <bio/alphabet/nucleotide/rna4.hpp>
 #include <bio/alphabet/nucleotide/rna5.hpp>
-#include <bio/meta/debug_stream.hpp>
 
 #include "../semi_alphabet_test_template.hpp"
 #include "alphabet_tuple_base_test_template.hpp"

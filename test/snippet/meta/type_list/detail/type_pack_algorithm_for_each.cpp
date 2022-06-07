@@ -1,13 +1,13 @@
 #include <string>
 
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/meta/type_pack/detail/type_pack_algorithm.hpp>
 
 int main()
 {
     auto fn = [](auto && a)
     {
-        bio::debug_stream << a;
+        fmt::print("{}", a);
     };
 
     // prints each argument, i.e. "0, 1, 2, 3\n"

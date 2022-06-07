@@ -17,7 +17,7 @@ macro (biocpp_snippet test_name_prefix snippet snippet_base_path)
     set (target "${snippet_target_name}_snippet")
 
     add_executable (${target} "${snippet_base_path}/${snippet}")
-    target_link_libraries (${target} biocpp::test::unit sharg::sharg)
+    target_link_libraries (${target} biocpp::test::unit sharg::sharg fmt::fmt-header-only)
     target_compile_options (${target} PUBLIC "-Wno-unused")
     set_target_properties(${target}
         PROPERTIES
@@ -42,6 +42,7 @@ endmacro ()
 biocpp_require_ccache ()
 biocpp_require_test ()
 biocpp_require_sharg ()
+biocpp_require_fmt ()
 
 biocpp_snippets ("doc/snippet" "${CMAKE_SOURCE_DIR}/../../doc")
 biocpp_snippets ("snippet" "${CMAKE_SOURCE_DIR}")

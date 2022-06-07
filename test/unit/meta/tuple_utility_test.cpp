@@ -17,6 +17,8 @@
 #include <bio/meta/tuple_utility.hpp>
 #include <concepts>
 
+using bar = unsigned;
+
 template <typename T>
 class tuple_utility : public ::testing::Test
 {
@@ -25,8 +27,8 @@ public:
     T value;
 };
 
-using tuple_utility_types = ::testing::Types<std::tuple<int, long, float>,
-                                             bio::pod_tuple<int, long, float>>;
+using tuple_utility_types = ::testing::Types<std::tuple<int, long, bar, float>,
+                                             bio::pod_tuple<int, long, bar, float>>;
 
 TYPED_TEST_SUITE(tuple_utility, tuple_utility_types, );
 
@@ -39,7 +41,7 @@ TYPED_TEST(tuple_utility, tuple_type_list)
 
     {
         using list = bio::detail::tuple_type_list_t<TypeParam>;
-        EXPECT_TRUE((std::is_same_v<list, bio::type_list<int, long, float>>));
+        EXPECT_TRUE((std::is_same_v<list, bio::type_list<int, long, bar, float>>));
     }
 }
 
@@ -65,7 +67,7 @@ TYPED_TEST(tuple_utility, detail_split)
         EXPECT_EQ(std::tuple_size_v<decltype(res)>, 2u);
         EXPECT_TRUE((std::is_same_v<std::tuple_element_t<0, decltype(res)>, bar>));
         EXPECT_TRUE((std::is_same_v<std::tuple_element_t<1, decltype(res)>, float>));
-        EXPECT_EQ(std::get<0>(res).get(), 2u);
+        EXPECT_EQ(std::get<0>(res), 2u);
         EXPECT_FLOAT_EQ(std::get<1>(res), 2.1);
     }
 }
@@ -82,7 +84,7 @@ TYPED_TEST(tuple_utility, tuple_split_by_pos_lvalue)
 
         EXPECT_EQ(std::get<0>(std::get<1>(res)), 1);
         EXPECT_EQ(std::get<1>(std::get<1>(res)), 10l);
-        EXPECT_EQ(std::get<2>(std::get<1>(res)).get(), 2u);
+        EXPECT_EQ(std::get<2>(std::get<1>(res)), 2u);
         EXPECT_FLOAT_EQ(std::get<3>(std::get<1>(res)), 2.1);
     }
 
@@ -95,7 +97,7 @@ TYPED_TEST(tuple_utility, tuple_split_by_pos_lvalue)
 
         EXPECT_EQ(std::get<0>(std::get<0>(res)), 1);
         EXPECT_EQ(std::get<0>(std::get<1>(res)), 10l);
-        EXPECT_EQ(std::get<1>(std::get<1>(res)).get(), 2u);
+        EXPECT_EQ(std::get<1>(std::get<1>(res)), 2u);
         EXPECT_FLOAT_EQ(std::get<2>(std::get<1>(res)), 2.1);
     }
 
@@ -129,7 +131,7 @@ TYPED_TEST(tuple_utility, tuple_split_by_pos_const_lvalue)
 
         EXPECT_EQ(std::get<0>(std::get<1>(res)), 1);
         EXPECT_EQ(std::get<1>(std::get<1>(res)), 10l);
-        EXPECT_EQ(std::get<2>(std::get<1>(res)).get(), 2u);
+        EXPECT_EQ(std::get<2>(std::get<1>(res)), 2u);
         EXPECT_FLOAT_EQ(std::get<3>(std::get<1>(res)), 2.1);
     }
 }
@@ -145,7 +147,7 @@ TYPED_TEST(tuple_utility, tuple_split_by_pos_rvalue)
 
         EXPECT_EQ(std::get<0>(std::get<1>(res)), 1);
         EXPECT_EQ(std::get<1>(std::get<1>(res)), 10l);
-        EXPECT_EQ(std::get<2>(std::get<1>(res)).get(), 2u);
+        EXPECT_EQ(std::get<2>(std::get<1>(res)), 2u);
         EXPECT_FLOAT_EQ(std::get<3>(std::get<1>(res)), 2.1);
     }
 }
@@ -163,7 +165,7 @@ TYPED_TEST(tuple_utility, tuple_split_by_pos_const_rvalue)
 
         EXPECT_EQ(std::get<0>(std::get<1>(res)), 1);
         EXPECT_EQ(std::get<1>(std::get<1>(res)), 10l);
-        EXPECT_EQ(std::get<2>(std::get<1>(res)).get(), 2u);
+        EXPECT_EQ(std::get<2>(std::get<1>(res)), 2u);
         EXPECT_FLOAT_EQ(std::get<3>(std::get<1>(res)), 2.1);
     }
 }
@@ -180,7 +182,7 @@ TYPED_TEST(tuple_utility, tuple_split_by_type_lvalue)
 
         EXPECT_EQ(std::get<0>(std::get<1>(res)), 1);
         EXPECT_EQ(std::get<1>(std::get<1>(res)), 10l);
-        EXPECT_EQ(std::get<2>(std::get<1>(res)).get(), 2u);
+        EXPECT_EQ(std::get<2>(std::get<1>(res)), 2u);
         EXPECT_FLOAT_EQ(std::get<3>(std::get<1>(res)), 2.1);
     }
 
@@ -193,7 +195,7 @@ TYPED_TEST(tuple_utility, tuple_split_by_type_lvalue)
 
         EXPECT_EQ(std::get<0>(std::get<0>(res)), 1);
         EXPECT_EQ(std::get<0>(std::get<1>(res)), 10l);
-        EXPECT_EQ(std::get<1>(std::get<1>(res)).get(), 2u);
+        EXPECT_EQ(std::get<1>(std::get<1>(res)), 2u);
         EXPECT_FLOAT_EQ(std::get<2>(std::get<1>(res)), 2.1);
     }
 
@@ -219,7 +221,7 @@ TYPED_TEST(tuple_utility, tuple_split_by_type_const_lvalue)
 
         EXPECT_EQ(std::get<0>(std::get<1>(res)), 1);
         EXPECT_EQ(std::get<1>(std::get<1>(res)), 10l);
-        EXPECT_EQ(std::get<2>(std::get<1>(res)).get(), 2u);
+        EXPECT_EQ(std::get<2>(std::get<1>(res)), 2u);
         EXPECT_FLOAT_EQ(std::get<3>(std::get<1>(res)), 2.1);
     }
 }
@@ -235,7 +237,7 @@ TYPED_TEST(tuple_utility, tuple_split_by_type_rvalue)
 
         EXPECT_EQ(std::get<0>(std::get<1>(res)), 1);
         EXPECT_EQ(std::get<1>(std::get<1>(res)), 10l);
-        EXPECT_EQ(std::get<2>(std::get<1>(res)).get(), 2u);
+        EXPECT_EQ(std::get<2>(std::get<1>(res)), 2u);
         EXPECT_FLOAT_EQ(std::get<3>(std::get<1>(res)), 2.1);
     }
 }
@@ -253,7 +255,7 @@ TYPED_TEST(tuple_utility, tuple_split_by_type_const_rvalue)
 
         EXPECT_EQ(std::get<0>(std::get<1>(res)), 1);
         EXPECT_EQ(std::get<1>(std::get<1>(res)), 10l);
-        EXPECT_EQ(std::get<2>(std::get<1>(res)).get(), 2u);
+        EXPECT_EQ(std::get<2>(std::get<1>(res)), 2u);
         EXPECT_FLOAT_EQ(std::get<3>(std::get<1>(res)), 2.1);
     }
 }
@@ -266,7 +268,7 @@ TYPED_TEST(tuple_utility, tuple_pop_front_lvalue)
     EXPECT_EQ(std::tuple_size_v<decltype(res)>, 3u);
 
     EXPECT_EQ(std::get<0>(res), 10l);
-    EXPECT_EQ(std::get<1>(res).get(), 2u);
+    EXPECT_EQ(std::get<1>(res), 2u);
     EXPECT_FLOAT_EQ(std::get<2>(res), 2.1);
 
     auto res2 = bio::tuple_pop_front(bio::tuple_pop_front(bio::tuple_pop_front(res)));
@@ -282,7 +284,7 @@ TYPED_TEST(tuple_utility, tuple_pop_front_const_lvalue)
     EXPECT_EQ(std::tuple_size_v<decltype(res)>, 3u);
 
     EXPECT_EQ(std::get<0>(res), 10l);
-    EXPECT_EQ(std::get<1>(res).get(), 2u);
+    EXPECT_EQ(std::get<1>(res), 2u);
     EXPECT_FLOAT_EQ(std::get<2>(res), 2.1);
 }
 
@@ -294,7 +296,7 @@ TYPED_TEST(tuple_utility, tuple_pop_front_rvalue)
     EXPECT_EQ(std::tuple_size_v<decltype(res)>, 3u);
 
     EXPECT_EQ(std::get<0>(res), 10l);
-    EXPECT_EQ(std::get<1>(res).get(), 2u);
+    EXPECT_EQ(std::get<1>(res), 2u);
     EXPECT_FLOAT_EQ(std::get<2>(res), 2.1);
 }
 
@@ -306,7 +308,7 @@ TYPED_TEST(tuple_utility, tuple_pop_front_const_rvalue)
     EXPECT_EQ(std::tuple_size_v<decltype(res)>, 3u);
 
     EXPECT_EQ(std::get<0>(res), 10l);
-    EXPECT_EQ(std::get<1>(res).get(), 2u);
+    EXPECT_EQ(std::get<1>(res), 2u);
     EXPECT_FLOAT_EQ(std::get<2>(res), 2.1);
 }
 

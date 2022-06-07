@@ -13,7 +13,6 @@
 #include <bio/ranges/container/concept.hpp>
 #include <bio/ranges/container/small_string.hpp>
 #include <ranges>
-#include <bio/test/pretty_printing.hpp>
 
 using namespace std::literals;
 

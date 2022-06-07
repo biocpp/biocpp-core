@@ -39,12 +39,18 @@ TEST(string_view, range_eq_pass)
 
 TEST(string_view, range_eq_fail)
 {
-    char const * error_message = "Expected equality of these values:\n"
-                                 "  expect\n"
-                                 "    Which is: Hel\n"
-                                 "lo\n"
-                                 "  result\n"
-                                 "    Which is: Hello!";
+    char const * error_message =
+R"(Expected equality of these values:
+  expect
+    Which is: { 'H' (72, 0x48), 'e' (101, 0x65), 'l' (108, 0x6C), '\n' (10, 0xA), 'l' (108, 0x6C), 'o' (111, 0x6F) }
+  result
+    Which is: { 'H' (72, 0x48), 'e' (101, 0x65), 'l' (108, 0x6C), 'l' (108, 0x6C), 'o' (111, 0x6F), '!' (33, 0x21) }
+With diff:
+@@ -1,2 +1,1 @@
+-{ 'H' (72, 0x48), 'e' (101, 0x65), 'l' (108, 0x6C), '
+-' (10, 0xA), 'l' (108, 0x6C), 'o' (111, 0x6F) }
++{ 'H' (72, 0x48), 'e' (101, 0x65), 'l' (108, 0x6C), 'l' (108, 0x6C), 'o' (111, 0x6F), '!' (33, 0x21) }
+)";
 
     std::vector<char> expect{'H', 'e', 'l', '\n', 'l', 'o'};
     std::string_view result{"Hello!"};
@@ -71,9 +77,9 @@ TEST(span, range_eq_fail)
 {
     char const * error_message = "Expected equality of these values:\n"
                                  "  expect\n"
-                                 "    Which is: [0,1,2,3,4]\n"
+                                 "    Which is: { 0, 1, 2, 3, 4 }\n"
                                  "  result\n"
-                                 "    Which is: [-1,0,1,2,3,4,5]";
+                                 "    Which is: { -1, 0, 1, 2, 3, 4, 5 }";
 
     std::vector<int> expect{0, 1, 2, 3, 4};
     std::vector<int> source{-2, -1, 0, 1, 2, 3, 4, 5, 6};
@@ -132,9 +138,9 @@ TEST(input_range, range_eq_fail)
 {
     char const * error_message = "Expected equality of these values:\n"
                                  "  expect\n"
-                                 "    Which is: [0,1,2,3,4,5]\n"
+                                 "    Which is: { 0, 1, 2, 3, 4, 5 }\n"
                                  "  result\n"
-                                 "    Which is: [0,1,2,3,4]";
+                                 "    Which is: { 0, 1, 2, 3, 4 }";
 
     std::vector<int> expect{0, 1, 2, 3, 4, 5};
 

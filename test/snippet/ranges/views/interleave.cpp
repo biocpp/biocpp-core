@@ -1,6 +1,6 @@
 #include <string>
 
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/views/interleave.hpp>
 
 int main()
@@ -11,5 +11,5 @@ int main()
 
     auto v = u | bio::views::interleave(s, i);
 
-    bio::debug_stream << v << '\n'; // prints FOOinBARinBAXinBAT
+    fmt::print("{}\n", v); // prints FOOinBARinBAXinBAT
 }

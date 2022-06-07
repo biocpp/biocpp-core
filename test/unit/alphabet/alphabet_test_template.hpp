@@ -5,11 +5,12 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
 // -----------------------------------------------------------------------------------------------------
 
+#include <ranges>
+
 #include <gtest/gtest.h>
 
 #include <bio/alphabet/concept.hpp>
 #include <bio/alphabet/exception.hpp>
-#include <bio/test/pretty_printing.hpp>
 
 template <typename T>
 using alphabet = ::testing::Test;

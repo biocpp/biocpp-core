@@ -1,7 +1,7 @@
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/alphabet/quality/phred42.hpp>
 #include <bio/alphabet/quality/qualified.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 int main()
 {
@@ -13,5 +13,5 @@ int main()
     // creates {'A'_dna4, bio::phred42{1}}
 
     if (letter1 == letter2)
-        bio::debug_stream << "yeah\n"; // yeah
+        fmt::print("{}", "yeah\n"); // yeah
 }

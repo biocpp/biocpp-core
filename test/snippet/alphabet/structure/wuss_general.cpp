@@ -1,5 +1,5 @@
 #include <bio/alphabet/structure/wuss.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 int main()
 {
@@ -10,6 +10,6 @@ int main()
     // modify and print
     vec[1] = '<'_wuss51;
     for (bio::wuss51 chr : vec)
-        bio::debug_stream << bio::to_char(chr);  // .<>
-    bio::debug_stream << "\n";
+        fmt::print("{}", bio::to_char(chr));  // .<>
+    fmt::print("\n");
 }

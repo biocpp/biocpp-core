@@ -2,8 +2,8 @@
 #include <iostream>
 #include <ranges>
 #include <vector>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/alphabet/nucleotide/all.hpp>
-#include <bio/meta/debug_stream.hpp>
 #include <bio/ranges/detail/inherited_iterator_base.hpp>
 
 using bio::operator""_dna5;
@@ -11,7 +11,7 @@ using bio::operator""_dna5;
 /* The iterator template */
 template <std::ranges::forward_range urng_t>            // CRTP derivation ↓
 class my_iterator : public bio::detail::inherited_iterator_base<my_iterator<urng_t>,
-                                                                   std::ranges::iterator_t<urng_t>>
+                                                                std::ranges::iterator_t<urng_t>>
 {
 private:
     static_assert(bio::nucleotide_alphabet<std::ranges::range_reference_t<urng_t>>,
@@ -91,6 +91,7 @@ public:
 
     // construct from non-view that can be view-wrapped
     template <std::ranges::viewable_range orng_t>
+        requires std::same_as<std::views::all_t<orng_t>, urng_t>
     my_view(orng_t && urange_) : urange{std::views::all(std::forward<orng_t>(urange_))}
     {}
     //![view_constructors]
@@ -183,14 +184,14 @@ int main()
     /* try the range */
     my_view v{vec};
     static_assert(std::ranges::random_access_range<decltype(v)>);
-    bio::debug_stream << '\n' << v << '\n';
+    fmt::print("\n{}\n", v);
 //![main_range]
 
 //![main_adaptor]
     /* try the adaptor */
     auto v2 = vec | std::views::reverse | ::views::my;
     static_assert(std::ranges::random_access_range<decltype(v2)>);
-    bio::debug_stream << v2 << '\n';
+    fmt::print("{}\n", v2);
 //![main_adaptor]
 
 //![end]

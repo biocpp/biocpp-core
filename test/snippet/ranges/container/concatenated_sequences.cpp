@@ -1,7 +1,7 @@
 #include <vector>
 
 #include <bio/alphabet/nucleotide/dna4.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/container/concatenated_sequences.hpp>
 
 int main()
@@ -9,7 +9,7 @@ int main()
     using bio::operator""_dna4;
 
     bio::concatenated_sequences<bio::dna4_vector> concat1{"ACGT"_dna4, "GAGGA"_dna4};
-    bio::debug_stream << concat1[0] << '\n'; // "ACGT"
+    fmt::print("{}\n", concat1[0]); // "ACGT"
 
     std::vector<bio::dna4_vector> concat2{"ACTA"_dna4, "AGGA"_dna4};
 
@@ -17,7 +17,7 @@ int main()
 
     concat2[0] = "ATTA"_dna4;        // this works for vector of vector
     concat1[0][1] = 'T'_dna4;        // and this works for concatenated_sequences
-    bio::debug_stream << concat1[0] << '\n'; // "ATTA"
+    fmt::print("{}\n", concat1[0]); // "ATTA"
 
     // if you know that you will be adding ten vectors of length ten:
     std::vector<bio::dna4> vector_of_length10{"ACGTACGTAC"_dna4};

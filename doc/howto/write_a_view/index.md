@@ -11,6 +11,8 @@ Some of the links from this HowTo only resolve in the developer documentation be
 they refer to entities from the bio::detail namespace.
 We recommend you open this tutorial from [the developer documentation](https://docs.seqan.de/seqan/3-master-dev/).
 
+//TODO update this regarding use of {fmt}
+
 # Motivation
 
 We have introduced "views" in \ref tutorial_ranges.
@@ -142,8 +144,7 @@ takes an object that models `std::regular_invocable`, e.g. a lambda function wit
 
 \include doc/howto/write_a_view/view_exercise1.cpp
 
-You simply define your adaptor type as `auto` and make it behave like `std::views::transform`, except that you
-"hard-code" the lambda function that is applied to each element.
+You simply define your adaptor type as `auto` and make it behave like `std::views::transform`, except that you\n"hard-code" the lambda function that is applied to each element.
 Since your adaptor object now takes a range as the only parameter, it is an adaptor closure object.
 
 The object is marked as `constexpr` because the adaptor object itself never changes, it only
@@ -362,8 +363,7 @@ the same as of the underlying range, we just pass it through.
 
 For many more complex views you will have to define the sentinel type yourself or derive it from the underlying
 type in a similar manner to how we derived the iterator type.
-Often you can use `std::default_sentinel_t` as the type for your sentinel and implement the
-"end-condition" in the iterator's equality comparison operator against that type.
+Often you can use `std::default_sentinel_t` as the type for your sentinel and implement the\n"end-condition" in the iterator's equality comparison operator against that type.
 
 \snippet doc/howto/write_a_view/solution_view.cpp view_constructors
 

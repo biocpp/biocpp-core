@@ -7,7 +7,6 @@
 
 #include <gtest/gtest.h>
 
-#include <bio/meta/debug_stream.hpp>
 #include <bio/ranges/container/dynamic_bitset.hpp>
 #include <bio/test/cereal.hpp>
 
@@ -702,19 +701,6 @@ TEST(dynamic_bitset, resize)
     EXPECT_TRUE(resize_test());
 }
 
-TEST(dynamic_bitset, to_string)
-{
-    bio::dynamic_bitset t1{"0011000"};
-    EXPECT_EQ(t1.to_string(), std::string{"0011000"});
-
-    bio::dynamic_bitset t2{0b001100};
-    EXPECT_EQ(t2.to_string(), std::string{"1100"});
-    t2.resize(6);
-    EXPECT_EQ(t2.to_string(), std::string{"001100"});
-    EXPECT_EQ(t2.to_string('#'), std::string{"##11##"});
-    EXPECT_EQ(t2.to_string('#', '*'), std::string{"##**##"});
-}
-
 constexpr bool to_ulong_test()
 {
     bio::dynamic_bitset t1{"0011000"};
@@ -755,63 +741,28 @@ TEST(dynamic_bitset, to_ullong)
     }
 }
 
-TEST(dynamic_bitset, output)
-{
-    bio::dynamic_bitset t1{"0011000"};
-    std::ostringstream os;
-    os << t1;
-    EXPECT_EQ(os.str(), std::string{"0011000"});
-}
-
-TEST(dynamic_bitset, input)
-{
-    { // Until whitespace
-        bio::dynamic_bitset t1{""};
-        std::istringstream is{"0011 0001"};
-        is >> t1;
-        EXPECT_EQ(t1, bio::dynamic_bitset{"0011"});
-    }
-
-    { // Exceed capacity
-        bio::dynamic_bitset<5> t1{"11111"};
-        std::istringstream is{"00110001"};
-        is >> t1;
-        EXPECT_EQ(t1, bio::dynamic_bitset{"00110"});
-
-        std::string remaining{};
-        is >> remaining;
-        EXPECT_EQ(remaining, std::string{"001"});
-    }
-
-    { // eof before capacity reached
-        bio::dynamic_bitset t1{};
-        std::istringstream is{"00110001"};
-        is >> t1;
-        EXPECT_EQ(t1, bio::dynamic_bitset{"00110001"});
-    }
-}
-
-TEST(dynamic_bitset, debug_stream)
-{
-    std::ostringstream o;
-    bio::debug_stream_type my_stream{o};
-
-    bio::dynamic_bitset t1{0b1100'1110'1010'1111};
-
-    my_stream << t1;
-    o.flush();
-    EXPECT_EQ(o.str(), "1100'1110'1010'1111");
-
-    bio::dynamic_bitset const t2{0b1011'1010'1111'0000};
-
-    my_stream << t2;
-    o.flush();
-    EXPECT_EQ(o.str(), "1100'1110'1010'11111011'1010'1111'0000");
-
-    my_stream << bio::dynamic_bitset{0b0101'1110'0101'1001}; // The leftmost 0 will be stripped
-    o.flush();
-    EXPECT_EQ(o.str(), "1100'1110'1010'11111011'1010'1111'00001011'1100'1011'001");
-}
+// TODO(bio): add fmt test
+// TEST(dynamic_bitset, debug_stream)
+// {
+//     std::ostringstream o;
+//     bio::debug_stream_type my_stream{o};
+//
+//     bio::dynamic_bitset t1{0b1100'1110'1010'1111};
+//
+//     my_stream << t1;
+//     o.flush();
+//     EXPECT_EQ(o.str(), "1100'1110'1010'1111");
+//
+//     bio::dynamic_bitset const t2{0b1011'1010'1111'0000};
+//
+//     my_stream << t2;
+//     o.flush();
+//     EXPECT_EQ(o.str(), "1100'1110'1010'11111011'1010'1111'0000");
+//
+//     my_stream << bio::dynamic_bitset{0b0101'1110'0101'1001}; // The leftmost 0 will be stripped
+//     o.flush();
+//     EXPECT_EQ(o.str(), "1100'1110'1010'11111011'1010'1111'00001011'1100'1011'001");
+// }
 
 TEST(dynamic_bitset, std_hash)
 {

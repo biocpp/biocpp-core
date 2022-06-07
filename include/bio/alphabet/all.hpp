@@ -96,10 +96,11 @@
  * is generated via conversion tables. This is, however, not required as long as both interfaces are provided
  * and all functions operate in constant time.
  *
- * The same applies for printing characters although bio::debug_stream provides some convenience.
+ * The same applies for printing characters although we provide overloads for the {fmt}-library in
+ * `<bio/alphabet/fmt.hpp>`.
  *
  * Here is an example of explicit assignment of a rank and char, and how it can be printed via std::cout and
- * bio::debug_stream:
+ * {fmt}:
  * \include test/snippet/alphabet/all_nonambiguous.cpp
  *
  * To reduce the burden of calling `assign_char` often, most alphabets in SeqAn provide custom literals for
@@ -180,3 +181,5 @@
 #include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/alphabet/quality/all.hpp>
 #include <bio/alphabet/structure/all.hpp>
+// #include <bio/alphabet/fmt.hpp>
+

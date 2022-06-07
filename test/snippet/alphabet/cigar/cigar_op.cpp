@@ -1,5 +1,5 @@
 #include <bio/alphabet/cigar/cigar_op.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 using bio::operator""_cigar_op;
 
@@ -9,5 +9,5 @@ int main()
     bio::cigar_op match{'M'_cigar_op};
 
     // you can print cigar_op values:
-    bio::debug_stream << match << '\n'; // M
+    fmt::print("{}\n", match); // M
 }

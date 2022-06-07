@@ -1,7 +1,11 @@
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/aminoacid/all.hpp>
+#include <bio/alphabet/fmt.hpp>
+
+using bio::operator""_aa27;
 
 int main()
 {
-    bio::debug_stream << "Hello world\n";
+    std::vector<bio::aa27> protein = "HELLOWORLD"_aa27;
+    fmt::print("{}\n", protein);
     return 0;
 }
