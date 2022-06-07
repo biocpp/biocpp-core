@@ -13,15 +13,9 @@
 
 #include "my_tuple.hpp"
 
-#include <bio/meta/detail/strong_type.hpp>
 #include <bio/meta/pod_tuple.hpp>
 #include <bio/meta/tuple_utility.hpp>
 #include <concepts>
-
-struct bar : public bio::detail::strong_type<unsigned, bar>
-{
-    using bio::detail::strong_type<unsigned, bar>::strong_type;
-};
 
 template <typename T>
 class tuple_utility : public ::testing::Test
@@ -31,8 +25,8 @@ public:
     T value;
 };
 
-using tuple_utility_types = ::testing::Types<std::tuple<int, long, bar, float>,
-                                             bio::pod_tuple<int, long, bar, float>>;
+using tuple_utility_types = ::testing::Types<std::tuple<int, long, float>,
+                                             bio::pod_tuple<int, long, float>>;
 
 TYPED_TEST_SUITE(tuple_utility, tuple_utility_types, );
 
@@ -45,7 +39,7 @@ TYPED_TEST(tuple_utility, tuple_type_list)
 
     {
         using list = bio::detail::tuple_type_list_t<TypeParam>;
-        EXPECT_TRUE((std::is_same_v<list, bio::type_list<int, long, bar, float>>));
+        EXPECT_TRUE((std::is_same_v<list, bio::type_list<int, long, float>>));
     }
 }
 
