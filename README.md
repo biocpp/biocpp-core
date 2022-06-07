@@ -2,38 +2,37 @@
 
 This is the core library of the [BioC++ project](https://github.com/biocpp/biocpp). It provides the following modules:
 
-  * Alphabet: data structures and utilities for representing single biological compounds like DNA, RNA and amino acids.
+  * Alphabet: data structures that represent single biological compounds like DNA, RNA and amino acids.
   * Ranges: containers, views and utilities for storing and manipulating sequences of biological compounds.
-  * Meta: meta-programming and auxilliary data structures used by many BioC++ modules.
+  * Meta: metaprogramming utilities and auxilliary data structures.
 
 The design of this module is heavily influenced by **C++ Ranges** and **C++ Concepts**.
 A short introduction into the topic can be found [here](https://hannes.hauswedell.net/post/2019/11/30/range_intro/).
 
+General information on the **BioC++ project** can be found in the [main repository](https://github.com/biocpp/biocpp).
+The **full documention** (all BioC++ modules) can found [here](https://biocpp.github.io).
+
 ## Example
 
 ```cpp
-std::vector seq = "GATTACA"_dna4;
-
+std::vector seq = "GATTACATATA"_dna4;
 auto translated = seq | bio::views::translate;
 
-fmt::print("The six frames of \"{}\" are:\n{}\n", seq, translated);
+fmt::print("The six protein frames of '{}' are:\n{}\n", seq, translated);
 /*
-TODO
-*/
+The six protein frames of 'GATTACATATA' are:
+[DYI, ITY, LHI, YM*, ICN, YVI]
+ */
+
 fmt::print("The second amino acid in the third frame is: {}\n", translated[2][1]);
 /*
-TODO
-*/
+The second amino acid in the third frame is: H
+ */
 ```
 
-Here `translated` appears like a vector of protein sequences, however, it is actually a "view", i.e. a light-weight, lazy-evaluated data structure.
-It's "elements" are computed on-the-fly and occupy no memory. It still supports random access like a vector.
-
-## About
-
-  * General information on the **BioC++ project** can be found in the [main repository](https://github.com/biocpp/biocpp).
-  * The **full documention** (all BioC++ modules) can found here: (TODO).
-  * The documentation for just the core module can be found here: (TODO).
+Here `translated` appears like a vector of protein sequences, however, it is actually a "view", i.e. a light-weight,
+lazy-evaluated data structure. Its elements are computed on-the-fly and occupy no memory. It still supports
+constant-time random access like a vector.
 
 ## Easy to use
 
@@ -41,20 +40,15 @@ It's "elements" are computed on-the-fly and occupy no memory. It still supports 
   * Zero dependencies → keep complexity low!
   * No build-system and no configure steps required.
   * Optional CMake support available.
-  * Integrates well with the standard library and [fmt](https://github.com/fmtlib/fmt).
+  * Integrates well with the standard library and [{fmt}](https://github.com/fmtlib/fmt).
 
 ## Quick-Setup
 
-  * Clone the repository with submodules: `git clone https://github.com/biocpp/biocpp-core.git`
-  * Add the following to your compiler invocation:
-    * the include directory of BioC++
-    * C++20 mode
-  * The command could look like this:
+  * Clone the repository: `git clone https://github.com/biocpp/biocpp-core.git`
+  * Add the include directory of BioC++, activate C++20 and you are good to go:
 ```sh
-g++-10 -O3 -DNDEBUG -Wall -Wextra          \
-    -std=c++20                             \
-    -I       /path/to/biocpp-core/include  \
-  your_file.cpp
+g++-10 -O3 -DNDEBUG -Wall -Wextra -std=c++20 -I /path/to/biocpp-core/include your_file.cpp
 ```
+  * If you want to use {fmt}, add `-I /path/to/fmt/include -D FMT_HEADER_ONLY=1`.
 
 **Currently, GCC ≥ 10 is the only supported compiler.** Clang support is planned.
