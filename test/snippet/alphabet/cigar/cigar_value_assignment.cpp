@@ -1,6 +1,6 @@
 #include <bio/alphabet/cigar/cigar.hpp>
 #include <bio/alphabet/cigar/cigar_op.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 int main()
 {
@@ -12,5 +12,5 @@ int main()
     letter = 20; // yields 20D
 
     if (letter == bio::cigar{20, 'D'_cigar_op})
-        bio::debug_stream << "yeah\n";
+        fmt::print("{}", "yeah\n");
 }

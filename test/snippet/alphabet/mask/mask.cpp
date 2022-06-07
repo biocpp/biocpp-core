@@ -1,5 +1,5 @@
 #include <bio/alphabet/mask/mask.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 int main()
 {
@@ -10,5 +10,5 @@ int main()
     another_mask.assign_rank(0); // will also assign another_mask the value mask::UNMASKED
 
     if (my_mask.to_rank() == another_mask.to_rank())
-        bio::debug_stream << "Both are UNMASKED!\n";
+        fmt::print("Both are UNMASKED!\n");
 }

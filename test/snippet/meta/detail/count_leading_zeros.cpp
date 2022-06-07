@@ -1,5 +1,5 @@
 #include <bio/meta/bit_manipulation.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 int main()
 {
@@ -8,10 +8,10 @@ int main()
     uint32_t t2 = 0b0000'0000'0000'0000'1000'0000'0000'0000;
     uint64_t t3 = 0b0000'0000'0000'0000'0000'0000'0000'0000'0000'0000'0000'0000'0000'0000'0000'0001;
 
-    bio::debug_stream << bio::detail::count_leading_zeros(t0) << '\n'; // 4
-    bio::debug_stream << bio::detail::count_leading_zeros(t1) << '\n'; // 1
-    bio::debug_stream << bio::detail::count_leading_zeros(t2) << '\n'; // 16
-    bio::debug_stream << bio::detail::count_leading_zeros(t3) << '\n'; // 63
+    fmt::print("{}\n", bio::detail::count_leading_zeros(t0)); // 4
+    fmt::print("{}\n", bio::detail::count_leading_zeros(t1)); // 1
+    fmt::print("{}\n", bio::detail::count_leading_zeros(t2)); // 16
+    fmt::print("{}\n", bio::detail::count_leading_zeros(t3)); // 63
 
     return 0;
 }

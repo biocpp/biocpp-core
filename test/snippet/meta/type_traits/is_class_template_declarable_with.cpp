@@ -1,7 +1,7 @@
 #include <type_traits>
 
 #include <bio/meta/type_traits/lazy.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 template <typename t>
     requires std::is_integral_v<t>
@@ -30,14 +30,14 @@ static_assert(!bio::detail::is_class_template_declarable_with_v<bar, double>);
 // is_class_template_declarable_with_v works well with lazy_conditional_t
 template <typename t>
 using maybe_foo_t = bio::detail::lazy_conditional_t<bio::detail::is_class_template_declarable_with_v<foo, t>,
-                                                       bio::detail::lazy<foo, t>,
-                                                       t>;
+                                                    bio::detail::lazy<foo, t>,
+                                                    t>;
 
 int main()
 {
-    foo<int> a = maybe_foo_t<int>{10}; // foo is instantiable with int, thus use foo<int>
-    bio::debug_stream << "a: " << a.value << '\n'; // prints 10
+    foo<int> a = maybe_foo_t<int>{10};  // foo is instantiable with int, thus use foo<int>
+    fmt::print("a: {}\n", a.value);     // prints 10
     float b = maybe_foo_t<float>{0.4f}; // foo is not instantiable with float, thus use float directly
-    bio::debug_stream << "b: " << b << '\n'; // prints 0.4
+    fmt::print("b: {}\n",  b);          // prints 0.4
     return 0;
 }

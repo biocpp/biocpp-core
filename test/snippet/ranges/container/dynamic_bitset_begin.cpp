@@ -1,4 +1,4 @@
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/container/dynamic_bitset.hpp>
 
 int main()
@@ -7,7 +7,7 @@ int main()
 
     // begin() refers to the rightmost position.
     for (auto it = t1.begin(); it != t1.end(); ++it)
-        bio::debug_stream << *it; // 1111'0001'1101
+        fmt::print("{}", *it); // 111100011101
 
-    bio::debug_stream << '\n';
+    fmt::print("\n");
 }

@@ -1,4 +1,4 @@
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/container/dynamic_bitset.hpp>
 
 int main()
@@ -7,7 +7,7 @@ int main()
 
     // Positions are 0-based and start at the rightmost bit.
     for (size_t i = 0; i < t1.size(); ++i)
-        bio::debug_stream << t1[i]; // 1111'0001'1101
+        fmt::print("{}", t1[i]); // 1111'0001'1101
 
-    bio::debug_stream << '\n';
+    fmt::print("{}", '\n');
 }

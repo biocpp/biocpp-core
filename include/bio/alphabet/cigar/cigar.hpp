@@ -17,7 +17,6 @@
 #include <bio/alphabet/adaptation/uint.hpp>
 #include <bio/alphabet/cigar/cigar_op.hpp>
 #include <bio/alphabet/composite/alphabet_tuple_base.hpp>
-#include <bio/meta/detail/debug_stream_type.hpp>
 #include <bio/ranges/container/small_string.hpp>
 
 // ------------------------------------------------------------------
@@ -158,12 +157,20 @@ public:
     //!\}
 };
 
-//!\brief Overload for the bio::debug_stream's operator.
-template <typename char_t>
-inline debug_stream_type<char_t> & operator<<(debug_stream_type<char_t> & s, cigar const c)
-{
-    s << c.to_string();
-    return s;
-}
-
 } // namespace bio
+
+#if __has_include(<fmt/format.h>)
+
+#include <fmt/format.h>
+
+template <>
+struct fmt::formatter<bio::cigar> : fmt::formatter<std::string_view>
+{
+    constexpr auto format(bio::cigar const a, auto & ctx) const
+    {
+        auto tmp = a.to_string();
+        std::string_view v{tmp.data(), tmp.size()};
+        return fmt::formatter<std::string_view>::format(v, ctx);
+    }
+};
+#endif

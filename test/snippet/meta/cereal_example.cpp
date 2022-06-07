@@ -5,7 +5,7 @@
 #include <cereal/archives/binary.hpp> // includes the cereal::BinaryInputArchive and cereal::BinaryOutputArchive
 #include <cereal/types/vector.hpp>    // includes cerealisation support for std::vector
 
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/test/tmp_filename.hpp>
 
 // Written for std::vector, other types also work.
@@ -36,7 +36,7 @@ int main()
     std::vector<int16_t> vec2;
     load(vec2, tmp_file);                            // Calls load on a std::vector.
 
-    bio::debug_stream << vec << '\n';             // Prints [1,2,3,4].
+    fmt::print("{}\n", vec);             // Prints [1,2,3,4].
 
     return 0;
 }

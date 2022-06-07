@@ -17,9 +17,7 @@
 #include <algorithm>
 #include <ranges>
 
-#include <bio/meta/detail/debug_stream_range.hpp>
-#include <bio/meta/detail/to_string.hpp>
-#include <bio/test/pretty_printing.hpp>
+#include <bio/meta/platform.hpp>
 
 namespace bio::test
 {

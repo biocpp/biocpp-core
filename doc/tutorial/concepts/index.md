@@ -210,8 +210,7 @@ templates.
 \include doc/tutorial/concepts/specialisation.cpp
 
 This is a typical example of a "type transformation trait".
-It maps one type to another type; in this case it returns a type that is able to represent the square root of the
-"input type".
+It maps one type to another type; in this case it returns a type that is able to represent the square root of the\n"input type".
 This can be used in generic algorithms to hold data in different types depending on the type of the input –
 in this case we could avoid half of the space consumption for unsigned integral types VS signed integral types.
 

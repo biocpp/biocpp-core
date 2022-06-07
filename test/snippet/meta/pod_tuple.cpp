@@ -1,5 +1,5 @@
 #include <bio/meta/pod_tuple.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 int main()
 {
@@ -10,7 +10,7 @@ int main()
     // template parameters are automatically deduced:
     bio::pod_tuple t2{17, 3.7f, 19l};
 
-    bio::debug_stream << std::get<0>(t2) << '\n'; // 17
+    fmt::print("{}\n", std::get<0>(t2)); // 17
 
     auto [ i, f, l ] = t2; // creates an int i with value 17, float f...
 }

@@ -72,9 +72,9 @@
  *
  * ###Printing and conversion to char
  *
- * As with all alphabets in SeqAn, none of the nucleotide alphabets can be directly converted to char or printed.
- * You need to explicitly call bio::to_char to convert to char. The only exception is bio::debug_stream
- * which does this conversion to char automatically.
+ * As with all alphabets in SeqAn, none of the nucleotide alphabets can be directly converted to char or printed
+ * with iostreams.
+ * You need to explicitly call bio::to_char to convert to char or use the {fmt}-library which automatically converts.
  *
  * `T` and `U` are represented by the same rank and you cannot differentiate between them. The only difference between
  * e.g. bio::dna4 and bio::rna4 is the output when calling to_char().

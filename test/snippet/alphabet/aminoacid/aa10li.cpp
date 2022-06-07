@@ -1,6 +1,6 @@
 #include <bio/alphabet/aminoacid/aa10li.hpp>
 #include <bio/alphabet/aminoacid/aa27.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/views/convert.hpp>
 
 using bio::operator""_aa10li;
@@ -15,13 +15,13 @@ int main()
     my_letter.assign_char('?'); // all unknown characters are converted to 'S'_aa10li implicitly
 
     if (my_letter.to_char() == 'S')
-        bio::debug_stream << "yeah\n"; // "yeah";
+        fmt::print("{}", "yeah\n"); // "yeah";
 
     // Convert aa27 alphabet to aa10_murphy
     bio::aa27_vector v1{"ALRSTXOUMP"_aa27};
     auto v2 = v1 | bio::views::convert<bio::aa10li>; // AJKAASKCJP
 
-    bio::debug_stream << v2 << "\n";
+    fmt::print("{}\n", v2);
 
     return 0;
 }

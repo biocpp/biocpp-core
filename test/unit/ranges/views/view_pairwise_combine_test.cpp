@@ -15,7 +15,6 @@
 #include <bio/meta/type_traits/range.hpp>
 #include <bio/ranges/views/pairwise_combine.hpp>
 #include <bio/ranges/views/take.hpp>
-#include <bio/test/pretty_printing.hpp>
 
 template <typename t>
 class pairwise_combine_base_test : public ::testing::Test

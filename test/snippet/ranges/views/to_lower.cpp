@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/views/to_lower.hpp>
 
 int main()
@@ -11,6 +11,6 @@ int main()
     auto v1 = s | bio::views::to_lower;
     auto v2 = sv | bio::views::to_lower;
 
-    bio::debug_stream << v1 << '\n'; // => "changed!"
-    bio::debug_stream << v2 << '\n'; // => ["changed", "unchanged!"]
+    fmt::print("{}\n", v1); // => "changed!"
+    fmt::print("{}\n", v2); // => ["changed", "unchanged!"]
 }

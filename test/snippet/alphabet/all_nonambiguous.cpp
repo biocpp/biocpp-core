@@ -1,5 +1,5 @@
 #include <bio/alphabet/nucleotide/dna4.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 int main()
 {
@@ -11,8 +11,8 @@ int main()
     std::cout << (unsigned)bio::to_rank(my_letter);  // prints 0
     // we have to add the cast here, because uint8_t is also treated as a char type by default :(
 
-    // Using SeqAn's debug_stream:
-    bio::debug_stream << bio::to_char(my_letter); // prints 'A'
-    bio::debug_stream << my_letter;                  // prints 'A' (calls to_char() automatically!)
-    bio::debug_stream << bio::to_rank(my_letter); // prints 0   (casts uint8_t to unsigned automatically!)
+    // Using the format library:
+    fmt::print("{}", bio::to_char(my_letter));      // prints 'A'
+    fmt::print("{}", my_letter);                    // prints 'A' (calls to_char() automatically!)
+    fmt::print("{}", bio::to_rank(my_letter));      // prints 0   (casts uint8_t to unsigned automatically!)
 }

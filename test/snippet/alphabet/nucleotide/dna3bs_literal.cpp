@@ -1,5 +1,5 @@
 #include <bio/alphabet/nucleotide/dna3bs.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 
 int main()
 {
@@ -9,7 +9,7 @@ int main()
     bio::dna3bs_vector bar = "ATGTTA"_dna3bs;
 
     if (foo == bar)
-        bio::debug_stream << "yeah\n"; // "yeah";
+        fmt::print("{}", "yeah\n"); // "yeah";
 
     auto bax = "ACGTTA"_dna3bs;
 

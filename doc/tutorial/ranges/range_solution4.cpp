@@ -1,8 +1,8 @@
 #include <vector>
 
-#include <sharg/all.hpp>                                        // Optional: the sharg-parser
+#include <sharg/all.hpp>                                      // Optional: the sharg-parser
 
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/ranges/container/bitcompressed_vector.hpp>      // include bitcompressed vector
 
@@ -22,7 +22,7 @@ int main(int argc, char ** argv)
     }
     catch (sharg::argument_parser_error const & ext)                     // catch user errors
     {
-        std::cerr << "[Error] " << ext.what() << "\n";
+        fmt::print(stderr, "[Error] {}\n", ext.what());
         return -1;
     }
 
@@ -30,12 +30,11 @@ int main(int argc, char ** argv)
     {
         bio::bitcompressed_vector<bio::dna4> vector;
         vector.resize(size, 'A'_dna4);
-        bio::debug_stream << "Allocated bio::bitcompressed_vector<bio::dna4> of size "
-                             << vector.size() << '\n';
+        fmt::print("Allocated bio::bitcompressed_vector<bio::dna4> of size {}\n", vector.size());
     }
     else
     {
         std::vector<bio::dna4> vector{size};
-        bio::debug_stream << "Allocated std::vector<bio::dna4> of size " << vector.size() << '\n';
+        fmt::print("Allocated std::vector<bio::dna4> of size {}\n", vector.size());
     }
 }

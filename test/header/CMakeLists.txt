@@ -2,7 +2,7 @@
 # Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 # Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 # This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-# shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+# shipped with this file and also available at: https://github.com/seqan/bio/blob/master/LICENSE.md
 # -----------------------------------------------------------------------------------------------------
 
 cmake_minimum_required (VERSION 3.7)
@@ -10,7 +10,7 @@ project (biocpp_header_test CXX)
 
 include (../biocpp-test.cmake)
 
-option (BIOCPP_FULL_HEADER_TEST "Test seqan3 headers as well as the headers of external libraries" OFF)
+option (BIOCPP_FULL_HEADER_TEST "Test BioC++ headers as well as the headers of external libraries" OFF)
 
 # We compile each header twice in separate compilation units. Each alone is
 # sufficient to test that the header is functional, but both are needed to check
@@ -19,7 +19,7 @@ option (BIOCPP_FULL_HEADER_TEST "Test seqan3 headers as well as the headers of e
 # header guards are working by including the same header twice.
 #
 # example invocation:
-#     biocpp_header_test (seqan3 "<path>/include/seqan3" "test.hpp|/folder/|test2.hpp")
+#     biocpp_header_test (bio "<path>/include/bio" "test.hpp|/folder/|test2.hpp")
 #
 # \param component        The component name, will create the target `${component}_header_test`
 # \param header_base_path The base path to the header files
@@ -36,12 +36,12 @@ macro (biocpp_header_test component header_base_path exclude_regex)
     # "${header_base_path}/header_files[i]" will result in an absolute path to the file
     #
     # Example output:
-    #   seqan3/alphabet/adaptation/all.hpp
-    #   seqan3/alphabet/adaptation/char.hpp
-    #   seqan3/alphabet/adaptation/concept.hpp
-    #   seqan3/alphabet/adaptation/uint.hpp
-    #   seqan3/alphabet/all.hpp
-    #   seqan3/alphabet/dna5_detail.hpp <- will be filtered out
+    #   bio/alphabet/adaptation/all.hpp
+    #   bio/alphabet/adaptation/char.hpp
+    #   bio/alphabet/adaptation/concept.hpp
+    #   bio/alphabet/adaptation/uint.hpp
+    #   bio/alphabet/all.hpp
+    #   bio/alphabet/dna5_detail.hpp <- will be filtered out
     #   ....
     biocpp_test_files (header_files "${header_base_path}" "*.hpp;*.h")
 
@@ -71,36 +71,14 @@ macro (biocpp_header_test component header_base_path exclude_regex)
 #include <benchmark/benchmark.h>
 TEST(${header_test_name_safe}) {}")
 
-            # test that seqan3 headers include platform.hpp
-            if ("${component}" MATCHES "seqan3")
+            # test that bio headers include platform.hpp
+            if ("${component}" MATCHES "bio")
 
-                # exclude seqan3/std/* and seqan3/contrib/* from platform test
-                if (NOT header MATCHES "seqan3/(std|contrib)/")
-                    file (APPEND "${header_target_source}" "
-#ifndef BIOCPP_DOXYGEN_ONLY
-#error \"Your header '${header}' file is missing #include <seqan3/core/platform.hpp>\"
-#endif")
-                endif ()
-
-                # seqan3/std/* must not include platform.hpp (and therefore any other seqan3 header)
-                # See https://github.com/seqan/product_backlog/issues/135
-                if (header MATCHES "seqan3/std/")
-                    file (APPEND "${header_target_source}" "
-#ifdef BIOCPP_DOXYGEN_ONLY
-#error \"The standard header '${header}' file MUST NOT include any other seqan3 header (except for seqan3/contrib)\"
-#endif")
-                endif ()
-
-                # test whether seqan3 has the visibility bug on lower gcc versions
-                # https://github.com/seqan/seqan3/issues/1317
+                # exclude bio/std/* and bio/contrib/* from platform test
                 file (APPEND "${header_target_source}" "
-#include <seqan3/core/platform.hpp>
-class A{ int i{5}; };
-
-template <typename t>
-BIOCPP_CONCEPT private_bug = requires(t a){a.i;};
-
-static_assert(!private_bug<A>, \"See https://github.com/seqan/seqan3/issues/1317\");")
+#ifndef BIOCPP_DOXYGEN_ONLY
+#error \"Your header '${header}' file is missing #include <bio/meta/platform.hpp>\"
+#endif")
             endif ()
 
             add_library (${header_target} OBJECT "${header_target_source}")
@@ -132,22 +110,6 @@ biocpp_require_ccache ()
 biocpp_require_benchmark ()
 biocpp_require_test ()
 
-# note: seqan3/std/* will not be tested, because the source files don't have any file extension
-biocpp_header_test (seqan3 "${BIOCPP_CLONE_DIR}/include" "")
+# note: bio/std/* will not be tested, because the source files don't have any file extension
+biocpp_header_test (bio "${BIOCPP_CLONE_DIR}/include" "fmt.hpp")
 biocpp_header_test (biocpp_test "${BIOCPP_CLONE_DIR}/test/include" "")
-
-if (BIOCPP_FULL_HEADER_TEST)
-
-    # contains deprecated headers that produce an error when included
-    biocpp_header_test (range-v3 "${BIOCPP_CLONE_DIR}/submodules/range-v3/include" "/detail/")
-    target_compile_definitions (range-v3_header_test INTERFACE RANGES_DISABLE_DEPRECATED_WARNINGS=1)
-
-    # not self-contained headers; error: extra ‘;’ [-Werror=pedantic]
-    # biocpp_header_test (lemon "${BIOCPP_CLONE_DIR}/submodules/lemon/include" "")
-
-    # not complete self-contained headers
-    biocpp_header_test (cereal "${BIOCPP_CLONE_DIR}/submodules/cereal/include" "/external/|polymorphic_impl\.hpp")
-
-    biocpp_header_test (sdsl-lite "${BIOCPP_CLONE_DIR}/submodules/sdsl-lite/include" "")
-
-endif ()

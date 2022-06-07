@@ -10,7 +10,6 @@
 #include <bio/alphabet/concept.hpp>
 #include <bio/alphabet/exception.hpp>
 #include <bio/meta/concept/core_language.hpp>
-#include <bio/test/pretty_printing.hpp>
 
 template <typename T>
 using semi_alphabet_test = ::testing::Test;

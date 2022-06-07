@@ -1,5 +1,5 @@
 #include <bio/alphabet/nucleotide/dna5.hpp>
-#include <bio/meta/debug_stream.hpp>
+#include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/views/complement.hpp>
 #include <bio/ranges/views/translate.hpp>
 
@@ -12,7 +12,7 @@ int main()
     // Default (first forward frame)
     auto v1 = vec | bio::views::translate_single;
     // == [T,Y,V,R]
-    bio::debug_stream << v1[1] << '\n';
+    fmt::print("{}\n", v1[1]);
 
     // First forward frame
     auto v2 = vec | bio::views::translate_single(bio::translation_frames::FWD_FRAME_0);

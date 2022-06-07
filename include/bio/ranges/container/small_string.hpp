@@ -417,3 +417,18 @@ small_string(char const) -> small_string<1>;
 //!\}
 
 } // namespace bio
+
+#if __has_include(<fmt/format.h>)
+
+#include <fmt/ranges.h>
+
+template <size_t N>
+struct fmt::formatter<bio::small_string<N>> : fmt::formatter<std::string_view>
+{
+    constexpr auto format(bio::small_string<N> const & a, auto & ctx) const
+    {
+        return fmt::formatter<std::string_view>::format(std::string_view{a.data(), a.size()}, ctx);
+    }
+};
+
+#endif
