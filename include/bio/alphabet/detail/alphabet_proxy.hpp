@@ -37,7 +37,7 @@ namespace bio
  * may instead return a *proxy* to the held value which still allows changing it (and updating the underlying data
  * structure to reflect this).
  *
- * This CRTP base facilitates the definition of such proxies. Most users of SeqAn will not need to understand the
+ * This CRTP base facilitates the definition of such proxies. Most users of BioC++ will not need to understand the
  * details.
  *
  * This class ensures that the proxy itself also models bio::semialphabet, bio::alphabet,

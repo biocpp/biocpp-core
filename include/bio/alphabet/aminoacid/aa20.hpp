@@ -190,7 +190,7 @@ constexpr aa20 operator""_aa20(char const c) noexcept
  * \include test/snippet/alphabet/aminoacid/aa20_literal.cpp
  *
  * \attention
- * All seqan3 literals are in the namespace bio!
+ * All BioC++ literals are in the namespace bio!
  */
 
 inline aa20_vector operator""_aa20(const char * s, std::size_t n)

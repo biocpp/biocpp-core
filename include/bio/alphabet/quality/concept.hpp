@@ -84,7 +84,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 inline constexpr auto to_phred = detail::adl_only::to_phred_fn{};
@@ -184,7 +184,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 inline constexpr auto assign_phred_to = detail::adl_only::assign_phred_to_fn{};

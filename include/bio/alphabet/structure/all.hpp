@@ -16,7 +16,7 @@
  *
  * \details
  *
- * The following alphabets are currently supported in SeqAn. Please see the format's page for more details.
+ * The following alphabets are currently supported in BioC++. Please see the format's page for more details.
  *
  * Name                                     | Chars               | Description
  * ---------------------------------------- | ------------------------ | -----------

@@ -90,7 +90,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 inline constexpr auto complement = detail::adl_only::complement_fn{};

@@ -18,7 +18,7 @@
  *
  * \details
  *
- * All traits on type lists are defined in the header `<seqan3/core/type_list/traits.hpp>`.
+ * All traits on type lists are defined in the header `<bio/core/type_list/traits.hpp>`.
  *
  */
 

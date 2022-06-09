@@ -20,7 +20,7 @@
  *
  * This module contains auxiliary functions, algorithms and traits on
  * [template parameter packs](https://en.cppreference.com/w/cpp/language/parameter_pack).
- * All traits on a template parameter pack are defined in the header `<seqan3/core/type_pack/traits.hpp>`.
+ * All traits on a template parameter pack are defined in the header `<bio/core/type_pack/traits.hpp>`.
  */
 
 /*!\namespace bio::pack_traits

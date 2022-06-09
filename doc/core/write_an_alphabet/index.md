@@ -1,19 +1,19 @@
-# How to write your own alphabet {#howto_write_an_alphabet}
+# How to write your own alphabet {#core_custom_alphabet}
 
 [TOC]
 
-This HowTo documents how to write a custom alphabet that can be used with the algorithms and data structures in SeqAn.
+This HowTo documents how to write a custom alphabet that can be used with the algorithms and data structures in BioC++.
 
-\tutorial_head{Moderate, 45 min, \ref tutorial_concepts\, \ref tutorial_alphabets, \ref alphabet}
+\tutorial_head{Moderate, 45 min, \ref core_concepts\, \ref core_alphabets, \ref alphabet}
 
 # Motivation
 
-In the [alphabet tutorial](\ref tutorial_alphabets) you have learned that alphabets are a core component in SeqAn
+In the [alphabet tutorial](\ref core_alphabets) you have learned that alphabets are a core component in BioC++
 and represent the smallest unit of biological sequence data. We introduced the common alphabets for
 nucleotide, amino acid and gap as well as structure and quality annotation.
-However, in your SeqAn application you may want to implement a custom alphabet in order to work efficiently
-with SeqAn's algorithms. To achieve this, your custom alphabet must meet certain requirements, which are defined
-in [concepts](\ref tutorial_concepts).
+However, in your BioC++ application you may want to implement a custom alphabet in order to work efficiently
+with BioC++'s algorithms. To achieve this, your custom alphabet must meet certain requirements, which are defined
+in [concepts](\ref core_concepts).
 
 For detailed information on the alphabet concepts please read the \ref alphabet page.
 In the following sections we demonstrate how to write an alphabet that models them.
@@ -48,7 +48,7 @@ In our case we have only two values so `bool` would be sufficient.
 However `bool` is not actually smaller than `uint8_t` and does not always behave like an unsigned integral type
 so we use `uint8_t` here. You only need a different type if your alphabet has an alphabet size >=255.
 
-If you want SeqAn's algorithms to accept it as an alphabet, you need to make sure that your type
+If you want BioC++'s algorithms to accept it as an alphabet, you need to make sure that your type
 satisfies the requirements of the bio::alphabet concept. A quick check can reveal that this is not the case:
 \snippet dna2_only_rank.cpp alphabet_concept
 
@@ -99,12 +99,12 @@ Implement the four comparison operators and verify that your type models std::to
 ## semialphabet
 
 Let's move on to the more interesting concepts. bio::semialphabet constitutes the *rank interface*
-that we introduced in the [alphabet tutorial](\ref tutorial_alphabets). Have a look at the API reference again.
+that we introduced in the [alphabet tutorial](\ref core_alphabets). Have a look at the API reference again.
 Beyond the conceptional requirements, it also requires that bio::alphabet_size and bio::to_rank can be
 called on your alphabet.
 
 There are different ways to satisfy bio::alphabet_size and bio::to_rank, have a look at the respective API
-reference and also the [documentation on customisation points](\ref about_customisation).
+reference and also the [documentation on customisation points](\ref biocpp_customisation).
 
 In this case we choose to implement the functionality as member functions:
 \snippet dna2_semialphabet.cpp semialphabet

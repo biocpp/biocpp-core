@@ -86,9 +86,9 @@ ALIASES += endhint="\htmlonly </details> </div> \endhtmlonly"
 
 ALIASES += strike{1}="\htmlonly<div style='color:red;text-decoration:line-through'>\1</div>\endhtmlonly"
 
-ALIASES += noapi="\warning This documentation item is not guaranteed to exist in future SeqAn3 releases. Do not rely on the interface in your applications."
+ALIASES += noapi="\warning This documentation item is not guaranteed to exist in future BioC++ releases. Do not rely on the interface in your applications."
 
-ALIASES += experimental="\warning The interface of this documentation item is not yet stable and might change until the next release of SeqAn3. Do not rely on it in stable releases of your application."
+ALIASES += experimental="\warning The interface of this documentation item is not yet stable and might change until the next release of BioC++. Do not rely on it in stable releases of your application."
 
 ALIASES += header_file{1}="\htmlonly<b>Header File</b><br><div style='text-indent:3em;'><code>#include\endhtmlonly <\1>\htmlonly</code></div>\endhtmlonly"
 

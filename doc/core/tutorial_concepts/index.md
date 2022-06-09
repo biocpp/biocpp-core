@@ -1,11 +1,11 @@
-# C++ Concepts {#tutorial_concepts}
+# C++ Concepts {#core_concepts}
 
 [TOC]
 
 This tutorial introduces "C++ Concepts", a feature of C++20 (and available to some extent in older GCC versions).
-You will learn the terminology used in the context of concepts and how to use SeqAn's concepts in your application.
+You will learn the terminology used in the context of concepts and how to use BioC++'s concepts in your application.
 
-\tutorial_head{Moderate, 60 min, \ref setup, }
+\tutorial_head{Moderate, 60 min, \ref core_setup, }
 
 This tutorial teaches the very basics of working with concepts. For more background and information on how to implement
 your own concepts, we recommend:
@@ -16,7 +16,7 @@ your own concepts, we recommend:
 
 ## Motivation
 
-One central design goal of SeqAn is to provide generic algorithms and data structures which can be used for different
+One central design goal of BioC++ is to provide generic algorithms and data structures which can be used for different
 types without reimplementing the same algorithms over and over again for particular types.
 This has multiple benefits: improved maintainability due to an additional level of abstraction
 and more importantly the ability to reuse the code with user provided types.
@@ -24,7 +24,7 @@ A familiar example for generic code is std::vector and the algorithms in the sta
 They are *templates* which means that they can be *instantiated* with other types.
 Most often the type cannot be arbitrary, because the template expects a particular interface from the type.
 
-A SeqAn example is the local alignment algorithm.
+A BioC++ example is the local alignment algorithm.
 It computes the best local match between two sequences over a finite alphabet.
 The algorithm is generic in so far that it allows any alphabet that offers the minimal interface which
 is used inside the algorithm (e.g. objects of the alphabet type must be equality comparable).
@@ -159,11 +159,11 @@ of types.
 When a function is overloaded and multiple overloads are valid for a given/deduced template argument, the
 *most-refined* overload is chosen:
 
-\include doc/tutorial/concepts/overloading1.cpp
+\include overloading1.cpp
 
 But as soon as we introduce another overload, the compiler will pick the "best" match:
 
-\include doc/tutorial/concepts/overloading2.cpp
+\include overloading2.cpp
 
 \assignment{Assignment 1: Static polymorphism with alphabets I}
 Write a small program, similar to the one above with the following "skeleton":
@@ -192,14 +192,14 @@ be constrained to only accepts types that model bio::alphabet.
 Try calling `print` with a different type, e.g. `int` to make sure that it does.
 \endassignment
 \solution
-\include doc/tutorial/concepts/overloading_solution1.cpp
+\include overloading_solution1.cpp
 \endsolution
 
 \assignment{Assignment 2: Static polymorphism with alphabets II}
 Adapt your previous solution to handle nucleotides differently from the rest. For nucleotides, it should print both the value and its complement.
 \endassignment
 \solution
-\include doc/tutorial/concepts/overloading_solution2.cpp
+\include overloading_solution2.cpp
 \endsolution
 
 ## Partial template specialisation
@@ -207,7 +207,7 @@ Adapt your previous solution to handle nucleotides differently from the rest. Fo
 Similar to function template overloading it is possible to use concepts for partially specialising class and variable
 templates.
 
-\include doc/tutorial/concepts/specialisation.cpp
+\include specialisation.cpp
 
 This is a typical example of a "type transformation trait".
 It maps one type to another type; in this case it returns a type that is able to represent the square root of the\n"input type".
@@ -219,9 +219,9 @@ It requires that both parameters are the same. The `static_assert` checks condit
 used to verify whether a type or a combination of types model a concept. In the above case we can use the combination
 to check the "return type" of the transformation trait.
 
-# Concepts in SeqAn and this documentation
+# Concepts in BioC++ and this documentation
 
-SeqAn uses concepts extensively, for specialisation/overloading, but also to prevent misuse of templates and to clearly
+BioC++ uses concepts extensively, for specialisation/overloading, but also to prevent misuse of templates and to clearly
 specify all public interfaces.
 We prefer the intermediate syntax and additionally use the verbose expressions if necessary.
 Unfortunately, doxygen, the system used to generate this documentation, does not handle C++ concepts very well, yet.

@@ -1,12 +1,12 @@
-# Alphabets in SeqAn {#tutorial_alphabets}
+# Alphabets in BioC++ {#core_alphabets}
 
 ***Learning Objective:***
 
-In this tutorial we look at alphabets and you will learn how to work with nucleotides and amino acids in SeqAn.
-We guide you through the most important properties of SeqAn's alphabets and show you the different implemented types.
+In this tutorial we look at alphabets and you will learn how to work with nucleotides and amino acids in BioC++.
+We guide you through the most important properties of BioC++'s alphabets and show you the different implemented types.
 After completion, you will be able to use the alphabets inside of STL containers and to compare alphabet values.
 
-\tutorial_head{Easy, 45 min, \ref setup, None}
+\tutorial_head{Easy, 45 min, \ref core_setup, None}
 
 The links on this page mostly point straight into the API documentation which you should use as a reference.
 The code examples and assignments are designed to provide some practical experience with our interface
@@ -17,7 +17,7 @@ as well as a code basis for your own program development.
 # Introduction
 
 An alphabet is the set of symbols of which a biological sequence – or in general a text – is composed.
-SeqAn implements specific and optimised alphabets not only for sequences of RNA, DNA and protein components,
+BioC++ implements specific and optimised alphabets not only for sequences of RNA, DNA and protein components,
 but also for quality, secondary structure and gap annotation as well as combinations of the aforementioned.
 
 \assignment{Task}
@@ -29,7 +29,7 @@ This is a detailed introduction to the alphabet module and demonstrates its main
 
 Nucleotides are the components of (Deoxy)Ribonucleic acid (DNA/RNA) and contain one of the nucleobases
 Adenine (A), Cytosine (C), Guanine (G), Thymine (T, only DNA) and Uracil (U, only RNA).
-In SeqAn the alphabets bio::dna4 and bio::rna4 contain exactly the four respective nucleotides.
+In BioC++ the alphabets bio::dna4 and bio::rna4 contain exactly the four respective nucleotides.
 The trailed number in the alphabets' name represents the number of entities the alphabet holds –
 we denote this number as *alphabet size*.
 For instance, the alphabet bio::dna5 represents five entities as it contains the additional symbol 'N'
@@ -52,14 +52,14 @@ We have shown three solutions for assigning variables of alphabet type.
 
 ## The rank of an alphabet symbol
 The rank of a symbol is a number in range \[0..alphabet_size) where each number is paired with
-an alphabet symbol by a bijective function. In SeqAn the rank is always determined by the lexicographical
+an alphabet symbol by a bijective function. In BioC++ the rank is always determined by the lexicographical
 order of the underlying characters. For instance, in bio::dna4 the bijection is <br>
 <code>'A'_dna4 ⟼ 0</code> <br>
 <code>'C'_dna4 ⟼ 1</code> <br>
 <code>'G'_dna4 ⟼ 2</code> <br>
 <code>'T'_dna4 ⟼ 3</code>.
 
-SeqAn provides the function bio::to_rank for converting a symbol to its rank value
+BioC++ provides the function bio::to_rank for converting a symbol to its rank value
 as demonstrated in the following code example. Note that the data type of the rank is usually the smallest possible
 unsigned type that is required for storing the values of the alphabet.
 
@@ -69,7 +69,7 @@ unsigned type that is required for storing the values of the alphabet.
 
 Our alphabets also have a character representation because it is more intuitive to work
 with them than using the rank. Each alphabet symbol is represented by its respective character
-whenever possible (<code>A ⟼ 'A'</code>). Analogously to the rank, SeqAn provides the function
+whenever possible (<code>A ⟼ 'A'</code>). Analogously to the rank, BioC++ provides the function
 bio::to_char for converting a symbol to its character representation.
 
 \snippet alphabet_main.cpp char
@@ -94,16 +94,16 @@ which is implemented in most bio::alphabet instances.
 
 ## containers over alphabets
 
-In SeqAn you can use the STL containers to model e.g. sequences, sets or mappings with our alphabets.
+In BioC++ you can use the STL containers to model e.g. sequences, sets or mappings with our alphabets.
 The following example shows some exemplary contexts for their use.
-For **sequences** we recommend the std::vector with one of SeqAn's alphabet types.
+For **sequences** we recommend the std::vector with one of BioC++'s alphabet types.
 Please note how easily a sequence can be created via the string literal.
 
 \snippet alphabet_main.cpp containers
 
 ## Comparability
 
-All alphabets in SeqAn are regular and comparable. This means that you can
+All alphabets in BioC++ are regular and comparable. This means that you can
 use the `<`, `<=`, `>` and `>=` operators to compare the values based on the rank.
 For instance, this is useful for sorting a text over the alphabet. Regular implies that the
 equality and inequality of two values can be tested with `==` and `!=`.
@@ -113,7 +113,7 @@ equality and inequality of two values can be tested with `==` and `!=`.
 ## Example
 
 To wrap up this section on the nucleotide alphabet, the following assignment lets you
-practise the use of a SeqAn alphabet and its related functions.
+practise the use of a BioC++ alphabet and its related functions.
 It will also show you a handy advantage of using a vector over an alphabet instead
 of using `std::string`: The rank representation can be used straight as an array
 index (opposed to using a map with logarithmic access times, for example).
@@ -141,8 +141,8 @@ if your results are correct.
 
 # Other alphabets
 
-Until now, we have focused on alphabets for nucleotides to introduce the properties of SeqAn's alphabet
-on a specific example. SeqAn implements, however, many more alphabets. In this section, we want to give you
+Until now, we have focused on alphabets for nucleotides to introduce the properties of BioC++'s alphabet
+on a specific example. BioC++ implements, however, many more alphabets. In this section, we want to give you
 an overview of the other existing alphabets.
 
 ## The amino acid alphabet
@@ -173,7 +173,7 @@ bio::structured_aa). See our API documentation for a detailed description of eac
 
 ## Gap alphabet
 
-The bio::gap alphabet is the smallest alphabet in SeqAn, consisting only of the gap character.
+The bio::gap alphabet is the smallest alphabet in BioC++, consisting only of the gap character.
 It is most often used in an [Alphabet Variant](\ref bio::alphabet_variant) with a nucleotide or amino acid alphabet
 to represent gapped sequences, e.g. in alignments. To create a gapped alphabet simply use bio::gapped<> with
 the alphabet type you want to refine.

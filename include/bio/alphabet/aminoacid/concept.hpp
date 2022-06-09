@@ -117,7 +117,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To change the default behaviour for your own alphabet,
+ * This is a customisation point (see \ref biocpp_customisation). To change the default behaviour for your own alphabet,
  * follow the above instructions.
  */
 template <typename t>

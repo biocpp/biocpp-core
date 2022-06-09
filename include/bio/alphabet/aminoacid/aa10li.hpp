@@ -196,7 +196,7 @@ constexpr aa10li operator""_aa10li(char const c) noexcept
  * You can use this string literal to easily assign to aa10li_vector:
  *
  * \attention
- * All seqan3 literals are in the namespace bio!
+ * All BioC++ literals are in the namespace bio!
  */
 
 inline aa10li_vector operator""_aa10li(char const * const s, size_t const n)

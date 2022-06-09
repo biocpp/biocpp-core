@@ -167,16 +167,16 @@ public:
 
     //!\brief Export this type's components in a visible manner.
     //!\private
-    using seqan3_required_types = component_list;
+    using biocpp_required_types = component_list;
     //!\brief Export this type's components and possibly the components' components in a visible manner.
     //!\private
-    using seqan3_recursive_required_types =
+    using biocpp_recursive_required_types =
         list_traits::concat<component_list,
                             detail::transformation_trait_or_t<detail::recursive_required_types<component_types>,
                                                               bio::type_list<>>...>;
     //!\brief Make specialisations of this template identifiable in metapgrogramming contexts.
     //!\private
-    static constexpr bool seqan3_alphabet_tuple_like = true;
+    static constexpr bool biocpp_alphabet_tuple_like = true;
 
     /*!\name Constructors, destructor and assignment
      * \{
@@ -798,7 +798,7 @@ template <std::size_t i, bio::detail::alphabet_tuple_like tuple_t>
 struct tuple_element<i, tuple_t>
 {
     //!\brief Element type.
-    using type = bio::list_traits::at<i, typename tuple_t::seqan3_required_types>;
+    using type = bio::list_traits::at<i, typename tuple_t::biocpp_required_types>;
 };
 
 /*!\brief Provides access to the number of elements in a tuple as a compile-time constant expression.
@@ -809,7 +809,7 @@ struct tuple_element<i, tuple_t>
  */
 template <bio::detail::alphabet_tuple_like tuple_t>
 struct tuple_size<tuple_t> :
-    public std::integral_constant<size_t, bio::list_traits::size<typename tuple_t::seqan3_required_types>>
+    public std::integral_constant<size_t, bio::list_traits::size<typename tuple_t::biocpp_required_types>>
 {};
 
 } // namespace std

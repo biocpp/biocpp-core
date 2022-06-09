@@ -442,7 +442,7 @@ TEST(char_predicate, char_types)
     }
 }
 
-// see issue https://github.com/seqan/seqan3/issues/1972
+// see issue https://github.com/biocpp/biocpp-core/issues/1972
 TEST(char_predicate, issue1972)
 {
     EXPECT_TRUE(bio::is_in_alphabet<bio::gapped<bio::rna5>>('A')); // valid bio::rna5 char

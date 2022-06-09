@@ -19,7 +19,7 @@
 
 /*!\defgroup concept Concept
  * \ingroup core
- * \brief Additional concepts that are not specific to a SeqAn module.
+ * \brief Additional concepts that are not specific to a BioC++ module.
  *
  * \details
  *

@@ -13,7 +13,7 @@
 #include <bio/meta/platform.hpp>
 
 /*!\file
- * \brief Provides SeqAn version macros and global variables.
+ * \brief Provides BioC++ version macros and global variables.
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
@@ -33,15 +33,15 @@ namespace bio
 {
 
 //!\brief The major version.
-constexpr uint8_t seqan3_version_major = BIOCPP_VERSION_MAJOR;
+constexpr uint8_t biocpp_core_version_major = BIOCPP_VERSION_MAJOR;
 //!\brief The minor version.
-constexpr uint8_t seqan3_version_minor = BIOCPP_VERSION_MINOR;
+constexpr uint8_t biocpp_core_version_minor = BIOCPP_VERSION_MINOR;
 //!\brief The patch version.
-constexpr uint8_t seqan3_version_patch = BIOCPP_VERSION_PATCH;
+constexpr uint8_t biocpp_core_version_patch = BIOCPP_VERSION_PATCH;
 
 //!\brief The full version as `std::string`.
-std::string const seqan3_version = std::to_string(seqan3_version_major) + "." +
-                                   std::to_string(seqan3_version_minor) + "." +
-                                   std::to_string(seqan3_version_patch);
+std::string const biocpp_core_version = std::to_string(biocpp_core_version_major) + "." +
+                                   std::to_string(biocpp_core_version_minor) + "." +
+                                   std::to_string(biocpp_core_version_patch);
 
 } // namespace bio

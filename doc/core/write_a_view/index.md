@@ -1,10 +1,10 @@
-# How to write a view {#howto_write_a_view}
+# How to write a view {#core_custom_view}
 
 [TOC]
 
-This HowTo documents how to write a view using the standard library and some helpers from SeqAn.
+This HowTo documents how to write a view using the standard library and some helpers from BioC++.
 
-\tutorial_head{Difficult, 120 min, \ref tutorial_concepts\,\ref tutorial_ranges, }
+\tutorial_head{Difficult, 120 min, \ref core_concepts\,\ref core_ranges, }
 
 \note
 Some of the links from this HowTo only resolve in the developer documentation because
@@ -15,8 +15,8 @@ We recommend you open this tutorial from [the developer documentation](https://d
 
 # Motivation
 
-We have introduced "views" in \ref tutorial_ranges.
-You can do many things with the views provided by the standard library and those shipped with SeqAn, but in
+We have introduced "views" in \ref core_ranges.
+You can do many things with the views provided by the standard library and those shipped with BioC++, but in
 certain situations you will want to define your own view.
 This page will teach you the basics of defining your own view.
 
@@ -33,7 +33,7 @@ does not need to be of the same type as the iterator – as long as they are com
 This view then holds exactly the iterator-sentinel-pair as its state and nothing else.
 
 But `std::ranges::subrange` does not yet facilitate any "composing-behaviour" that you have seen in
-\ref tutorial_ranges tutorial,
+\ref core_ranges tutorial,
 `std::ranges::subrange` is simply a type that can be constructed from an iterator-sentinel-pair, you cannot "pipe"
 anything into it.
 Most views are adaptors on other views, e.g. `std::ranges::transform_view` wraps an existing view and applies
@@ -123,11 +123,11 @@ to `char` or a similar type.
 
 We want to do the following:
 
-\snippet doc/howto/write_a_view/view_exercise1.cpp start
+\snippet view_exercise1.cpp start
 ```cpp
 // your implementation goes here
 ```
-\snippet doc/howto/write_a_view/view_exercise1.cpp end
+\snippet view_exercise1.cpp end
 
 Define a *range adaptor object* using an existing adaptor which applies a concrete transformation
 (calling bio::to_char) on every element.
@@ -142,7 +142,7 @@ takes an object that models `std::regular_invocable`, e.g. a lambda function wit
 
 \solution
 
-\include doc/howto/write_a_view/view_exercise1.cpp
+\include view_exercise1.cpp
 
 You simply define your adaptor type as `auto` and make it behave like `std::views::transform`, except that you\n"hard-code" the lambda function that is applied to each element.
 Since your adaptor object now takes a range as the only parameter, it is an adaptor closure object.
@@ -159,18 +159,18 @@ to write a view that transforms ranges of nucleotides into their complement.
 
 BUT, we are also interested in *reversing* the range which is possible with `std::views::reverse`:
 
-\snippet doc/howto/write_a_view/view_exercise2.cpp start
+\snippet view_exercise2.cpp start
 ```cpp
 // your implementation goes here
 ```
-\snippet doc/howto/write_a_view/view_exercise2.cpp end
+\snippet view_exercise2.cpp end
 
 Define a *range adaptor object* that presents a view of the reverse complement of whatever you pipe into it.
 \endassignment
 
 \solution
 
-\include doc/howto/write_a_view/view_exercise2.cpp
+\include view_exercise2.cpp
 
 The adaptor consists of `std::views::reverse` combined with `std::views::transform`. This time the lambda just
 performs the call to `bio::complement`.
@@ -208,15 +208,15 @@ This indicates that we can use the sentinel of the underlying range as-is.
 
 \assignment{Exercise 3: Your first iterator}
 
-Have a peak at the \ref tutorial_concepts tutorial again and study the `std::forward_iterator` concept thoroughly.
+Have a peak at the \ref core_concepts tutorial again and study the `std::forward_iterator` concept thoroughly.
 You will now have to implement your own forward iterator.
 
-\snippet doc/howto/write_a_view/solution_iterator.cpp start
+\snippet solution_iterator.cpp start
 
 ```cpp
     // YOUR IMPLEMENTATION GOES HERE (OPERATORS, MEMBER TYPES...)
 ```
-\snippet doc/howto/write_a_view/solution_iterator.cpp end
+\snippet solution_iterator.cpp end
 
 In order to re-use functionality of the underlying range's iterator type you can inherit from it
 (`std::ranges::iterator_t` returns the iterator type).¹ In the end, you should be able
@@ -243,14 +243,14 @@ A reason could be that you *don't* want to inherit some members or want to preve
 \endassignment
 
 \solution
-\snippet doc/howto/write_a_view/solution_iterator.cpp start
-\snippet doc/howto/write_a_view/solution_iterator.cpp solution1a
+\snippet solution_iterator.cpp start
+\snippet solution_iterator.cpp solution1a
 ```cpp
     using reference             = typename std::iterator_traits<base_t>::reference;
 
 ```
-\snippet doc/howto/write_a_view/solution_iterator.cpp solution1b
-\snippet doc/howto/write_a_view/solution_iterator.cpp end
+\snippet solution_iterator.cpp solution1b
+\snippet solution_iterator.cpp end
 
 The program prints "G A T T A C A ".
 \endsolution
@@ -272,20 +272,20 @@ of that operator as your transformation might make a change necessary.
 \solution
 
 1. The restriction on the alphabet type is done via a `static_assert`:
-\snippet doc/howto/write_a_view/solution_iterator.cpp static_assert
+\snippet solution_iterator.cpp static_assert
 You could have done this via an additional template constraint, too, but `static_assert` gives you the opportunity
 to give a readable message in case of an error.¹
 
 2. The operator that needs to call the `bio::complement` function is `operator*`:
-\snippet doc/howto/write_a_view/solution_iterator.cpp dereference
+\snippet solution_iterator.cpp dereference
 
 3. As previously noted, care needs to be taken with this function's return type:
-\snippet doc/howto/write_a_view/solution_iterator.cpp reference
+\snippet solution_iterator.cpp reference
 
 
 Here is the full solution:
 \hint
-\include doc/howto/write_a_view/solution_iterator.cpp
+\include solution_iterator.cpp
 
 The program prints "C T A A T G T "
 
@@ -316,24 +316,24 @@ other in memory (the elements of our view are created on demand and are not stor
 
 If you have looked at the `std::random_access_iterator`, you will have seen that it is quite a bit of work to implement
 all the operators, many of whom just need to be overloaded to fix the return type.
-To make this a little bit easier SeqAn provides `bio::detail::inherited_iterator_base`, it fixes the issue with the
+To make this a little bit easier BioC++ provides `bio::detail::inherited_iterator_base`, it fixes the issue with the
 return type via CRTP.
 A solution to the previous exercise looks like this:
 
-\snippet doc/howto/write_a_view/solution_view.cpp iterator
-\snippet doc/howto/write_a_view/solution_view.cpp main_it
-\snippet doc/howto/write_a_view/solution_view.cpp end
+\snippet solution_view.cpp iterator
+\snippet solution_view.cpp main_it
+\snippet solution_view.cpp end
 
 ### The view class
 
 We now implement the view in several steps:
 
-\snippet doc/howto/write_a_view/solution_view.cpp view_header
+\snippet solution_view.cpp view_header
 
 Like the iterator, the view is derived from a CRTP base class that takes care of defining many members
 for us, e.g. `.size()`, `.operator[]` and a few others.
 
-\snippet doc/howto/write_a_view/solution_view.cpp view_private
+\snippet solution_view.cpp view_private
 
 The only data member the class holds is a copy of the underlying range.
 As you may have noted above, our class only takes underlying ranges that model
@@ -341,7 +341,7 @@ std::ranges::view.
 This might seem strange; after all we want to apply the view to a vector of which we know that it
 is not a view, but we will clear this up later.
 
-\snippet doc/howto/write_a_view/solution_view.cpp view_member_types
+\snippet solution_view.cpp view_member_types
 
 The only member types that we define here are the definitions of the iterators which are just the iterator
 we have defined before.
@@ -351,12 +351,12 @@ because in a const-context the `urange` data member will be const so we cannot r
 Many ranges like the standard library containers also present the member types of the iterator, i.e. `value_type`,
 `reference` a.s.o, but this is not required to model any of the range concepts.
 
-\snippet doc/howto/write_a_view/solution_view.cpp view_begin
+\snippet solution_view.cpp view_begin
 
 These functions are the same member functions you know from `std::vector`, they return objects of the previously
 defined iterator types that are initialised with the begin iterator from the underlying range.
 
-\snippet doc/howto/write_a_view/solution_view.cpp view_end
+\snippet solution_view.cpp view_end
 
 The implementation for `end()` is similar except that for our range the sentinel type (the return type of `end()`) is
 the same as of the underlying range, we just pass it through.
@@ -365,7 +365,7 @@ For many more complex views you will have to define the sentinel type yourself o
 type in a similar manner to how we derived the iterator type.
 Often you can use `std::default_sentinel_t` as the type for your sentinel and implement the\n"end-condition" in the iterator's equality comparison operator against that type.
 
-\snippet doc/howto/write_a_view/solution_view.cpp view_constructors
+\snippet solution_view.cpp view_constructors
 
 We have two constructors, one that takes an the underlying type by copy and moves it into the data member
 (remember that since it is a view, it will not be expensive to copy – if it is copied).
@@ -380,26 +380,26 @@ Storing only a view member guarantess that our type itself is also cheap to copy
 Note that both of these constructors seem like generic functions, but they just handle the underlying type or a
 type that turns into the underlying when wrapped in `std::views::all`.
 
-\snippet doc/howto/write_a_view/solution_view.cpp view_deduction_guide
+\snippet solution_view.cpp view_deduction_guide
 
 To easily use the second constructor we need to provide a type deduction guide.
 
 Here is the full solution:
 \hint
-\snippet doc/howto/write_a_view/solution_view.cpp iterator
-\snippet doc/howto/write_a_view/solution_view.cpp view_header
-\snippet doc/howto/write_a_view/solution_view.cpp view_private
-\snippet doc/howto/write_a_view/solution_view.cpp view_member_types
-\snippet doc/howto/write_a_view/solution_view.cpp view_constructors
-\snippet doc/howto/write_a_view/solution_view.cpp view_begin
-\snippet doc/howto/write_a_view/solution_view.cpp view_end
+\snippet solution_view.cpp iterator
+\snippet solution_view.cpp view_header
+\snippet solution_view.cpp view_private
+\snippet solution_view.cpp view_member_types
+\snippet solution_view.cpp view_constructors
+\snippet solution_view.cpp view_begin
+\snippet solution_view.cpp view_end
 ```cpp
 };
 ```
-\snippet doc/howto/write_a_view/solution_view.cpp view_deduction_guide
-\snippet doc/howto/write_a_view/solution_view.cpp main_it
-\snippet doc/howto/write_a_view/solution_view.cpp main_range
-\snippet doc/howto/write_a_view/solution_view.cpp end
+\snippet solution_view.cpp view_deduction_guide
+\snippet solution_view.cpp main_it
+\snippet solution_view.cpp main_range
+\snippet solution_view.cpp end
 
 The program prints
 ```
@@ -418,7 +418,7 @@ operators and then create a global instance of that type which can be used to in
 The adaptor has the primary purpose of facilitating the piping behaviour, but it shall also allow for
 function/constructor-style creation of view objects, therefore it defines two operators:
 
-\snippet doc/howto/write_a_view/solution_view.cpp adaptor_type_definition
+\snippet solution_view.cpp adaptor_type_definition
 
 The first operator is very straight-forward, it simply delegates to the constructor of our view so that
 `views::my(FOO)` is identical to `my_view{FOO}`.
@@ -431,7 +431,7 @@ This adaptor type does not yet provide the ability to combine multiple adaptors 
 handles ranges as left-hand-side input to `operator|`.
 
 Our example adaptor type definition is rather simple, but for views/adaptors that take more parameters it gets quite
-complicated quickly. Therefore SeqAn provides some convenience templates for you:
+complicated quickly. Therefore BioC++ provides some convenience templates for you:
 ```cpp
 // in our example, this is all you need:
 //                                      your view type goes here ↓
@@ -445,7 +445,7 @@ See `bio::detail::adaptor_base`, `bio::detail::adaptor_for_view_without_args` an
 
 The adaptor object is simply an instance of the previously defined type:
 
-\snippet doc/howto/write_a_view/solution_view.cpp adaptor_object_definition
+\snippet solution_view.cpp adaptor_object_definition
 
 As noted above, we place this object in a `views::` sub-namespace by convention.
 Since the object holds no state, we mark it as `constexpr` and since it's a global variable we also mark it as
@@ -453,11 +453,11 @@ Since the object holds no state, we mark it as `constexpr` and since it's a glob
 
 Finally we can use our view with pipes and combine it with others:
 
-\snippet doc/howto/write_a_view/solution_view.cpp main_adaptor
+\snippet solution_view.cpp main_adaptor
 
 Here is the full, final solution:
 \hint
-\include doc/howto/write_a_view/solution_view.cpp
+\include solution_view.cpp
 
 The program prints:
 ```

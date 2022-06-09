@@ -195,7 +195,7 @@ constexpr aa10murphy operator""_aa10murphy(char const c) noexcept
  * You can use this string literal to easily assign to aa10murphy_vector:
  *
  * \attention
- * All seqan3 literals are in the namespace bio!
+ * All BioC++ literals are in the namespace bio!
  */
 
 inline aa10murphy_vector operator""_aa10murphy(const char * s, std::size_t n)

@@ -40,8 +40,8 @@
  */
 
 /*!\namespace bio::custom
- * \brief A namespace for third party and standard library specialisations of SeqAn customisation points.
- * \see \ref about_customisation
+ * \brief A namespace for third party and standard library specialisations of BioC++ customisation points.
+ * \see \ref biocpp_customisation
  */
 
 /*!\if DEV
@@ -50,6 +50,6 @@
  * \details
  * The contents of this namespace are not visible to consumers of the library and the documentation is
  * only generated for developers.
- * \sa https://github.com/seqan/seqan3/wiki/Documentation
+ * \sa https://github.com/biocpp/biocpp-core/wiki/Documentation
  * \endif
  */

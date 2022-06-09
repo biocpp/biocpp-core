@@ -166,7 +166,7 @@ pod_tuple(types && ...) -> pod_tuple<types...>;
  * \{
  * \brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
  *
- * Note that these functions are available, both, in the seqan3 namespace and in namespace std.
+ * Note that these functions are available, both, in the bio namespace and in namespace std.
  */
 //!\brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
 //!\relates bio::pod_tuple
@@ -229,7 +229,7 @@ constexpr auto const && get(bio::pod_tuple<types...> const && t) noexcept
 /*!\name Access an element of a pod_tuple by type
  * \brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
  *
- * Note that these functions are available, both, in the seqan3 namespace and in namespace std.
+ * Note that these functions are available, both, in the bio namespace and in namespace std.
  * As is the case with std::tuple, this function is only defined if the type appears once
  * in the tuple, i.e. `std::get<int>(std::tuple<int, int>{1,2})` is not defined.
  * \{

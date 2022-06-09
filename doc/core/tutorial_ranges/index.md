@@ -1,10 +1,10 @@
-# Ranges {#tutorial_ranges}
+# Ranges {#core_ranges}
 
 [TOC]
 
-This tutorial introduces the notion of *ranges*, a C++20 feature that SeqAn3 makes strong use of.
+This tutorial introduces the notion of *ranges*, a C++20 feature that BioC++ makes strong use of.
 
-\tutorial_head{Moderate, 90 min, \ref tutorial_concepts,}
+\tutorial_head{Moderate, 90 min, \ref core_concepts,}
 
 # Motivation
 
@@ -68,7 +68,7 @@ std::ranges::sized_range which requires that the size of a range can be computed
 
 ## Storage behaviour
 
-**Containers** are the ranges most well known, they own their elements. SeqAn3 makes use of standard STL containers
+**Containers** are the ranges most well known, they own their elements. BioC++ makes use of standard STL containers
 like `std::vector`, but also implements some custom containers.
 
 **Decorators** are ranges that are always defined on another range and decorate/annotate the underlying range
@@ -98,12 +98,12 @@ They are incredibly useful and you will find them throughout the library.
 A key feature of views is that whatever transformation they apply, they do so at the moment you request an
 element, not when the view is created.
 
-\snippet doc/tutorial/ranges/range_snippets.cpp def
+\snippet range_snippets.cpp def
 
 Here `v` is a view; creating it neither changes `vec`, nor does `v` store any elements.
 The time it takes to construct `v` and its size in memory is independent of the size of `vec`.
 
-\snippet doc/tutorial/ranges/range_snippets.cpp all
+\snippet range_snippets.cpp all
 
 This will print "6", but the important thing is that resolving the first element of `v` to the last element of `vec`
 happens **on-demand**.
@@ -115,7 +115,7 @@ expensive transformation, it will have to do so repeatedly if the same element i
 
 You may have wondered why we wrote
 
-\snippet doc/tutorial/ranges/range_snippets.cpp rev_def
+\snippet range_snippets.cpp rev_def
 
 and not
 ```cpp
@@ -128,7 +128,7 @@ The exact type of this view is hidden behind the `auto` statement.
 This has the advantage, that we don't need to worry about the template arguments of the view type, but more importantly
 the adaptor has an additional feature: it can be *chained* with other adaptors!
 
-\snippet doc/tutorial/ranges/range_snippets.cpp piped
+\snippet range_snippets.cpp piped
 
 What will this print?
 \hint
@@ -163,7 +163,7 @@ std::cout << *v.begin() << '\n'; // should print 4
 ```
 \endassignment
 \solution
-\include doc/tutorial/ranges/range_solution1.cpp
+\include range_solution1.cpp
 \endsolution
 
 ## View concepts
@@ -182,7 +182,7 @@ the second in memory (but instead before the second).
 Perhaps surprising to some, many views also model std::ranges::output_range if the underlying range does, i.e. **views
 are not read-only**:
 
-\snippet doc/tutorial/ranges/range_snippets.cpp assign_through
+\snippet range_snippets.cpp assign_through
 
 \assignment{Assignment 2: Fun with views II}
 Have a look at the solution to the previous assignment (filter+transform).
@@ -232,14 +232,14 @@ are not stored in memory at all.
 
 We provide overview tables for all our view adaptors that document which concepts are modelled by the views they return.
 
-## Views in the standard library and in SeqAn
+## Views in the standard library and in BioC++
 
-The standard library in C++20 provides a number of useful views and SeqAn provides many views, as well.
-Most views provided by SeqAn3 are specific to biological operations, like bio::views::trim_quality which trims sequences
+The standard library in C++20 provides a number of useful views and BioC++ provides many views, as well.
+Most views provided by BioC++ are specific to biological operations, like bio::views::trim_quality which trims sequences
 based on the quality or bio::views::complement which generates the complement of a nucleotide sequence.
-But SeqAn3 also provides some general purpose views.
+But BioC++ also provides some general purpose views.
 
-Have a look at the \link views views-submodule \endlink to get an overview of SeqAn's views and also read through the
+Have a look at the \link views views-submodule \endlink to get an overview of BioC++'s views and also read through the
 detailed description on that page now that you had a more gentle introduction.
 
 \assignment{Assignment 3: Fun with views III}
@@ -252,13 +252,13 @@ Create a small program that
 Use views to implement steps 2.-4.
 \endassignment
 \solution
-\include doc/tutorial/ranges/range_solution3.cpp
+\include range_solution3.cpp
 \endsolution
 
 # Containers
 
 containers are ranges that own their data.
-SeqAn3 uses the standard library containers, like std::vector and std::list to store elements.
+BioC++ uses the standard library containers, like std::vector and std::list to store elements.
 For certain use-cases we have introduced our own containers, though.
 
 All standard library containers model std::ranges::forward_range (see above), but we have introduced container
@@ -291,5 +291,5 @@ On macOS and BSD use `/usr/bin/time -l <program> <args>` and look for "maximum r
 consumption.
 \endassignment
 \solution
-\include doc/tutorial/ranges/range_solution4.cpp
+\include range_solution4.cpp
 \endsolution

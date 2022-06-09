@@ -172,7 +172,7 @@ constexpr aa27 operator""_aa27(char const c) noexcept
  * \include test/snippet/alphabet/aminoacid/aa27_literal.cpp
  *
  * \attention
- * All seqan3 literals are in the namespace bio!
+ * All BioC++ literals are in the namespace bio!
  */
 
 inline aa27_vector operator""_aa27(const char * s, std::size_t n)

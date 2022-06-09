@@ -91,7 +91,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 inline constexpr auto is_pair_open = detail::adl_only::is_pair_open_fn{};
@@ -170,7 +170,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 inline constexpr auto is_pair_close = detail::adl_only::is_pair_close_fn{};
@@ -249,7 +249,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 inline constexpr auto is_unpaired = detail::adl_only::is_unpaired_fn{};
@@ -355,7 +355,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 template <typename alph_t>
@@ -440,7 +440,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 inline constexpr auto pseudoknot_id = detail::adl_only::pseudoknot_id_fn{};

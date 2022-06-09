@@ -126,7 +126,7 @@ private:
 
     static_assert((std::is_same_v<alphabet_char_t<alternative_types>, char> && ...),
                   "The alphabet_variant is currently only tested for alphabets with char_type char. "
-                  "Contact us on GitHub if you have a different use case: https://github.com/seqan/seqan3 .");
+                  "Contact us on GitHub if you have a different use case: https://github.com/biocpp/biocpp-core .");
 
     //!\brief Befriend the base type.
     friend base_t;
@@ -149,13 +149,13 @@ public:
     * \private
     * \details
     */
-    using seqan3_required_types = type_list<alternative_types...>;
+    using biocpp_required_types = type_list<alternative_types...>;
    /*!\brief Expose the recursive alternative types to concept checks in metaprogramming.
     * \private
     * \details
     */
-    using seqan3_recursive_required_types =
-        list_traits::concat<seqan3_required_types,
+    using biocpp_recursive_required_types =
+        list_traits::concat<biocpp_required_types,
                             detail::transformation_trait_or_t<detail::recursive_required_types<alternative_types>,
                                                               type_list<>>...>;
 

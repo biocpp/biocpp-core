@@ -341,7 +341,7 @@ TEST(alphabet_variant_test, two_different_variants)
 TYPED_TEST(alphabet_variant_test, char_is_valid_for)
 {
     using gapped_alphabet_t = TypeParam;
-    using gapped_alphabet_bases_t = typename gapped_alphabet_t::seqan3_required_types;
+    using gapped_alphabet_bases_t = typename gapped_alphabet_t::biocpp_required_types;
     using char_t = bio::alphabet_char_t<gapped_alphabet_t>;
 
     char_t i = std::numeric_limits<char_t>::min();
