@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
@@ -195,7 +196,7 @@ constexpr aa10li operator""_aa10li(char const c) noexcept
  * You can use this string literal to easily assign to aa10li_vector:
  *
  * \attention
- * All seqan3 literals are in the namespace bio!
+ * All BioC++ literals are in the namespace bio!
  */
 
 inline aa10li_vector operator""_aa10li(char const * const s, size_t const n)

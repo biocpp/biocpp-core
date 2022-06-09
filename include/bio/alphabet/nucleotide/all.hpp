@@ -1,12 +1,13 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  * \brief Meta-header for the nucleotide submodule; includes all headers from alphabet/nucleotide/.
  */
 
@@ -56,7 +57,7 @@
  * Keep in mind, that while we think of "the nucleotide alphabet" as consisting of four bases, there are indeed
  * more characters defined with different levels of ambiguity. Depending on your application it will make sense
  * to preserve this ambiguity or to discard it to save space and/or optimise computations.
- * SeqAn offers six distinct nucleotide alphabet types to accommodate for this.
+ * BioC++ offers six distinct nucleotide alphabet types to accommodate for this.
  *
  * The specialised RNA alphabets are provided for convenience, however the DNA alphabets can handle being assigned a
  * `'U'` character, as well. See below for the details.
@@ -72,7 +73,7 @@
  *
  * ###Printing and conversion to char
  *
- * As with all alphabets in SeqAn, none of the nucleotide alphabets can be directly converted to char or printed
+ * As with all alphabets in BioC++, none of the nucleotide alphabets can be directly converted to char or printed
  * with iostreams.
  * You need to explicitly call bio::to_char to convert to char or use the {fmt}-library which automatically converts.
  *

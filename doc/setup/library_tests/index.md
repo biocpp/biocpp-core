@@ -1,9 +1,9 @@
 # Setting up library tests {#setup_tests}
 
 <b>Learning Objective:</b><br>
-In this guide you will learn to set up SeqAn3's library tests to make sure that your contributions don't break anything.
+In this guide you will learn to set up BioC++'s library tests to make sure that your contributions don't break anything.
 
-\tutorial_head{Easy, 20 Minutes, \ref setup, }
+\tutorial_head{Easy, 20 Minutes, \ref core_setup, }
 
 [TOC]
 
@@ -14,19 +14,19 @@ Before submitting a pull request to our repository, make sure that the unit test
 
 ## Setting up unit tests
 
-Assume that you have cloned SeqAn including submodules into `/home/me/devel/seqan3` and performed some local changes.
+Assume that you have cloned BioC++ including submodules into `/home/me/devel/biocpp-core` and performed some local changes.
 
 Create an out-of-source build directory and change to it:
 
 ```bash
-mkdir -p /home/me/devel/seqan3-build/debug
-cd /home/me/devel/seqan3-build/debug
+mkdir -p /home/me/devel/biocpp-core-build/debug
+cd /home/me/devel/biocpp-core-build/debug
 ```
 
 Invoke CMake (this is often referred to as the "Configure" step):
 
 ```bash
-cmake ../../seqan3/test/unit -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-7
+cmake ../../bio/test/unit -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-10
 ```
 
 The build type could be "Release", but stick to "Debug" for now. Specifying the compiler is optional; depending on
@@ -77,7 +77,7 @@ can have unexpected side-effects.
 
 # Other test suites
 
-SeqAn has the following test suites:
+BioC++ has the following test suites:
 
   * unit: tests the API of the library
   * documentation: tests that everything is properly documented
@@ -95,10 +95,10 @@ Since you used out-of-source builds, you can simply create another directory for
 This will setup snippet tests:
 
 ```bash
-mkdir -p /home/me/devel/seqan3-build/snippet
-cd /home/me/devel/seqan3-build/snippet
+mkdir -p /home/me/devel/biocpp-core-build/snippet
+cd /home/me/devel/biocpp-core-build/snippet
 
-cmake ../../seqan3/test/snippet -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-7
+cmake ../../bio/test/snippet -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-10
 
 make -j 4
 
@@ -107,7 +107,7 @@ ctest .
 
 Documentation tests do not require setting a build type or compiler, but they require that doxygen be installed on
 the system. Locally built documentation will be placed into
-`/home/me/devel/seqan3-build/documentation/doc_usr/html/`.
+`/home/me/devel/biocpp-core-build/documentation/doc_usr/html/`.
 
 # Platform specific notes
 

@@ -1,12 +1,13 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  * \brief Core alphabet concept and free function/type trait wrappers.
  */
 
@@ -34,7 +35,7 @@ namespace bio::custom
  *
  * \details
  *
- * For examples of when and how you can make use of this type, please see \link about_customisation the page on
+ * For examples of when and how you can make use of this type, please see \link biocpp_customisation the page on
  * customisation \endlink and the \link howto_write_an_alphabet_custom section on third party types \endlink in
  * the Alphabet HowTo.
  *
@@ -137,7 +138,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 inline constexpr auto to_rank = detail::adl_only::to_rank_fn{};
@@ -233,7 +234,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 inline constexpr auto assign_rank_to = detail::adl_only::assign_rank_to_fn{};
@@ -315,7 +316,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 inline constexpr auto to_char = detail::adl_only::to_char_fn{};
@@ -411,7 +412,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 inline constexpr auto assign_char_to = detail::adl_only::assign_char_to_fn{};
@@ -512,7 +513,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 template <typename alph_t>
@@ -696,7 +697,7 @@ namespace bio
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref about_customisation). To specify the behaviour for your own alphabet type,
+ * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
  * simply provide one of the three functions specified above.
  */
 template <typename alph_t>
@@ -716,7 +717,7 @@ inline constexpr auto alphabet_size = detail::adl_only::alphabet_size_obj<alph_t
  * \extends std::copy_constructible
  * \ingroup alphabet
  *
- * This concept represents the "rank part" of what is considered "an alphabet" in SeqAn. It requires no
+ * This concept represents the "rank part" of what is considered "an alphabet" in BioC++. It requires no
  * `char` representation and corresponding interfaces. It is mostly used internally.
  *
  * ### Requirements
@@ -739,7 +740,7 @@ inline constexpr auto alphabet_size = detail::adl_only::alphabet_size_obj<alph_t
  *   * std::is_trivially_copyable
  *   * bio::standard_layout
  *
- * All alphabets available in SeqAn (with very few exceptions) do so.
+ * All alphabets available in BioC++ (with very few exceptions) do so.
  *
  * ### Related types
  *
@@ -794,7 +795,7 @@ concept semialphabet =
  *
  * ### Serialisation
  *
- * Types that model the concept (and all refinements) can be serialised via SeqAn
+ * Types that model the concept (and all refinements) can be serialised via BioC++
  * serialisation support.
  * The rank value is (de-)serialised, types need not provide any overloads themselves.
  */
@@ -878,7 +879,7 @@ concept alphabet = semialphabet<t> && requires (t v)
  *
  * ### Serialisation
  *
- * Types that model the concept (and all refinements) can be serialised via SeqAn
+ * Types that model the concept (and all refinements) can be serialised via BioC++
  * serialisation support.
  * The rank value is (de-)serialised, types need not provide any overloads themselves.
  */

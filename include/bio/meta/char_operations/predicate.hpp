@@ -1,14 +1,15 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
  * \brief Provides character predicates for tokenisation.
  * \author Rene Rahn <rene.rahn AT fu-berlin.de>
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
 #pragma once
@@ -312,11 +313,11 @@ inline auto constexpr is_xdigit = is_in_interval<'0', '9'> ||
  * \details
  *
  * Char predicates are function like objects that can be used to check if a character `c` fulfills certain
- * constraints. SeqAn implements all predicates also available in the standard library and some more.
+ * constraints. BioC++ implements all predicates also available in the standard library and some more.
  *
  * ### Disjunction and Negation
  *
- * In contrast to the standard library (where the checks are implemented as functions), the functors in SeqAn can be
+ * In contrast to the standard library (where the checks are implemented as functions), the functors in BioC++ can be
  * joined efficiently, maintaining constant-time evaluation independent of the number of checks. Functors can be
  * combined with the `||-operator` or negated via the `!-operator`:
  *
@@ -335,7 +336,7 @@ inline auto constexpr is_xdigit = is_in_interval<'0', '9'> ||
  *
  * ### Standard library predicates
  *
- * SeqAn offers the 12 predicates exactly
+ * BioC++ offers the 12 predicates exactly
  * [as defined in the standard library](https://en.cppreference.com/w/cpp/string/byte) except that we have introduced
  * an underscore in the name to be consistent with our other naming.
  *

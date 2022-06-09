@@ -1,12 +1,13 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2021, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2021, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  * \brief Provides implementation detail for bio::alphabet_variant and bio::alphabet_tuple_base.
  */
 
@@ -38,7 +39,7 @@ namespace bio::detail
 template <typename t>
 concept alphabet_tuple_like = requires
 {
-    requires t::seqan3_alphabet_tuple_like;
+    requires t::biocpp_alphabet_tuple_like;
 };
 //!\endcond
 
@@ -73,12 +74,12 @@ struct required_types
  */
 template <typename t>
 //!\cond
-    requires requires { typename t::seqan3_required_types; }
+    requires requires { typename t::biocpp_required_types; }
 //!\endcond
 struct required_types<t>
 {
     //!\brief The returned type.
-    using type = typename t::seqan3_required_types;
+    using type = typename t::biocpp_required_types;
 };
 
 /*!\brief A bio::type_list with types that the given type depends on. [Trait shortcut]
@@ -112,13 +113,13 @@ template <typename t>
 //!\cond
     requires requires
     {
-        typename t::seqan3_recursive_required_types;
+        typename t::biocpp_recursive_required_types;
     }
 //!\endcond
 struct recursive_required_types<t>
 {
     //!\brief The returned type.
-    using type = typename t::seqan3_recursive_required_types;
+    using type = typename t::biocpp_recursive_required_types;
 };
 
 /*!\brief Shortcut for bio::detail::recursive_required_types.

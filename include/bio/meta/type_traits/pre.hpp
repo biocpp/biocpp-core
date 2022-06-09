@@ -1,13 +1,14 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
  * \brief Provides various transformation trait base templates and shortcuts.
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
 #pragma once
@@ -28,11 +29,11 @@ namespace bio
 #ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
-//!\brief This is helper structure to deprecate bio::value_type and will be removed before SeqAn 3.1.
+//!\brief This is helper structure to deprecate bio::value_type and will be removed before BioC++ 3.1.
 template <typename t>
 struct value_type;
 
-//!\brief This is helper structure to deprecate bio::value_type_t and will be removed before SeqAn 3.1.
+//!\brief This is helper structure to deprecate bio::value_type_t and will be removed before BioC++ 3.1.
 template <typename t>
 using value_type_t = typename value_type<t>::type;
 } // namespace bio::detail
@@ -76,11 +77,11 @@ using value_type_t BIOCPP_DEPRECATED_310 = typename detail::value_type_t<t>;
 #ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
-//!\brief This is helper structure to deprecate bio::reference and will be removed before SeqAn 3.1.
+//!\brief This is helper structure to deprecate bio::reference and will be removed before BioC++ 3.1.
 template <typename t>
 struct reference;
 
-//!\brief This is helper structure to deprecate bio::reference_t and will be removed before SeqAn 3.1.
+//!\brief This is helper structure to deprecate bio::reference_t and will be removed before BioC++ 3.1.
 template <typename t>
 using reference_t = typename reference<t>::type;
 } // namespace bio::detail
@@ -124,11 +125,11 @@ using reference_t BIOCPP_DEPRECATED_310 = typename detail::reference_t<t>;
 #ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
-//!\brief This is helper structure to deprecate bio::rvalue_reference and will be removed before SeqAn 3.1.
+//!\brief This is helper structure to deprecate bio::rvalue_reference and will be removed before BioC++ 3.1.
 template <typename t>
 struct rvalue_reference;
 
-//!\brief This is helper structure to deprecate bio::rvalue_reference_t and will be removed before SeqAn 3.1.
+//!\brief This is helper structure to deprecate bio::rvalue_reference_t and will be removed before BioC++ 3.1.
 template <typename t>
 using rvalue_reference_t = typename rvalue_reference<t>::type;
 } // namespace bio::detail
@@ -172,11 +173,11 @@ using rvalue_reference_t BIOCPP_DEPRECATED_310 = typename detail::rvalue_referen
 #ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
-//!\brief This is helper structure to deprecate bio::const_reference and will be removed before SeqAn 3.1.
+//!\brief This is helper structure to deprecate bio::const_reference and will be removed before BioC++ 3.1.
 template <typename t>
 struct const_reference;
 
-//!\brief This is helper structure to deprecate bio::const_reference_t and will be removed before SeqAn 3.1.
+//!\brief This is helper structure to deprecate bio::const_reference_t and will be removed before BioC++ 3.1.
 template <typename t>
 using const_reference_t = typename const_reference<t>::type;
 } // namespace bio::detail
@@ -224,11 +225,11 @@ using const_reference_t BIOCPP_DEPRECATED_310 = typename detail::const_reference
 #ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
-//!\brief This is helper structure to deprecate bio::difference_type and will be removed before SeqAn 3.1.
+//!\brief This is helper structure to deprecate bio::difference_type and will be removed before BioC++ 3.1.
 template <typename t>
 struct difference_type;
 
-//!\brief This is helper structure to deprecate bio::difference_type_t and will be removed before SeqAn 3.1.
+//!\brief This is helper structure to deprecate bio::difference_type_t and will be removed before BioC++ 3.1.
 template <typename t>
 using difference_type_t = typename difference_type<t>::type;
 } // namespace bio::detail
@@ -274,11 +275,11 @@ using difference_type_t BIOCPP_DEPRECATED_310 = typename detail::difference_type
 #ifdef BIOCPP_DEPRECATED_310
 namespace detail
 {
-//!\brief This is helper structure to deprecate bio::size_type and will be removed before SeqAn 3.1.
+//!\brief This is helper structure to deprecate bio::size_type and will be removed before BioC++ 3.1.
 template <typename t>
 struct size_type;
 
-//!\brief This is helper structure to deprecate bio::size_type_t and will be removed before SeqAn 3.1.
+//!\brief This is helper structure to deprecate bio::size_type_t and will be removed before BioC++ 3.1.
 template <typename t>
 using size_type_t = typename size_type<t>::type;
 } // namespace bio::detail

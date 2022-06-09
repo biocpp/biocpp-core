@@ -1,4 +1,4 @@
-# Code of Conduct {#about_code_of_conduct}
+# Code of Conduct {#biocpp_code_of_conduct}
 
 BioC++ adheres to the [Berlin Code of Conduct](https://berlincodeofconduct.org/). From the code of conduct:
 

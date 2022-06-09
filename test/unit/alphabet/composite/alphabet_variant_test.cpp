@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2021, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2021, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
@@ -340,7 +341,7 @@ TEST(alphabet_variant_test, two_different_variants)
 TYPED_TEST(alphabet_variant_test, char_is_valid_for)
 {
     using gapped_alphabet_t = TypeParam;
-    using gapped_alphabet_bases_t = typename gapped_alphabet_t::seqan3_required_types;
+    using gapped_alphabet_bases_t = typename gapped_alphabet_t::biocpp_required_types;
     using char_t = bio::alphabet_char_t<gapped_alphabet_t>;
 
     char_t i = std::numeric_limits<char_t>::min();

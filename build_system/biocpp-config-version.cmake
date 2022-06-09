@@ -2,7 +2,7 @@
 # Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 # Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 # This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-# shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+# shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/master/LICENSE.md
 # -----------------------------------------------------------------------------------------------------
 
 # This file adds version support for `find_package(SEQAN3 3.1)`.
@@ -15,7 +15,7 @@
 find_path (BIOCPP_CLONE_DIR NAMES build_system/biocpp-config.cmake HINTS "${CMAKE_CURRENT_LIST_DIR}/..")
 find_path (BIOCPP_INCLUDE_DIR NAMES bio/version.hpp HINTS "${BIOCPP_CLONE_DIR}/include")
 
-# extract version from seqan3/version.hpp header
+# extract version from bio/version.hpp header
 file(STRINGS "${BIOCPP_INCLUDE_DIR}/bio/version.hpp" BIOCPP_VERSION_HPP REGEX "#define BIOCPP_VERSION_(MAJOR|MINOR|PATCH)")
 string(REGEX REPLACE "#define BIOCPP_VERSION_(MAJOR|MINOR|PATCH) " "" PACKAGE_VERSION "${BIOCPP_VERSION_HPP}")
 string(REGEX REPLACE ";" "." PACKAGE_VERSION "${PACKAGE_VERSION}")

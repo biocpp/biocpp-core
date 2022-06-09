@@ -1,13 +1,14 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
  * \brief Adaptions of concepts from the Cereal library.
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
 #pragma once
@@ -33,7 +34,7 @@ namespace bio
  * and cereal::XMLOutputArchive.
  *
  * \attention
- * The cereal library is an optional dependency of SeqAn, if it is not found **no types** satisfy this concept.
+ * The cereal library is an optional dependency of BioC++, if it is not found **no types** satisfy this concept.
  */
 //!\cond
 #if BIOCPP_WITH_CEREAL
@@ -54,7 +55,7 @@ concept cereal_output_archive = false;
  * and cereal::XMLInputArchive.
  *
  * \attention
- * The cereal library is an optional dependency of SeqAn, if it is not found **no types** satisfy this concept.
+ * The cereal library is an optional dependency of BioC++, if it is not found **no types** satisfy this concept.
  */
 //!\cond
 #if BIOCPP_WITH_CEREAL
@@ -71,7 +72,7 @@ concept cereal_input_archive = false;
  * \ingroup core
  *
  * \attention
- * The cereal library is an optional dependency of SeqAn, if it is not found **no types** satisfy this concept.
+ * The cereal library is an optional dependency of BioC++, if it is not found **no types** satisfy this concept.
  */
 //!\cond
 #if BIOCPP_WITH_CEREAL
@@ -92,7 +93,7 @@ concept cereal_archive = false;
  * and cereal::XMLInputArchive.
  *
  * \attention
- * The cereal library is an optional dependency of SeqAn, if it is not found **no types** satisfy this concept.
+ * The cereal library is an optional dependency of BioC++, if it is not found **no types** satisfy this concept.
  */
 //!\cond
 #if BIOCPP_WITH_CEREAL
@@ -134,7 +135,7 @@ concept cereal_text_archive = false;
  * \include test/snippet/meta/cereal_example.cpp
  *
  * \attention
- * The cereal library is an optional dependency of SeqAn, if it is not found **no types** satisfy this concept.
+ * The cereal library is an optional dependency of BioC++, if it is not found **no types** satisfy this concept.
  */
 //!\cond
 #if BIOCPP_WITH_CEREAL

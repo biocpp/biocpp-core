@@ -1,14 +1,15 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
  * \ingroup views
  * \brief Auxiliary header for the \link views views submodule \endlink.
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
 #pragma once
@@ -40,7 +41,7 @@ class combined_adaptor;
  *
  * \details
  *
- * See \ref howto_write_a_view for details on what range adaptor closure objects are.
+ * See \ref core_custom_view for details on what range adaptor closure objects are.
  *
  * This class requires from the `derived_type`:
  *   * an `impl()` function that takes a range and possibly further arguments.
@@ -352,10 +353,10 @@ public:
  *
  * # Example
  *
- * From include/seqan3/range/views/kmer_hash.hpp:
+ * From include/bio/range/views/kmer_hash.hpp:
  *
  * TODO(bio)
- * include/seqan3/range/views/kmer_hash.hpp adaptor_def
+ * include/bio/range/views/kmer_hash.hpp adaptor_def
  *
  * This is the full proto-adaptor, first look at the second member function: it handles range and argument input and
  * delegates to the view's constructor. In other, simpler cases you could invoke other adaptors here.

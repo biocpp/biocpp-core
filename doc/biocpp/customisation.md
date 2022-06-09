@@ -1,6 +1,6 @@
-# Customisation {#about_customisation}
+# Customisation {#biocpp_customisation}
 
-SeqAn clearly documents which of its interfaces are designed to be used with user-provided types and how
+BioC++ clearly documents which of its interfaces are designed to be used with user-provided types and how
 this can be realised.
 
 [TOC]
@@ -8,18 +8,20 @@ this can be realised.
 # Generic interfaces
 
 Templates are a core part of generic programming in C++, because they allow instantiating the code with different
-types or constants. SeqAn's API consists mostly of templates for exactly this reason, although we try to make this
+types or constants. BioC++'s API consists mostly of templates for exactly this reason, although we try to make this
 less visible by having the template parameters deduced in many scenarios.
 
 We strive to document the exact requirements for every template parameter in the API documentation; often these
 are also enforced via C++ concepts. Wherever other types meet the given requirements, you can use these
 types as arguments – independent of whether they are standard library types, your own types or types from another
-library. See \ref tutorial_concepts for more details on this.
+library. See \ref core_concepts for more details on this.
 
 Some requirements are more elaborate and depend on a specialisation or "overload" of another entity from the
-SeqAn library. We call these "customisation points" (also known as "extension points").
+BioC++ library. We call these "customisation points" (also known as "extension points").
 
 # Customisation points
+
+\warning TODO this section is subject to change TODO
 
 One such customisation point is bio::to_rank. Instead of the bio::semialphabet concept looking directly for
 member functions or free functions in your namespace, it always checks for a valid definition of bio::to_rank which
@@ -39,10 +41,10 @@ use 1. and 2., because they are much easier to implement. Only use 3. if you ada
 add to that type's definition and/or namespace.
 
 \warning
-**Never** add anything (types, functions, variables...) to namespace `seqan3` and never explicitly specialise one
+**Never** add anything (types, functions, variables...) to namespace `bio::` and never explicitly specialise one
 of our templates (except those in bio::custom) or overload one of our functions.
 
-The \link howto_write_an_alphabet HowTo on creating your own alphabet \endlink provides many examples of how to
+The \link core_custom_alphabet HowTo on creating your own alphabet \endlink provides many examples of how to
 satisfy the requirements of customisation point objects.
 
 More technical background on this topic can be found here:

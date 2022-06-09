@@ -1,13 +1,14 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
  * \brief Meta-header for the \link views views submodule \endlink.
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
 #pragma once
@@ -36,7 +37,7 @@
  *
  * \details
  *
- * SeqAn makes heavy use of views as defined in the
+ * BioC++ makes heavy use of views as defined in the
  * [Ranges Technical Specification](https://en.cppreference.com/w/cpp/experimental/ranges). From the original
  * documentation:  <i>"A view is a lightweight wrapper that presents a view of an underlying sequence of elements in
  * some custom way without mutating or copying it. Views are cheap to create and copy, and have non-owning reference
@@ -47,16 +48,16 @@
  *
  * See the \link range range module \endlink for how views relate to containers and decorators.
  *
- * Most views provided by SeqAn are specific to biological operations, like bio::views::trim_quality which trims
+ * Most views provided by BioC++ are specific to biological operations, like bio::views::trim_quality which trims
  * sequences based on the quality or bio::views::complement which generates the complement of a nucleotide sequence.
- * But SeqAn also provides some general purpose views.
+ * But BioC++ also provides some general purpose views.
  *
  * ### Namespaces
  *
  *   * [All views from the range-v3 libary](https://ericniebler.github.io/range-v3/index.html#range-views) are available
  * in the namespace `ranges::view`.
  *
- *   * All SeqAn views are available in the namespace `bio::views`.
+ *   * All BioC++ views are available in the namespace `bio::views`.
  *
  * ### Example
  *
@@ -151,7 +152,7 @@
  * **Underlying range's reference type:** The reference type is the type the elements of the underlying range are
  * accessed by
  * (since dereferencing an iterator or calling operator[] returns the reference type). The reference type may or may
- * not actually contain a `&` (see below). For many SeqAn specific views additional concept requirements are defined
+ * not actually contain a `&` (see below). For many BioC++ specific views additional concept requirements are defined
  * for the input range's reference type, e.g. bio::views::complement can only operate on ranges whose elements are
  * nucleotides (meet bio::nucleotide_alphabet_check). In some case the type may even be a specific type or the result
  * of a type trait.
@@ -174,7 +175,7 @@
 
 /*!
  * \namespace bio::views
- * \brief The SeqAn namespace for views.
+ * \brief The BioC++ namespace for views.
  *
  * Since views often have name clashes with regular functions and ranges they are implemented in the sub
  * namespace `view`.

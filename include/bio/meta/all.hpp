@@ -1,13 +1,14 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
  * \brief Meta-header for the \link core core module \endlink.
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  * \author Rene Rahn <rene.rahn AT fu-berlin.de>
  */
 
@@ -39,8 +40,8 @@
  */
 
 /*!\namespace bio::custom
- * \brief A namespace for third party and standard library specialisations of SeqAn customisation points.
- * \see \ref about_customisation
+ * \brief A namespace for third party and standard library specialisations of BioC++ customisation points.
+ * \see \ref biocpp_customisation
  */
 
 /*!\if DEV
@@ -49,6 +50,6 @@
  * \details
  * The contents of this namespace are not visible to consumers of the library and the documentation is
  * only generated for developers.
- * \sa https://github.com/seqan/seqan3/wiki/Documentation
+ * \sa https://github.com/biocpp/biocpp-core/wiki/Documentation
  * \endif
  */

@@ -1,13 +1,14 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
  * \brief Additional non-standard concepts for ranges.
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
 #pragma once
@@ -32,11 +33,11 @@ namespace bio
  *
  *   * a `const` range is usually not writable so std::ranges::output_range is lost; pure output ranges
  * (those that are not also input ranges) are therefore not `const`-iterable;
- *   * single-pass input ranges, like SeqAn files, are not `const`-iterable, because "single-pass-ness" implies that
+ *   * single-pass input ranges, like BioC++ files, are not `const`-iterable, because "single-pass-ness" implies that
  * there is something in the range that changes on every iterator increment (and `const` ranges can't change);
  *   * certain views store a state with their algorithm that also changes when `begin()` is called or an
  * iterator is incremented; these may be not be `const`-iterable, because the standard library
- * (and also SeqAn) guarantees that it is safe to call `const`-qualified functions concurrently.
+ * (and also BioC++) guarantees that it is safe to call `const`-qualified functions concurrently.
  */
 //!\cond
 template <typename type>

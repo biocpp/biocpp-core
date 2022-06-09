@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 #pragma once
@@ -13,7 +14,7 @@
 
 /*!\file
  * \brief Provides platform and dependency checks.
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
 // macro cruft
@@ -41,7 +42,7 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 //  Dependencies
 // ============================================================================
 
-// SeqAn [required]
+// BioC++ [required]
 #if !__has_include(<bio/version.hpp>)
 #   error BioC++ include directory not set correctly. Forgot to add -I ${INSTALLDIR}/include to your CXXFLAGS?
 #endif
@@ -108,9 +109,9 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 //  Deprecation Messages
 // ============================================================================
 
-//!\brief Deprecation message for SeqAn 3.1.0 release.
+//!\brief Deprecation message for BioC++ 3.1.0 release.
 #if !defined(BIOCPP_DEPRECATED_310)
-#   define BIOCPP_DEPRECATED_310 [[deprecated("This will be removed in SeqAn-3.1.0; please see the documentation.")]]
+#   define BIOCPP_DEPRECATED_310 [[deprecated("This will be removed in BioC++-3.1.0; please see the documentation.")]]
 #endif
 
 // ============================================================================
@@ -186,7 +187,7 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
  * where gcc 4 is the standard compiler) don't support dual ABI. This has the effect that even community builds of gcc
  * are build with --disable-libstdcxx-dual-abi. Only building the compiler yourself would solve this problem.
  *
- * \see https://github.com/seqan/seqan3/issues/2244
+ * \see https://github.com/biocpp/biocpp-core/issues/2244
  * \see https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_dual_abi.html
  */
 #ifndef BIOCPP_WORKAROUND_GCC_NO_CXX11_ABI
@@ -204,7 +205,7 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 
 #if defined(_GLIBCXX_USE_CXX11_ABI) &&  _GLIBCXX_USE_CXX11_ABI == 0
 #   ifndef BIOCPP_DISABLE_LEGACY_STD_DIAGNOSTIC
-#       pragma GCC warning "We do not actively support compiler that have -D_GLIBCXX_USE_CXX11_ABI=0 set, and it might be that SeqAn does not compile due to this. It is known that all compiler of CentOS 7 / RHEL 7 set this flag by default (and that it cannot be overridden!). Note that these versions of the OSes are community-supported (see https://docs.seqan.de/seqan/3-master-user/about_api.html#platform_stability for more details). You can disable this warning by setting -DBIOCPP_DISABLE_LEGACY_STD_DIAGNOSTIC."
+#       pragma GCC warning "We do not actively support compiler that have -D_GLIBCXX_USE_CXX11_ABI=0 set, and it might be that BioC++ does not compile due to this. It is known that all compiler of CentOS 7 / RHEL 7 set this flag by default (and that it cannot be overridden!). Note that these versions of the OSes are community-supported (see https://docs.seqan.de/seqan/3-master-user/about_api.html#platform_stability for more details). You can disable this warning by setting -DBIOCPP_DISABLE_LEGACY_STD_DIAGNOSTIC."
 #   endif // BIOCPP_DISABLE_LEGACY_STD_DIAGNOSTIC
 #endif // _GLIBCXX_USE_CXX11_ABI == 0
 

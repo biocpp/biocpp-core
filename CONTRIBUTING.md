@@ -1,7 +1,7 @@
-# Contributing {#about_contributing}
+# Contributing {#biocpp_contributing}
 
 First of all, thanks for wanting to contribute to BioC++ Community is important to us and we strive to maintain a great
-culture and atmosphere. Please have a look at our [Code of Conduct](\ref about_code_of_conduct).
+culture and atmosphere. Please have a look at our [Code of Conduct](\ref biocpp_code_of_conduct).
 
 The following is a guide that helps stream-line the process of adding changes. If you haven't contributed to BioC++
 before, don't worry about getting something wrong, that's absolutely OK. However, following this guide closely
@@ -21,11 +21,11 @@ The overall workflow of contributing changes to this repository is:
 
 ## Creating an issue
 
-Go to https://github.com/seqan/seqan3/issues and check if someone else has already reported the same issue. If not,
+Go to https://github.com/biocpp/biocpp-core/issues and check if someone else has already reported the same issue. If not,
 create a new issue and follow the template.
 
 We usually reply quickly to issues; if there is no reply within a week (and it's not prime vacation season in Europe)
-feel free to reply to the issue and explicitly mention `@seqan/core`.
+feel free to reply to the issue and explicitly mention `@h-2`.
 
 ## Creating commits
 

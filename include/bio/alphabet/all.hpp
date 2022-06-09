@@ -1,19 +1,20 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  * \brief Meta-header for the alphabet module.
  *
  * \defgroup alphabet Alphabet
  *
  * # Introduction
  *
- * Alphabets are a core component in SeqAn. They enable us to represent the smallest
+ * Alphabets are a core component in BioC++. They enable us to represent the smallest
  * unit of biological sequence data, e.g. a nucleotide or an amino acid.
  *
  * In theory, these could just be represented as a `char` and this is how many people
@@ -32,19 +33,19 @@
  * alphabet you could instead convert those to a special "unknown"-character, e.g. you might want 'J' to be
  * always converted to 'N'.
  *
- * In SeqAn there are alphabet types for typical sequence alphabets like DNA and amino acid, but also
+ * In BioC++ there are alphabet types for typical sequence alphabets like DNA and amino acid, but also
  * for qualities, RNA structures and alignment gaps. In addition there are templates for combining alphabet
  * types into new alphabets, and wrappers for existing data types like the canonical `char`.
  *
- * In addition to concrete alphabet types, SeqAn provides multiple *concepts* that describe groups of alphabets
+ * In addition to concrete alphabet types, BioC++ provides multiple *concepts* that describe groups of alphabets
  * by their properties and can be used to *constrain* templates so that they only work with certain alphabet types.
- * See the \link tutorial_concepts Tutorial on Concepts \endlink for a gentle introduction to the topic.
+ * See the \link core_concepts Tutorial on Concepts \endlink for a gentle introduction to the topic.
  *
  * # The alphabet concepts
  *
  * ### alphabet size
  *
- * All alphabets in SeqAn have a fixed size. It
+ * All alphabets in BioC++ have a fixed size. It
  * can be queried via the bio::alphabet_size type trait and *optionally* also the `alphabet_size` static
  * member of the alphabet (see below for "members VS free/global functions").
  *
@@ -73,7 +74,7 @@
  *
  * \include test/snippet/alphabet/all_ambiguous.cpp
  *
- * To solve this problem, alphabets in SeqAn define two interfaces:
+ * To solve this problem, alphabets in BioC++ define two interfaces:
  *
  *   1. a **rank based interface** with
  *     * bio::to_rank to produce the numerical representation;
@@ -103,7 +104,7 @@
  * {fmt}:
  * \include test/snippet/alphabet/all_nonambiguous.cpp
  *
- * To reduce the burden of calling `assign_char` often, most alphabets in SeqAn provide custom literals for
+ * To reduce the burden of calling `assign_char` often, most alphabets in BioC++ provide custom literals for
  * the alphabet and sequences over the alphabet:
  *
  * \include test/snippet/alphabet/all_literal.cpp
@@ -143,7 +144,7 @@
  *
  * ### Members VS free/global functions
  *
- * The alphabet concept (as most concepts in SeqAn) looks for free/global functions, i.e. you need to be able
+ * The alphabet concept (as most concepts in BioC++) looks for free/global functions, i.e. you need to be able
  * to call `bio::to_rank(my_letter)`, however *most* alphabets also provide a member function, i.e.
  * `my_letter.to_rank()`. The same is true for the type trait bio::alphabet_size vs the static data member
  * `alphabet_size`.
@@ -155,7 +156,7 @@
  *
  * # containers over alphabets
  *
- * In SeqAn it is recommended you use the STL container classes like std::vector for storing sequence data,
+ * In BioC++ it is recommended you use the STL container classes like std::vector for storing sequence data,
  * but you can use other class templates if they satisfy the respective bio::container, e.g. `std::deque` or
  * <a href="https://github.com/facebook/folly/blob/master/folly/docs/FBVector.md" target="_blank">
  * <tt>folly::fbvector</tt></a> or even <a href="https://doc.qt.io/qt-5/qvector.html" target="_blank">

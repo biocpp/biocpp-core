@@ -1,13 +1,14 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
  * \brief Meta-header for the \link range range module \endlink.
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
 #pragma once
@@ -27,12 +28,12 @@
  * This is resembled by the range concepts defined in this module. Another way to classify ranges is by their storage
  * behaviour, i.e. whether they own the data that is accessible through them. See below for more details.
  *
- * Ranges are found throughout the SeqAn library, this module provides general-purpose ranges that are not specific
+ * Ranges are found throughout the BioC++ library, this module provides general-purpose ranges that are not specific
  * to another module or biological function.
  *
  * ### Iterator capabilities
  *
- * All ranges in SeqAn are either \link std::ranges::input_range input ranges \endlink (they can be read from) or
+ * All ranges in BioC++ are either \link std::ranges::input_range input ranges \endlink (they can be read from) or
  * \link std::ranges::output_range output ranges \endlink (they can be written to) or both. E.g. an
  * `std::vector<int>` is both, but a `std::vector<int> const` would only be an input range.
  *
@@ -49,7 +50,7 @@
  *
  * ### Storage behaviour
  *
- * **Containers** are the ranges most well known, they own their elements. SeqAn makes use of standard STL containers
+ * **Containers** are the ranges most well known, they own their elements. BioC++ makes use of standard STL containers
  * like `std::vector`, but also implements some custom containers. See the \link container container submodule \endlink
  * for more details.
  *
@@ -66,7 +67,7 @@
  *
  * \attention
  *
- * There are ranges in SeqAn that fit neither of these storage categories, e.g. all the files are
+ * There are ranges in BioC++ that fit neither of these storage categories, e.g. all the files are
  * \link std::ranges::input_range input ranges \endlink (if they are input files) and
  * \link std::ranges::output_range output ranges \endlink (if they are output files), but they are neither
  * containers, decorators nor views.

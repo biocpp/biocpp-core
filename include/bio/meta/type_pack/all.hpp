@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2021, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2021, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
@@ -19,7 +20,7 @@
  *
  * This module contains auxiliary functions, algorithms and traits on
  * [template parameter packs](https://en.cppreference.com/w/cpp/language/parameter_pack).
- * All traits on a template parameter pack are defined in the header `<seqan3/core/type_pack/traits.hpp>`.
+ * All traits on a template parameter pack are defined in the header `<bio/core/type_pack/traits.hpp>`.
  */
 
 /*!\namespace bio::pack_traits

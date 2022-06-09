@@ -2,35 +2,24 @@
 # Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 # Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 # This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-# shipped with this file and also available at: https://github.com/seqan/seqan3/blob/master/LICENSE.md
+# shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/master/LICENSE.md
 # -----------------------------------------------------------------------------------------------------
 #
-# This CMake module will try to find SeqAn and its dependencies.  You can use
+# This CMake module will try to find BioC++ and its dependencies.  You can use
 # it the same way you would use any other CMake module.
 #
-#   find_package (BioC++ [REQUIRED] ...)
+#   find_package (BioCpp [REQUIRED] ...)
 #
 # Since this makes a difference for CMAKE, pay attention to the case
-# ("BioC++", "SEQAN3" and "seqan3" are all valid, but other names not).
+# ("BioCpp", "BIOCPP" and "biocpp" are all valid, but other names not).
 #
-# SeqAn has the following platform requirements:
+# BioC++ has the following platform requirements:
 #
 #   C++20
-#   C++ Concepts (either via Concepts TS or C++20)
-#   C++ Filesystem (part of C++20 but needs extra linking on some platforms)
-#   pthread
 #
-# SeqAn requires the following libraries:
+# BioC++ has the following optional dependencies:
 #
-#   SDSL      -- the succinct data structure library
-#   Range-V3  -- Ranges Library by Eric Niebler
-#
-# SeqAn has the following optional dependencies:
-#
-#   ZLIB      -- zlib compression library
-#   BZip2     -- libbz2 compression library
 #   Cereal    -- Serialisation library
-#   Lemon     -- Graph library
 #
 # If you don't wish for these to be detected (and used), you may define BIOCPP_NO_ZLIB,
 # BIOCPP_NO_BZIP2, BIOCPP_NO_CEREAL and BIOCPP_NO_LEMON respectively.
@@ -42,7 +31,7 @@
 #
 # Once the search has been performed, the following variables will be set.
 #
-#   BIOCPP_FOUND            -- Indicate whether SeqAn was found and requirements met.
+#   BIOCPP_FOUND            -- Indicate whether BioC++ was found and requirements met.
 #
 #   BIOCPP_VERSION          -- The version as string, e.g. "3.0.0"
 #   BIOCPP_VERSION_MAJOR    -- e.g. 3
@@ -127,7 +116,7 @@ endmacro ()
 # Note that biocpp-config.cmake can be standalone and thus BIOCPP_CLONE_DIR might be empty.
 # * `BIOCPP_CLONE_DIR` was already found in biocpp-config-version.cmake
 # * `BIOCPP_INCLUDE_DIR` was already found in biocpp-config-version.cmake
-find_path (BIOCPP_SUBMODULES_DIR NAMES submodules/sdsl-lite HINTS "${BIOCPP_CLONE_DIR}" "${BIOCPP_INCLUDE_DIR}/seqan3")
+find_path (BIOCPP_SUBMODULES_DIR NAMES submodules/sdsl-lite HINTS "${BIOCPP_CLONE_DIR}" "${BIOCPP_INCLUDE_DIR}/bio")
 
 if (BIOCPP_INCLUDE_DIR)
     biocpp_config_print ("BioC++ include dir found:   ${BIOCPP_INCLUDE_DIR}")
@@ -174,7 +163,7 @@ option (BIOCPP_CEREAL    "Require cereal and fail if not present." OFF)
 option (BIOCPP_NO_CEREAL "Don't use cereal, even if present." OFF)
 
 if (BIOCPP_CEREAL AND BIOCPP_NO_CEREAL)
-    # this is always a user error, therefore we always error-out, even if SeqAn is not required
+    # this is always a user error, therefore we always error-out, even if BioC++ is not required
     message (FATAL_ERROR "You may not specify BIOCPP_CEREAL and BIOCPP_NO_CEREAL at the same time.\n\
                           You can specify neither (use auto-detection), or specify either to force on/off.")
     return ()
@@ -333,9 +322,9 @@ add_library (biocpp_core INTERFACE)
 target_compile_definitions (biocpp_core INTERFACE ${BIOCPP_DEFINITIONS})
 target_compile_options (biocpp_core INTERFACE ${BIOCPP_CXX_FLAGS_LIST})
 target_link_libraries (biocpp_core INTERFACE "${BIOCPP_LIBRARIES}")
-# include seqan3/include/ as -I, because seqan3 should never produce warnings.
+# include bio/include/ as -I, because BioC++ should never produce warnings.
 target_include_directories (biocpp_core INTERFACE "${BIOCPP_INCLUDE_DIR}")
-# include everything except seqan3/include/ as -isystem, i.e.
+# include everything except bio/include/ as -isystem, i.e.
 # a system header which suppresses warnings of external libraries.
 target_include_directories (biocpp_core SYSTEM INTERFACE "${BIOCPP_DEPENDENCY_INCLUDE_DIRS}")
 add_library (biocpp::core ALIAS biocpp_core)

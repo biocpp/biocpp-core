@@ -1,12 +1,13 @@
 // -----------------------------------------------------------------------------------------------------
+// Copyright (c) 2022 deCODE Genetics
 // Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 // Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 // This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md.md
+// shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \author Hannes Hauswedell <hannes.hauswedell AT fu-berlin.de>
+ * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  * \brief Provides bio::pod_tuple
  */
 
@@ -165,7 +166,7 @@ pod_tuple(types && ...) -> pod_tuple<types...>;
  * \{
  * \brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
  *
- * Note that these functions are available, both, in the seqan3 namespace and in namespace std.
+ * Note that these functions are available, both, in the bio namespace and in namespace std.
  */
 //!\brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
 //!\relates bio::pod_tuple
@@ -228,7 +229,7 @@ constexpr auto const && get(bio::pod_tuple<types...> const && t) noexcept
 /*!\name Access an element of a pod_tuple by type
  * \brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
  *
- * Note that these functions are available, both, in the seqan3 namespace and in namespace std.
+ * Note that these functions are available, both, in the bio namespace and in namespace std.
  * As is the case with std::tuple, this function is only defined if the type appears once
  * in the tuple, i.e. `std::get<int>(std::tuple<int, int>{1,2})` is not defined.
  * \{
