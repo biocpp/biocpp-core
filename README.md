@@ -1,3 +1,5 @@
+<img align="right" src="test/documentation/biocpp_logo.svg">
+
 # The BioC++ Core Library
 
 This is the core library of the [BioC++ project](https://github.com/biocpp/biocpp). It provides the following modules:
