@@ -1,4 +1,4 @@
-<img align="right" src="test/documentation/biocpp_logo.svg">
+<img align="left" src="test/documentation/biocpp_logo.svg">
 
 # The BioC++ Core Library
 
@@ -13,6 +13,8 @@ A short introduction into the topic can be found [here](https://hannes.hauswedel
 
 General information on the **BioC++ project** can be found in the [main repository](https://github.com/biocpp/biocpp).
 The **full documention** (all BioC++ modules) can found [here](https://biocpp.github.io).
+
+**Attention:** this library is currently a work-in-progress. Getting it into a stable state is of highest priority, but until then all kinds of changes are still possible.
 
 ## Example
 
