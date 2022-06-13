@@ -22,9 +22,8 @@ class pairwise_combine_base_test : public ::testing::Test
 {
 public:
 
-    using view_t       = decltype(bio::detail::pairwise_combine_view{std::views::all(std::declval<t &>())});
-    using const_view_t = decltype(bio::detail::pairwise_combine_view{
-                                    std::views::all(std::declval<t const &>())});
+    using view_t       = decltype(bio::detail::pairwise_combine_view{std::declval<t &>()});
+    using const_view_t = decltype(bio::detail::pairwise_combine_view{std::declval<t const &>()});
 
     auto create_view()
     {
@@ -371,7 +370,6 @@ TYPED_TEST(pairwise_combine_test, basic_construction)
 {
     using view_t = typename TestFixture::view_t;
 
-    EXPECT_TRUE(std::is_default_constructible_v<view_t>);
     EXPECT_TRUE(std::is_copy_constructible_v<view_t>);
     EXPECT_TRUE(std::is_move_constructible_v<view_t>);
     EXPECT_TRUE(std::is_copy_assignable_v<view_t>);

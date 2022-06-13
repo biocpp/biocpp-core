@@ -1,16 +1,14 @@
-name: BioC++ Linux CI
+name: Linux CI
 
 on:
   push:
     branches:
       # Push events to branches matching refs/heads/master
-      - 'master'
+      - 'main'
       # Push events to branches matching refs/heads/release*
       - 'release*'
   # Trigger after PR was unlabeled
   pull_request:
-    types:
-      - unlabeled
   # Enables a manual trigger, may run on any branch
   workflow_dispatch:
 
@@ -32,7 +30,7 @@ jobs:
     timeout-minutes: 120
     #if: github.repository_owner == 'seqan' || github.event_name == 'workflow_dispatch' || github.event.label.name == 'clang-format'
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         include:
           - name: "Coverage gcc12"
@@ -101,8 +99,8 @@ jobs:
         env:
           CC: ${{ matrix.cc }}
         run: |
+          sudo apt-get install --yes gcovr
           sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/${CC/gcc/gcov} 100
-          pip install gcovr==5.0
       - name: Load ccache
         uses: actions/cache@v2
         with:
@@ -124,8 +122,7 @@ jobs:
         run: |
           mkdir biocpp-core-build
           cd biocpp-core-build
-          cmake ../biocpp-core/test/${{ matrix.build }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}"
-          make -j2 gtest_build
+          cmake ../biocpp-core/test/${{ matrix.build }} -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}"
       - name: Build tests
         env:
           CCACHE_BASEDIR: ${{ github.workspace }}
@@ -149,5 +146,5 @@ jobs:
         if: matrix.build == 'coverage'
         uses: codecov/codecov-action@v2
         with:
-          files: ${{ github.workspace }}/biocpp-core-build/biocpp-core_coverage.xml
+          files: ${{ github.workspace }}/biocpp-core-build/biocpp_coverage.xml
           root_dir: ${{ github.workspace }}/biocpp-core

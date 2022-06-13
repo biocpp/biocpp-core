@@ -36,7 +36,9 @@ struct repeat_n_fn
     template <typename value_t>
     constexpr auto operator()(value_t && value, size_t const count) const
     {
-        static_assert(std::copy_constructible<value_t>, "The value passed to repeat_n must be copy constructible.");
+        static_assert(std::constructible_from<std::remove_cvref_t<value_t>, value_t>,
+                      "The value passed to repeat_n must be (1) an lvalue and its type copy constructible; or "
+                      "(2) an rvalue and its type move constructible.");
 
         return views::repeat(std::forward<value_t>(value)) | views::take_exactly(count);
     }

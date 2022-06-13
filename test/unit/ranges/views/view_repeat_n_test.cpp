@@ -79,7 +79,7 @@ TEST(view, factory)
     // view
     {
         auto view = std::string{"foobar"} | bio::views::persist | std::views::take(3);
-        auto v = bio::views::repeat_n(view, 5);
+        auto v = bio::views::repeat_n(std::move(view), 5);
         EXPECT_RANGE_EQ(*v.begin(), std::string{"foo"});
     }
 
