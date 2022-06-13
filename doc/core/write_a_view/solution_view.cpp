@@ -19,7 +19,7 @@ private:
 
     // the immediate base type is the CRTP-layer
     using base_t = bio::detail::inherited_iterator_base<my_iterator<urng_t>,
-                                                           std::ranges::iterator_t<urng_t>>;
+                                                        std::ranges::iterator_t<urng_t>>;
 
 public:
     // the member types are never imported automatically, but can be explicitly inherited:
@@ -85,14 +85,19 @@ public:
     //![view_member_types]
 
     //![view_constructors]
+    my_view()                            = default;
+    my_view(my_view const &)             = default;
+    my_view(my_view &&)                  = default;
+    my_view & operator=(my_view const &) = default;
+    my_view & operator=(my_view &&)      = default;
+
     // construct from a view
     my_view(urng_t urange_) : urange{std::move(urange_)}
     {}
 
-    // construct from non-view that can be view-wrapped
-    template <std::ranges::viewable_range orng_t>
-        requires std::same_as<std::views::all_t<orng_t>, urng_t>
-    my_view(orng_t && urange_) : urange{std::views::all(std::forward<orng_t>(urange_))}
+    // construct from the underlying type (works together with the deduction guide)
+    template <std::constructible_from<urng_t> orng_t>
+    my_view(orng_t && urange_) : urange{std::forward<orng_t>(urange_)}
     {}
     //![view_constructors]
 
@@ -173,7 +178,7 @@ int main()
     /* try the iterator */
     using my_it_concrete = my_iterator<std::vector<bio::dna5>>;
 
-     my_it_concrete it{vec.begin()};
+    my_it_concrete it{vec.begin()};
 
     // now you can use operator[] on the iterator
     for (size_t i = 0; i < 7; ++i)

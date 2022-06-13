@@ -26,23 +26,15 @@ defaults:
 jobs:
   build:
     name: ${{ matrix.name }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os == '' && 'ubuntu-22.04' || matrix.os }}
     timeout-minutes: 120
-    #if: github.repository_owner == 'seqan' || github.event_name == 'workflow_dispatch' || github.event.label.name == 'clang-format'
     strategy:
       fail-fast: false
       matrix:
         include:
-          - name: "Coverage gcc12"
-            cxx: "g++-12"
-            cc: "gcc-12"
-            os: "ubuntu-22.04"
-            build: coverage
-            build_type: Debug
-
-          - name: "Unit gcc12"
-            cxx: "g++-12"
-            cc: "gcc-12"
+          - name: "Unit gcc10"
+            cxx: "g++-10"
+            cc: "gcc-10"
             os: "ubuntu-22.04"
             build: unit
             build_type: Release
@@ -54,11 +46,49 @@ jobs:
             build: unit
             build_type: Release
 
-          - name: "Unit gcc10"
-            cxx: "g++-10"
-            cc: "gcc-10"
+          - name: "Unit gcc12"
+            cxx: "g++-12"
+            cc: "gcc-12"
             os: "ubuntu-22.04"
             build: unit
+            build_type: Release
+
+          - name: "Documentation"
+            cxx: "doxygen"
+            cc: "doxygen"
+            os: "ubuntu-22.04"
+            build: documentation
+            build_type: Debug
+
+          - name: "Coverage gcc12"
+            cxx: "g++-12"
+            cc: "gcc-12"
+            os: "ubuntu-22.04"
+            build: coverage
+            build_type: Debug
+
+          - name: "Snippet gcc10"
+            cxx: "g++-10"
+            cc: "gcc-10"
+            build: snippet
+            build_type: Release
+
+          - name: "Snippet gcc12"
+            cxx: "g++-12"
+            cc: "gcc-12"
+            build: snippet
+            build_type: Release
+
+          - name: "Performance gcc12"
+            cxx: "g++-12"
+            cc: "gcc-12"
+            build: performance
+            build_type: Release
+
+          - name: "Header gcc12"
+            cxx: "g++-12"
+            cc: "gcc-12"
+            build: header
             build_type: Release
 
     steps:
@@ -102,6 +132,7 @@ jobs:
           sudo apt-get install --yes gcovr
           sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/${CC/gcc/gcov} 100
       - name: Load ccache
+        if: matrix.build == 'documentation'
         uses: actions/cache@v2
         with:
           path: .ccache
@@ -131,14 +162,13 @@ jobs:
           CCACHE_COMPRESSLEVEL: 12
           CCACHE_MAXSIZE: ${{ matrix.build == 'coverage' && '525M' || '75M' }}
           CCACHE_IGNOREOPTIONS: "-fprofile-abs-path"
-          #GCOV: ${{ github.workspace }}/biocpp-core/.github/workflows/scripts/gcov.sh
         run: |
           ccache -z
           cd biocpp-core-build
           make -k -j2
           ccache -sv
       - name: Run tests
-        if: matrix.build != 'coverage'
+        if: matrix.build != 'coverage' && matrix.build != 'documentation'
         run: |
           cd biocpp-core-build
           ctest . -j2 --output-on-failure

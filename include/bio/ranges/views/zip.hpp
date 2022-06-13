@@ -14,6 +14,7 @@
 #pragma once
 
 #include <algorithm>
+#include <functional>
 #include <ranges>
 
 #include <bio/ranges/views/detail.hpp>
