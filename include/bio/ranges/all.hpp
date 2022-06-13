@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Meta-header for the \link range range module \endlink.
+ * \brief Meta-header for the \link range ranges module \endlink.
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
@@ -16,8 +16,8 @@
 #include <bio/ranges/container/all.hpp>
 #include <bio/ranges/views/all.hpp>
 
-/*!\defgroup range Range
- * \brief The range module provides general purpose containers, decorators and views.
+/*!\defgroup range Ranges
+ * \brief The ranges module provides general purpose containers, decorators and views.
  *
  * ### Introduction
  *
