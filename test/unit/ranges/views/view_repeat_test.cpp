@@ -156,8 +156,8 @@ TEST(view, factory)
     // view
     {
         auto view = std::string{"foobar"} | bio::views::persist | std::views::take(3);
-        auto v = bio::views::repeat(view);
-        EXPECT_RANGE_EQ(*v.begin(), view);
+        auto v = bio::views::repeat(std::move(view));
+        EXPECT_RANGE_EQ(*v.begin(), std::string_view{"foo"});
     }
 
     // combinability
