@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Request a new feature that you would like to see in SeqAn.
+about: Request a new feature that you would like to see. Please ask "questions" in the "Discussions" tab instead!
 title: ''
 labels: 'feature/proposal'
 assignees: ''
@@ -14,8 +14,8 @@ implement everything that we (or you) would like.
 One of the following will happen to feature requests:
 
   * We will "accept" it and someone will start working on it for the next release.
-  * We will convert it to a card in our [long-term project planning](https://github.com/seqan/seqan3/projects), but
+  * We will convert it to a discussion where it can be discussed further and might be picked up in the future. We will
     close the issue for now as no-one can work on it immediately. You are welcome to contribute patches yourself,
-    see the [contributor guide](https://github.com/seqan/seqan3/pull/CONTRIBUTING.md).
+    see the [contributor guide](https://github.com/biocpp/biocpp/wiki/Contributing).
   * The feature request is invalid and will be closed.
 -->
