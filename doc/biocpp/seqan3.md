@@ -4,6 +4,7 @@ BioC++ was created by Hannes Hauswedell, one of the main developers behind SeqAn
 
 Some of the strategic differences between BioC++ and SeqAn3 are:
 * focus on delivering a core library with stable interfaces as soon as possible
+* no dependencies for the core library
 * stronger modularisation
   * allows users to choose BioC++ libraries for some tasks and more specialised third party libraries for others
   * allows developers to apply different rules to some libraries (more stringent code reviews and high stability on important libraries; faster development for libraries in "research" status)

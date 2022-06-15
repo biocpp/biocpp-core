@@ -11,7 +11,6 @@
             <tab type="user"  visible="yes" title="BioC++ ↔ SeqAn3"     url="\ref biocpp_seqan3"            intro=""/>
             <tab type="user"  visible="yes" title="Code of Conduct"     url="\ref biocpp_code_of_conduct"   intro=""/>
             <tab type="user"  visible="yes" title="API/ABI stability"   url="\ref biocpp_api"               intro=""/>
-            <tab type="user"  visible="yes" title="Contributing"        url="\ref biocpp_contributing"      intro=""/>
             <tab type="user"  visible="yes" title="Customisation"       url="\ref biocpp_customisation"     intro=""/>
 
         </tab>
