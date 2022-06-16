@@ -39,7 +39,7 @@ public:
     //!\brief Operator definition.
     template <typename alph_t>
     //!\cond
-        requires requires (alph_t const chr) { { impl(priority_tag<2>{}, chr) }; }
+        requires (requires (alph_t const chr) { { impl(priority_tag<2>{}, chr) }; })
     //!\endcond
     constexpr auto operator()(alph_t const chr) const noexcept
     {
@@ -95,7 +95,7 @@ inline constexpr auto to_phred = detail::adl_only::to_phred_fn{};
  */
 template <typename alphabet_type>
 //!\cond
-    requires requires { { bio::to_phred(std::declval<alphabet_type>()) }; }
+    requires (requires { { bio::to_phred(std::declval<alphabet_type>()) }; })
 //!\endcond
 using alphabet_phred_t = decltype(bio::to_phred(std::declval<alphabet_type>()));
 
@@ -125,8 +125,8 @@ public:
     //!\brief Operator definition for lvalues.
     template <typename alph_t>
     //!\cond
-        requires requires (bio::alphabet_phred_t<alph_t> const p, alph_t & a)
-            { { impl(priority_tag<2>{}, a, p) }; }
+        requires (requires (bio::alphabet_phred_t<alph_t> const p, alph_t & a)
+            { { impl(priority_tag<2>{}, a, p) }; })
     //!\endcond
     constexpr alph_t & operator()(bio::alphabet_phred_t<alph_t> const p, alph_t & a) const noexcept
     {
@@ -141,8 +141,8 @@ public:
     //!\brief Operator definition for rvalues.
     template <typename alph_t>
     //!\cond
-        requires requires (bio::alphabet_phred_t<alph_t> const p, alph_t & a)
-            { { impl(priority_tag<2>{}, a, p) }; } && (!std::is_lvalue_reference_v<alph_t>)
+        requires (requires (bio::alphabet_phred_t<alph_t> const p, alph_t & a)
+            { { impl(priority_tag<2>{}, a, p) }; } && (!std::is_lvalue_reference_v<alph_t>))
     //!\endcond
     constexpr alph_t operator()(bio::alphabet_phred_t<alph_t> const p, alph_t && a) const noexcept
     {

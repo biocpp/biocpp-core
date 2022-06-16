@@ -94,8 +94,7 @@ protected:
     };
 
     //!\copydoc bio::dna4::char_to_rank
-    static constexpr std::array<rank_type, 256> char_to_rank
-    {
+    static constexpr std::array<rank_type, 256> char_to_rank =
         [] () constexpr
         {
             std::array<rank_type, 256> ret{};
@@ -115,8 +114,7 @@ protected:
             ret['U'] = ret['T']; ret['u'] = ret['t'];
 
             return ret;
-        }()
-    };
+        }();
 
     //!\copydoc bio::dna4::complement_table
     static const std::array<sam_dna16, alphabet_size> complement_table;

@@ -68,7 +68,7 @@ struct instantiate<lazy<template_t, spec_t...>>
  */
 template <typename t>
 //!\cond
-    requires requires { typename instantiate<t>::type; }
+    requires (requires { typename instantiate<t>::type; })
 //!\endcond
 using instantiate_t = typename instantiate<t>::type;
 
@@ -113,7 +113,7 @@ struct instantiate_if<lazy<template_t, spec_t...>, true>
  */
 template <typename t, bool condition>
 //!\cond
-    requires requires { typename instantiate_if<t, condition>::type; }
+    requires (requires { typename instantiate_if<t, condition>::type; })
 //!\endcond
 using instantiate_if_t = typename instantiate_if<t, condition>::type;
 
@@ -123,7 +123,7 @@ using instantiate_if_t = typename instantiate_if<t, condition>::type;
  */
 template <typename t, bool condition>
 //!\cond
-    requires requires { instantiate_if_t<t, condition>::value; }
+    requires (requires { instantiate_if_t<t, condition>::value; })
 //!\endcond
 inline constexpr auto instantiate_if_v = instantiate_if_t<t, condition>::value;
 
@@ -155,7 +155,7 @@ struct lazy_conditional : instantiate<std::conditional_t<decision, on_true_t, on
  */
 template <bool decision, typename on_true_t, typename on_false_t>
 //!\cond
-    requires requires { typename instantiate_t<std::conditional_t<decision, on_true_t, on_false_t>>; }
+    requires (requires { typename instantiate_t<std::conditional_t<decision, on_true_t, on_false_t>>; })
 //!\endcond
 using lazy_conditional_t = instantiate_t<std::conditional_t<decision, on_true_t, on_false_t>>;
 
@@ -186,7 +186,7 @@ struct is_class_template_declarable_with :
 
 //!\cond
 template <template <typename ...> typename query_t, typename ...args_t>
-    requires requires { typename std::type_identity<query_t<args_t...>>::type; }
+    requires (requires { typename std::type_identity<query_t<args_t...>>::type; })
 struct is_class_template_declarable_with<query_t, args_t...> : public std::true_type
 {};
 //!\endcond

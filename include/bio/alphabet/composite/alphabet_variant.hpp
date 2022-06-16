@@ -32,10 +32,10 @@ namespace bio::detail
 //!\brief Prevents wrong instantiations of std::alphabet_variant's constructors.
 template <typename other_t, typename ... alternative_types>
 inline constexpr bool variant_general_guard =
-    (!std::same_as<other_t, alphabet_variant<alternative_types...>>) &&
+    ((!std::same_as<other_t, alphabet_variant<alternative_types...>>) &&
     (!std::is_base_of_v<alphabet_variant<alternative_types...>, other_t>) &&
     (!(std::same_as<other_t, alternative_types> || ...)) &&
-    (!list_traits::contains<alphabet_variant<alternative_types...>, recursive_required_types_t<other_t>>);
+    (!list_traits::contains<alphabet_variant<alternative_types...>, recursive_required_types_t<other_t>>));
 
 //!\brief Prevents wrong instantiations of std::alphabet_variant's comparison operators.
 template <typename lhs_t, typename rhs_t, bool lhs_rhs_switched, typename ... alternative_types>
@@ -110,9 +110,9 @@ namespace bio
  */
 template <typename ...alternative_types>
 //!\cond
-    requires (detail::writable_constexpr_alphabet<alternative_types> && ...) &&
+    requires ((detail::writable_constexpr_alphabet<alternative_types> && ...) &&
              (std::regular<alternative_types> && ...) &&
-             (sizeof...(alternative_types) >= 2)
+             (sizeof...(alternative_types) >= 2))
 //!\endcond
 class alphabet_variant : public alphabet_base<alphabet_variant<alternative_types...>,
                                               (static_cast<size_t>(alphabet_size<alternative_types>) + ...),
@@ -190,11 +190,11 @@ public:
      */
     template <typename alternative_t>
     //!\cond
-        requires (!std::same_as<alternative_t, alphabet_variant>) &&
+        requires ((!std::same_as<alternative_t, alphabet_variant>) &&
                  (!std::is_base_of_v<alphabet_variant, alternative_t>) &&
                  (!list_traits::contains<alphabet_variant,
                   detail::transformation_trait_or_t<detail::recursive_required_types<alternative_t>, type_list<>>>) &&
-                 (is_alternative<alternative_t>())
+                 (is_alternative<alternative_t>()))
     //!\endcond
     constexpr alphabet_variant(alternative_t const alternative) noexcept
     {
@@ -567,8 +567,7 @@ protected:
     /*!\brief Compile-time generated lookup table which maps the char to the index of the first alphabet that fulfils
      *        char_is_valid_for.
      */
-    static constexpr auto first_valid_char_table
-    {
+    static constexpr auto first_valid_char_table =
         [] () constexpr
         {
             constexpr size_t alternative_size = sizeof...(alternative_types);
@@ -595,8 +594,7 @@ protected:
             }
 
             return lookup_table;
-        }()
-    };
+        }();
 
     /*!\brief Compile-time generated lookup table which maps the char to rank.
      *

@@ -161,8 +161,7 @@ protected:
     //!\privatesection
 
     //!\brief Rank to char conversion table.
-    static std::array<char_type, alphabet_size> constexpr rank_to_char
-    {
+    static std::array<char_type, alphabet_size> constexpr rank_to_char =
         [] () constexpr
         {
             std::array<char_type, alphabet_size> ret{};
@@ -176,12 +175,10 @@ protected:
             }
 
             return ret;
-        }()
-    };
+        }();
 
     //!\brief Rank to phred conversion table.
-    static std::array<char_type, alphabet_size> constexpr rank_to_phred
-    {
+    static std::array<char_type, alphabet_size> constexpr rank_to_phred =
         [] () constexpr
         {
             std::array<char_type, alphabet_size> ret{};
@@ -195,8 +192,7 @@ protected:
             }
 
             return ret;
-        }()
-    };
+        }();
 };
 
 //!\brief Type deduction guide enables usage of qualified without specifying template args.

@@ -42,6 +42,7 @@ struct priority_tag<0>
 // BIOCPP_CPO_IMPL
 // ============================================================================
 
+// clang-format off
 //!\brief A macro that helps defining the overload set of a customisation point.
 #define BIOCPP_CPO_IMPL(PRIO, TERM)                                                                                  \
 /*!\brief A customisation point overload.*/                                                                          \
@@ -50,8 +51,10 @@ static constexpr decltype(auto) impl(bio::detail::priority_tag<PRIO>,           
                                      [[maybe_unused]] t && v,                                                        \
                                      [[maybe_unused]] arg_ts && ... args)                                            \
     noexcept(noexcept(TERM))                                                                                         \
-    requires requires (bio::detail::priority_tag<PRIO> const &/*<- need for doxygen*/, t && v, arg_ts && ... args)\
-    { { TERM }; }                                                                                                    \
+    requires (requires (bio::detail::priority_tag<PRIO> const &/*<- need for doxygen*/, t && v, arg_ts && ... args)\
+    { { TERM }; })                                                                                                    \
 {                                                                                                                    \
     return TERM;                                                                                                     \
 }
+
+// clang-format on

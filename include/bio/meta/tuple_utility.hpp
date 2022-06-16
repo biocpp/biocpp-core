@@ -40,7 +40,7 @@ template <size_t beg,
           size_t ... Is,
           typename ...ts>
 //!\cond
-    requires tuple_like<tuple_t<ts...>> && tuple_like<tuple_t<>>
+    requires (tuple_like<tuple_t<ts...>> && tuple_like<tuple_t<>>)
 //!\endcond
 constexpr auto tuple_split(tuple_t<ts...> const & t, std::index_sequence<Is...> const & BIOCPP_DOXYGEN_ONLY(idx))
 {
@@ -53,7 +53,7 @@ template <size_t beg,
           size_t ... Is,
           typename ...ts>
 //!\cond
-    requires tuple_like<tuple_t<ts...>> && tuple_like<tuple_t<>>
+    requires (tuple_like<tuple_t<ts...>> && tuple_like<tuple_t<>>)
 //!\endcond
 constexpr auto tuple_split(tuple_t<ts...> && t, std::index_sequence<Is...> const & BIOCPP_DOXYGEN_ONLY(idx))
 {

@@ -95,7 +95,7 @@ struct deferred_crtp_base_vargs
  */
 template <typename deferred_crtp_base_t, typename derived_t>
 //!\cond
-    requires requires { typename deferred_crtp_base_t::template invoke<derived_t>; }
+    requires (requires { typename deferred_crtp_base_t::template invoke<derived_t>; })
 //!\endcond
 using invoke_deferred_crtp_base = typename deferred_crtp_base_t::template invoke<derived_t>;
 

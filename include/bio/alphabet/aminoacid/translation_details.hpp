@@ -30,8 +30,7 @@ struct translation_table
 {
     //!\brief Holds the generic translation table.
     static constexpr std::array<std::array<std::array<aa27, alphabet_size<nucl_type>>, alphabet_size<nucl_type>>,
-                                                      alphabet_size<nucl_type>> VALUE
-    {
+                                                      alphabet_size<nucl_type>> VALUE =
         [] () constexpr
         {
             std::array<std::array<std::array<aa27, alphabet_size<nucl_type>>,
@@ -52,8 +51,7 @@ struct translation_table
                 }
             }
             return table;
-        } ()
-    };
+        } ();
 };
 
 //!\brief Translation table for canonical genetic code and dna15 alphabet.
@@ -62,6 +60,7 @@ struct translation_table<dna15, bio::genetic_code::CANONICAL, void_type>
 {
     //!\brief Holds the translation table for canonical genetic code and nucl16 alphabet.
     static constexpr aa27 VALUE[dna15::alphabet_size][dna15::alphabet_size][dna15::alphabet_size]
+    // clang-format off
     {
         { // a??
             // a,        b,        c,        d,        g,        h,        k,        m,        n,        r,        s,        t,        v,        w,        y
@@ -319,6 +318,7 @@ struct translation_table<dna15, bio::genetic_code::CANONICAL, void_type>
             { 'X'_aa27, 'X'_aa27, 'X'_aa27, 'X'_aa27, 'X'_aa27, 'X'_aa27, 'X'_aa27, 'X'_aa27, 'X'_aa27, 'X'_aa27, 'X'_aa27, 'X'_aa27, 'X'_aa27, 'X'_aa27, 'X'_aa27 }  // yy?
         }
     };
+    // clang-format on
 };
 
 }

@@ -95,8 +95,7 @@ protected:
     };
 
     //!\copydoc bio::dna4::char_to_rank
-    static constexpr std::array<rank_type, 256> char_to_rank
-    {
+    static constexpr std::array<rank_type, 256> char_to_rank =
         [] () constexpr
         {
             std::array<rank_type, 256> ret{};
@@ -117,8 +116,7 @@ protected:
 
             // iupac characters are implicitly "UNKNOWN"
             return ret;
-        }()
-    };
+        }();
 
     //!\copydoc bio::dna4::complement_table
     static const std::array<dna5, alphabet_size> complement_table;

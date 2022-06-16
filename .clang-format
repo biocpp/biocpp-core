@@ -111,7 +111,7 @@ PointerAlignment: Middle
 QualifierAlignment: Custom
 QualifierOrder: ['static', 'inline', 'constexpr', 'type', 'const', 'volatile', 'restrict' ]
 ReferenceAlignment: Middle
-ReflowComments:  true
+ReflowComments:  false
 SeparateDefinitionBlocks: Leave
 SortIncludes:    CaseInsensitive
 SortIncludes: true

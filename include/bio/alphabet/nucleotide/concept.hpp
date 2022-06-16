@@ -40,14 +40,14 @@ public:
     //!\brief Operator definition.
     template <typename nucleotide_t>
     //!\cond
-        requires requires (nucleotide_t const nucl)
+        requires (requires (nucleotide_t const nucl)
         {
             { impl(priority_tag<2>{}, nucl) };
             requires noexcept(impl(priority_tag<2>{}, nucl));
             // requires std::common_with<decltype(impl(priority_tag<2>{}, nucl)), nucleotide_t>; // triggers an ICE
             requires alphabet<decltype(impl(priority_tag<2>{}, nucl))>;
             { impl(priority_tag<2>{}, impl(priority_tag<2>{}, nucl)) }; // you can take the complement again
-        }
+        })
     //!\endcond
     constexpr auto operator()(nucleotide_t const nucl) const noexcept
     {

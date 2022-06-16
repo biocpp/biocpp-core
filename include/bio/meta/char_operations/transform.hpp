@@ -24,8 +24,7 @@ namespace bio::detail
 //!\brief Auxiliary table for bio::to_lower.
 //!\ingroup char_operations
 template <typename char_type>
-inline std::array<char_type, detail::size_in_values_v<char_type>> constexpr to_lower_table
-{
+inline std::array<char_type, detail::size_in_values_v<char_type>> constexpr to_lower_table =
     [] () constexpr
     {
         std::array<char_type, detail::size_in_values_v<char_type>> ret{};
@@ -37,14 +36,12 @@ inline std::array<char_type, detail::size_in_values_v<char_type>> constexpr to_l
             ret[i] = ret[i] - char_type{'A'} + char_type{'a'};
 
         return ret;
-    } ()
-};
+    } ();
 
 //!\brief Auxiliary table for bio::to_upper.
 //!\ingroup char_operations
 template <typename char_type>
-inline std::array<char_type, detail::size_in_values_v<char_type>> constexpr to_upper_table
-{
+inline std::array<char_type, detail::size_in_values_v<char_type>> constexpr to_upper_table =
     [] () constexpr
     {
         std::array<char_type, detail::size_in_values_v<char_type>> ret{};
@@ -56,8 +53,7 @@ inline std::array<char_type, detail::size_in_values_v<char_type>> constexpr to_u
             ret[i] = ret[i] - char_type{'a'} + char_type{'A'};
 
         return ret;
-    } ()
-};
+    } ();
 
 } // namespace bio::detail
 

@@ -107,10 +107,7 @@ inline constexpr auto all_elements_model_totally_ordered(bio::type_list<elements
  */
 template <typename tuple_t>
 //!\cond
-    requires requires()
-    {
-        { detail::all_elements_model_totally_ordered(tuple_type_list_t<tuple_t>{}) };
-    }
+    requires (requires { { detail::all_elements_model_totally_ordered(tuple_type_list_t<tuple_t>{}) }; } )
 //!\endcond
 static constexpr bool all_elements_model_totally_ordered_v =
     decltype(detail::all_elements_model_totally_ordered(tuple_type_list_t<tuple_t>{}))::value;

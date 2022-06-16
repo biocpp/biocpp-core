@@ -43,7 +43,7 @@ public:
     //!\brief Operator definition.
     template <typename rna_structure_t>
     //!\cond
-        requires requires (rna_structure_t const chr) { { impl(priority_tag<2>{}, chr) }; }
+        requires (requires (rna_structure_t const chr) { { impl(priority_tag<2>{}, chr) }; })
     //!\endcond
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
@@ -122,7 +122,7 @@ public:
     //!\brief Operator definition.
     template <typename rna_structure_t>
     //!\cond
-        requires requires (rna_structure_t const chr) { { impl(priority_tag<2>{}, chr) }; }
+        requires (requires (rna_structure_t const chr) { { impl(priority_tag<2>{}, chr) }; })
     //!\endcond
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
@@ -201,7 +201,7 @@ public:
     //!\brief Operator definition.
     template <typename rna_structure_t>
     //!\cond
-        requires requires (rna_structure_t const chr) { { impl(priority_tag<2>{}, chr) }; }
+        requires (requires (rna_structure_t const chr) { { impl(priority_tag<2>{}, chr) }; })
     //!\endcond
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
@@ -289,7 +289,7 @@ public:
     //!\brief Operator definition.
     template <typename dummy = int>
     //!\cond
-        requires requires { { impl(priority_tag<2>{}, s_alph_t{}, dummy{}) }; }
+        requires (requires { { impl(priority_tag<2>{}, s_alph_t{}, dummy{}) }; })
     //!\endcond
     constexpr auto operator()() const noexcept
     {
@@ -307,7 +307,7 @@ public:
 //!\cond
 // required to prevent https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89953
 template <typename alph_t>
-    requires requires { { max_pseudoknot_depth_fn<alph_t>{} }; }
+    requires (requires { { max_pseudoknot_depth_fn<alph_t>{} }; })
 inline constexpr auto max_pseudoknot_depth_obj = max_pseudoknot_depth_fn<alph_t>{};
 //!\endcond
 
@@ -360,8 +360,8 @@ namespace bio
  */
 template <typename alph_t>
 //!\cond
-    requires requires { { detail::adl_only::max_pseudoknot_depth_fn<alph_t>{} }; } &&
-             requires { { detail::adl_only::max_pseudoknot_depth_obj<alph_t>() }; }
+    requires (requires { { detail::adl_only::max_pseudoknot_depth_fn<alph_t>{} }; } &&
+             requires { { detail::adl_only::max_pseudoknot_depth_obj<alph_t>() }; })
 //!\endcond
 inline constexpr auto max_pseudoknot_depth = detail::adl_only::max_pseudoknot_depth_obj<alph_t>();
 
@@ -390,7 +390,7 @@ public:
     //!\brief Operator definition.
     template <typename rna_structure_t>
     //!\cond
-        requires requires (rna_structure_t const chr) { { impl(priority_tag<2>{}, chr) }; }
+        requires (requires (rna_structure_t const chr) { { impl(priority_tag<2>{}, chr) }; })
     //!\endcond
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {

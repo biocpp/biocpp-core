@@ -15,7 +15,6 @@
 
 #include <cmath>
 
-#include <bio/meta/type_traits/pre.hpp>
 #include <bio/meta/type_traits/transformation_trait_or.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
 #include <bio/ranges/views/detail.hpp>
@@ -44,10 +43,10 @@ namespace bio::detail
  */
 template <std::ranges::random_access_range urng_t, std::ranges::random_access_range inserted_rng_t>
     //!\cond
-    requires std::ranges::view<urng_t> && std::ranges::sized_range<urng_t> &&
+    requires (std::ranges::view<urng_t> && std::ranges::sized_range<urng_t> &&
              std::ranges::view<inserted_rng_t> && std::ranges::sized_range<inserted_rng_t> &&
              std::common_reference_with<std::ranges::range_reference_t<urng_t>,
-                                        std::ranges::range_reference_t<inserted_rng_t>>
+                                        std::ranges::range_reference_t<inserted_rng_t>>)
     //!\endcond
 class view_interleave : public std::ranges::view_interface<view_interleave<urng_t, inserted_rng_t>>
 {
@@ -117,8 +116,8 @@ public:
      */
     template <typename orng_t, typename oirng_t>
         //!\cond
-        requires std::constructible_from<urng_t, decltype(views::type_reduce(std::declval<orng_t>()))> &&
-                 std::constructible_from<inserted_rng_t, decltype(views::persist(std::declval<oirng_t>()))>
+        requires (std::constructible_from<urng_t, decltype(views::type_reduce(std::declval<orng_t>()))> &&
+                 std::constructible_from<inserted_rng_t, decltype(views::persist(std::declval<oirng_t>()))>)
         //!\endcond
     view_interleave(orng_t && _urange, size_t const _step_size, oirng_t && _inserted_range) :
         view_interleave{views::type_reduce(std::forward<orng_t>(_urange)), _step_size,
@@ -244,10 +243,10 @@ public:
 //!\relates bio::detail::view_interleave
 template <std::ranges::random_access_range urng_t, std::ranges::random_access_range inserted_rng_t>
     //!\cond
-    requires std::ranges::viewable_range<urng_t> && std::ranges::sized_range<urng_t> &&
+    requires (std::ranges::viewable_range<urng_t> && std::ranges::sized_range<urng_t> &&
              std::ranges::sized_range<inserted_rng_t> &&
              std::common_reference_with<std::ranges::range_reference_t<urng_t>,
-                                        std::ranges::range_reference_t<inserted_rng_t>>
+                                        std::ranges::range_reference_t<inserted_rng_t>>)
     //!\endcond
 view_interleave(urng_t &&, size_t, inserted_rng_t &&)
     -> view_interleave<decltype(views::type_reduce(std::declval<urng_t>())),

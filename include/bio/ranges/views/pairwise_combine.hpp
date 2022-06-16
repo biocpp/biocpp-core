@@ -39,7 +39,7 @@ namespace bio::detail
  */
 template <std::ranges::view underlying_range_type>
 //!\cond
-    requires  std::ranges::forward_range<underlying_range_type> && std::ranges::common_range<underlying_range_type>
+    requires ( std::ranges::forward_range<underlying_range_type> && std::ranges::common_range<underlying_range_type>)
 //!\endcond
 class pairwise_combine_view : public std::ranges::view_interface<pairwise_combine_view<underlying_range_type>>
 {
@@ -143,7 +143,6 @@ public:
         requires ((!std::same_as<std::remove_cvref_t<other_range_t>, pairwise_combine_view>) &&
                  std::ranges::viewable_range<other_range_t> &&  // Must come after self type check to avoid conflicts with the move constructor.
                  std::constructible_from<underlying_range_type, std::views::all_t<other_range_t>>)
-
     //!\endcond
     explicit constexpr pairwise_combine_view(other_range_t && range) :
         pairwise_combine_view{std::views::all(std::forward<other_range_t>(range))}
@@ -253,7 +252,7 @@ pairwise_combine_view(other_range_t && range) ->
  */
 template <std::ranges::view underlying_range_type>
 //!\cond
-    requires std::ranges::forward_range<underlying_range_type> && std::ranges::common_range<underlying_range_type>
+    requires (std::ranges::forward_range<underlying_range_type> && std::ranges::common_range<underlying_range_type>)
 //!\endcond
 template <typename range_type>
 class pairwise_combine_view<underlying_range_type>::basic_iterator
@@ -332,8 +331,8 @@ public:
      */
     template <typename other_range_type>
     //!\cond
-        requires std::convertible_to<other_range_type, range_type &> &&
-                 std::same_as<std::remove_const_t<other_range_type>, std::remove_const_t<range_type>>
+        requires (std::convertible_to<other_range_type, range_type &> &&
+                 std::same_as<std::remove_const_t<other_range_type>, std::remove_const_t<range_type>>)
     //!\endcond
     constexpr basic_iterator(basic_iterator<other_range_type> other) noexcept :
         basic_iterator{std::move(other.first_it), std::move(other.begin_it), std::move(other.end_it)}
@@ -480,8 +479,8 @@ public:
     //!\      std::random_access_iterator.
     template <typename other_range_type>
     //!\cond
-        requires std::random_access_iterator<underlying_iterator_type> &&
-                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>
+        requires (std::random_access_iterator<underlying_iterator_type> &&
+                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
     //!\endcond
     constexpr difference_type operator-(basic_iterator<other_range_type> const & rhs) const
         noexcept(noexcept(std::declval<basic_iterator &>().to_index()))
@@ -502,8 +501,8 @@ public:
     //!\brief Checks whether `*this` is equal to `rhs`.
     template <typename other_range_type>
     //!\cond
-        requires std::equality_comparable_with<underlying_iterator_type, std::ranges::iterator_t<other_range_type>> &&
-                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>
+        requires (std::equality_comparable_with<underlying_iterator_type, std::ranges::iterator_t<other_range_type>> &&
+                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
     //!\endcond
     constexpr bool operator==(basic_iterator<other_range_type> const & rhs) const
         noexcept(noexcept(std::declval<underlying_iterator_type &>() == std::declval<underlying_iterator_type &>()))
@@ -514,8 +513,8 @@ public:
     //!\brief Checks whether `*this` is not equal to `rhs`.
     template <typename other_range_type>
     //!\cond
-        requires std::equality_comparable_with<underlying_iterator_type, std::ranges::iterator_t<other_range_type>> &&
-                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>
+        requires (std::equality_comparable_with<underlying_iterator_type, std::ranges::iterator_t<other_range_type>> &&
+                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
     //!\endcond
     constexpr bool operator!=(basic_iterator<other_range_type> const & rhs) const
         noexcept(noexcept(std::declval<underlying_iterator_type &>() != std::declval<underlying_iterator_type &>()))
@@ -526,9 +525,9 @@ public:
     //!\brief Checks whether `*this` is less than `rhs`.
     template <typename other_range_type>
     //!\cond
-        requires std::totally_ordered_with<underlying_iterator_type,
+        requires (std::totally_ordered_with<underlying_iterator_type,
                                                std::ranges::iterator_t<other_range_type>> &&
-                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>
+                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
     //!\endcond
     constexpr bool operator<(basic_iterator<other_range_type> const & rhs) const
         noexcept(noexcept(std::declval<underlying_iterator_type &>() < std::declval<underlying_iterator_type &>()))
@@ -539,9 +538,9 @@ public:
     //!\brief Checks whether `*this` is greater than `rhs`.
     template <typename other_range_type>
     //!\cond
-        requires std::totally_ordered_with<underlying_iterator_type,
+        requires (std::totally_ordered_with<underlying_iterator_type,
                                                std::ranges::iterator_t<other_range_type>> &&
-                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>
+                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
     //!\endcond
     constexpr bool operator>(basic_iterator<other_range_type> const & rhs) const
         noexcept(noexcept(std::declval<underlying_iterator_type &>() > std::declval<underlying_iterator_type &>()))
@@ -553,9 +552,9 @@ public:
     //!\brief Checks whether `*this` is less than or equal to `rhs`.
     template <typename other_range_type>
     //!\cond
-        requires std::totally_ordered_with<underlying_iterator_type,
+        requires (std::totally_ordered_with<underlying_iterator_type,
                                                std::ranges::iterator_t<other_range_type>> &&
-                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>
+                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
     //!\endcond
     constexpr bool operator<=(basic_iterator<other_range_type> const & rhs) const
         noexcept(noexcept(std::declval<underlying_iterator_type &>() <= std::declval<underlying_iterator_type &>()))
@@ -566,9 +565,9 @@ public:
     //!\brief Checks whether `*this` is greater than or equal to `rhs`.
     template <typename other_range_type>
     //!\cond
-        requires std::totally_ordered_with<underlying_iterator_type,
+        requires (std::totally_ordered_with<underlying_iterator_type,
                                                std::ranges::iterator_t<other_range_type>> &&
-                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>
+                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
     //!\endcond
     constexpr bool operator>=(basic_iterator<other_range_type> const & rhs) const
         noexcept(noexcept(std::declval<underlying_iterator_type &>() >= std::declval<underlying_iterator_type &>()))

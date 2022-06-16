@@ -122,8 +122,7 @@ protected:
     };
 
     //!\brief Char to value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank
-    {
+    static constexpr std::array<rank_type, 256> char_to_rank =
         [] () constexpr
         {
             std::array<rank_type, 256> ret{};
@@ -157,8 +156,7 @@ protected:
             ret['Z'] = ret['B']; ret['z'] = ret['B']; // Convert Z (either E/Q) to B (either D/N).
             ret['*'] = ret['F']; // The most common stop codon is UGA. This is most similar to a Tryptophan which in this alphabet gets converted to Phenylalanine.
             return ret;
-        }()
-    };
+        }();
 };
 
 // ------------------------------------------------------------------

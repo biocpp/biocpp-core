@@ -33,8 +33,7 @@ namespace bio::detail
  * \hideinitializer
  */
 template <alphabet out_t, alphabet in_t>
-constexpr std::array<out_t, alphabet_size<in_t>> convert_through_char_representation
-{
+constexpr std::array<out_t, alphabet_size<in_t>> convert_through_char_representation =
     [] () constexpr
     {
         std::array<out_t, alphabet_size<in_t>> ret{};
@@ -42,7 +41,6 @@ constexpr std::array<out_t, alphabet_size<in_t>> convert_through_char_representa
         for (auto i = decltype(alphabet_size<in_t>){0}; i < alphabet_size<in_t>; ++i)
             assign_char_to(to_char(assign_rank_to(i, in_t{})), ret[i]);
         return ret;
-    }()
-};
+    }();
 
 } // namespace bio::detail

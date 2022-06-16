@@ -207,7 +207,7 @@ public:
     //!\brief Implicit conversion to types that the emulated type is convertible to.
     template <typename other_t>
     //!\cond
-        requires (!std::is_class_v<alphabet_type>) && std::convertible_to<alphabet_type, other_t>
+        requires (!std::is_class_v<alphabet_type> && std::convertible_to<alphabet_type, other_t>)
     //!\endcond
     constexpr operator other_t() const noexcept
     {

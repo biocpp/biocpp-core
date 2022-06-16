@@ -128,8 +128,7 @@ protected:
     };
 
     //!\brief Char-to-value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank
-    {
+    static constexpr std::array<rank_type, 256> char_to_rank =
         [] () constexpr
         {
             std::array<rank_type, 256> rank_table{};
@@ -144,8 +143,7 @@ protected:
             rank_table[')'] = 2u;
 
             return rank_table;
-        } ()
-    };
+        } ();
 };
 
 /*!\name Literals

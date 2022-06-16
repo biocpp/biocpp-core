@@ -112,8 +112,7 @@ protected:
     };
 
     //!\brief Char to value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank
-    {
+    static constexpr std::array<rank_type, 256> char_to_rank =
         [] () constexpr
         {
             std::array<rank_type, 256> ret{};
@@ -137,8 +136,7 @@ protected:
             ret['Z'] = ret['E']; ret['z'] = ret['E']; // Convert z (either E/Q) to E, since E occurs more frequently.
             ret['*'] = ret['W']; // The most common stop codon is UGA. This is most similar to a Tryptophan.
             return ret;
-        }()
-    };
+        }();
 };
 
 } // namespace bio

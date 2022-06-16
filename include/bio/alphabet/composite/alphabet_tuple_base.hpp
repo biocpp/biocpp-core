@@ -110,8 +110,8 @@ decltype(auto) get();
 template <typename derived_type,
           typename ...component_types>
 //!\cond
-    requires (detail::writable_constexpr_semialphabet<component_types> && ...) &&
-             (std::regular<component_types> && ...)
+    requires ((detail::writable_constexpr_semialphabet<component_types> && ...) &&
+              (std::regular<component_types> && ...))
 //!\endcond
 class alphabet_tuple_base :
     public alphabet_base<derived_type,
@@ -202,8 +202,8 @@ public:
      */
     template <typename component_type>
     //!\cond
-        requires (!std::is_base_of_v<alphabet_tuple_base, component_type>) &&
-                 is_unique_component<component_type>
+        requires ((!std::is_base_of_v<alphabet_tuple_base, component_type>) &&
+                 is_unique_component<component_type>)
     //!\endcond
     constexpr explicit alphabet_tuple_base(component_type const alph) noexcept : alphabet_tuple_base{}
     {
@@ -270,8 +270,8 @@ public:
      */
     template <typename component_type>
     //!\cond
-        requires (!std::derived_from<component_type, alphabet_tuple_base>) &&
-                 is_unique_component<component_type>
+        requires ((!std::derived_from<component_type, alphabet_tuple_base>) &&
+                 is_unique_component<component_type>)
     //!\endcond
     constexpr derived_type & operator=(component_type const alph) noexcept
     {
@@ -593,8 +593,7 @@ private:
     }
 
     //!\brief The cumulative alphabet size products are cached.
-    static constexpr std::array<rank_type, component_list::size()> cummulative_alph_sizes
-    {
+    static constexpr std::array<rank_type, component_list::size()> cummulative_alph_sizes =
         [] () constexpr
         {
             // create array (1, |sigma1|, |sigma1|*|sigma2|,  ... ,  |sigma1|*...*|sigmaN|)
@@ -617,8 +616,7 @@ private:
                 ret2[i] = ret[component_list::size() - i - 1];
 
             return ret2;
-        }()
-    };
+        }();
 
     //!\brief For the given components, compute the combined rank.
     template <std::size_t ...idx>
@@ -629,8 +627,7 @@ private:
 
     //!\brief Conversion table from rank to the i-th component's rank.
     static constexpr std::array<std::array<rank_type, alphabet_size < 1024 ? alphabet_size : 0>, // not for big alphs
-                                list_traits::size<component_list>> rank_to_component_rank
-    {
+                                list_traits::size<component_list>> rank_to_component_rank =
         [] () constexpr
         {
             std::array<std::array<rank_type, alphabet_size < 1024 ? alphabet_size : 0>, // not for big alphs
@@ -646,8 +643,7 @@ private:
             }
 
             return ret;
-        }()
-    };
+        }();
 };
 
 /*!\brief Specialisation of bio::alphabet_proxy that updates the rank of the alphabet_tuple_base.

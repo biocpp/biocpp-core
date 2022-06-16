@@ -66,9 +66,9 @@ public:
     //!\brief Allow explicit construction from any other aminoacid type and convert via the character representation.
     template <typename other_aa_type>
     //!\cond
-        requires (!std::same_as<aminoacid_base, other_aa_type>) &&
-                 (!std::same_as<derived_type, other_aa_type>) &&
-                 aminoacid_alphabet<other_aa_type>
+        requires ((!std::same_as<aminoacid_base, other_aa_type>) &&
+                  (!std::same_as<derived_type, other_aa_type>) &&
+                  aminoacid_alphabet<other_aa_type>)
     //!\endcond
     explicit constexpr aminoacid_base(other_aa_type const other) noexcept
     {
@@ -114,8 +114,7 @@ public:
 
 private:
     //!\brief Implementation of #char_is_valid().
-    static constexpr std::array<bool, 256> valid_char_table
-    {
+    static constexpr std::array<bool, 256> valid_char_table =
         [] () constexpr
         {
             // init with false
@@ -129,8 +128,7 @@ private:
             }
 
             return ret;
-        }()
-    };
+        }();
 };
 
 } // namespace bio

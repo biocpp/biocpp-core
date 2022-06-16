@@ -90,8 +90,7 @@ protected:
     };
 
     //!\brief Char to value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank
-    {
+    static constexpr std::array<rank_type, 256> char_to_rank =
         [] () constexpr
         {
             std::array<rank_type, 256> ret{};
@@ -103,8 +102,7 @@ protected:
             }
 
             return ret;
-        }()
-    };
+        }();
 };
 
 // ------------------------------------------------------------------

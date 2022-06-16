@@ -125,9 +125,9 @@ namespace bio
 template <typename inner_type,
           typename data_delimiters_type = std::vector<typename inner_type::size_type>>
 //!\cond
-    requires reservible_container<std::remove_reference_t<inner_type>> &&
-             reservible_container<std::remove_reference_t<data_delimiters_type>> &&
-             std::is_same_v<std::ranges::range_size_t<inner_type>, std::ranges::range_value_t<data_delimiters_type>>
+    requires (reservible_container<std::remove_reference_t<inner_type>> &&
+              reservible_container<std::remove_reference_t<data_delimiters_type>> &&
+              std::is_same_v<std::ranges::range_size_t<inner_type>, std::ranges::range_value_t<data_delimiters_type>>)
 //!\endcond
 class concatenated_sequences
 {
@@ -312,8 +312,8 @@ public:
     template <std::forward_iterator begin_iterator_type, typename end_iterator_type>
     concatenated_sequences(begin_iterator_type begin_it, end_iterator_type end_it)
     //!\cond
-        requires std::sized_sentinel_for<end_iterator_type, begin_iterator_type> &&
-                 iter_value_t_is_compatible_with_value_type<begin_iterator_type>
+        requires (std::sized_sentinel_for<end_iterator_type, begin_iterator_type> &&
+                  iter_value_t_is_compatible_with_value_type<begin_iterator_type>)
     //!\endcond
     {
         insert(cend(), begin_it, end_it);
@@ -426,8 +426,8 @@ public:
     template <std::forward_iterator begin_iterator_type, typename end_iterator_type>
     void assign(begin_iterator_type begin_it, end_iterator_type end_it)
     //!\cond
-        requires iter_value_t_is_compatible_with_value_type<begin_iterator_type> &&
-                 std::sized_sentinel_for<end_iterator_type, begin_iterator_type>
+        requires (iter_value_t_is_compatible_with_value_type<begin_iterator_type> &&
+                  std::sized_sentinel_for<end_iterator_type, begin_iterator_type>)
     //!\endcond
     {
         concatenated_sequences rhs{begin_it, end_it};
@@ -1040,8 +1040,8 @@ public:
     template <std::forward_iterator begin_iterator_type, typename end_iterator_type>
     iterator insert(const_iterator pos, begin_iterator_type first, end_iterator_type last)
     //!\cond
-        requires iter_value_t_is_compatible_with_value_type<begin_iterator_type> &&
-                 std::sized_sentinel_for<end_iterator_type, begin_iterator_type>
+        requires (iter_value_t_is_compatible_with_value_type<begin_iterator_type> &&
+                  std::sized_sentinel_for<end_iterator_type, begin_iterator_type>)
     //!\endcond
     {
         auto const pos_as_num = std::distance(cbegin(), pos);

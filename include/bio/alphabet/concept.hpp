@@ -87,12 +87,12 @@ public:
     //!\brief Operator definition.
     template <typename alph_t>
     //!\cond
-        requires requires (alph_t const a)
+        requires (requires (alph_t const a)
         {
             { impl(priority_tag<2>{}, a) };
             requires noexcept(impl(priority_tag<2>{}, a));
             requires std::integral<decltype(impl(priority_tag<2>{}, a))>;
-        }
+        })
     //!\endcond
     constexpr auto operator()(alph_t const a) const noexcept
     {
@@ -148,7 +148,7 @@ inline constexpr auto to_rank = detail::adl_only::to_rank_fn{};
 //!\ingroup alphabet
 template <typename semi_alphabet_type>
 //!\cond
-    requires requires { { bio::to_rank(std::declval<semi_alphabet_type>()) }; }
+    requires (requires { { bio::to_rank(std::declval<semi_alphabet_type>()) }; })
 //!\endcond
 using alphabet_rank_t = decltype(bio::to_rank(std::declval<semi_alphabet_type>()));
 
@@ -178,12 +178,12 @@ public:
     //!\brief Operator definition.
     template <typename alph_t>
     //!\cond
-        requires requires (bio::alphabet_rank_t<alph_t> const r, alph_t & a)
+        requires (requires (bio::alphabet_rank_t<alph_t> const r, alph_t & a)
             {
                 { impl(priority_tag<2>{}, a, r) };
                 requires noexcept(impl(priority_tag<2>{}, a, r));
                 requires std::same_as<alph_t &, decltype(impl(priority_tag<2>{}, a, r))>;
-            }
+            })
     //!\endcond
     constexpr alph_t operator()(bio::alphabet_rank_t<alph_t> const r, alph_t && a) const noexcept
     {
@@ -264,12 +264,12 @@ public:
     //!\brief Operator definition.
     template <typename alph_t>
     //!\cond
-        requires requires (alph_t const a)
+        requires (requires (alph_t const a)
         {
             { impl(priority_tag<2>{}, a) };
             requires noexcept(impl(priority_tag<2>{}, a));
             requires builtin_character<decltype(impl(priority_tag<2>{}, a))>;
-        }
+        })
     //!\endcond
     constexpr decltype(auto) operator()(alph_t const a) const noexcept
     {
@@ -326,7 +326,7 @@ inline constexpr auto to_char = detail::adl_only::to_char_fn{};
 //!\ingroup alphabet
 template <typename alphabet_type>
 //!\cond
-    requires requires (alphabet_type const a) { { bio::to_char(a) }; }
+    requires (requires (alphabet_type const a) { { bio::to_char(a) }; })
 //!\endcond
 using alphabet_char_t = decltype(bio::to_char(std::declval<alphabet_type const>()));
 
@@ -356,12 +356,12 @@ public:
     //!\brief Operator definition.
     template <typename alph_t>
     //!\cond
-        requires requires (bio::alphabet_char_t<alph_t> const r, alph_t & a)
+        requires (requires (bio::alphabet_char_t<alph_t> const r, alph_t & a)
             {
                 { impl(priority_tag<2>{}, a, r) };
                 requires noexcept(impl(priority_tag<2>{}, a, r));
                 requires std::same_as<alph_t &, decltype(impl(priority_tag<2>{}, a, r))>;
-            }
+            })
     //!\endcond
     constexpr alph_t operator()(bio::alphabet_char_t<alph_t> const r, alph_t && a) const noexcept
     {
@@ -452,12 +452,12 @@ public:
     //!\brief Operator definition.
     template <typename dummy = int> // need to make this a template to enforce deferred instantiation
     //!\cond
-        requires requires (alphabet_char_t<alph_t> const a)
+        requires (requires (alphabet_char_t<alph_t> const a)
         {
             { impl(priority_tag<3>{}, a, dummy{}) };
             requires noexcept(impl(priority_tag<3>{}, a, dummy{}));
             { impl(priority_tag<3>{}, a, dummy{}) } -> std::convertible_to<bool>;
-        }
+        })
     //!\endcond
     constexpr bool operator()(alphabet_char_t<alph_t> const a) const noexcept
     {
@@ -518,7 +518,7 @@ namespace bio
  */
 template <typename alph_t>
 //!\cond
-    requires requires { { to_char(std::declval<alph_t>()) }; } // to_char() is required by some defs
+    requires (requires { { to_char(std::declval<alph_t>()) }; }) // to_char() is required by some defs
 //!\endcond
 inline constexpr auto char_is_valid_for = detail::adl_only::char_is_valid_for_fn<alph_t>{};
 //!\}
@@ -538,11 +538,11 @@ struct assign_char_strictly_to_fn
     //!\brief Operator overload for lvalues.
     template <typename alph_t>
     //!\cond
-        requires requires (alph_t a, bio::alphabet_char_t<alph_t> r)
+        requires (requires (alph_t a, bio::alphabet_char_t<alph_t> r)
         {
             { bio::assign_char_to(r, a) } -> std::convertible_to<alph_t>;
             { bio::char_is_valid_for<alph_t>(r) } -> std::same_as<bool>;
-        }
+        })
     //!\endcond
     decltype(auto) operator()(bio::alphabet_char_t<alph_t> const r, alph_t & a) const
     {
@@ -555,11 +555,11 @@ struct assign_char_strictly_to_fn
     //!\brief Operator overload for rvalues.
     template <typename alph_t>
     //!\cond
-        requires requires (alph_t a, bio::alphabet_char_t<alph_t> r)
+        requires (requires (alph_t a, bio::alphabet_char_t<alph_t> r)
         {
             { bio::assign_char_to(r, a) } -> std::convertible_to<alph_t>;
             { bio::char_is_valid_for<alph_t>(r) } -> std::same_as<bool>;
-        }
+        })
     //!\endcond
     auto operator()(bio::alphabet_char_t<alph_t> const r, alph_t && a) const
     {
@@ -633,12 +633,12 @@ public:
     //!\brief Operator definition.
     template <typename dummy = int> // need to make this a template to enforce deferred instantiation
     //!\cond
-        requires requires
+        requires (requires
         {
             { impl(priority_tag<2>{}, s_alph_t{}, dummy{}) };
             requires noexcept(impl(priority_tag<2>{}, s_alph_t{}, dummy{}));
             requires std::integral<std::remove_cvref_t<decltype(impl(priority_tag<2>{}, s_alph_t{}, dummy{}))>>;
-        }
+        })
     //!\endcond
     constexpr auto operator()() const noexcept
     {
@@ -653,7 +653,7 @@ public:
 //!\cond
 // required to prevent https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89953
 template <typename alph_t>
-    requires requires { { alphabet_size_fn<alph_t>{} }; }
+    requires (requires { { alphabet_size_fn<alph_t>{} }; })
 inline constexpr auto alphabet_size_obj = alphabet_size_fn<alph_t>{};
 //!\endcond
 
@@ -702,8 +702,8 @@ namespace bio
  */
 template <typename alph_t>
 //!\cond
-    requires requires { { detail::adl_only::alphabet_size_fn<alph_t>{} }; } &&
-             requires { { detail::adl_only::alphabet_size_obj<alph_t>() }; } // ICE workarounds
+    requires (requires { { detail::adl_only::alphabet_size_fn<alph_t>{} }; } &&
+              requires { { detail::adl_only::alphabet_size_obj<alph_t>() }; }) // ICE workarounds
 //!\endcond
 inline constexpr auto alphabet_size = detail::adl_only::alphabet_size_obj<alph_t>();
 

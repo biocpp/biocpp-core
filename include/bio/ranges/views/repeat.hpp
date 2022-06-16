@@ -244,8 +244,8 @@ public:
      */
     template <typename parent_type2>
     //!\cond
-        requires std::is_const_v<parent_type> && (!std::is_const_v<parent_type2>) &&
-                 std::is_same_v<std::remove_const_t<parent_type>, parent_type2>
+        requires (std::is_const_v<parent_type> && (!std::is_const_v<parent_type2>) &&
+                 std::is_same_v<std::remove_const_t<parent_type>, parent_type2>)
     //!\endcond
     constexpr basic_iterator(basic_iterator<parent_type2> const & rhs) noexcept :
         base_t{rhs}

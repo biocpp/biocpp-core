@@ -137,8 +137,7 @@ public:
 
 private:
     //!\brief Implementation of #char_is_valid().
-    static constexpr std::array<bool, 256> valid_char_table
-    {
+    static constexpr std::array<bool, 256> valid_char_table =
         [] () constexpr
         {
             // init with false
@@ -158,8 +157,7 @@ private:
             ret['t'] = true;
 
             return ret;
-        }()
-    };
+        }();
 };
 
 } // namespace bio

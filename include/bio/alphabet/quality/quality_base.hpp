@@ -75,9 +75,9 @@ public:
     //!\brief Allow explicit construction from any other quality type by means of the phred representation.
     template <typename other_qual_type>
     //!\cond
-        requires (!std::same_as<quality_base, other_qual_type>) &&
+        requires ((!std::same_as<quality_base, other_qual_type>) &&
                  (!std::same_as<derived_type, other_qual_type>) &&
-                 quality_alphabet<other_qual_type>
+                 quality_alphabet<other_qual_type>)
     //!\endcond
     explicit constexpr quality_base(other_qual_type const & other) noexcept
     {
@@ -117,8 +117,7 @@ public:
 
 protected:
     //!\brief Phred to rank conversion table.
-    static std::array<rank_type, 256> constexpr phred_to_rank
-    {
+    static std::array<rank_type, 256> constexpr phred_to_rank =
         [] () constexpr
         {
             std::array<rank_type, 256> ret{};
@@ -133,12 +132,10 @@ protected:
                     ret[static_cast<rank_type>(i)] = i - derived_type::offset_phred;
             }
             return ret;
-        }()
-    };
+        }();
 
     //!\brief Char to rank conversion table.
-    static std::array<rank_type, 256> constexpr char_to_rank
-    {
+    static std::array<rank_type, 256> constexpr char_to_rank =
         [] () constexpr
         {
             std::array<rank_type, 256> ret{};
@@ -154,12 +151,10 @@ protected:
             }
 
             return ret;
-        }()
-    };
+        }();
 
     //!\brief Rank to phred conversion table.
-    static std::array<phred_type, alphabet_size> constexpr rank_to_phred
-    {
+    static std::array<phred_type, alphabet_size> constexpr rank_to_phred =
         [] () constexpr
         {
             std::array<phred_type, alphabet_size> ret{};
@@ -168,12 +163,10 @@ protected:
                 ret[i] = i + derived_type::offset_phred;
 
             return ret;
-        }()
-    };
+        }();
 
     //!\brief Rank to char conversion table.
-    static std::array<char_type, alphabet_size> constexpr rank_to_char
-    {
+    static std::array<char_type, alphabet_size> constexpr rank_to_char =
         [] () constexpr
         {
             std::array<char_type, alphabet_size> ret{};
@@ -182,8 +175,7 @@ protected:
                 ret[i] = i + derived_type::offset_char;
 
             return ret;
-        }()
-    };
+        }();
 };
 
 } // namespace bio

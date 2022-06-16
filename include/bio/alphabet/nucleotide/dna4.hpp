@@ -93,8 +93,7 @@ protected:
     };
 
     //!\brief Char to value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank
-    {
+    static constexpr std::array<rank_type, 256> char_to_rank =
         [] () constexpr
         {
             std::array<rank_type, 256> ret{};
@@ -122,8 +121,7 @@ protected:
             ret['V'] = ret['A']; ret['v'] = ret['A']; // or C or G
 
             return ret;
-        }()
-    };
+        }();
 
     //!\brief The complement table.
     static const std::array<dna4, alphabet_size> complement_table;

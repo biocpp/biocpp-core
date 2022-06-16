@@ -135,8 +135,7 @@ public:
 protected:
     //!\privatesection
     //!\brief Value-to-char conversion table.
-    static constexpr std::array<char_type, alphabet_size> rank_to_char
-    {
+    static constexpr std::array<char_type, alphabet_size> rank_to_char =
         [] () constexpr
         {
             std::array<char_type, alphabet_size> chars
@@ -153,12 +152,10 @@ protected:
             }
 
             return chars;
-        } ()
-    };
+        } ();
 
     //!\brief Char-to-value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank
-    {
+    static constexpr std::array<rank_type, 256> char_to_rank =
         [] () constexpr
         {
             std::array<rank_type, 256> rank_table{};
@@ -171,8 +168,7 @@ protected:
             for (rank_type rnk = 0u; rnk < alphabet_size; ++rnk)
                 rank_table[rank_to_char[rnk]] = rnk;
             return rank_table;
-        } ()
-    };
+        } ();
 
     /*!\brief Lookup table for interactions: unpaired (0), pair-open (< 0), pair-close (> 0).
      * Paired brackets have the same absolute value.

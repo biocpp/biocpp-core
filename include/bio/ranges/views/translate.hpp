@@ -224,9 +224,9 @@ public:
      */
     template <typename rng_t>
     //!\cond
-     requires (!std::same_as<std::remove_cvref_t<rng_t>, view_translate_single>) &&
+     requires ((!std::same_as<std::remove_cvref_t<rng_t>, view_translate_single>) &&
               std::ranges::viewable_range<rng_t> &&
-              std::constructible_from<urng_t, std::ranges::ref_view<std::remove_reference_t<rng_t>>>
+              std::constructible_from<urng_t, std::ranges::ref_view<std::remove_reference_t<rng_t>>>)
     //!\endcond
     view_translate_single(rng_t && _urange, translation_frames const _tf = translation_frames::FWD_FRAME_0)
      : view_translate_single{std::views::all(std::forward<rng_t>(_urange)), _tf}
@@ -599,9 +599,9 @@ public:
      */
     template <typename rng_t>
     //!\cond
-        requires (!std::same_as<std::remove_cvref_t<rng_t>, view_translate>) &&
+        requires ((!std::same_as<std::remove_cvref_t<rng_t>, view_translate>) &&
                  std::ranges::viewable_range<rng_t> &&
-                 std::constructible_from<urng_t, std::ranges::ref_view<std::remove_reference_t<rng_t>>>
+                 std::constructible_from<urng_t, std::ranges::ref_view<std::remove_reference_t<rng_t>>>)
     //!\endcond
     view_translate(rng_t && _urange, translation_frames const _tf = translation_frames::SIX_FRAME)
      : view_translate{std::views::all(std::forward<rng_t>(_urange)), _tf}

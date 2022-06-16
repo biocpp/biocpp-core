@@ -74,7 +74,7 @@ struct required_types
  */
 template <typename t>
 //!\cond
-    requires requires { typename t::biocpp_required_types; }
+    requires (requires { typename t::biocpp_required_types; })
 //!\endcond
 struct required_types<t>
 {
@@ -111,10 +111,7 @@ struct recursive_required_types
  */
 template <typename t>
 //!\cond
-    requires requires
-    {
-        typename t::biocpp_recursive_required_types;
-    }
+    requires (requires { typename t::biocpp_recursive_required_types; })
 //!\endcond
 struct recursive_required_types<t>
 {
@@ -223,17 +220,17 @@ namespace bio
 // forward
 template <typename ...alternative_types>
 //!\cond
-    requires (detail::writable_constexpr_alphabet<alternative_types> && ...) &&
+    requires ((detail::writable_constexpr_alphabet<alternative_types> && ...) &&
              (std::regular<alternative_types> && ...) &&
-             (sizeof...(alternative_types) >= 2)
+             (sizeof...(alternative_types) >= 2))
 //!\endcond
 class alphabet_variant;
 
 template <typename derived_type,
           typename ...component_types>
 //!\cond
-    requires (detail::writable_constexpr_semialphabet<component_types> && ...) &&
-             (std::regular<component_types> && ...)
+    requires ((detail::writable_constexpr_semialphabet<component_types> && ...) &&
+             (std::regular<component_types> && ...))
 //!\endcond
 class alphabet_tuple_base;
 

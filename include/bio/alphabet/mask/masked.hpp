@@ -98,8 +98,7 @@ public:
 
 protected:
     //!\brief Rank to char conversion table.
-    static constexpr std::array<char_type, alphabet_size> rank_to_char
-    {
+    static constexpr std::array<char_type, alphabet_size> rank_to_char =
         [] ()
         {
             std::array<char_type, alphabet_size> ret{};
@@ -112,12 +111,10 @@ protected:
             }
 
             return ret;
-        } ()
-    };
+        } ();
 
     //!\brief Char to rank conversion table.
-    static constexpr std::array<rank_type, detail::size_in_values_v<char_type>> char_to_rank
-    {
+    static constexpr std::array<rank_type, detail::size_in_values_v<char_type>> char_to_rank =
         [] ()
         {
             std::array<rank_type, detail::size_in_values_v<char_type>> ret{};
@@ -132,8 +129,7 @@ protected:
             }
 
             return ret;
-        } ()
-    };
+        } ();
 };
 
 //!\brief Type deduction guide enables usage of masked without specifying template args.
