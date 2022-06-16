@@ -60,6 +60,13 @@ jobs:
             build: documentation
             build_type: Debug
 
+          - name: "Clang Format"
+            cxx: "clang-format-14"
+            cc: "gcc"
+            os: "ubuntu-22.04"
+            build: clang_format
+            build_type: Debug
+
           - name: "Coverage gcc12"
             cxx: "g++-12"
             cc: "gcc-12"
