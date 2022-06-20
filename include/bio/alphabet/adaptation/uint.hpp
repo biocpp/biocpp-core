@@ -35,9 +35,8 @@ namespace bio::detail
 //!\ingroup adaptation
 //!\hideinitializer
 template <typename type>
-constexpr bool is_uint_adaptation_v = std::same_as<type, uint8_t>  ||
-                                      std::same_as<type, uint16_t> ||
-                                      std::same_as<type, uint32_t>;
+constexpr bool is_uint_adaptation_v =
+  std::same_as<type, uint8_t> || std::same_as<type, uint16_t> || std::same_as<type, uint32_t>;
 } // namespace bio::detail
 
 namespace bio::custom
@@ -48,14 +47,14 @@ namespace bio::custom
  * \ingroup adaptation
  */
 template <typename uint_type>
-//!\cond
+    //!\cond
     requires bio::detail::is_uint_adaptation_v<uint_type>
 //!\endcond
 struct alphabet<uint_type>
 {
     //!\brief Return the number of values the uint type can take (e.g. 256 for `uint8_t`).
     static constexpr auto alphabet_size =
-        detail::min_viable_uint_t<detail::size_in_values_v<uint_type>>{detail::size_in_values_v<uint_type>};
+      detail::min_viable_uint_t<detail::size_in_values_v<uint_type>>{detail::size_in_values_v<uint_type>};
 
     /*!\brief Converting uint to char casts to a character type of same size.
      * \param[in] intgr The alphabet letter that you wish to convert to char.
@@ -75,10 +74,7 @@ struct alphabet<uint_type>
      * \param[in] intgr The alphabet letter that you wish to convert to rank.
      * \returns `intgr`.
      */
-    static constexpr uint_type to_rank(uint_type const intgr) noexcept
-    {
-        return intgr;
-    }
+    static constexpr uint_type to_rank(uint_type const intgr) noexcept { return intgr; }
 
     /*!\brief Assign from a character type via implicit or explicit cast.
      * \param[in] chr The `char` value you wish to assign.

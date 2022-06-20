@@ -13,8 +13,8 @@
 
 #pragma once
 
-#include <bio/meta/type_traits/basic.hpp>
 #include <bio/meta/concept/tuple.hpp>
+#include <bio/meta/type_traits/basic.hpp>
 #include <ranges>
 
 namespace bio::views
@@ -63,19 +63,20 @@ namespace bio::views
  * \hideinitializer
  */
 template <auto index>
-inline auto const get = std::views::transform([] (auto && in) -> decltype(auto)
-{
-    using std::get;
-    using bio::get;
-    static_assert(tuple_like<decltype(in)>,
-                  "You may only pass ranges to views::get whose reference_t models the tuple_like.");
+inline auto const get = std::views::transform(
+  [](auto && in) -> decltype(auto)
+  {
+      using std::get;
+      using bio::get;
+      static_assert(tuple_like<decltype(in)>,
+                    "You may only pass ranges to views::get whose reference_t models the tuple_like.");
 
-    // we need to explicitly remove && around temporaries to return values as values (and not as rvalue references)
-    // we cannot simply cast to std::tuple_element_t (or set that as return value), because some tuples, like
-    // our alphabet_tuple_base alphabets do not return that type when get is called on them (they return a proxy)
-    using ret_type = remove_rvalue_reference_t<decltype(get<index>(std::forward<decltype(in)>(in)))>;
-    return static_cast<ret_type>(get<index>(std::forward<decltype(in)>(in)));
-});
+      // we need to explicitly remove && around temporaries to return values as values (and not as rvalue references)
+      // we cannot simply cast to std::tuple_element_t (or set that as return value), because some tuples, like
+      // our alphabet_tuple_base alphabets do not return that type when get is called on them (they return a proxy)
+      using ret_type = remove_rvalue_reference_t<decltype(get<index>(std::forward<decltype(in)>(in)))>;
+      return static_cast<ret_type>(get<index>(std::forward<decltype(in)>(in)));
+  });
 
 //!\}
 

@@ -34,11 +34,11 @@ struct iterator_category_tag
 };
 
 template <typename it_t>
-    requires (requires { typename std::iterator_traits<it_t>::iterator_category; }
+    requires(requires { typename std::iterator_traits<it_t>::iterator_category; })
 struct iterator_category_tag<it_t>
 {
     using type = typename std::iterator_traits<it_t>::iterator_category;
-};)
+};
 //!\endcond
 /*!\brief Exposes the
  * [iterator_category](https://en.cppreference.com/w/cpp/iterator/iterator_tags) from the modelled concept.
@@ -51,7 +51,7 @@ struct iterator_category_tag<it_t>
  */
 template <typename it_t>
 using iterator_category_tag_t = typename iterator_category_tag<it_t>::type;
-#else // ^^^ workaround / no workaround vvv
+#else  // ^^^ workaround / no workaround vvv
 // TODO: Change the description / the definition of iterator_category_tag_t depending on how the standard resolves this
 // https://github.com/seqan/product_backlog/issues/151
 
@@ -66,8 +66,8 @@ using iterator_category_tag_t = typename iterator_category_tag<it_t>::type;
  * If not, this means that `it_t` is no "legacy" iterator and this transformation trait will give a substitution error.
  */
 template <typename it_t>
-//!\cond
-    requires (requires { typename std::iterator_traits<it_t>::iterator_category; })
+    //!\cond
+    requires(requires { typename std::iterator_traits<it_t>::iterator_category; })
 //!\endcond
 using iterator_category_tag_t = typename std::iterator_traits<it_t>::iterator_category;
 #endif // BIOCPP_WORKAROUND_GCC_96070
@@ -78,26 +78,21 @@ using iterator_category_tag_t = typename std::iterator_traits<it_t>::iterator_ca
  * \tparam it_t The type to operate on.
  */
 template <typename it_t>
-//!\cond
+    //!\cond
     requires std::input_or_output_iterator<it_t>
 //!\endcond
-using iterator_concept_tag_t =
-    std::conditional_t<
-        std::contiguous_iterator<it_t>,
-        std::contiguous_iterator_tag,
-        std::conditional_t<
-            std::random_access_iterator<it_t>,
-            std::random_access_iterator_tag,
-            std::conditional_t<
-                std::bidirectional_iterator<it_t>,
-                std::bidirectional_iterator_tag,
-                std::conditional_t<
-                    std::forward_iterator<it_t>,
-                    std::forward_iterator_tag,
-                    std::conditional_t<
-                        std::input_iterator<it_t>,
-                        std::input_iterator_tag,
-                        std::output_iterator_tag>>>>>;
+using iterator_concept_tag_t = std::conditional_t<
+  std::contiguous_iterator<it_t>,
+  std::contiguous_iterator_tag,
+  std::conditional_t<std::random_access_iterator<it_t>,
+                     std::random_access_iterator_tag,
+                     std::conditional_t<std::bidirectional_iterator<it_t>,
+                                        std::bidirectional_iterator_tag,
+                                        std::conditional_t<std::forward_iterator<it_t>,
+                                                           std::forward_iterator_tag,
+                                                           std::conditional_t<std::input_iterator<it_t>,
+                                                                              std::input_iterator_tag,
+                                                                              std::output_iterator_tag>>>>>;
 
 } // namespace bio::detail
 
@@ -125,7 +120,7 @@ struct iter_pointer
 
 //!\cond
 template <typename it_t>
-    requires (requires { typename std::iterator_traits<it_t>::pointer; })
+    requires(requires { typename std::iterator_traits<it_t>::pointer; })
 struct iter_pointer<it_t>
 {
     //!\brief This is defined for every legacy input-iterator.

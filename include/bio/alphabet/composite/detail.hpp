@@ -73,8 +73,8 @@ struct required_types
  * Exposes for bio::alphabet_tuple_base its components and for bio::alphabet_variant its alternatives.
  */
 template <typename t>
-//!\cond
-    requires (requires { typename t::biocpp_required_types; })
+    //!\cond
+    requires(requires { typename t::biocpp_required_types; })
 //!\endcond
 struct required_types<t>
 {
@@ -110,8 +110,8 @@ struct recursive_required_types
  * \ingroup alphabet_composite
  */
 template <typename t>
-//!\cond
-    requires (requires { typename t::biocpp_recursive_required_types; })
+    //!\cond
+    requires(requires { typename t::biocpp_recursive_required_types; })
 //!\endcond
 struct recursive_required_types<t>
 {
@@ -198,7 +198,7 @@ struct weakly_ordered_with_
  */
 template <typename lhs_t, typename rhs_t>
 struct weakly_equality_comparable_with_trait :
-    std::integral_constant<bool, weakly_equality_comparable_with<lhs_t, rhs_t>>
+  std::integral_constant<bool, weakly_equality_comparable_with<lhs_t, rhs_t>>
 {};
 
 /*!\brief Binary type trait that behaves like the bio::detail::weakly_ordered_with concept.
@@ -218,18 +218,16 @@ namespace bio
 {
 
 // forward
-template <typename ...alternative_types>
-//!\cond
-    requires ((detail::writable_constexpr_alphabet<alternative_types> && ...) &&
-             (std::regular<alternative_types> && ...) &&
-             (sizeof...(alternative_types) >= 2))
+template <typename... alternative_types>
+    //!\cond
+    requires((detail::writable_constexpr_alphabet<alternative_types> && ...) &&
+             (std::regular<alternative_types> && ...) && (sizeof...(alternative_types) >= 2))
 //!\endcond
 class alphabet_variant;
 
-template <typename derived_type,
-          typename ...component_types>
-//!\cond
-    requires ((detail::writable_constexpr_semialphabet<component_types> && ...) &&
+template <typename derived_type, typename... component_types>
+    //!\cond
+    requires((detail::writable_constexpr_semialphabet<component_types> && ...) &&
              (std::regular<component_types> && ...))
 //!\endcond
 class alphabet_tuple_base;

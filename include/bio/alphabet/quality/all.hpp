@@ -15,10 +15,10 @@
 
 #include <bio/alphabet/quality/aliases.hpp>
 #include <bio/alphabet/quality/concept.hpp>
-#include <bio/alphabet/quality/qualified.hpp>
 #include <bio/alphabet/quality/phred42.hpp>
 #include <bio/alphabet/quality/phred63.hpp>
 #include <bio/alphabet/quality/phred68legacy.hpp>
+#include <bio/alphabet/quality/qualified.hpp>
 
 /*!\defgroup quality Quality
  * \brief Provides the various quality score types.

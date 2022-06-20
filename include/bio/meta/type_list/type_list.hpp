@@ -25,17 +25,14 @@ namespace bio
 /*!\brief Type that contains multiple types.
  * \ingroup core_type_list
  */
-template <typename ...types>
+template <typename... types>
 struct type_list
 {
     //!\brief The type list itself
     using type = type_list;
 
     //!\brief The number of types contained in the type list
-    static constexpr size_t size() noexcept
-    {
-        return sizeof...(types);
-    }
+    static constexpr size_t size() noexcept { return sizeof...(types); }
 };
 
 } // namespace bio

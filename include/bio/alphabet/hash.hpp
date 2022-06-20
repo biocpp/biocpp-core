@@ -22,7 +22,7 @@ namespace std
  * \tparam alphabet_t The type of character to hash; must model bio::semialphabet.
  */
 template <typename alphabet_t>
-//!\cond
+    //!\cond
     requires bio::semialphabet<alphabet_t>
 //!\endcond
 struct hash<alphabet_t>
@@ -33,10 +33,7 @@ struct hash<alphabet_t>
      * \returns The rank of the character.
      * \sa bio::to_rank.
      */
-    size_t operator()(alphabet_t const character) const noexcept
-    {
-        return bio::to_rank(character);
-    }
+    size_t operator()(alphabet_t const character) const noexcept { return bio::to_rank(character); }
 };
 
 } // namespace std

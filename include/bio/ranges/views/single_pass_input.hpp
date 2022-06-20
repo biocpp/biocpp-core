@@ -41,9 +41,8 @@ class basic_iterator;
 template <std::ranges::view urng_t>
 class single_pass_input_view : public std::ranges::view_interface<single_pass_input_view<urng_t>>
 {
-//![view_def]
+    //![view_def]
 private:
-
     //!\brief The iterator type for the underlying range.
     using urng_iterator_type = std::ranges::iterator_t<urng_t>;
 
@@ -55,7 +54,7 @@ private:
     struct state
     {
         //!\brief The underlying range.
-        urng_t urng;
+        urng_t             urng;
         //!\brief The cached iterator of the underlying range.
         urng_iterator_type cached_urng_iter = std::ranges::begin(urng);
     };
@@ -78,33 +77,30 @@ public:
      * \brief All standard functions are explicitly defaulted.
      */
     //!\brief Default default-constructor.
-    constexpr single_pass_input_view() = default;
+    constexpr single_pass_input_view()                                           = default;
     //!\brief Default copy-constructor.
-    constexpr single_pass_input_view(single_pass_input_view const &) = default;
+    constexpr single_pass_input_view(single_pass_input_view const &)             = default;
     //!\brief Default move-constructor.
-    constexpr single_pass_input_view(single_pass_input_view &&) = default;
+    constexpr single_pass_input_view(single_pass_input_view &&)                  = default;
     //!\brief Default copy-assignment.
     constexpr single_pass_input_view & operator=(single_pass_input_view const &) = default;
     //!\brief Default move-assignment
-    constexpr single_pass_input_view & operator=(single_pass_input_view &&) = default;
+    constexpr single_pass_input_view & operator=(single_pass_input_view &&)      = default;
     //!\brief Default destructor.
-    ~single_pass_input_view() = default;
+    ~single_pass_input_view()                                                    = default;
 
     //!\brief Construction from the underlying view.
-    explicit single_pass_input_view(urng_t _urng) :
-        state_ptr{new state{std::move(_urng)}}
-    {}
+    explicit single_pass_input_view(urng_t _urng) : state_ptr{new state{std::move(_urng)}} {}
 
     //!\brief Construction from std::ranges::viewable_range.
     template <typename other_urng_t>
-    //!\cond
-    requires (!std::same_as<std::remove_cvref_t<other_urng_t>, single_pass_input_view> &&
-              std::ranges::viewable_range<other_urng_t> &&  // Must come after self type check to avoid conflicts with the move constructor.
-              std::constructible_from<urng_t, std::ranges::ref_view<std::remove_reference_t<other_urng_t>>>)
+        //!\cond
+        requires(!std::same_as<std::remove_cvref_t<other_urng_t>, single_pass_input_view> &&
+                 std::ranges::viewable_range<
+                   other_urng_t> && // Must come after self type check to avoid conflicts with the move constructor.
+                 std::constructible_from<urng_t, std::ranges::ref_view<std::remove_reference_t<other_urng_t>>>)
     //!\endcond
-    explicit single_pass_input_view(other_urng_t && _urng) :
-        single_pass_input_view{std::views::all(_urng)}
-    {}
+    explicit single_pass_input_view(other_urng_t && _urng) : single_pass_input_view{std::views::all(_urng)} {}
     //!\}
 
     /*!\name Iterators
@@ -117,19 +113,13 @@ public:
      * Subsequent calls to begin will result in different positions if the iterator was incremented
      * between the calls.
      */
-    iterator begin()
-    {
-        return {*this};
-    }
+    iterator begin() { return {*this}; }
 
     //!\brief Const version of begin is deleted, since the underlying view_state must be mutable.
     iterator begin() const = delete;
 
     //!\brief Returns a sentinel.
-    sentinel end()
-    {
-        return {std::ranges::end(state_ptr->urng)};
-    }
+    sentinel end() { return {std::ranges::end(state_ptr->urng)}; }
 
     //!\brief Const version of end is deleted, since the underlying view_state must be mutable.
     sentinel end() const = delete;
@@ -143,10 +133,9 @@ public:
 
 //!\brief Deduces the single_pass_input_view from the underlying range if it is a std::ranges::viewable_range.
 template <std::ranges::viewable_range urng_t>
-single_pass_input_view(urng_t &&) ->
-    single_pass_input_view<std::views::all_t<urng_t>>;
+single_pass_input_view(urng_t &&) -> single_pass_input_view<std::views::all_t<urng_t>>;
 //!\}
-} // bio::detail
+} // namespace bio::detail
 
 //-----------------------------------------------------------------------------
 // Iterator for single pass input view.
@@ -167,7 +156,7 @@ class basic_iterator<single_pass_input_view<view_type>>
     //!\brief The pointer to the associated view.
     using base_iterator_type = typename single_pass_input_view<view_type>::urng_iterator_type;
     //!\brief The sentinel type to compare to.
-    using sentinel_type = typename single_pass_input_view<view_type>::sentinel;
+    using sentinel_type      = typename single_pass_input_view<view_type>::sentinel;
 
     //!\brief The pointer to the associated view.
     single_pass_input_view<view_type> * view_ptr{};
@@ -180,18 +169,17 @@ class basic_iterator<single_pass_input_view<view_type>>
     static_assert(std::sentinel_for<sentinel_type, base_iterator_type>);
 
 public:
-
     /*!\name Associated types
      * \{
      */
     //!\brief Difference type.
-    using difference_type = std::iter_difference_t<base_iterator_type>;
+    using difference_type   = std::iter_difference_t<base_iterator_type>;
     //!\brief Value type.
-    using value_type = std::iter_value_t<base_iterator_type>;
+    using value_type        = std::iter_value_t<base_iterator_type>;
     //!\brief Pointer type.
-    using pointer = detail::iter_pointer_t<base_iterator_type>;
+    using pointer           = detail::iter_pointer_t<base_iterator_type>;
     //!\brief Reference type.
-    using reference = std::iter_reference_t<base_iterator_type>;
+    using reference         = std::iter_reference_t<base_iterator_type>;
     //!\brief Iterator category.
     using iterator_category = std::input_iterator_tag;
     //!\}
@@ -200,36 +188,32 @@ public:
      * \{
      */
     //!\brief Default construction.
-    basic_iterator() = default;
+    basic_iterator()                                                 = default;
     //!\brief Copy construction.
-    constexpr basic_iterator(basic_iterator const & rhs) = default;
+    constexpr basic_iterator(basic_iterator const & rhs)             = default;
     //!\brief Move construction.
-    constexpr basic_iterator(basic_iterator && rhs) = default;
+    constexpr basic_iterator(basic_iterator && rhs)                  = default;
     //!\brief Copy assignment.
     constexpr basic_iterator & operator=(basic_iterator const & rhs) = default;
     //!\brief Move assignment.
-    constexpr basic_iterator & operator=(basic_iterator && rhs) = default;
+    constexpr basic_iterator & operator=(basic_iterator && rhs)      = default;
     //!\brief Destruction.
-    ~basic_iterator() = default;
+    ~basic_iterator()                                                = default;
 
     //!\brief Constructing from the underlying bio::single_pass_input_view.
-    basic_iterator(single_pass_input_view<view_type> & view) noexcept : view_ptr{&view}
-    {}
+    basic_iterator(single_pass_input_view<view_type> & view) noexcept : view_ptr{&view} {}
     //!\}
 
     /*!\name Access operations
      * \{
      */
     //!\brief Dereferences the cached iterator.
-    reference operator*() const noexcept
-    {
-        return *cached();
-    }
+    reference operator*() const noexcept { return *cached(); }
 
     //!\brief Returns pointer to the pointed-to object.
     pointer operator->() const noexcept
-    //!\cond
-        requires (!std::is_void_v<pointer>)
+      //!\cond
+      requires(!std::is_void_v<pointer>)
     //!\endcond
     {
         return std::addressof(*cached());
@@ -267,34 +251,20 @@ public:
      * \{
      */
     //!\brief Compares for equality with sentinel.
-    constexpr bool operator==(sentinel_type const & s) const noexcept
-    {
-        return cached() == s;
-    }
+    constexpr bool operator==(sentinel_type const & s) const noexcept { return cached() == s; }
 
     //!\copydoc operator==
-    friend constexpr bool
-    operator==(sentinel_type const & s, basic_iterator const & rhs) noexcept
-    {
-        return rhs == s;
-    }
+    friend constexpr bool operator==(sentinel_type const & s, basic_iterator const & rhs) noexcept { return rhs == s; }
 
     //!\brief Compares for inequality with sentinel.
-    constexpr bool operator!=(sentinel_type const & rhs) const noexcept
-    {
-        return !(*this == rhs);
-    }
+    constexpr bool operator!=(sentinel_type const & rhs) const noexcept { return !(*this == rhs); }
 
     //!\copydoc operator!=
-    friend constexpr bool
-    operator!=(sentinel_type const & s, basic_iterator const & rhs) noexcept
-    {
-        return rhs != s;
-    }
+    friend constexpr bool operator!=(sentinel_type const & s, basic_iterator const & rhs) noexcept { return rhs != s; }
     //!\}
 
 protected:
-//!\privatesection
+    //!\privatesection
     //!\brief Gives access to the cached iterator.
     base_iterator_type & cached() const noexcept
     {
@@ -303,7 +273,7 @@ protected:
         return view_ptr->state_ptr->cached_urng_iter;
     }
 };
-}  // bio::detail
+} // namespace bio::detail
 
 //-----------------------------------------------------------------------------
 // View shortcut for functor.

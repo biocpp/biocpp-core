@@ -53,34 +53,31 @@ private:
     friend base_t;
 
 public:
-    using base_t::to_rank;
     using base_t::assign_rank;
+    using base_t::to_rank;
 
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr semialphabet_any()                                     noexcept = default; //!< Defaulted.
-    constexpr semialphabet_any(semialphabet_any const &)             noexcept = default; //!< Defaulted.
-    constexpr semialphabet_any(semialphabet_any &&)                  noexcept = default; //!< Defaulted.
+    constexpr semialphabet_any() noexcept                                     = default; //!< Defaulted.
+    constexpr semialphabet_any(semialphabet_any const &) noexcept             = default; //!< Defaulted.
+    constexpr semialphabet_any(semialphabet_any &&) noexcept                  = default; //!< Defaulted.
     constexpr semialphabet_any & operator=(semialphabet_any const &) noexcept = default; //!< Defaulted.
-    constexpr semialphabet_any & operator=(semialphabet_any &&)      noexcept = default; //!< Defaulted.
-    ~semialphabet_any()                                              noexcept = default; //!< Defaulted.
+    constexpr semialphabet_any & operator=(semialphabet_any &&) noexcept      = default; //!< Defaulted.
+    ~semialphabet_any() noexcept                                              = default; //!< Defaulted.
 
     //!\brief Construct semialphabet_any from alphabet of the same size
     template <semialphabet other_alph_t>
-    //!\cond
-        requires (alphabet_size<other_alph_t> == size)
+        //!\cond
+        requires(alphabet_size<other_alph_t> == size)
     //!\endcond
-    explicit semialphabet_any(other_alph_t const other)
-    {
-        assign_rank(bio::to_rank(other));
-    }
+    explicit semialphabet_any(other_alph_t const other) { assign_rank(bio::to_rank(other)); }
     //!\}
 
     //!\brief Enable conversion of semialphabet_any into other (semi-)alphabet of the same size
     template <semialphabet other_alph_t>
-    //!\cond
-        requires ((alphabet_size<other_alph_t> == size) && std::regular<other_alph_t>)
+        //!\cond
+        requires((alphabet_size<other_alph_t> == size) && std::regular<other_alph_t>)
     //!\endcond
     explicit operator other_alph_t() const
     {

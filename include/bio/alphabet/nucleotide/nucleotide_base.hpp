@@ -47,12 +47,12 @@ private:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr nucleotide_base()                                    noexcept = default; //!< Defaulted.
-    constexpr nucleotide_base(nucleotide_base const &)             noexcept = default; //!< Defaulted.
-    constexpr nucleotide_base(nucleotide_base &&)                  noexcept = default; //!< Defaulted.
+    constexpr nucleotide_base() noexcept                                    = default; //!< Defaulted.
+    constexpr nucleotide_base(nucleotide_base const &) noexcept             = default; //!< Defaulted.
+    constexpr nucleotide_base(nucleotide_base &&) noexcept                  = default; //!< Defaulted.
     constexpr nucleotide_base & operator=(nucleotide_base const &) noexcept = default; //!< Defaulted.
-    constexpr nucleotide_base & operator=(nucleotide_base &&)      noexcept = default; //!< Defaulted.
-    ~nucleotide_base()                                             noexcept = default; //!< Defaulted.
+    constexpr nucleotide_base & operator=(nucleotide_base &&) noexcept      = default; //!< Defaulted.
+    ~nucleotide_base() noexcept                                             = default; //!< Defaulted.
     //!\}
 
     //! Befriend the derived_type so it can instantiate.
@@ -73,15 +73,14 @@ public:
     // This constructor needs to be public, because constructor templates are not inherited otherwise
     //!\brief Allow explicit construction from any other nucleotide type and convert via the character representation.
     template <typename other_nucl_type>
-    //!\cond
-        requires (!std::same_as<nucleotide_base, other_nucl_type>) &&
-                 (!std::same_as<derived_type, other_nucl_type>) &&
-                 nucleotide_alphabet<other_nucl_type>
-    //!\endcond
-    explicit constexpr nucleotide_base(other_nucl_type const & other) noexcept
+        //!\cond
+        requires(!std::same_as<nucleotide_base, other_nucl_type>)
+    &&(!std::same_as<derived_type, other_nucl_type>)&&nucleotide_alphabet<other_nucl_type>
+      //!\endcond
+      explicit constexpr nucleotide_base(other_nucl_type const & other) noexcept
     {
         static_cast<derived_type &>(*this) =
-            detail::convert_through_char_representation<derived_type, other_nucl_type>[bio::to_rank(other)];
+          detail::convert_through_char_representation<derived_type, other_nucl_type>[bio::to_rank(other)];
     }
     //!\}
 
@@ -105,10 +104,7 @@ public:
      *
      * Guaranteed not to throw.
      */
-    constexpr derived_type complement() const noexcept
-    {
-        return derived_type::complement_table[to_rank()];
-    }
+    constexpr derived_type complement() const noexcept { return derived_type::complement_table[to_rank()]; }
     //!\}
 
     /*!\brief Validate whether a character value has a one-to-one mapping to an alphabet value.
@@ -137,27 +133,27 @@ public:
 
 private:
     //!\brief Implementation of #char_is_valid().
-    static constexpr std::array<bool, 256> valid_char_table =
-        [] () constexpr
+    static constexpr std::array<bool, 256> valid_char_table = []() constexpr
+    {
+        // init with false
+        std::array<bool, 256> ret{};
+
+        // the original valid chars and their lower cases
+        for (uint8_t c : derived_type::rank_to_char)
         {
-            // init with false
-            std::array<bool, 256> ret{};
+            ret[c]           = true;
+            ret[to_lower(c)] = true;
+        }
 
-            // the original valid chars and their lower cases
-            for (uint8_t c : derived_type::rank_to_char)
-            {
-                ret[         c ] = true;
-                ret[to_lower(c)] = true;
-            }
+        // U and T shall be accepted for all
+        ret['U'] = true;
+        ret['T'] = true;
+        ret['u'] = true;
+        ret['t'] = true;
 
-            // U and T shall be accepted for all
-            ret['U'] = true;
-            ret['T'] = true;
-            ret['u'] = true;
-            ret['t'] = true;
-
-            return ret;
-        }();
+        return ret;
+    }
+    ();
 };
 
 } // namespace bio

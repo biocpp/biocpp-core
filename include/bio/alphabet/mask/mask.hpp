@@ -13,8 +13,8 @@
 
 #pragma once
 
-#include <cassert>
 #include <bio/alphabet/alphabet_base.hpp>
+#include <cassert>
 
 namespace bio
 {
@@ -45,12 +45,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr mask() = default;                         //!< Defaulted.
-    constexpr mask(mask const &) = default;             //!< Defaulted.
-    constexpr mask(mask &&) = default;                  //!< Defaulted.
+    constexpr mask()                         = default; //!< Defaulted.
+    constexpr mask(mask const &)             = default; //!< Defaulted.
+    constexpr mask(mask &&)                  = default; //!< Defaulted.
     constexpr mask & operator=(mask const &) = default; //!< Defaulted.
-    constexpr mask & operator=(mask &&) = default;      //!< Defaulted.
-    ~mask() = default;                                  //!< Defaulted.
+    constexpr mask & operator=(mask &&)      = default; //!< Defaulted.
+    ~mask()                                  = default; //!< Defaulted.
     //!\}
 
     /*!\name Boolean values
@@ -63,6 +63,6 @@ public:
     //!\}
 };
 
-mask constexpr mask::UNMASKED{mask{}.assign_rank(0)};
-mask constexpr mask::MASKED  {mask{}.assign_rank(1)};
+constexpr mask mask::UNMASKED{mask{}.assign_rank(0)};
+constexpr mask mask::MASKED{mask{}.assign_rank(1)};
 } // namespace bio

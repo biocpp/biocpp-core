@@ -38,9 +38,9 @@ public:
     /*!\name Constructors, destructor and assignment
         * \{
         */
-    constexpr dynamic_bitset_reference_proxy() noexcept = default; //!< Defaulted.
+    constexpr dynamic_bitset_reference_proxy() noexcept                                       = default; //!< Defaulted.
     constexpr dynamic_bitset_reference_proxy(dynamic_bitset_reference_proxy const &) noexcept = default; //!< Defaulted.
-    constexpr dynamic_bitset_reference_proxy(dynamic_bitset_reference_proxy &&) noexcept = default; //!< Defaulted.
+    constexpr dynamic_bitset_reference_proxy(dynamic_bitset_reference_proxy &&) noexcept      = default; //!< Defaulted.
 
     //!\brief Assign the value of the bit.
     constexpr dynamic_bitset_reference_proxy & operator=(dynamic_bitset_reference_proxy const rhs) noexcept
@@ -61,20 +61,14 @@ public:
 
     //!\brief Initialise from bio::dynamic_bitset's underlying data and a bit position.
     constexpr dynamic_bitset_reference_proxy(dynamic_bitset_bitfield & internal_, size_t const pos) noexcept :
-        internal{internal_}, mask{1ULL<<pos}
+      internal{internal_}, mask{1ULL << pos}
     {}
 
     //!\brief Returns the value of the referenced bit.
-    constexpr operator bool() const noexcept
-    {
-        return static_cast<bool>(internal.bits & mask);
-    }
+    constexpr operator bool() const noexcept { return static_cast<bool>(internal.bits & mask); }
 
     //!\brief Returns the inverted value of the referenced bit.
-    constexpr bool operator~() const noexcept
-    {
-        return !static_cast<bool>(internal.bits & mask);
-    }
+    constexpr bool operator~() const noexcept { return !static_cast<bool>(internal.bits & mask); }
 
     //!\brief Sets the referenced bit to the result of a binary OR with `value`.
     constexpr dynamic_bitset_reference_proxy & operator|=(bool const value)
@@ -105,19 +99,13 @@ private:
     //!\brief The proxy of the underlying data type.
     dynamic_bitset_bitfield & internal;
     //!\brief Bitmask to access one specific bit.
-    uint64_t mask;
+    uint64_t                  mask;
 
     //!\brief Sets the referenced bit to `1`.
-    constexpr void set() noexcept
-    {
-        internal.bits |= mask;
-    }
+    constexpr void set() noexcept { internal.bits |= mask; }
 
     //!\brief Sets the referenced bit to `0`.
-    constexpr void reset() noexcept
-    {
-        internal.bits &= ~mask;
-    }
+    constexpr void reset() noexcept { internal.bits &= ~mask; }
 };
 
 } // namespace bio::detail
@@ -157,7 +145,9 @@ private:
     friend class dynamic_bitset;
 
     //!\brief Stores the actual data.
-    detail::dynamic_bitset_bitfield data{0u, 0u}; // Specifying values prevents ICE on gcc < 9 when comparing to default constructed bitset
+    detail::dynamic_bitset_bitfield data{
+      0u,
+      0u}; // Specifying values prevents ICE on gcc < 9 when comparing to default constructed bitset
 
 public:
     static_assert(bit_capacity <= 58, "The capacity of the dynamic_bitset exceeds the limit of 58.");
@@ -183,18 +173,18 @@ public:
 
     //!\cond
     // this signals to range-v3 that something is a container :|
-    using allocator_type    = void;
+    using allocator_type = void;
     //!\endcond
 
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr dynamic_bitset()                                   noexcept = default; //!< Defaulted.
-    constexpr dynamic_bitset(dynamic_bitset const &)             noexcept = default; //!< Defaulted.
-    constexpr dynamic_bitset(dynamic_bitset &&)                  noexcept = default; //!< Defaulted.
+    constexpr dynamic_bitset() noexcept                                   = default; //!< Defaulted.
+    constexpr dynamic_bitset(dynamic_bitset const &) noexcept             = default; //!< Defaulted.
+    constexpr dynamic_bitset(dynamic_bitset &&) noexcept                  = default; //!< Defaulted.
     constexpr dynamic_bitset & operator=(dynamic_bitset const &) noexcept = default; //!< Defaulted.
-    constexpr dynamic_bitset & operator=(dynamic_bitset &&)      noexcept = default; //!< Defaulted.
-    ~dynamic_bitset()                                            noexcept = default; //!< Defaulted.
+    constexpr dynamic_bitset & operator=(dynamic_bitset &&) noexcept      = default; //!< Defaulted.
+    ~dynamic_bitset() noexcept                                            = default; //!< Defaulted.
 
     /*!\brief Construct from an `uint64_t`.
      * \param[in] value The `uint64_t` to construct/assign from.
@@ -240,12 +230,11 @@ public:
      * No-throw guarantee.
      */
     template <std::forward_iterator begin_it_type, typename end_it_type>
-    //!\cond
-        requires (std::sentinel_for<end_it_type, begin_it_type> &&
-                  std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
+        //!\cond
+        requires(std::sentinel_for<end_it_type, begin_it_type> &&
+                   std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
     //!\endcond
-    constexpr dynamic_bitset(begin_it_type begin_it, end_it_type end_it) noexcept:
-        dynamic_bitset{}
+    constexpr dynamic_bitset(begin_it_type begin_it, end_it_type end_it) noexcept : dynamic_bitset{}
     {
         assign(begin_it, end_it);
     }
@@ -266,11 +255,11 @@ public:
      * No-throw guarantee.
      */
     template <std::ranges::input_range other_range_t>
-    //!\cond
-        requires (!std::same_as<std::remove_cvref_t<other_range_t>, dynamic_bitset>)
+        //!\cond
+        requires(!std::same_as<std::remove_cvref_t<other_range_t>, dynamic_bitset>)
     //!\endcond
     explicit constexpr dynamic_bitset(other_range_t && range) noexcept :
-        dynamic_bitset{std::ranges::begin(range), std::ranges::end(range)}
+      dynamic_bitset{std::ranges::begin(range), std::ranges::end(range)}
     {}
 
     /*!\brief Construct with `n` times `value`.
@@ -287,8 +276,7 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr dynamic_bitset(size_type const n, value_type const value) noexcept :
-        dynamic_bitset{}
+    constexpr dynamic_bitset(size_type const n, value_type const value) noexcept : dynamic_bitset{}
     {
         assign(n, value);
     }
@@ -465,7 +453,7 @@ public:
      * No-throw guarantee.
      */
     template <std::ranges::input_range other_range_t>
-    //!\cond
+        //!\cond
         requires std::constructible_from<value_type, std::ranges::range_reference_t<other_range_t>>
     //!\endcond
     constexpr void assign(other_range_t && range) noexcept
@@ -491,9 +479,9 @@ public:
      * No-throw guarantee.
      */
     template <std::forward_iterator begin_it_type, typename end_it_type>
-    //!\cond
-        requires (std::sentinel_for<end_it_type, begin_it_type> &&
-                 std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
+        //!\cond
+        requires(std::sentinel_for<end_it_type, begin_it_type> &&
+                   std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
     //!\endcond
     constexpr void assign(begin_it_type begin_it, end_it_type end_it) noexcept
     {
@@ -513,22 +501,13 @@ public:
      *
      * \include test/snippet/ranges/container/dynamic_bitset_begin.cpp
      */
-    constexpr iterator begin() noexcept
-    {
-        return iterator{*this};
-    }
+    constexpr iterator begin() noexcept { return iterator{*this}; }
 
     //!\copydoc begin()
-    constexpr const_iterator begin() const noexcept
-    {
-        return const_iterator{*this};
-    }
+    constexpr const_iterator begin() const noexcept { return const_iterator{*this}; }
 
     //!\copydoc begin()
-    constexpr const_iterator cbegin() const noexcept
-    {
-        return begin();
-    }
+    constexpr const_iterator cbegin() const noexcept { return begin(); }
 
     /*!\brief Returns iterator past the end of the `dynamic_bitset`.
      *
@@ -538,22 +517,13 @@ public:
      *
      * \include test/snippet/ranges/container/dynamic_bitset_begin.cpp
      */
-    constexpr iterator end() noexcept
-    {
-        return iterator{*this, size()};
-    }
+    constexpr iterator end() noexcept { return iterator{*this, size()}; }
 
     //!\copydoc end()
-    constexpr const_iterator end() const noexcept
-    {
-        return const_iterator{*this, size()};
-    }
+    constexpr const_iterator end() const noexcept { return const_iterator{*this, size()}; }
 
     //!\copydoc end()
-    constexpr const_iterator cend() const noexcept
-    {
-        return end();
-    }
+    constexpr const_iterator cend() const noexcept { return end(); }
     //!\}
 
     /*!\name Bit manipulation
@@ -934,32 +904,20 @@ public:
     /*!\brief Checks if all bit are set.
      * \returns `true` if all bits are set or the bitset is empty, `false` otherwise.
      */
-    constexpr bool all() const noexcept
-    {
-        return count() == size();
-    }
+    constexpr bool all() const noexcept { return count() == size(); }
 
     /*!\brief Checks if any bit is set.
      * \returns `true` if any bit is set, `false` otherwise.
      */
-    constexpr bool any() const noexcept
-    {
-        return count() != 0;
-    }
+    constexpr bool any() const noexcept { return count() != 0; }
 
     /*!\brief Checks if no bit is set.
      * \returns `true` if no bit is set, `false` otherwise.
      */
-    constexpr bool none() const noexcept
-    {
-        return count() == 0;
-    }
+    constexpr bool none() const noexcept { return count() == 0; }
 
     //!\brief Returns the number of set bits.
-    constexpr size_type count() const noexcept
-    {
-        return detail::popcount(data.bits);
-    }
+    constexpr size_type count() const noexcept { return detail::popcount(data.bits); }
 
     /*!\brief Returns the i-th element.
      * \param[in] i Index of the element to retrieve.
@@ -994,10 +952,7 @@ public:
     }
 
     //!\copydoc at()
-    constexpr const_reference test(size_t const i) const
-    {
-        return at(i);
-    }
+    constexpr const_reference test(size_t const i) const { return at(i); }
 
     /*!\brief Returns the i-th element.
      * \param[in] i The element to retrieve.
@@ -1091,16 +1046,10 @@ public:
     }
 
     //!\brief Direct access to the underlying bit field.
-    constexpr detail::dynamic_bitset_bitfield * raw_data() noexcept
-    {
-        return &data;
-    }
+    constexpr detail::dynamic_bitset_bitfield * raw_data() noexcept { return &data; }
 
     //!\copydoc raw_data()
-    constexpr detail::dynamic_bitset_bitfield const * raw_data() const noexcept
-    {
-        return &data;
-    }
+    constexpr detail::dynamic_bitset_bitfield const * raw_data() const noexcept { return &data; }
     //!\}
 
     /*!\name Capacity
@@ -1119,10 +1068,7 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr bool empty() const noexcept
-    {
-        return size() == 0;
-    }
+    constexpr bool empty() const noexcept { return size() == 0; }
 
     /*!\brief Returns the number of elements in the container, i.e. `std::distance(begin(), end())`.
      * \returns The number of elements in the container.
@@ -1137,10 +1083,7 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr size_type size() const noexcept
-    {
-        return data.size;
-    }
+    constexpr size_type size() const noexcept { return data.size; }
 
     /*!\brief Returns the maximum number of elements the container is able to hold and resolves to `bit_capacity`.
      * \returns The number of elements in the container.
@@ -1160,10 +1103,7 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr size_type max_size() const noexcept
-    {
-        return capacity();
-    }
+    constexpr size_type max_size() const noexcept { return capacity(); }
 
     /*!\brief Returns the number of elements that the container is able to hold and resolves to `bit_capacity`.
      * \returns The capacity of the currently allocated storage.
@@ -1178,10 +1118,7 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr size_type capacity() const noexcept
-    {
-        return bit_capacity;
-    }
+    constexpr size_type capacity() const noexcept { return bit_capacity; }
 
     //!\brief Since the capacity is fixed on compile time, this is a no-op.
     constexpr void reserve(size_t) const noexcept
@@ -1237,10 +1174,7 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr iterator insert(const_iterator pos, value_type const value) noexcept
-    {
-        return insert(pos, 1, value);
-    }
+    constexpr iterator insert(const_iterator pos, value_type const value) noexcept { return insert(pos, 1, value); }
 
     /*!\brief Inserts `count` copies of `value` before position in the container.
      * \param[in] pos   Iterator before which the content will be inserted. `pos` may be the `end()` iterator.
@@ -1289,14 +1223,14 @@ public:
      * No-throw guarantee.
      */
     template <std::forward_iterator begin_it_type, typename end_it_type>
-    //!\cond
-        requires (std::sentinel_for<end_it_type, begin_it_type> &&
-                 std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
+        //!\cond
+        requires(std::sentinel_for<end_it_type, begin_it_type> &&
+                   std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
     //!\endcond
     constexpr iterator insert(const_iterator pos, begin_it_type begin_it, end_it_type end_it) noexcept
     {
         auto const pos_as_num = std::ranges::distance(cbegin(), pos);
-        auto const length = std::ranges::distance(begin_it, end_it);
+        auto const length     = std::ranges::distance(begin_it, end_it);
 
         if (length == 0)
             return begin(); // nothing to insert
@@ -1363,7 +1297,7 @@ public:
             return begin() + std::ranges::distance(cbegin(), end_it);
 
         auto const length = std::ranges::distance(begin_it, end_it);
-        auto out_it = begin() + std::ranges::distance(cbegin(), begin_it);
+        auto       out_it = begin() + std::ranges::distance(cbegin(), begin_it);
 
         while (end_it != cend())
             *(out_it++) = *(end_it++);
@@ -1392,10 +1326,7 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr iterator erase(const_iterator pos) noexcept
-    {
-       return erase(pos, pos + 1);
-    }
+    constexpr iterator erase(const_iterator pos) noexcept { return erase(pos, pos + 1); }
 
     /*!\brief Appends the given element `value` to the end of the container.
      * \param[in] value The value to append.
@@ -1492,15 +1423,12 @@ public:
     constexpr void swap(dynamic_bitset & rhs) noexcept
     {
         detail::dynamic_bitset_bitfield tmp = std::move(data);
-        data = std::move(rhs.data);
-        rhs.data = std::move(tmp);
+        data                                = std::move(rhs.data);
+        rhs.data                            = std::move(tmp);
     }
 
     //!\overload
-    constexpr void swap(dynamic_bitset && rhs) noexcept
-    {
-        data = std::move(rhs.data);
-    }
+    constexpr void swap(dynamic_bitset && rhs) noexcept { data = std::move(rhs.data); }
 
     //!\}
 
@@ -1518,10 +1446,7 @@ public:
      *
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
-    friend constexpr void swap(dynamic_bitset & lhs, dynamic_bitset & rhs) noexcept
-    {
-        lhs.swap(rhs);
-    }
+    friend constexpr void swap(dynamic_bitset & lhs, dynamic_bitset & rhs) noexcept { lhs.swap(rhs); }
 
     /*!\name Binary operators
      * \{
@@ -1535,8 +1460,8 @@ public:
      * Both dynamic_bitsets must have the same size. In debug mode an assertion checks this constraint.
      */
     template <size_t cap>
-    //!\cond
-        requires (cap <= bit_capacity)
+        //!\cond
+        requires(cap <= bit_capacity)
     //!\endcond
     friend constexpr dynamic_bitset operator&(dynamic_bitset const & lhs, dynamic_bitset<cap> const & rhs) noexcept
     {
@@ -1555,8 +1480,8 @@ public:
      * Both dynamic_bitsets must have the same size. In debug mode an assertion checks this constraint.
      */
     template <size_t cap>
-    //!\cond
-        requires (cap <= bit_capacity)
+        //!\cond
+        requires(cap <= bit_capacity)
     //!\endcond
     friend constexpr dynamic_bitset operator^(dynamic_bitset const & lhs, dynamic_bitset<cap> const & rhs) noexcept
     {
@@ -1575,8 +1500,8 @@ public:
      * Both dynamic_bitsets must have the same size. In debug mode an assertion checks this constraint.
      */
     template <size_t cap>
-    //!\cond
-        requires (cap <= bit_capacity)
+        //!\cond
+        requires(cap <= bit_capacity)
     //!\endcond
     friend constexpr dynamic_bitset operator|(dynamic_bitset const & lhs, dynamic_bitset<cap> const & rhs) noexcept
     {
@@ -1702,7 +1627,7 @@ public:
     {
         uint64_t size = data.size;
         archive(size);
-        data.size = size;
+        data.size     = size;
         uint64_t bits = data.bits;
         archive(bits);
         data.bits = bits;
@@ -1735,10 +1660,9 @@ struct hash<bio::dynamic_bitset<cap>>
 
 } //namespace std
 
-
 #if __has_include(<fmt/format.h>)
 
-#include <fmt/ranges.h>
+#    include <fmt/ranges.h>
 
 template <>
 struct fmt::formatter<bio::detail::dynamic_bitset_reference_proxy> : fmt::formatter<bool>
@@ -1760,10 +1684,8 @@ struct fmt::formatter<bio::dynamic_bitset<bit_capacity>> : fmt::formatter<std::s
     {
         std::string str{"0b"};
         str.reserve(s.size()); // TODO fix me
-        auto v = s
-               | std::views::reverse
-               | std::views::transform([] (bool const bit) { return bit ? '1' : '0'; })
-               | bio::views::interleave(4, std::string_view{"'"});
+        auto v = s | std::views::reverse | std::views::transform([](bool const bit) { return bit ? '1' : '0'; }) |
+                 bio::views::interleave(4, std::string_view{"'"});
         std::ranges::copy(v, std::back_inserter(str));
         return fmt::formatter<std::string>::format(str, ctx);
     }

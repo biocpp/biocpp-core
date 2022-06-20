@@ -11,11 +11,11 @@
  * \brief Meta-header for the cigar submodule; includes all headers from alphabet/cigar/.
  */
 
- #pragma once
+#pragma once
 
- #include <bio/alphabet/cigar/cigar_op.hpp>
+#include <bio/alphabet/cigar/cigar_op.hpp>
 
- /*!\defgroup cigar CIGAR
+/*!\defgroup cigar CIGAR
   * \brief Provides (semi-)alphabets for representing elements in CIGAR strings.
   * \ingroup alphabet
   *

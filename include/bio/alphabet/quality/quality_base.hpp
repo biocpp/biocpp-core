@@ -43,18 +43,15 @@ private:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr quality_base()                                  noexcept = default; //!< Defaulted.
-    constexpr quality_base(quality_base const &)              noexcept = default; //!< Defaulted.
-    constexpr quality_base(quality_base &&)                   noexcept = default; //!< Defaulted.
-    constexpr quality_base & operator=(quality_base const &)  noexcept = default; //!< Defaulted.
-    constexpr quality_base & operator=(quality_base &&)       noexcept = default; //!< Defaulted.
-    ~quality_base()                                           noexcept = default; //!< Defaulted.
+    constexpr quality_base() noexcept                                 = default; //!< Defaulted.
+    constexpr quality_base(quality_base const &) noexcept             = default; //!< Defaulted.
+    constexpr quality_base(quality_base &&) noexcept                  = default; //!< Defaulted.
+    constexpr quality_base & operator=(quality_base const &) noexcept = default; //!< Defaulted.
+    constexpr quality_base & operator=(quality_base &&) noexcept      = default; //!< Defaulted.
+    ~quality_base() noexcept                                          = default; //!< Defaulted.
 
     //!\brief Allow construction from the phred value.
-    constexpr quality_base(phred_type const p) noexcept
-    {
-        static_cast<derived_type *>(this)->assign_phred(p);
-    }
+    constexpr quality_base(phred_type const p) noexcept { static_cast<derived_type *>(this)->assign_phred(p); }
     //!\}
 
     //!\brief Befriend the derived_type so it can instantiate.
@@ -63,8 +60,8 @@ private:
 public:
     // Import from base type:
     using base_t::alphabet_size;
-    using base_t::to_rank;
     using base_t::assign_rank;
+    using base_t::to_rank;
     using typename base_t::char_type;
     using typename base_t::rank_type;
 
@@ -74,10 +71,9 @@ public:
     // This constructor needs to be public, because constructor templates are not inherited otherwise
     //!\brief Allow explicit construction from any other quality type by means of the phred representation.
     template <typename other_qual_type>
-    //!\cond
-        requires ((!std::same_as<quality_base, other_qual_type>) &&
-                 (!std::same_as<derived_type, other_qual_type>) &&
-                 quality_alphabet<other_qual_type>)
+        //!\cond
+        requires((!std::same_as<quality_base, other_qual_type>)&&(
+          !std::same_as<derived_type, other_qual_type>)&&quality_alphabet<other_qual_type>)
     //!\endcond
     explicit constexpr quality_base(other_qual_type const & other) noexcept
     {
@@ -89,10 +85,7 @@ public:
      * \{
      */
     //!\brief Return the alphabet's value in phred representation.
-    constexpr phred_type to_phred() const noexcept
-    {
-        return rank_to_phred[to_rank()];
-    }
+    constexpr phred_type to_phred() const noexcept { return rank_to_phred[to_rank()]; }
     //!\}
 
     /*!\name Write functions
@@ -117,65 +110,65 @@ public:
 
 protected:
     //!\brief Phred to rank conversion table.
-    static std::array<rank_type, 256> constexpr phred_to_rank =
-        [] () constexpr
-        {
-            std::array<rank_type, 256> ret{};
+    static constexpr std::array<rank_type, 256> phred_to_rank = []() constexpr
+    {
+        std::array<rank_type, 256> ret{};
 
-            for (int64_t i = std::numeric_limits<phred_type>::lowest(); i <= std::numeric_limits<phred_type>::max(); ++i)
-            {
-                if (i < derived_type::offset_phred)                     // map too-small to smallest possible
-                    ret[static_cast<rank_type>(i)] = 0;
-                else if (i >= derived_type::offset_phred + alphabet_size)  // map too-large to highest possible
-                    ret[static_cast<rank_type>(i)] = alphabet_size - 1;
-                else                                                    // map valid range to identity
-                    ret[static_cast<rank_type>(i)] = i - derived_type::offset_phred;
-            }
-            return ret;
-        }();
+        for (int64_t i = std::numeric_limits<phred_type>::lowest(); i <= std::numeric_limits<phred_type>::max(); ++i)
+        {
+            if (i < derived_type::offset_phred) // map too-small to smallest possible
+                ret[static_cast<rank_type>(i)] = 0;
+            else if (i >= derived_type::offset_phred + alphabet_size) // map too-large to highest possible
+                ret[static_cast<rank_type>(i)] = alphabet_size - 1;
+            else // map valid range to identity
+                ret[static_cast<rank_type>(i)] = i - derived_type::offset_phred;
+        }
+        return ret;
+    }
+    ();
 
     //!\brief Char to rank conversion table.
-    static std::array<rank_type, 256> constexpr char_to_rank =
-        [] () constexpr
+    static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
+    {
+        std::array<rank_type, 256> ret{};
+
+        for (int64_t i = std::numeric_limits<char_type>::lowest(); i <= std::numeric_limits<char_type>::max(); ++i)
         {
-            std::array<rank_type, 256> ret{};
+            if (i < derived_type::offset_char) // map too-small to smallest possible
+                ret[static_cast<rank_type>(i)] = 0;
+            else if (i >= derived_type::offset_char + alphabet_size) // map too-large to highest possible
+                ret[static_cast<rank_type>(i)] = alphabet_size - 1;
+            else // map valid range to identity
+                ret[static_cast<rank_type>(i)] = i - derived_type::offset_char;
+        }
 
-            for (int64_t i = std::numeric_limits<char_type>::lowest(); i <= std::numeric_limits<char_type>::max(); ++i)
-            {
-                if (i < derived_type::offset_char)                     // map too-small to smallest possible
-                    ret[static_cast<rank_type>(i)] = 0;
-                else if (i >= derived_type::offset_char + alphabet_size)  // map too-large to highest possible
-                    ret[static_cast<rank_type>(i)] = alphabet_size - 1;
-                else                                                   // map valid range to identity
-                    ret[static_cast<rank_type>(i)] = i - derived_type::offset_char;
-            }
-
-            return ret;
-        }();
+        return ret;
+    }
+    ();
 
     //!\brief Rank to phred conversion table.
-    static std::array<phred_type, alphabet_size> constexpr rank_to_phred =
-        [] () constexpr
-        {
-            std::array<phred_type, alphabet_size> ret{};
+    static constexpr std::array<phred_type, alphabet_size> rank_to_phred = []() constexpr
+    {
+        std::array<phred_type, alphabet_size> ret{};
 
-            for (size_t i = 0; i < alphabet_size; ++i)
-                ret[i] = i + derived_type::offset_phred;
+        for (size_t i = 0; i < alphabet_size; ++i)
+            ret[i] = i + derived_type::offset_phred;
 
-            return ret;
-        }();
+        return ret;
+    }
+    ();
 
     //!\brief Rank to char conversion table.
-    static std::array<char_type, alphabet_size> constexpr rank_to_char =
-        [] () constexpr
-        {
-            std::array<char_type, alphabet_size> ret{};
+    static constexpr std::array<char_type, alphabet_size> rank_to_char = []() constexpr
+    {
+        std::array<char_type, alphabet_size> ret{};
 
-            for (size_t i = 0; i < alphabet_size; ++i)
-                ret[i] = i + derived_type::offset_char;
+        for (size_t i = 0; i < alphabet_size; ++i)
+            ret[i] = i + derived_type::offset_char;
 
-            return ret;
-        }();
+        return ret;
+    }
+    ();
 };
 
 } // namespace bio

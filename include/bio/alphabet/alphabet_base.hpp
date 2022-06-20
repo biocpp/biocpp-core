@@ -69,12 +69,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr alphabet_base()                                   noexcept = default; //!< Defaulted.
-    constexpr alphabet_base(alphabet_base const &)              noexcept = default; //!< Defaulted.
-    constexpr alphabet_base(alphabet_base &&)                   noexcept = default; //!< Defaulted.
-    constexpr alphabet_base & operator=(alphabet_base const &)  noexcept = default; //!< Defaulted.
-    constexpr alphabet_base & operator=(alphabet_base &&)       noexcept = default; //!< Defaulted.
-    ~alphabet_base()                                            noexcept = default; //!< Defaulted.
+    constexpr alphabet_base() noexcept                                  = default; //!< Defaulted.
+    constexpr alphabet_base(alphabet_base const &) noexcept             = default; //!< Defaulted.
+    constexpr alphabet_base(alphabet_base &&) noexcept                  = default; //!< Defaulted.
+    constexpr alphabet_base & operator=(alphabet_base const &) noexcept = default; //!< Defaulted.
+    constexpr alphabet_base & operator=(alphabet_base &&) noexcept      = default; //!< Defaulted.
+    ~alphabet_base() noexcept                                           = default; //!< Defaulted.
     //!\}
 
     /*!\name Read functions
@@ -95,8 +95,8 @@ public:
      * Guaranteed not to throw.
      */
     constexpr char_type to_char() const noexcept
-    //!\cond
-        requires (!std::same_as<char_t, void>)
+      //!\cond
+      requires(!std::same_as<char_t, void>)
     //!\endcond
     {
         return derived_type::rank_to_char[rank];
@@ -116,10 +116,7 @@ public:
      *
      * Guaranteed not to throw.
      */
-    constexpr rank_type to_rank() const noexcept
-    {
-        return rank;
-    }
+    constexpr rank_type to_rank() const noexcept { return rank; }
     //!\}
 
     /*!\name Write functions
@@ -141,12 +138,12 @@ public:
      * Guaranteed not to throw.
      */
     constexpr derived_type & assign_char(char_type const c) noexcept
-    //!\cond
-        requires (!std::same_as<char_t, void>)
+      //!\cond
+      requires(!std::same_as<char_t, void>)
     //!\endcond
     {
         using index_t = std::make_unsigned_t<char_type>;
-        rank = derived_type::char_to_rank[static_cast<index_t>(c)];
+        rank          = derived_type::char_to_rank[static_cast<index_t>(c)];
         return static_cast<derived_type &>(*this);
     }
 
@@ -174,7 +171,7 @@ public:
     //!\}
 
     //!\brief The size of the alphabet, i.e. the number of different values it can take.
-    static detail::min_viable_uint_t<size> constexpr alphabet_size = size;
+    static constexpr detail::min_viable_uint_t<size> alphabet_size = size;
 
     //!\name Comparison operators
     //!\{
@@ -249,12 +246,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr alphabet_base()                                   noexcept = default; //!< Defaulted.
-    constexpr alphabet_base(alphabet_base const &)              noexcept = default; //!< Defaulted.
-    constexpr alphabet_base(alphabet_base &&)                   noexcept = default; //!< Defaulted.
-    constexpr alphabet_base & operator=(alphabet_base const &)  noexcept = default; //!< Defaulted.
-    constexpr alphabet_base & operator=(alphabet_base &&)       noexcept = default; //!< Defaulted.
-    ~alphabet_base()                                            noexcept = default; //!< Defaulted.
+    constexpr alphabet_base() noexcept                                  = default; //!< Defaulted.
+    constexpr alphabet_base(alphabet_base const &) noexcept             = default; //!< Defaulted.
+    constexpr alphabet_base(alphabet_base &&) noexcept                  = default; //!< Defaulted.
+    constexpr alphabet_base & operator=(alphabet_base const &) noexcept = default; //!< Defaulted.
+    constexpr alphabet_base & operator=(alphabet_base &&) noexcept      = default; //!< Defaulted.
+    ~alphabet_base() noexcept                                           = default; //!< Defaulted.
     //!\}
 
     /*!\name Read functions
@@ -262,18 +259,15 @@ public:
      */
     //!\copybrief bio::alphabet_base::to_char
     constexpr char_type to_char() const noexcept
-    //!\cond
-        requires (!std::same_as<char_t, void>)
+      //!\cond
+      requires(!std::same_as<char_t, void>)
     //!\endcond
     {
         return derived_type::char_value;
     }
 
     //!\copybrief bio::alphabet_base::to_rank
-    constexpr rank_type to_rank() const noexcept
-    {
-        return 0;
-    }
+    constexpr rank_type to_rank() const noexcept { return 0; }
     //!\}
 
     /*!\name Write functions
@@ -281,18 +275,15 @@ public:
      */
     //!\copybrief bio::alphabet_base::assign_char
     constexpr derived_type & assign_char(char_type const) noexcept
-    //!\cond
-        requires (!std::same_as<char_t, void>)
+      //!\cond
+      requires(!std::same_as<char_t, void>)
     //!\endcond
     {
         return static_cast<derived_type &>(*this);
     }
 
     //!\copybrief bio::alphabet_base::assign_rank
-    constexpr derived_type & assign_rank(rank_type const) noexcept
-    {
-        return static_cast<derived_type &>(*this);
-    }
+    constexpr derived_type & assign_rank(rank_type const) noexcept { return static_cast<derived_type &>(*this); }
     //!\}
 
     //!\brief The size of the alphabet, i.e. the number of different values it can take.
@@ -302,40 +293,22 @@ public:
     //!\{
 
     //!\brief Letters are always equal.
-    friend constexpr bool operator==(derived_type const, derived_type const) noexcept
-    {
-        return true;
-    }
+    friend constexpr bool operator==(derived_type const, derived_type const) noexcept { return true; }
 
     //!\brief Letters are never unequal.
-    friend constexpr bool operator!=(derived_type const, derived_type const) noexcept
-    {
-        return false;
-    }
+    friend constexpr bool operator!=(derived_type const, derived_type const) noexcept { return false; }
 
     //!\brief One letter cannot be smaller than another.
-    friend constexpr bool operator<(derived_type const,  derived_type const)  noexcept
-    {
-        return false;
-    }
+    friend constexpr bool operator<(derived_type const, derived_type const) noexcept { return false; }
 
     //!\brief One letter cannot be bigger than another.
-    friend constexpr bool operator>(derived_type const,  derived_type const)  noexcept
-    {
-        return false;
-    }
+    friend constexpr bool operator>(derived_type const, derived_type const) noexcept { return false; }
 
     //!\brief Letters are always equal.
-    friend constexpr bool operator<=(derived_type const, derived_type const) noexcept
-    {
-        return true;
-    }
+    friend constexpr bool operator<=(derived_type const, derived_type const) noexcept { return true; }
 
     //!\brief Letters are always equal.
-    friend constexpr bool operator>=(derived_type const, derived_type const) noexcept
-    {
-        return true;
-    }
+    friend constexpr bool operator>=(derived_type const, derived_type const) noexcept { return true; }
     //!\}
 
 private:

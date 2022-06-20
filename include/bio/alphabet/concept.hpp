@@ -72,32 +72,28 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void to_rank(args_t ...) = delete;
+template <typename... args_t>
+void to_rank(args_t...) = delete;
 
 //!\brief Functor definition for bio::to_rank.
 struct to_rank_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_rank(v))    // explicit customisation
-    BIOCPP_CPO_IMPL(1, to_rank(v)                                       )    // ADL
-    BIOCPP_CPO_IMPL(0, v.to_rank()                                      )    // member
+    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_rank(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, to_rank(v))                                     // ADL
+    BIOCPP_CPO_IMPL(0, v.to_rank())                                    // member
 
 public:
     //!\brief Operator definition.
     template <typename alph_t>
-    //!\cond
-        requires (requires (alph_t const a)
-        {
-            { impl(priority_tag<2>{}, a) };
+        //!\cond
+        requires(requires(alph_t const a) {
+            {impl(priority_tag<2>{}, a)};
             requires noexcept(impl(priority_tag<2>{}, a));
             requires std::integral<decltype(impl(priority_tag<2>{}, a))>;
         })
     //!\endcond
-    constexpr auto operator()(alph_t const a) const noexcept
-    {
-        return impl(priority_tag<2>{}, a);
-    }
+    constexpr auto operator()(alph_t const a) const noexcept { return impl(priority_tag<2>{}, a); }
 };
 
 } // namespace bio::detail::adl_only
@@ -147,8 +143,8 @@ inline constexpr auto to_rank = detail::adl_only::to_rank_fn{};
 //!\brief The `rank_type` of the semi-alphabet; defined as the return type of bio::to_rank.
 //!\ingroup alphabet
 template <typename semi_alphabet_type>
-//!\cond
-    requires (requires { { bio::to_rank(std::declval<semi_alphabet_type>()) }; })
+    //!\cond
+    requires(requires { {bio::to_rank(std::declval<semi_alphabet_type>())}; })
 //!\endcond
 using alphabet_rank_t = decltype(bio::to_rank(std::declval<semi_alphabet_type>()));
 
@@ -162,8 +158,8 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void assign_rank_to(args_t ...) = delete;
+template <typename... args_t>
+void assign_rank_to(args_t...) = delete;
 
 //!\brief Functor definition for bio::assign_rank_to.
 //!\ingroup alphabet
@@ -171,19 +167,18 @@ struct assign_rank_to_fn
 {
 public:
     BIOCPP_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_rank_to(args..., v))) // explicit customisation
-    BIOCPP_CPO_IMPL(1, (assign_rank_to(args..., v)                                       )) // ADL
-    BIOCPP_CPO_IMPL(0, (v.assign_rank(args...)                                           )) // member
+    BIOCPP_CPO_IMPL(1, (assign_rank_to(args..., v)))                                     // ADL
+    BIOCPP_CPO_IMPL(0, (v.assign_rank(args...)))                                         // member
 
 public:
     //!\brief Operator definition.
     template <typename alph_t>
-    //!\cond
-        requires (requires (bio::alphabet_rank_t<alph_t> const r, alph_t & a)
-            {
-                { impl(priority_tag<2>{}, a, r) };
-                requires noexcept(impl(priority_tag<2>{}, a, r));
-                requires std::same_as<alph_t &, decltype(impl(priority_tag<2>{}, a, r))>;
-            })
+        //!\cond
+        requires(requires(bio::alphabet_rank_t<alph_t> const r, alph_t & a) {
+            {impl(priority_tag<2>{}, a, r)};
+            requires noexcept(impl(priority_tag<2>{}, a, r));
+            requires std::same_as<alph_t &, decltype(impl(priority_tag<2>{}, a, r))>;
+        })
     //!\endcond
     constexpr alph_t operator()(bio::alphabet_rank_t<alph_t> const r, alph_t && a) const noexcept
     {
@@ -249,32 +244,28 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void to_char(args_t ...) = delete;
+template <typename... args_t>
+void to_char(args_t...) = delete;
 
 //!\brief Functor definition for bio::to_char.
 struct to_char_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_char(v))    // explicit customisation
-    BIOCPP_CPO_IMPL(1, to_char(v)                                       )    // ADL
-    BIOCPP_CPO_IMPL(0, v.to_char()                                      )    // member
+    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_char(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, to_char(v))                                     // ADL
+    BIOCPP_CPO_IMPL(0, v.to_char())                                    // member
 
 public:
     //!\brief Operator definition.
     template <typename alph_t>
-    //!\cond
-        requires (requires (alph_t const a)
-        {
-            { impl(priority_tag<2>{}, a) };
+        //!\cond
+        requires(requires(alph_t const a) {
+            {impl(priority_tag<2>{}, a)};
             requires noexcept(impl(priority_tag<2>{}, a));
             requires builtin_character<decltype(impl(priority_tag<2>{}, a))>;
         })
     //!\endcond
-    constexpr decltype(auto) operator()(alph_t const a) const noexcept
-    {
-        return impl(priority_tag<2>{}, a);
-    }
+    constexpr decltype(auto) operator()(alph_t const a) const noexcept { return impl(priority_tag<2>{}, a); }
 };
 
 } // namespace bio::detail::adl_only
@@ -325,8 +316,8 @@ inline constexpr auto to_char = detail::adl_only::to_char_fn{};
 //!\brief The `char_type` of the alphabet; defined as the return type of bio::to_char.
 //!\ingroup alphabet
 template <typename alphabet_type>
-//!\cond
-    requires (requires (alphabet_type const a) { { bio::to_char(a) }; })
+    //!\cond
+    requires(requires(alphabet_type const a) { {bio::to_char(a)}; })
 //!\endcond
 using alphabet_char_t = decltype(bio::to_char(std::declval<alphabet_type const>()));
 
@@ -340,8 +331,8 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void assign_char_to(args_t ...) = delete;
+template <typename... args_t>
+void assign_char_to(args_t...) = delete;
 
 //!\brief Functor definition for bio::assign_char_to.
 //!\ingroup alphabet
@@ -349,19 +340,18 @@ struct assign_char_to_fn
 {
 public:
     BIOCPP_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_char_to(args..., v))) // explicit customisation
-    BIOCPP_CPO_IMPL(1, (assign_char_to(args..., v)                                       )) // ADL
-    BIOCPP_CPO_IMPL(0, (v.assign_char(args...)                                           )) // member
+    BIOCPP_CPO_IMPL(1, (assign_char_to(args..., v)))                                     // ADL
+    BIOCPP_CPO_IMPL(0, (v.assign_char(args...)))                                         // member
 
 public:
     //!\brief Operator definition.
     template <typename alph_t>
-    //!\cond
-        requires (requires (bio::alphabet_char_t<alph_t> const r, alph_t & a)
-            {
-                { impl(priority_tag<2>{}, a, r) };
-                requires noexcept(impl(priority_tag<2>{}, a, r));
-                requires std::same_as<alph_t &, decltype(impl(priority_tag<2>{}, a, r))>;
-            })
+        //!\cond
+        requires(requires(bio::alphabet_char_t<alph_t> const r, alph_t & a) {
+            {impl(priority_tag<2>{}, a, r)};
+            requires noexcept(impl(priority_tag<2>{}, a, r));
+            requires std::same_as<alph_t &, decltype(impl(priority_tag<2>{}, a, r))>;
+        })
     //!\endcond
     constexpr alph_t operator()(bio::alphabet_char_t<alph_t> const r, alph_t && a) const noexcept
     {
@@ -427,8 +417,8 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void char_is_valid_for(args_t ...) = delete;
+template <typename... args_t>
+void char_is_valid_for(args_t...) = delete;
 
 /*!\brief Functor definition for bio::char_is_valid_for.
  * \tparam alph_t   The alphabet type being queried.
@@ -444,25 +434,23 @@ public:
                                         std::type_identity<alph_t>>;
 
     BIOCPP_CPO_IMPL(3, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::char_is_valid(v))) // expl. cst.
-    BIOCPP_CPO_IMPL(2, (char_is_valid_for(v, s_alph_t{})                                                )) // ADL
-    BIOCPP_CPO_IMPL(1, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::char_is_valid(v)          )) // member
-    BIOCPP_CPO_IMPL(0, (bio::to_char(bio::assign_char_to(v, s_alph_t{})) == v                     )) // fallback
+    BIOCPP_CPO_IMPL(2, (char_is_valid_for(v, s_alph_t{})))                                              // ADL
+    BIOCPP_CPO_IMPL(1, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::char_is_valid(v)))   // member
+    BIOCPP_CPO_IMPL(0, (bio::to_char(bio::assign_char_to(v, s_alph_t{})) == v))                         // fallback
 
 public:
     //!\brief Operator definition.
     template <typename dummy = int> // need to make this a template to enforce deferred instantiation
-    //!\cond
-        requires (requires (alphabet_char_t<alph_t> const a)
-        {
-            { impl(priority_tag<3>{}, a, dummy{}) };
+                                    //!\cond
+        requires(requires(alphabet_char_t<alph_t> const a) {
+            {impl(priority_tag<3>{}, a, dummy{})};
             requires noexcept(impl(priority_tag<3>{}, a, dummy{}));
-            { impl(priority_tag<3>{}, a, dummy{}) } -> std::convertible_to<bool>;
+            {
+                impl(priority_tag<3>{}, a, dummy{})
+                } -> std::convertible_to<bool>;
         })
     //!\endcond
-    constexpr bool operator()(alphabet_char_t<alph_t> const a) const noexcept
-    {
-        return impl(priority_tag<3>{}, a);
-    }
+    constexpr bool operator()(alphabet_char_t<alph_t> const a) const noexcept { return impl(priority_tag<3>{}, a); }
 };
 
 } // namespace bio::detail::adl_only
@@ -517,8 +505,8 @@ namespace bio
  * simply provide one of the three functions specified above.
  */
 template <typename alph_t>
-//!\cond
-    requires (requires { { to_char(std::declval<alph_t>()) }; }) // to_char() is required by some defs
+    //!\cond
+    requires(requires { {to_char(std::declval<alph_t>())}; }) // to_char() is required by some defs
 //!\endcond
 inline constexpr auto char_is_valid_for = detail::adl_only::char_is_valid_for_fn<alph_t>{};
 //!\}
@@ -537,11 +525,14 @@ struct assign_char_strictly_to_fn
 {
     //!\brief Operator overload for lvalues.
     template <typename alph_t>
-    //!\cond
-        requires (requires (alph_t a, bio::alphabet_char_t<alph_t> r)
-        {
-            { bio::assign_char_to(r, a) } -> std::convertible_to<alph_t>;
-            { bio::char_is_valid_for<alph_t>(r) } -> std::same_as<bool>;
+        //!\cond
+        requires(requires(alph_t a, bio::alphabet_char_t<alph_t> r) {
+            {
+                bio::assign_char_to(r, a)
+                } -> std::convertible_to<alph_t>;
+            {
+                bio::char_is_valid_for<alph_t>(r)
+                } -> std::same_as<bool>;
         })
     //!\endcond
     decltype(auto) operator()(bio::alphabet_char_t<alph_t> const r, alph_t & a) const
@@ -554,11 +545,14 @@ struct assign_char_strictly_to_fn
 
     //!\brief Operator overload for rvalues.
     template <typename alph_t>
-    //!\cond
-        requires (requires (alph_t a, bio::alphabet_char_t<alph_t> r)
-        {
-            { bio::assign_char_to(r, a) } -> std::convertible_to<alph_t>;
-            { bio::char_is_valid_for<alph_t>(r) } -> std::same_as<bool>;
+        //!\cond
+        requires(requires(alph_t a, bio::alphabet_char_t<alph_t> r) {
+            {
+                bio::assign_char_to(r, a)
+                } -> std::convertible_to<alph_t>;
+            {
+                bio::char_is_valid_for<alph_t>(r)
+                } -> std::same_as<bool>;
         })
     //!\endcond
     auto operator()(bio::alphabet_char_t<alph_t> const r, alph_t && a) const
@@ -608,8 +602,8 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void alphabet_size(args_t ...) = delete;
+template <typename... args_t>
+void alphabet_size(args_t...) = delete;
 
 /*!\brief Functor definition used indirectly by for bio::detail::alphabet_size.
  * \tparam alph_t   The type being queried.
@@ -621,21 +615,20 @@ struct alphabet_size_fn
 public:
     //!\brief `alph_t` with cvref removed and possibly wrapped in std::type_identity.
     using s_alph_t = std::conditional_t<std::is_nothrow_default_constructible_v<std::remove_cvref_t<alph_t>> &&
-                                        bio::is_constexpr_default_constructible_v<std::remove_cvref_t<alph_t>>,
+                                          bio::is_constexpr_default_constructible_v<std::remove_cvref_t<alph_t>>,
                                         std::remove_cvref_t<alph_t>,
                                         std::type_identity<alph_t>>;
 
     BIOCPP_CPO_IMPL(2, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::alphabet_size)) // expl. cst.
-    BIOCPP_CPO_IMPL(1, (alphabet_size(v)                                                             )) // ADL
-    BIOCPP_CPO_IMPL(0, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::alphabet_size          )) // member
+    BIOCPP_CPO_IMPL(1, (alphabet_size(v)))                                                           // ADL
+    BIOCPP_CPO_IMPL(0, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::alphabet_size))   // member
 
 public:
     //!\brief Operator definition.
     template <typename dummy = int> // need to make this a template to enforce deferred instantiation
-    //!\cond
-        requires (requires
-        {
-            { impl(priority_tag<2>{}, s_alph_t{}, dummy{}) };
+                                    //!\cond
+        requires(requires {
+            {impl(priority_tag<2>{}, s_alph_t{}, dummy{})};
             requires noexcept(impl(priority_tag<2>{}, s_alph_t{}, dummy{}));
             requires std::integral<std::remove_cvref_t<decltype(impl(priority_tag<2>{}, s_alph_t{}, dummy{}))>>;
         })
@@ -645,7 +638,7 @@ public:
         // The following cannot be added to the list of constraints, because it is not properly deferred
         // for incomplete types which leads to breakage.
         static_assert(BIOCPP_IS_CONSTEXPR(impl(priority_tag<2>{}, s_alph_t{})),
-            "Only overloads that are marked constexpr are picked up by bio::alphabet_size.");
+                      "Only overloads that are marked constexpr are picked up by bio::alphabet_size.");
         return impl(priority_tag<2>{}, s_alph_t{});
     }
 };
@@ -653,7 +646,7 @@ public:
 //!\cond
 // required to prevent https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89953
 template <typename alph_t>
-    requires (requires { { alphabet_size_fn<alph_t>{} }; })
+    requires(requires { {alphabet_size_fn<alph_t>{}}; })
 inline constexpr auto alphabet_size_obj = alphabet_size_fn<alph_t>{};
 //!\endcond
 
@@ -701,9 +694,10 @@ namespace bio
  * simply provide one of the three functions specified above.
  */
 template <typename alph_t>
-//!\cond
-    requires (requires { { detail::adl_only::alphabet_size_fn<alph_t>{} }; } &&
-              requires { { detail::adl_only::alphabet_size_obj<alph_t>() }; }) // ICE workarounds
+    //!\cond
+    requires(
+      requires { {detail::adl_only::alphabet_size_fn<alph_t>{}}; } &&
+      requires { {detail::adl_only::alphabet_size_obj<alph_t>()}; }) // ICE workarounds
 //!\endcond
 inline constexpr auto alphabet_size = detail::adl_only::alphabet_size_obj<alph_t>();
 
@@ -752,14 +746,11 @@ inline constexpr auto alphabet_size = detail::adl_only::alphabet_size_obj<alph_t
  */
 //!\cond
 template <typename t>
-concept semialphabet =
-    std::totally_ordered<t> &&
-    std::copy_constructible<t> &&
-    std::is_nothrow_copy_constructible_v<t> &&
-    requires (t v)
+concept semialphabet = std::totally_ordered<t> && std::copy_constructible<t> &&
+  std::is_nothrow_copy_constructible_v<t> && requires(t v)
 {
-    { bio::alphabet_size<t> };
-    { bio::to_rank(v) };
+    {bio::alphabet_size<t>};
+    {bio::to_rank(v)};
 };
 //!\endcond
 
@@ -801,9 +792,9 @@ concept semialphabet =
  */
 //!\cond
 template <typename t>
-concept writable_semialphabet = semialphabet<t> && requires (t v, alphabet_rank_t<t> r)
+concept writable_semialphabet = semialphabet<t> && requires(t v, alphabet_rank_t<t> r)
 {
-    { bio::assign_rank_to(r, v) };
+    {bio::assign_rank_to(r, v)};
 };
 //!\endcond
 
@@ -838,9 +829,9 @@ concept writable_semialphabet = semialphabet<t> && requires (t v, alphabet_rank_
  */
 //!\cond
 template <typename t>
-concept alphabet = semialphabet<t> && requires (t v)
+concept alphabet = semialphabet<t> && requires(t v)
 {
-    { bio::to_char(v) };
+    {bio::to_char(v)};
 };
 //!\endcond
 
@@ -885,11 +876,11 @@ concept alphabet = semialphabet<t> && requires (t v)
  */
 //!\cond
 template <typename t>
-concept writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires (t v, alphabet_char_t<t> c)
+concept writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires(t v, alphabet_char_t<t> c)
 {
-    { bio::assign_char_to(c, v) };
+    {bio::assign_char_to(c, v)};
 
-    { bio::char_is_valid_for<t>(c) };
+    {bio::char_is_valid_for<t>(c)};
 };
 //!\endcond
 
@@ -938,8 +929,8 @@ alphabet_rank_t<alphabet_t> CEREAL_SAVE_MINIMAL_FUNCTION_NAME(archive_t const &,
 template <cereal_input_archive archive_t, typename wrapped_alphabet_t>
 void CEREAL_LOAD_MINIMAL_FUNCTION_NAME(archive_t const &,
                                        wrapped_alphabet_t && l,
-                                       alphabet_rank_t<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>> const & r)
-    requires semialphabet<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>>
+                                       alphabet_rank_t<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>> const &
+                                         r) requires semialphabet<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>>
 {
     assign_rank_to(r, static_cast<detail::strip_cereal_wrapper_t<wrapped_alphabet_t> &>(l));
 }
@@ -1034,7 +1025,7 @@ concept constexpr_alphabet = constexpr_semialphabet<t> && alphabet<t> && require
 //!\cond
 template <typename t>
 concept writable_constexpr_alphabet =
-    constexpr_alphabet<t> && writable_constexpr_semialphabet<t> && writable_alphabet<t> && requires
+  constexpr_alphabet<t> && writable_constexpr_semialphabet<t> && writable_alphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
     requires BIOCPP_IS_CONSTEXPR(bio::assign_char_to(alphabet_char_t<t>{}, std::remove_reference_t<t>{}));

@@ -64,17 +64,17 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr dna15()                           noexcept = default; //!< Defaulted.
-    constexpr dna15(dna15 const &)              noexcept = default; //!< Defaulted.
-    constexpr dna15(dna15 &&)                   noexcept = default; //!< Defaulted.
-    constexpr dna15 & operator=(dna15 const &)  noexcept = default; //!< Defaulted.
-    constexpr dna15 & operator=(dna15 &&)       noexcept = default; //!< Defaulted.
-    ~dna15()                                    noexcept = default; //!< Defaulted.
+    constexpr dna15() noexcept                          = default; //!< Defaulted.
+    constexpr dna15(dna15 const &) noexcept             = default; //!< Defaulted.
+    constexpr dna15(dna15 &&) noexcept                  = default; //!< Defaulted.
+    constexpr dna15 & operator=(dna15 const &) noexcept = default; //!< Defaulted.
+    constexpr dna15 & operator=(dna15 &&) noexcept      = default; //!< Defaulted.
+    ~dna15() noexcept                                   = default; //!< Defaulted.
 
     using base_t::base_t;
 
     //!\brief Allow implicit construction from dna/rna of the same size.
-    template <std::same_as<rna15> t>    // Accept incomplete type
+    template <std::same_as<rna15> t> // Accept incomplete type
     constexpr dna15(t const & r) noexcept
     {
         assign_rank(r.to_rank());
@@ -85,47 +85,32 @@ protected:
     //!\privatesection
 
     //!\copydoc bio::dna4::rank_to_char
-    static constexpr char_type rank_to_char[alphabet_size]
-    {
-        'A',
-        'B',
-        'C',
-        'D',
-        'G',
-        'H',
-        'K',
-        'M',
-        'N',
-        'R',
-        'S',
-        'T',
-        'V',
-        'W',
-        'Y'
-    };
+    static constexpr char_type
+      rank_to_char[alphabet_size]{'A', 'B', 'C', 'D', 'G', 'H', 'K', 'M', 'N', 'R', 'S', 'T', 'V', 'W', 'Y'};
 
     //!\copydoc bio::dna4::char_to_rank
-    static constexpr std::array<rank_type, 256> char_to_rank =
-        [] () constexpr
+    static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
+    {
+        std::array<rank_type, 256> ret{};
+
+        // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
+        for (auto & c : ret)
+            c = 8; // rank of 'N'
+
+        // reverse mapping for characters and their lowercase
+        for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
         {
-            std::array<rank_type, 256> ret{};
+            ret[rank_to_char[rnk]]           = rnk;
+            ret[to_lower(rank_to_char[rnk])] = rnk;
+        }
 
-            // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
-            for (auto & c : ret)
-                c = 8; // rank of 'N'
+        // set U equal to T
+        ret['U'] = ret['T'];
+        ret['u'] = ret['t'];
 
-            // reverse mapping for characters and their lowercase
-            for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
-            {
-                ret[         rank_to_char[rnk] ] = rnk;
-                ret[to_lower(rank_to_char[rnk])] = rnk;
-            }
-
-            // set U equal to T
-            ret['U'] = ret['T']; ret['u'] = ret['t'];
-
-            return ret;
-        }();
+        return ret;
+    }
+    ();
 
     //!\copydoc bio::dna4::complement_table
     static const std::array<dna15, alphabet_size> complement_table;
@@ -181,23 +166,22 @@ inline dna15_vector operator""_dna15(char const * s, std::size_t n)
 // dna15 (deferred definition)
 // ------------------------------------------------------------------
 
-constexpr std::array<dna15, dna15::alphabet_size> dna15::complement_table
-{
-    'T'_dna15,    // complement of 'A'_dna15
-    'V'_dna15,    // complement of 'B'_dna15
-    'G'_dna15,    // complement of 'C'_dna15
-    'H'_dna15,    // complement of 'D'_dna15
-    'C'_dna15,    // complement of 'G'_dna15
-    'D'_dna15,    // complement of 'H'_dna15
-    'M'_dna15,    // complement of 'K'_dna15
-    'K'_dna15,    // complement of 'M'_dna15
-    'N'_dna15,    // complement of 'N'_dna15
-    'Y'_dna15,    // complement of 'R'_dna15
-    'S'_dna15,    // complement of 'S'_dna15
-    'A'_dna15,    // complement of 'T'_dna15
-    'B'_dna15,    // complement of 'V'_dna15
-    'W'_dna15,    // complement of 'W'_dna15
-    'R'_dna15     // complement of 'Y'_dna15
+constexpr std::array<dna15, dna15::alphabet_size> dna15::complement_table{
+  'T'_dna15, // complement of 'A'_dna15
+  'V'_dna15, // complement of 'B'_dna15
+  'G'_dna15, // complement of 'C'_dna15
+  'H'_dna15, // complement of 'D'_dna15
+  'C'_dna15, // complement of 'G'_dna15
+  'D'_dna15, // complement of 'H'_dna15
+  'M'_dna15, // complement of 'K'_dna15
+  'K'_dna15, // complement of 'M'_dna15
+  'N'_dna15, // complement of 'N'_dna15
+  'Y'_dna15, // complement of 'R'_dna15
+  'S'_dna15, // complement of 'S'_dna15
+  'A'_dna15, // complement of 'T'_dna15
+  'B'_dna15, // complement of 'V'_dna15
+  'W'_dna15, // complement of 'W'_dna15
+  'R'_dna15  // complement of 'Y'_dna15
 };
 
 } // namespace bio

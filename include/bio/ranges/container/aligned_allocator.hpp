@@ -74,13 +74,13 @@ public:
     static constexpr size_t alignment = alignment_v;
 
     //!\brief The value type of the allocation.
-    using value_type = value_t;
+    using value_type      = value_t;
     //!\brief The pointer type of the allocation.
-    using pointer = value_type*;
+    using pointer         = value_type *;
     //!\brief The difference type of the allocation.
     using difference_type = typename std::pointer_traits<pointer>::difference_type;
     //!\brief The size type of the allocation.
-    using size_type = std::make_unsigned_t<difference_type>;
+    using size_type       = std::make_unsigned_t<difference_type>;
 
     //!\brief Are any two allocators of the same aligned_allocator type always compare equal?
     using is_always_equal = std::true_type;
@@ -88,12 +88,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    aligned_allocator()                                     = default; //!< Defaulted.
-    aligned_allocator(aligned_allocator const &)            = default; //!< Defaulted.
-    aligned_allocator(aligned_allocator &&)                 = default; //!< Defaulted.
-    aligned_allocator& operator=(aligned_allocator const &) = default; //!< Defaulted.
-    aligned_allocator& operator=(aligned_allocator &&)      = default; //!< Defaulted.
-    ~aligned_allocator()                                    = default; //!< Defaulted.
+    aligned_allocator()                                      = default; //!< Defaulted.
+    aligned_allocator(aligned_allocator const &)             = default; //!< Defaulted.
+    aligned_allocator(aligned_allocator &&)                  = default; //!< Defaulted.
+    aligned_allocator & operator=(aligned_allocator const &) = default; //!< Defaulted.
+    aligned_allocator & operator=(aligned_allocator &&)      = default; //!< Defaulted.
+    ~aligned_allocator()                                     = default; //!< Defaulted.
 
     //!\brief Copy constructor with different value type and alignment.
     template <class other_value_type, size_t other_alignment>
@@ -132,8 +132,7 @@ public:
      *
      * Strong exception guarantee.
      */
-    [[nodiscard]]
-    pointer allocate(size_type const n) const
+    [[nodiscard]] pointer allocate(size_type const n) const
     {
         constexpr size_type max_size = std::numeric_limits<size_type>::max() / sizeof(value_type);
         if (n > max_size)
@@ -197,7 +196,7 @@ public:
         //!\brief The alignment for the rebound allocator.
         static constexpr size_t other_alignment = std::max(alignof(new_value_type), alignment);
         //!\brief The type of the allocator for a different value type.
-        using other = aligned_allocator<new_value_type, other_alignment>;
+        using other                             = aligned_allocator<new_value_type, other_alignment>;
     };
 
     /*!\name Comparison operators

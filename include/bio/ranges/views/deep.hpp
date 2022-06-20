@@ -112,12 +112,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr deep()                         noexcept = default; //!< Defaulted.
-    constexpr deep(deep const &)             noexcept = default; //!< Defaulted.
-    constexpr deep(deep &&)                  noexcept = default; //!< Defaulted.
+    constexpr deep() noexcept                         = default; //!< Defaulted.
+    constexpr deep(deep const &) noexcept             = default; //!< Defaulted.
+    constexpr deep(deep &&) noexcept                  = default; //!< Defaulted.
     constexpr deep & operator=(deep const &) noexcept = default; //!< Defaulted.
-    constexpr deep & operator=(deep &&)      noexcept = default; //!< Defaulted.
-    ~deep()                                  noexcept = default; //!< Defaulted.
+    constexpr deep & operator=(deep &&) noexcept      = default; //!< Defaulted.
+    ~deep() noexcept                                  = default; //!< Defaulted.
 
     using base_type::base_type;
     //!\}
@@ -151,28 +151,24 @@ public:
      * Recurses and calls std::views::transform if the underlying range is a range-of-ranges.
      */
     template <std::ranges::input_range urng_t>
-    //!\cond
+        //!\cond
         requires std::ranges::input_range<std::ranges::range_reference_t<urng_t>>
     //!\endcond
     constexpr auto operator()(urng_t && urange) const &
     {
-        return std::forward<urng_t>(urange) | std::views::transform([me = *this] (auto && e)
-        {
-            return std::forward<decltype(e)>(e) | me;
-        });
+        return std::forward<urng_t>(urange) |
+               std::views::transform([me = *this](auto && e) { return std::forward<decltype(e)>(e) | me; });
     }
 
     //!\overload
     template <std::ranges::input_range urng_t>
-    //!\cond
+        //!\cond
         requires std::ranges::input_range<std::ranges::range_reference_t<urng_t>>
     //!\endcond
     constexpr auto operator()(urng_t && urange) &&
     {
-        return std::forward<urng_t>(urange) | std::views::transform([me = std::move(*this)] (auto && e)
-        {
-            return std::forward<decltype(e)>(e) | me;
-        });
+        return std::forward<urng_t>(urange) |
+               std::views::transform([me = std::move(*this)](auto && e) { return std::forward<decltype(e)>(e) | me; });
     }
 
     /*!\brief Called to produce a range adaptor closure object if the wrapped functor was **not** a range
@@ -183,17 +179,17 @@ public:
      * \param[in] args             Further arguments (optional).
      * \returns A views::deep specialisation of a closure object, i.e. with stored arguments.
      */
-    template <typename first_arg_t, typename ...stored_arg_types>
-    //!\cond
-        requires (!std::ranges::input_range<first_arg_t>)
+    template <typename first_arg_t, typename... stored_arg_types>
+        //!\cond
+        requires(!std::ranges::input_range<first_arg_t>)
     //!\endcond
-    constexpr auto operator()(first_arg_t && first, stored_arg_types && ...args) const
+    constexpr auto operator()(first_arg_t && first, stored_arg_types &&... args) const
     {
         // The adaptor currently wrapped is a proto-adaptor and this function has the arguments to "complete" it.
         // We extract the adaptor that is stored and invoke it with the given arguments.
         // This returns an adaptor closure object.
-        auto adaptor_closure = std::get<0>(this->arguments)(std::forward<first_arg_t>(first),
-                                                            std::forward<stored_arg_types>(args)...);
+        auto adaptor_closure =
+          std::get<0>(this->arguments)(std::forward<first_arg_t>(first), std::forward<stored_arg_types>(args)...);
         // Now we wrap this closure object back into a views::deep to get the deep behaviour.
         return deep<decltype(adaptor_closure)>{std::move(adaptor_closure)};
     }
@@ -221,11 +217,11 @@ public:
      *
      * Recurses and calls std::views::transform if the underlying range is a range-of-ranges.
      */
-    template <std::ranges::input_range urng_t, typename ...stored_arg_types>
-    //!\cond
-        requires (sizeof...(stored_arg_types) > 0)
+    template <std::ranges::input_range urng_t, typename... stored_arg_types>
+        //!\cond
+        requires(sizeof...(stored_arg_types) > 0)
     //!\endcond
-    constexpr auto operator()(urng_t && urange, stored_arg_types && ...args) const
+    constexpr auto operator()(urng_t && urange, stored_arg_types &&... args) const
     {
         auto adaptor_closure = std::get<0>(this->arguments)(std::forward<stored_arg_types>(args)...);
         return std::forward<urng_t>(urange) | std::move(adaptor_closure);

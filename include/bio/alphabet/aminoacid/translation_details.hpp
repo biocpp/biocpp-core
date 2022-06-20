@@ -13,10 +13,10 @@
 
 #pragma once
 
-#include <bio/alphabet/nucleotide/concept.hpp>
-#include <bio/alphabet/nucleotide/dna15.hpp>
 #include <bio/alphabet/aminoacid/aa27.hpp>
 #include <bio/alphabet/aminoacid/translation_genetic_code.hpp>
+#include <bio/alphabet/nucleotide/concept.hpp>
+#include <bio/alphabet/nucleotide/dna15.hpp>
 
 namespace bio::detail
 {
@@ -30,28 +30,31 @@ struct translation_table
 {
     //!\brief Holds the generic translation table.
     static constexpr std::array<std::array<std::array<aa27, alphabet_size<nucl_type>>, alphabet_size<nucl_type>>,
-                                                      alphabet_size<nucl_type>> VALUE =
-        [] () constexpr
-        {
-            std::array<std::array<std::array<aa27, alphabet_size<nucl_type>>,
-                                             alphabet_size<nucl_type>>, alphabet_size<nucl_type>> table{};
+                                alphabet_size<nucl_type>>
+      VALUE = []() constexpr
+    {
+        std::array<std::array<std::array<aa27, alphabet_size<nucl_type>>, alphabet_size<nucl_type>>,
+                   alphabet_size<nucl_type>>
+          table{};
 
-            using size_t = std::remove_const_t<decltype(alphabet_size<nucl_type>)>;
-            for (size_t i = 0; i < alphabet_size<nucl_type>; ++i)
+        using size_t = std::remove_const_t<decltype(alphabet_size<nucl_type>)>;
+        for (size_t i = 0; i < alphabet_size<nucl_type>; ++i)
+        {
+            dna15 n1(assign_rank_to(i, nucl_type{}));
+            for (size_t j = 0; j < alphabet_size<nucl_type>; ++j)
             {
-                dna15 n1(assign_rank_to(i, nucl_type{}));
-                for (size_t j = 0; j < alphabet_size<nucl_type>; ++j)
+                dna15 n2(assign_rank_to(j, nucl_type{}));
+                for (size_t k = 0; k < alphabet_size<nucl_type>; ++k)
                 {
-                    dna15 n2(assign_rank_to(j, nucl_type{}));
-                    for (size_t k = 0; k < alphabet_size<nucl_type>; ++k)
-                    {
-                        dna15 n3(assign_rank_to(k, nucl_type{}));
-                        table[i][j][k] = translation_table<dna15, gc, void_type>::VALUE[to_rank(n1)][to_rank(n2)][to_rank(n3)];
-                    }
+                    dna15 n3(assign_rank_to(k, nucl_type{}));
+                    table[i][j][k] =
+                      translation_table<dna15, gc, void_type>::VALUE[to_rank(n1)][to_rank(n2)][to_rank(n3)];
                 }
             }
-            return table;
-        } ();
+        }
+        return table;
+    }
+    ();
 };
 
 //!\brief Translation table for canonical genetic code and dna15 alphabet.
@@ -60,7 +63,7 @@ struct translation_table<dna15, bio::genetic_code::CANONICAL, void_type>
 {
     //!\brief Holds the translation table for canonical genetic code and nucl16 alphabet.
     static constexpr aa27 VALUE[dna15::alphabet_size][dna15::alphabet_size][dna15::alphabet_size]
-    // clang-format off
+      // clang-format off
     {
         { // a??
             // a,        b,        c,        d,        g,        h,        k,        m,        n,        r,        s,        t,        v,        w,        y
@@ -321,4 +324,4 @@ struct translation_table<dna15, bio::genetic_code::CANONICAL, void_type>
     // clang-format on
 };
 
-}
+} // namespace bio::detail

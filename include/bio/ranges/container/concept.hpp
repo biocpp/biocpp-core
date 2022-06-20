@@ -20,8 +20,8 @@
 // remove if is_basic_string is not needed anymore
 #include <string>
 
-#include <iterator>
 #include <concepts>
+#include <iterator>
 
 #include <bio/meta/platform.hpp>
 
@@ -55,7 +55,7 @@ constexpr bool is_basic_string_v = is_basic_string<basic_string_t>::value;
 
 //!\publicsection
 
-} // bio::detail
+} // namespace bio::detail
 
 namespace bio
 {
@@ -79,13 +79,13 @@ namespace bio
  */
 //!\cond
 template <typename type>
-concept container = requires (type val, type val2, type const cval, typename type::iterator it)
+concept container = requires(type val, type val2, type const cval, typename type::iterator it)
 {
     // member types
     typename type::value_type;
     typename type::reference;
     typename type::const_reference;
-/*
+    /*
     typename type::iterator;
     requires std::forward_iterator<typename type::iterator>;
     // NOTE check whether iterator is const convertible
@@ -147,7 +147,7 @@ concept container = requires (type val, type val2, type const cval, typename typ
  */
 //!\cond
 template <typename type>
-concept sequence_container = requires (type val, type val2, type const cval)
+concept sequence_container = requires(type val, type val2, type const cval)
 {
     requires container<type>;
 
@@ -212,7 +212,7 @@ concept sequence_container = requires (type val, type val2, type const cval)
  */
 //!\cond
 template <typename type>
-concept random_access_container = requires (type val)
+concept random_access_container = requires(type val)
 {
     requires sequence_container<type>;
 
@@ -240,7 +240,7 @@ concept random_access_container = requires (type val)
  */
 //!\cond
 template <typename type>
-concept reservible_container = requires (type val)
+concept reservible_container = requires(type val)
 {
     requires random_access_container<type>;
 

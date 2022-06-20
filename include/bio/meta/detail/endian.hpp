@@ -28,9 +28,9 @@ namespace bio::detail
 enum class endian
 {
 #ifdef _WIN32
-    little = 0,                       //!< implementation-defined
-    big    = 1,                       //!< implementation-defined
-    native = little                   //!< implementation-defined
+    little = 0,     //!< implementation-defined
+    big    = 1,     //!< implementation-defined
+    native = little //!< implementation-defined
 #else
     little = __ORDER_LITTLE_ENDIAN__, //!< implementation-defined
     big    = __ORDER_BIG_ENDIAN__,    //!< implementation-defined

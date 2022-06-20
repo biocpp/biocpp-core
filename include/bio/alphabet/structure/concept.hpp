@@ -28,29 +28,29 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void is_pair_open(args_t ...) = delete;
+template <typename... args_t>
+void is_pair_open(args_t...) = delete;
 
 //!\brief Functor definition for bio::is_pair_open.
 struct is_pair_open_fn
 {
 public:
     BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::is_pair_open(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, is_pair_open(v)                                       ) // ADL
-    BIOCPP_CPO_IMPL(0, v.is_pair_open()                                      ) // member
+    BIOCPP_CPO_IMPL(1, is_pair_open(v))                                     // ADL
+    BIOCPP_CPO_IMPL(0, v.is_pair_open())                                    // member
 
 public:
     //!\brief Operator definition.
     template <typename rna_structure_t>
-    //!\cond
-        requires (requires (rna_structure_t const chr) { { impl(priority_tag<2>{}, chr) }; })
+        //!\cond
+        requires(requires(rna_structure_t const chr) { {impl(priority_tag<2>{}, chr)}; })
     //!\endcond
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
         static_assert(noexcept(impl(priority_tag<2>{}, chr)),
-            "Only overloads that are marked noexcept are picked up by bio::is_pair_open().");
+                      "Only overloads that are marked noexcept are picked up by bio::is_pair_open().");
         static_assert(std::same_as<bool, decltype(impl(priority_tag<2>{}, chr))>,
-            "The return type of your is_pair_open() implementation must be 'bool'.");
+                      "The return type of your is_pair_open() implementation must be 'bool'.");
 
         return impl(priority_tag<2>{}, chr);
     }
@@ -107,29 +107,29 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void is_pair_close(args_t ...) = delete;
+template <typename... args_t>
+void is_pair_close(args_t...) = delete;
 
 //!\brief Functor definition for bio::is_pair_close.
 struct is_pair_close_fn
 {
 public:
     BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::is_pair_close(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, is_pair_close(v)                                       ) // ADL
-    BIOCPP_CPO_IMPL(0, v.is_pair_close()                                      ) // member
+    BIOCPP_CPO_IMPL(1, is_pair_close(v))                                     // ADL
+    BIOCPP_CPO_IMPL(0, v.is_pair_close())                                    // member
 
 public:
     //!\brief Operator definition.
     template <typename rna_structure_t>
-    //!\cond
-        requires (requires (rna_structure_t const chr) { { impl(priority_tag<2>{}, chr) }; })
+        //!\cond
+        requires(requires(rna_structure_t const chr) { {impl(priority_tag<2>{}, chr)}; })
     //!\endcond
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
         static_assert(noexcept(impl(priority_tag<2>{}, chr)),
-            "Only overloads that are marked noexcept are picked up by bio::is_pair_close().");
+                      "Only overloads that are marked noexcept are picked up by bio::is_pair_close().");
         static_assert(std::same_as<bool, decltype(impl(priority_tag<2>{}, chr))>,
-            "The return type of your is_pair_close() implementation must be 'bool'.");
+                      "The return type of your is_pair_close() implementation must be 'bool'.");
 
         return impl(priority_tag<2>{}, chr);
     }
@@ -186,29 +186,29 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void is_unpaired(args_t ...) = delete;
+template <typename... args_t>
+void is_unpaired(args_t...) = delete;
 
 //!\brief Functor definition for bio::is_unpaired.
 struct is_unpaired_fn
 {
 public:
     BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::is_unpaired(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, is_unpaired(v)                                       ) // ADL
-    BIOCPP_CPO_IMPL(0, v.is_unpaired()                                      ) // member
+    BIOCPP_CPO_IMPL(1, is_unpaired(v))                                     // ADL
+    BIOCPP_CPO_IMPL(0, v.is_unpaired())                                    // member
 
 public:
     //!\brief Operator definition.
     template <typename rna_structure_t>
-    //!\cond
-        requires (requires (rna_structure_t const chr) { { impl(priority_tag<2>{}, chr) }; })
+        //!\cond
+        requires(requires(rna_structure_t const chr) { {impl(priority_tag<2>{}, chr)}; })
     //!\endcond
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
         static_assert(noexcept(impl(priority_tag<2>{}, chr)),
-            "Only overloads that are marked noexcept are picked up by bio::is_unpaired().");
+                      "Only overloads that are marked noexcept are picked up by bio::is_unpaired().");
         static_assert(std::same_as<bool, decltype(impl(priority_tag<2>{}, chr))>,
-            "The return type of your is_unpaired() implementation must be 'bool'.");
+                      "The return type of your is_unpaired() implementation must be 'bool'.");
 
         return impl(priority_tag<2>{}, chr);
     }
@@ -265,8 +265,8 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void max_pseudoknot_depth(args_t ...) = delete;
+template <typename... args_t>
+void max_pseudoknot_depth(args_t...) = delete;
 
 /*!\brief Functor definition for bio::max_pseudoknot_depth.
  * \tparam alph_t   The type being queried.
@@ -274,31 +274,32 @@ void max_pseudoknot_depth(args_t ...) = delete;
  * \ingroup structure
  */
 template <typename alph_t,
-          typename s_alph_t = std::conditional_t<std::is_nothrow_default_constructible_v<std::remove_cvref_t<alph_t>> &&
-                                                 bio::is_constexpr_default_constructible_v<std::remove_cvref_t<alph_t>>,
-                                                 std::remove_cvref_t<alph_t>,
-                                                 std::type_identity<alph_t>>>
+          typename s_alph_t =
+            std::conditional_t<std::is_nothrow_default_constructible_v<std::remove_cvref_t<alph_t>> &&
+                                 bio::is_constexpr_default_constructible_v<std::remove_cvref_t<alph_t>>,
+                               std::remove_cvref_t<alph_t>,
+                               std::type_identity<alph_t>>>
 struct max_pseudoknot_depth_fn
 {
 public:
     BIOCPP_CPO_IMPL(2, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::max_pseudoknot_depth)) // custom
-    BIOCPP_CPO_IMPL(1, (max_pseudoknot_depth(v)                                                             )) // ADL
-    BIOCPP_CPO_IMPL(0, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::max_pseudoknot_depth          )) // member
+    BIOCPP_CPO_IMPL(1, (max_pseudoknot_depth(v)))                                                           // ADL
+    BIOCPP_CPO_IMPL(0, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::max_pseudoknot_depth))   // member
 
 public:
     //!\brief Operator definition.
     template <typename dummy = int>
-    //!\cond
-        requires (requires { { impl(priority_tag<2>{}, s_alph_t{}, dummy{}) }; })
+        //!\cond
+        requires(requires { {impl(priority_tag<2>{}, s_alph_t{}, dummy{})}; })
     //!\endcond
     constexpr auto operator()() const noexcept
     {
         static_assert(noexcept(impl(priority_tag<2>{}, s_alph_t{})),
-            "Only overloads that are marked noexcept are picked up by bio::max_pseudoknot_depth.");
+                      "Only overloads that are marked noexcept are picked up by bio::max_pseudoknot_depth.");
         static_assert(std::constructible_from<size_t, decltype(impl(priority_tag<2>{}, s_alph_t{}))>,
-            "The return type of your max_pseudoknot_depth implementation must be convertible to size_t.");
+                      "The return type of your max_pseudoknot_depth implementation must be convertible to size_t.");
         static_assert(BIOCPP_IS_CONSTEXPR(impl(priority_tag<2>{}, s_alph_t{})),
-            "Only overloads that are marked constexpr are picked up by bio::max_pseudoknot_depth.");
+                      "Only overloads that are marked constexpr are picked up by bio::max_pseudoknot_depth.");
 
         return impl(priority_tag<2>{}, s_alph_t{});
     }
@@ -307,7 +308,7 @@ public:
 //!\cond
 // required to prevent https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89953
 template <typename alph_t>
-    requires (requires { { max_pseudoknot_depth_fn<alph_t>{} }; })
+    requires(requires { {max_pseudoknot_depth_fn<alph_t>{}}; })
 inline constexpr auto max_pseudoknot_depth_obj = max_pseudoknot_depth_fn<alph_t>{};
 //!\endcond
 
@@ -359,9 +360,10 @@ namespace bio
  * simply provide one of the three functions specified above.
  */
 template <typename alph_t>
-//!\cond
-    requires (requires { { detail::adl_only::max_pseudoknot_depth_fn<alph_t>{} }; } &&
-             requires { { detail::adl_only::max_pseudoknot_depth_obj<alph_t>() }; })
+    //!\cond
+    requires(
+      requires { {detail::adl_only::max_pseudoknot_depth_fn<alph_t>{}}; } &&
+      requires { {detail::adl_only::max_pseudoknot_depth_obj<alph_t>()}; })
 //!\endcond
 inline constexpr auto max_pseudoknot_depth = detail::adl_only::max_pseudoknot_depth_obj<alph_t>();
 
@@ -375,29 +377,30 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void pseudoknot_id(args_t ...) = delete;
+template <typename... args_t>
+void pseudoknot_id(args_t...) = delete;
 
 //!\brief Functor definition for bio::pseudoknot_id.
 struct pseudoknot_id_fn
 {
 public:
     BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::pseudoknot_id(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, pseudoknot_id(v)                                       ) // ADL
-    BIOCPP_CPO_IMPL(0, v.pseudoknot_id()                                      ) // member
+    BIOCPP_CPO_IMPL(1, pseudoknot_id(v))                                     // ADL
+    BIOCPP_CPO_IMPL(0, v.pseudoknot_id())                                    // member
 
 public:
     //!\brief Operator definition.
     template <typename rna_structure_t>
-    //!\cond
-        requires (requires (rna_structure_t const chr) { { impl(priority_tag<2>{}, chr) }; })
+        //!\cond
+        requires(requires(rna_structure_t const chr) { {impl(priority_tag<2>{}, chr)}; })
     //!\endcond
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
         static_assert(noexcept(impl(priority_tag<2>{}, chr)),
-            "Only overloads that are marked noexcept are picked up by bio::pseudoknot_id().");
-        static_assert(std::constructible_from<std::optional<size_t>, decltype(impl(priority_tag<2>{}, chr))>,
-            "The return type of your pseudoknot_id() implementation must be convertible to std::optional<size_t>.");
+                      "Only overloads that are marked noexcept are picked up by bio::pseudoknot_id().");
+        static_assert(
+          std::constructible_from<std::optional<size_t>, decltype(impl(priority_tag<2>{}, chr))>,
+          "The return type of your pseudoknot_id() implementation must be convertible to std::optional<size_t>.");
 
         return impl(priority_tag<2>{}, chr);
     }
@@ -488,13 +491,14 @@ namespace bio
 template <typename t>
 concept rna_structure_alphabet = bio::alphabet<t> && requires(t val)
 {
-    { bio::is_pair_open(val) };
-    { bio::is_pair_close(val) };
-    { bio::is_unpaired(val) };
-    { bio::pseudoknot_id(val) };
+    {bio::is_pair_open(val)};
+    {bio::is_pair_close(val)};
+    {bio::is_unpaired(val)};
+    {bio::pseudoknot_id(val)};
 
     // this is delegated to a static class variable, which must not be 0
-    requires bio::max_pseudoknot_depth<t> > 0;
+    requires bio::max_pseudoknot_depth<t> >
+    0;
 };
 //!\endcond
 

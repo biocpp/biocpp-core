@@ -15,7 +15,6 @@
 
 #include <tuple>
 #include <type_traits>
-#include <type_traits>
 
 #include <bio/meta/platform.hpp>
 
@@ -86,7 +85,7 @@ struct is_constexpr_default_constructible : std::false_type
  * \see bio::is_constexpr_default_constructible
  */
 template <typename t>
-//!\cond
+    //!\cond
     requires std::is_default_constructible_v<t>
 //!\endcond
 struct is_constexpr_default_constructible<t> : std::integral_constant<bool, BIOCPP_IS_CONSTEXPR(t{})>
@@ -119,7 +118,7 @@ namespace bio::detail
  * \tparam dependent_ts Any provided types are ignored.
  * \see bio::detail::deferred_type_t
  */
-template <typename t, typename ...dependent_ts>
+template <typename t, typename... dependent_ts>
 struct deferred_type
 {
     //!\brief The type identity.
@@ -132,7 +131,7 @@ struct deferred_type
  * \tparam dependent_ts Any provided types are ignored.
  * \see bio::detail::deferred_type
  */
-template <typename t, typename ...dependent_ts>
+template <typename t, typename... dependent_ts>
 using deferred_type_t = typename deferred_type<t, dependent_ts...>::type;
 
 // ----------------------------------------------------------------------------
@@ -162,9 +161,9 @@ constexpr bool decays_to_ignore_v = std::is_same_v<std::remove_cvref_t<t>, ignor
  * \ingroup type_traits
  */
 #if defined(__clang__)
-#   define BIOCPP_IS_SAME(...)              __is_same(__VA_ARGS__)
+#    define BIOCPP_IS_SAME(...) __is_same(__VA_ARGS__)
 #elif defined(__GNUC__)
-#   define BIOCPP_IS_SAME(...)              __is_same_as(__VA_ARGS__)
+#    define BIOCPP_IS_SAME(...) __is_same_as(__VA_ARGS__)
 #else
-#   define BIOCPP_IS_SAME(...)              std::is_same_v<__VA_ARGS__>
+#    define BIOCPP_IS_SAME(...) std::is_same_v<__VA_ARGS__>
 #endif

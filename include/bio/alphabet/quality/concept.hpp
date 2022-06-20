@@ -24,29 +24,29 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void to_phred(args_t ...) = delete;
+template <typename... args_t>
+void to_phred(args_t...) = delete;
 
 //!\brief Functor definition for bio::to_phred.
 struct to_phred_fn
 {
 public:
     BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_phred(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, to_phred(v)                                       ) // ADL
-    BIOCPP_CPO_IMPL(0, v.to_phred()                                      ) // member
+    BIOCPP_CPO_IMPL(1, to_phred(v))                                     // ADL
+    BIOCPP_CPO_IMPL(0, v.to_phred())                                    // member
 
 public:
     //!\brief Operator definition.
     template <typename alph_t>
-    //!\cond
-        requires (requires (alph_t const chr) { { impl(priority_tag<2>{}, chr) }; })
+        //!\cond
+        requires(requires(alph_t const chr) { {impl(priority_tag<2>{}, chr)}; })
     //!\endcond
     constexpr auto operator()(alph_t const chr) const noexcept
     {
         static_assert(noexcept(impl(priority_tag<2>{}, chr)),
-            "Only overloads that are marked noexcept are picked up by bio::to_phred().");
+                      "Only overloads that are marked noexcept are picked up by bio::to_phred().");
         static_assert(std::constructible_from<size_t, decltype(impl(priority_tag<2>{}, chr))>,
-            "The return type of your to_phred() implementation must be convertible to size_t.");
+                      "The return type of your to_phred() implementation must be convertible to size_t.");
 
         return impl(priority_tag<2>{}, chr);
     }
@@ -94,8 +94,8 @@ inline constexpr auto to_phred = detail::adl_only::to_phred_fn{};
  * \ingroup quality
  */
 template <typename alphabet_type>
-//!\cond
-    requires (requires { { bio::to_phred(std::declval<alphabet_type>()) }; })
+    //!\cond
+    requires(requires { {bio::to_phred(std::declval<alphabet_type>())}; })
 //!\endcond
 using alphabet_phred_t = decltype(bio::to_phred(std::declval<alphabet_type>()));
 
@@ -109,8 +109,8 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void assign_phred_to(args_t ...) = delete;
+template <typename... args_t>
+void assign_phred_to(args_t...) = delete;
 
 //!\brief Functor definition for bio::assign_phred_to.
 //!\ingroup quality
@@ -118,31 +118,30 @@ struct assign_phred_to_fn
 {
 public:
     BIOCPP_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_phred_to(args..., v))) // explicit customisation
-    BIOCPP_CPO_IMPL(1, (assign_phred_to(args..., v)                                       )) // ADL
-    BIOCPP_CPO_IMPL(0, (v.assign_phred(args...)                                           )) // member
+    BIOCPP_CPO_IMPL(1, (assign_phred_to(args..., v)))                                     // ADL
+    BIOCPP_CPO_IMPL(0, (v.assign_phred(args...)))                                         // member
 
 public:
     //!\brief Operator definition for lvalues.
     template <typename alph_t>
-    //!\cond
-        requires (requires (bio::alphabet_phred_t<alph_t> const p, alph_t & a)
-            { { impl(priority_tag<2>{}, a, p) }; })
+        //!\cond
+        requires(requires(bio::alphabet_phred_t<alph_t> const p, alph_t & a) { {impl(priority_tag<2>{}, a, p)}; })
     //!\endcond
     constexpr alph_t & operator()(bio::alphabet_phred_t<alph_t> const p, alph_t & a) const noexcept
     {
         static_assert(noexcept(impl(priority_tag<2>{}, a, p)),
-            "Only overloads that are marked noexcept are picked up by bio::assign_phred_to().");
+                      "Only overloads that are marked noexcept are picked up by bio::assign_phred_to().");
         static_assert(std::same_as<alph_t &, decltype(impl(priority_tag<2>{}, a, p))>,
-            "The return type of your assign_phred_to() implementation must be 'alph_t &'.");
+                      "The return type of your assign_phred_to() implementation must be 'alph_t &'.");
 
         return impl(priority_tag<2>{}, a, p);
     }
 
     //!\brief Operator definition for rvalues.
     template <typename alph_t>
-    //!\cond
-        requires (requires (bio::alphabet_phred_t<alph_t> const p, alph_t & a)
-            { { impl(priority_tag<2>{}, a, p) }; } && (!std::is_lvalue_reference_v<alph_t>))
+        //!\cond
+        requires(requires(bio::alphabet_phred_t<alph_t> const p, alph_t & a) { {impl(priority_tag<2>{}, a, p)}; } &&
+                 (!std::is_lvalue_reference_v<alph_t>))
     //!\endcond
     constexpr alph_t operator()(bio::alphabet_phred_t<alph_t> const p, alph_t && a) const noexcept
     {
@@ -230,7 +229,7 @@ namespace bio
 template <typename t>
 concept quality_alphabet = alphabet<t> && requires(t qual)
 {
-    { bio::to_phred(qual) };
+    {bio::to_phred(qual)};
 };
 //!\endcond
 
@@ -266,11 +265,9 @@ concept quality_alphabet = alphabet<t> && requires(t qual)
  */
 //!\cond
 template <typename t>
-concept writable_quality_alphabet = writable_alphabet<t> &&
-                                         quality_alphabet<t> &&
-                                         requires(t v, alphabet_phred_t<t> c)
+concept writable_quality_alphabet = writable_alphabet<t> && quality_alphabet<t> && requires(t v, alphabet_phred_t<t> c)
 {
-    { bio::assign_phred_to(c, v) };
+    {bio::assign_phred_to(c, v)};
 };
 //!\endcond
 

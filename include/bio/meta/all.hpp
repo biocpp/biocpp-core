@@ -21,11 +21,11 @@
 #include <bio/meta/add_enum_bitwise_operators.hpp>
 #include <bio/meta/concept/all.hpp>
 #include <bio/meta/detail/all.hpp>
-#include <bio/meta/type_traits/all.hpp>
 #include <bio/meta/platform.hpp>
 #include <bio/meta/pod_tuple.hpp>
 #include <bio/meta/tuple_utility.hpp>
 #include <bio/meta/type_list/type_list.hpp>
+#include <bio/meta/type_traits/all.hpp>
 
 /*!\defgroup core Meta
  * \brief Provides core functionality used by multiple modules.

@@ -25,9 +25,9 @@ namespace bio::detail
 //!\brief A tag that allows controlled overload resolution via implicit base conversion rules.
 template <size_t I>
 struct priority_tag
-//!\cond
-// Doxygen fail
-: priority_tag<I-1>
+  //!\cond
+  // Doxygen fail
+  : priority_tag<I - 1>
 //!\endcond
 {};
 
@@ -36,7 +36,7 @@ template <>
 struct priority_tag<0>
 {};
 
-} // bio::detail
+} // namespace bio::detail
 
 // ============================================================================
 // BIOCPP_CPO_IMPL

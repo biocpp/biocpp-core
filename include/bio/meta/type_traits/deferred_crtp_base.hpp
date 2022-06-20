@@ -39,7 +39,7 @@ namespace bio::detail
  * \see bio::detail::invoke_deferred_crtp_base
  * \see bio::detail::deferred_crtp_base_vargs
  */
-template <template <typename ...> typename crtp_base, typename ...args_t>
+template <template <typename...> typename crtp_base, typename... args_t>
 struct deferred_crtp_base
 {
     /*!\brief Invokes the deferred crtp_base with the corresponding derived type.
@@ -72,7 +72,7 @@ struct deferred_crtp_base
  * \see bio::detail::invoke_deferred_crtp_base
  * \see bio::detail::deferred_crtp_base
  */
-template <template <typename, auto ...> typename crtp_base, auto ...args>
+template <template <typename, auto...> typename crtp_base, auto... args>
 struct deferred_crtp_base_vargs
 {
     /*!\brief Invokes the deferred crtp_base with the corresponding derived type.
@@ -94,8 +94,8 @@ struct deferred_crtp_base_vargs
  * \see bio::detail::deferred_crtp_base
  */
 template <typename deferred_crtp_base_t, typename derived_t>
-//!\cond
-    requires (requires { typename deferred_crtp_base_t::template invoke<derived_t>; })
+    //!\cond
+    requires(requires { typename deferred_crtp_base_t::template invoke<derived_t>; })
 //!\endcond
 using invoke_deferred_crtp_base = typename deferred_crtp_base_t::template invoke<derived_t>;
 

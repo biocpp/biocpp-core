@@ -16,8 +16,8 @@
 #include <tuple>
 
 #include <bio/alphabet/aminoacid/aa27.hpp>
-#include <bio/alphabet/aminoacid/translation_genetic_code.hpp>
 #include <bio/alphabet/aminoacid/translation_details.hpp>
+#include <bio/alphabet/aminoacid/translation_genetic_code.hpp>
 #include <bio/meta/type_traits/range.hpp>
 
 namespace bio
@@ -60,9 +60,12 @@ constexpr aa27 translate_triplet(nucl_type const & n1, nucl_type const & n2, nuc
     }
     else if constexpr (std::same_as<nucl_type, rna4> || std::same_as<nucl_type, rna5> || std::same_as<nucl_type, rna15>)
     {
-        using rna2dna_t = std::conditional_t<std::same_as<nucl_type, rna4>,  dna4,
-                          std::conditional_t<std::same_as<nucl_type, rna5>,  dna5,
-                          std::conditional_t<std::same_as<nucl_type, rna15>, dna15, void>>>;
+        using rna2dna_t =
+          std::conditional_t<std::same_as<nucl_type, rna4>,
+                             dna4,
+                             std::conditional_t<std::same_as<nucl_type, rna5>,
+                                                dna5,
+                                                std::conditional_t<std::same_as<nucl_type, rna15>, dna15, void>>>;
 
         // we can use dna's tables, because ranks are identical
         return bio::detail::translation_table<rna2dna_t, gc>::VALUE[to_rank(n1)][to_rank(n2)][to_rank(n3)];
@@ -71,9 +74,8 @@ constexpr aa27 translate_triplet(nucl_type const & n1, nucl_type const & n2, nuc
     {
         // we cast to dna15; slightly slower run-time, but lot's of compile time saved for large alphabets.
         // (nucleotide types can be converted to dna15 by definition)
-        return bio::detail::translation_table<dna15, gc>::VALUE[to_rank(static_cast<dna15>(n1))]
-                                                                  [to_rank(static_cast<dna15>(n2))]
-                                                                  [to_rank(static_cast<dna15>(n3))];
+        return bio::detail::translation_table<dna15, gc>::VALUE[to_rank(static_cast<dna15>(n1))][to_rank(
+          static_cast<dna15>(n2))][to_rank(static_cast<dna15>(n3))];
     }
 }
 
@@ -97,13 +99,12 @@ constexpr aa27 translate_triplet(nucl_type const & n1, nucl_type const & n2, nuc
  * \deprecated Use bio::translate_triplet(nucl_type const & n1, nucl_type const & n2, nucl_type const & n3) instead.
  */
 template <genetic_code gc = genetic_code::CANONICAL, typename tuple_type>
-//!\cond
-    requires ((std::tuple_size<tuple_type>::value == 3) &&
-             nucleotide_alphabet<std::tuple_element_t<0, tuple_type>> &&
+    //!\cond
+    requires((std::tuple_size<tuple_type>::value == 3) && nucleotide_alphabet<std::tuple_element_t<0, tuple_type>> &&
              nucleotide_alphabet<std::tuple_element_t<1, tuple_type>> &&
              nucleotide_alphabet<std::tuple_element_t<2, tuple_type>>)
 //!\endcond
-constexpr aa27 translate_triplet BIOCPP_DEPRECATED_310 (tuple_type const & input_tuple) noexcept
+constexpr aa27 translate_triplet BIOCPP_DEPRECATED_310(tuple_type const & input_tuple) noexcept
 {
     return translate_triplet(std::get<0>(input_tuple), std::get<1>(input_tuple), std::get<2>(input_tuple));
 }
@@ -128,10 +129,10 @@ constexpr aa27 translate_triplet BIOCPP_DEPRECATED_310 (tuple_type const & input
  * \deprecated Use bio::translate_triplet(nucl_type const & n1, nucl_type const & n2, nucl_type const & n3) instead.
  */
 template <genetic_code gc = genetic_code::CANONICAL, std::ranges::input_range range_type>
-//!\cond
+    //!\cond
     requires nucleotide_alphabet<std::ranges::range_reference_t<std::decay_t<range_type>>>
 //!\endcond
-constexpr aa27 translate_triplet BIOCPP_DEPRECATED_310 (range_type && input_range)
+constexpr aa27 translate_triplet BIOCPP_DEPRECATED_310(range_type && input_range)
 {
     auto n1 = std::ranges::begin(input_range);
     auto n2 = ++n1;
@@ -164,10 +165,10 @@ constexpr aa27 translate_triplet BIOCPP_DEPRECATED_310 (range_type && input_rang
  * \deprecated Use bio::translate_triplet(nucl_type const & n1, nucl_type const & n2, nucl_type const & n3) instead.
  */
 template <genetic_code gc = genetic_code::CANONICAL, std::ranges::random_access_range rng_t>
-//!\cond
+    //!\cond
     requires nucleotide_alphabet<std::ranges::range_reference_t<std::decay_t<rng_t>>>
 //!\endcond
-constexpr aa27 translate_triplet BIOCPP_DEPRECATED_310 (rng_t && input_range)
+constexpr aa27 translate_triplet BIOCPP_DEPRECATED_310(rng_t && input_range)
 {
     assert(std::ranges::begin(input_range) != std::ranges::end(input_range));
     assert(std::ranges::begin(input_range) + 1 != std::ranges::end(input_range));

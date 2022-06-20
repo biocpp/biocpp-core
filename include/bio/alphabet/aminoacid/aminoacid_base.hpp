@@ -14,8 +14,8 @@
 #pragma once
 
 #include <bio/alphabet/alphabet_base.hpp>
-#include <bio/alphabet/detail/convert.hpp>
 #include <bio/alphabet/aminoacid/concept.hpp>
+#include <bio/alphabet/detail/convert.hpp>
 #include <bio/meta/char_operations/transform.hpp>
 
 namespace bio
@@ -39,12 +39,12 @@ private:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr aminoacid_base()                                   noexcept = default; //!< Defaulted.
-    constexpr aminoacid_base(aminoacid_base const &)             noexcept = default; //!< Defaulted.
-    constexpr aminoacid_base(aminoacid_base &&)                  noexcept = default; //!< Defaulted.
+    constexpr aminoacid_base() noexcept                                   = default; //!< Defaulted.
+    constexpr aminoacid_base(aminoacid_base const &) noexcept             = default; //!< Defaulted.
+    constexpr aminoacid_base(aminoacid_base &&) noexcept                  = default; //!< Defaulted.
     constexpr aminoacid_base & operator=(aminoacid_base const &) noexcept = default; //!< Defaulted.
-    constexpr aminoacid_base & operator=(aminoacid_base &&)      noexcept = default; //!< Defaulted.
-    ~aminoacid_base()                                            noexcept = default; //!< Defaulted.
+    constexpr aminoacid_base & operator=(aminoacid_base &&) noexcept      = default; //!< Defaulted.
+    ~aminoacid_base() noexcept                                            = default; //!< Defaulted.
     //!\}
 
     //!\brief Befriend the derived class so it can instantiate.
@@ -65,10 +65,9 @@ public:
     // This constructor needs to be public, because constructor templates are not inherited otherwise
     //!\brief Allow explicit construction from any other aminoacid type and convert via the character representation.
     template <typename other_aa_type>
-    //!\cond
-        requires ((!std::same_as<aminoacid_base, other_aa_type>) &&
-                  (!std::same_as<derived_type, other_aa_type>) &&
-                  aminoacid_alphabet<other_aa_type>)
+        //!\cond
+        requires((!std::same_as<aminoacid_base, other_aa_type>)&&(
+          !std::same_as<derived_type, other_aa_type>)&&aminoacid_alphabet<other_aa_type>)
     //!\endcond
     explicit constexpr aminoacid_base(other_aa_type const other) noexcept
     {
@@ -78,10 +77,10 @@ public:
 #else
                       detail::writable_constexpr_alphabet<other_aa_type>
 #endif // BIOCPP_WORKAROUND_GCC7_AND_8_CONCEPT_ISSUES
-                     )
+        )
         {
             static_cast<derived_type &>(*this) =
-                detail::convert_through_char_representation<derived_type, other_aa_type>[bio::to_rank(other)];
+              detail::convert_through_char_representation<derived_type, other_aa_type>[bio::to_rank(other)];
         }
         else
         {
@@ -114,21 +113,21 @@ public:
 
 private:
     //!\brief Implementation of #char_is_valid().
-    static constexpr std::array<bool, 256> valid_char_table =
-        [] () constexpr
+    static constexpr std::array<bool, 256> valid_char_table = []() constexpr
+    {
+        // init with false
+        std::array<bool, 256> ret{};
+
+        // the original valid chars and their lower cases
+        for (uint8_t c : derived_type::rank_to_char)
         {
-            // init with false
-            std::array<bool, 256> ret{};
+            ret[c]           = true;
+            ret[to_lower(c)] = true;
+        }
 
-            // the original valid chars and their lower cases
-            for (uint8_t c : derived_type::rank_to_char)
-            {
-                ret[         c ] = true;
-                ret[to_lower(c)] = true;
-            }
-
-            return ret;
-        }();
+        return ret;
+    }
+    ();
 };
 
 } // namespace bio

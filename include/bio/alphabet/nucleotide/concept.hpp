@@ -25,34 +25,30 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void complement(args_t ...) = delete;
+template <typename... args_t>
+void complement(args_t...) = delete;
 
 //!\brief Functor definition for bio::complement.
 struct complement_fn
 {
 public:
     BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::complement(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, complement(v)                                       ) // ADL
-    BIOCPP_CPO_IMPL(0, v.complement()                                      ) // member
+    BIOCPP_CPO_IMPL(1, complement(v))                                     // ADL
+    BIOCPP_CPO_IMPL(0, v.complement())                                    // member
 
 public:
     //!\brief Operator definition.
     template <typename nucleotide_t>
-    //!\cond
-        requires (requires (nucleotide_t const nucl)
-        {
-            { impl(priority_tag<2>{}, nucl) };
+        //!\cond
+        requires(requires(nucleotide_t const nucl) {
+            {impl(priority_tag<2>{}, nucl)};
             requires noexcept(impl(priority_tag<2>{}, nucl));
             // requires std::common_with<decltype(impl(priority_tag<2>{}, nucl)), nucleotide_t>; // triggers an ICE
             requires alphabet<decltype(impl(priority_tag<2>{}, nucl))>;
-            { impl(priority_tag<2>{}, impl(priority_tag<2>{}, nucl)) }; // you can take the complement again
+            {impl(priority_tag<2>{}, impl(priority_tag<2>{}, nucl))}; // you can take the complement again
         })
     //!\endcond
-    constexpr auto operator()(nucleotide_t const nucl) const noexcept
-    {
-        return impl(priority_tag<2>{}, nucl);
-    }
+    constexpr auto operator()(nucleotide_t const nucl) const noexcept { return impl(priority_tag<2>{}, nucl); }
 };
 
 } // namespace bio::detail::adl_only
@@ -127,9 +123,9 @@ inline constexpr auto complement = detail::adl_only::complement_fn{};
  */
 //!\cond
 template <typename t>
-concept nucleotide_alphabet = alphabet<t> && requires (t val)
+concept nucleotide_alphabet = alphabet<t> && requires(t val)
 {
-    { bio::complement(val) };
+    {bio::complement(val)};
 };
 //!\endcond
 

@@ -64,45 +64,34 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr cigar_op()                             noexcept = default; //!< Defaulted.
-    constexpr cigar_op(cigar_op const &)             noexcept = default; //!< Defaulted.
-    constexpr cigar_op(cigar_op &&)                  noexcept = default; //!< Defaulted.
+    constexpr cigar_op() noexcept                             = default; //!< Defaulted.
+    constexpr cigar_op(cigar_op const &) noexcept             = default; //!< Defaulted.
+    constexpr cigar_op(cigar_op &&) noexcept                  = default; //!< Defaulted.
     constexpr cigar_op & operator=(cigar_op const &) noexcept = default; //!< Defaulted.
-    constexpr cigar_op & operator=(cigar_op &&)      noexcept = default; //!< Defaulted.
-    ~cigar_op()                                      noexcept = default; //!< Defaulted.
+    constexpr cigar_op & operator=(cigar_op &&) noexcept      = default; //!< Defaulted.
+    ~cigar_op() noexcept                                      = default; //!< Defaulted.
     //!\}
 
 protected:
     //!\privatesection
 
     //!\brief Value to char conversion table.
-    static constexpr char_type rank_to_char[alphabet_size]
-    {
-        'M',
-        'D',
-        'I',
-        'S',
-        'H',
-        'N',
-        'P',
-        'X',
-        '='
-    };
+    static constexpr char_type rank_to_char[alphabet_size]{'M', 'D', 'I', 'S', 'H', 'N', 'P', 'X', '='};
 
     //!\brief Char to value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank =
-        [] () constexpr
+    static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
+    {
+        std::array<rank_type, 256> ret{};
+
+        // reverse mapping for characters
+        for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
         {
-            std::array<rank_type, 256> ret{};
+            ret[rank_to_char[rnk]] = rnk;
+        }
 
-            // reverse mapping for characters
-            for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
-            {
-                ret[rank_to_char[rnk] ] = rnk;
-            }
-
-            return ret;
-        }();
+        return ret;
+    }
+    ();
 };
 
 // ------------------------------------------------------------------

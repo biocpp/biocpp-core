@@ -60,19 +60,19 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr rna4()                          noexcept = default; //!< Defaulted.
-    constexpr rna4(rna4 const &)              noexcept = default; //!< Defaulted.
-    constexpr rna4(rna4 &&)                   noexcept = default; //!< Defaulted.
-    constexpr rna4 & operator=(rna4 const &)  noexcept = default; //!< Defaulted.
-    constexpr rna4 & operator=(rna4 &&)       noexcept = default; //!< Defaulted.
-    ~rna4()                                   noexcept = default; //!< Defaulted.
+    constexpr rna4() noexcept                         = default; //!< Defaulted.
+    constexpr rna4(rna4 const &) noexcept             = default; //!< Defaulted.
+    constexpr rna4(rna4 &&) noexcept                  = default; //!< Defaulted.
+    constexpr rna4 & operator=(rna4 const &) noexcept = default; //!< Defaulted.
+    constexpr rna4 & operator=(rna4 &&) noexcept      = default; //!< Defaulted.
+    ~rna4() noexcept                                  = default; //!< Defaulted.
 
     using base_t::base_t;
 
     //!\brief Allow implicit construction from dna/rna of the same size.
     constexpr rna4(dna4 const & r) noexcept
 #if BIOCPP_WORKAROUND_GCC_90897
-        requires true
+      requires true
 #endif
     {
         assign_rank(r.to_rank());
@@ -83,13 +83,7 @@ protected:
     //!\privatesection
 
     //!\copydoc bio::dna4::rank_to_char
-    static constexpr char_type rank_to_char[alphabet_size]
-    {
-        'A',
-        'C',
-        'G',
-        'U'
-    };
+    static constexpr char_type rank_to_char[alphabet_size]{'A', 'C', 'G', 'U'};
 
     //!\copydoc bio::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank = dna4::char_to_rank;
@@ -148,12 +142,11 @@ inline rna4_vector operator""_rna4(char const * s, std::size_t n)
 // rna4 (deferred definition)
 // ------------------------------------------------------------------
 
-constexpr std::array<rna4, rna4::alphabet_size> rna4::complement_table
-{
-    'U'_rna4,    // complement of 'A'_rna4
-    'G'_rna4,    // complement of 'C'_rna4
-    'C'_rna4,    // complement of 'G'_rna4
-    'A'_rna4     // complement of 'U'_rna4
+constexpr std::array<rna4, rna4::alphabet_size> rna4::complement_table{
+  'U'_rna4, // complement of 'A'_rna4
+  'G'_rna4, // complement of 'C'_rna4
+  'C'_rna4, // complement of 'G'_rna4
+  'A'_rna4  // complement of 'U'_rna4
 };
 
 } // namespace bio

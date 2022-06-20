@@ -34,7 +34,7 @@ namespace bio::detail
  * \tparam template_t The uninstantiated template.
  * \tparam spec_t     The arguments to template_t.
  */
-template <template <typename ...> typename template_t, typename ...spec_t>
+template <template <typename...> typename template_t, typename... spec_t>
 struct lazy
 {};
 
@@ -55,7 +55,7 @@ struct instantiate : std::type_identity<t>
  * \tparam spec_t     The arguments to template_t.
  * \implements bio::transformation_trait
  */
-template <template <typename ...> typename template_t, typename ...spec_t>
+template <template <typename...> typename template_t, typename... spec_t>
 struct instantiate<lazy<template_t, spec_t...>>
 {
     //!\brief Return type of the trait [instantiates the template arguments].
@@ -67,8 +67,8 @@ struct instantiate<lazy<template_t, spec_t...>>
  * \relates bio::detail::instantiate
  */
 template <typename t>
-//!\cond
-    requires (requires { typename instantiate<t>::type; })
+    //!\cond
+    requires(requires { typename instantiate<t>::type; })
 //!\endcond
 using instantiate_t = typename instantiate<t>::type;
 
@@ -100,7 +100,7 @@ struct instantiate_if<t, true> : std::type_identity<t>
  * \tparam spec_t     The arguments to template_t.
  * \implements bio::transformation_trait
  */
-template <template <typename ...> typename template_t, typename ...spec_t>
+template <template <typename...> typename template_t, typename... spec_t>
 struct instantiate_if<lazy<template_t, spec_t...>, true>
 {
     //!\brief Return type of the trait [instantiates the template arguments].
@@ -112,8 +112,8 @@ struct instantiate_if<lazy<template_t, spec_t...>, true>
  * \relates bio::detail::instantiate_if
  */
 template <typename t, bool condition>
-//!\cond
-    requires (requires { typename instantiate_if<t, condition>::type; })
+    //!\cond
+    requires(requires { typename instantiate_if<t, condition>::type; })
 //!\endcond
 using instantiate_if_t = typename instantiate_if<t, condition>::type;
 
@@ -122,8 +122,8 @@ using instantiate_if_t = typename instantiate_if<t, condition>::type;
  * \relates bio::detail::instantiate_if
  */
 template <typename t, bool condition>
-//!\cond
-    requires (requires { instantiate_if_t<t, condition>::value; })
+    //!\cond
+    requires(requires { instantiate_if_t<t, condition>::value; })
 //!\endcond
 inline constexpr auto instantiate_if_v = instantiate_if_t<t, condition>::value;
 
@@ -154,8 +154,8 @@ struct lazy_conditional : instantiate<std::conditional_t<decision, on_true_t, on
  * \relates bio::detail::lazy_conditional
  */
 template <bool decision, typename on_true_t, typename on_false_t>
-//!\cond
-    requires (requires { typename instantiate_t<std::conditional_t<decision, on_true_t, on_false_t>>; })
+    //!\cond
+    requires(requires { typename instantiate_t<std::conditional_t<decision, on_true_t, on_false_t>>; })
 //!\endcond
 using lazy_conditional_t = instantiate_t<std::conditional_t<decision, on_true_t, on_false_t>>;
 
@@ -177,16 +177,16 @@ using lazy_conditional_t = instantiate_t<std::conditional_t<decision, on_true_t,
  *
  * \include test/snippet/meta/type_traits/is_class_template_declarable_with.cpp
  */
-template <template <typename ...> typename query_t, typename ...args_t>
+template <template <typename...> typename query_t, typename... args_t>
 struct is_class_template_declarable_with :
-//!\cond
-    public std::false_type
+  //!\cond
+  public std::false_type
 //!\endcond
 {};
 
 //!\cond
-template <template <typename ...> typename query_t, typename ...args_t>
-    requires (requires { typename std::type_identity<query_t<args_t...>>::type; })
+template <template <typename...> typename query_t, typename... args_t>
+    requires(requires { typename std::type_identity<query_t<args_t...>>::type; })
 struct is_class_template_declarable_with<query_t, args_t...> : public std::true_type
 {};
 //!\endcond
@@ -196,7 +196,8 @@ struct is_class_template_declarable_with<query_t, args_t...> : public std::true_
  * \tparam args_t  The template parameter pack to instantiate the template class with.
  * \relates bio::detail::is_class_template_declarable_with
  */
-template <template <typename ...> typename query_t, typename ...args_t>
-inline constexpr bool is_class_template_declarable_with_v = is_class_template_declarable_with<query_t, args_t...>::value;
+template <template <typename...> typename query_t, typename... args_t>
+inline constexpr bool is_class_template_declarable_with_v =
+  is_class_template_declarable_with<query_t, args_t...>::value;
 //!\}
 } // namespace bio::detail

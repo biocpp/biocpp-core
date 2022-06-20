@@ -75,7 +75,7 @@ namespace bio::views
  *
  * \hideinitializer
  */
-inline auto constexpr take_exactly = detail::take_fn<true, false>{};
+inline constexpr auto take_exactly = detail::take_fn<true, false>{};
 
 // ============================================================================
 //  views::take_exactly_or_throw (adaptor instance definition)
@@ -89,7 +89,7 @@ inline auto constexpr take_exactly = detail::take_fn<true, false>{};
  * \copydetails bio::views::take_exactly
  * \hideinitializer
  */
-inline auto constexpr take_exactly_or_throw = detail::take_fn<true, true>{};
+inline constexpr auto take_exactly_or_throw = detail::take_fn<true, true>{};
 
 //!\}
 } // namespace bio::views

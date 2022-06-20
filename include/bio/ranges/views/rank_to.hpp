@@ -65,13 +65,11 @@ namespace bio::views
  * \hideinitializer
  */
 template <typename alphabet_type>
-//!\cond
+    //!\cond
     requires writable_semialphabet<alphabet_type>
 //!\endcond
-inline auto const rank_to = deep{std::views::transform([] (alphabet_rank_t<alphabet_type> const in) -> alphabet_type
-{
-    return assign_rank_to(in, alphabet_type{});
-})};
+inline auto const rank_to = deep{std::views::transform([](alphabet_rank_t<alphabet_type> const in) -> alphabet_type
+                                                       { return assign_rank_to(in, alphabet_type{}); })};
 
 //!\}
 

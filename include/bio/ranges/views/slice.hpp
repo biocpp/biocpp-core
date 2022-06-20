@@ -49,16 +49,14 @@ struct slice_fn
         if constexpr (std::ranges::sized_range<urng_t>)
         {
             begin_pos = std::min(begin_pos, static_cast<ptrdiff_t>(std::ranges::size(urange)));
-            end_pos = std::min(end_pos, static_cast<ptrdiff_t>(std::ranges::size(urange)));
+            end_pos   = std::min(end_pos, static_cast<ptrdiff_t>(std::ranges::size(urange)));
         }
 
         if (end_pos < begin_pos)
             throw std::invalid_argument{"end_pos argument to bio::views::slice must be >= the begin_pos argument."};
 
-        return std::forward<urng_t>(urange)
-          | std::views::drop(begin_pos)
-          | std::views::take(end_pos - begin_pos)
-          | views::type_reduce;
+        return std::forward<urng_t>(urange) | std::views::drop(begin_pos) | std::views::take(end_pos - begin_pos) |
+               views::type_reduce;
     }
 
     // does not require special overloads, because views::drop and views::take handle the flattening.

@@ -48,7 +48,7 @@ struct type_list_expander;
  * This is a technical trick to make a type representable as a value. Instantiating a type might not always work
  * because not every type provides a default constructor. In addition it is possible to use incomplete types as well.
  */
-template <template <typename ...> typename type_list_t, typename ...args_t>
+template <template <typename...> typename type_list_t, typename... args_t>
 struct type_list_expander<type_list_t<args_t...>>
 {
     /*!\brief Invokes the actual function by passing the types as instances of std::type_identity to the target
@@ -62,7 +62,7 @@ struct type_list_expander<type_list_t<args_t...>>
      * Invokes `fn` by passing the expanded types wrapped in std::type_identity.
      */
     template <typename fn_t>
-    //!\cond
+        //!\cond
         requires std::invocable<fn_t, std::type_identity<args_t>...>
     //!\endcond
     static constexpr std::invoke_result_t<fn_t, std::type_identity<args_t>...> invoke_on_type_identities(fn_t && fn)
@@ -111,14 +111,13 @@ struct type_list_expander<type_list_t<args_t...>>
  */
 template <typename type_list_t, typename unary_predicate_t>
 [[nodiscard]] constexpr bool all_of(unary_predicate_t && fn)
-//!\cond
-    requires template_specialisation_of<type_list_t, bio::type_list>
+  //!\cond
+  requires template_specialisation_of<type_list_t, bio::type_list>
 //!\endcond
 {
-    return type_list_expander<type_list_t>::invoke_on_type_identities([&] (auto && ...type_identities)
-    {
-        return all_of(fn, std::forward<decltype(type_identities)>(type_identities)...);
-    });
+    return type_list_expander<type_list_t>::invoke_on_type_identities(
+      [&](auto &&... type_identities)
+      { return all_of(fn, std::forward<decltype(type_identities)>(type_identities)...); });
 }
 
 //-----------------------------------------------------------------------------
@@ -160,15 +159,13 @@ template <typename type_list_t, typename unary_predicate_t>
  * \sa bio::detail::for_each
  */
 template <typename type_list_t, typename unary_function_t>
-//!\cond
+    //!\cond
     requires template_specialisation_of<type_list_t, bio::type_list>
 //!\endcond
 constexpr void for_each(unary_function_t && fn)
 {
-    type_list_expander<type_list_t>::invoke_on_type_identities([&] (auto && ...type_identities)
-    {
-        for_each(fn, std::forward<decltype(type_identities)>(type_identities)...);
-    });
+    type_list_expander<type_list_t>::invoke_on_type_identities(
+      [&](auto &&... type_identities) { for_each(fn, std::forward<decltype(type_identities)>(type_identities)...); });
 }
 
-}  // namespace bio::detail
+} // namespace bio::detail

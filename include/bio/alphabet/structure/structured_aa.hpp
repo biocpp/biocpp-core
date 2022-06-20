@@ -46,20 +46,23 @@ namespace bio
  * This bio::alphabet_tuple_base itself fulfills bio::alphabet.
  */
 template <writable_alphabet sequence_alphabet_t = aa27, writable_alphabet structure_alphabet_t = dssp9>
-//!\cond
-    requires ((!std::is_reference_v<sequence_alphabet_t>) && (!std::is_reference_v<structure_alphabet_t>))
+    //!\cond
+    requires((!std::is_reference_v<sequence_alphabet_t>)&&(!std::is_reference_v<structure_alphabet_t>))
 //!\endcond
 class structured_aa :
-    public alphabet_tuple_base<structured_aa<sequence_alphabet_t, structure_alphabet_t>,
-                               sequence_alphabet_t, structure_alphabet_t>
+  public alphabet_tuple_base<structured_aa<sequence_alphabet_t, structure_alphabet_t>,
+                             sequence_alphabet_t,
+                             structure_alphabet_t>
 {
 private:
     //!\brief The base type.
     using base_type = alphabet_tuple_base<structured_aa<sequence_alphabet_t, structure_alphabet_t>,
-                                          sequence_alphabet_t, structure_alphabet_t>;
+                                          sequence_alphabet_t,
+                                          structure_alphabet_t>;
+
 public:
     //!\brief First template parameter as member type.
-    using sequence_alphabet_type = sequence_alphabet_t;
+    using sequence_alphabet_type  = sequence_alphabet_t;
     //!\brief Second template parameter as member type.
     using structure_alphabet_type = structure_alphabet_t;
 
@@ -69,31 +72,35 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr structured_aa()                                    noexcept = default; //!< Defaulted.
-    constexpr structured_aa(structured_aa const &)               noexcept = default; //!< Defaulted.
-    constexpr structured_aa(structured_aa &&)                    noexcept = default; //!< Defaulted.
-    constexpr structured_aa & operator =(structured_aa const &)  noexcept = default; //!< Defaulted.
-    constexpr structured_aa & operator =(structured_aa &&)       noexcept = default; //!< Defaulted.
-    ~structured_aa()                                             noexcept = default; //!< Defaulted.
+    constexpr structured_aa() noexcept                                  = default; //!< Defaulted.
+    constexpr structured_aa(structured_aa const &) noexcept             = default; //!< Defaulted.
+    constexpr structured_aa(structured_aa &&) noexcept                  = default; //!< Defaulted.
+    constexpr structured_aa & operator=(structured_aa const &) noexcept = default; //!< Defaulted.
+    constexpr structured_aa & operator=(structured_aa &&) noexcept      = default; //!< Defaulted.
+    ~structured_aa() noexcept                                           = default; //!< Defaulted.
 
     using base_type::base_type; // Inherit non-default constructors
 
-#if BIOCPP_DOXYGEN_ONLY(1)0
+#if BIOCPP_DOXYGEN_ONLY(1) 0
     //!\copydoc alphabet_tuple_base::alphabet_tuple_base(component_type const alph)
     template <typename component_type>
-    constexpr structured_aa(component_type const alph) {}
+    constexpr structured_aa(component_type const alph)
+    {}
 
     //!\copydoc alphabet_tuple_base::alphabet_tuple_base(indirect_component_type const alph)
     template <typename indirect_component_type>
-    constexpr structured_aa(indirect_component_type const alph) {}
+    constexpr structured_aa(indirect_component_type const alph)
+    {}
 
     //!\copydoc alphabet_tuple_base::operator=(component_type const alph)
     template <typename component_type>
-    constexpr structured_aa & operator=(component_type const alph) {}
+    constexpr structured_aa & operator=(component_type const alph)
+    {}
 
     //!\copydoc alphabet_tuple_base::operator=(indirect_component_type const alph)
     template <typename indirect_component_type>
-    constexpr structured_aa & operator=(indirect_component_type const alph) {}
+    constexpr structured_aa & operator=(indirect_component_type const alph)
+    {}
 #endif
 
     //!\brief Inherit operators from base
@@ -132,6 +139,6 @@ public:
 //!\relates structured_aa
 template <typename sequence_alphabet_type, typename structure_alphabet_type>
 structured_aa(sequence_alphabet_type &&, structure_alphabet_type &&)
-    -> structured_aa<std::decay_t<sequence_alphabet_type>, std::decay_t<structure_alphabet_type>>;
+  -> structured_aa<std::decay_t<sequence_alphabet_type>, std::decay_t<structure_alphabet_type>>;
 
 } // namespace bio

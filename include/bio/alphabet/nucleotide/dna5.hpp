@@ -64,17 +64,17 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr dna5()                          noexcept = default; //!< Defaulted.
-    constexpr dna5(dna5 const &)              noexcept = default; //!< Defaulted.
-    constexpr dna5(dna5 &&)                   noexcept = default; //!< Defaulted.
-    constexpr dna5 & operator=(dna5 const &)  noexcept = default; //!< Defaulted.
-    constexpr dna5 & operator=(dna5 &&)       noexcept = default; //!< Defaulted.
-    ~dna5()                                   noexcept = default; //!< Defaulted.
+    constexpr dna5() noexcept                         = default; //!< Defaulted.
+    constexpr dna5(dna5 const &) noexcept             = default; //!< Defaulted.
+    constexpr dna5(dna5 &&) noexcept                  = default; //!< Defaulted.
+    constexpr dna5 & operator=(dna5 const &) noexcept = default; //!< Defaulted.
+    constexpr dna5 & operator=(dna5 &&) noexcept      = default; //!< Defaulted.
+    ~dna5() noexcept                                  = default; //!< Defaulted.
 
     using base_t::base_t;
 
     //!\brief Allow implicit construction from dna/rna of the same size.
-    template <std::same_as<rna5> t>    // Accept incomplete type
+    template <std::same_as<rna5> t> // Accept incomplete type
     constexpr dna5(t const & r) noexcept
     {
         assign_rank(r.to_rank());
@@ -85,38 +85,32 @@ protected:
     //!\privatesection
 
     //!\copydoc bio::dna4::rank_to_char
-    static constexpr char_type rank_to_char[alphabet_size]
-    {
-        'A',
-        'C',
-        'G',
-        'N',
-        'T'
-    };
+    static constexpr char_type rank_to_char[alphabet_size]{'A', 'C', 'G', 'N', 'T'};
 
     //!\copydoc bio::dna4::char_to_rank
-    static constexpr std::array<rank_type, 256> char_to_rank =
-        [] () constexpr
+    static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
+    {
+        std::array<rank_type, 256> ret{};
+
+        // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
+        for (auto & c : ret)
+            c = 3; // == 'N'
+
+        // reverse mapping for characters and their lowercase
+        for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
         {
-            std::array<rank_type, 256> ret{};
+            ret[rank_to_char[rnk]]           = rnk;
+            ret[to_lower(rank_to_char[rnk])] = rnk;
+        }
 
-            // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
-            for (auto & c : ret)
-                c = 3; // == 'N'
+        // set U equal to T
+        ret['U'] = ret['T'];
+        ret['u'] = ret['t'];
 
-            // reverse mapping for characters and their lowercase
-            for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
-            {
-                ret[         rank_to_char[rnk] ] = rnk;
-                ret[to_lower(rank_to_char[rnk])] = rnk;
-            }
-
-            // set U equal to T
-            ret['U'] = ret['T']; ret['u'] = ret['t'];
-
-            // iupac characters are implicitly "UNKNOWN"
-            return ret;
-        }();
+        // iupac characters are implicitly "UNKNOWN"
+        return ret;
+    }
+    ();
 
     //!\copydoc bio::dna4::complement_table
     static const std::array<dna5, alphabet_size> complement_table;
@@ -172,13 +166,12 @@ inline dna5_vector operator""_dna5(char const * s, std::size_t n)
 // dna5 (deferred definition)
 // ------------------------------------------------------------------
 
-constexpr std::array<dna5, dna5::alphabet_size> dna5::complement_table
-{
-    'T'_dna5,    // complement of 'A'_dna5
-    'G'_dna5,    // complement of 'C'_dna5
-    'C'_dna5,    // complement of 'G'_dna5
-    'N'_dna5,    // complement of 'N'_dna5
-    'A'_dna5     // complement of 'T'_dna5
+constexpr std::array<dna5, dna5::alphabet_size> dna5::complement_table{
+  'T'_dna5, // complement of 'A'_dna5
+  'G'_dna5, // complement of 'C'_dna5
+  'C'_dna5, // complement of 'G'_dna5
+  'N'_dna5, // complement of 'N'_dna5
+  'A'_dna5  // complement of 'T'_dna5
 };
 
 } // namespace bio

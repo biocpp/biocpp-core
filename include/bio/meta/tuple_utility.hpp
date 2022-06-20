@@ -35,12 +35,9 @@ namespace bio::detail
  *
  * \returns A new tuple with the extracted elements.
  */
-template <size_t beg,
-          template <typename ...> typename tuple_t,
-          size_t ... Is,
-          typename ...ts>
-//!\cond
-    requires (tuple_like<tuple_t<ts...>> && tuple_like<tuple_t<>>)
+template <size_t beg, template <typename...> typename tuple_t, size_t... Is, typename... ts>
+    //!\cond
+    requires(tuple_like<tuple_t<ts...>> && tuple_like<tuple_t<>>)
 //!\endcond
 constexpr auto tuple_split(tuple_t<ts...> const & t, std::index_sequence<Is...> const & BIOCPP_DOXYGEN_ONLY(idx))
 {
@@ -48,12 +45,9 @@ constexpr auto tuple_split(tuple_t<ts...> const & t, std::index_sequence<Is...> 
 }
 
 //!\copydoc bio::detail::tuple_split
-template <size_t beg,
-          template <typename ...> typename tuple_t,
-          size_t ... Is,
-          typename ...ts>
-//!\cond
-    requires (tuple_like<tuple_t<ts...>> && tuple_like<tuple_t<>>)
+template <size_t beg, template <typename...> typename tuple_t, size_t... Is, typename... ts>
+    //!\cond
+    requires(tuple_like<tuple_t<ts...>> && tuple_like<tuple_t<>>)
 //!\endcond
 constexpr auto tuple_split(tuple_t<ts...> && t, std::index_sequence<Is...> const & BIOCPP_DOXYGEN_ONLY(idx))
 {
@@ -95,8 +89,8 @@ namespace bio
  *
  * Concurrent invocations of this functions are thread safe.
  */
-template <size_t pivot_c, template <typename ...> typename tuple_t, typename ...ts>
-//!\cond
+template <size_t pivot_c, template <typename...> typename tuple_t, typename... ts>
+    //!\cond
     requires tuple_like<tuple_t<ts...>>
 //!\endcond
 constexpr auto tuple_split(tuple_t<ts...> const & t)
@@ -108,8 +102,8 @@ constexpr auto tuple_split(tuple_t<ts...> const & t)
 }
 
 //!\copydoc bio::tuple_split
-template <size_t pivot_c, template <typename ...> typename tuple_t, typename ...ts>
-//!\cond
+template <size_t pivot_c, template <typename...> typename tuple_t, typename... ts>
+    //!\cond
     requires tuple_like<tuple_t<ts...>>
 //!\endcond
 constexpr auto tuple_split(tuple_t<ts...> && t)

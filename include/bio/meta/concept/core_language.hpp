@@ -32,15 +32,14 @@ namespace bio::detail
  */
 //!\cond
 template <class T, class U>
-concept weakly_equality_comparable_with =
-    requires(std::remove_reference_t<T> const & t,
-             std::remove_reference_t<U> const & u)
-    {
-        requires std::convertible_to<decltype(t == u), bool>;
-        requires std::convertible_to<decltype(t != u), bool>;
-        requires std::convertible_to<decltype(u == t), bool>;
-        requires std::convertible_to<decltype(u != t), bool>;
-    };
+concept weakly_equality_comparable_with = requires(std::remove_reference_t<T> const & t,
+                                                   std::remove_reference_t<U> const & u)
+{
+    requires std::convertible_to<decltype(t == u), bool>;
+    requires std::convertible_to<decltype(t != u), bool>;
+    requires std::convertible_to<decltype(u == t), bool>;
+    requires std::convertible_to<decltype(u != t), bool>;
+};
 //!\endcond
 
 /*!\interface   bio::detail::weakly_ordered_with <>
@@ -50,24 +49,23 @@ concept weakly_equality_comparable_with =
  */
 //!\cond
 template <typename t1, typename t2>
-concept weakly_ordered_with = requires (std::remove_reference_t<t1> const & v1,
-                                               std::remove_reference_t<t2> const & v2)
+concept weakly_ordered_with = requires(std::remove_reference_t<t1> const & v1, std::remove_reference_t<t2> const & v2)
 {
-    requires std::convertible_to<decltype(v1 <  v2), bool>;
+    requires std::convertible_to<decltype(v1 < v2), bool>;
     requires std::convertible_to<decltype(v1 <= v2), bool>;
-    requires std::convertible_to<decltype(v1 >  v2), bool>;
+    requires std::convertible_to<decltype(v1 > v2), bool>;
     requires std::convertible_to<decltype(v1 >= v2), bool>;
 
-    requires std::convertible_to<decltype(v2 <  v1), bool>;
+    requires std::convertible_to<decltype(v2 < v1), bool>;
     requires std::convertible_to<decltype(v2 <= v1), bool>;
-    requires std::convertible_to<decltype(v2 >  v1), bool>;
+    requires std::convertible_to<decltype(v2 > v1), bool>;
     requires std::convertible_to<decltype(v2 >= v1), bool>;
 };
 //!\endcond
 
 //!\}
 
-} // bio::detail
+} // namespace bio::detail
 
 namespace bio
 {
@@ -89,7 +87,10 @@ concept implicitly_convertible_to = std::is_convertible_v<t, u>;
  */
 //!\cond
 template <typename t, typename u>
-concept explicitly_convertible_to = requires (t vt) { { static_cast<u>(vt)}; };
+concept explicitly_convertible_to = requires(t vt)
+{
+    {static_cast<u>(vt)};
+};
 //!\endcond
 
 /*!\interface   bio::arithmetic <>
@@ -120,11 +121,11 @@ concept floating_point = arithmetic<t> && std::is_floating_point_v<t>;
 
 template <typename t>
 concept builtin_character = std::integral<t> &&
-                      (std::same_as<t, char> || std::same_as<t, unsigned char> || std::same_as<t, signed char> ||
+  (std::same_as<t, char> || std::same_as<t, unsigned char> || std::same_as<t, signed char> ||
 #ifdef __cpp_char8_t
-                       std::same_as<t, char8_t> ||
+   std::same_as<t, char8_t> ||
 #endif
-                       std::same_as<t, char16_t> || std::same_as<t, char32_t> || std::same_as<t, wchar_t>);
+   std::same_as<t, char16_t> || std::same_as<t, char32_t> || std::same_as<t, wchar_t>);
 //!\endcond
 
 /*!\interface   bio::trivially_destructible <>
@@ -181,4 +182,4 @@ template <typename t, typename u>
 concept weakly_assignable_from = std::is_assignable_v<t, u>;
 //!\endcond
 
-}  // namespace bio
+} // namespace bio

@@ -59,12 +59,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr sam_dna16()                              noexcept = default; //!< Defaulted.
-    constexpr sam_dna16(sam_dna16 const &)             noexcept = default; //!< Defaulted.
-    constexpr sam_dna16(sam_dna16 &&)                  noexcept = default; //!< Defaulted.
+    constexpr sam_dna16() noexcept                              = default; //!< Defaulted.
+    constexpr sam_dna16(sam_dna16 const &) noexcept             = default; //!< Defaulted.
+    constexpr sam_dna16(sam_dna16 &&) noexcept                  = default; //!< Defaulted.
     constexpr sam_dna16 & operator=(sam_dna16 const &) noexcept = default; //!< Defaulted.
-    constexpr sam_dna16 & operator=(sam_dna16 &&)      noexcept = default; //!< Defaulted.
-    ~sam_dna16()                                       noexcept = default; //!< Defaulted.
+    constexpr sam_dna16 & operator=(sam_dna16 &&) noexcept      = default; //!< Defaulted.
+    ~sam_dna16() noexcept                                       = default; //!< Defaulted.
 
     using base_t::base_t;
     //!\}
@@ -73,48 +73,32 @@ protected:
     //!\privatesection
 
     //!\brief The representation is the same as in the SAM specifications (which is NOT in alphabetical order).
-    static constexpr char_type rank_to_char[alphabet_size]
-    {
-        '=',
-        'A',
-        'C',
-        'M',
-        'G',
-        'R',
-        'S',
-        'V',
-        'T',
-        'W',
-        'Y',
-        'H',
-        'K',
-        'D',
-        'B',
-        'N'
-    };
+    static constexpr char_type
+      rank_to_char[alphabet_size]{'=', 'A', 'C', 'M', 'G', 'R', 'S', 'V', 'T', 'W', 'Y', 'H', 'K', 'D', 'B', 'N'};
 
     //!\copydoc bio::dna4::char_to_rank
-    static constexpr std::array<rank_type, 256> char_to_rank =
-        [] () constexpr
+    static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
+    {
+        std::array<rank_type, 256> ret{};
+
+        // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
+        for (auto & c : ret)
+            c = 15; // rank of 'N'
+
+        // reverse mapping for characters and their lowercase
+        for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
         {
-            std::array<rank_type, 256> ret{};
+            ret[rank_to_char[rnk]]           = rnk;
+            ret[to_lower(rank_to_char[rnk])] = rnk;
+        }
 
-            // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
-            for (auto & c : ret)
-                c = 15; // rank of 'N'
+        // set U equal to T
+        ret['U'] = ret['T'];
+        ret['u'] = ret['t'];
 
-            // reverse mapping for characters and their lowercase
-            for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
-            {
-                ret[         rank_to_char[rnk] ] = rnk;
-                ret[to_lower(rank_to_char[rnk])] = rnk;
-            }
-
-            // set U equal to T
-            ret['U'] = ret['T']; ret['u'] = ret['t'];
-
-            return ret;
-        }();
+        return ret;
+    }
+    ();
 
     //!\copydoc bio::dna4::complement_table
     static const std::array<sam_dna16, alphabet_size> complement_table;
@@ -172,24 +156,23 @@ inline sam_dna16_vector operator""_sam_dna16(char const * s, size_t n)
 // complement deferred definition
 // ------------------------------------------------------------------
 
-constexpr std::array<sam_dna16, sam_dna16::alphabet_size> sam_dna16::complement_table
-{
-    'N'_sam_dna16,    // complement of '='_sam_dna16
-    'T'_sam_dna16,    // complement of 'A'_sam_dna16
-    'G'_sam_dna16,    // complement of 'C'_sam_dna16
-    'K'_sam_dna16,    // complement of 'M'_sam_dna16
-    'C'_sam_dna16,    // complement of 'G'_sam_dna16
-    'Y'_sam_dna16,    // complement of 'R'_sam_dna16
-    'S'_sam_dna16,    // complement of 'S'_sam_dna16
-    'B'_sam_dna16,    // complement of 'V'_sam_dna16
-    'A'_sam_dna16,    // complement of 'T'_sam_dna16
-    'W'_sam_dna16,    // complement of 'W'_sam_dna16
-    'R'_sam_dna16,    // complement of 'Y'_sam_dna16
-    'D'_sam_dna16,    // complement of 'H'_sam_dna16
-    'M'_sam_dna16,    // complement of 'K'_sam_dna16
-    'H'_sam_dna16,    // complement of 'D'_sam_dna16
-    'V'_sam_dna16,    // complement of 'B'_sam_dna16
-    'N'_sam_dna16     // complement of 'N'_sam_dna16
+constexpr std::array<sam_dna16, sam_dna16::alphabet_size> sam_dna16::complement_table{
+  'N'_sam_dna16, // complement of '='_sam_dna16
+  'T'_sam_dna16, // complement of 'A'_sam_dna16
+  'G'_sam_dna16, // complement of 'C'_sam_dna16
+  'K'_sam_dna16, // complement of 'M'_sam_dna16
+  'C'_sam_dna16, // complement of 'G'_sam_dna16
+  'Y'_sam_dna16, // complement of 'R'_sam_dna16
+  'S'_sam_dna16, // complement of 'S'_sam_dna16
+  'B'_sam_dna16, // complement of 'V'_sam_dna16
+  'A'_sam_dna16, // complement of 'T'_sam_dna16
+  'W'_sam_dna16, // complement of 'W'_sam_dna16
+  'R'_sam_dna16, // complement of 'Y'_sam_dna16
+  'D'_sam_dna16, // complement of 'H'_sam_dna16
+  'M'_sam_dna16, // complement of 'K'_sam_dna16
+  'H'_sam_dna16, // complement of 'D'_sam_dna16
+  'V'_sam_dna16, // complement of 'B'_sam_dna16
+  'N'_sam_dna16  // complement of 'N'_sam_dna16
 };
 
 } // namespace bio

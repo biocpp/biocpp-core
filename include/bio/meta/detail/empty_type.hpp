@@ -23,4 +23,4 @@ namespace bio::detail
 struct empty_type
 {};
 
-}  // namespace bio::detail
+} // namespace bio::detail

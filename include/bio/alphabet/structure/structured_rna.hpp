@@ -47,20 +47,23 @@ namespace bio
  * This bio::alphabet_tuple_base itself models both bio::nucleotide_alphabet and bio::rna_structure_alphabet.
  */
 template <nucleotide_alphabet sequence_alphabet_t, rna_structure_alphabet structure_alphabet_t>
-//!\cond
-    requires (writable_alphabet<sequence_alphabet_t> && writable_alphabet<structure_alphabet_t>)
+    //!\cond
+    requires(writable_alphabet<sequence_alphabet_t> && writable_alphabet<structure_alphabet_t>)
 //!\endcond
 class structured_rna :
-    public alphabet_tuple_base<structured_rna<sequence_alphabet_t, structure_alphabet_t>,
-                                 sequence_alphabet_t, structure_alphabet_t>
+  public alphabet_tuple_base<structured_rna<sequence_alphabet_t, structure_alphabet_t>,
+                             sequence_alphabet_t,
+                             structure_alphabet_t>
 {
 private:
     //!\brief The base type.
     using base_type = alphabet_tuple_base<structured_rna<sequence_alphabet_t, structure_alphabet_t>,
-                                            sequence_alphabet_t, structure_alphabet_t>;
+                                          sequence_alphabet_t,
+                                          structure_alphabet_t>;
+
 public:
     //!\brief First template parameter as member type.
-    using sequence_alphabet_type = sequence_alphabet_t;
+    using sequence_alphabet_type  = sequence_alphabet_t;
     //!\brief Second template parameter as member type.
     using structure_alphabet_type = structure_alphabet_t;
 
@@ -70,23 +73,23 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr structured_rna()                                    noexcept = default; //!< Defaulted.
-    constexpr structured_rna(structured_rna const &)              noexcept = default; //!< Defaulted.
-    constexpr structured_rna(structured_rna &&)                   noexcept = default; //!< Defaulted.
-    constexpr structured_rna & operator =(structured_rna const &) noexcept = default; //!< Defaulted.
-    constexpr structured_rna & operator =(structured_rna &&)      noexcept = default; //!< Defaulted.
-    ~structured_rna()                                             noexcept = default; //!< Defaulted.
+    constexpr structured_rna() noexcept                                   = default; //!< Defaulted.
+    constexpr structured_rna(structured_rna const &) noexcept             = default; //!< Defaulted.
+    constexpr structured_rna(structured_rna &&) noexcept                  = default; //!< Defaulted.
+    constexpr structured_rna & operator=(structured_rna const &) noexcept = default; //!< Defaulted.
+    constexpr structured_rna & operator=(structured_rna &&) noexcept      = default; //!< Defaulted.
+    ~structured_rna() noexcept                                            = default; //!< Defaulted.
 
     using base_type::base_type; // Inherit non-default constructors
 
     //!\copydoc alphabet_tuple_base::alphabet_tuple_base(component_type const alph)
-    BIOCPP_DOXYGEN_ONLY(( constexpr structured_rna(component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY((constexpr structured_rna(component_type const alph) noexcept {}))
     //!\copydoc alphabet_tuple_base::alphabet_tuple_base(indirect_component_type const alph)
-    BIOCPP_DOXYGEN_ONLY(( constexpr structured_rna(indirect_component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY((constexpr structured_rna(indirect_component_type const alph) noexcept {}))
     //!\copydoc alphabet_tuple_base::operator=(component_type const alph)
-    BIOCPP_DOXYGEN_ONLY(( constexpr structured_rna & operator=(component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY((constexpr structured_rna & operator=(component_type const alph) noexcept {}))
     //!\copydoc alphabet_tuple_base::operator=(indirect_component_type const alph)
-    BIOCPP_DOXYGEN_ONLY(( constexpr structured_rna & operator=(indirect_component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY((constexpr structured_rna & operator=(indirect_component_type const alph) noexcept {}))
     //!\}
 
     // Inherit operators from base
@@ -107,10 +110,7 @@ public:
     //!\{
 
     //!\brief Return a character. This reads the internal sequence letter.
-    constexpr char_type to_char() const noexcept
-    {
-        return bio::to_char(get<0>(*this));
-    }
+    constexpr char_type to_char() const noexcept { return bio::to_char(get<0>(*this)); }
 
     /*!\brief Return a structured_rna where the sequence letter is converted to its complement.
      * \details
@@ -140,26 +140,17 @@ public:
     /*!\brief Check whether the character represents a rightward interaction in an RNA structure.
      * \returns True if the letter represents a rightward interaction, False otherwise.
      */
-    constexpr bool is_pair_open() const noexcept
-    {
-        return get<1>(*this).is_pair_open();
-    };
+    constexpr bool is_pair_open() const noexcept { return get<1>(*this).is_pair_open(); };
 
     /*!\brief Check whether the character represents a leftward interaction in an RNA structure.
      * \returns True if the letter represents a leftward interaction, False otherwise.
      */
-    constexpr bool is_pair_close() const noexcept
-    {
-        return get<1>(*this).is_pair_close();
-    };
+    constexpr bool is_pair_close() const noexcept { return get<1>(*this).is_pair_close(); };
 
     /*!\brief Check whether the character represents an unpaired position in an RNA structure.
      * \returns True if the letter represents an unpaired site, False otherwise.
      */
-    constexpr bool is_unpaired() const noexcept
-    {
-        return get<1>(*this).is_unpaired();
-    };
+    constexpr bool is_unpaired() const noexcept { return get<1>(*this).is_unpaired(); };
 
     //!\brief The ability of this alphabet to represent pseudoknots, i.e. crossing interactions.
     static constexpr uint8_t max_pseudoknot_depth{structure_alphabet_t::max_pseudoknot_depth};
@@ -168,10 +159,7 @@ public:
      * \returns The pseudoknot id, if alph denotes an interaction, and no value otherwise.
      * It is guaranteed to be smaller than bio::max_pseudoknot_depth.
      */
-    constexpr std::optional<uint8_t> pseudoknot_id() const noexcept
-    {
-        return get<1>(*this).pseudoknot_id();
-    };
+    constexpr std::optional<uint8_t> pseudoknot_id() const noexcept { return get<1>(*this).pseudoknot_id(); };
     //!\}
 };
 
@@ -179,6 +167,6 @@ public:
 //!\relates structured_rna
 template <typename sequence_alphabet_type, typename structure_alphabet_type>
 structured_rna(sequence_alphabet_type &&, structure_alphabet_type &&)
-    -> structured_rna<std::decay_t<sequence_alphabet_type>, std::decay_t<structure_alphabet_type>>;
+  -> structured_rna<std::decay_t<sequence_alphabet_type>, std::decay_t<structure_alphabet_type>>;
 
 } // namespace bio

@@ -18,12 +18,12 @@
 #include <sdsl/int_vector.hpp>
 
 #include <bio/alphabet/detail/alphabet_proxy.hpp>
-#include <bio/meta/math.hpp>
 #include <bio/meta/concept/cereal.hpp>
+#include <bio/meta/math.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
+#include <bio/ranges/views/convert.hpp>
 #include <bio/ranges/views/to_char.hpp>
 #include <bio/ranges/views/to_rank.hpp>
-#include <bio/ranges/views/convert.hpp>
 #include <concepts>
 #include <iterator>
 #include <ranges>
@@ -60,7 +60,7 @@ namespace bio
  * 64bit-block, i.e. if the distance between `i` and `j` is smaller than 64 / alphabet_size.
  */
 template <writable_semialphabet alphabet_type>
-//!\cond
+    //!\cond
     requires std::regular<alphabet_type>
 //!\endcond
 class bitcompressed_vector
@@ -91,10 +91,7 @@ private:
         std::ranges::range_reference_t<data_type> internal_proxy;
 
         //!\brief Update the sdsl-proxy.
-        constexpr void on_update() noexcept
-        {
-            internal_proxy = static_cast<base_t &>(*this).to_rank();
-        }
+        constexpr void on_update() noexcept { internal_proxy = static_cast<base_t &>(*this).to_rank(); }
 
     public:
         // Import from base:
@@ -104,16 +101,16 @@ private:
          * \{
          */
         //!\brief Deleted, because using this proxy without a parent would be undefined behaviour.
-        reference_proxy_type() = delete;
-        constexpr reference_proxy_type(reference_proxy_type const &)             noexcept = default; //!< Defaulted.
-        constexpr reference_proxy_type(reference_proxy_type &&)                  noexcept = default; //!< Defaulted.
+        reference_proxy_type()                                                            = delete;
+        constexpr reference_proxy_type(reference_proxy_type const &) noexcept             = default; //!< Defaulted.
+        constexpr reference_proxy_type(reference_proxy_type &&) noexcept                  = default; //!< Defaulted.
         constexpr reference_proxy_type & operator=(reference_proxy_type const &) noexcept = default; //!< Defaulted.
-        constexpr reference_proxy_type & operator=(reference_proxy_type &&)      noexcept = default; //!< Defaulted.
-        ~reference_proxy_type()                                                  noexcept = default; //!< Defaulted.
+        constexpr reference_proxy_type & operator=(reference_proxy_type &&) noexcept      = default; //!< Defaulted.
+        ~reference_proxy_type() noexcept                                                  = default; //!< Defaulted.
 
         //!\brief Initialise from internal proxy type.
         reference_proxy_type(std::ranges::range_reference_t<data_type> const & internal) noexcept :
-            internal_proxy{internal}
+          internal_proxy{internal}
         {
             static_cast<base_t &>(*this).assign_rank(internal);
         }
@@ -133,24 +130,24 @@ public:
      * \{
      */
     //!\brief Equals the alphabet_type.
-    using value_type        = alphabet_type;
+    using value_type      = alphabet_type;
     //!\brief A proxy type that enables assignment, if the underlying data structure also provides a proxy.
-    using reference         = reference_proxy_type;
+    using reference       = reference_proxy_type;
     //!\brief Equals the alphabet_type / value_type.
-    using const_reference   = alphabet_type;
+    using const_reference = alphabet_type;
     //!\brief The iterator type of this container (a random access iterator).
-    using iterator          = detail::random_access_iterator<bitcompressed_vector>;
+    using iterator        = detail::random_access_iterator<bitcompressed_vector>;
     //!\brief The const_iterator type of this container (a random access iterator).
-    using const_iterator    = detail::random_access_iterator<bitcompressed_vector const>;
+    using const_iterator  = detail::random_access_iterator<bitcompressed_vector const>;
     //!\brief A signed integer type (usually std::ptrdiff_t)
-    using difference_type   = std::ranges::range_difference_t<data_type>;
+    using difference_type = std::ranges::range_difference_t<data_type>;
     //!\brief An unsigned integer type (usually std::size_t)
-    using size_type         = std::ranges::range_size_t<data_type>;
+    using size_type       = std::ranges::range_size_t<data_type>;
     //!\}
 
     //!\cond
     // this signals to range-v3 that something is a container :|
-    using allocator_type    = void;
+    using allocator_type = void;
     //!\endcond
 
     /*!\name Constructors, destructor and assignment
@@ -177,11 +174,11 @@ public:
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
     template <std::ranges::input_range other_range_t>
-    //!\cond
+        //!\cond
         requires has_same_value_type_v<other_range_t>
     //!\endcond
     explicit bitcompressed_vector(other_range_t && range) :
-        bitcompressed_vector{std::ranges::begin(range), std::ranges::end(range)}
+      bitcompressed_vector{std::ranges::begin(range), std::ranges::end(range)}
     {}
 
     /*!\brief Construct with `count` times `value`.
@@ -196,9 +193,7 @@ public:
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
-    bitcompressed_vector(size_type const count, value_type const value) :
-        data(count, to_rank(value))
-    {}
+    bitcompressed_vector(size_type const count, value_type const value) : data(count, to_rank(value)) {}
 
     /*!\brief Construct from pair of iterators.
      * \tparam begin_iterator_type Must model std::forward_iterator and
@@ -217,8 +212,8 @@ public:
      */
     template <std::forward_iterator begin_iterator_type, typename end_iterator_type>
     bitcompressed_vector(begin_iterator_type begin_it, end_iterator_type end_it)
-    //!\cond
-        requires (std::sentinel_for<end_iterator_type, begin_iterator_type> &&
+      //!\cond
+      requires(std::sentinel_for<end_iterator_type, begin_iterator_type> &&
                  std::common_reference_with<std::iter_value_t<begin_iterator_type>, value_type>)
     //!\endcond
     {
@@ -237,7 +232,7 @@ public:
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
     bitcompressed_vector(std::initializer_list<value_type> ilist) :
-        bitcompressed_vector(std::begin(ilist), std::end(ilist))
+      bitcompressed_vector(std::begin(ilist), std::end(ilist))
     {}
 
     /*!\brief Assign from `std::initializer_list`.
@@ -272,8 +267,8 @@ public:
      */
     template <std::ranges::input_range other_range_t>
     void assign(other_range_t && range)
-    //!\cond
-        requires std::common_reference_with<std::ranges::range_value_t<other_range_t>, value_type>
+      //!\cond
+      requires std::common_reference_with<std::ranges::range_value_t<other_range_t>, value_type>
     //!\endcond
     {
         bitcompressed_vector rhs{std::forward<other_range_t>(range)};
@@ -315,9 +310,9 @@ public:
      */
     template <std::forward_iterator begin_iterator_type, typename end_iterator_type>
     void assign(begin_iterator_type begin_it, end_iterator_type end_it)
-    //!\cond
-        requires (std::sentinel_for<end_iterator_type, begin_iterator_type> &&
-                  std::common_reference_with<std::iter_value_t<begin_iterator_type>, value_type>)
+      //!\cond
+      requires(std::sentinel_for<end_iterator_type, begin_iterator_type> &&
+                 std::common_reference_with<std::iter_value_t<begin_iterator_type>, value_type>)
     //!\endcond
     {
         bitcompressed_vector rhs{begin_it, end_it};
@@ -335,10 +330,7 @@ public:
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
-    void assign(std::initializer_list<value_type> ilist)
-    {
-        assign(std::begin(ilist), std::end(ilist));
-    }
+    void assign(std::initializer_list<value_type> ilist) { assign(std::begin(ilist), std::end(ilist)); }
 
     //!\}
 
@@ -358,22 +350,13 @@ public:
      *
      * No-throw guarantee.
      */
-    iterator begin() noexcept
-    {
-        return iterator{*this};
-    }
+    iterator begin() noexcept { return iterator{*this}; }
 
     //!\copydoc begin()
-    const_iterator begin() const noexcept
-    {
-        return const_iterator{*this};
-    }
+    const_iterator begin() const noexcept { return const_iterator{*this}; }
 
     //!\copydoc begin()
-    const_iterator cbegin() const noexcept
-    {
-        return const_iterator{*this};
-    }
+    const_iterator cbegin() const noexcept { return const_iterator{*this}; }
 
     /*!\brief Returns an iterator to the element following the last element of the container.
      * \returns Iterator to the first element.
@@ -388,22 +371,13 @@ public:
      *
      * No-throw guarantee.
      */
-    iterator end() noexcept
-    {
-        return iterator{*this, size()};
-    }
+    iterator end() noexcept { return iterator{*this, size()}; }
 
     //!\copydoc end()
-    const_iterator end() const noexcept
-    {
-        return const_iterator{*this, size()};
-    }
+    const_iterator end() const noexcept { return const_iterator{*this, size()}; }
 
     //!\copydoc end()
-    const_iterator cend() const noexcept
-    {
-        return const_iterator{*this, size()};
-    }
+    const_iterator cend() const noexcept { return const_iterator{*this, size()}; }
     //!\}
 
     /*!\name Element access
@@ -511,14 +485,14 @@ public:
     reference back() noexcept
     {
         assert(size() > 0);
-        return (*this)[size()-1];
+        return (*this)[size() - 1];
     }
 
     //!\copydoc back()
     const_reference back() const noexcept
     {
         assert(size() > 0);
-        return (*this)[size()-1];
+        return (*this)[size() - 1];
     }
 
     /*!\brief Provides direct, unsafe access to underlying data structures.
@@ -528,16 +502,10 @@ public:
      *
      * The exact representation of the data is implementation defined. Do not rely on it for API stability.
      */
-    constexpr data_type & raw_data() noexcept
-    {
-        return data;
-    }
+    constexpr data_type & raw_data() noexcept { return data; }
 
     //!\copydoc raw_data()
-    constexpr data_type const & raw_data() const noexcept
-    {
-        return data;
-    }
+    constexpr data_type const & raw_data() const noexcept { return data; }
     //!\}
 
     /*!\name Capacity
@@ -554,10 +522,7 @@ public:
      *
      * No-throw guarantee.
      */
-    bool empty() const noexcept
-    {
-        return size() == 0;
-    }
+    bool empty() const noexcept { return size() == 0; }
 
     /*!\brief Returns the number of elements in the container, i.e. std::distance(begin(), end()).
      * \returns The number of elements in the container.
@@ -570,10 +535,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type size() const noexcept
-    {
-        return data.size();
-    }
+    size_type size() const noexcept { return data.size(); }
 
     /*!\brief Returns the maximum number of elements the container is able to hold due to system or library
      * implementation limitations, i.e. std::distance(begin(), end()) for the largest container.
@@ -589,10 +551,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type max_size() const noexcept
-    {
-        return data.max_size();
-    }
+    size_type max_size() const noexcept { return data.max_size(); }
 
     /*!\brief Returns the number of elements that the container has currently allocated space for.
      * \returns The capacity of the currently allocated storage.
@@ -609,10 +568,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type capacity() const noexcept
-    {
-        return data.capacity();
-    }
+    size_type capacity() const noexcept { return data.capacity(); }
 
     /*!\brief Increase the capacity to a value that's greater or equal to new_cap.
      * \param            new_cap The new capacity.
@@ -632,10 +588,7 @@ public:
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
-    void reserve(size_type const new_cap)
-    {
-        data.reserve(new_cap);
-    }
+    void reserve(size_type const new_cap) { data.reserve(new_cap); }
 
     /*!\brief Requests the removal of unused capacity.
      *
@@ -652,10 +605,7 @@ public:
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
-    void shrink_to_fit()
-    {
-        data.shrink_to_fit();
-    }
+    void shrink_to_fit() { data.shrink_to_fit(); }
     //!\}
 
     /*!\name Modifiers
@@ -672,10 +622,7 @@ public:
      *
      * No-throw guarantee.
      */
-    void clear() noexcept
-    {
-        data.clear();
-    }
+    void clear() noexcept { data.clear(); }
 
     /*!\brief Inserts value before position in the container.
      * \param   pos Iterator before which the content will be inserted. `pos` may be the end() iterator.
@@ -695,10 +642,7 @@ public:
      * Basic exception guarantee, i.e. guaranteed not to leak, but container may contain invalid data after exception is
      * thrown.
      */
-    iterator insert(const_iterator pos, value_type const value)
-    {
-        return insert(pos, 1, value);
-    }
+    iterator insert(const_iterator pos, value_type const value) { return insert(pos, 1, value); }
 
     /*!\brief Inserts count copies of value before position in the container.
      * \param   pos Iterator before which the content will be inserted. `pos` may be the end() iterator.
@@ -754,16 +698,15 @@ public:
      */
     template <std::forward_iterator begin_iterator_type, typename end_iterator_type>
     iterator insert(const_iterator pos, begin_iterator_type begin_it, end_iterator_type end_it)
-    //!\cond
-        requires (std::sentinel_for<end_iterator_type, begin_iterator_type> &&
-                  std::common_reference_with<std::iter_value_t<begin_iterator_type>, value_type>)
+      //!\cond
+      requires(std::sentinel_for<end_iterator_type, begin_iterator_type> &&
+                 std::common_reference_with<std::iter_value_t<begin_iterator_type>, value_type>)
     //!\endcond
     {
         auto const pos_as_num = std::distance(cbegin(), pos);
 
-        auto v = std::ranges::subrange<begin_iterator_type, end_iterator_type>{begin_it, end_it}
-               | views::convert<value_type>
-               | views::to_rank;
+        auto v = std::ranges::subrange<begin_iterator_type, end_iterator_type>{begin_it, end_it} |
+                 views::convert<value_type> | views::to_rank;
         data.insert(data.begin() + pos_as_num, std::ranges::begin(v), std::ranges::end(v));
 
         return begin() + pos_as_num;
@@ -817,10 +760,9 @@ public:
             return begin() + std::distance(cbegin(), end_it);
 
         auto const begin_it_pos = std::distance(cbegin(), begin_it);
-        auto const end_it_pos = std::distance(cbegin(), end_it);
+        auto const end_it_pos   = std::distance(cbegin(), end_it);
 
-        data.erase(data.cbegin() + begin_it_pos,
-                   data.cbegin() + end_it_pos);
+        data.erase(data.cbegin() + begin_it_pos, data.cbegin() + end_it_pos);
 
         return begin() + begin_it_pos;
     }
@@ -844,10 +786,7 @@ public:
      * Basic exception guarantee, i.e. guaranteed not to leak, but container may contain invalid data after exception is
      * thrown.
      */
-    iterator erase(const_iterator pos)
-    {
-       return erase(pos, pos + 1);
-    }
+    iterator erase(const_iterator pos) { return erase(pos, pos + 1); }
 
     /*!\brief Appends the given element value to the end of the container.
      * \param value The value to append.
@@ -864,10 +803,7 @@ public:
      * Basic exception guarantee, i.e. guaranteed not to leak, but container may contain invalid data after exception is
      * thrown.
      */
-    void push_back(value_type const value)
-    {
-        data.push_back(to_rank(value));
-    }
+    void push_back(value_type const value) { data.push_back(to_rank(value)); }
 
     /*!\brief Removes the last element of the container.
      *
@@ -944,16 +880,10 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr void swap(bitcompressed_vector & rhs) noexcept
-    {
-        std::swap(data, rhs.data);
-    }
+    constexpr void swap(bitcompressed_vector & rhs) noexcept { std::swap(data, rhs.data); }
 
     //!\copydoc swap()
-    constexpr void swap(bitcompressed_vector && rhs) noexcept
-    {
-        std::swap(data, rhs.data);
-    }
+    constexpr void swap(bitcompressed_vector && rhs) noexcept { std::swap(data, rhs.data); }
 
     /*!\brief Swap contents with another instance.
      * \param lhs The first instance.
@@ -967,10 +897,7 @@ public:
      *
      * No-throw guarantee.
      */
-    friend constexpr void swap(bitcompressed_vector & lhs, bitcompressed_vector & rhs) noexcept
-    {
-        std::swap(lhs, rhs);
-    }
+    friend constexpr void swap(bitcompressed_vector & lhs, bitcompressed_vector & rhs) noexcept { std::swap(lhs, rhs); }
 
     //!\overload
     friend constexpr void swap(bitcompressed_vector && lhs, bitcompressed_vector && rhs) noexcept
@@ -984,40 +911,22 @@ public:
      */
 
     //!\brief Checks whether `*this` is equal to `rhs`.
-    constexpr bool operator==(bitcompressed_vector const & rhs) const noexcept
-    {
-        return data == rhs.data;
-    }
+    constexpr bool operator==(bitcompressed_vector const & rhs) const noexcept { return data == rhs.data; }
 
     //!\brief Checks whether `*this` is not equal to `rhs`.
-    constexpr bool operator!=(bitcompressed_vector const & rhs) const noexcept
-    {
-        return data != rhs.data;
-    }
+    constexpr bool operator!=(bitcompressed_vector const & rhs) const noexcept { return data != rhs.data; }
 
     //!\brief Checks whether `*this` is less than `rhs`.
-    constexpr bool operator<(bitcompressed_vector const & rhs) const noexcept
-    {
-        return data < rhs.data;
-    }
+    constexpr bool operator<(bitcompressed_vector const & rhs) const noexcept { return data < rhs.data; }
 
     //!\brief Checks whether `*this` is greater than `rhs`.
-    constexpr bool operator>(bitcompressed_vector const & rhs) const noexcept
-    {
-        return data > rhs.data;
-    }
+    constexpr bool operator>(bitcompressed_vector const & rhs) const noexcept { return data > rhs.data; }
 
     //!\brief Checks whether `*this` is less than or equal to `rhs`.
-    constexpr bool operator<=(bitcompressed_vector const & rhs) const noexcept
-    {
-        return data <= rhs.data;
-    }
+    constexpr bool operator<=(bitcompressed_vector const & rhs) const noexcept { return data <= rhs.data; }
 
     //!\brief Checks whether `*this` is greater than or equal to `rhs`.
-    constexpr bool operator>=(bitcompressed_vector const & rhs) const noexcept
-    {
-        return data >= rhs.data;
-    }
+    constexpr bool operator>=(bitcompressed_vector const & rhs) const noexcept { return data >= rhs.data; }
     //!\}
 
     /*!\cond DEV

@@ -13,8 +13,8 @@
 
 #pragma once
 
-#include <vector>
 #include <stdexcept>
+#include <vector>
 
 #include <bio/meta/type_traits/range.hpp>
 #include <bio/ranges/container/small_string.hpp>
@@ -43,9 +43,9 @@ class view_translate_join : public std::ranges::view_base
 {
 private:
     //!\brief The data members of view_translate_join.
-    urng_t urange;
+    urng_t                              urange;
     //!\brief The frames that should be used for translation.
-    translation_frames tf;
+    translation_frames                  tf;
     //!\brief The selected frames corresponding to the frames required.
     small_vector<translation_frames, 6> selected_frames{};
 
@@ -54,19 +54,19 @@ private:
      * \{
      */
     //!\brief The reference_type.
-    using reference         = view_translate_single<std::views::all_t<std::ranges::range_reference_t<urng_t>>>;
+    using reference       = view_translate_single<std::views::all_t<std::ranges::range_reference_t<urng_t>>>;
     //!\brief The const_reference type.
-    using const_reference   = reference;
+    using const_reference = reference;
     //!\brief The value_type (which equals the reference_type with any references removed).
-    using value_type        = reference;
+    using value_type      = reference;
     //!\brief The size_type.
-    using size_type         = std::ranges::range_size_t<std::ranges::range_reference_t<urng_t>>;
+    using size_type       = std::ranges::range_size_t<std::ranges::range_reference_t<urng_t>>;
     //!\brief A signed integer type, usually std::ptrdiff_t.
-    using difference_type   = std::ranges::range_difference_t<std::ranges::range_reference_t<urng_t>>;
+    using difference_type = std::ranges::range_difference_t<std::ranges::range_reference_t<urng_t>>;
     //!\brief The iterator type of this view (a random access iterator).
-    using iterator          = detail::random_access_iterator<view_translate_join>;
+    using iterator        = detail::random_access_iterator<view_translate_join>;
     //!\brief The const iterator type of this view (same as iterator, because it's a view).
-    using const_iterator    = detail::random_access_iterator<view_translate_join const>;
+    using const_iterator  = detail::random_access_iterator<view_translate_join const>;
     //!\}
 
     //!\brief Befriend the following class s.t. iterator and const_iterator can be defined for this type.
@@ -74,7 +74,6 @@ private:
     friend class detail::random_access_iterator_base;
 
 public:
-
     static_assert(range_dimension_v<urng_t> == 2,
                   "This adaptor only handles range-of-range (two dimensions) as input.");
     static_assert(std::ranges::viewable_range<urng_t>,
@@ -99,19 +98,19 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    view_translate_join()                                                      noexcept = default; //!< Defaulted.
-    constexpr view_translate_join(view_translate_join const & rhs)             noexcept = default; //!< Defaulted.
-    constexpr view_translate_join(view_translate_join && rhs)                  noexcept = default; //!< Defaulted.
+    view_translate_join() noexcept                                                      = default; //!< Defaulted.
+    constexpr view_translate_join(view_translate_join const & rhs) noexcept             = default; //!< Defaulted.
+    constexpr view_translate_join(view_translate_join && rhs) noexcept                  = default; //!< Defaulted.
     constexpr view_translate_join & operator=(view_translate_join const & rhs) noexcept = default; //!< Defaulted.
-    constexpr view_translate_join & operator=(view_translate_join && rhs)      noexcept = default; //!< Defaulted.
-    ~view_translate_join()                                                     noexcept = default; //!< Defaulted.
+    constexpr view_translate_join & operator=(view_translate_join && rhs) noexcept      = default; //!< Defaulted.
+    ~view_translate_join() noexcept                                                     = default; //!< Defaulted.
 
     /*!\brief Construct from another view.
      * \param[in] _urange The underlying range (of ranges).
      * \param[in] _tf The frames that should be used for translation.
      */
-    view_translate_join(urng_t _urange, translation_frames const _tf = translation_frames::SIX_FRAME)
-        : urange{std::move(_urange)}, tf{_tf}
+    view_translate_join(urng_t _urange, translation_frames const _tf = translation_frames::SIX_FRAME) :
+      urange{std::move(_urange)}, tf{_tf}
     {
         if ((_tf & translation_frames::FWD_FRAME_0) == translation_frames::FWD_FRAME_0)
             selected_frames.push_back(translation_frames::FWD_FRAME_0);
@@ -132,13 +131,12 @@ public:
      * \param[in] _tf The frames that should be used for translation.
      */
     template <typename rng_t>
-    //!\cond
-        requires ((!std::same_as<std::remove_cvref_t<rng_t>, view_translate_join>) &&
-                 std::ranges::viewable_range<rng_t> &&
-                 std::constructible_from<urng_t, std::ranges::ref_view<std::remove_reference_t<rng_t>>>)
+        //!\cond
+        requires((!std::same_as<std::remove_cvref_t<rng_t>, view_translate_join>)&&std::ranges::viewable_range<rng_t> &&
+                   std::constructible_from<urng_t, std::ranges::ref_view<std::remove_reference_t<rng_t>>>)
     //!\endcond
-    view_translate_join(rng_t && _urange, translation_frames const _tf = translation_frames::SIX_FRAME)
-     : view_translate_join{std::views::all(std::forward<rng_t>(_urange)), _tf}
+    view_translate_join(rng_t && _urange, translation_frames const _tf = translation_frames::SIX_FRAME) :
+      view_translate_join{std::views::all(std::forward<rng_t>(_urange)), _tf}
     {}
     //!\}
 
@@ -158,17 +156,10 @@ public:
      *
      * No-throw guarantee.
      */
-    iterator begin() noexcept
-    {
-        return {*this, 0};
-    }
+    iterator begin() noexcept { return {*this, 0}; }
 
     //!\overload
-    const_iterator begin() const noexcept
-        requires const_iterable_range<urng_t>
-    {
-        return {*this, 0};
-    }
+    const_iterator begin() const noexcept requires const_iterable_range<urng_t> { return {*this, 0}; }
 
     /*!\brief Returns an iterator to the element following the last element of the container.
      * \returns Iterator to the first element.
@@ -183,17 +174,10 @@ public:
      *
      * No-throw guarantee.
      */
-    iterator end() noexcept
-    {
-        return {*this, size()};
-    }
+    iterator end() noexcept { return {*this, size()}; }
 
     //!\overload
-    const_iterator end() const noexcept
-        requires const_iterable_range<urng_t>
-    {
-        return {*this, size()};
-    }
+    const_iterator end() const noexcept requires const_iterable_range<urng_t> { return {*this, size()}; }
     //!\}
 
     /*!\brief Returns the number of elements in the view.
@@ -207,16 +191,12 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type size() noexcept
-    {
-        return (size_type) std::ranges::size(urange) * selected_frames.size();
-    }
+    size_type size() noexcept { return (size_type)std::ranges::size(urange) * selected_frames.size(); }
 
     //!\overload
-    size_type size() const noexcept
-        requires const_iterable_range<urng_t>
+    size_type size() const noexcept requires const_iterable_range<urng_t>
     {
-        return (size_type) std::ranges::size(urange) * selected_frames.size();
+        return (size_type)std::ranges::size(urange) * selected_frames.size();
     }
 
     /*!\name Element access
@@ -240,17 +220,16 @@ public:
     reference operator[](size_type const n)
     {
         assert(n < size());
-        size_type index_frame = n % selected_frames.size();
+        size_type index_frame  = n % selected_frames.size();
         size_type index_urange = (n - index_frame) / selected_frames.size();
         return urange[index_urange] | views::translate_single(selected_frames[index_frame]);
     }
 
     //!\overload
-    const_reference operator[](size_type const n) const
-        requires const_iterable_range<urng_t>
+    const_reference operator[](size_type const n) const requires const_iterable_range<urng_t>
     {
         assert(n < size());
-        size_type index_frame = n % selected_frames.size();
+        size_type index_frame  = n % selected_frames.size();
         size_type index_urange = (n - index_frame) / selected_frames.size();
         return urange[index_urange] | views::translate_single(selected_frames[index_frame]);
     }
@@ -259,7 +238,8 @@ public:
 
 //!\brief Class template argument deduction for view_translate_join.
 template <typename urng_t>
-view_translate_join(urng_t &&, translation_frames const = translation_frames{}) -> view_translate_join<std::views::all_t<urng_t>>;
+view_translate_join(urng_t &&, translation_frames const = translation_frames{})
+  -> view_translate_join<std::views::all_t<urng_t>>;
 
 // ============================================================================
 //  translate_fn (adaptor definition for both views)

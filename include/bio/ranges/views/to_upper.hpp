@@ -64,12 +64,13 @@ namespace bio::views
  * \include test/snippet/ranges/views/to_upper.cpp
  * \hideinitializer
  */
-inline auto const to_upper = deep{std::views::transform([] (auto const in) noexcept
-{
-    static_assert(builtin_character<std::remove_cvref_t<decltype(in)>>,
-                  "The value type of bio::views::to_upper must model the bio::builtin_character.");
-    return bio::to_upper(in);
-})};
+inline auto const to_upper = deep{std::views::transform(
+  [](auto const in) noexcept
+  {
+      static_assert(builtin_character<std::remove_cvref_t<decltype(in)>>,
+                    "The value type of bio::views::to_upper must model the bio::builtin_character.");
+      return bio::to_upper(in);
+  })};
 
 //!\}
 

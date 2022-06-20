@@ -69,12 +69,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr dna3bs()                            noexcept = default; //!< Defaulted.
-    constexpr dna3bs(dna3bs const &)              noexcept = default; //!< Defaulted.
-    constexpr dna3bs(dna3bs &&)                   noexcept = default; //!< Defaulted.
-    constexpr dna3bs & operator=(dna3bs const &)  noexcept = default; //!< Defaulted.
-    constexpr dna3bs & operator=(dna3bs &&)       noexcept = default; //!< Defaulted.
-    ~dna3bs()                                     noexcept = default; //!< Defaulted.
+    constexpr dna3bs() noexcept                           = default; //!< Defaulted.
+    constexpr dna3bs(dna3bs const &) noexcept             = default; //!< Defaulted.
+    constexpr dna3bs(dna3bs &&) noexcept                  = default; //!< Defaulted.
+    constexpr dna3bs & operator=(dna3bs const &) noexcept = default; //!< Defaulted.
+    constexpr dna3bs & operator=(dna3bs &&) noexcept      = default; //!< Defaulted.
+    ~dna3bs() noexcept                                    = default; //!< Defaulted.
 
     using base_t::base_t;
     //!\}
@@ -83,44 +83,51 @@ protected:
     //!\privatesection
 
     //!\brief Value to char conversion table.
-    static constexpr char_type rank_to_char[alphabet_size]
-    {
-        'A',
-        'G',
-        'T'
-    };
+    static constexpr char_type rank_to_char[alphabet_size]{'A', 'G', 'T'};
 
     //!\brief Char to value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank =
-        [] () constexpr
+    static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
+    {
+        std::array<rank_type, 256> ret{};
+
+        // reverse mapping for characters and their lowercase
+        for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
         {
-            std::array<rank_type, 256> ret{};
+            ret[rank_to_char[rnk]]           = rnk;
+            ret[to_lower(rank_to_char[rnk])] = rnk;
+        }
 
-            // reverse mapping for characters and their lowercase
-            for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
-            {
-                ret[         rank_to_char[rnk] ] = rnk;
-                ret[to_lower(rank_to_char[rnk])] = rnk;
-            }
+        // set C and U equal to T
+        ret['C'] = ret['T'];
+        ret['c'] = ret['t'];
+        ret['U'] = ret['T'];
+        ret['u'] = ret['t'];
 
-            // set C and U equal to T
-            ret['C'] = ret['T']; ret['c'] = ret['t'];
-            ret['U'] = ret['T']; ret['u'] = ret['t'];
+        // iupac characters get special treatment, because there is no N
+        ret['R'] = ret['A'];
+        ret['r'] = ret['A']; // A or G becomes A
+        ret['Y'] = ret['T'];
+        ret['y'] = ret['T']; // C or T becomes T
+        ret['S'] = ret['T'];
+        ret['s'] = ret['T']; // C or G becomes T
+        ret['W'] = ret['A'];
+        ret['w'] = ret['A']; // A or T becomes A
+        ret['K'] = ret['G'];
+        ret['k'] = ret['G']; // G or T becomes G
+        ret['M'] = ret['A'];
+        ret['m'] = ret['A']; // A or C becomes A
+        ret['B'] = ret['T'];
+        ret['b'] = ret['T']; // C or G or T becomes T
+        ret['D'] = ret['A'];
+        ret['d'] = ret['A']; // A or G or T becomes A
+        ret['H'] = ret['A'];
+        ret['h'] = ret['A']; // A or C or T becomes A
+        ret['V'] = ret['A'];
+        ret['v'] = ret['A']; // A or C or G  becomes A
 
-            // iupac characters get special treatment, because there is no N
-            ret['R'] = ret['A']; ret['r'] = ret['A']; // A or G becomes A
-            ret['Y'] = ret['T']; ret['y'] = ret['T']; // C or T becomes T
-            ret['S'] = ret['T']; ret['s'] = ret['T']; // C or G becomes T
-            ret['W'] = ret['A']; ret['w'] = ret['A']; // A or T becomes A
-            ret['K'] = ret['G']; ret['k'] = ret['G']; // G or T becomes G
-            ret['M'] = ret['A']; ret['m'] = ret['A']; // A or C becomes A
-            ret['B'] = ret['T']; ret['b'] = ret['T']; // C or G or T becomes T
-            ret['D'] = ret['A']; ret['d'] = ret['A']; // A or G or T becomes A
-            ret['H'] = ret['A']; ret['h'] = ret['A']; // A or C or T becomes A
-            ret['V'] = ret['A']; ret['v'] = ret['A']; // A or C or G  becomes A
-
-            return ret;
-        }();
+        return ret;
+    }
+    ();
 
     //!\brief The complement table.
     static const std::array<dna3bs, alphabet_size> complement_table;
@@ -176,11 +183,10 @@ inline dna3bs_vector operator""_dna3bs(char const * s, std::size_t n)
 // dna3bs (deferred definition)
 // ------------------------------------------------------------------
 
-constexpr std::array<dna3bs, dna3bs::alphabet_size> dna3bs::complement_table
-{
-    'T'_dna3bs,    // complement of 'A'_dna3bs
-    'T'_dna3bs,    // complement of 'G'_dna3bs
-    'A'_dna3bs     // complement of 'T'_dna3bs
+constexpr std::array<dna3bs, dna3bs::alphabet_size> dna3bs::complement_table{
+  'T'_dna3bs, // complement of 'A'_dna3bs
+  'T'_dna3bs, // complement of 'G'_dna3bs
+  'A'_dna3bs  // complement of 'T'_dna3bs
 };
 
 } // namespace bio

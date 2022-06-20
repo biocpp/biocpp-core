@@ -35,10 +35,8 @@ namespace bio::detail
 //!\ingroup adaptation
 //!\hideinitializer
 template <typename type>
-constexpr bool is_char_adaptation_v = std::same_as<type, char>     ||
-                                      std::same_as<type, char16_t> ||
-                                      std::same_as<type, char32_t> ||
-                                      std::same_as<type, wchar_t>;
+constexpr bool is_char_adaptation_v = std::same_as<type, char> || std::same_as<type, char16_t> ||
+                                      std::same_as<type, char32_t> || std::same_as<type, wchar_t>;
 } // namespace bio::detail
 
 namespace bio::custom
@@ -49,23 +47,20 @@ namespace bio::custom
  * \ingroup adaptation
  */
 template <typename char_type>
-//!\cond
+    //!\cond
     requires detail::is_char_adaptation_v<char_type>
 //!\endcond
 struct alphabet<char_type>
 {
     //!\brief The number of values the char type can take (e.g. 256 for `char`).
     static constexpr auto alphabet_size =
-        detail::min_viable_uint_t<detail::size_in_values_v<char_type>>{detail::size_in_values_v<char_type>};
+      detail::min_viable_uint_t<detail::size_in_values_v<char_type>>{detail::size_in_values_v<char_type>};
 
     /*!\brief Converting char to char is no-op (it will just return the value you pass in).
      * \param[in] chr The alphabet letter that you wish to convert to char (no-op).
      * \returns `chr`.
      */
-    static constexpr char_type to_char(char_type const chr) noexcept
-    {
-        return chr;
-    }
+    static constexpr char_type to_char(char_type const chr) noexcept { return chr; }
 
     /*!\brief Convert char to rank by casting to an unsigned integral type of same size.
      * \param[in] chr The alphabet letter that you wish to convert to rank.
@@ -81,10 +76,7 @@ struct alphabet<char_type>
      * \param[in,out] chr The alphabet letter that you wish to assign to.
      * \returns A reference to the alphabet letter you passed in.
      */
-    static constexpr char_type & assign_char_to(char_type const chr2, char_type & chr) noexcept
-    {
-        return chr = chr2;
-    }
+    static constexpr char_type & assign_char_to(char_type const chr2, char_type & chr) noexcept { return chr = chr2; }
 
     /*!\brief Assigning a rank to a char is the same as assigning it a numeric value.
      * \param[in] rank The `rank` value you wish to assign.
@@ -92,7 +84,7 @@ struct alphabet<char_type>
      * \returns A reference to the alphabet letter you passed in.
      */
     static constexpr char_type & assign_rank_to(decltype(alphabet::to_rank(char_type{})) const rank,
-                                                char_type & chr) noexcept
+                                                char_type &                                    chr) noexcept
     {
         return chr = rank;
     }

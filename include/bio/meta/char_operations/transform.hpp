@@ -24,36 +24,36 @@ namespace bio::detail
 //!\brief Auxiliary table for bio::to_lower.
 //!\ingroup char_operations
 template <typename char_type>
-inline std::array<char_type, detail::size_in_values_v<char_type>> constexpr to_lower_table =
-    [] () constexpr
-    {
-        std::array<char_type, detail::size_in_values_v<char_type>> ret{};
+inline constexpr std::array<char_type, detail::size_in_values_v<char_type>> to_lower_table = []() constexpr
+{
+    std::array<char_type, detail::size_in_values_v<char_type>> ret{};
 
-        for (size_t i = 0; i < detail::size_in_values_v<char_type>; ++i)
-            ret[i] = i;
+    for (size_t i = 0; i < detail::size_in_values_v<char_type>; ++i)
+        ret[i] = i;
 
-        for (size_t i = char_type{'A'}; i <= char_type{'Z'}; ++i)
-            ret[i] = ret[i] - char_type{'A'} + char_type{'a'};
+    for (size_t i = char_type{'A'}; i <= char_type{'Z'}; ++i)
+        ret[i] = ret[i] - char_type{'A'} + char_type{'a'};
 
-        return ret;
-    } ();
+    return ret;
+}
+();
 
 //!\brief Auxiliary table for bio::to_upper.
 //!\ingroup char_operations
 template <typename char_type>
-inline std::array<char_type, detail::size_in_values_v<char_type>> constexpr to_upper_table =
-    [] () constexpr
-    {
-        std::array<char_type, detail::size_in_values_v<char_type>> ret{};
+inline constexpr std::array<char_type, detail::size_in_values_v<char_type>> to_upper_table = []() constexpr
+{
+    std::array<char_type, detail::size_in_values_v<char_type>> ret{};
 
-        for (size_t i = 0; i < detail::size_in_values_v<char_type>; ++i)
-            ret[i] = i;
+    for (size_t i = 0; i < detail::size_in_values_v<char_type>; ++i)
+        ret[i] = i;
 
-        for (size_t i = char_type{'a'}; i <= char_type{'z'}; ++i)
-            ret[i] = ret[i] - char_type{'a'} + char_type{'A'};
+    for (size_t i = char_type{'a'}; i <= char_type{'z'}; ++i)
+        ret[i] = ret[i] - char_type{'a'} + char_type{'A'};
 
-        return ret;
-    } ();
+    return ret;
+}
+();
 
 } // namespace bio::detail
 

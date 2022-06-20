@@ -65,12 +65,12 @@ namespace bio::views
  * often implemented as `unsigned char` and thus will not be printed as a number by default.
  * \hideinitializer
  */
-inline auto const to_rank = deep{std::views::transform([] (auto const in) noexcept
-{
-    static_assert(semialphabet<decltype(in)>,
-                  "The value type of bio::views::to_rank must model the bio::alphabet.");
-    return bio::to_rank(in);
-})};
+inline auto const to_rank = deep{std::views::transform(
+  [](auto const in) noexcept
+  {
+      static_assert(semialphabet<decltype(in)>, "The value type of bio::views::to_rank must model the bio::alphabet.");
+      return bio::to_rank(in);
+  })};
 
 //!\}
 

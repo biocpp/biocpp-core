@@ -31,7 +31,7 @@ namespace bio::pack_traits::detail
  * \returns The position of the first occurrence of `query_t` in `pack_t` or `-1` if it is not contained.
  * \ingroup core_type_pack
  */
-template <typename query_t, typename ...pack_t>
+template <typename query_t, typename... pack_t>
 constexpr ptrdiff_t find()
 {
     ptrdiff_t i = 0;
@@ -44,7 +44,7 @@ constexpr ptrdiff_t find()
  * \returns The position of the first type `t` in `pack_t` for whom ``pred_t<t>::%value`` is true.
  * \ingroup core_type_pack
  */
-template <template <typename> typename pred_t, typename ...pack_t>
+template <template <typename> typename pred_t, typename... pack_t>
 constexpr ptrdiff_t find_if()
 {
     ptrdiff_t i = 0;
@@ -57,7 +57,7 @@ constexpr ptrdiff_t find_if()
  * \tparam tail_t   Rest of the type pack.
  * \ingroup core_type_pack
  */
-template <ptrdiff_t idx, typename head_t, typename ...tail_t>
+template <ptrdiff_t idx, typename head_t, typename... tail_t>
 auto at()
 {
     if constexpr (idx == 0)
@@ -77,7 +77,7 @@ auto at()
  * \tparam tail_t   Rest of the type pack.
  * \ingroup core_type_pack
  */
-template <typename head_t, typename ...tail_t>
+template <typename head_t, typename... tail_t>
 std::type_identity<head_t> front();
 
 /*!\brief Implementation for bio::pack_traits::drop_front.
@@ -85,7 +85,7 @@ std::type_identity<head_t> front();
  * \tparam tail_t   Rest of the type pack.
  * \ingroup core_type_pack
  */
-template <typename head_t, typename ...tail_t>
+template <typename head_t, typename... tail_t>
 type_list<tail_t...> drop_front();
 
 /*!\brief Implementation for bio::pack_traits::split_after.
@@ -95,9 +95,7 @@ type_list<tail_t...> drop_front();
  * \tparam pack2_t The type pack after the split index.
  * \ingroup core_type_pack
  */
-template <ptrdiff_t idx,
-          typename head_t, typename ...pack2_t,
-          typename ...pack1_t>
+template <ptrdiff_t idx, typename head_t, typename... pack2_t, typename... pack1_t>
 auto split_after(type_list<pack1_t...>)
 {
     if constexpr (idx == sizeof...(pack2_t) + 1)
@@ -115,10 +113,7 @@ auto split_after(type_list<pack1_t...>)
  * \tparam i The indicies of the index sequence associated with the type pack.
  * \ingroup core_type_pack
  */
-template <typename replace_t,
-          ptrdiff_t idx,
-          typename ...pack_t,
-          size_t ...i>
+template <typename replace_t, ptrdiff_t idx, typename... pack_t, size_t... i>
 auto replace_at(std::index_sequence<i...>) -> type_list<std::conditional_t<i == idx, replace_t, pack_t>...>;
 
 } // namespace bio::pack_traits::detail
@@ -148,7 +143,7 @@ namespace bio::pack_traits
  *
  * \include test/snippet/meta/type_list/pack_traits_size.cpp
  */
-template <typename ...pack_t>
+template <typename... pack_t>
 inline constexpr size_t size = sizeof...(pack_t);
 
 /*!\brief Count the occurrences of a type in a pack.
@@ -166,8 +161,8 @@ inline constexpr size_t size = sizeof...(pack_t);
  *
  * \include test/snippet/meta/type_list/pack_traits_count.cpp
  */
-template <typename query_t, typename ...pack_t>
-inline constexpr ptrdiff_t count =  (std::is_same_v<query_t, pack_t> + ... + 0);
+template <typename query_t, typename... pack_t>
+inline constexpr ptrdiff_t count = (std::is_same_v<query_t, pack_t> + ... + 0);
 
 /*!\brief Get the index of the first occurrence of a type in a pack.
  * \tparam query_t  The type you are searching for.
@@ -184,7 +179,7 @@ inline constexpr ptrdiff_t count =  (std::is_same_v<query_t, pack_t> + ... + 0);
  *
  * \include test/snippet/meta/type_list/pack_traits_find.cpp
  */
-template <typename query_t, typename ...pack_t>
+template <typename query_t, typename... pack_t>
 inline constexpr ptrdiff_t find = bio::pack_traits::detail::find<query_t, pack_t...>();
 
 /*!\brief Get the index of the first type in a pack that satisfies the given predicate.
@@ -207,7 +202,7 @@ inline constexpr ptrdiff_t find = bio::pack_traits::detail::find<query_t, pack_t
  *
  * \include test/snippet/meta/type_list/pack_traits_find_if.cpp
  */
-template <template <typename> typename pred_t, typename ...pack_t>
+template <template <typename> typename pred_t, typename... pack_t>
 inline constexpr ptrdiff_t find_if = bio::pack_traits::detail::find_if<pred_t, pack_t...>();
 
 /*!\brief Whether a type occurs in a pack or not.
@@ -225,7 +220,7 @@ inline constexpr ptrdiff_t find_if = bio::pack_traits::detail::find_if<pred_t, p
  *
  * \include test/snippet/meta/type_list/pack_traits_find.cpp
  */
-template <typename query_t, typename ...pack_t>
+template <typename query_t, typename... pack_t>
 inline constexpr bool contains = (find<query_t, pack_t...> != -1);
 //!\}
 
@@ -249,12 +244,12 @@ inline constexpr bool contains = (find<query_t, pack_t...> != -1);
  *
  * \include test/snippet/meta/type_list/pack_traits_at.cpp
  */
-template <ptrdiff_t idx, typename ...pack_t>
-//!\cond
-    requires (idx >= 0 && idx < sizeof...(pack_t)) ||
-             (-idx <= sizeof...(pack_t))
-//!\endcond
-using at = typename decltype(detail::at<idx, pack_t...>())::type;
+template <ptrdiff_t idx, typename... pack_t>
+    //!\cond
+    requires(idx >= 0 && idx < sizeof...(pack_t))
+|| (-idx <= sizeof...(pack_t))
+  //!\endcond
+  using at = typename decltype(detail::at<idx, pack_t...>())::type;
 
 /*!\brief Return the first type from the type pack.
  * \tparam pack_t The type pack.
@@ -269,9 +264,9 @@ using at = typename decltype(detail::at<idx, pack_t...>())::type;
  *
  * \include test/snippet/meta/type_list/pack_traits_front.cpp
  */
-template <typename ...pack_t>
-//!\cond
-    requires (sizeof...(pack_t) > 0)
+template <typename... pack_t>
+    //!\cond
+    requires(sizeof...(pack_t) > 0)
 //!\endcond
 using front = typename decltype(detail::front<pack_t...>())::type;
 
@@ -291,9 +286,9 @@ using front = typename decltype(detail::front<pack_t...>())::type;
  *
  * \include test/snippet/meta/type_list/pack_traits_back.cpp
  */
-template <typename ...pack_t>
-//!\cond
-    requires (sizeof...(pack_t) > 0)
+template <typename... pack_t>
+    //!\cond
+    requires(sizeof...(pack_t) > 0)
 //!\endcond
 using back = typename decltype((std::type_identity<pack_t>{}, ...))::type; // use comma operator
 
@@ -316,9 +311,9 @@ using back = typename decltype((std::type_identity<pack_t>{}, ...))::type; // us
  *
  * \include test/snippet/meta/type_list/pack_traits_drop_front.cpp
  */
-template <typename ...pack_t>
-//!\cond
-    requires (sizeof...(pack_t) > 0)
+template <typename... pack_t>
+    //!\cond
+    requires(sizeof...(pack_t) > 0)
 //!\endcond
 using drop_front = typename decltype(detail::drop_front<pack_t...>())::type;
 
@@ -339,7 +334,7 @@ using drop_front = typename decltype(detail::drop_front<pack_t...>())::type;
  *
  * \include test/snippet/meta/type_list/pack_traits_transform.cpp
  */
-template <template <typename> typename trait_t, typename ...pack_t>
+template <template <typename> typename trait_t, typename... pack_t>
 using transform = bio::type_list<trait_t<pack_t>...>;
 
 //!\}
@@ -362,9 +357,9 @@ using transform = bio::type_list<trait_t<pack_t>...>;
  *
  * \include test/snippet/meta/type_list/pack_traits_take.cpp
  */
-template <ptrdiff_t i, typename ...pack_t>
-//!\cond
-    requires (i >= 0 && i <= size<pack_t...>)
+template <ptrdiff_t i, typename... pack_t>
+    //!\cond
+    requires(i >= 0 && i <= size<pack_t...>)
 //!\endcond
 using take = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))::first_type;
 
@@ -382,9 +377,9 @@ using take = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))
  *
  * \include test/snippet/meta/type_list/pack_traits_drop.cpp
  */
-template <ptrdiff_t i, typename ...pack_t>
-//!\cond
-    requires (i >= 0 && i <= size<pack_t...>)
+template <ptrdiff_t i, typename... pack_t>
+    //!\cond
+    requires(i >= 0 && i <= size<pack_t...>)
 //!\endcond
 using drop = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))::second_type;
 
@@ -402,9 +397,9 @@ using drop = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))
  *
  * \include test/snippet/meta/type_list/pack_traits_take_last.cpp
  */
-template <ptrdiff_t i, typename ...pack_t>
-//!\cond
-    requires (i >= 0 && i <= size<pack_t...>)
+template <ptrdiff_t i, typename... pack_t>
+    //!\cond
+    requires(i >= 0 && i <= size<pack_t...>)
 //!\endcond
 using take_last = drop<size<pack_t...> - i, pack_t...>;
 
@@ -422,9 +417,9 @@ using take_last = drop<size<pack_t...> - i, pack_t...>;
  *
  * \include test/snippet/meta/type_list/pack_traits_take_last.cpp
  */
-template <ptrdiff_t i, typename ...pack_t>
-//!\cond
-    requires (i >= 0 && i <= size<pack_t...>)
+template <ptrdiff_t i, typename... pack_t>
+    //!\cond
+    requires(i >= 0 && i <= size<pack_t...>)
 //!\endcond
 using drop_last = take<size<pack_t...> - i, pack_t...>;
 
@@ -442,12 +437,11 @@ using drop_last = take<size<pack_t...> - i, pack_t...>;
  *
  * \include test/snippet/meta/type_list/pack_traits_take_last.cpp
  */
-template <ptrdiff_t i, typename ...pack_t>
-//!\cond
-    requires (i >= 0 && i <= size<pack_t...>)
+template <ptrdiff_t i, typename... pack_t>
+    //!\cond
+    requires(i >= 0 && i <= size<pack_t...>)
 //!\endcond
 using split_after = decltype(detail::split_after<i, pack_t...>(type_list<>{}));
-
 
 /*!\brief Replace the type at the given index with the given type.
  * \tparam replace_t The type to replace the old type with.
@@ -464,9 +458,9 @@ using split_after = decltype(detail::split_after<i, pack_t...>(type_list<>{}));
  *
  * \include test/snippet/meta/type_list/pack_traits_take_last.cpp
  */
-template <typename replace_t, std::ptrdiff_t i, typename ...pack_t>
-//!\cond
-    requires (i >= 0 && i < size<pack_t...>)
+template <typename replace_t, std::ptrdiff_t i, typename... pack_t>
+    //!\cond
+    requires(i >= 0 && i < size<pack_t...>)
 //!\endcond
 using replace_at = decltype(detail::replace_at<replace_t, i, pack_t...>(std::make_index_sequence<size<pack_t...>>{}));
 

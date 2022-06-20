@@ -64,12 +64,13 @@ namespace bio::views
  * \include test/snippet/ranges/views/to_lower.cpp
  * \hideinitializer
  */
-inline auto const to_lower = deep{std::views::transform([] (auto const in) noexcept
-{
-    static_assert(builtin_character<std::remove_cvref_t<decltype(in)>>,
-                  "The value type of bio::views::to_lower must model bio::builtin_character.");
-    return bio::to_lower(in);
-})};
+inline auto const to_lower = deep{std::views::transform(
+  [](auto const in) noexcept
+  {
+      static_assert(builtin_character<std::remove_cvref_t<decltype(in)>>,
+                    "The value type of bio::views::to_lower must model bio::builtin_character.");
+      return bio::to_lower(in);
+  })};
 
 //!\}
 
