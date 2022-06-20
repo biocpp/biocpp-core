@@ -6,8 +6,8 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
 #include <fstream>
+#include <gtest/gtest.h>
 
 #include <bio/test/tmp_filename.hpp>
 
@@ -56,8 +56,8 @@ TEST(tmp_filename_mv_assign, mv_assign)
 // destructor
 TEST(tmp_filename_dtr, dtr)
 {
-    auto t1 = std::make_unique<bio::test::tmp_filename>("delete_test");
-    auto path = t1->get_path();
+    auto          t1   = std::make_unique<bio::test::tmp_filename>("delete_test");
+    auto          path = t1->get_path();
     std::ofstream os{path, std::ios::out};
     os << "delete_test";
     os.close();

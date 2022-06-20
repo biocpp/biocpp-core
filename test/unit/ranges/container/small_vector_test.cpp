@@ -13,8 +13,8 @@
 
 #include <bio/ranges/container/concept.hpp>
 #include <bio/ranges/container/small_vector.hpp>
-#include <ranges>
 #include <bio/test/cereal.hpp>
+#include <ranges>
 
 #include "container_test_template.hpp"
 
@@ -50,12 +50,16 @@ TEST(small_vector, concepts)
 TEST(small_vector, construct_from_array)
 {
     // Deduce value type and N
-    EXPECT_TRUE((std::same_as<decltype(bio::small_vector{std::array{'h','e','l','l','o'}}),
-                 bio::small_vector<char, 5>>));
+    EXPECT_TRUE((std::same_as<decltype(bio::small_vector{
+                                std::array{'h', 'e', 'l', 'l', 'o'}
+    }),
+                              bio::small_vector<char, 5>>));
 
     // construct from different sized array (size has to be smaller)
-    EXPECT_TRUE((std::same_as<decltype(bio::small_vector<char, 10>{std::array{'h','e','l','l','o'}}),
-                 bio::small_vector<char, 10>>));
+    EXPECT_TRUE((std::same_as<decltype(bio::small_vector<char, 10>{
+                                std::array{'h', 'e', 'l', 'l', 'o'}
+    }),
+                              bio::small_vector<char, 10>>));
 }
 
 TEST(small_vector, construct_from_built_in_array)
@@ -81,27 +85,26 @@ constexpr bool comparison_test()
 {
     bio::small_vector<char, 20> t1{'A', 'C', 'C', 'G', 'T'};
     bio::small_vector<char, 20> t2{'A', 'C', 'C', 'G', 'T'};
-    bio::small_vector<char, 2> t3{'A', 'C'};
+    bio::small_vector<char, 2>  t3{'A', 'C'};
     bio::small_vector<char, 20> t4{'A', 'G', 'C', 'G', 'T'};
 
     bool res = t1 == t2;
-    res = res && (t1 <= t2);
-    res = res && (t1 >= t2);
-    res = res && (t1 != t3);
+    res      = res && (t1 <= t2);
+    res      = res && (t1 >= t2);
+    res      = res && (t1 != t3);
 
-    res = res && (t3 <  t1);
+    res = res && (t3 < t1);
     res = res && (t3 <= t1);
-    res = res && (t1 <  t4);
+    res = res && (t1 < t4);
     res = res && (t1 <= t4);
 
-    res = res && (t1 >  t3);
+    res = res && (t1 > t3);
     res = res && (t1 >= t3);
-    res = res && (t4 >  t1);
+    res = res && (t4 > t1);
     res = res && (t4 >= t1);
 
     return true;
 }
-
 
 TEST(small_vector, comparison)
 {
@@ -111,7 +114,7 @@ TEST(small_vector, comparison)
 
 constexpr bool begin_end_test()
 {
-    std::array src{'h','e','l','l','o'};
+    std::array        src{'h', 'e', 'l', 'l', 'o'};
     bio::small_vector vec{src};
 
     auto it_s = src.begin();
@@ -126,7 +129,7 @@ constexpr bool begin_end_test()
 
 constexpr bool cbegin_cend_test()
 {
-    std::array src{'h','e','l','l','o'};
+    std::array        src{'h', 'e', 'l', 'l', 'o'};
     bio::small_vector vec{src};
 
     auto it_s = src.cbegin();
@@ -153,8 +156,8 @@ TEST(small_string, size_and_maxsize)
     // auto deduction -> capacity == size
     {
         constexpr bio::small_vector vec{"hello"};
-        constexpr auto size = vec.size();
-        constexpr auto msize = vec.max_size();
+        constexpr auto              size  = vec.size();
+        constexpr auto              msize = vec.max_size();
 
         EXPECT_EQ(size, 6u); // incl. null character
         EXPECT_EQ(msize, 6u);
@@ -162,9 +165,9 @@ TEST(small_string, size_and_maxsize)
 
     // capacity != size
     {
-        constexpr bio::small_vector<char, 10> vec{'h','e','l','l','o'};
-        constexpr auto size = vec.size();
-        constexpr auto msize = vec.max_size();
+        constexpr bio::small_vector<char, 10> vec{'h', 'e', 'l', 'l', 'o'};
+        constexpr auto                        size  = vec.size();
+        constexpr auto                        msize = vec.max_size();
 
         EXPECT_EQ(size, 5u);
         EXPECT_EQ(msize, 10u);
@@ -204,7 +207,7 @@ constexpr bool assign_test()
     // initializer list
     bio::small_vector<char, 20> t5, t6;
     t5.assign({'A', 'C', 'C', 'G', 'T'});
-    t6 = {'A', 'C', 'C', 'G', 'T'};
+    t6  = {'A', 'C', 'C', 'G', 'T'};
     res = res && (t5 == t1);
     res = res && (t6 == t1);
 
@@ -224,17 +227,17 @@ TEST(small_vector, assign)
 
 constexpr bool element_access_test()
 {
-    bio::small_vector<char, 20> t1{'A', 'C', 'C', 'G', 'T'};
+    bio::small_vector<char, 20>       t1{'A', 'C', 'C', 'G', 'T'};
     bio::small_vector<char, 20> const t2{'A', 'C', 'C', 'G', 'T'};
 
     // at() cannot be constexpr because it throws
 
     // []
     bool res = (t1[0] == 'A');
-    res = res && (t2[0] == 'A');
+    res      = res && (t2[0] == 'A');
     // front
-    res = res && (t1.front() == 'A');
-    res = res && (t2.front() == 'A');
+    res      = res && (t1.front() == 'A');
+    res      = res && (t2.front() == 'A');
 
     // back
     res = res && (t1.back() == 'T');
@@ -242,14 +245,14 @@ constexpr bool element_access_test()
 
     // mutability
     t1[0] = 'T';
-    res = res && (t1 == bio::small_vector<char, 20>{'T', 'C', 'C', 'G', 'T'});
-    res = res && !(t1 == bio::small_vector<char, 20>{'T', 'C', 'C'}); // for code coverage
+    res   = res && (t1 == bio::small_vector<char, 20>{'T', 'C', 'C', 'G', 'T'});
+    res   = res && !(t1 == bio::small_vector<char, 20>{'T', 'C', 'C'}); // for code coverage
 
     t1.front() = 'C';
-    res = res && (t1 == bio::small_vector<char, 20>{'C', 'C', 'C', 'G', 'T'});
+    res        = res && (t1 == bio::small_vector<char, 20>{'C', 'C', 'C', 'G', 'T'});
 
     t1.back() = 'G';
-    res = res && (t1 == bio::small_vector<char, 20>{'C', 'C', 'C', 'G', 'G'});
+    res       = res && (t1 == bio::small_vector<char, 20>{'C', 'C', 'C', 'G', 'G'});
 
     // data()
     res = res && (*t1.data() == 'C');
@@ -305,7 +308,7 @@ constexpr bool insert_test()
     t0.clear();
     t0.insert(t0.cend(), t1.begin() + 1, t1.begin() + 3);
 
-    t0.insert(t0.cend(),   t1.cend() - 2, t1.cend());
+    t0.insert(t0.cend(), t1.cend() - 2, t1.cend());
     t0.insert(t0.cbegin(), t1.cbegin(), t1.cbegin() + 1);
     res = res && (t0 == t1);
 
@@ -351,7 +354,7 @@ constexpr bool push_pop_test()
 
     // push_back
     t0.push_back('A');
-    bool res = (t0 ==  (bio::small_vector<char, 20>{'A'}));
+    bool res = (t0 == (bio::small_vector<char, 20>{'A'}));
     t0.push_back('C');
     res = res && (t0 == (bio::small_vector<char, 20>{'A', 'C'}));
 
@@ -401,6 +404,8 @@ TEST(small_vector, resize)
 
 TEST(small_vector, serialisation)
 {
-    bio::small_vector hello{std::array{'h','e','l','l','o'}};
+    bio::small_vector hello{
+      std::array{'h', 'e', 'l', 'l', 'o'}
+    };
     bio::test::do_serialisation(hello);
 }

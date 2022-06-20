@@ -12,16 +12,16 @@
 
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/ranges/concept.hpp>
-#include <bio/ranges/views/to_rank.hpp>
 #include <bio/ranges/views/to.hpp>
+#include <bio/ranges/views/to_rank.hpp>
 #include <ranges>
 
 using bio::operator""_dna5;
 
 TEST(view_to_rank, basic)
 {
-    bio::dna5_vector vec{"ACTTTGATA"_dna5};
-    std::vector<uint8_t> cmp{0,1,4,4,4,2,0,4,0};
+    bio::dna5_vector     vec{"ACTTTGATA"_dna5};
+    std::vector<uint8_t> cmp{0, 1, 4, 4, 4, 2, 0, 4, 0};
 
     // pipe notation
     std::vector<uint8_t> v = vec | bio::views::to_rank | bio::views::to<std::vector>();

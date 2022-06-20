@@ -11,9 +11,9 @@
 // Tests the ADL-capabilities of the alphabet customisation point objects; type that isn't default constructible
 
 //![my_alph]
-#include <cstddef>                      // for size_t
-#include <bio/alphabet/concept.hpp>  // for bio::alphabet
-#include <type_traits>       // for std::type_identity
+#include <bio/alphabet/concept.hpp> // for bio::alphabet
+#include <cstddef>                  // for size_t
+#include <type_traits>              // for std::type_identity
 
 namespace my_namespace
 {
@@ -23,8 +23,8 @@ class my_alph
 public:
     bool rank;
 
-    my_alph() = delete;
-    constexpr my_alph(my_alph const &) = default;
+    my_alph()                                      = delete;
+    constexpr my_alph(my_alph const &)             = default;
     constexpr my_alph & operator=(my_alph const &) = default;
 
     constexpr my_alph(bool rank) : rank{rank} {}
@@ -33,10 +33,9 @@ public:
     constexpr friend bool operator!=(my_alph lhs, my_alph rhs) { return lhs.rank != rhs.rank; }
     constexpr friend bool operator<=(my_alph lhs, my_alph rhs) { return lhs.rank <= rhs.rank; }
     constexpr friend bool operator>=(my_alph lhs, my_alph rhs) { return lhs.rank >= rhs.rank; }
-    constexpr friend bool operator< (my_alph lhs, my_alph rhs) { return lhs.rank <  rhs.rank; }
-    constexpr friend bool operator> (my_alph lhs, my_alph rhs) { return lhs.rank >  rhs.rank; }
+    constexpr friend bool operator<(my_alph lhs, my_alph rhs) { return lhs.rank < rhs.rank; }
+    constexpr friend bool operator>(my_alph lhs, my_alph rhs) { return lhs.rank > rhs.rank; }
 };
-
 
 constexpr size_t alphabet_size(std::type_identity<my_alph> const &) noexcept
 {
@@ -66,8 +65,14 @@ constexpr my_alph & assign_char_to(char const c, my_alph & a) noexcept
 {
     switch (c)
     {
-        case '0': case 'F': case 'f': a.rank = 0; return a;
-        default: a.rank = 1; return a;
+        case '0':
+        case 'F':
+        case 'f':
+            a.rank = 0;
+            return a;
+        default:
+            a.rank = 1;
+            return a;
     }
 }
 
@@ -75,8 +80,15 @@ constexpr bool char_is_valid_for(char const c, std::type_identity<my_alph> const
 {
     switch (c)
     {
-        case '0': case 'F': case 'f': case '1': case 'T': case 't': return true;
-        default: return false;
+        case '0':
+        case 'F':
+        case 'f':
+        case '1':
+        case 'T':
+        case 't':
+            return true;
+        default:
+            return false;
     }
 }
 

@@ -33,23 +33,15 @@ INSTANTIATE_TYPED_TEST_SUITE_P(wuss67, semi_alphabet_constexpr, bio::wuss<67>, )
 // assign_char functions
 TEST(wuss, assign_char)
 {
-    std::vector<char> input
-    {
-        '.', '(', ')',
-        ':', ',', '-', '_', '~', ';',
-        '<', '>', '[', ']', '{', '}',
-        'H', 'B', 'E', 'G', 'I', 'T', 'S'
-    };
+    std::vector<char> input{'.', '(', ')', ':', ',', '-', '_', '~', ';', '<', '>',
+                            '[', ']', '{', '}', 'H', 'B', 'E', 'G', 'I', 'T', 'S'};
 
-    std::vector<bio::wuss51> cmp
-    {
-        '.'_wuss51, '('_wuss51, ')'_wuss51,
-        ':'_wuss51, ','_wuss51, '-'_wuss51, '_'_wuss51, '~'_wuss51, ';'_wuss51,
-        '<'_wuss51, '>'_wuss51, '['_wuss51, ']'_wuss51, '{'_wuss51, '}'_wuss51,
-        'H'_wuss51, 'B'_wuss51, 'E'_wuss51, 'G'_wuss51, 'I'_wuss51, 'T'_wuss51, 'S'_wuss51
-    };
+    std::vector<bio::wuss51> cmp{'.'_wuss51, '('_wuss51, ')'_wuss51, ':'_wuss51, ','_wuss51, '-'_wuss51,
+                                 '_'_wuss51, '~'_wuss51, ';'_wuss51, '<'_wuss51, '>'_wuss51, '['_wuss51,
+                                 ']'_wuss51, '{'_wuss51, '}'_wuss51, 'H'_wuss51, 'B'_wuss51, 'E'_wuss51,
+                                 'G'_wuss51, 'I'_wuss51, 'T'_wuss51, 'S'_wuss51};
 
-    for (auto [ ch, cm ] : bio::views::zip(input, cmp))
+    for (auto [ch, cm] : bio::views::zip(input, cmp))
         EXPECT_EQ((bio::assign_char_to(ch, bio::wuss51{})), cm);
 }
 
@@ -82,7 +74,7 @@ TEST(wuss, concept_check)
     EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss51 const &>);
     EXPECT_NE(bio::max_pseudoknot_depth<bio::wuss51>, 0);
 
-    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<>>);  // same as wuss51
+    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<>>); // same as wuss51
     EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<> &>);
     EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<> const>);
     EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<> const &>);
@@ -93,7 +85,6 @@ TEST(wuss, concept_check)
     EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<67> const>);
     EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<67> const &>);
     EXPECT_NE(bio::max_pseudoknot_depth<bio::wuss<67>>, 0);
-
 }
 
 TEST(wuss, literals)
@@ -117,7 +108,7 @@ TEST(wuss, rna_structure_properties)
         EXPECT_FALSE(vec[idx].is_pair_close());
         EXPECT_FALSE(vec[idx].pseudoknot_id());
     }
-    for (unsigned idx = 7; idx <= 21; idx+=2)
+    for (unsigned idx = 7; idx <= 21; idx += 2)
     {
         EXPECT_TRUE(vec[idx].is_pair_open());
         EXPECT_FALSE(vec[idx].is_unpaired());
@@ -125,7 +116,7 @@ TEST(wuss, rna_structure_properties)
         EXPECT_TRUE(vec[idx].pseudoknot_id());
         EXPECT_EQ(vec[idx].pseudoknot_id(), std::optional<uint8_t>{(idx - 7) / 2});
     }
-    for (unsigned idx = 8; idx <= 22; idx+=2)
+    for (unsigned idx = 8; idx <= 22; idx += 2)
     {
         EXPECT_TRUE(vec[idx].is_pair_close());
         EXPECT_FALSE(vec[idx].is_unpaired());

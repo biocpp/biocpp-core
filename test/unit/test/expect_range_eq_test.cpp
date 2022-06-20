@@ -6,8 +6,8 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
 #include <gtest/gtest-spi.h> // provides test utility to test google test itself
+#include <gtest/gtest.h>
 
 #include <span>
 #include <string_view>
@@ -31,7 +31,7 @@ TEST(expect_range_eq, braces_with_many_commas)
 TEST(string_view, range_eq_pass)
 {
     std::vector<char> expect{'H', 'e', 'l', 'l', 'o'};
-    std::string_view result{"Hello"};
+    std::string_view  result{"Hello"};
 
     auto && expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
     EXPECT_TRUE(expect_result);
@@ -41,7 +41,7 @@ TEST(string_view, range_eq_pass)
 TEST(string_view, range_eq_fail)
 {
     char const * error_message =
-R"(Expected equality of these values:
+      R"(Expected equality of these values:
   expect
     Which is: { 'H' (72, 0x48), 'e' (101, 0x65), 'l' (108, 0x6C), '\n' (10, 0xA), 'l' (108, 0x6C), 'o' (111, 0x6F) }
   result
@@ -54,7 +54,7 @@ With diff:
 )";
 
     std::vector<char> expect{'H', 'e', 'l', '\n', 'l', 'o'};
-    std::string_view result{"Hello!"};
+    std::string_view  result{"Hello!"};
 
     auto && expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
 
@@ -67,7 +67,7 @@ TEST(span, range_eq_pass)
 {
     std::vector<int> expect{0, 1, 2, 3, 4};
     std::vector<int> source{-2, -1, 0, 1, 2, 3, 4, 5, 6};
-    std::span result{source.begin() + 2, 5};
+    std::span        result{source.begin() + 2, 5};
 
     auto && expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
     EXPECT_TRUE(expect_result);
@@ -76,15 +76,16 @@ TEST(span, range_eq_pass)
 
 TEST(span, range_eq_fail)
 {
-    char const * error_message = "Expected equality of these values:\n"
-                                 "  expect\n"
-                                 "    Which is: { 0, 1, 2, 3, 4 }\n"
-                                 "  result\n"
-                                 "    Which is: { -1, 0, 1, 2, 3, 4, 5 }";
+    char const * error_message =
+      "Expected equality of these values:\n"
+      "  expect\n"
+      "    Which is: { 0, 1, 2, 3, 4 }\n"
+      "  result\n"
+      "    Which is: { -1, 0, 1, 2, 3, 4, 5 }";
 
     std::vector<int> expect{0, 1, 2, 3, 4};
     std::vector<int> source{-2, -1, 0, 1, 2, 3, 4, 5, 6};
-    std::span result{source.begin() + 1, 7};
+    std::span        result{source.begin() + 1, 7};
 
     auto && expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
 
@@ -96,21 +97,30 @@ TEST(span, range_eq_fail)
 struct input_range
 {
     static constexpr int values[]{0, 1, 2, 3, 4};
-    int const * current = values;
-    int const * sentinel = values + sizeof(values) / sizeof(int);
+    int const *          current  = values;
+    int const *          sentinel = values + sizeof(values) / sizeof(int);
 
     struct iterator
     {
         using difference_type = std::ptrdiff_t;
-        using value_type = int;
+        using value_type      = int;
 
         input_range * host;
 
         int const & operator*() const { return *host->current; }
-        iterator & operator++() { ++host->current; return *this; }
-        value_type operator++(int) { value_type x = *(*this); ++*this; return x; }
+        iterator &  operator++()
+        {
+            ++host->current;
+            return *this;
+        }
+        value_type operator++(int)
+        {
+            value_type x = *(*this);
+            ++*this;
+            return x;
+        }
         bool operator==(iterator const &) const { return host->current == host->sentinel; }
-        bool operator!=(iterator const & sentinel) const { return !(*this == sentinel);}
+        bool operator!=(iterator const & sentinel) const { return !(*this == sentinel); }
     };
 
     iterator begin() { return {this}; }
@@ -125,7 +135,7 @@ TEST(input_range, range_eq_pass)
 
     {
         input_range result{};
-        auto && expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
+        auto &&     expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
         EXPECT_TRUE(expect_result);
     }
 
@@ -137,17 +147,18 @@ TEST(input_range, range_eq_pass)
 
 TEST(input_range, range_eq_fail)
 {
-    char const * error_message = "Expected equality of these values:\n"
-                                 "  expect\n"
-                                 "    Which is: { 0, 1, 2, 3, 4, 5 }\n"
-                                 "  result\n"
-                                 "    Which is: { 0, 1, 2, 3, 4 }";
+    char const * error_message =
+      "Expected equality of these values:\n"
+      "  expect\n"
+      "    Which is: { 0, 1, 2, 3, 4, 5 }\n"
+      "  result\n"
+      "    Which is: { 0, 1, 2, 3, 4 }";
 
     std::vector<int> expect{0, 1, 2, 3, 4, 5};
 
     {
         input_range result{};
-        auto && expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
+        auto &&     expect_result = bio::test::expect_range_eq{}("expect", "result", expect, result);
         EXPECT_FALSE(expect_result);
         EXPECT_STREQ(error_message, expect_result.message());
     }

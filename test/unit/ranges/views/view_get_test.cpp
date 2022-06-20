@@ -13,10 +13,10 @@
 #include <bio/alphabet/mask/masked.hpp>
 #include <bio/alphabet/quality/aliases.hpp>
 #include <bio/ranges/concept.hpp>
-#include <bio/ranges/views/get.hpp>
 #include <bio/ranges/views/complement.hpp>
-#include <bio/ranges/views/to_char.hpp>
+#include <bio/ranges/views/get.hpp>
 #include <bio/ranges/views/to.hpp>
+#include <bio/ranges/views/to_char.hpp>
 #include <bio/ranges/views/zip.hpp>
 #include <ranges>
 
@@ -25,21 +25,23 @@ using bio::operator""_dna4;
 TEST(view_get, basic)
 {
     // TODO remove const-ness from input vector once alphabet_proxy's complement doesnt cause ICE
-    std::vector<bio::dna4q> const qv{{'A'_dna4, bio::phred42{0}},
-                                        {'C'_dna4, bio::phred42{1}},
-                                        {'G'_dna4, bio::phred42{2}},
-                                        {'T'_dna4, bio::phred42{3}}};
-    bio::dna4_vector cmp0{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
+    std::vector<bio::dna4q> const qv{
+      {'A'_dna4, bio::phred42{0}},
+      {'C'_dna4, bio::phred42{1}},
+      {'G'_dna4, bio::phred42{2}},
+      {'T'_dna4, bio::phred42{3}}
+    };
+    bio::dna4_vector          cmp0{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
     std::vector<bio::phred42> cmp1{bio::phred42{0}, bio::phred42{1}, bio::phred42{2}, bio::phred42{3}};
 
     //functor
-    bio::dna4_vector functor0 = bio::views::get<0>(qv) | bio::views::to<std::vector>();
+    bio::dna4_vector          functor0 = bio::views::get<0>(qv) | bio::views::to<std::vector>();
     std::vector<bio::phred42> functor1 = bio::views::get<1>(qv) | bio::views::to<std::vector>();
     EXPECT_EQ(cmp0, functor0);
     EXPECT_EQ(cmp1, functor1);
 
     // pipe notation
-    bio::dna4_vector pipe0 = qv | bio::views::get<0> | bio::views::to<std::vector>();
+    bio::dna4_vector          pipe0 = qv | bio::views::get<0> | bio::views::to<std::vector>();
     std::vector<bio::phred42> pipe1 = qv | bio::views::get<1> | bio::views::to<std::vector>();
     EXPECT_EQ(cmp0, pipe0);
     EXPECT_EQ(cmp1, pipe1);
@@ -62,17 +64,20 @@ TEST(view_get, basic)
 TEST(view_get, advanced)
 {
     // TODO remove const-ness from input vector once alphabet_proxy inherits it's alphabet
-    std::vector<bio::qualified<bio::masked<bio::dna4>,
-                                  bio::phred42>> const t{{{'A'_dna4, bio::mask::MASKED}, bio::phred42{0}},
-                                                            {{'C'_dna4, bio::mask::UNMASKED}, bio::phred42{1}},
-                                                            {{'G'_dna4, bio::mask::MASKED}, bio::phred42{2}},
-                                                            {{'T'_dna4, bio::mask::UNMASKED}, bio::phred42{3}}};
+    std::vector<bio::qualified<bio::masked<bio::dna4>, bio::phred42>> const t{
+      {  {'A'_dna4, bio::mask::MASKED}, bio::phred42{0}},
+      {{'C'_dna4, bio::mask::UNMASKED}, bio::phred42{1}},
+      {  {'G'_dna4, bio::mask::MASKED}, bio::phred42{2}},
+      {{'T'_dna4, bio::mask::UNMASKED}, bio::phred42{3}}
+    };
 
     // functor notation
-    std::vector<bio::masked<bio::dna4>> cmp0{{'A'_dna4, bio::mask::MASKED},
-                                                   {'C'_dna4, bio::mask::UNMASKED},
-                                                   {'G'_dna4, bio::mask::MASKED},
-                                                   {'T'_dna4, bio::mask::UNMASKED}};
+    std::vector<bio::masked<bio::dna4>> cmp0{
+      {'A'_dna4,   bio::mask::MASKED},
+      {'C'_dna4, bio::mask::UNMASKED},
+      {'G'_dna4,   bio::mask::MASKED},
+      {'T'_dna4, bio::mask::UNMASKED}
+    };
     std::vector<bio::masked<bio::dna4>> functor0 = bio::views::get<0>(t) | bio::views::to<std::vector>();
     EXPECT_EQ(cmp0, functor0);
 
@@ -95,55 +100,64 @@ TEST(view_get, advanced)
     EXPECT_EQ(cmp00, pipe00);
 
     // combinability
-    std::vector<bio::masked<bio::dna4>> cmprev{{'T'_dna4, bio::mask::UNMASKED},
-                                                     {'G'_dna4, bio::mask::MASKED},
-                                                     {'C'_dna4, bio::mask::UNMASKED},
-                                                     {'A'_dna4, bio::mask::MASKED}};
-    std::vector<bio::masked<bio::dna4>> revtest = t
-                                                      | bio::views::get<0>
-                                                      | std::views::reverse
-                                                      | bio::views::to<std::vector>();
+    std::vector<bio::masked<bio::dna4>> cmprev{
+      {'T'_dna4, bio::mask::UNMASKED},
+      {'G'_dna4,   bio::mask::MASKED},
+      {'C'_dna4, bio::mask::UNMASKED},
+      {'A'_dna4,   bio::mask::MASKED}
+    };
+    std::vector<bio::masked<bio::dna4>> revtest =
+      t | bio::views::get<0> | std::views::reverse | bio::views::to<std::vector>();
     EXPECT_EQ(cmprev, revtest);
 
     bio::dna4_vector cmprev2{'T'_dna4, 'G'_dna4, 'C'_dna4, 'A'_dna4};
-    bio::dna4_vector revtest2 = t
-                                 | bio::views::get<0>
-                                 | bio::views::get<0>
-                                 | std::views::reverse
-                                 | bio::views::to<std::vector>();
+    bio::dna4_vector revtest2 =
+      t | bio::views::get<0> | bio::views::get<0> | std::views::reverse | bio::views::to<std::vector>();
     EXPECT_EQ(cmprev2, revtest2);
 
     // reference check
     functor0[0] = bio::masked<bio::dna4>{'T'_dna4, bio::mask::UNMASKED};
-    std::vector<bio::masked<bio::dna4>> cmpref{{'T'_dna4, bio::mask::UNMASKED},
-                                                     {'C'_dna4, bio::mask::UNMASKED},
-                                                     {'G'_dna4, bio::mask::MASKED},
-                                                     {'T'_dna4, bio::mask::UNMASKED}};
+    std::vector<bio::masked<bio::dna4>> cmpref{
+      {'T'_dna4, bio::mask::UNMASKED},
+      {'C'_dna4, bio::mask::UNMASKED},
+      {'G'_dna4,   bio::mask::MASKED},
+      {'T'_dna4, bio::mask::UNMASKED}
+    };
     EXPECT_EQ(cmpref, functor0);
 }
 
 TEST(view_get, tuple_pair)
 {
-    std::vector<std::pair<int, int>> pair_test{{0, 1}, {1, 2}, {2, 3}, {3, 4}};
-    std::vector<std::tuple<int, int>> tuple_test{{0, 1}, {1, 2}, {2, 3}, {3, 4}};
+    std::vector<std::pair<int, int>> pair_test{
+      {0, 1},
+      {1, 2},
+      {2, 3},
+      {3, 4}
+    };
+    std::vector<std::tuple<int, int>> tuple_test{
+      {0, 1},
+      {1, 2},
+      {2, 3},
+      {3, 4}
+    };
 
     // functor notation
     std::vector<int> cmp{0, 1, 2, 3};
-    std::vector<int> pair_func = bio::views::get<0>(pair_test) | bio::views::to<std::vector>();
+    std::vector<int> pair_func  = bio::views::get<0>(pair_test) | bio::views::to<std::vector>();
     std::vector<int> tuple_func = bio::views::get<0>(tuple_test) | bio::views::to<std::vector>();
     EXPECT_EQ(cmp, pair_func);
     EXPECT_EQ(cmp, tuple_func);
 
     // reference test
-    cmp[0] = 4;
-    pair_func[0] = 4;
+    cmp[0]        = 4;
+    pair_func[0]  = 4;
     tuple_func[0] = 4;
     EXPECT_EQ(cmp, pair_func);
     EXPECT_EQ(cmp, tuple_func);
 
     // pipe notation
-    cmp[0] = 0;
-    std::vector<int> pair_pipe = pair_test | bio::views::get<0> | bio::views::to<std::vector>();
+    cmp[0]                      = 0;
+    std::vector<int> pair_pipe  = pair_test | bio::views::get<0> | bio::views::to<std::vector>();
     std::vector<int> tuple_pipe = tuple_test | bio::views::get<0> | bio::views::to<std::vector>();
     EXPECT_EQ(cmp, pair_pipe);
     EXPECT_EQ(cmp, tuple_pipe);
@@ -151,7 +165,13 @@ TEST(view_get, tuple_pair)
 
 TEST(view_get, concepts)
 {
-    std::vector<std::tuple<int, int>> vec{{0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 1}};
+    std::vector<std::tuple<int, int>> vec{
+      {0, 1},
+      {0, 1},
+      {0, 1},
+      {0, 1},
+      {0, 1}
+    };
     EXPECT_TRUE(std::ranges::input_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(vec)>);

@@ -67,8 +67,8 @@ TEST(bit_manipulation, next_power_of_two)
         size_t next_power = (power_of_two << 1);
         for (size_t i = power_of_two + 1, k = 0; i < next_power && k < max_iterations; ++i, ++k)
         {
-            EXPECT_EQ(bio::detail::next_power_of_two(i), next_power) << "The next power of two of " << i
-                                                                        << " should be " << next_power;
+            EXPECT_EQ(bio::detail::next_power_of_two(i), next_power)
+              << "The next power of two of " << i << " should be " << next_power;
         }
     }
 }
@@ -83,7 +83,7 @@ TYPED_TEST_SUITE(unsigned_operations, unsigned_types, );
 
 TYPED_TEST(unsigned_operations, most_significant_bit_set)
 {
-    using unsigned_t = TypeParam;
+    using unsigned_t       = TypeParam;
     constexpr size_t zero  = bio::detail::most_significant_bit_set<unsigned_t>(0b0001);
     constexpr size_t one1  = bio::detail::most_significant_bit_set<unsigned_t>(0b0010);
     constexpr size_t one2  = bio::detail::most_significant_bit_set<unsigned_t>(0b0011);
@@ -100,20 +100,20 @@ TYPED_TEST(unsigned_operations, most_significant_bit_set)
     for (uint8_t position = 0; position < bio::detail::sizeof_bits<unsigned_t>; ++position)
     {
         unsigned_t start = unsigned_t{1u} << position;
-        unsigned_t end = start << 1u;
+        unsigned_t end   = start << 1u;
         for (unsigned_t n = start, k = 0u; n < end && k < max_iterations; ++n, ++k)
         {
-            EXPECT_EQ(sdsl::bits::hi(n), position) << "[SDSL] The position of the msb of " << n << " should be "
-                                                   << position;
-            EXPECT_EQ(bio::detail::most_significant_bit_set(n), position) << "The position of the msb of " << n
-                                                                             << " should be " << position;
+            EXPECT_EQ(sdsl::bits::hi(n), position)
+              << "[SDSL] The position of the msb of " << n << " should be " << position;
+            EXPECT_EQ(bio::detail::most_significant_bit_set(n), position)
+              << "The position of the msb of " << n << " should be " << position;
         }
     }
 }
 
 TYPED_TEST(unsigned_operations, count_leading_zeros)
 {
-    using unsigned_t = TypeParam;
+    using unsigned_t    = TypeParam;
     constexpr size_t t1 = bio::detail::count_leading_zeros<unsigned_t>(0b0001);
     constexpr size_t t2 = bio::detail::count_leading_zeros<unsigned_t>(0b0101);
     constexpr size_t t3 = bio::detail::count_leading_zeros<unsigned_t>(0b0010);
@@ -130,43 +130,42 @@ TYPED_TEST(unsigned_operations, count_leading_zeros)
     for (uint8_t cnt = 0; cnt < bio::detail::sizeof_bits<unsigned_t>; ++cnt)
     {
         unsigned_t start = std::numeric_limits<unsigned_t>::max() >> cnt;
-        unsigned_t end = start >> 1u;
+        unsigned_t end   = start >> 1u;
         for (unsigned_t n = start, k = 0u; n < end && k < max_iterations; ++n, ++k)
         {
-            EXPECT_EQ(bio::detail::sizeof_bits<unsigned_t> - sdsl::bits::hi(n) - 1, n) << "[SDSL] n " << n
-                                                                                          << " should have " << cnt
-                                                                                          << " leading zeros.";
-            EXPECT_EQ(bio::detail::count_leading_zeros(n), cnt) << "n " << n << " should have " << cnt
-                                                                   << " leading zeros.";
+            EXPECT_EQ(bio::detail::sizeof_bits<unsigned_t> - sdsl::bits::hi(n) - 1, n)
+              << "[SDSL] n " << n << " should have " << cnt << " leading zeros.";
+            EXPECT_EQ(bio::detail::count_leading_zeros(n), cnt)
+              << "n " << n << " should have " << cnt << " leading zeros.";
         }
     }
 }
 
 TYPED_TEST(unsigned_operations, count_trailing_zeros)
 {
-    using unsigned_t = TypeParam;
+    using unsigned_t       = TypeParam;
     constexpr size_t zero  = bio::detail::count_trailing_zeros<unsigned_t>(0b0001);
     constexpr size_t zero2 = bio::detail::count_trailing_zeros<unsigned_t>(0b0101);
     constexpr size_t one1  = bio::detail::count_trailing_zeros<unsigned_t>(0b0010);
     constexpr size_t one2  = bio::detail::count_trailing_zeros<unsigned_t>(0b0110);
     constexpr size_t two   = bio::detail::count_trailing_zeros<unsigned_t>(0b0100);
     constexpr size_t five  = bio::detail::count_trailing_zeros<unsigned_t>(0b10100000);
-    EXPECT_EQ(zero,  0u);
+    EXPECT_EQ(zero, 0u);
     EXPECT_EQ(zero2, 0u);
-    EXPECT_EQ(one1,  1u);
-    EXPECT_EQ(one2,  1u);
-    EXPECT_EQ(two,   2u);
-    EXPECT_EQ(five,  5u);
+    EXPECT_EQ(one1, 1u);
+    EXPECT_EQ(one2, 1u);
+    EXPECT_EQ(two, 2u);
+    EXPECT_EQ(five, 5u);
 
     for (uint8_t cnt = 0; cnt < bio::detail::sizeof_bits<unsigned_t>; ++cnt)
     {
         unsigned_t start = std::numeric_limits<unsigned_t>::max() << cnt;
-        unsigned_t end = start << 1u;
+        unsigned_t end   = start << 1u;
         for (unsigned_t n = start, k = 0u; n < end && k < max_iterations; ++n, ++k)
         {
             EXPECT_EQ(sdsl::bits::lo(n), cnt) << "[SDSL] n " << n << " should have " << cnt << " trailing zeros.";
-            EXPECT_EQ(bio::detail::count_trailing_zeros(n), cnt) << "n " << n << " should have " << cnt
-                                                                    << " trailing zeros.";
+            EXPECT_EQ(bio::detail::count_trailing_zeros(n), cnt)
+              << "n " << n << " should have " << cnt << " trailing zeros.";
         }
     }
 }
@@ -185,38 +184,34 @@ unsigned_t permute_bits(unsigned_t v)
 
 TYPED_TEST(unsigned_operations, popcount)
 {
-    using unsigned_t = TypeParam;
+    using unsigned_t       = TypeParam;
     constexpr size_t zero  = bio::detail::popcount<unsigned_t>(0b0000);
     constexpr size_t one   = bio::detail::popcount<unsigned_t>(0b0100);
     constexpr size_t two   = bio::detail::popcount<unsigned_t>(0b1100);
     constexpr size_t three = bio::detail::popcount<unsigned_t>(0b1110);
     constexpr size_t four  = bio::detail::popcount<unsigned_t>(0b1111);
     constexpr size_t five  = bio::detail::popcount<unsigned_t>(0b10011011);
-    EXPECT_EQ(zero,  0u);
-    EXPECT_EQ(one,   1u);
-    EXPECT_EQ(two,   2u);
+    EXPECT_EQ(zero, 0u);
+    EXPECT_EQ(one, 1u);
+    EXPECT_EQ(two, 2u);
     EXPECT_EQ(three, 3u);
-    EXPECT_EQ(four,  4u);
-    EXPECT_EQ(five,  5u);
+    EXPECT_EQ(four, 4u);
+    EXPECT_EQ(five, 5u);
 
     for (uint8_t position = 0; position < bio::detail::sizeof_bits<unsigned_t>; ++position)
     {
-        unsigned_t start = std::numeric_limits<unsigned_t>::max() >> position;
-        auto sizeof_bits_of_unsigned_t = bio::detail::sizeof_bits<unsigned_t>;
+        unsigned_t start                     = std::numeric_limits<unsigned_t>::max() >> position;
+        auto       sizeof_bits_of_unsigned_t = bio::detail::sizeof_bits<unsigned_t>;
 
-        EXPECT_EQ(bio::detail::popcount(start),
-                  sizeof_bits_of_unsigned_t - position) << "The pocount of " << start << " should be "
-                                                        << sizeof_bits_of_unsigned_t - position;
-        for (unsigned_t n = permute_bits(start), k = 0u;
-             n > start && k < max_iterations;
+        EXPECT_EQ(bio::detail::popcount(start), sizeof_bits_of_unsigned_t - position)
+          << "The pocount of " << start << " should be " << sizeof_bits_of_unsigned_t - position;
+        for (unsigned_t n = permute_bits(start), k = 0u; n > start && k < max_iterations;
              start = n, n = permute_bits(start), ++k)
         {
-            EXPECT_EQ(static_cast<uint8_t>(sdsl::bits::cnt(n)),
-                      sizeof_bits_of_unsigned_t - position) << "[SDSL] The pocount of " << n << " should be "
-                                                            << sizeof_bits_of_unsigned_t - position;
-            EXPECT_EQ(bio::detail::popcount(n),
-                      sizeof_bits_of_unsigned_t - position) << "The pocount of " << n << " should be "
-                                                            << sizeof_bits_of_unsigned_t - position;
+            EXPECT_EQ(static_cast<uint8_t>(sdsl::bits::cnt(n)), sizeof_bits_of_unsigned_t - position)
+              << "[SDSL] The pocount of " << n << " should be " << sizeof_bits_of_unsigned_t - position;
+            EXPECT_EQ(bio::detail::popcount(n), sizeof_bits_of_unsigned_t - position)
+              << "The pocount of " << n << " should be " << sizeof_bits_of_unsigned_t - position;
         }
     }
 }
@@ -230,9 +225,9 @@ TEST(to_little_endian, byte)
 
 TEST(to_little_endian, word)
 {
-    uint16_t val = 0x0102;  // 258
-    uint16_t res = bio::detail::to_little_endian(val);
-    char * res_p = reinterpret_cast<char *>(&res);
+    uint16_t val   = 0x0102; // 258
+    uint16_t res   = bio::detail::to_little_endian(val);
+    char *   res_p = reinterpret_cast<char *>(&res);
 
     EXPECT_EQ(*(res_p + 0), '\x02'); // LSB
     EXPECT_EQ(*(res_p + 1), '\x01'); // MSB
@@ -240,9 +235,9 @@ TEST(to_little_endian, word)
 
 TEST(to_little_endian, double_word)
 {
-    uint32_t val = 0x01020304; // 16.909.060
-    uint32_t res = bio::detail::to_little_endian(val);
-    char * res_p = reinterpret_cast<char *>(&res);
+    uint32_t val   = 0x01020304; // 16.909.060
+    uint32_t res   = bio::detail::to_little_endian(val);
+    char *   res_p = reinterpret_cast<char *>(&res);
 
     EXPECT_EQ(*(res_p + 0), '\x04');
     EXPECT_EQ(*(res_p + 1), '\x03');
@@ -252,9 +247,9 @@ TEST(to_little_endian, double_word)
 
 TEST(to_little_endian, quad_word)
 {
-    uint64_t val = 0x0102030405060708;
-    uint64_t res = bio::detail::to_little_endian(val);
-    char * res_p = reinterpret_cast<char *>(&res);
+    uint64_t val   = 0x0102030405060708;
+    uint64_t res   = bio::detail::to_little_endian(val);
+    char *   res_p = reinterpret_cast<char *>(&res);
 
     EXPECT_EQ(*(res_p + 0), '\x08');
     EXPECT_EQ(*(res_p + 1), '\x07');

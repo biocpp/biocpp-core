@@ -11,17 +11,17 @@
 #include <gtest/gtest.h>
 
 #include <bio/alphabet/nucleotide/dna5.hpp>
+#include <bio/ranges/concept.hpp>
 #include <bio/ranges/views/rank_to.hpp>
 #include <bio/ranges/views/to.hpp>
-#include <bio/ranges/concept.hpp>
 #include <ranges>
 
 TEST(view_rank_to, basic)
 {
     using bio::operator""_dna5;
 
-    std::vector<unsigned> vec{0,1,4,4,4,2,0,4,0};
-    bio::dna5_vector cmp{"ACTTTGATA"_dna5};
+    std::vector<unsigned> vec{0, 1, 4, 4, 4, 2, 0, 4, 0};
+    bio::dna5_vector      cmp{"ACTTTGATA"_dna5};
 
     // pipe notation
     bio::dna5_vector v = vec | bio::views::rank_to<bio::dna5> | bio::views::to<std::vector>();
@@ -33,16 +33,13 @@ TEST(view_rank_to, basic)
 
     // combinability
     bio::dna5_vector cmp2{"ATAGTTTCA"_dna5};
-    bio::dna5_vector v3 = vec
-                           | bio::views::rank_to<bio::dna5>
-                           | std::views::reverse
-                           | bio::views::to<std::vector>();
+    bio::dna5_vector v3 = vec | bio::views::rank_to<bio::dna5> | std::views::reverse | bio::views::to<std::vector>();
     EXPECT_EQ(cmp2, v3);
 }
 
 TEST(view_rank_to, concepts)
 {
-    std::vector<unsigned> vec{0,1,3,3,3,2,0,3,0};
+    std::vector<unsigned> vec{0, 1, 3, 3, 3, 2, 0, 3, 0};
     EXPECT_TRUE(std::ranges::input_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(vec)>);

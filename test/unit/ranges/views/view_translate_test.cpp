@@ -12,17 +12,17 @@
 #include <string>
 #include <vector>
 
-#include <bio/alphabet/nucleotide/all.hpp>
+#include <algorithm>
 #include <bio/alphabet/aminoacid/aa27.hpp>
+#include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/container/concatenated_sequences.hpp>
 #include <bio/ranges/views/char_to.hpp>
 #include <bio/ranges/views/complement.hpp>
 #include <bio/ranges/views/to.hpp>
 #include <bio/ranges/views/translate.hpp>
-#include <algorithm>
-#include <ranges>
 #include <bio/test/expect_range_eq.hpp>
+#include <ranges>
 
 using bio::operator""_aa27;
 
@@ -31,22 +31,17 @@ class nucleotide : public ::testing::Test
 {};
 
 // add all alphabets here
-using nucleotide_types = ::testing::Types<bio::dna4,
-                                          bio::dna5,
-                                          bio::dna15,
-                                          bio::rna4,
-                                          bio::rna5,
-                                          bio::rna15>;
+using nucleotide_types = ::testing::Types<bio::dna4, bio::dna5, bio::dna15, bio::rna4, bio::rna5, bio::rna15>;
 
 TYPED_TEST_SUITE(nucleotide, nucleotide_types, );
 
 TYPED_TEST(nucleotide, view_translate_single)
 {
-    std::string const in{"ACGTACGTACGTA"};
+    std::string const      in{"ACGTACGTACGTA"};
     std::vector<TypeParam> vec = in | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();
-    bio::aa27_vector cmp1{"TYVR"_aa27};
-    bio::aa27_vector cmp2{"CMHA"_aa27};
-    bio::aa27_vector cmp3{"AHMC"_aa27};
+    bio::aa27_vector       cmp1{"TYVR"_aa27};
+    bio::aa27_vector       cmp2{"CMHA"_aa27};
+    bio::aa27_vector       cmp3{"AHMC"_aa27};
 
     // default parameter translation_frames
     auto v1 = vec | bio::views::translate_single;
@@ -69,33 +64,33 @@ TYPED_TEST(nucleotide, view_translate_single)
     EXPECT_RANGE_EQ(v4, cmp1);
 
     // combinability
-    auto v5 = vec
-            | bio::views::complement
-            | bio::views::translate_single(bio::translation_frames::FWD_FRAME_0);
+    auto v5 = vec | bio::views::complement | bio::views::translate_single(bio::translation_frames::FWD_FRAME_0);
     // == [C,M,H,A]
     EXPECT_RANGE_EQ(v5, cmp2);
 
     // combinability
-    auto v6 = vec
-            | bio::views::complement
-            | bio::views::translate_single(bio::translation_frames::FWD_FRAME_0)
-            | std::views::reverse;
+    auto v6 = vec | bio::views::complement | bio::views::translate_single(bio::translation_frames::FWD_FRAME_0) |
+              std::views::reverse;
     // == [A,H,M,C]
     EXPECT_RANGE_EQ(v6, cmp3);
 }
 
 TYPED_TEST(nucleotide, view_translate)
 {
-    std::string const in{"ACGTACGTACGTA"};
-    std::vector<TypeParam> vec = in | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();
-    std::vector<std::vector<bio::aa27> > cmp1{{"TYVR"_aa27}};
-    std::vector<std::vector<bio::aa27> > cmp2{{"TYVR"_aa27}, {"YVRT"_aa27}};
-    std::vector<std::vector<bio::aa27> > cmp3{{"TYVR"_aa27}, {"RTYV"_aa27}, {"VRT"_aa27}};
-    std::vector<std::vector<bio::aa27> > cmp4{{"TYVR"_aa27}, {"RTYV"_aa27}, {"VRT"_aa27}, {"YVRT"_aa27},
-                                                 {"TYVR"_aa27}, {"RTY"_aa27}};
-    std::vector<std::vector<bio::aa27> > cmp5{{"TYVR"_aa27}, {"VRT"_aa27}};
-    std::vector<std::vector<bio::aa27> > cmp6{{"CMHA"_aa27}, {"MHAC"_aa27}};
-    std::vector<std::vector<bio::aa27> > cmp7{{"CMHA"_aa27}};
+    std::string const                   in{"ACGTACGTACGTA"};
+    std::vector<TypeParam>              vec = in | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();
+    std::vector<std::vector<bio::aa27>> cmp1{{"TYVR"_aa27}};
+    std::vector<std::vector<bio::aa27>> cmp2{{"TYVR"_aa27}, {"YVRT"_aa27}};
+    std::vector<std::vector<bio::aa27>> cmp3{{"TYVR"_aa27}, {"RTYV"_aa27}, {"VRT"_aa27}};
+    std::vector<std::vector<bio::aa27>> cmp4{{"TYVR"_aa27},
+                                             {"RTYV"_aa27},
+                                             {"VRT"_aa27},
+                                             {"YVRT"_aa27},
+                                             {"TYVR"_aa27},
+                                             {"RTY"_aa27}};
+    std::vector<std::vector<bio::aa27>> cmp5{{"TYVR"_aa27}, {"VRT"_aa27}};
+    std::vector<std::vector<bio::aa27>> cmp6{{"CMHA"_aa27}, {"MHAC"_aa27}};
+    std::vector<std::vector<bio::aa27>> cmp7{{"CMHA"_aa27}};
 
     // default parameter translation_frames
     auto v1 = vec | bio::views::translate;
@@ -140,8 +135,7 @@ TYPED_TEST(nucleotide, view_translate)
         EXPECT_RANGE_EQ(v6[i], cmp4[i]);
 
     // user-defined frame combination
-    auto v7 = vec | bio::views::translate(bio::translation_frames::FWD_FRAME_0
-                  | bio::translation_frames::FWD_FRAME_2);
+    auto v7 = vec | bio::views::translate(bio::translation_frames::FWD_FRAME_0 | bio::translation_frames::FWD_FRAME_2);
     // == [[T,Y,V,R],[V,R,T]]
     EXPECT_EQ(v7.size(), cmp5.size());
     for (unsigned i = 0; i < v7.size(); i++)
@@ -162,10 +156,8 @@ TYPED_TEST(nucleotide, view_translate)
         EXPECT_RANGE_EQ(v9[i], cmp6[i]);
 
     // combinability
-    auto v10 = vec
-             | bio::views::complement
-             | bio::views::translate(bio::translation_frames::FWD_REV_0)
-             | std::views::take(1);
+    auto v10 =
+      vec | bio::views::complement | bio::views::translate(bio::translation_frames::FWD_REV_0) | std::views::take(1);
     // == [[C,M,H,A]]
     EXPECT_EQ(v10.size(), cmp7.size());
     for (unsigned i = 0; i < v10.size(); i++)
@@ -181,22 +173,26 @@ TYPED_TEST(nucleotide, view_translate)
 
 TYPED_TEST(nucleotide, view_translate_single_container_conversion)
 {
-    std::string const in{"ACGTACGTACGTA"};
+    std::string const      in{"ACGTACGTACGTA"};
     std::vector<TypeParam> vec = in | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();
-    bio::aa27_vector cmp1{"TYVR"_aa27};
+    bio::aa27_vector       cmp1{"TYVR"_aa27};
 
     // default parameter translation_frames
     auto v1 = vec | bio::views::translate_single | bio::views::to<std::vector>();
     // == [T,Y,V,R]
-    EXPECT_EQ(std::vector<bio::aa27>(v1) , cmp1);
+    EXPECT_EQ(std::vector<bio::aa27>(v1), cmp1);
 }
 
 TYPED_TEST(nucleotide, view_translate_container_conversion)
 {
-    std::string const in{"ACGTACGTACGTA"};
-    std::vector<TypeParam> vec = in | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();
-    std::vector<std::vector<bio::aa27> > cmp1{{"TYVR"_aa27}, {"RTYV"_aa27}, {"VRT"_aa27}, {"YVRT"_aa27},
-                                                 {"TYVR"_aa27}, {"RTY"_aa27}};
+    std::string const                   in{"ACGTACGTACGTA"};
+    std::vector<TypeParam>              vec = in | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();
+    std::vector<std::vector<bio::aa27>> cmp1{{"TYVR"_aa27},
+                                             {"RTYV"_aa27},
+                                             {"VRT"_aa27},
+                                             {"YVRT"_aa27},
+                                             {"TYVR"_aa27},
+                                             {"RTY"_aa27}};
 
     // six frame translation
     auto v1 = vec | bio::views::translate(bio::translation_frames::SIX_FRAME);
@@ -205,12 +201,12 @@ TYPED_TEST(nucleotide, view_translate_container_conversion)
     for (unsigned i = 0; i < v1.size(); i++)
         EXPECT_EQ(v1[i] | bio::views::to<std::vector>(), cmp1[i]);
 
-    EXPECT_TRUE(bio::concatenated_sequences<std::vector<bio::aa27> >(v1) == cmp1);
+    EXPECT_TRUE(bio::concatenated_sequences<std::vector<bio::aa27>>(v1) == cmp1);
 }
 
 TYPED_TEST(nucleotide, view_translate_single_concepts)
 {
-    std::string const in{"ACGTACGTACGTA"};
+    std::string const      in{"ACGTACGTACGTA"};
     std::vector<TypeParam> vec = in | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();
     EXPECT_TRUE(std::ranges::input_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec)>);
@@ -229,7 +225,7 @@ TYPED_TEST(nucleotide, view_translate_single_concepts)
 
 TYPED_TEST(nucleotide, view_translate_concepts)
 {
-    std::string const in{"ACGTACGTACGTA"};
+    std::string const      in{"ACGTACGTACGTA"};
     std::vector<TypeParam> vec = in | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::random_access_range<decltype(vec)>);
@@ -252,7 +248,7 @@ TYPED_TEST(nucleotide, view_translate_concepts)
 TYPED_TEST(nucleotide, issue1339)
 {
     // empty input
-    std::string in{};
+    std::string            in{};
     std::vector<TypeParam> vec = in | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();
 
     auto v = vec | bio::views::translate;
@@ -264,7 +260,7 @@ TYPED_TEST(nucleotide, issue1339)
         EXPECT_TRUE(out_vec.empty());
 
     // input of size 1
-    in = "A";
+    in  = "A";
     vec = in | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();
 
     v = vec | bio::views::translate;

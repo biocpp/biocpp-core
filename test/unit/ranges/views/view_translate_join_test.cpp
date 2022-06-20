@@ -13,8 +13,8 @@
 #include <string>
 #include <vector>
 
-#include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/alphabet/aminoacid/aa27.hpp>
+#include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/views/char_to.hpp>
 #include <bio/ranges/views/complement.hpp>
@@ -27,19 +27,27 @@
 using bio::operator""_aa27;
 using bio::operator""_dna4;
 
-using iterator_type =
-        decltype(bio::views::translate_join(std::declval<std::vector<bio::dna4_vector > &>()).begin());
+using iterator_type = decltype(bio::views::translate_join(std::declval<std::vector<bio::dna4_vector> &>()).begin());
 
 template <>
 struct iterator_fixture<iterator_type> : public ::testing::Test
 {
-    using iterator_tag = std::random_access_iterator_tag;
+    using iterator_tag                   = std::random_access_iterator_tag;
     static constexpr bool const_iterable = true;
 
-    std::vector<bio::dna4_vector > vec{"ACGTACGTACGTA"_dna4, "TCGAGAGCTTTAGC"_dna4};
-    std::vector<std::vector<bio::aa27> > expected_range{{"TYVR"_aa27}, {"RTYV"_aa27}, {"VRT"_aa27}, {"YVRT"_aa27},
-                                                           {"TYVR"_aa27}, {"RTY"_aa27}, {"SRAL"_aa27}, {"REL*"_aa27},
-                                                           {"ESFS"_aa27}, {"AKAL"_aa27}, {"LKLS"_aa27}, {"*SSR"_aa27}};
+    std::vector<bio::dna4_vector>             vec{"ACGTACGTACGTA"_dna4, "TCGAGAGCTTTAGC"_dna4};
+    std::vector<std::vector<bio::aa27>>       expected_range{{"TYVR"_aa27},
+                                                       {"RTYV"_aa27},
+                                                       {"VRT"_aa27},
+                                                       {"YVRT"_aa27},
+                                                       {"TYVR"_aa27},
+                                                       {"RTY"_aa27},
+                                                       {"SRAL"_aa27},
+                                                       {"REL*"_aa27},
+                                                       {"ESFS"_aa27},
+                                                       {"AKAL"_aa27},
+                                                       {"LKLS"_aa27},
+                                                       {"*SSR"_aa27}};
     decltype(bio::views::translate_join(vec)) test_range = bio::views::translate_join(vec);
 
     template <typename A, typename B>
@@ -57,34 +65,42 @@ class nucleotide : public ::testing::Test
 {};
 
 // add all alphabets here
-using nucleotide_types = ::testing::Types<bio::dna4,
-                                          bio::dna5,
-                                          bio::dna15,
-                                          bio::rna4,
-                                          bio::rna5,
-                                          bio::rna15>;
+using nucleotide_types = ::testing::Types<bio::dna4, bio::dna5, bio::dna15, bio::rna4, bio::rna5, bio::rna15>;
 
 TYPED_TEST_SUITE(nucleotide, nucleotide_types, );
 
 TYPED_TEST(nucleotide, view_translate)
 {
-    std::string const in1{"ACGTACGTACGTA"};
-    std::string const in2{"TCGAGAGCTTTAGC"};
-    std::vector<std::vector<TypeParam> > vec;
+    std::string const                   in1{"ACGTACGTACGTA"};
+    std::string const                   in2{"TCGAGAGCTTTAGC"};
+    std::vector<std::vector<TypeParam>> vec;
     vec.resize(2);
     vec[0] = in1 | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();
     vec[1] = in2 | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();
 
-    std::vector<std::vector<bio::aa27> > cmp1{{"TYVR"_aa27}, {"SRAL"_aa27}};
-    std::vector<std::vector<bio::aa27> > cmp2{{"TYVR"_aa27}, {"YVRT"_aa27}, {"SRAL"_aa27}, {"AKAL"_aa27}};
-    std::vector<std::vector<bio::aa27> > cmp3{{"TYVR"_aa27}, {"RTYV"_aa27}, {"VRT"_aa27}, {"SRAL"_aa27},
-                                                 {"REL*"_aa27}, {"ESFS"_aa27}};
-    std::vector<std::vector<bio::aa27> > cmp4{{"TYVR"_aa27}, {"RTYV"_aa27}, {"VRT"_aa27}, {"YVRT"_aa27},
-                                                 {"TYVR"_aa27}, {"RTY"_aa27}, {"SRAL"_aa27}, {"REL*"_aa27},
-                                                 {"ESFS"_aa27}, {"AKAL"_aa27}, {"LKLS"_aa27}, {"*SSR"_aa27}};
-    std::vector<std::vector<bio::aa27> > cmp5{{"TYVR"_aa27}, {"VRT"_aa27}, {"SRAL"_aa27}, {"ESFS"_aa27}};
-    std::vector<std::vector<bio::aa27> > cmp6{{"CMHA"_aa27}, {"MHAC"_aa27}, {"SSRN"_aa27}, {"RFRE"_aa27}};
-    std::vector<std::vector<bio::aa27> > cmp7{{"CMHA"_aa27}};
+    std::vector<std::vector<bio::aa27>> cmp1{{"TYVR"_aa27}, {"SRAL"_aa27}};
+    std::vector<std::vector<bio::aa27>> cmp2{{"TYVR"_aa27}, {"YVRT"_aa27}, {"SRAL"_aa27}, {"AKAL"_aa27}};
+    std::vector<std::vector<bio::aa27>> cmp3{{"TYVR"_aa27},
+                                             {"RTYV"_aa27},
+                                             {"VRT"_aa27},
+                                             {"SRAL"_aa27},
+                                             {"REL*"_aa27},
+                                             {"ESFS"_aa27}};
+    std::vector<std::vector<bio::aa27>> cmp4{{"TYVR"_aa27},
+                                             {"RTYV"_aa27},
+                                             {"VRT"_aa27},
+                                             {"YVRT"_aa27},
+                                             {"TYVR"_aa27},
+                                             {"RTY"_aa27},
+                                             {"SRAL"_aa27},
+                                             {"REL*"_aa27},
+                                             {"ESFS"_aa27},
+                                             {"AKAL"_aa27},
+                                             {"LKLS"_aa27},
+                                             {"*SSR"_aa27}};
+    std::vector<std::vector<bio::aa27>> cmp5{{"TYVR"_aa27}, {"VRT"_aa27}, {"SRAL"_aa27}, {"ESFS"_aa27}};
+    std::vector<std::vector<bio::aa27>> cmp6{{"CMHA"_aa27}, {"MHAC"_aa27}, {"SSRN"_aa27}, {"RFRE"_aa27}};
+    std::vector<std::vector<bio::aa27>> cmp7{{"CMHA"_aa27}};
 
     // default parameter translation_frames
     auto v1 = vec | bio::views::translate_join;
@@ -129,9 +145,8 @@ TYPED_TEST(nucleotide, view_translate)
         EXPECT_RANGE_EQ(v6[i], cmp4[i]);
 
     // user-defined frame combination
-    auto v7 = vec
-            | bio::views::translate_join(bio::translation_frames::FWD_FRAME_0
-            | bio::translation_frames::FWD_FRAME_2);
+    auto v7 =
+      vec | bio::views::translate_join(bio::translation_frames::FWD_FRAME_0 | bio::translation_frames::FWD_FRAME_2);
     // == [[T,Y,V,R],[V,R,T],[S,R,A,L],[E,S,F,S]]
     EXPECT_EQ(v7.size(), cmp5.size());
     for (unsigned i = 0; i < v7.size(); i++)
@@ -152,18 +167,15 @@ TYPED_TEST(nucleotide, view_translate)
         EXPECT_RANGE_EQ(v9[i], cmp6[i]);
 
     // combinability
-    auto v10 = vec
-             | bio::views::complement
-             | bio::views::translate_join(bio::translation_frames::FWD_REV_0)
-             | std::views::take(1);
+    auto v10 = vec | bio::views::complement | bio::views::translate_join(bio::translation_frames::FWD_REV_0) |
+               std::views::take(1);
     // == [C,M,H,A]
     EXPECT_EQ(v10.size(), cmp7.size());
     for (unsigned i = 0; i < v10.size(); i++)
         EXPECT_RANGE_EQ(v10[i], cmp7[i]);
 
     // combinability and function syntax
-    auto v11 = bio::detail::view_translate_join(bio::views::complement(vec),
-                                                   bio::translation_frames::FWD_REV_0);
+    auto v11 = bio::detail::view_translate_join(bio::views::complement(vec), bio::translation_frames::FWD_REV_0);
     // == [[C,M,H,A],[M,H,A,C],[S,S,R,N],[R,F,R,E]]
     EXPECT_EQ(v11.size(), cmp6.size());
     for (unsigned i = 0; i < v11.size(); i++)
@@ -172,9 +184,9 @@ TYPED_TEST(nucleotide, view_translate)
 
 TYPED_TEST(nucleotide, view_translate_concepts)
 {
-    std::string const in1{"ACGTACGTACGTA"};
-    std::string const in2{"TCGAGAGCTTTAGC"};
-    std::vector<std::vector<TypeParam> > vec;
+    std::string const                   in1{"ACGTACGTACGTA"};
+    std::string const                   in2{"TCGAGAGCTTTAGC"};
+    std::vector<std::vector<TypeParam>> vec;
     vec.resize(2);
     vec[0] = in1 | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();
     vec[1] = in2 | bio::views::char_to<TypeParam> | bio::views::to<std::vector>();

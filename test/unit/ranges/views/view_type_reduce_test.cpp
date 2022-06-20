@@ -6,19 +6,19 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <iostream>
 #include <deque>
+#include <iostream>
 #include <list>
 #include <string>
 #include <vector>
 
 #include <gtest/gtest.h>
 
-#include <bio/ranges/views/type_reduce.hpp>
-#include <concepts>
 #include <algorithm>
-#include <ranges>
+#include <bio/ranges/views/type_reduce.hpp>
 #include <bio/test/expect_range_eq.hpp>
+#include <concepts>
+#include <ranges>
 
 // ============================================================================
 //  test templates
@@ -36,7 +36,7 @@ TEST(type_reduce, string_overload)
     }
 
     {
-        std::string urange_{"foobar"};
+        std::string      urange_{"foobar"};
         std::string_view urange{urange_};
 
         auto v = bio::views::type_reduce(urange);
@@ -82,14 +82,15 @@ TEST(type_reduce, random_access_overload)
 
     auto v = bio::views::type_reduce(urange);
 
-    EXPECT_TRUE((std::same_as<decltype(v), std::ranges::subrange<typename std::deque<int>::iterator,
-                                                                 typename std::deque<int>::iterator>>));
+    EXPECT_TRUE(
+      (std::same_as<decltype(v),
+                    std::ranges::subrange<typename std::deque<int>::iterator, typename std::deque<int>::iterator>>));
     EXPECT_RANGE_EQ(v, urange);
 }
 
 TEST(type_reduce, generic_overload)
 {
-    {   // bidirectional container
+    { // bidirectional container
         std::list<int> urange{1, 2, 3, 4, 5, 6};
 
         auto v = bio::views::type_reduce(urange);
@@ -98,10 +99,10 @@ TEST(type_reduce, generic_overload)
         EXPECT_RANGE_EQ(v, urange);
     }
 
-    {   // view
+    { // view
         std::array<int, 6> urange{1, 2, 3, 4, 5, 6};
 
-        auto v = urange | std::views::filter([] (int) { return true; });
+        auto v  = urange | std::views::filter([](int) { return true; });
         auto v2 = bio::views::type_reduce(v);
 
         EXPECT_TRUE((std::same_as<decltype(v2), std::views::all_t<decltype(v)>>));

@@ -24,12 +24,10 @@ template <typename T>
 class tuple_utility : public ::testing::Test
 {
 public:
-
     T value;
 };
 
-using tuple_utility_types = ::testing::Types<std::tuple<int, long, bar, float>,
-                                             bio::pod_tuple<int, long, bar, float>>;
+using tuple_utility_types = ::testing::Types<std::tuple<int, long, bar, float>, bio::pod_tuple<int, long, bar, float>>;
 
 TYPED_TEST_SUITE(tuple_utility, tuple_utility_types, );
 
@@ -121,7 +119,9 @@ TYPED_TEST(tuple_utility, tuple_split_by_pos_lvalue)
 
 TYPED_TEST(tuple_utility, tuple_split_by_pos_const_lvalue)
 {
-    TypeParam const t{TypeParam{1, 10l, bar{2}, 2.1}};
+    TypeParam const t{
+      TypeParam{1, 10l, bar{2}, 2.1}
+    };
     EXPECT_TRUE((std::is_same_v<decltype(t), TypeParam const>));
     {
         auto res = bio::tuple_split<0>(t);
@@ -156,7 +156,9 @@ TYPED_TEST(tuple_utility, tuple_split_by_pos_rvalue)
 TYPED_TEST(tuple_utility, tuple_split_by_pos_const_rvalue)
 {
     {
-        TypeParam const t{TypeParam{1, 10l, bar{2}, 2.1}};
+        TypeParam const t{
+          TypeParam{1, 10l, bar{2}, 2.1}
+        };
         EXPECT_TRUE((std::is_same_v<decltype(t), TypeParam const>));
         auto res = bio::tuple_split<0>(std::move(t));
 
@@ -211,7 +213,9 @@ TYPED_TEST(tuple_utility, tuple_split_by_type_lvalue)
 
 TYPED_TEST(tuple_utility, tuple_split_by_type_const_lvalue)
 {
-    TypeParam const t{TypeParam{1, 10l, bar{2}, 2.1}};
+    TypeParam const t{
+      TypeParam{1, 10l, bar{2}, 2.1}
+    };
     EXPECT_TRUE((std::is_same_v<decltype(t), TypeParam const>));
     {
         auto res = bio::tuple_split<int>(t);
@@ -246,7 +250,9 @@ TYPED_TEST(tuple_utility, tuple_split_by_type_rvalue)
 TYPED_TEST(tuple_utility, tuple_split_by_type_const_rvalue)
 {
     {
-        TypeParam const t{TypeParam{1, 10l, bar{2}, 2.1}};
+        TypeParam const t{
+          TypeParam{1, 10l, bar{2}, 2.1}
+        };
         EXPECT_TRUE((std::is_same_v<decltype(t), TypeParam const>));
         auto res = bio::tuple_split<int>(std::move(t));
 
@@ -264,7 +270,7 @@ TYPED_TEST(tuple_utility, tuple_split_by_type_const_rvalue)
 TYPED_TEST(tuple_utility, tuple_pop_front_lvalue)
 {
     TypeParam t{1, 10l, bar{2}, 2.1};
-    auto res = bio::tuple_pop_front(t);
+    auto      res = bio::tuple_pop_front(t);
 
     EXPECT_EQ(std::tuple_size_v<decltype(res)>, 3u);
 
@@ -279,7 +285,9 @@ TYPED_TEST(tuple_utility, tuple_pop_front_lvalue)
 
 TYPED_TEST(tuple_utility, tuple_pop_front_const_lvalue)
 {
-    TypeParam const t{TypeParam{1, 10l, bar{2}, 2.1}};
+    TypeParam const t{
+      TypeParam{1, 10l, bar{2}, 2.1}
+    };
     auto res = bio::tuple_pop_front(t);
 
     EXPECT_EQ(std::tuple_size_v<decltype(res)>, 3u);
@@ -292,7 +300,7 @@ TYPED_TEST(tuple_utility, tuple_pop_front_const_lvalue)
 TYPED_TEST(tuple_utility, tuple_pop_front_rvalue)
 {
     TypeParam t{1, 10l, bar{2}, 2.1};
-    auto res = bio::tuple_pop_front(std::move(t));
+    auto      res = bio::tuple_pop_front(std::move(t));
 
     EXPECT_EQ(std::tuple_size_v<decltype(res)>, 3u);
 
@@ -303,7 +311,9 @@ TYPED_TEST(tuple_utility, tuple_pop_front_rvalue)
 
 TYPED_TEST(tuple_utility, tuple_pop_front_const_rvalue)
 {
-    TypeParam const t{TypeParam{1, 10l, bar{2}, 2.1}};
+    TypeParam const t{
+      TypeParam{1, 10l, bar{2}, 2.1}
+    };
     auto res = bio::tuple_pop_front(std::move(t));
 
     EXPECT_EQ(std::tuple_size_v<decltype(res)>, 3u);
@@ -322,10 +332,10 @@ TYPED_TEST(tuple_utility, tuple_split_and_pop)
         EXPECT_EQ(std::tuple_size_v<std::remove_reference_t<decltype(left)>>, 0u);
         EXPECT_EQ(std::tuple_size_v<std::remove_reference_t<decltype(right)>>, 1u);
 
-        using left_tuple_t = std::remove_reference_t<decltype(left)>;
+        using left_tuple_t  = std::remove_reference_t<decltype(left)>;
         using right_tuple_t = std::remove_reference_t<decltype(bio::tuple_pop_front(right))>;
 
-        using left_t = bio::detail::transfer_template_args_onto_t<left_tuple_t, bio::type_list>;
+        using left_t  = bio::detail::transfer_template_args_onto_t<left_tuple_t, bio::type_list>;
         using right_t = bio::detail::transfer_template_args_onto_t<right_tuple_t, bio::type_list>;
 
         EXPECT_TRUE((std::is_same_v<left_t, bio::type_list<>>));

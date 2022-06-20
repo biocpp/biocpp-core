@@ -12,8 +12,8 @@
 
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/ranges/concept.hpp>
-#include <bio/ranges/views/to_char.hpp>
 #include <bio/ranges/views/to.hpp>
+#include <bio/ranges/views/to_char.hpp>
 #include <ranges>
 
 using bio::operator""_dna5;
@@ -21,7 +21,7 @@ using bio::operator""_dna5;
 TEST(view_to_char, basic)
 {
     bio::dna5_vector vec{"ACTTTGATA"_dna5};
-    std::string cmp{"ACTTTGATA"};
+    std::string      cmp{"ACTTTGATA"};
 
     // pipe notation
     std::string v = vec | bio::views::to_char | bio::views::to<std::string>();

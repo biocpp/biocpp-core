@@ -8,19 +8,19 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <bio/meta/type_traits/iterator.hpp>
 #include <bio/meta/type_traits/range.hpp>
 #include <bio/ranges/views/persist.hpp>
 #include <bio/ranges/views/repeat.hpp>
 #include <bio/ranges/views/take.hpp>
 #include <bio/ranges/views/take_exactly.hpp>
-#include <algorithm>
-#include <ranges>
 #include <bio/test/expect_range_eq.hpp>
+#include <ranges>
 
 TEST(repeat_view, deduction_guide)
 {
-    int value = 0;
+    int         value      = 0;
     int const & value_cref = value;
 
     bio::detail::repeat_view repeat_view1{value};
@@ -44,7 +44,7 @@ TEST(general, construction)
 
     // char const
     char const chr_const{'A'};
-    auto v_const = bio::views::repeat(chr_const);
+    auto       v_const = bio::views::repeat(chr_const);
 
     EXPECT_TRUE((std::is_default_constructible_v<decltype(v_const)>));
     EXPECT_TRUE((std::is_copy_constructible_v<decltype(v_const)>));
@@ -118,7 +118,7 @@ TEST(general, iterator)
     EXPECT_EQ(*it, 'X');
 
     auto cit = std::ranges::cbegin(v);
-    cit = v.begin(); // assign it from const it
+    cit      = v.begin(); // assign it from const it
 }
 
 TEST(general, subscript_operator)
@@ -141,14 +141,14 @@ TEST(view, factory)
     // const char
     {
         char const chr{'X'};
-        auto v = bio::views::repeat(chr);
+        auto       v = bio::views::repeat(chr);
         EXPECT_EQ(*v.begin(), chr);
     }
 
     // string
     {
         std::string str{"foobar"};
-        auto v = bio::views::repeat(str);
+        auto        v = bio::views::repeat(str);
         EXPECT_EQ(*v.begin(), str);
         EXPECT_EQ(v[2345], str);
     }
@@ -156,14 +156,14 @@ TEST(view, factory)
     // view
     {
         auto view = std::string{"foobar"} | bio::views::persist | std::views::take(3);
-        auto v = bio::views::repeat(std::move(view));
+        auto v    = bio::views::repeat(std::move(view));
         EXPECT_RANGE_EQ(*v.begin(), std::string_view{"foo"});
     }
 
     // combinability
     {
         std::string str{"foobar"};
-        auto v = bio::views::repeat(str) | bio::views::take_exactly(3);
+        auto        v = bio::views::repeat(str) | bio::views::take_exactly(3);
         EXPECT_EQ(*v.begin(), str);
         EXPECT_EQ(std::ranges::size(v), 3u);
     }
@@ -183,7 +183,7 @@ constexpr char constexpr_class_and_iterator()
 constexpr char constexpr_view()
 {
     char chr{'A'};
-    auto v = bio::views::repeat(chr);
+    auto v  = bio::views::repeat(chr);
     v[1324] = 'X';
 
     return *v.begin();

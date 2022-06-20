@@ -34,33 +34,24 @@ class alphabet_tuple_base_test<test_composite<bio::dna4, bio::dna5>> : public ::
 public:
     using T = test_composite<bio::dna4, bio::dna5>;
 
-    T instance = T{value_1(), value_2()};
-    T zero_instance = T{decltype(value_1()){}, decltype(value_2()){}};
+    T      instance      = T{value_1(), value_2()};
+    T      zero_instance = T{decltype(value_1()){}, decltype(value_2()){}};
     size_t tup_size{2};
 
     // test_composite<bio::dna4, bio::dna5>
     // -------------------------------------------------------------------------
-    bio::dna4 value_1()
+    bio::dna4 value_1() { return 'G'_dna4; }
+    bio::rna4 assignable_to_value_1() { return 'G'_rna4; }
+    bio::dna5 value_2() { return 'G'_dna5; }
+    bio::rna5 assignable_to_value_2() { return 'G'_rna5; }
+    auto      values_to_cmp()
     {
-        return 'G'_dna4;
-    }
-    bio::rna4 assignable_to_value_1()
-    {
-        return 'G'_rna4;
-    }
-    bio::dna5 value_2()
-    {
-        return 'G'_dna5;
-    }
-    bio::rna5 assignable_to_value_2()
-    {
-        return 'G'_rna5;
-    }
-    auto values_to_cmp()
-    {
-        return std::make_tuple(/*low */'A'_dna4, 'A'_dna5,
-                               /*mid */'C'_dna4, 'C'_dna5,
-                               /*high*/'T'_dna4, 'T'_dna5);
+        return std::make_tuple(/*low */ 'A'_dna4,
+                               'A'_dna5,
+                               /*mid */ 'C'_dna4,
+                               'C'_dna5,
+                               /*high*/ 'T'_dna4,
+                               'T'_dna5);
     }
 };
 

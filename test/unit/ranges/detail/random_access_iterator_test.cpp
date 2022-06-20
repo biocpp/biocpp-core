@@ -22,24 +22,24 @@
 template <>
 struct iterator_fixture<bio::detail::random_access_iterator<std::vector<int>>> : public ::testing::Test
 {
-    using iterator_tag = std::random_access_iterator_tag;
+    using iterator_tag                   = std::random_access_iterator_tag;
     static constexpr bool const_iterable = true;
 
     struct expose_iterator
     {
-        using iterator_type = bio::detail::random_access_iterator<std::vector<int>>;
+        using iterator_type       = bio::detail::random_access_iterator<std::vector<int>>;
         using const_iterator_type = bio::detail::random_access_iterator<std::vector<int> const>;
 
         std::vector<int> rng{1, 2, 3, 4, 5, 6, 7, 8};
 
-        iterator_type begin() { return iterator_type{rng}; }
-        iterator_type end() { return iterator_type{rng, rng.size()}; }
+        iterator_type       begin() { return iterator_type{rng}; }
+        iterator_type       end() { return iterator_type{rng, rng.size()}; }
         const_iterator_type begin() const { return const_iterator_type{rng}; }
         const_iterator_type end() const { return const_iterator_type{rng, rng.size()}; }
     };
 
     std::vector<int> expected_range{1, 2, 3, 4, 5, 6, 7, 8};
-    expose_iterator test_range{};
+    expose_iterator  test_range{};
 };
 
 using test_type = ::testing::Types<bio::detail::random_access_iterator<std::vector<int>>>;
@@ -53,35 +53,35 @@ INSTANTIATE_TYPED_TEST_SUITE_P(iterator_fixture, iterator_fixture, test_type, );
 class random_access_iterator_test_fixture : public ::testing::Test
 {
 protected:
-    std::vector<uint8_t> v_empty{};
-    std::vector<uint8_t> const v_const_empty{};
-    std::vector<uint8_t> v, v2, v3, v4, w, w2;
-    std::vector<uint8_t> const v_const{'a', 't'};
-    std::vector<uint8_t> const v2_const{'a', 'u'};
-    std::vector<uint8_t> const v3_const{'a', 't', 'z'};
-    std::vector<uint8_t> const v4_const{'a', 'u', 'v', 'w', 'x'};
-    std::vector<uint8_t> const w_const{'c', 't'};
-    std::vector<uint8_t> const w2_const{'b', 'v'};
-    std::array<long int, 3> a;
+    std::vector<uint8_t>          v_empty{};
+    std::vector<uint8_t> const    v_const_empty{};
+    std::vector<uint8_t>          v, v2, v3, v4, w, w2;
+    std::vector<uint8_t> const    v_const{'a', 't'};
+    std::vector<uint8_t> const    v2_const{'a', 'u'};
+    std::vector<uint8_t> const    v3_const{'a', 't', 'z'};
+    std::vector<uint8_t> const    v4_const{'a', 'u', 'v', 'w', 'x'};
+    std::vector<uint8_t> const    w_const{'c', 't'};
+    std::vector<uint8_t> const    w2_const{'b', 'v'};
+    std::array<long int, 3>       a;
     std::array<long int, 3> const a_const = {11, 22, 33};
 
     virtual void SetUp()
     {
         // code here will execute just before the test ensues
-        v = {'a', 't'};
+        v  = {'a', 't'};
         v2 = {'a', 'u'};
         v3 = {'a', 't', 'z'};
         v4 = {'a', 'u', 'v', 'w', 'x'};
-        w = {'c', 't'};
+        w  = {'c', 't'};
         w2 = {'b', 'v'};
-        a = {11, 22, 33};
+        a  = {11, 22, 33};
     }
 };
 
 // default constructor
 TEST(random_access_iterator_test, default_constructor)
 {
-    [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t>> it;
+    [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t>>       it;
     [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t> const> it2;
 }
 
@@ -89,10 +89,10 @@ TEST(random_access_iterator_test, default_constructor)
 TEST(random_access_iterator_test, constructor_ref)
 {
     // non-const version
-    std::vector<uint8_t> v_empty;
-    bio::detail::random_access_iterator<std::vector<uint8_t>> it(v_empty);
+    std::vector<uint8_t>                                            v_empty;
+    bio::detail::random_access_iterator<std::vector<uint8_t>>       it(v_empty);
     // const version
-    std::vector<uint8_t> const v_const_empty;
+    std::vector<uint8_t> const                                      v_const_empty;
     bio::detail::random_access_iterator<std::vector<uint8_t> const> it2(v_const_empty);
 }
 
@@ -126,10 +126,10 @@ TEST_F(random_access_iterator_test_fixture, constructor_ref3)
 TEST_F(random_access_iterator_test_fixture, cp_constructor1)
 {
     // non-const container
-    bio::detail::random_access_iterator<std::vector<uint8_t>> it_base(v_empty);
-    [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t>> it_derivate(it_base);
+    bio::detail::random_access_iterator<std::vector<uint8_t>>                        it_base(v_empty);
+    [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t>>       it_derivate(it_base);
     // const container
-    bio::detail::random_access_iterator<std::vector<uint8_t> const> it_base2(v_const_empty);
+    bio::detail::random_access_iterator<std::vector<uint8_t> const>                  it_base2(v_const_empty);
     [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t> const> it_derivate2(it_base2);
 }
 
@@ -146,7 +146,6 @@ TEST_F(random_access_iterator_test_fixture, cp_constructor2)
     bio::detail::random_access_iterator<std::vector<uint8_t> const> it_derivate2(it_base2);
     EXPECT_EQ('a', it_base2[0]);
     EXPECT_EQ('a', it_derivate2[0]);
-
 }
 
 // construct const_iterator from iterator
@@ -164,10 +163,10 @@ TEST_F(random_access_iterator_test_fixture, constructor_const_from_nonconst)
 TEST_F(random_access_iterator_test_fixture, constructor_assign1)
 {
     // non-const
-    bio::detail::random_access_iterator<std::vector<uint8_t>> it_base(v_empty);
-    [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t>> it_derived = it_base;
+    bio::detail::random_access_iterator<std::vector<uint8_t>>                        it_base(v_empty);
+    [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t>>       it_derived = it_base;
     // const
-    bio::detail::random_access_iterator<std::vector<uint8_t> const> it_base2(v_const_empty);
+    bio::detail::random_access_iterator<std::vector<uint8_t> const>                  it_base2(v_const_empty);
     [[maybe_unused]] bio::detail::random_access_iterator<std::vector<uint8_t> const> it_derived2 = it_base2;
 }
 
@@ -217,13 +216,12 @@ TEST_F(random_access_iterator_test_fixture, cp_destructor)
 {
     // non-const
     using iterator_type = typename bio::detail::random_access_iterator<std::vector<uint8_t>>;
-    iterator_type it(v_empty);
+    iterator_type   it(v_empty);
     iterator_type * it_ptr = &it;
     it_ptr->iterator_type::~iterator_type();
     // const
     using iterator_type2 = typename bio::detail::random_access_iterator<std::vector<uint8_t> const>;
-    iterator_type2 it2(v_const_empty);
+    iterator_type2   it2(v_const_empty);
     iterator_type2 * it_ptr2 = &it2;
     it_ptr2->iterator_type2::~iterator_type2();
-
 }

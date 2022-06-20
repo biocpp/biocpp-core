@@ -10,9 +10,9 @@
 
 #include <gtest/gtest.h>
 
+#include <bio/meta/type_list/type_list.hpp>
 #include <bio/meta/type_traits/concept.hpp>
 #include <bio/meta/type_traits/template_inspection.hpp>
-#include <bio/meta/type_list/type_list.hpp>
 
 template <std::integral t>
 struct constraint_bar
@@ -33,7 +33,7 @@ TEST(template_inspect, concept_check)
 TEST(template_inspect, transfer_template_args_onto_t)
 {
     using tl = bio::type_list<int, char, double>;
-    using t = bio::detail::transfer_template_args_onto<tl, std::tuple>::type;
+    using t  = bio::detail::transfer_template_args_onto<tl, std::tuple>::type;
     EXPECT_TRUE((std::is_same_v<t, std::tuple<int, char, double>>));
 
     // shortcut
@@ -47,7 +47,7 @@ TEST(template_inspect, transfer_template_args_onto_with_constraint)
     // type declarations and not type instantiations
 
     using bar_char = constraint_bar<char>; // this is fine, even though it contains a static_assert
-    using bar_int = constraint_bar<int>;
+    using bar_int  = constraint_bar<int>;
 
     // float does not fulfil integral constraint
     using bar_float_identity = bio::detail::transfer_template_args_onto<bio::type_list<float>, constraint_bar>;
@@ -84,7 +84,7 @@ TEST(template_inspect, is_type_specialisation_with_constraint)
     // type declarations and not type instantiations
 
     using bar_char = constraint_bar<char>; // this is fine, even though it contains a static_assert
-    using bar_int = constraint_bar<char>;
+    using bar_int  = constraint_bar<char>;
 
     EXPECT_FALSE((bio::detail::is_type_specialisation_of<std::tuple<float>, constraint_bar>::value));
     EXPECT_FALSE((bio::detail::is_type_specialisation_of<std::tuple<int>, constraint_bar>::value));
@@ -94,7 +94,8 @@ TEST(template_inspect, is_type_specialisation_with_constraint)
 }
 
 template <int i, char c>
-struct t1 {};
+struct t1
+{};
 
 template <int _i, char _c>
 struct t2
@@ -146,7 +147,7 @@ TEST(template_inspect, transfer_template_vargs_onto_enum)
 TEST(template_inspect, transfer_template_vargs_onto_t)
 {
     using ta = bio::detail::transfer_template_vargs_onto<t1<1, 'a'>, t2>::type;
-    EXPECT_EQ(1,   ta::i);
+    EXPECT_EQ(1, ta::i);
     EXPECT_EQ('a', ta::c);
 
     // ensures that transfer_template_vargs_onto uses internally only type declarations and not type instantiations
@@ -158,7 +159,7 @@ TEST(template_inspect, transfer_template_vargs_onto_t)
 
     // shortcut
     using ta2 = bio::detail::transfer_template_vargs_onto_t<t1<2, 'a'>, t2>;
-    EXPECT_EQ(2,   ta2::i);
+    EXPECT_EQ(2, ta2::i);
     EXPECT_EQ('a', ta2::c);
 }
 
@@ -179,11 +180,11 @@ TEST(template_inspect, is_value_specialisation_of_v)
 }
 
 template <int varg>
-    requires (0 <= varg && varg <= 2)
+    requires(0 <= varg && varg <= 2)
 struct constraint_vbar
 {};
 
-template <auto ...vargs>
+template <auto... vargs>
 struct vargs_foo
 {};
 

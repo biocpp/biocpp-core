@@ -53,10 +53,7 @@ TEST(view_convert, explicit_conversion)
 
     // combinability
     bio::dna4_vector cmp2{"AGGATAGCA"_dna4};
-    bio::dna4_vector v3 = vec
-                           | bio::views::convert<bio::dna4>
-                           | std::views::reverse
-                           | bio::views::to<std::vector>();
+    bio::dna4_vector v3 = vec | bio::views::convert<bio::dna4> | std::views::reverse | bio::views::to<std::vector>();
     EXPECT_EQ(cmp2, v3);
 }
 

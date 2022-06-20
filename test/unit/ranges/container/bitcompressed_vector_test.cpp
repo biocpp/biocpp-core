@@ -23,7 +23,7 @@ TEST(bitcompressed_vector_test, issue1743_complement_on_proxy)
 { // https://github.com/seqan/seqan3/issues/1743
     bio::bitcompressed_vector<bio::dna4> v{'A'_dna4};
 
-    auto proxy = *v.begin();
+    auto proxy      = *v.begin();
     auto complement = bio::complement(proxy);
 
     EXPECT_TRUE((std::same_as<decltype(complement), bio::dna4>));
@@ -33,7 +33,7 @@ TEST(bitcompressed_vector_test, issue1743_complement_on_proxy)
 TEST(bitcompressed_vector_test, issue1743_view_combinability)
 { // https://github.com/seqan/seqan3/issues/1743
     bio::bitcompressed_vector<bio::dna4> v{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
-    auto complement = v | bio::views::complement;
+    auto                                 complement = v | bio::views::complement;
 
     EXPECT_EQ(v.size(), complement.size());
     EXPECT_RANGE_EQ(complement, (bio::dna4_vector{'T'_dna4, 'G'_dna4, 'C'_dna4, 'A'_dna4}));

@@ -83,10 +83,9 @@ TEST(rna5, string_literal)
 
 TEST(rna5, char_is_valid)
 {
-    constexpr auto validator = bio::is_char<'A'> || bio::is_char<'C'> || bio::is_char<'G'> ||
-                               bio::is_char<'T'> || bio::is_char<'U'> || bio::is_char<'a'> ||
-                               bio::is_char<'c'> || bio::is_char<'g'> || bio::is_char<'t'> ||
-                               bio::is_char<'u'> || bio::is_char<'N'> || bio::is_char<'n'>;
+    constexpr auto validator = bio::is_char<'A'> || bio::is_char<'C'> || bio::is_char<'G'> || bio::is_char<'T'> ||
+                               bio::is_char<'U'> || bio::is_char<'a'> || bio::is_char<'c'> || bio::is_char<'g'> ||
+                               bio::is_char<'t'> || bio::is_char<'u'> || bio::is_char<'N'> || bio::is_char<'n'>;
     for (char c : std::views::iota(std::numeric_limits<char>::min(), std::numeric_limits<char>::max()))
         EXPECT_EQ(bio::rna5::char_is_valid(c), validator(c));
 }

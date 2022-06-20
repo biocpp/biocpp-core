@@ -58,7 +58,9 @@ TEST(small_string, construct_from_char)
 TEST(small_string, construct_from_array)
 {
     EXPECT_TRUE((std::is_same_v<bio::small_string<5>,
-                                decltype(bio::small_string{std::array{'h','e','l','l','o'}})>));
+                                decltype(bio::small_string{
+                                  std::array{'h', 'e', 'l', 'l', 'o'}
+    })>));
 }
 
 // assignment from literal.
@@ -101,14 +103,14 @@ TEST(small_string, c_str)
 TEST(small_string, string)
 {
     bio::small_string em{"hello"};
-    EXPECT_EQ(em.str(), "hello"s);  // explicit
+    EXPECT_EQ(em.str(), "hello"s); // explicit
 }
 
 TEST(small_string, implicit_conversion)
 {
     bio::small_string em{"hello"};
-    std::string str = em;
-    EXPECT_EQ(str, "hello"s);  // explicit
+    std::string       str = em;
+    EXPECT_EQ(str, "hello"s); // explicit
 }
 
 constexpr bool erase_test()
@@ -137,9 +139,8 @@ TEST(small_string, erase)
 TEST(small_string, concat)
 {
     {
-        constexpr bio::small_string em = bio::small_string{"hello"} +
-                                            bio::small_string{' '} +
-                                            bio::small_string{"world"};
+        constexpr bio::small_string em =
+          bio::small_string{"hello"} + bio::small_string{' '} + bio::small_string{"world"};
         constexpr auto size = em.size();
 
         EXPECT_EQ(size, 11u);
@@ -147,11 +148,11 @@ TEST(small_string, concat)
     }
 
     {
-        static constexpr char const a[] = "hello";
-        static constexpr char const b[] = " ";
-        static constexpr char const c[] = "world";
-        constexpr auto em = bio::small_string{a} + bio::small_string{b} + bio::small_string{c};
-        constexpr auto size = em.size();
+        static constexpr char const a[]  = "hello";
+        static constexpr char const b[]  = " ";
+        static constexpr char const c[]  = "world";
+        constexpr auto              em   = bio::small_string{a} + bio::small_string{b} + bio::small_string{c};
+        constexpr auto              size = em.size();
 
         EXPECT_EQ(size, 11u);
         EXPECT_EQ(em.str(), "hello world"s);
@@ -199,7 +200,7 @@ TEST(small_string, swap)
 {
     bio::small_string s1{"hello"};
     bio::small_string s2{"olleh"};
-    {  // global function.
+    { // global function.
         std::swap(s1, s2);
         EXPECT_EQ(s1, bio::small_string{"olleh"});
         EXPECT_EQ(s2, bio::small_string{"hello"});
@@ -246,7 +247,7 @@ TEST(small_string, equality)
 {
     constexpr bool cmp1 = bio::small_string{"hello"} == bio::small_string{"hello"};
     constexpr bool cmp2 = bio::small_string{"hello"} == bio::small_string{"hell"};
-    constexpr bool cmp3 = bio::small_string{"hell"}  == bio::small_string{"hello"};
+    constexpr bool cmp3 = bio::small_string{"hell"} == bio::small_string{"hello"};
     constexpr bool cmp4 = bio::small_string{"hella"} == bio::small_string{"hello"};
 
     EXPECT_TRUE(cmp1);
@@ -259,7 +260,7 @@ TEST(small_string, inequality)
 {
     constexpr bool cmp1 = bio::small_string{"hello"} != bio::small_string{"hello"};
     constexpr bool cmp2 = bio::small_string{"hello"} != bio::small_string{"hell"};
-    constexpr bool cmp3 = bio::small_string{"hell"}  != bio::small_string{"hello"};
+    constexpr bool cmp3 = bio::small_string{"hell"} != bio::small_string{"hello"};
     constexpr bool cmp4 = bio::small_string{"hella"} != bio::small_string{"hello"};
 
     EXPECT_FALSE(cmp1);
@@ -272,7 +273,7 @@ TEST(small_string, less)
 {
     constexpr bool cmp1 = bio::small_string{"hello"} < bio::small_string{"hello"};
     constexpr bool cmp2 = bio::small_string{"hello"} < bio::small_string{"hell"};
-    constexpr bool cmp3 = bio::small_string{"hell"}  < bio::small_string{"hello"};
+    constexpr bool cmp3 = bio::small_string{"hell"} < bio::small_string{"hello"};
     constexpr bool cmp4 = bio::small_string{"hella"} < bio::small_string{"hello"};
 
     EXPECT_FALSE(cmp1);
@@ -285,7 +286,7 @@ TEST(small_string, less_equal)
 {
     constexpr bool cmp1 = bio::small_string{"hello"} <= bio::small_string{"hello"};
     constexpr bool cmp2 = bio::small_string{"hello"} <= bio::small_string{"hell"};
-    constexpr bool cmp3 = bio::small_string{"hell"}  <= bio::small_string{"hello"};
+    constexpr bool cmp3 = bio::small_string{"hell"} <= bio::small_string{"hello"};
     constexpr bool cmp4 = bio::small_string{"hella"} <= bio::small_string{"hello"};
 
     EXPECT_TRUE(cmp1);
@@ -298,7 +299,7 @@ TEST(small_string, greater)
 {
     constexpr bool cmp1 = bio::small_string{"hello"} > bio::small_string{"hello"};
     constexpr bool cmp2 = bio::small_string{"hello"} > bio::small_string{"hell"};
-    constexpr bool cmp3 = bio::small_string{"hell"}  > bio::small_string{"hello"};
+    constexpr bool cmp3 = bio::small_string{"hell"} > bio::small_string{"hello"};
     constexpr bool cmp4 = bio::small_string{"hella"} > bio::small_string{"hello"};
 
     EXPECT_FALSE(cmp1);
@@ -311,7 +312,7 @@ TEST(small_string, greater_equal)
 {
     constexpr bool cmp1 = bio::small_string{"hello"} >= bio::small_string{"hello"};
     constexpr bool cmp2 = bio::small_string{"hello"} >= bio::small_string{"hell"};
-    constexpr bool cmp3 = bio::small_string{"hell"}  >= bio::small_string{"hello"};
+    constexpr bool cmp3 = bio::small_string{"hell"} >= bio::small_string{"hello"};
     constexpr bool cmp4 = bio::small_string{"hella"} >= bio::small_string{"hello"};
 
     EXPECT_TRUE(cmp1);
@@ -341,7 +342,7 @@ TEST(small_string, compile_time_fill)
 
 TEST(small_string, output)
 {
-    bio::small_string em{"hello"};
+    bio::small_string  em{"hello"};
     std::ostringstream os;
     os << em;
     EXPECT_EQ(os.str(), "hello"s);
@@ -351,14 +352,14 @@ TEST(small_string, input)
 {
     { // Until whitespace
         bio::small_string<50> em{"test"};
-        std::istringstream is{"hello test"};
+        std::istringstream    is{"hello test"};
         is >> em;
         EXPECT_EQ(em.str(), "hello"s);
     }
 
     { // Exceed capacity
         bio::small_string<5> em{"test"};
-        std::istringstream is{"hellotest"};
+        std::istringstream   is{"hellotest"};
         is >> em;
         EXPECT_EQ(em.str(), "hello"s);
 
@@ -369,7 +370,7 @@ TEST(small_string, input)
 
     { // eof before capacity reached
         bio::small_string<50> em{""};
-        std::istringstream is{"hellotest"};
+        std::istringstream    is{"hellotest"};
         is >> em;
         EXPECT_EQ(em.str(), "hellotest"s);
     }

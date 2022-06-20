@@ -48,37 +48,37 @@ TEST(alphabet_variant_test, initialise_from_component_alphabet)
     bio::dna5 l('A'_rna5);
 
     using alphabet_t = bio::alphabet_variant<bio::dna4, bio::dna5, bio::gap>;
-    using variant_t = std::variant<bio::dna4, bio::dna5, bio::gap>;
+    using variant_t  = std::variant<bio::dna4, bio::dna5, bio::gap>;
 
-    constexpr variant_t variant0{'A'_dna4};
+    constexpr variant_t  variant0{'A'_dna4};
     constexpr alphabet_t letter0{'A'_dna4};
 
-    constexpr variant_t variant1 = 'C'_dna4;
-    constexpr alphabet_t letter1 = 'C'_dna4;
+    constexpr variant_t  variant1 = 'C'_dna4;
+    constexpr alphabet_t letter1  = 'C'_dna4;
 
-    constexpr variant_t variant2 = {'G'_dna4};
-    constexpr alphabet_t letter2 = {'G'_dna4};
+    constexpr variant_t  variant2 = {'G'_dna4};
+    constexpr alphabet_t letter2  = {'G'_dna4};
 
-    constexpr variant_t variant3 = static_cast<variant_t>('T'_dna4);
-    constexpr alphabet_t letter3 = static_cast<alphabet_t>('T'_dna4);
+    constexpr variant_t  variant3 = static_cast<variant_t>('T'_dna4);
+    constexpr alphabet_t letter3  = static_cast<alphabet_t>('T'_dna4);
 
-    constexpr variant_t variant4 = {static_cast<variant_t>('A'_dna5)};
-    constexpr alphabet_t letter4 = {static_cast<alphabet_t>('A'_dna5)};
+    constexpr variant_t  variant4 = {static_cast<variant_t>('A'_dna5)};
+    constexpr alphabet_t letter4  = {static_cast<alphabet_t>('A'_dna5)};
 
-    variant_t variant5{'C'_dna5};
+    variant_t  variant5{'C'_dna5};
     alphabet_t letter5{'C'_dna5};
 
-    variant_t variant6 = 'G'_dna5;
-    alphabet_t letter6 = 'G'_dna5;
+    variant_t  variant6 = 'G'_dna5;
+    alphabet_t letter6  = 'G'_dna5;
 
-    variant_t variant7 = {'N'_dna5};
-    alphabet_t letter7 = {'N'_dna5};
+    variant_t  variant7 = {'N'_dna5};
+    alphabet_t letter7  = {'N'_dna5};
 
-    variant_t variant8 = static_cast<variant_t>('T'_dna5);
-    alphabet_t letter8 = static_cast<alphabet_t>('T'_dna5);
+    variant_t  variant8 = static_cast<variant_t>('T'_dna5);
+    alphabet_t letter8  = static_cast<alphabet_t>('T'_dna5);
 
-    variant_t variant9 = {static_cast<variant_t>(bio::gap{})};
-    alphabet_t letter9 = {static_cast<alphabet_t>(bio::gap{})};
+    variant_t  variant9 = {static_cast<variant_t>(bio::gap{})};
+    alphabet_t letter9  = {static_cast<alphabet_t>(bio::gap{})};
 
     EXPECT_EQ(letter0.to_rank(), 0);
     EXPECT_EQ(letter1.to_rank(), 1);
@@ -95,34 +95,34 @@ TEST(alphabet_variant_test, initialise_from_component_alphabet)
 TEST(alphabet_variant_test, initialise_from_component_alphabet_subtype)
 {
     using alphabet_t = bio::alphabet_variant<bio::dna4, bio::dna5, bio::gap>;
-    using variant_t = std::variant<bio::dna4, bio::dna5, bio::gap>;
+    using variant_t  = std::variant<bio::dna4, bio::dna5, bio::gap>;
 
-    variant_t variant0{'A'_rna4};
+    variant_t  variant0{'A'_rna4};
     alphabet_t letter0{'A'_rna4};
 
-    variant_t variant1 = 'C'_rna4;
-    alphabet_t letter1 = 'C'_rna4;
+    variant_t  variant1 = 'C'_rna4;
+    alphabet_t letter1  = 'C'_rna4;
 
-    variant_t variant2 = {'G'_rna4};
-    alphabet_t letter2 = {'G'_rna4};
+    variant_t  variant2 = {'G'_rna4};
+    alphabet_t letter2  = {'G'_rna4};
 
-    variant_t variant3 = static_cast<variant_t>('T'_rna4);
-    alphabet_t letter3 = static_cast<alphabet_t>('T'_rna4);
+    variant_t  variant3 = static_cast<variant_t>('T'_rna4);
+    alphabet_t letter3  = static_cast<alphabet_t>('T'_rna4);
 
-    variant_t variant4 = {static_cast<variant_t>('A'_rna5)};
-    alphabet_t letter4 = {static_cast<alphabet_t>('A'_rna5)};
+    variant_t  variant4 = {static_cast<variant_t>('A'_rna5)};
+    alphabet_t letter4  = {static_cast<alphabet_t>('A'_rna5)};
 
-    variant_t variant5{'C'_rna5};
+    variant_t  variant5{'C'_rna5};
     alphabet_t letter5{'C'_rna5};
 
-    variant_t variant6 = 'G'_rna5;
-    alphabet_t letter6 = 'G'_rna5;
+    variant_t  variant6 = 'G'_rna5;
+    alphabet_t letter6  = 'G'_rna5;
 
-    variant_t variant7 = {'N'_rna5};
-    alphabet_t letter7 = {'N'_rna5};
+    variant_t  variant7 = {'N'_rna5};
+    alphabet_t letter7  = {'N'_rna5};
 
-    variant_t variant8 = static_cast<variant_t>('T'_rna5);
-    alphabet_t letter8 = static_cast<alphabet_t>('T'_rna5);
+    variant_t  variant8 = static_cast<variant_t>('T'_rna5);
+    alphabet_t letter8  = static_cast<alphabet_t>('T'_rna5);
 
     EXPECT_EQ(letter0.to_rank(), 0);
     EXPECT_EQ(letter1.to_rank(), 1);
@@ -138,27 +138,27 @@ TEST(alphabet_variant_test, initialise_from_component_alphabet_subtype)
 TEST(alphabet_variant_test, assign_from_component_alphabet)
 {
     using alphabet_t = bio::alphabet_variant<bio::dna4, bio::dna5, bio::gap>;
-    using variant_t = std::variant<bio::dna4, bio::dna5, bio::gap>;
+    using variant_t  = std::variant<bio::dna4, bio::dna5, bio::gap>;
     alphabet_t letter{};
-    variant_t variant{};
+    variant_t  variant{};
 
     variant = 'A'_dna4;
-    letter = 'A'_dna4;
+    letter  = 'A'_dna4;
     EXPECT_EQ(variant.index(), 0u);
     EXPECT_EQ(letter.to_rank(), 0);
 
     variant = {'C'_dna4};
-    letter = {'C'_dna4};
+    letter  = {'C'_dna4};
     EXPECT_EQ(variant.index(), 0u);
     EXPECT_EQ(letter.to_rank(), 1);
 
     variant = static_cast<variant_t>('G'_dna4);
-    letter = static_cast<alphabet_t>('G'_dna4);
+    letter  = static_cast<alphabet_t>('G'_dna4);
     EXPECT_EQ(variant.index(), 0u);
     EXPECT_EQ(letter.to_rank(), 2);
 
     variant = {static_cast<variant_t>('T'_dna4)};
-    letter = {static_cast<alphabet_t>('T'_dna4)};
+    letter  = {static_cast<alphabet_t>('T'_dna4)};
     EXPECT_EQ(letter.to_rank(), 3);
 
     letter = 'A'_dna5;
@@ -183,27 +183,27 @@ TEST(alphabet_variant_test, assign_from_component_alphabet)
 TEST(alphabet_variant_test, assign_from_component_alphabet_subtype)
 {
     using alphabet_t = bio::alphabet_variant<bio::dna4, bio::dna5, bio::gap>;
-    using variant_t = std::variant<bio::dna4, bio::dna5, bio::gap>;
+    using variant_t  = std::variant<bio::dna4, bio::dna5, bio::gap>;
     alphabet_t letter{};
-    variant_t variant{};
+    variant_t  variant{};
 
     variant = 'A'_rna4;
-    letter = 'A'_rna4;
+    letter  = 'A'_rna4;
     EXPECT_EQ(variant.index(), 0u);
     EXPECT_EQ(letter.to_rank(), 0);
 
     variant = {'C'_rna4};
-    letter = {'C'_rna4};
+    letter  = {'C'_rna4};
     EXPECT_EQ(variant.index(), 0u);
     EXPECT_EQ(letter.to_rank(), 1);
 
     variant = static_cast<variant_t>('G'_rna4);
-    letter = static_cast<alphabet_t>('G'_rna4);
+    letter  = static_cast<alphabet_t>('G'_rna4);
     EXPECT_EQ(variant.index(), 0u);
     EXPECT_EQ(letter.to_rank(), 2);
 
     variant = {static_cast<variant_t>('T'_rna4)};
-    letter = {static_cast<alphabet_t>('T'_rna4)};
+    letter  = {static_cast<alphabet_t>('T'_rna4)};
     EXPECT_EQ(letter.to_rank(), 3);
 
     letter = 'A'_rna5;
@@ -316,7 +316,7 @@ TEST(alphabet_variant_test, convert_by_type)
     bio::dna5 out = u.convert_to<bio::dna5>();
     EXPECT_EQ(out, 'C'_dna5);
 
-    u = bio::gap{};
+    u          = bio::gap{};
     bio::gap g = u.convert_unsafely_to<bio::gap>();
     EXPECT_EQ(g, bio::gap{});
 }
@@ -340,22 +340,23 @@ TEST(alphabet_variant_test, two_different_variants)
 
 TYPED_TEST(alphabet_variant_test, char_is_valid_for)
 {
-    using gapped_alphabet_t = TypeParam;
+    using gapped_alphabet_t       = TypeParam;
     using gapped_alphabet_bases_t = typename gapped_alphabet_t::biocpp_required_types;
-    using char_t = bio::alphabet_char_t<gapped_alphabet_t>;
+    using char_t                  = bio::alphabet_char_t<gapped_alphabet_t>;
 
-    char_t i = std::numeric_limits<char_t>::min();
-    char_t end = std::numeric_limits<char_t>::max();
+    char_t   i             = std::numeric_limits<char_t>::min();
+    char_t   end           = std::numeric_limits<char_t>::max();
     uint64_t i_no_overflow = std::numeric_limits<char_t>::min();
 
     for (; i_no_overflow <= static_cast<uint64_t>(end); ++i, ++i_no_overflow)
     {
         bool is_valid{};
-        bio::detail::for_each<gapped_alphabet_bases_t>([&is_valid, i](auto id)
-        {
-             using type = typename decltype(id)::type;
-             is_valid = is_valid || bio::char_is_valid_for<type>(i);
-        });
+        bio::detail::for_each<gapped_alphabet_bases_t>(
+          [&is_valid, i](auto id)
+          {
+              using type = typename decltype(id)::type;
+              is_valid   = is_valid || bio::char_is_valid_for<type>(i);
+          });
         EXPECT_EQ(bio::char_is_valid_for<gapped_alphabet_t>(i), is_valid);
     }
 }

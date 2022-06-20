@@ -10,15 +10,15 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/views/as_const.hpp>
 #include <bio/ranges/views/complement.hpp>
 #include <bio/ranges/views/to.hpp>
 #include <bio/ranges/views/to_lower.hpp>
-#include <algorithm>
-#include <ranges>
 #include <bio/test/expect_range_eq.hpp>
+#include <ranges>
 
 using bio::operator""_dna5;
 
@@ -36,17 +36,14 @@ TEST(view_as_const, basic)
 
     // combinability
     bio::dna5_vector vec2{"ACGTA"_dna5};
-    bio::dna5_vector v3 = vec2
-                           | bio::views::complement
-                           | bio::views::as_const
-                           | bio::views::to<std::vector>();
+    bio::dna5_vector v3 = vec2 | bio::views::complement | bio::views::as_const | bio::views::to<std::vector>();
     EXPECT_EQ("TGCAT"_dna5, v3);
 }
 
 TEST(view_as_const, concepts)
 {
     std::string vec{"ACTTTGATA"};
-    auto v1 = vec | bio::views::as_const;
+    auto        v1 = vec | bio::views::as_const;
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);

@@ -36,8 +36,7 @@ TEST(range_concept, forward_range)
     EXPECT_TRUE((std::ranges::forward_range<bio::concatenated_sequences<std::string>>));
     EXPECT_TRUE((std::ranges::forward_range<bio::concatenated_sequences<std::vector<char>>>));
     EXPECT_TRUE((std::ranges::forward_range<bio::bitcompressed_vector<bio::dna4>>));
-    EXPECT_TRUE((std::ranges::forward_range<bio::bitcompressed_vector<bio::qualified<bio::dna4,
-                                                                                           bio::phred42>>>));
+    EXPECT_TRUE((std::ranges::forward_range<bio::bitcompressed_vector<bio::qualified<bio::dna4, bio::phred42>>>));
 }
 
 TEST(container, container)
@@ -96,8 +95,7 @@ TEST(container, reservible_container)
     EXPECT_TRUE((bio::reservible_container<sdsl::int_vector<13>>));
     EXPECT_TRUE((bio::reservible_container<sdsl::int_vector<64>>));
     EXPECT_TRUE((bio::reservible_container<bio::bitcompressed_vector<bio::dna4>>));
-    EXPECT_TRUE((bio::reservible_container<bio::bitcompressed_vector<bio::qualified<bio::dna4,
-                                                                                             bio::phred42>>>));
+    EXPECT_TRUE((bio::reservible_container<bio::bitcompressed_vector<bio::qualified<bio::dna4, bio::phred42>>>));
 }
 
 /* Check the SDSL containers */

@@ -14,16 +14,16 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/container/concept.hpp>
 #include <bio/ranges/views/single_pass_input.hpp>
 #include <bio/ranges/views/take.hpp>
 #include <bio/ranges/views/take_exactly.hpp>
 #include <bio/ranges/views/to.hpp>
-#include <algorithm>
+#include <bio/test/expect_range_eq.hpp>
 #include <concepts>
 #include <ranges>
-#include <bio/test/expect_range_eq.hpp>
 
 // ============================================================================
 //  test templates
@@ -80,7 +80,7 @@ void do_concepts(adaptor_t && adaptor, bool const exactly)
     EXPECT_TRUE(bio::const_iterable_range<decltype(v1)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(v1), int>));
 
-    auto v3 = vec | std::views::transform([] (auto && v) { return v; }) | adaptor;
+    auto v3 = vec | std::views::transform([](auto && v) { return v; }) | adaptor;
 
     EXPECT_TRUE(std::ranges::input_range<decltype(v3)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v3)>);
@@ -136,13 +136,11 @@ TEST(view_take_exactly, concepts)
 TEST(view_take_exactly, underlying_is_shorter)
 {
     std::string vec{"foo"};
-    EXPECT_NO_THROW(( bio::views::take_exactly(vec, 4) )); // no parsing
+    EXPECT_NO_THROW((bio::views::take_exactly(vec, 4))); // no parsing
 
     std::string v;
-    EXPECT_NO_THROW(( v = vec
-                        | bio::views::single_pass_input
-                        | bio::views::take_exactly(4)
-                        | bio::views::to<std::string>())); // full parsing on conversion
+    EXPECT_NO_THROW((v = vec | bio::views::single_pass_input | bio::views::take_exactly(4) |
+                         bio::views::to<std::string>())); // full parsing on conversion
     EXPECT_EQ("foo", v);
 
     auto v2 = vec | bio::views::single_pass_input | bio::views::take_exactly(4);
@@ -152,7 +150,7 @@ TEST(view_take_exactly, underlying_is_shorter)
 TEST(view_take_exactly, shrink_size_on_input_ranges)
 {
     std::string vec{"foobar"};
-    auto v = vec | bio::views::single_pass_input | bio::views::take_exactly(3);
+    auto        v = vec | bio::views::single_pass_input | bio::views::take_exactly(3);
 
     EXPECT_EQ(std::ranges::size(v), 3u);
     EXPECT_EQ(*std::ranges::begin(v), 'f');
@@ -186,17 +184,15 @@ TEST(view_take_exactly_or_throw, concepts)
 TEST(view_take_exactly_or_throw, underlying_is_shorter)
 {
     std::string vec{"foo"};
-    EXPECT_THROW(( bio::views::take_exactly_or_throw(vec, 4) ),
-                   std::invalid_argument); // no parsing, but throws in adaptor
+    EXPECT_THROW((bio::views::take_exactly_or_throw(vec, 4)),
+                 std::invalid_argument); // no parsing, but throws in adaptor
 
     std::list l{'f', 'o', 'o'};
-    EXPECT_THROW(( bio::detail::view_take<std::views::all_t<std::list<char> &>, true, true>(l, 4) ),
-                   std::invalid_argument); // no parsing, but throws on construction
+    EXPECT_THROW((bio::detail::view_take<std::views::all_t<std::list<char> &>, true, true>(l, 4)),
+                 std::invalid_argument); // no parsing, but throws on construction
 
     std::string v;
-    EXPECT_THROW(( v = vec
-                     | bio::views::single_pass_input
-                     | bio::views::take_exactly_or_throw(4)
-                     | bio::views::to<std::string>()),
-                   std::runtime_error); // full parsing on conversion, throw on conversion
+    EXPECT_THROW(
+      (v = vec | bio::views::single_pass_input | bio::views::take_exactly_or_throw(4) | bio::views::to<std::string>()),
+      std::runtime_error); // full parsing on conversion, throw on conversion
 }

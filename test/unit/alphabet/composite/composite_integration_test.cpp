@@ -28,11 +28,11 @@ using bio::operator""_phred63;
 using bio::operator""_rna4;
 
 // tests various combinations of alphabet_variant and alphabet_tuple
-using qualified_dna_phred42 = bio::qualified<bio::dna4, bio::phred42>;
-using qualified_gapped_dna_phred42 = bio::qualified<bio::gapped<bio::dna4>, bio::phred42>;
-using gapped_qualified_dna_phred42 = bio::gapped<qualified_dna_phred42>;
+using qualified_dna_phred42                          = bio::qualified<bio::dna4, bio::phred42>;
+using qualified_gapped_dna_phred42                   = bio::qualified<bio::gapped<bio::dna4>, bio::phred42>;
+using gapped_qualified_dna_phred42                   = bio::gapped<qualified_dna_phred42>;
 using qualified_qualified_gapped_dna_phred42_phred42 = bio::qualified<qualified_gapped_dna_phred42, bio::phred42>;
-using gapped_alphabet_variant_dna_phred42 = bio::gapped<bio::alphabet_variant<bio::dna4, bio::phred42>>;
+using gapped_alphabet_variant_dna_phred42            = bio::gapped<bio::alphabet_variant<bio::dna4, bio::phred42>>;
 
 using alphabet_types = ::testing::Types<qualified_dna_phred42,
                                         qualified_gapped_dna_phred42,
@@ -69,7 +69,9 @@ TEST(composite, custom_constructors)
     gapped_qualified_dna_phred42 t42{'C'_rna4};
     gapped_qualified_dna_phred42 t43{'$'_phred42};
     gapped_qualified_dna_phred42 t44{bio::gap{}};
-    gapped_qualified_dna_phred42 t45{qualified_dna_phred42{'C'_dna4, '!'_phred42}};
+    gapped_qualified_dna_phred42 t45{
+      qualified_dna_phred42{'C'_dna4, '!'_phred42}
+    };
 
     qualified_qualified_gapped_dna_phred42_phred42 t51{'C'_dna4};
     qualified_qualified_gapped_dna_phred42_phred42 t52{'C'_rna4};
@@ -82,7 +84,9 @@ TEST(composite, custom_constructors)
     gapped_alphabet_variant_dna_phred42 t62{'C'_rna4};
     gapped_alphabet_variant_dna_phred42 t63{'$'_phred42};
     gapped_alphabet_variant_dna_phred42 t64{bio::gap{}};
-    gapped_alphabet_variant_dna_phred42 t65{qualified_dna_phred42{'C'_dna4, '!'_phred42}};
+    gapped_alphabet_variant_dna_phred42 t65{
+      qualified_dna_phred42{'C'_dna4, '!'_phred42}
+    };
 
     EXPECT_EQ(t11, t12);
     EXPECT_EQ(t13, t14);
@@ -136,7 +140,9 @@ TEST(composite_constexpr, custom_constructor)
     constexpr gapped_qualified_dna_phred42 t42{'C'_rna4};
     constexpr gapped_qualified_dna_phred42 t43{'$'_phred42};
     constexpr gapped_qualified_dna_phred42 t44{bio::gap{}};
-    constexpr gapped_qualified_dna_phred42 t45{qualified_dna_phred42{'C'_dna4, '!'_phred42}};
+    constexpr gapped_qualified_dna_phred42 t45{
+      qualified_dna_phred42{'C'_dna4, '!'_phred42}
+    };
 
     constexpr qualified_qualified_gapped_dna_phred42_phred42 t51{'C'_dna4};
     constexpr qualified_qualified_gapped_dna_phred42_phred42 t52{'C'_rna4};
@@ -149,7 +155,9 @@ TEST(composite_constexpr, custom_constructor)
     constexpr gapped_alphabet_variant_dna_phred42 t62{'C'_rna4};
     constexpr gapped_alphabet_variant_dna_phred42 t63{'$'_phred42};
     constexpr gapped_alphabet_variant_dna_phred42 t64{bio::gap{}};
-    constexpr gapped_alphabet_variant_dna_phred42 t65{qualified_dna_phred42{'C'_dna4, '!'_phred42}};
+    constexpr gapped_alphabet_variant_dna_phred42 t65{
+      qualified_dna_phred42{'C'_dna4, '!'_phred42}
+    };
 }
 
 TEST(composite, custom_assignment)
@@ -192,9 +200,13 @@ TEST(composite, custom_assignment)
 
     gapped_qualified_dna_phred42 t41{};
     gapped_qualified_dna_phred42 t42{'C'_dna4};
-    gapped_qualified_dna_phred42 t43{qualified_dna_phred42{'C'_dna4, '$'_phred42}};
+    gapped_qualified_dna_phred42 t43{
+      qualified_dna_phred42{'C'_dna4, '$'_phred42}
+    };
     gapped_qualified_dna_phred42 t44{bio::gap{}};
-    gapped_qualified_dna_phred42 t45{qualified_dna_phred42{'C'_dna4, '!'_phred42}};
+    gapped_qualified_dna_phred42 t45{
+      qualified_dna_phred42{'C'_dna4, '!'_phred42}
+    };
     t41 = 'C'_dna4;
     EXPECT_EQ(t41, t42);
     t41 = 'C'_rna4;
@@ -208,10 +220,14 @@ TEST(composite, custom_assignment)
 
     qualified_qualified_gapped_dna_phred42_phred42 t51{};
     qualified_qualified_gapped_dna_phred42_phred42 t52{'C'_dna4};
-    qualified_qualified_gapped_dna_phred42_phred42 t53{qualified_gapped_dna_phred42{'C'_dna4, '!'_phred42},
-                                                       '$'_phred42};
-    qualified_qualified_gapped_dna_phred42_phred42 t54{qualified_gapped_dna_phred42{bio::gap{}, '!'_phred42},
-                                                       '$'_phred42};
+    qualified_qualified_gapped_dna_phred42_phred42 t53{
+      qualified_gapped_dna_phred42{'C'_dna4, '!'_phred42},
+      '$'_phred42
+    };
+    qualified_qualified_gapped_dna_phred42_phred42 t54{
+      qualified_gapped_dna_phred42{bio::gap{}, '!'_phred42},
+      '$'_phred42
+    };
     t51 = 'C'_dna4;
     EXPECT_EQ(t51, t52);
     t51 = 'C'_rna4;
@@ -229,7 +245,9 @@ TEST(composite, custom_assignment)
     gapped_alphabet_variant_dna_phred42 t62{'C'_dna4};
     gapped_alphabet_variant_dna_phred42 t63{'$'_phred42};
     gapped_alphabet_variant_dna_phred42 t64{bio::gap{}};
-    gapped_alphabet_variant_dna_phred42 t65{qualified_dna_phred42{'C'_dna4, '!'_phred42}};
+    gapped_alphabet_variant_dna_phred42 t65{
+      qualified_dna_phred42{'C'_dna4, '!'_phred42}
+    };
     t61 = 'C'_dna4;
     EXPECT_EQ(t61, t62);
     t61 = 'C'_rna4;
@@ -240,7 +258,6 @@ TEST(composite, custom_assignment)
     EXPECT_EQ(t61, t64);
     t61 = qualified_dna_phred42{'C'_dna4, '!'_phred42};
     EXPECT_EQ(t61, t65);
-
 }
 
 constexpr bool do_assignment()
@@ -346,42 +363,52 @@ TEST(composite, custom_comparison)
     EXPECT_GT(bio::gap{}, t31); // *
     EXPECT_LT(bio::gapped<bio::dna4>('A'_dna4), t31);
 
-    gapped_qualified_dna_phred42 t41{qualified_dna_phred42{'C'_dna4, '$'_phred42}};
+    gapped_qualified_dna_phred42 t41{
+      qualified_dna_phred42{'C'_dna4, '$'_phred42}
+    };
     EXPECT_EQ(t41, 'C'_dna4);
     EXPECT_EQ(t41, 'C'_rna4);
     EXPECT_EQ(t41, '$'_phred42);
     EXPECT_NE(t41, bio::gap{});
     EXPECT_EQ(t41, (qualified_dna_phred42{'C'_dna4, '$'_phred42}));
-    EXPECT_EQ(t41, (gapped_qualified_dna_phred42{qualified_dna_phred42{'C'_dna4, '$'_phred42}}));
-//     EXPECT_LT(t41, 'G'_dna4); // not supposed to work
-//     EXPECT_LT(t41, 'G'_rna4); // not supposed to work
-//     EXPECT_LT(t41, '%'_phred42); // would never be LT, because bio::dna4 part of tuple defaulted to 'A' on RHS
-    EXPECT_LT(t41, bio::gap{}); // *
+    EXPECT_EQ(t41,
+              (gapped_qualified_dna_phred42{
+                qualified_dna_phred42{'C'_dna4, '$'_phred42}
+    }));
+    //     EXPECT_LT(t41, 'G'_dna4); // not supposed to work
+    //     EXPECT_LT(t41, 'G'_rna4); // not supposed to work
+    //     EXPECT_LT(t41, '%'_phred42); // would never be LT, because bio::dna4 part of tuple defaulted to 'A' on RHS
+    EXPECT_LT(t41, bio::gap{});                                     // *
     EXPECT_LT(t41, (qualified_dna_phred42{'G'_dna4, '#'_phred42})); // *
-    EXPECT_LT(t41, (gapped_qualified_dna_phred42{qualified_dna_phred42{'G'_dna4, '#'_phred42}}));
+    EXPECT_LT(t41,
+              (gapped_qualified_dna_phred42{
+                qualified_dna_phred42{'G'_dna4, '#'_phred42}
+    }));
 
     EXPECT_EQ('C'_dna4, t41);
     EXPECT_EQ('C'_rna4, t41);
     EXPECT_EQ('$'_phred42, t41);
     EXPECT_EQ((qualified_dna_phred42{'C'_dna4, '$'_phred42}), t41);
     EXPECT_NE(bio::gap{}, t41);
-//     EXPECT_LT('A'_dna4, t41); // not supposed to work
-//     EXPECT_LT('A'_rna4, t41); // not supposed to work
-//     EXPECT_LT('#'_phred42, t41); // not supposed to work
+    //     EXPECT_LT('A'_dna4, t41); // not supposed to work
+    //     EXPECT_LT('A'_rna4, t41); // not supposed to work
+    //     EXPECT_LT('#'_phred42, t41); // not supposed to work
     EXPECT_LT((qualified_dna_phred42{'A'_dna4, '#'_phred42}), t41); // *
-    EXPECT_GT(bio::gap{}, t41); // *
+    EXPECT_GT(bio::gap{}, t41);                                     // *
 
-    qualified_qualified_gapped_dna_phred42_phred42 t51{qualified_gapped_dna_phred42{'C'_dna4, '$'_phred42}};
+    qualified_qualified_gapped_dna_phred42_phred42 t51{
+      qualified_gapped_dna_phred42{'C'_dna4, '$'_phred42}
+    };
     EXPECT_EQ(t51, 'C'_dna4);
     EXPECT_EQ(t51, 'C'_rna4);
     EXPECT_NE(t51, bio::gap{});
     EXPECT_EQ(t51, bio::gapped<bio::dna4>('C'_dna4));
     EXPECT_EQ(t51, '!'_phred42); // "outer" Phred score element
     EXPECT_EQ(t51, (qualified_gapped_dna_phred42{'C'_dna4, '$'_phred42}));
-//     EXPECT_LT(t51, 'G'_dna4); // not supposed to work
-//     EXPECT_LT(t51, 'G'_rna4); // not supposed to work
-//     EXPECT_LT(t51, bio::gap{}); // not supposed to work
-//     EXPECT_LT(t51, bio::gapped<bio::dna4>('G'_dna4)); // not supposed to work
+    //     EXPECT_LT(t51, 'G'_dna4); // not supposed to work
+    //     EXPECT_LT(t51, 'G'_rna4); // not supposed to work
+    //     EXPECT_LT(t51, bio::gap{}); // not supposed to work
+    //     EXPECT_LT(t51, bio::gapped<bio::dna4>('G'_dna4)); // not supposed to work
     EXPECT_LT(t51, '"'_phred42);
     EXPECT_LT(t51, (qualified_gapped_dna_phred42{'C'_dna4, '%'_phred42}));
 
@@ -391,10 +418,10 @@ TEST(composite, custom_comparison)
     EXPECT_EQ(bio::gapped<bio::dna4>('C'_dna4), t51);
     EXPECT_EQ('!'_phred42, t51);
     EXPECT_EQ((qualified_gapped_dna_phred42{'C'_dna4, '$'_phred42}), t51);
-//     EXPECT_LT('A'_dna4, t51); // not supposed to work
-//     EXPECT_LT('A'_rna4, t51); // not supposed to work
-//     EXPECT_GT(bio::gap{}, t51); // not supposed to work
-//     EXPECT_LT(bio::gapped<bio::dna4>('A'_dna4), t51); // not supposed to work
+    //     EXPECT_LT('A'_dna4, t51); // not supposed to work
+    //     EXPECT_LT('A'_rna4, t51); // not supposed to work
+    //     EXPECT_GT(bio::gap{}, t51); // not supposed to work
+    //     EXPECT_LT(bio::gapped<bio::dna4>('A'_dna4), t51); // not supposed to work
     EXPECT_GT('"'_phred42, t51);
     EXPECT_GT((qualified_gapped_dna_phred42{'C'_dna4, '%'_phred42}), t51);
 
@@ -403,18 +430,18 @@ TEST(composite, custom_comparison)
     EXPECT_EQ(t61, 'C'_dna4);
     EXPECT_NE(t61, bio::gap{});
     EXPECT_NE(t61, '!'_phred42);
-    EXPECT_LT(t61, 'G'_rna4); // *
-    EXPECT_LT(t61, 'G'_dna4); // *
-    EXPECT_LT(t61, bio::gap{}); // *
+    EXPECT_LT(t61, 'G'_rna4);    // *
+    EXPECT_LT(t61, 'G'_dna4);    // *
+    EXPECT_LT(t61, bio::gap{});  // *
     EXPECT_LT(t61, '"'_phred42); // *
 
     EXPECT_EQ('C'_rna4, t61);
     EXPECT_EQ('C'_dna4, t61);
     EXPECT_NE(bio::gap{}, t61);
     EXPECT_NE('!'_phred42, t61);
-    EXPECT_LT('A'_rna4, t61); // *
-    EXPECT_LT('A'_dna4, t61); // *
-    EXPECT_GT(bio::gap{}, t61); // *
+    EXPECT_LT('A'_rna4, t61);    // *
+    EXPECT_LT('A'_dna4, t61);    // *
+    EXPECT_GT(bio::gap{}, t61);  // *
     EXPECT_GT('!'_phred42, t61); // *
 }
 
@@ -422,18 +449,20 @@ TEST(composite, get)
 {
     using bio::get;
 
-    qualified_qualified_gapped_dna_phred42_phred42 t51{qualified_gapped_dna_phred42{'C'_dna4, '$'_phred42}};
-    EXPECT_EQ(get<0>(t51),            'C'_dna4);
-    EXPECT_EQ(get<0>(get<0>(t51)),    'C'_dna4);
+    qualified_qualified_gapped_dna_phred42_phred42 t51{
+      qualified_gapped_dna_phred42{'C'_dna4, '$'_phred42}
+    };
+    EXPECT_EQ(get<0>(t51), 'C'_dna4);
+    EXPECT_EQ(get<0>(get<0>(t51)), 'C'_dna4);
 
-    EXPECT_EQ(get<0>(t51),            'C'_rna4);
-    EXPECT_EQ(get<0>(get<0>(t51)),    'C'_rna4);
+    EXPECT_EQ(get<0>(t51), 'C'_rna4);
+    EXPECT_EQ(get<0>(get<0>(t51)), 'C'_rna4);
 
-    EXPECT_NE(get<0>(t51),            bio::gap{});
-    EXPECT_NE(get<0>(get<0>(t51)),    bio::gap{});
+    EXPECT_NE(get<0>(t51), bio::gap{});
+    EXPECT_NE(get<0>(get<0>(t51)), bio::gap{});
 
-    EXPECT_EQ(get<0>(t51),            bio::gapped<bio::dna4>('C'_dna4));
-    EXPECT_EQ(get<0>(get<0>(t51)),    bio::gapped<bio::dna4>('C'_dna4));
+    EXPECT_EQ(get<0>(t51), bio::gapped<bio::dna4>('C'_dna4));
+    EXPECT_EQ(get<0>(get<0>(t51)), bio::gapped<bio::dna4>('C'_dna4));
 
-    EXPECT_NE(get<0>(t51),            '!'_phred42);
+    EXPECT_NE(get<0>(t51), '!'_phred42);
 }

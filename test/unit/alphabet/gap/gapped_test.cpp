@@ -13,8 +13,8 @@
 #include <vector>
 
 #include <bio/alphabet/gap/gapped.hpp>
-#include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/alphabet/nucleotide/dna15.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/alphabet/quality/phred42.hpp>
 #include <bio/alphabet/quality/qualified.hpp>
 
@@ -25,9 +25,8 @@
 
 using bio::operator""_dna4;
 
-using gapped_types = ::testing::Types<bio::gapped<bio::dna4>,
-                                      bio::gapped<bio::dna15>,
-                                      bio::gapped<bio::qualified<bio::dna4, bio::phred42>>>;
+using gapped_types = ::testing::
+  Types<bio::gapped<bio::dna4>, bio::gapped<bio::dna15>, bio::gapped<bio::qualified<bio::dna4, bio::phred42>>>;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(gapped, alphabet, gapped_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(gapped, semi_alphabet_test, gapped_types, );
@@ -41,8 +40,8 @@ TYPED_TEST_SUITE(gapped_test, gapped_types, );
 
 TYPED_TEST(gapped_test, concept_check)
 {
-//TODO(bio)
-//    EXPECT_TRUE((bio::aligned_sequence<std::vector<TypeParam>>));
+    //TODO(bio)
+    //    EXPECT_TRUE((bio::aligned_sequence<std::vector<TypeParam>>));
 }
 
 TEST(gapped_test, initialise_from_component_alphabet)
@@ -60,7 +59,7 @@ TEST(gapped_test, initialise_from_component_alphabet)
     alphabet_t letter7 = static_cast<alphabet_t>('T'_dna4);
 
     constexpr alphabet_t letter8{bio::gap{}}; // letter3 = 'T'_dna4; does not work
-    alphabet_t letter9{bio::gap{}};
+    alphabet_t           letter9{bio::gap{}};
 
     EXPECT_EQ(letter0.to_rank(), 0);
     EXPECT_EQ(letter1.to_rank(), 1);

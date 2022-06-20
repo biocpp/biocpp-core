@@ -123,7 +123,7 @@ TEST(pod_tuple, stdget_i)
 TEST(pod_tuple_struct_binding, struct_binding)
 {
     bio::pod_tuple<int, long, float> t0{4, 7l, 3.0f};
-    auto [ i, l, f ] = t0;
+    auto [i, l, f] = t0;
 
     EXPECT_EQ(i, 4);
     EXPECT_EQ(l, 7l);
@@ -133,9 +133,9 @@ TEST(pod_tuple_struct_binding, struct_binding)
 // get<type>
 TEST(pod_tuple_get_type, get_type)
 {
-    using pt = bio::pod_tuple<int, long, float>;
+    using pt  = bio::pod_tuple<int, long, float>;
     using ptc = pt const;
-    pt t0{4, 7l, 3.0f};
+    pt  t0{4, 7l, 3.0f};
     ptc t1{4, 7l, 3.0f};
 
     static_assert(std::is_same_v<decltype(bio::get<int>(t0)), int &>);
@@ -174,9 +174,9 @@ TEST(pod_tuple_get_type, get_type)
 // std::get<type>
 TEST(pod_tuple_get_type, stdget_type)
 {
-    using pt = bio::pod_tuple<int, long, float>;
+    using pt  = bio::pod_tuple<int, long, float>;
     using ptc = pt const;
-    pt t0{4, 7l, 3.0f};
+    pt  t0{4, 7l, 3.0f};
     ptc t1{4, 7l, 3.0f};
 
     static_assert(std::is_same_v<decltype(std::get<int>(t0)), int &>);

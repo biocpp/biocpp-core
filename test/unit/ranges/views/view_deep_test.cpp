@@ -10,20 +10,20 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/views/deep.hpp>
 #include <bio/ranges/views/to.hpp>
-#include <algorithm>
-#include <ranges>
 #include <bio/test/expect_range_eq.hpp>
+#include <ranges>
 
 namespace bio::views
 {
 inline auto const deep_reverse = deep{std::views::reverse};
-inline auto const deep_take = deep{std::views::take};
-inline auto const deep_take2 = deep{std::views::take(2)};
-}
+inline auto const deep_take    = deep{std::views::take};
+inline auto const deep_take2   = deep{std::views::take(2)};
+} // namespace bio::views
 
 using bio::operator""_dna5;
 
@@ -135,7 +135,7 @@ TEST(view_deep_take, deep)
     EXPECT_RANGE_EQ(v[1], "TG"_dna5);
     EXPECT_RANGE_EQ(v[2], "NN"_dna5);
 
-    int i = 2;
+    int  i  = 2;
     auto v2 = foo | bio::views::deep_take(i);
 
     ASSERT_EQ(size(v2), 3u);

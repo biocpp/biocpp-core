@@ -8,16 +8,16 @@
 
 #include <bio/meta/platform.hpp>
 
-#include "alphabet_test_template.hpp"
 #include "alphabet_constexpr_test_template.hpp"
-#include "semi_alphabet_test_template.hpp"
+#include "alphabet_test_template.hpp"
 #include "semi_alphabet_constexpr_test_template.hpp"
+#include "semi_alphabet_test_template.hpp"
 
 // Tests the capabilities of the explicit alphabet customisation
 
 //![third_party_type]
-#include <cstddef>                      // for size_t
-#include <bio/alphabet/concept.hpp>  // for bio::alphabet
+#include <bio/alphabet/concept.hpp> // for bio::alphabet
+#include <cstddef>                  // for size_t
 
 // this is from some other library:
 namespace third_party_ns
@@ -38,7 +38,6 @@ enum class third_party_type
 template <>
 struct bio::custom::alphabet<third_party_ns::third_party_type>
 {
-
     static constexpr size_t alphabet_size = 3;
 
     static constexpr size_t to_rank(third_party_ns::third_party_type const a) noexcept
@@ -46,13 +45,20 @@ struct bio::custom::alphabet<third_party_ns::third_party_type>
         return static_cast<size_t>(a);
     }
 
-    static constexpr third_party_ns::third_party_type & assign_rank_to(size_t const r, third_party_ns::third_party_type & a) noexcept
+    static constexpr third_party_ns::third_party_type & assign_rank_to(size_t const                       r,
+                                                                       third_party_ns::third_party_type & a) noexcept
     {
         switch (r)
         {
-            case 0:  a = third_party_ns::third_party_type::ZERO; return a;
-            case 1:  a = third_party_ns::third_party_type::ONE;  return a;
-            default: a = third_party_ns::third_party_type::TWO;  return a;
+            case 0:
+                a = third_party_ns::third_party_type::ZERO;
+                return a;
+            case 1:
+                a = third_party_ns::third_party_type::ONE;
+                return a;
+            default:
+                a = third_party_ns::third_party_type::TWO;
+                return a;
         }
     }
 
@@ -60,19 +66,29 @@ struct bio::custom::alphabet<third_party_ns::third_party_type>
     {
         switch (a)
         {
-            case third_party_ns::third_party_type::ZERO: return '0';
-            case third_party_ns::third_party_type::ONE:  return '1';
-            default:                                     return '2';
+            case third_party_ns::third_party_type::ZERO:
+                return '0';
+            case third_party_ns::third_party_type::ONE:
+                return '1';
+            default:
+                return '2';
         }
     }
 
-    static constexpr third_party_ns::third_party_type & assign_char_to(char const c, third_party_ns::third_party_type & a) noexcept
+    static constexpr third_party_ns::third_party_type & assign_char_to(char const                         c,
+                                                                       third_party_ns::third_party_type & a) noexcept
     {
         switch (c)
         {
-            case '0': a = third_party_ns::third_party_type::ZERO; return a;
-            case '1': a = third_party_ns::third_party_type::ONE;  return a;
-            default:  a = third_party_ns::third_party_type::TWO;  return a;
+            case '0':
+                a = third_party_ns::third_party_type::ZERO;
+                return a;
+            case '1':
+                a = third_party_ns::third_party_type::ONE;
+                return a;
+            default:
+                a = third_party_ns::third_party_type::TWO;
+                return a;
         }
     }
 };
