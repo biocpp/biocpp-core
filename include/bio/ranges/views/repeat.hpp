@@ -52,16 +52,16 @@ private:
     using sentinel_type = std::default_sentinel_t;
 
     //!\brief The view which wraps the single value to repeat.
-    using single_value_t = value_t;//decltype(std::views::single(std::declval<value_t>()));
+    using single_value_t = value_t; //decltype(std::views::single(std::declval<value_t>()));
 
     /*!\name Associated types
      * These associated types are needed in bio::detail::random_access_iterator.
      * \{
      */
     //!\brief The value type (equals the value_t with any references removed).
-    using value_type = std::remove_reference_t<value_t>;
+    using value_type      = std::remove_reference_t<value_t>;
     //!\brief The reference_type.
-    using reference  = value_type &;
+    using reference       = value_type &;
     //!\brief The const reference type.
     using const_reference = value_type const &;
     //!\brief The type to store the difference of two iterators.
@@ -76,7 +76,7 @@ private:
     * \{
     */
     //!\brief The iterator type of this view (a random access iterator).
-    using iterator = basic_iterator<repeat_view>;
+    using iterator       = basic_iterator<repeat_view>;
     //!\brief The const_iterator type is equal to the iterator type but over the const qualified type.
     using const_iterator = basic_iterator<repeat_view const>;
     //!\}
@@ -89,23 +89,21 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    repeat_view() = default; //!< Defaulted.
-    repeat_view(repeat_view const &) = default; //!< Defaulted.
+    repeat_view()                                = default; //!< Defaulted.
+    repeat_view(repeat_view const &)             = default; //!< Defaulted.
     repeat_view & operator=(repeat_view const &) = default; //!< Defaulted.
-    repeat_view(repeat_view &&) = default; //!< Defaulted.
-    repeat_view & operator=(repeat_view &&) = default; //!< Defaulted.
-    ~repeat_view() = default; //!< Defaulted.
+    repeat_view(repeat_view &&)                  = default; //!< Defaulted.
+    repeat_view & operator=(repeat_view &&)      = default; //!< Defaulted.
+    ~repeat_view()                               = default; //!< Defaulted.
 
     //!\brief Construct from any type (Note: the value will be copied into views::single).
-    constexpr explicit repeat_view(value_t const & value)
-        requires std::copy_constructible<value_t>
-        : single_value{value}
+    constexpr explicit repeat_view(value_t const & value) requires std::copy_constructible<value_t> :
+      single_value{value}
 
     {}
 
     //!\overload
-    constexpr explicit repeat_view(value_t && value) : single_value{std::move(value)}
-    {}
+    constexpr explicit repeat_view(value_t && value) : single_value{std::move(value)} {}
     //!\}
 
     /*!\name Iterators
@@ -126,16 +124,10 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr iterator begin() noexcept
-    {
-        return iterator{*this};
-    }
+    constexpr iterator begin() noexcept { return iterator{*this}; }
 
     //!\copydoc begin()
-    constexpr const_iterator begin() const noexcept
-    {
-        return const_iterator{*this};
-    }
+    constexpr const_iterator begin() const noexcept { return const_iterator{*this}; }
 
     /*!\brief Returns an iterator to the element following the last element of the range.
      * \returns Iterator to the end.
@@ -152,16 +144,10 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr sentinel_type end() noexcept
-    {
-        return {};
-    }
+    constexpr sentinel_type end() noexcept { return {}; }
 
     //!\copydoc end()
-    constexpr sentinel_type end() const noexcept
-    {
-        return {};
-    }
+    constexpr sentinel_type end() const noexcept { return {}; }
     //!\}
 
     /*!\name Element access
@@ -189,10 +175,7 @@ public:
     }
 
     //!\copydoc operator[]()
-    constexpr reference operator[](difference_type const BIOCPP_DOXYGEN_ONLY(n)) noexcept
-    {
-        return single_value;
-    }
+    constexpr reference operator[](difference_type const BIOCPP_DOXYGEN_ONLY(n)) noexcept { return single_value; }
     //!}
 
 private:
@@ -203,8 +186,7 @@ private:
 //!\brief The iterator type for views::repeat (a random access iterator).
 template <typename value_t>
 template <typename parent_type>
-class repeat_view<value_t>::basic_iterator :
-    public detail::random_access_iterator_base<parent_type, basic_iterator>
+class repeat_view<value_t>::basic_iterator : public detail::random_access_iterator_base<parent_type, basic_iterator>
 {
     //!\brief The CRTP base type.
     using base_t = detail::random_access_iterator_base<parent_type, basic_iterator>;
@@ -227,12 +209,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    basic_iterator() = default; //!< Defaulted.
-    basic_iterator(basic_iterator const &) = default; //!< Defaulted.
+    basic_iterator()                                   = default; //!< Defaulted.
+    basic_iterator(basic_iterator const &)             = default; //!< Defaulted.
     basic_iterator & operator=(basic_iterator const &) = default; //!< Defaulted.
-    basic_iterator (basic_iterator &&) = default; //!< Defaulted.
-    basic_iterator & operator=(basic_iterator &&) = default; //!< Defaulted.
-    ~basic_iterator() = default; //!< Defaulted.
+    basic_iterator(basic_iterator &&)                  = default; //!< Defaulted.
+    basic_iterator & operator=(basic_iterator &&)      = default; //!< Defaulted.
+    ~basic_iterator()                                  = default; //!< Defaulted.
 
     /*!\brief Construct by host range.
      * \param host The host range.
@@ -243,13 +225,11 @@ public:
      * \param rhs a non-const version of basic_iterator to construct from.
      */
     template <typename parent_type2>
-    //!\cond
-        requires std::is_const_v<parent_type> && (!std::is_const_v<parent_type2>) &&
-                 std::is_same_v<std::remove_const_t<parent_type>, parent_type2>
+        //!\cond
+        requires(std::is_const_v<parent_type> &&
+                 (!std::is_const_v<parent_type2>)&&std::is_same_v<std::remove_const_t<parent_type>, parent_type2>)
     //!\endcond
-    constexpr basic_iterator(basic_iterator<parent_type2> const & rhs) noexcept :
-        base_t{rhs}
-    {}
+    constexpr basic_iterator(basic_iterator<parent_type2> const & rhs) noexcept : base_t{rhs} {}
     //!\}
 
     /*!\name Comparison operators
@@ -261,30 +241,16 @@ public:
     using base_t::operator!=;
 
     //!\brief Equality comparison to the sentinel always returns false on an infinite view.
-    constexpr bool operator==(std::default_sentinel_t const &) const noexcept
-    {
-        return false;
-    }
+    constexpr bool operator==(std::default_sentinel_t const &) const noexcept { return false; }
 
     //!\brief Inequality comparison to the sentinel always returns true on an infinite view.
-    constexpr bool operator!=(std::default_sentinel_t const &) const noexcept
-    {
-        return true;
-    }
+    constexpr bool operator!=(std::default_sentinel_t const &) const noexcept { return true; }
 
     //!\brief Equality comparison to the sentinel always returns false on an infinite view.
-    friend constexpr bool operator==(std::default_sentinel_t const &,
-                                     basic_iterator const &) noexcept
-    {
-        return false;
-    }
+    friend constexpr bool operator==(std::default_sentinel_t const &, basic_iterator const &) noexcept { return false; }
 
     //!\brief Inequality comparison to the sentinel always returns true on an infinite view.
-    friend constexpr bool operator!=(std::default_sentinel_t const &,
-                                     basic_iterator const &) noexcept
-    {
-        return true;
-    }
+    friend constexpr bool operator!=(std::default_sentinel_t const &, basic_iterator const &) noexcept { return true; }
     //!\}
 };
 
@@ -360,7 +326,7 @@ namespace bio::views
  *
  * \hideinitializer
  */
-constexpr inline detail::repeat_fn repeat{};
+inline constexpr detail::repeat_fn repeat{};
 //!\}
 
 } // namespace bio::views

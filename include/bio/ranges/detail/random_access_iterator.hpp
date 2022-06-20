@@ -38,7 +38,7 @@ namespace bio::detail
  * Since the CRTP parameter is in fact a template template, CRTP instantiation looks a little different, e.g.:
  * \include test/snippet/ranges/detail/random_access_iterator.cpp
  */
-template <typename range_type, template <typename ...> typename derived_t_template>
+template <typename range_type, template <typename...> typename derived_t_template>
 class random_access_iterator_base
 {
 protected:
@@ -50,30 +50,29 @@ protected:
     position_type pos{static_cast<position_type>(0)};
 
     //!\brief This friend declaration is required to allow non-const to const-construction.
-    template <typename range_type2, template <typename ...> typename derived_t_template2>
-    //!\cond
-        requires std::is_const_v<range_type> && (!std::is_const_v<range_type2>) &&
-                 std::is_same_v<std::remove_const_t<range_type>, range_type2> &&
-                 std::is_same_v<derived_t_template2, derived_t_template>
+    template <typename range_type2, template <typename...> typename derived_t_template2>
+        //!\cond
+        requires(std::is_const_v<range_type> &&
+                 (!std::is_const_v<range_type2>)&&std::is_same_v<std::remove_const_t<range_type>, range_type2> &&
+                 std::is_same_v<derived_t_template2, derived_t_template>)
     //!\endcond
     friend class random_access_iterator_base;
 
     //!\brief Because this is CRTP, we know the full derived type:
-    using derived_t = derived_t_template <range_type>;
+    using derived_t = derived_t_template<range_type>;
 
 public:
     //!\brief Type for distances between iterators.
     using difference_type = typename range_type::difference_type; // TODO should be range_ but is broken in ranges
     //!\brief Value type of container elements.
-    using value_type = typename range_type::value_type;
+    using value_type      = typename range_type::value_type;
     //!\brief Use reference type defined by container.
-    using reference = std::conditional_t<std::is_const_v<range_type>,
-                                         typename range_type::const_reference,
-                                         typename range_type::reference>;
+    using reference       = std::
+      conditional_t<std::is_const_v<range_type>, typename range_type::const_reference, typename range_type::reference>;
     //!\brief Use const reference type provided by container.
-    using const_reference = typename range_type::const_reference; //TODO: there is no type trait for this, yet :o
+    using const_reference   = typename range_type::const_reference; //TODO: there is no type trait for this, yet :o
     //!\brief Pointer type is pointer of container element type.
-    using pointer = value_type *;
+    using pointer           = value_type *;
     //!\brief Tag this class as a random access iterator.
     using iterator_category = std::random_access_iterator_tag;
 
@@ -81,33 +80,33 @@ public:
      * \{
      */
     //!\brief Default constructor.
-    constexpr random_access_iterator_base() = default;
+    constexpr random_access_iterator_base()                                                = default;
     //!\brief Copy constructor.
-    constexpr random_access_iterator_base(random_access_iterator_base const &) = default;
+    constexpr random_access_iterator_base(random_access_iterator_base const &)             = default;
     //!\brief Copy construction via assignment.
     constexpr random_access_iterator_base & operator=(random_access_iterator_base const &) = default;
     //!\brief Move constructor.
-    constexpr random_access_iterator_base (random_access_iterator_base &&) = default;
+    constexpr random_access_iterator_base(random_access_iterator_base &&)                  = default;
     //!\brief Move assignment.
-    constexpr random_access_iterator_base & operator=(random_access_iterator_base &&) = default;
+    constexpr random_access_iterator_base & operator=(random_access_iterator_base &&)      = default;
     //!\brief Use default deconstructor.
-    ~random_access_iterator_base() = default;
+    ~random_access_iterator_base()                                                         = default;
 
     //!\brief Construct by host, default position pointer with 0.
     explicit constexpr random_access_iterator_base(range_type & host) noexcept : host{&host} {}
     //!\brief Construct by host and explicit position.
-    constexpr random_access_iterator_base(range_type & host, position_type const pos) noexcept :
-        host{&host}, pos{pos}
+    constexpr random_access_iterator_base(range_type & host, position_type const pos) noexcept : host{&host}, pos{pos}
     {}
 
     //!\brief Constructor for const version from non-const version.
     template <typename range_type2>
-    //!\cond
-        requires std::is_const_v<range_type> && (!std::is_const_v<range_type2>) &&
-                 std::is_same_v<std::remove_const_t<range_type>, range_type2>
+        //!\cond
+        requires(std::is_const_v<range_type> &&
+                 (!std::is_const_v<range_type2>)&&std::is_same_v<std::remove_const_t<range_type>, range_type2>)
     //!\endcond
-    constexpr random_access_iterator_base(random_access_iterator_base<range_type2, derived_t_template> const & rhs) noexcept :
-        host{rhs.host}, pos{rhs.pos}
+    constexpr random_access_iterator_base(
+      random_access_iterator_base<range_type2, derived_t_template> const & rhs) noexcept :
+      host{rhs.host}, pos{rhs.pos}
     {}
     //!\}
 
@@ -119,7 +118,7 @@ public:
 
     //!\brief Checks whether `*this` is equal to `rhs`.
     template <typename range_type2>
-    //!\cond
+        //!\cond
         requires std::is_same_v<std::remove_const_t<range_type>, std::remove_const_t<range_type2>>
     //!\endcond
     constexpr bool operator==(random_access_iterator_base<range_type2, derived_t_template> const & rhs) const noexcept
@@ -129,7 +128,7 @@ public:
 
     //!\brief Checks whether `*this` is not equal to `rhs`.
     template <typename range_type2>
-    //!\cond
+        //!\cond
         requires std::is_same_v<std::remove_const_t<range_type>, std::remove_const_t<range_type2>>
     //!\endcond
     constexpr bool operator!=(random_access_iterator_base<range_type2, derived_t_template> const & rhs) const noexcept
@@ -139,7 +138,7 @@ public:
 
     //!\brief Checks whether `*this` is less than `rhs`.
     template <typename range_type2>
-    //!\cond
+        //!\cond
         requires std::is_same_v<std::remove_const_t<range_type>, std::remove_const_t<range_type2>>
     //!\endcond
     constexpr bool operator<(random_access_iterator_base<range_type2, derived_t_template> const & rhs) const noexcept
@@ -149,7 +148,7 @@ public:
 
     //!\brief Checks whether `*this` is greater than `rhs`.
     template <typename range_type2>
-    //!\cond
+        //!\cond
         requires std::is_same_v<std::remove_const_t<range_type>, std::remove_const_t<range_type2>>
     //!\endcond
     constexpr bool operator>(random_access_iterator_base<range_type2, derived_t_template> const & rhs) const noexcept
@@ -159,7 +158,7 @@ public:
 
     //!\brief Checks whether `*this` is less than or equal to `rhs`.
     template <typename range_type2>
-    //!\cond
+        //!\cond
         requires std::is_same_v<std::remove_const_t<range_type>, std::remove_const_t<range_type2>>
     //!\endcond
     constexpr bool operator<=(random_access_iterator_base<range_type2, derived_t_template> const & rhs) const noexcept
@@ -169,7 +168,7 @@ public:
 
     //!\brief Checks whether `*this` is greater than or equal to `rhs`.
     template <typename range_type2>
-    //!\cond
+        //!\cond
         requires std::is_same_v<std::remove_const_t<range_type>, std::remove_const_t<range_type2>>
     //!\endcond
     constexpr bool operator>=(random_access_iterator_base<range_type2, derived_t_template> const & rhs) const noexcept
@@ -264,37 +263,24 @@ public:
      * \{
     */
     //!\brief Dereference operator returns element currently pointed at.
-    constexpr reference operator*() const noexcept(noexcept((*host)[pos]))
-    {
-        return (*host)[pos];
-    }
+    constexpr reference operator*() const noexcept(noexcept((*host)[pos])) { return (*host)[pos]; }
 
     //!\brief Return pointer to this iterator.
-    constexpr pointer operator->() const noexcept(noexcept((&host)[pos]))
-    {
-        return &host[pos];
-    }
+    constexpr pointer operator->() const noexcept(noexcept((&host)[pos])) { return &host[pos]; }
 
     //!\brief Return underlying container value currently pointed at.
-    constexpr reference operator[](position_type const n) const noexcept(noexcept((*host)[pos+n]))
+    constexpr reference operator[](position_type const n) const noexcept(noexcept((*host)[pos + n]))
     {
         return (*host)[pos + n];
     }
     //!\}
 
 private:
-
     //!\brief Cast this to derived type.
-    constexpr derived_t* this_derived()
-    {
-        return static_cast<derived_t*>(this);
-    }
+    constexpr derived_t * this_derived() { return static_cast<derived_t *>(this); }
 
     //!\copydoc this_derived
-    constexpr derived_t const * this_derived() const
-    {
-        return static_cast<derived_t const *>(this);
-    }
+    constexpr derived_t const * this_derived() const { return static_cast<derived_t const *>(this); }
 };
 
 /*!\brief A generic random access iterator that delegates most operations to the range.
@@ -306,8 +292,7 @@ private:
  * a requirement for this.
  */
 template <typename range_type>
-class random_access_iterator :
-    public random_access_iterator_base<range_type, random_access_iterator>
+class random_access_iterator : public random_access_iterator_base<range_type, random_access_iterator>
 {
 private:
     //!\brief Shortcut for the base class.
@@ -320,12 +305,12 @@ public:
      * \brief Make the parent's member types visible.
      * \{
      */
-    using typename base::difference_type;
-    using typename base::value_type;
-    using typename base::reference;
     using typename base::const_reference;
-    using typename base::pointer;
+    using typename base::difference_type;
     using typename base::iterator_category;
+    using typename base::pointer;
+    using typename base::reference;
+    using typename base::value_type;
     //!\}
 
     //!\brief Import the parent's constructors.

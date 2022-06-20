@@ -43,8 +43,8 @@ namespace bio::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename ...args_t>
-void enable_aminoacid(args_t ...) = delete;
+template <typename... args_t>
+void enable_aminoacid(args_t...) = delete;
 
 //!\brief Customisation point dispatcher for bio::enable_aminoacid.
 struct enable_aminoacid_dispatcher
@@ -121,7 +121,8 @@ namespace bio
  * follow the above instructions.
  */
 template <typename t>
-inline constexpr bool enable_aminoacid = detail::adl_only::enable_aminoacid_dispatcher::dispatch<std::remove_cvref_t<t>>();
+inline constexpr bool enable_aminoacid =
+  detail::adl_only::enable_aminoacid_dispatcher::dispatch<std::remove_cvref_t<t>>();
 
 // ============================================================================
 // concept

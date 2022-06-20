@@ -63,17 +63,17 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr dna4()                          noexcept = default; //!< Defaulted.
-    constexpr dna4(dna4 const &)              noexcept = default; //!< Defaulted.
-    constexpr dna4(dna4 &&)                   noexcept = default; //!< Defaulted.
-    constexpr dna4 & operator=(dna4 const &)  noexcept = default; //!< Defaulted.
-    constexpr dna4 & operator=(dna4 &&)       noexcept = default; //!< Defaulted.
-    ~dna4()                                   noexcept = default; //!< Defaulted.
+    constexpr dna4() noexcept                         = default; //!< Defaulted.
+    constexpr dna4(dna4 const &) noexcept             = default; //!< Defaulted.
+    constexpr dna4(dna4 &&) noexcept                  = default; //!< Defaulted.
+    constexpr dna4 & operator=(dna4 const &) noexcept = default; //!< Defaulted.
+    constexpr dna4 & operator=(dna4 &&) noexcept      = default; //!< Defaulted.
+    ~dna4() noexcept                                  = default; //!< Defaulted.
 
     using base_t::base_t;
 
     //!\brief Allow implicit construction from dna/rna of the same size.
-    template <std::same_as<rna4> t>    // Accept incomplete type
+    template <std::same_as<rna4> t> // Accept incomplete type
     constexpr dna4(t const & r) noexcept
     {
         assign_rank(r.to_rank());
@@ -84,46 +84,49 @@ protected:
     //!\privatesection
 
     //!\brief Value to char conversion table.
-    static constexpr char_type rank_to_char[alphabet_size]
-    {
-        'A',
-        'C',
-        'G',
-        'T'
-    };
+    static constexpr char_type rank_to_char[alphabet_size]{'A', 'C', 'G', 'T'};
 
     //!\brief Char to value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank
+    static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
     {
-        [] () constexpr
+        std::array<rank_type, 256> ret{};
+
+        // reverse mapping for characters and their lowercase
+        for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
         {
-            std::array<rank_type, 256> ret{};
+            ret[rank_to_char[rnk]]           = rnk;
+            ret[to_lower(rank_to_char[rnk])] = rnk;
+        }
 
-            // reverse mapping for characters and their lowercase
-            for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
-            {
-                ret[         rank_to_char[rnk] ] = rnk;
-                ret[to_lower(rank_to_char[rnk])] = rnk;
-            }
+        // set U equal to T
+        ret['U'] = ret['T'];
+        ret['u'] = ret['t'];
 
-            // set U equal to T
-            ret['U'] = ret['T']; ret['u'] = ret['t'];
+        // iupac characters get special treatment, because there is no N
+        ret['R'] = ret['A'];
+        ret['r'] = ret['A']; // or G
+        ret['Y'] = ret['C'];
+        ret['y'] = ret['C']; // or T
+        ret['S'] = ret['C'];
+        ret['s'] = ret['C']; // or G
+        ret['W'] = ret['A'];
+        ret['w'] = ret['A']; // or T
+        ret['K'] = ret['G'];
+        ret['k'] = ret['G']; // or T
+        ret['M'] = ret['A'];
+        ret['m'] = ret['A']; // or T
+        ret['B'] = ret['C'];
+        ret['b'] = ret['C']; // or G or T
+        ret['D'] = ret['A'];
+        ret['d'] = ret['A']; // or G or T
+        ret['H'] = ret['A'];
+        ret['h'] = ret['A']; // or C or T
+        ret['V'] = ret['A'];
+        ret['v'] = ret['A']; // or C or G
 
-            // iupac characters get special treatment, because there is no N
-            ret['R'] = ret['A']; ret['r'] = ret['A']; // or G
-            ret['Y'] = ret['C']; ret['y'] = ret['C']; // or T
-            ret['S'] = ret['C']; ret['s'] = ret['C']; // or G
-            ret['W'] = ret['A']; ret['w'] = ret['A']; // or T
-            ret['K'] = ret['G']; ret['k'] = ret['G']; // or T
-            ret['M'] = ret['A']; ret['m'] = ret['A']; // or T
-            ret['B'] = ret['C']; ret['b'] = ret['C']; // or G or T
-            ret['D'] = ret['A']; ret['d'] = ret['A']; // or G or T
-            ret['H'] = ret['A']; ret['h'] = ret['A']; // or C or T
-            ret['V'] = ret['A']; ret['v'] = ret['A']; // or C or G
-
-            return ret;
-        }()
-    };
+        return ret;
+    }
+    ();
 
     //!\brief The complement table.
     static const std::array<dna4, alphabet_size> complement_table;
@@ -179,12 +182,11 @@ inline dna4_vector operator""_dna4(char const * s, std::size_t n)
 // dna4 (deferred definition)
 // ------------------------------------------------------------------
 
-constexpr std::array<dna4, dna4::alphabet_size> dna4::complement_table
-{
-    'T'_dna4,    // complement of 'A'_dna4
-    'G'_dna4,    // complement of 'C'_dna4
-    'C'_dna4,    // complement of 'G'_dna4
-    'A'_dna4     // complement of 'T'_dna4
+constexpr std::array<dna4, dna4::alphabet_size> dna4::complement_table{
+  'T'_dna4, // complement of 'A'_dna4
+  'G'_dna4, // complement of 'C'_dna4
+  'C'_dna4, // complement of 'G'_dna4
+  'A'_dna4  // complement of 'T'_dna4
 };
 
 } // namespace bio

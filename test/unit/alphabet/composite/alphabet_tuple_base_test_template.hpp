@@ -14,7 +14,8 @@
 using bio::get;
 
 template <typename T>
-class alphabet_tuple_base_test : public ::testing::Test {};
+class alphabet_tuple_base_test : public ::testing::Test
+{};
 
 TYPED_TEST_SUITE_P(alphabet_tuple_base_test);
 
@@ -122,8 +123,8 @@ TYPED_TEST_P(alphabet_tuple_base_test, get_i)
 {
     TypeParam t0 = TestFixture::instance;
 
-//     static_assert(std::is_same_v<decltype(get<0>(t0)), decltype(TestFixture::value_1()) &>);
-//     static_assert(std::is_same_v<decltype(get<1>(t0)), decltype(TestFixture::value_2()) &>);
+    //     static_assert(std::is_same_v<decltype(get<0>(t0)), decltype(TestFixture::value_1()) &>);
+    //     static_assert(std::is_same_v<decltype(get<1>(t0)), decltype(TestFixture::value_2()) &>);
 
     EXPECT_EQ(get<0>(t0), TestFixture::value_1());
     EXPECT_EQ(get<1>(t0), TestFixture::value_2());
@@ -133,7 +134,7 @@ TYPED_TEST_P(alphabet_tuple_base_test, get_i)
 TYPED_TEST_P(alphabet_tuple_base_test, struct_binding)
 {
     TypeParam t0 = TestFixture::instance;
-    auto [ i, l ] = t0;
+    auto [i, l]  = t0;
 
     static_assert(std::is_same_v<decltype(i), decltype(TestFixture::value_1())>);
     static_assert(std::is_same_v<decltype(l), decltype(TestFixture::value_2())>);
@@ -210,8 +211,7 @@ TYPED_TEST_P(alphabet_tuple_base_test, custom_assignment)
     EXPECT_NE(get<1>(t1), TestFixture::value_2());
 
     // first type, non-default
-    TypeParam t2 = {std::get<4>(TestFixture::values_to_cmp()),
-                    std::get<5>(TestFixture::values_to_cmp())};
+    TypeParam t2 = {std::get<4>(TestFixture::values_to_cmp()), std::get<5>(TestFixture::values_to_cmp())};
 
     EXPECT_NE(get<0>(t2), get<0>(t_d));
     EXPECT_NE(get<1>(t2), get<1>(t_d));
@@ -245,8 +245,7 @@ TYPED_TEST_P(alphabet_tuple_base_test, custom_assignment)
     EXPECT_EQ(get<1>(t3), TestFixture::value_2());
 
     // second type, non-default
-    TypeParam t4 = {std::get<4>(TestFixture::values_to_cmp()),
-                    std::get<5>(TestFixture::values_to_cmp())};
+    TypeParam t4 = {std::get<4>(TestFixture::values_to_cmp()), std::get<5>(TestFixture::values_to_cmp())};
 
     EXPECT_NE(get<0>(t4), get<0>(t_d));
     EXPECT_NE(get<1>(t4), get<1>(t_d));
@@ -287,8 +286,7 @@ TYPED_TEST_P(alphabet_tuple_base_test, custom_assignment_subtype)
     EXPECT_NE(get<1>(t1), TestFixture::value_2());
 
     // first type, non-default
-    TypeParam t2 = {std::get<4>(TestFixture::values_to_cmp()),
-                    std::get<5>(TestFixture::values_to_cmp())};
+    TypeParam t2 = {std::get<4>(TestFixture::values_to_cmp()), std::get<5>(TestFixture::values_to_cmp())};
 
     EXPECT_NE(get<0>(t2), get<0>(t_d));
     EXPECT_NE(get<1>(t2), get<1>(t_d));
@@ -322,8 +320,7 @@ TYPED_TEST_P(alphabet_tuple_base_test, custom_assignment_subtype)
     EXPECT_EQ(get<1>(t3), TestFixture::value_2());
 
     // second type, non-default
-    TypeParam t4 = {std::get<4>(TestFixture::values_to_cmp()),
-                    std::get<5>(TestFixture::values_to_cmp())};
+    TypeParam t4 = {std::get<4>(TestFixture::values_to_cmp()), std::get<5>(TestFixture::values_to_cmp())};
 
     EXPECT_NE(get<0>(t4), get<0>(t_d));
     EXPECT_NE(get<1>(t4), get<1>(t_d));
@@ -355,7 +352,7 @@ TYPED_TEST_P(alphabet_tuple_base_test, tuple_element)
 TYPED_TEST_P(alphabet_tuple_base_test, type_deduce)
 {
     TypeParam t0 = TestFixture::instance;
-    using pt = decltype(t0);
+    using pt     = decltype(t0);
 
     static_assert(std::is_same_v<std::tuple_element_t<0, pt>, decltype(TestFixture::value_1())>);
     static_assert(std::is_same_v<std::tuple_element_t<1, pt>, decltype(TestFixture::value_2())>);
@@ -378,14 +375,10 @@ TYPED_TEST_P(alphabet_tuple_base_test, cast_to_element)
 // comparison operators
 TYPED_TEST_P(alphabet_tuple_base_test, cmp)
 {
-    TypeParam t0 = {std::get<2>(TestFixture::values_to_cmp()),
-                    std::get<3>(TestFixture::values_to_cmp())};
-    TypeParam t1 = {std::get<2>(TestFixture::values_to_cmp()),
-                    std::get<1>(TestFixture::values_to_cmp())};
-    TypeParam t2 = {std::get<4>(TestFixture::values_to_cmp()),
-                    std::get<3>(TestFixture::values_to_cmp())};
-    TypeParam t3 = {std::get<0>(TestFixture::values_to_cmp()),
-                    std::get<5>(TestFixture::values_to_cmp())};
+    TypeParam t0 = {std::get<2>(TestFixture::values_to_cmp()), std::get<3>(TestFixture::values_to_cmp())};
+    TypeParam t1 = {std::get<2>(TestFixture::values_to_cmp()), std::get<1>(TestFixture::values_to_cmp())};
+    TypeParam t2 = {std::get<4>(TestFixture::values_to_cmp()), std::get<3>(TestFixture::values_to_cmp())};
+    TypeParam t3 = {std::get<0>(TestFixture::values_to_cmp()), std::get<5>(TestFixture::values_to_cmp())};
 
     EXPECT_EQ(t1, t1);
 
@@ -427,12 +420,9 @@ TYPED_TEST_P(alphabet_tuple_base_test, cmp)
 TYPED_TEST_P(alphabet_tuple_base_test, cmp_to_composite)
 {
     // first type
-    TypeParam t1 = {std::get<2>(TestFixture::values_to_cmp()),
-                    std::get<3>(TestFixture::values_to_cmp())};
+    TypeParam t1 = {std::get<2>(TestFixture::values_to_cmp()), std::get<3>(TestFixture::values_to_cmp())};
 
-    auto [ lt_v1, lt_v2,
-           eq_v1, eq_v2,
-           gt_v1, gt_v2] = TestFixture::values_to_cmp();
+    auto [lt_v1, lt_v2, eq_v1, eq_v2, gt_v1, gt_v2] = TestFixture::values_to_cmp();
 
     EXPECT_EQ(t1, eq_v1);
     EXPECT_LE(t1, eq_v1);
@@ -451,8 +441,7 @@ TYPED_TEST_P(alphabet_tuple_base_test, cmp_to_composite)
     EXPECT_LT(lt_v1, t1);
 
     // second type
-    TypeParam t2 = {std::get<2>(TestFixture::values_to_cmp()),
-                    std::get<3>(TestFixture::values_to_cmp())};
+    TypeParam t2 = {std::get<2>(TestFixture::values_to_cmp()), std::get<3>(TestFixture::values_to_cmp())};
 
     EXPECT_EQ(t2, eq_v2);
     EXPECT_LE(t2, eq_v2);
@@ -474,8 +463,7 @@ TYPED_TEST_P(alphabet_tuple_base_test, cmp_to_composite)
 TYPED_TEST_P(alphabet_tuple_base_test, cmp_to_composite_subtype)
 {
     // first type
-    TypeParam t0 = {std::get<4>(TestFixture::values_to_cmp()),
-                    std::get<5>(TestFixture::values_to_cmp())};
+    TypeParam t0 = {std::get<4>(TestFixture::values_to_cmp()), std::get<5>(TestFixture::values_to_cmp())};
     TypeParam t1 = TestFixture::instance;
     TypeParam t2{};
 
@@ -509,6 +497,26 @@ TYPED_TEST_P(alphabet_tuple_base_test, cmp_to_composite_subtype)
     EXPECT_GT(TestFixture::assignable_to_value_2(), t2);
 }
 
-REGISTER_TYPED_TEST_SUITE_P(alphabet_tuple_base_test, concept_check, ctr, aggr, cp_assgn, zro, cp_ctr, mv_ctr, mv_assgn,
-    swap, get_i, struct_binding, get_type, custom_ctr, custom_ctr_subtype, custom_assignment, custom_assignment_subtype,
-    tuple_element, type_deduce, cast_to_element, cmp, cmp_to_composite, cmp_to_composite_subtype);
+REGISTER_TYPED_TEST_SUITE_P(alphabet_tuple_base_test,
+                            concept_check,
+                            ctr,
+                            aggr,
+                            cp_assgn,
+                            zro,
+                            cp_ctr,
+                            mv_ctr,
+                            mv_assgn,
+                            swap,
+                            get_i,
+                            struct_binding,
+                            get_type,
+                            custom_ctr,
+                            custom_ctr_subtype,
+                            custom_assignment,
+                            custom_assignment_subtype,
+                            tuple_element,
+                            type_deduce,
+                            cast_to_element,
+                            cmp,
+                            cmp_to_composite,
+                            cmp_to_composite_subtype);

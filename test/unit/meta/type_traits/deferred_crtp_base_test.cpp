@@ -17,11 +17,7 @@ template <typename derived_t, typename value_t = std::string>
 class base1
 {
 public:
-
-    value_t func1() const
-    {
-        return {"instance of base1"};
-    }
+    value_t func1() const { return {"instance of base1"}; }
 };
 
 // Defines a crtp_base class with an additional return type and a parameter_t.
@@ -29,15 +25,11 @@ template <typename derived_t, typename value_t = int, typename parameter_t = int
 class base2
 {
 public:
-
-    value_t func2(parameter_t const p) const
-    {
-        return static_cast<value_t>(p);
-    }
+    value_t func2(parameter_t const p) const { return static_cast<value_t>(p); }
 };
 
 // The derived class that inherits from a variadic crtp pattern.
-template <typename ...bases_t>
+template <typename... bases_t>
 class derived : public bio::detail::invoke_deferred_crtp_base<bases_t, derived<bases_t...>>...
 {};
 

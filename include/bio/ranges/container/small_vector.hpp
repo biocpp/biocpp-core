@@ -17,7 +17,7 @@
 #include <type_traits>
 
 #if BIOCPP_WITH_CEREAL
-#include <cereal/types/array.hpp>
+#    include <cereal/types/array.hpp>
 #endif // BIOCPP_WITH_CEREAL
 
 #include <bio/meta/concept/cereal.hpp>
@@ -54,7 +54,7 @@ public:
      */
     using value_type      = value_type_;                          //!< The value_type type.
     using reference       = value_type &;                         //!< The reference type.
-    using const_reference = const value_type &;                   //!< The const_reference type.
+    using const_reference = value_type const &;                   //!< The const_reference type.
     using iterator        = value_type *;                         //!< The iterator type.
     using const_iterator  = value_type const *;                   //!< The const_iterator type.
     using difference_type = ptrdiff_t;                            //!< The difference_type type.
@@ -64,18 +64,18 @@ public:
 
     //!\cond
     // this signals to range-v3 that something is a container :|
-    using allocator_type    = void;
+    using allocator_type = void;
     //!\endcond
 
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr small_vector()                                 noexcept = default; //!< Defaulted.
-    constexpr small_vector(small_vector const &)             noexcept = default; //!< Defaulted.
-    constexpr small_vector(small_vector &&)                  noexcept = default; //!< Defaulted.
+    constexpr small_vector() noexcept                                 = default; //!< Defaulted.
+    constexpr small_vector(small_vector const &) noexcept             = default; //!< Defaulted.
+    constexpr small_vector(small_vector &&) noexcept                  = default; //!< Defaulted.
     constexpr small_vector & operator=(small_vector const &) noexcept = default; //!< Defaulted.
-    constexpr small_vector & operator=(small_vector &&)      noexcept = default; //!< Defaulted.
-    ~small_vector()                                          noexcept = default; //!< Defaulted.
+    constexpr small_vector & operator=(small_vector &&) noexcept      = default; //!< Defaulted.
+    ~small_vector() noexcept                                          = default; //!< Defaulted.
 
     /*!\brief Construct from an (smaller or equally sized) array over the same value type.
      * \param[in] array The array to copy the data_ from.
@@ -89,13 +89,13 @@ public:
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
     explicit constexpr small_vector(std::array<value_type, capacity_> const & array) noexcept(is_noexcept) :
-        data_{array}, sz{capacity_}
+      data_{array}, sz{capacity_}
     {}
 
     //!\cond
     template <size_t capacity2>
     explicit constexpr small_vector(std::array<value_type, capacity2> const & array) noexcept(is_noexcept) :
-        sz{capacity2}
+      sz{capacity2}
     {
         static_assert(capacity2 <= capacity_, "You can only initialize from array that has smaller or equal capacity.");
         std::ranges::copy(array, data_.begin());
@@ -114,8 +114,7 @@ public:
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
     template <size_t capacity2>
-    explicit constexpr small_vector(value_type const (&array)[capacity2]) noexcept(is_noexcept) :
-        sz{capacity2}
+    explicit constexpr small_vector(value_type const (&array)[capacity2]) noexcept(is_noexcept) : sz{capacity2}
     {
         static_assert(capacity2 <= capacity_, "You can only initialize from array that has smaller or equal capacity.");
         std::ranges::copy(array, data_.begin());
@@ -132,12 +131,12 @@ public:
      *
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
-    template <typename ...other_value_type>
-    //!\cond
-        requires (std::same_as<value_type, other_value_type> && ...)
+    template <typename... other_value_type>
+        //!\cond
+        requires(std::same_as<value_type, other_value_type> &&...)
     //!\endcond
     constexpr small_vector(other_value_type... args) noexcept(is_noexcept) :
-        data_{args...}, sz{sizeof...(other_value_type)}
+      data_{args...}, sz{sizeof...(other_value_type)}
     {
         static_assert(sizeof...(other_value_type) <= capacity_, "Value list must not exceed the capacity.");
     }
@@ -158,12 +157,11 @@ public:
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
     template <std::forward_iterator begin_it_type, typename end_it_type>
-    //!\cond
-        requires std::sentinel_for<end_it_type, begin_it_type> &&
-                 std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>
+        //!\cond
+        requires(std::sentinel_for<end_it_type, begin_it_type> &&
+                   std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
     //!\endcond
-    constexpr small_vector(begin_it_type begin_it, end_it_type end_it) noexcept(is_noexcept) :
-        small_vector{}
+    constexpr small_vector(begin_it_type begin_it, end_it_type end_it) noexcept(is_noexcept) : small_vector{}
     {
         assign(begin_it, end_it);
     }
@@ -182,12 +180,12 @@ public:
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
     template <std::ranges::input_range other_range_t>
-    //!\cond
-        requires (!std::is_same_v<std::remove_cvref_t<other_range_t>, small_vector>)
-                 /*ICE: && std::constructible_from<value_type, std::ranges::range_reference_t<other_range_t>>*/
+        //!\cond
+        requires(!std::is_same_v<std::remove_cvref_t<other_range_t>, small_vector>)
+    /*ICE: && std::constructible_from<value_type, std::ranges::range_reference_t<other_range_t>>*/
     //!\endcond
     explicit constexpr small_vector(other_range_t && range) noexcept(is_noexcept) :
-        small_vector{std::ranges::begin(range), std::ranges::end(range)}
+      small_vector{std::ranges::begin(range), std::ranges::end(range)}
     {}
 
     /*!\brief Construct with `n` times `value`.
@@ -202,11 +200,7 @@ public:
      *
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
-    constexpr small_vector(size_type n, value_type value) noexcept(is_noexcept) :
-        small_vector{}
-    {
-        assign(n, value);
-    }
+    constexpr small_vector(size_type n, value_type value) noexcept(is_noexcept) : small_vector{} { assign(n, value); }
 
     /*!\brief Assign from `std::initializer_list`.
      * \param[in] ilist A `std::initializer_list` of value_type.
@@ -274,7 +268,7 @@ public:
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
     template <std::ranges::input_range other_range_t>
-    //!\cond
+        //!\cond
         requires std::constructible_from<value_type, std::ranges::range_reference_t<other_range_t>>
     //!\endcond
     constexpr void assign(other_range_t && range) noexcept(is_noexcept)
@@ -298,9 +292,9 @@ public:
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
     template <std::forward_iterator begin_it_type, typename end_it_type>
-    //!\cond
-        requires std::sentinel_for<end_it_type, begin_it_type> &&
-                 std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>
+        //!\cond
+        requires(std::sentinel_for<end_it_type, begin_it_type> &&
+                   std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
     //!\endcond
     constexpr void assign(begin_it_type begin_it, end_it_type end_it) noexcept(is_noexcept)
     {
@@ -313,40 +307,22 @@ public:
      * \{
      */
     //!\brief Returns the begin to the string.
-    constexpr iterator begin() noexcept
-    {
-        return &data_[0];
-    }
+    constexpr iterator begin() noexcept { return &data_[0]; }
 
     //!\copydoc bio::small_vector::begin()
-    constexpr const_iterator begin() const noexcept
-    {
-        return &data_[0];
-    }
+    constexpr const_iterator begin() const noexcept { return &data_[0]; }
 
     //!\copydoc bio::small_vector::begin()
-    constexpr const_iterator cbegin() const noexcept
-    {
-        return &data_[0];
-    }
+    constexpr const_iterator cbegin() const noexcept { return &data_[0]; }
 
     //!\brief Returns iterator past the end of the vector.
-    constexpr iterator end() noexcept
-    {
-        return &data_[sz];
-    }
+    constexpr iterator end() noexcept { return &data_[sz]; }
 
     //!\copydoc bio::small_vector::end()
-    constexpr const_iterator end() const noexcept
-    {
-        return &data_[sz];
-    }
+    constexpr const_iterator end() const noexcept { return &data_[sz]; }
 
     //!\copydoc bio::small_vector::end()
-    constexpr const_iterator cend() const noexcept
-    {
-        return &data_[sz];
-    }
+    constexpr const_iterator cend() const noexcept { return &data_[sz]; }
     //!\}
 
     /*!\name Element access
@@ -456,27 +432,21 @@ public:
     constexpr reference back() noexcept
     {
         assert(size() > 0);
-        return (*this)[size()-1];
+        return (*this)[size() - 1];
     }
 
     //!\copydoc back()
     constexpr const_reference back() const noexcept
     {
         assert(size() > 0);
-        return (*this)[size()-1];
+        return (*this)[size() - 1];
     }
 
     //!\brief Direct access to the underlying array.
-    constexpr value_type * data() noexcept
-    {
-        return data_.data();
-    }
+    constexpr value_type * data() noexcept { return data_.data(); }
 
     //!\copydoc data()
-    constexpr value_type const * data() const noexcept
-    {
-        return data_.data();
-    }
+    constexpr value_type const * data() const noexcept { return data_.data(); }
     //!\}
 
     /*!\name Capacity
@@ -493,10 +463,7 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr bool empty() const noexcept
-    {
-        return size() == 0;
-    }
+    constexpr bool empty() const noexcept { return size() == 0; }
 
     /*!\brief Returns the number of elements in the container, i.e. std::distance(begin(), end()).
      * \returns The number of elements in the container.
@@ -509,10 +476,7 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr size_type size() const noexcept
-    {
-        return sz;
-    }
+    constexpr size_type size() const noexcept { return sz; }
 
     /*!\brief Returns the maximum number of elements the container is able to hold and resolves to `capacity_`.
      * \returns The number of elements in the container.
@@ -528,10 +492,7 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr size_type max_size() const noexcept
-    {
-        return capacity_;
-    }
+    constexpr size_type max_size() const noexcept { return capacity_; }
 
     /*!\brief Returns the number of elements that the container is able to hold and resolves to `capacity_`.
      * \returns The capacity of the currently allocated storage.
@@ -544,10 +505,7 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr size_type capacity() const noexcept
-    {
-        return capacity_;
-    }
+    constexpr size_type capacity() const noexcept { return capacity_; }
 
     //!\brief Since the capacity is fixed on compile time, this is a no-op.
     constexpr void reserve(size_type) const noexcept
@@ -575,10 +533,7 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr void clear() noexcept
-    {
-        sz = 0;
-    }
+    constexpr void clear() noexcept { sz = 0; }
 
     /*!\brief Inserts value before position in the container.
      * \param   pos Iterator before which the content will be inserted. `pos` may be the end() iterator.
@@ -643,14 +598,14 @@ public:
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
     template <std::forward_iterator begin_it_type, typename end_it_type>
-    //!\cond
-        requires std::sentinel_for<end_it_type, begin_it_type> &&
-                 std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>
+        //!\cond
+        requires(std::sentinel_for<end_it_type, begin_it_type> &&
+                   std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
     //!\endcond
     constexpr iterator insert(const_iterator pos, begin_it_type begin_it, end_it_type end_it) noexcept(is_noexcept)
     {
         auto const pos_as_num = std::ranges::distance(cbegin(), pos);
-        auto const length = std::ranges::distance(begin_it, end_it);
+        auto const length     = std::ranges::distance(begin_it, end_it);
 
         assert(pos_as_num + length <= capacity());
 
@@ -709,7 +664,7 @@ public:
             return begin() + std::ranges::distance(cbegin(), end_it);
 
         size_type const length = std::ranges::distance(begin_it, end_it);
-        auto out_it = begin() + std::ranges::distance(cbegin(), begin_it);
+        auto            out_it = begin() + std::ranges::distance(cbegin(), begin_it);
 
         while (end_it != cend())
             *(out_it++) = *(end_it++);
@@ -736,10 +691,7 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr iterator erase(const_iterator pos) noexcept
-    {
-       return erase(pos, pos + 1);
-    }
+    constexpr iterator erase(const_iterator pos) noexcept { return erase(pos, pos + 1); }
 
     /*!\brief Appends the given element value to the end of the container.
      * \param value The value to append.
@@ -828,17 +780,17 @@ public:
         auto tmp = *this;
 
         data_ = rhs.data_;
-        sz = rhs.sz;
+        sz    = rhs.sz;
 
         rhs.data_ = tmp.data_;
-        rhs.sz = tmp.sz;
+        rhs.sz    = tmp.sz;
     }
 
     //!\overload
     constexpr void swap(small_vector && rhs) noexcept(is_noexcept)
     {
         data_ = rhs.data_;
-        sz = rhs.sz;
+        sz    = rhs.sz;
     }
     //!\}
 
@@ -854,16 +806,10 @@ public:
      *
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
-    friend constexpr void swap(small_vector & lhs, small_vector & rhs) noexcept(is_noexcept)
-    {
-        lhs.swap(rhs);
-    }
+    friend constexpr void swap(small_vector & lhs, small_vector & rhs) noexcept(is_noexcept) { lhs.swap(rhs); }
 
     //!\overload
-    friend constexpr void swap(small_vector && lhs, small_vector && rhs) noexcept(is_noexcept)
-    {
-        lhs.swap(rhs);
-    }
+    friend constexpr void swap(small_vector && lhs, small_vector && rhs) noexcept(is_noexcept) { lhs.swap(rhs); }
 
     //!\name Comparison operators
     //!\{
@@ -927,7 +873,7 @@ public:
     //!\brief Stores the actual data_.
     std::array<value_type, capacity_> data_{};
     //!\brief The size of the actual contained data_.
-    size_type sz{0};
+    size_type                         sz{0};
 
 public:
     //!\cond DEV

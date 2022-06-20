@@ -24,23 +24,14 @@ INSTANTIATE_TYPED_TEST_SUITE_P(dssp9, semi_alphabet_constexpr, bio::dssp9, );
 // assign_char functions
 TEST(dssp9, assign_char)
 {
-    std::vector<char> input
-    {
-        '.', '(', ')',
-        ':', ',', '-', '_', '~', ';',
-        '<', '>', '[', ']', '{', '}',
-        'H', 'B', 'E', 'G', 'I', 'T', 'S'
-    };
+    std::vector<char> input{'.', '(', ')', ':', ',', '-', '_', '~', ';', '<', '>',
+                            '[', ']', '{', '}', 'H', 'B', 'E', 'G', 'I', 'T', 'S'};
 
-    std::vector<bio::dssp9> cmp
-    {
-        'X'_dssp9, 'X'_dssp9, 'X'_dssp9,
-        'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9,
-        'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9,
-        'H'_dssp9, 'B'_dssp9, 'E'_dssp9, 'G'_dssp9, 'I'_dssp9, 'T'_dssp9, 'S'_dssp9
-    };
+    std::vector<bio::dssp9> cmp{'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9,
+                                'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'X'_dssp9, 'H'_dssp9,
+                                'B'_dssp9, 'E'_dssp9, 'G'_dssp9, 'I'_dssp9, 'T'_dssp9, 'S'_dssp9};
 
-    for (auto [ ch, cm ] : bio::views::zip(input, cmp))
+    for (auto [ch, cm] : bio::views::zip(input, cmp))
         EXPECT_EQ((bio::assign_char_to(ch, bio::dssp9{})), cm);
 }
 
@@ -60,7 +51,6 @@ TEST(dssp9, to_char)
 
 TEST(dssp9, literals)
 {
-
     std::vector<bio::dssp9> vec1;
     vec1.resize(5, 'H'_dssp9);
     EXPECT_EQ(vec1, "HHHHH"_dssp9);

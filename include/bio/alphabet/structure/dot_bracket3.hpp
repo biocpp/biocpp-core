@@ -62,12 +62,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr dot_bracket3()                                 noexcept = default; //!< Defaulted.
-    constexpr dot_bracket3(dot_bracket3 const &)             noexcept = default; //!< Defaulted.
-    constexpr dot_bracket3(dot_bracket3 &&)                  noexcept = default; //!< Defaulted.
+    constexpr dot_bracket3() noexcept                                 = default; //!< Defaulted.
+    constexpr dot_bracket3(dot_bracket3 const &) noexcept             = default; //!< Defaulted.
+    constexpr dot_bracket3(dot_bracket3 &&) noexcept                  = default; //!< Defaulted.
     constexpr dot_bracket3 & operator=(dot_bracket3 const &) noexcept = default; //!< Defaulted.
-    constexpr dot_bracket3 & operator=(dot_bracket3 &&)      noexcept = default; //!< Defaulted.
-    ~dot_bracket3()                                          noexcept = default; //!< Defaulted.
+    constexpr dot_bracket3 & operator=(dot_bracket3 &&) noexcept      = default; //!< Defaulted.
+    ~dot_bracket3() noexcept                                          = default; //!< Defaulted.
     //!\}
 
     //!\name RNA structure properties
@@ -76,26 +76,17 @@ public:
     /*!\brief Check whether the character represents a rightward interaction in an RNA structure.
      * \returns True if the letter represents a rightward interaction, False otherwise.
      */
-    constexpr bool is_pair_open() const noexcept
-    {
-        return to_rank() == 1u;
-    }
+    constexpr bool is_pair_open() const noexcept { return to_rank() == 1u; }
 
     /*!\brief Check whether the character represents a leftward interaction in an RNA structure.
      * \returns True if the letter represents a leftward interaction, False otherwise.
      */
-    constexpr bool is_pair_close() const noexcept
-    {
-        return to_rank() == 2u;
-    }
+    constexpr bool is_pair_close() const noexcept { return to_rank() == 2u; }
 
     /*!\brief Check whether the character represents an unpaired position in an RNA structure.
      * \returns True if the letter represents an unpaired site, False otherwise.
      */
-    constexpr bool is_unpaired() const noexcept
-    {
-        return to_rank() == 0u;
-    }
+    constexpr bool is_unpaired() const noexcept { return to_rank() == 0u; }
 
     /*!\brief The ability of this alphabet to represent pseudoknots, i.e. crossing interactions, up to a certain depth.
      * \details It is the number of distinct pairs of interaction symbols the format supports. The value 1 denotes no
@@ -120,32 +111,25 @@ protected:
     //!\privatesection
 
     //!\brief Value-to-char conversion table.
-    static constexpr char_type rank_to_char[alphabet_size]
-    {
-        '.',
-        '(',
-        ')'
-    };
+    static constexpr char_type rank_to_char[alphabet_size]{'.', '(', ')'};
 
     //!\brief Char-to-value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank
+    static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
     {
-        [] () constexpr
-        {
-            std::array<rank_type, 256> rank_table{};
+        std::array<rank_type, 256> rank_table{};
 
-            // initialize with unpaired (std::array::fill unfortunately not constexpr)
-            for (rank_type & rnk : rank_table)
-                rnk = 0u;
+        // initialize with unpaired (std::array::fill unfortunately not constexpr)
+        for (rank_type & rnk : rank_table)
+            rnk = 0u;
 
-            // canonical
-            rank_table['.'] = 0u;
-            rank_table['('] = 1u;
-            rank_table[')'] = 2u;
+        // canonical
+        rank_table['.'] = 0u;
+        rank_table['('] = 1u;
+        rank_table[')'] = 2u;
 
-            return rank_table;
-        } ()
-    };
+        return rank_table;
+    }
+    ();
 };
 
 /*!\name Literals
@@ -160,7 +144,7 @@ protected:
  * You can use this string literal to easily assign to a vector of bio::dot_bracket3 characters:
  * \include test/snippet/alphabet/structure/dot_bracket3_literal.cpp
  */
-inline std::vector<dot_bracket3> operator""_db3(const char * str, std::size_t len)
+inline std::vector<dot_bracket3> operator""_db3(char const * str, std::size_t len)
 {
     std::vector<dot_bracket3> vec;
     vec.resize(len);

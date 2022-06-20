@@ -23,9 +23,9 @@
 
 #include "../../ranges/iterator_test_template.hpp"
 
-using range_t = std::vector<int>;
-using other_range_t = std::vector<std::string>;
-using zip_view_t = decltype(bio::views::zip(std::declval<range_t &>(), std::declval<other_range_t &>()));
+using range_t        = std::vector<int>;
+using other_range_t  = std::vector<std::string>;
+using zip_view_t     = decltype(bio::views::zip(std::declval<range_t &>(), std::declval<other_range_t &>()));
 using zip_iterator_t = std::ranges::iterator_t<zip_view_t>;
 
 template <>
@@ -39,7 +39,12 @@ struct iterator_fixture<zip_iterator_t> : public ::testing::Test
 
     other_range_t other_range{"AA", "BBB", "CC", "DDD"};
 
-    std::vector<std::tuple<int, std::string>> expected_range{{0, "AA"}, {1, "BBB"}, {2, "CC"}, {3, "DDD"}};
+    std::vector<std::tuple<int, std::string>> expected_range{
+      {0,  "AA"},
+      {1, "BBB"},
+      {2,  "CC"},
+      {3, "DDD"}
+    };
 
     zip_view_t test_range{bio::views::zip(range, other_range)};
 };
@@ -50,48 +55,33 @@ using bio::operator""_dna4;
 class zip_test : public ::testing::Test
 {
 protected:
-    using range_t = std::vector<int>;
-    using const_range_t = std::vector<int> const;
-    using other_range_t = std::vector<std::string>;
+    using range_t         = std::vector<int>;
+    using const_range_t   = std::vector<int> const;
+    using other_range_t   = std::vector<std::string>;
     using forward_range_t = std::forward_list<int>;
-    using view_t = decltype(bio::views::repeat('L'));
+    using view_t          = decltype(bio::views::repeat('L'));
 
-    range_t range{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    const_range_t const_range{range};
-    other_range_t other_range{"AA", "BBB", "CC", "DDD"};
-    forward_range_t forward_range{range.begin(), range.end()};
+    range_t                 range{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    const_range_t           const_range{range};
+    other_range_t           other_range{"AA", "BBB", "CC", "DDD"};
+    forward_range_t         forward_range{range.begin(), range.end()};
     static constexpr view_t view{};
 
-    using zip_common_range_t = decltype(bio::views::zip(range, other_range));
+    using zip_common_range_t     = decltype(bio::views::zip(range, other_range));
     using zip_not_common_range_t = decltype(bio::views::zip(range, other_range, view));
-    using zip_const_range_t = decltype(bio::views::zip(range, const_range));
-    using zip_forward_range_t = decltype(bio::views::zip(range, other_range, forward_range));
-    using const_zip_t = decltype(bio::views::zip(range, other_range)) const;
+    using zip_const_range_t      = decltype(bio::views::zip(range, const_range));
+    using zip_forward_range_t    = decltype(bio::views::zip(range, other_range, forward_range));
+    using const_zip_t            = decltype(bio::views::zip(range, other_range)) const;
 
-    zip_common_range_t zip_common_range()
-    {
-        return bio::views::zip(range, other_range);
-    }
+    zip_common_range_t zip_common_range() { return bio::views::zip(range, other_range); }
 
-    zip_not_common_range_t zip_not_common_range()
-    {
-        return bio::views::zip(range, other_range, view);
-    }
+    zip_not_common_range_t zip_not_common_range() { return bio::views::zip(range, other_range, view); }
 
-    zip_const_range_t zip_const_range()
-    {
-        return bio::views::zip(range, const_range);
-    }
+    zip_const_range_t zip_const_range() { return bio::views::zip(range, const_range); }
 
-    zip_forward_range_t zip_forward_range()
-    {
-        return bio::views::zip(range, other_range, forward_range);
-    }
+    zip_forward_range_t zip_forward_range() { return bio::views::zip(range, other_range, forward_range); }
 
-    const_zip_t const_zip()
-    {
-        return bio::views::zip(range, other_range);
-    }
+    const_zip_t const_zip() { return bio::views::zip(range, other_range); }
 };
 
 TEST_F(zip_test, concepts)
@@ -141,7 +131,7 @@ TEST_F(zip_test, concepts)
 TEST_F(zip_test, basic)
 {
     {
-        auto zip_view = zip_common_range();
+        auto   zip_view = zip_common_range();
         size_t i{};
         for (auto && [elem_1, elem_2] : zip_view)
         {
@@ -153,9 +143,9 @@ TEST_F(zip_test, basic)
         EXPECT_EQ(zip_view.size(), 4u);
     }
     {
-        auto zip_view = bio::views::zip(other_range);
+        auto   zip_view = bio::views::zip(other_range);
         size_t i{};
-        for (auto && [ elem_1 ] : zip_view)
+        for (auto && [elem_1] : zip_view)
         {
             EXPECT_EQ(elem_1, other_range[i]);
             ++i;
@@ -167,7 +157,7 @@ TEST_F(zip_test, basic)
 
 TEST_F(zip_test, combine)
 {
-    auto zip_view = zip_common_range() | std::views::take(2);
+    auto   zip_view = zip_common_range() | std::views::take(2);
     size_t i{};
     for (auto && [elem_1, elem_2] : zip_view)
     {
@@ -181,7 +171,7 @@ TEST_F(zip_test, combine)
 
 TEST_F(zip_test, use_as_output_range)
 {
-    auto zip_view = zip_common_range();
+    auto zip_view     = zip_common_range();
     *zip_view.begin() = std::tuple(23, "FF");
     EXPECT_EQ(std::get<0>(*zip_view.begin()), 23);
     EXPECT_EQ(std::get<1>(*zip_view.begin()), "FF");
@@ -205,5 +195,5 @@ TEST_F(zip_test, gcc10bug_rangev3_1480)
     std::vector<char> const second_sequence{};
 
     auto zip_view = bio::views::zip(first_sequence, second_sequence);
-    std::ranges::for_each(zip_view, [&] ([[maybe_unused]] auto && value) {});
+    std::ranges::for_each(zip_view, [&]([[maybe_unused]] auto && value) {});
 }

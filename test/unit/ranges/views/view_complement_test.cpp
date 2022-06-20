@@ -10,13 +10,13 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/views/complement.hpp>
 #include <bio/ranges/views/to.hpp>
-#include <algorithm>
-#include <ranges>
 #include <bio/test/expect_range_eq.hpp>
+#include <ranges>
 
 using bio::operator""_dna5;
 

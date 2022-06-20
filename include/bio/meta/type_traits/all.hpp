@@ -18,7 +18,6 @@
 
 #pragma once
 
-#include <bio/meta/type_traits/pre.hpp>
 #include <bio/meta/type_traits/basic.hpp>
 #include <bio/meta/type_traits/deferred_crtp_base.hpp>
 #include <bio/meta/type_traits/iterator.hpp>

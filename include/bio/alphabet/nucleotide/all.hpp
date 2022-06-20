@@ -14,13 +14,13 @@
 #pragma once
 
 #include <bio/alphabet/nucleotide/concept.hpp>
-#include <bio/alphabet/nucleotide/dna4.hpp>
-#include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/alphabet/nucleotide/dna15.hpp>
 #include <bio/alphabet/nucleotide/dna3bs.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
+#include <bio/alphabet/nucleotide/rna15.hpp>
 #include <bio/alphabet/nucleotide/rna4.hpp>
 #include <bio/alphabet/nucleotide/rna5.hpp>
-#include <bio/alphabet/nucleotide/rna15.hpp>
 
 /*!\defgroup nucleotide Nucleotide
  * \brief Provides the different DNA and RNA alphabet types.

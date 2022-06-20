@@ -6,15 +6,15 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
 #include <bio/meta/detail/int_types.hpp>
+#include <gtest/gtest.h>
 
 TEST(int_types_test, min_viable_uint_t)
 {
-    using bool_1_t = bio::detail::min_viable_uint_t<0ull>;
-    using bool_2_t = bio::detail::min_viable_uint_t<1ull>;
-    using uint8_1_t = bio::detail::min_viable_uint_t<2ull>;
-    using uint8_2_t = bio::detail::min_viable_uint_t<0xFFull>;
+    using bool_1_t   = bio::detail::min_viable_uint_t<0ull>;
+    using bool_2_t   = bio::detail::min_viable_uint_t<1ull>;
+    using uint8_1_t  = bio::detail::min_viable_uint_t<2ull>;
+    using uint8_2_t  = bio::detail::min_viable_uint_t<0xFFull>;
     using uint16_1_t = bio::detail::min_viable_uint_t<0x100ull>;
     using uint16_2_t = bio::detail::min_viable_uint_t<0xFFFFull>;
     using uint32_1_t = bio::detail::min_viable_uint_t<0x10000ull>;
@@ -36,10 +36,10 @@ TEST(int_types_test, min_viable_uint_t)
 
 TEST(int_types_test, min_viable_uint_v)
 {
-    auto bool_1_v = bio::detail::min_viable_uint_v<0ull>;
-    auto bool_2_v = bio::detail::min_viable_uint_v<1ull>;
-    auto uint8_1_v = bio::detail::min_viable_uint_v<2ull>;
-    auto uint8_2_v = bio::detail::min_viable_uint_v<0xFFull>;
+    auto bool_1_v   = bio::detail::min_viable_uint_v<0ull>;
+    auto bool_2_v   = bio::detail::min_viable_uint_v<1ull>;
+    auto uint8_1_v  = bio::detail::min_viable_uint_v<2ull>;
+    auto uint8_2_v  = bio::detail::min_viable_uint_v<0xFFull>;
     auto uint16_1_v = bio::detail::min_viable_uint_v<0x100ull>;
     auto uint16_2_v = bio::detail::min_viable_uint_v<0xFFFFull>;
     auto uint32_1_v = bio::detail::min_viable_uint_v<0x10000ull>;

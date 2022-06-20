@@ -60,19 +60,19 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr rna5()                          noexcept = default; //!< Defaulted.
-    constexpr rna5(rna5 const &)              noexcept = default; //!< Defaulted.
-    constexpr rna5(rna5 &&)                   noexcept = default; //!< Defaulted.
-    constexpr rna5 & operator=(rna5 const &)  noexcept = default; //!< Defaulted.
-    constexpr rna5 & operator=(rna5 &&)       noexcept = default; //!< Defaulted.
-    ~rna5()                                   noexcept = default; //!< Defaulted.
+    constexpr rna5() noexcept                         = default; //!< Defaulted.
+    constexpr rna5(rna5 const &) noexcept             = default; //!< Defaulted.
+    constexpr rna5(rna5 &&) noexcept                  = default; //!< Defaulted.
+    constexpr rna5 & operator=(rna5 const &) noexcept = default; //!< Defaulted.
+    constexpr rna5 & operator=(rna5 &&) noexcept      = default; //!< Defaulted.
+    ~rna5() noexcept                                  = default; //!< Defaulted.
 
     using base_t::base_t;
 
     //!\brief Allow implicit construction from dna/rna of the same size.
     constexpr rna5(dna5 const & r) noexcept
 #if BIOCPP_WORKAROUND_GCC_90897
-        requires true
+      requires true
 #endif
     {
         assign_rank(r.to_rank());
@@ -83,14 +83,7 @@ protected:
     //!\privatesection
 
     //!\copydoc bio::dna4::rank_to_char
-    static constexpr char_type rank_to_char[alphabet_size]
-    {
-        'A',
-        'C',
-        'G',
-        'N',
-        'U'
-    };
+    static constexpr char_type rank_to_char[alphabet_size]{'A', 'C', 'G', 'N', 'U'};
 
     //!\copydoc bio::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank = dna5::char_to_rank;
@@ -149,13 +142,12 @@ inline rna5_vector operator""_rna5(char const * s, std::size_t n)
 // rna5 (deferred definition)
 // ------------------------------------------------------------------
 
-constexpr std::array<rna5, rna5::alphabet_size> rna5::complement_table
-{
-    'U'_rna5,    // complement of 'A'_rna5
-    'G'_rna5,    // complement of 'C'_rna5
-    'C'_rna5,    // complement of 'G'_rna5
-    'N'_rna5,    // complement of 'N'_rna5
-    'A'_rna5     // complement of 'U'_rna5
+constexpr std::array<rna5, rna5::alphabet_size> rna5::complement_table{
+  'U'_rna5, // complement of 'A'_rna5
+  'G'_rna5, // complement of 'C'_rna5
+  'C'_rna5, // complement of 'G'_rna5
+  'N'_rna5, // complement of 'N'_rna5
+  'A'_rna5  // complement of 'U'_rna5
 };
 
 } // namespace bio

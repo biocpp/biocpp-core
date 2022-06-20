@@ -15,8 +15,8 @@
 
 #include <vector>
 
-#include <bio/alphabet/concept.hpp>
 #include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/concept.hpp>
 #include <bio/meta/char_operations/transform.hpp>
 
 // ------------------------------------------------------------------
@@ -71,43 +71,38 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr dssp9()                           noexcept = default; //!< Defaulted.
-    constexpr dssp9(dssp9 const &)              noexcept = default; //!< Defaulted.
-    constexpr dssp9(dssp9 &&)                   noexcept = default; //!< Defaulted.
-    constexpr dssp9 & operator=(dssp9 const &)  noexcept = default; //!< Defaulted.
-    constexpr dssp9 & operator=(dssp9 &&)       noexcept = default; //!< Defaulted.
-    ~dssp9()                                    noexcept = default; //!< Defaulted.
+    constexpr dssp9() noexcept                          = default; //!< Defaulted.
+    constexpr dssp9(dssp9 const &) noexcept             = default; //!< Defaulted.
+    constexpr dssp9(dssp9 &&) noexcept                  = default; //!< Defaulted.
+    constexpr dssp9 & operator=(dssp9 const &) noexcept = default; //!< Defaulted.
+    constexpr dssp9 & operator=(dssp9 &&) noexcept      = default; //!< Defaulted.
+    ~dssp9() noexcept                                   = default; //!< Defaulted.
     //!\}
 
 protected:
     //!\privatesection
 
     //!\brief Value-to-char conversion table.
-    static constexpr char_type rank_to_char[alphabet_size]
-    {
-        'H', 'B', 'E', 'G', 'I', 'T', 'S', 'C', 'X'
-    };
+    static constexpr char_type rank_to_char[alphabet_size]{'H', 'B', 'E', 'G', 'I', 'T', 'S', 'C', 'X'};
 
     //!\brief Char-to-value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank
+    static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
     {
-        [] () constexpr
+        std::array<rank_type, 256> ret{};
+
+        // initialize with X (std::array::fill unfortunately not constexpr)
+        for (rank_type & rnk : ret)
+            rnk = 8u;
+
+        // reverse mapping for characters
+        for (rank_type rnk = 0u; rnk < alphabet_size; ++rnk)
         {
-            std::array<rank_type, 256> ret{};
+            ret[static_cast<rank_type>(rank_to_char[rnk])] = rnk;
+        }
 
-            // initialize with X (std::array::fill unfortunately not constexpr)
-            for (rank_type & rnk : ret)
-                rnk = 8u;
-
-            // reverse mapping for characters
-            for (rank_type rnk = 0u; rnk < alphabet_size; ++rnk)
-            {
-                ret[static_cast<rank_type>(rank_to_char[rnk])] = rnk;
-            }
-
-            return ret;
-        } ()
-    };
+        return ret;
+    }
+    ();
 };
 
 /*!\name Literals
@@ -122,7 +117,7 @@ protected:
  * You can use this string literal to easily assign to a vector of bio::dssp9 characters:
  * \include test/snippet/alphabet/structure/dssp9_literal.cpp
  */
-inline std::vector<dssp9> operator""_dssp9(const char * str, std::size_t len)
+inline std::vector<dssp9> operator""_dssp9(char const * str, std::size_t len)
 {
     std::vector<dssp9> vec;
     vec.resize(len);

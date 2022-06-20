@@ -75,7 +75,7 @@ class combined_adaptor;
  *   just forward to other adaptors).
  * * `bio::views::deep` : Wraps an adaptor closure object or proto adaptor object and modifies the behaviour.
  */
-template <typename derived_type, typename ...stored_args_ts>
+template <typename derived_type, typename... stored_args_ts>
 class adaptor_base
 {
 private:
@@ -89,8 +89,8 @@ private:
         // std::get returns lvalue-reference to value, but we need to copy the values
         // so that the view does not depend on the functor
         return static_cast<derived_type const &>(*this).impl(
-            std::forward<urng_t>(urange),
-            std::tuple_element_t<Is, std::tuple<stored_args_ts...>>(std::get<Is>(arguments))...);
+          std::forward<urng_t>(urange),
+          std::tuple_element_t<Is, std::tuple<stored_args_ts...>>(std::get<Is>(arguments))...);
     }
 
     //!\overload
@@ -99,10 +99,9 @@ private:
     {
         // move out values, because we don't need them anymore (*this is temporary)
         return static_cast<derived_type &&>(*this).impl(
-            std::forward<urng_t>(urange),
-            std::tuple_element_t<Is, std::tuple<stored_args_ts...>>(std::get<Is>(std::move(arguments)))...);
+          std::forward<urng_t>(urange),
+          std::tuple_element_t<Is, std::tuple<stored_args_ts...>>(std::get<Is>(std::move(arguments)))...);
     }
-
 
     //!\brief Befriend the derived_type so it can access private members if need be.
     friend derived_type;
@@ -112,16 +111,16 @@ public:
      * \{
      */
     // a default constructor is not provided, however the constructor below might be one.
-    constexpr adaptor_base(adaptor_base const &)                noexcept = default; //!< Defaulted.
-    constexpr adaptor_base(adaptor_base &&)                     noexcept = default; //!< Defaulted.
-    constexpr adaptor_base & operator=(adaptor_base const &)    noexcept = default; //!< Defaulted.
-    constexpr adaptor_base & operator=(adaptor_base &&)         noexcept = default; //!< Defaulted.
-    ~adaptor_base()                                             noexcept = default; //!< Defaulted.
+    constexpr adaptor_base(adaptor_base const &) noexcept             = default; //!< Defaulted.
+    constexpr adaptor_base(adaptor_base &&) noexcept                  = default; //!< Defaulted.
+    constexpr adaptor_base & operator=(adaptor_base const &) noexcept = default; //!< Defaulted.
+    constexpr adaptor_base & operator=(adaptor_base &&) noexcept      = default; //!< Defaulted.
+    ~adaptor_base() noexcept                                          = default; //!< Defaulted.
 
     //!\brief Constructor with possible arguments; becomes a default constructor for adaptors without args.
-    constexpr adaptor_base(stored_args_ts ... args)
-        noexcept(noexcept(std::tuple<stored_args_ts...>{std::forward<stored_args_ts>(args)...})) :
-        arguments{std::forward<stored_args_ts>(args)...}
+    constexpr adaptor_base(stored_args_ts... args) noexcept(noexcept(std::tuple<stored_args_ts...>{
+      std::forward<stored_args_ts>(args)...})) :
+      arguments{std::forward<stored_args_ts>(args)...}
     {}
     //!\}
 
@@ -216,28 +215,21 @@ public:
  */
 template <typename left_adaptor_t, typename right_adaptor_t>
 class combined_adaptor :
-    public adaptor_base<combined_adaptor<left_adaptor_t, right_adaptor_t>,
-                        left_adaptor_t,
-                        right_adaptor_t>
+  public adaptor_base<combined_adaptor<left_adaptor_t, right_adaptor_t>, left_adaptor_t, right_adaptor_t>
 {
 private:
     //!\brief Type of the CRTP-base.
-    using base_type = adaptor_base<combined_adaptor<left_adaptor_t, right_adaptor_t>,
-                                   left_adaptor_t,
-                                   right_adaptor_t>;
+    using base_type = adaptor_base<combined_adaptor<left_adaptor_t, right_adaptor_t>, left_adaptor_t, right_adaptor_t>;
 
     //!\brief Befriend the base class so it can call impl().
     friend base_type;
 
     //!\brief Combine all arguments via `operator|`.
-    template <std::ranges::input_range urng_t,
-              typename left_adaptor_t_,
-              typename right_adaptor_t_>
+    template <std::ranges::input_range urng_t, typename left_adaptor_t_, typename right_adaptor_t_>
     static auto impl(urng_t && urange, left_adaptor_t_ && left_adaptor, right_adaptor_t_ && right_adaptor)
     {
-        return std::forward<urng_t>(urange)
-             | std::forward<left_adaptor_t_>(left_adaptor)
-             | std::forward<right_adaptor_t_>(right_adaptor);
+        return std::forward<urng_t>(urange) | std::forward<left_adaptor_t_>(left_adaptor) |
+               std::forward<right_adaptor_t_>(right_adaptor);
     }
 
 public:
@@ -245,18 +237,18 @@ public:
      * \{
      */
     constexpr combined_adaptor()                                              = default; //!< Defaulted.
-    constexpr combined_adaptor(combined_adaptor const &)             noexcept = default; //!< Defaulted.
-    constexpr combined_adaptor(combined_adaptor &&)                  noexcept = default; //!< Defaulted.
+    constexpr combined_adaptor(combined_adaptor const &) noexcept             = default; //!< Defaulted.
+    constexpr combined_adaptor(combined_adaptor &&) noexcept                  = default; //!< Defaulted.
     constexpr combined_adaptor & operator=(combined_adaptor const &) noexcept = default; //!< Defaulted.
-    constexpr combined_adaptor & operator=(combined_adaptor &&)      noexcept = default; //!< Defaulted.
-    ~combined_adaptor()                                              noexcept = default; //!< Defaulted.
+    constexpr combined_adaptor & operator=(combined_adaptor &&) noexcept      = default; //!< Defaulted.
+    ~combined_adaptor() noexcept                                              = default; //!< Defaulted.
 
     //!\brief Inherit the base type's constructors.
     using base_type::base_type;
 
     //!\brief Store both arguments in the adaptor.
     constexpr combined_adaptor(left_adaptor_t l, right_adaptor_t r) :
-        base_type{std::forward<left_adaptor_t>(l), std::forward<right_adaptor_t>(r)}
+      base_type{std::forward<left_adaptor_t>(l), std::forward<right_adaptor_t>(r)}
     {}
     //!\}
 };
@@ -288,7 +280,7 @@ public:
  *
  * \snippet include/bio/ranges/views/single_pass_input.hpp adaptor_def
  */
-template <template <typename, typename ...> typename view_type>
+template <template <typename, typename...> typename view_type>
 class adaptor_for_view_without_args : public adaptor_base<adaptor_for_view_without_args<view_type>>
 {
 private:
@@ -304,8 +296,8 @@ private:
      * \param[in] args      The arguments to the constructor.
      * \returns An instance of `view_type`.
      */
-    template <typename ...arg_types>
-    static auto impl(arg_types && ... args)
+    template <typename... arg_types>
+    static auto impl(arg_types &&... args)
     {
         return view_type{std::forward<arg_types>(args)...};
     }
@@ -317,15 +309,15 @@ public:
     //!\brief Defaulted.
     constexpr adaptor_for_view_without_args()                                                           = default;
     //!\brief Defaulted.
-    constexpr adaptor_for_view_without_args(adaptor_for_view_without_args const &)             noexcept = default;
+    constexpr adaptor_for_view_without_args(adaptor_for_view_without_args const &) noexcept             = default;
     //!\brief Defaulted.
-    constexpr adaptor_for_view_without_args(adaptor_for_view_without_args &&)                  noexcept = default;
+    constexpr adaptor_for_view_without_args(adaptor_for_view_without_args &&) noexcept                  = default;
     //!\brief Defaulted.
     constexpr adaptor_for_view_without_args & operator=(adaptor_for_view_without_args const &) noexcept = default;
     //!\brief Defaulted.
-    constexpr adaptor_for_view_without_args & operator=(adaptor_for_view_without_args &&)      noexcept = default;
+    constexpr adaptor_for_view_without_args & operator=(adaptor_for_view_without_args &&) noexcept      = default;
     //!\brief Defaulted.
-    ~adaptor_for_view_without_args()                                                           noexcept = default;
+    ~adaptor_for_view_without_args() noexcept                                                           = default;
 
     //!\brief Inherit the base type's constructors.
     using base_type::base_type;
@@ -367,9 +359,9 @@ public:
  *
  * Note that the proto-adaptor does not provide `operator|`, this is only required of adaptor closure objects.
  */
-template <typename functor_type, typename ...stored_args_ts>
+template <typename functor_type, typename... stored_args_ts>
 class adaptor_from_functor :
-    public adaptor_base<adaptor_from_functor<functor_type, stored_args_ts...>, stored_args_ts...>
+  public adaptor_base<adaptor_from_functor<functor_type, stored_args_ts...>, stored_args_ts...>
 {
 private:
     //!\brief Type of the CRTP-base.
@@ -389,7 +381,7 @@ private:
      * \returns Whatever the wrapped functor returns, usually a view.
      */
     template <std::ranges::input_range urng_t>
-    constexpr auto impl(urng_t && urange, stored_args_ts ... args) const
+    constexpr auto impl(urng_t && urange, stored_args_ts... args) const
     {
         return fun(std::forward<urng_t>(urange), std::forward<stored_args_ts>(args)...);
     }
@@ -399,15 +391,15 @@ public:
      * \{
      */
     constexpr adaptor_from_functor()                                                  = default; //!< Defaulted.
-    constexpr adaptor_from_functor(adaptor_from_functor const &)             noexcept = default; //!< Defaulted.
-    constexpr adaptor_from_functor(adaptor_from_functor &&)                  noexcept = default; //!< Defaulted.
+    constexpr adaptor_from_functor(adaptor_from_functor const &) noexcept             = default; //!< Defaulted.
+    constexpr adaptor_from_functor(adaptor_from_functor &&) noexcept                  = default; //!< Defaulted.
     constexpr adaptor_from_functor & operator=(adaptor_from_functor const &) noexcept = default; //!< Defaulted.
-    constexpr adaptor_from_functor & operator=(adaptor_from_functor &&)      noexcept = default; //!< Defaulted.
-    ~adaptor_from_functor()                                                  noexcept = default; //!< Defaulted.
+    constexpr adaptor_from_functor & operator=(adaptor_from_functor &&) noexcept      = default; //!< Defaulted.
+    ~adaptor_from_functor() noexcept                                                  = default; //!< Defaulted.
 
     //!\brief Construct from functor and possibly arguments.
-    constexpr adaptor_from_functor(functor_type f, stored_args_ts ... args) :
-        base_type{std::forward<stored_args_ts>(args)...}, fun{std::move(f)}
+    constexpr adaptor_from_functor(functor_type f, stored_args_ts... args) :
+      base_type{std::forward<stored_args_ts>(args)...}, fun{std::move(f)}
     {}
     //!\}
 };

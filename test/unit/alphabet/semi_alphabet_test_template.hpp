@@ -80,7 +80,7 @@ TYPED_TEST_P(semi_alphabet_test, copy_constructor)
     // the module operation ensures that the result is within the valid rank range;
     // it will be in the most cases 1 except for alphabets like bio::gap where it will be 0
     constexpr bio::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet_size<TypeParam>;
-    TypeParam t1;
+    TypeParam                                 t1;
     bio::assign_rank_to(rank, t1);
     TypeParam t2{t1};
     TypeParam t3(t1);
@@ -91,7 +91,7 @@ TYPED_TEST_P(semi_alphabet_test, copy_constructor)
 TYPED_TEST_P(semi_alphabet_test, move_constructor)
 {
     constexpr bio::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet_size<TypeParam>;
-    TypeParam t0;
+    TypeParam                                 t0;
     bio::assign_rank_to(rank, t0);
     TypeParam t1{t0};
 
@@ -104,7 +104,7 @@ TYPED_TEST_P(semi_alphabet_test, move_constructor)
 TYPED_TEST_P(semi_alphabet_test, copy_assignment)
 {
     constexpr bio::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet_size<TypeParam>;
-    TypeParam t1;
+    TypeParam                                 t1;
     bio::assign_rank_to(rank, t1);
     TypeParam t2;
     t2 = t1;
@@ -114,7 +114,7 @@ TYPED_TEST_P(semi_alphabet_test, copy_assignment)
 TYPED_TEST_P(semi_alphabet_test, move_assignment)
 {
     constexpr bio::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet_size<TypeParam>;
-    TypeParam t0;
+    TypeParam                                 t0;
     bio::assign_rank_to(rank, t0);
     TypeParam t1{t0};
     TypeParam t2;
@@ -128,7 +128,7 @@ TYPED_TEST_P(semi_alphabet_test, move_assignment)
 TYPED_TEST_P(semi_alphabet_test, swap)
 {
     constexpr bio::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet_size<TypeParam>;
-    TypeParam t0;
+    TypeParam                                 t0;
     bio::assign_rank_to(rank, t0);
     TypeParam t1{t0};
     TypeParam t2{};

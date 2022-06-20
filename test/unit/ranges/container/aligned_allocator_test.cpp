@@ -43,25 +43,25 @@ TEST(aligned_allocator, constexpr_constructor)
 
 TEST(aligned_allocator, conversion_constructor)
 {
-    bio::aligned_allocator<int, 16> int_alloc{};
+    bio::aligned_allocator<int, 16>                    int_alloc{};
     [[maybe_unused]] bio::aligned_allocator<float, 16> float_alloc{int_alloc};
 }
 
 TEST(aligned_allocator, request_too_much_memory)
 {
     bio::aligned_allocator<int, 16> alloc{};
-    EXPECT_THROW((void) alloc.allocate(std::numeric_limits<uint64_t>::max()), std::bad_alloc);
+    EXPECT_THROW((void)alloc.allocate(std::numeric_limits<uint64_t>::max()), std::bad_alloc);
 }
 
 size_t memory_alignment(void * value, size_t alignment)
 {
-   return (((size_t)value) & (alignment-1));
+    return (((size_t)value) & (alignment - 1));
 }
 
 TEST(aligned_allocator, memory_alignment)
 {
-    size_t size = 10;
-    constexpr size_t alignment = 16;
+    size_t                                 size      = 10;
+    constexpr size_t                       alignment = 16;
     bio::aligned_allocator<int, alignment> alloc{};
 
     int * begin = alloc.allocate(size);
@@ -70,17 +70,17 @@ TEST(aligned_allocator, memory_alignment)
     EXPECT_EQ(sizeof(int), 4u);
 
     EXPECT_EQ(memory_alignment(begin, alignment), 0u);
-    EXPECT_EQ(memory_alignment(end,   alignment), 8u);
+    EXPECT_EQ(memory_alignment(end, alignment), 8u);
 
-    EXPECT_EQ(memory_alignment(begin + 1,  alignment), 4u);
-    EXPECT_EQ(memory_alignment(begin + 2,  alignment), 8u);
-    EXPECT_EQ(memory_alignment(begin + 3,  alignment), 12u);
-    EXPECT_EQ(memory_alignment(begin + 4,  alignment), 0u);
-    EXPECT_EQ(memory_alignment(begin + 5,  alignment), 4u);
-    EXPECT_EQ(memory_alignment(begin + 6,  alignment), 8u);
-    EXPECT_EQ(memory_alignment(begin + 7,  alignment), 12u);
-    EXPECT_EQ(memory_alignment(begin + 8,  alignment), 0u);
-    EXPECT_EQ(memory_alignment(begin + 9,  alignment), 4u);
+    EXPECT_EQ(memory_alignment(begin + 1, alignment), 4u);
+    EXPECT_EQ(memory_alignment(begin + 2, alignment), 8u);
+    EXPECT_EQ(memory_alignment(begin + 3, alignment), 12u);
+    EXPECT_EQ(memory_alignment(begin + 4, alignment), 0u);
+    EXPECT_EQ(memory_alignment(begin + 5, alignment), 4u);
+    EXPECT_EQ(memory_alignment(begin + 6, alignment), 8u);
+    EXPECT_EQ(memory_alignment(begin + 7, alignment), 12u);
+    EXPECT_EQ(memory_alignment(begin + 8, alignment), 0u);
+    EXPECT_EQ(memory_alignment(begin + 9, alignment), 4u);
     EXPECT_EQ(memory_alignment(begin + 10, alignment), 8u);
     EXPECT_EQ(begin + 10, end);
 
@@ -89,7 +89,7 @@ TEST(aligned_allocator, memory_alignment)
 
 TEST(aligned_allocator, memory_alignment_bigger_than_default_new_alignment)
 {
-    size_t size = 10;
+    size_t           size      = 10;
     constexpr size_t alignment = bio::detail::next_power_of_two(__STDCPP_DEFAULT_NEW_ALIGNMENT__ + 1);
     bio::aligned_allocator<int, alignment> alloc{};
 
@@ -99,17 +99,17 @@ TEST(aligned_allocator, memory_alignment_bigger_than_default_new_alignment)
     EXPECT_EQ(sizeof(int), 4u);
 
     EXPECT_EQ(memory_alignment(begin, alignment), 0u);
-    EXPECT_EQ(memory_alignment(end,   alignment), 8u);
+    EXPECT_EQ(memory_alignment(end, alignment), 8u);
 
-    EXPECT_EQ(memory_alignment(begin + 1,  alignment), 4u);
-    EXPECT_EQ(memory_alignment(begin + 2,  alignment), 8u);
-    EXPECT_EQ(memory_alignment(begin + 3,  alignment), 12u);
-    EXPECT_EQ(memory_alignment(begin + 4,  alignment), 16u);
-    EXPECT_EQ(memory_alignment(begin + 5,  alignment), 20u);
-    EXPECT_EQ(memory_alignment(begin + 6,  alignment), 24u);
-    EXPECT_EQ(memory_alignment(begin + 7,  alignment), 28u);
-    EXPECT_EQ(memory_alignment(begin + 8,  alignment), 0u);
-    EXPECT_EQ(memory_alignment(begin + 9,  alignment), 4u);
+    EXPECT_EQ(memory_alignment(begin + 1, alignment), 4u);
+    EXPECT_EQ(memory_alignment(begin + 2, alignment), 8u);
+    EXPECT_EQ(memory_alignment(begin + 3, alignment), 12u);
+    EXPECT_EQ(memory_alignment(begin + 4, alignment), 16u);
+    EXPECT_EQ(memory_alignment(begin + 5, alignment), 20u);
+    EXPECT_EQ(memory_alignment(begin + 6, alignment), 24u);
+    EXPECT_EQ(memory_alignment(begin + 7, alignment), 28u);
+    EXPECT_EQ(memory_alignment(begin + 8, alignment), 0u);
+    EXPECT_EQ(memory_alignment(begin + 9, alignment), 4u);
     EXPECT_EQ(memory_alignment(begin + 10, alignment), 8u);
     EXPECT_EQ(begin + 10, end);
 
@@ -123,7 +123,7 @@ struct large_alignment
 
 TEST(aligned_allocator, memory_alignment_with_large_alignment_type)
 {
-    size_t size = 10;
+    size_t                                                            size = 10;
     bio::aligned_allocator<large_alignment, alignof(large_alignment)> alloc{};
 
     large_alignment * begin = alloc.allocate(size);
@@ -134,17 +134,17 @@ TEST(aligned_allocator, memory_alignment_with_large_alignment_type)
     EXPECT_EQ(alignof(large_alignment), 64u);
 
     EXPECT_EQ(memory_alignment(begin, alignment), 0u);
-    EXPECT_EQ(memory_alignment(end,   alignment), 0u);
+    EXPECT_EQ(memory_alignment(end, alignment), 0u);
 
-    EXPECT_EQ(memory_alignment(begin + 1,  alignment), 0u);
-    EXPECT_EQ(memory_alignment(begin + 2,  alignment), 0u);
-    EXPECT_EQ(memory_alignment(begin + 3,  alignment), 0u);
-    EXPECT_EQ(memory_alignment(begin + 4,  alignment), 0u);
-    EXPECT_EQ(memory_alignment(begin + 5,  alignment), 0u);
-    EXPECT_EQ(memory_alignment(begin + 6,  alignment), 0u);
-    EXPECT_EQ(memory_alignment(begin + 7,  alignment), 0u);
-    EXPECT_EQ(memory_alignment(begin + 8,  alignment), 0u);
-    EXPECT_EQ(memory_alignment(begin + 9,  alignment), 0u);
+    EXPECT_EQ(memory_alignment(begin + 1, alignment), 0u);
+    EXPECT_EQ(memory_alignment(begin + 2, alignment), 0u);
+    EXPECT_EQ(memory_alignment(begin + 3, alignment), 0u);
+    EXPECT_EQ(memory_alignment(begin + 4, alignment), 0u);
+    EXPECT_EQ(memory_alignment(begin + 5, alignment), 0u);
+    EXPECT_EQ(memory_alignment(begin + 6, alignment), 0u);
+    EXPECT_EQ(memory_alignment(begin + 7, alignment), 0u);
+    EXPECT_EQ(memory_alignment(begin + 8, alignment), 0u);
+    EXPECT_EQ(memory_alignment(begin + 9, alignment), 0u);
     EXPECT_EQ(memory_alignment(begin + 10, alignment), 0u);
     EXPECT_EQ(begin + 10, end);
 
@@ -153,8 +153,8 @@ TEST(aligned_allocator, memory_alignment_with_large_alignment_type)
 
 TEST(aligned_allocator, in_vector)
 {
-    size_t size = 10;
-    constexpr size_t alignment = 16;
+    size_t                                                   size      = 10;
+    constexpr size_t                                         alignment = 16;
     std::vector<int, bio::aligned_allocator<int, alignment>> container(size);
 
     auto begin_it = container.begin();
@@ -178,8 +178,8 @@ TEST(aligned_allocator, in_vector)
 
 TEST(aligned_allocator, in_deque)
 {
-    size_t size = 10;
-    constexpr size_t alignment = 16;
+    size_t                                                  size      = 10;
+    constexpr size_t                                        alignment = 16;
     std::deque<int, bio::aligned_allocator<int, alignment>> container(size);
 
     auto begin_it = container.begin();
@@ -203,8 +203,8 @@ TEST(aligned_allocator, in_deque)
 
 TEST(aligned_allocator, in_list)
 {
-    size_t size = 10;
-    constexpr size_t alignment = 16;
+    size_t                                                 size      = 10;
+    constexpr size_t                                       alignment = 16;
     std::list<int, bio::aligned_allocator<int, alignment>> container(size);
 
     auto begin_it = container.begin();
@@ -229,12 +229,20 @@ TEST(aligned_allocator, in_list)
 TEST(aligned_allocator, in_map)
 {
     constexpr size_t alignment = 16;
-    using key_type = char;
-    using value_type = int;
-    using allocator = bio::aligned_allocator<std::pair<const key_type, value_type>, alignment>;
-    std::map<key_type, value_type, std::less<key_type>, allocator> container
-    {
-        {0, 0}, {1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}, {6, 6}, {7, 7}, {8, 8}, {9, 9}
+    using key_type             = char;
+    using value_type           = int;
+    using allocator            = bio::aligned_allocator<std::pair<const key_type, value_type>, alignment>;
+    std::map<key_type, value_type, std::less<key_type>, allocator> container{
+      {0, 0},
+      {1, 1},
+      {2, 2},
+      {3, 3},
+      {4, 4},
+      {5, 5},
+      {6, 6},
+      {7, 7},
+      {8, 8},
+      {9, 9}
     };
 
     auto begin_it = container.begin();

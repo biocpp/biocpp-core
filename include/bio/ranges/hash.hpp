@@ -26,7 +26,7 @@ namespace std
                   range must model bio::semialphabet.
  */
 template <ranges::input_range urng_t>
-//!\cond
+    //!\cond
     requires bio::semialphabet<std::ranges::range_reference_t<urng_t>>
 //!\endcond
 struct hash<urng_t>
@@ -38,13 +38,13 @@ struct hash<urng_t>
      * \returns size_t.
      */
     template <ranges::input_range urng2_t>
-    //!\cond
-        requires bio::semialphabet<std::ranges::range_reference_t<urng2_t>>
-    //!\endcond
-    size_t operator()(urng2_t && range) const noexcept
+        //!\cond
+    requires bio::semialphabet<std::ranges::range_reference_t<urng2_t>>
+      //!\endcond
+      size_t operator()(urng2_t && range) const noexcept
     {
         using alphabet_t = std::ranges::range_reference_t<urng_t>;
-        size_t result{0};
+        size_t           result{0};
         hash<alphabet_t> h{};
         for (alphabet_t character : range)
         {

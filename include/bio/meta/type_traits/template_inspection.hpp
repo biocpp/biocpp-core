@@ -25,7 +25,7 @@ namespace bio::detail
 // ----------------------------------------------------------------------------
 
 //!\cond
-template <typename source_type, template <typename ...> typename target_template>
+template <typename source_type, template <typename...> typename target_template>
 struct transfer_template_args_onto
 {};
 //!\endcond
@@ -54,14 +54,12 @@ struct transfer_template_args_onto
  *
  * \include test/snippet/meta/type_traits/template_inspection_usage.cpp
  */
-template <template <typename ...> typename source_template,
-          template <typename ...> typename target_template,
-          typename ...source_arg_types>
-//!\cond
-    requires requires ()
-    {
-        typename target_template<source_arg_types...>;
-    }
+template <template <typename...> typename source_template,
+          template <typename...>
+          typename target_template,
+          typename... source_arg_types>
+    //!\cond
+    requires(requires() { typename target_template<source_arg_types...>; })
 //!\endcond
 struct transfer_template_args_onto<source_template<source_arg_types...>, target_template>
 {
@@ -73,7 +71,7 @@ struct transfer_template_args_onto<source_template<source_arg_types...>, target_
  * \ingroup type_traits
  * \see bio::detail::transfer_template_args_onto
  */
-template <typename source_type, template <typename ...> typename target_template>
+template <typename source_type, template <typename...> typename target_template>
 using transfer_template_args_onto_t = typename transfer_template_args_onto<source_type, target_template>::type;
 
 // ----------------------------------------------------------------------------
@@ -81,7 +79,7 @@ using transfer_template_args_onto_t = typename transfer_template_args_onto<sourc
 // ----------------------------------------------------------------------------
 
 //!\cond
-template <typename source_type, template <auto ...> typename target_template>
+template <typename source_type, template <auto...> typename target_template>
 struct transfer_template_vargs_onto
 {};
 //!\endcond
@@ -103,14 +101,12 @@ struct transfer_template_vargs_onto
  * no transformation trait that can handle a combination of type and non-type arguments.
  * If the `source_type` is a not a template class, e.g. an `int`, the member type `type` is not defined.
  */
-template <template <auto ...> typename source_template,
-          template <auto ...> typename target_template,
-          auto ... source_varg_types>
-//!\cond
-    requires requires ()
-    {
-        typename target_template<source_varg_types...>;
-    }
+template <template <auto...> typename source_template,
+          template <auto...>
+          typename target_template,
+          auto... source_varg_types>
+    //!\cond
+    requires(requires() { typename target_template<source_varg_types...>; })
 //!\endcond
 struct transfer_template_vargs_onto<source_template<source_varg_types...>, target_template>
 {
@@ -122,7 +118,7 @@ struct transfer_template_vargs_onto<source_template<source_varg_types...>, targe
  * \ingroup type_traits
  * \see bio::detail::transfer_template_vargs_onto
  */
-template <typename source_type, template <auto ...> typename target_template>
+template <typename source_type, template <auto...> typename target_template>
 using transfer_template_vargs_onto_t = typename transfer_template_vargs_onto<source_type, target_template>::type;
 
 // ----------------------------------------------------------------------------
@@ -141,18 +137,18 @@ using transfer_template_vargs_onto_t = typename transfer_template_vargs_onto<sou
  *
  * \include test/snippet/meta/type_traits/template_inspection_usage_2.cpp
  */
-template <typename source_t, template <typename ...> typename target_template>
+template <typename source_t, template <typename...> typename target_template>
 struct is_type_specialisation_of : public std::false_type
 {};
 
 //!\overload
-template <typename source_t, template <typename ...> typename target_template>
-//!\cond
-    requires (!std::same_as<transformation_trait_or_t<transfer_template_args_onto<source_t, target_template>, void>,
-                            void>)
+template <typename source_t, template <typename...> typename target_template>
+    //!\cond
+    requires(
+      !std::same_as<transformation_trait_or_t<transfer_template_args_onto<source_t, target_template>, void>, void>)
 //!\endcond
 struct is_type_specialisation_of<source_t, target_template> :
-        std::is_same<source_t, transfer_template_args_onto_t<source_t, target_template>>
+  std::is_same<source_t, transfer_template_args_onto_t<source_t, target_template>>
 {};
 
 /*!\brief Helper variable template for bio::detail::is_type_specialisation_of (unary_type_trait shortcut).
@@ -160,7 +156,7 @@ struct is_type_specialisation_of<source_t, target_template> :
  * \tparam source_type      The source type.
  * \tparam target_template  The type template you wish to compare against (must take only types as template arguments).
  */
-template <typename source_t, template <typename ...> typename target_template>
+template <typename source_t, template <typename...> typename target_template>
 inline constexpr bool is_type_specialisation_of_v = is_type_specialisation_of<source_t, target_template>::value;
 
 // ----------------------------------------------------------------------------
@@ -182,7 +178,7 @@ inline constexpr bool is_type_specialisation_of_v = is_type_specialisation_of<so
  * \include test/snippet/meta/type_traits/template_inspection_usage_3.cpp
  */
 //!\cond
-template <typename mytype, template <typename ...> typename type_template>
+template <typename mytype, template <typename...> typename type_template>
 concept template_specialisation_of = is_type_specialisation_of_v<mytype, type_template>;
 
 // ----------------------------------------------------------------------------
@@ -190,7 +186,7 @@ concept template_specialisation_of = is_type_specialisation_of_v<mytype, type_te
 // ----------------------------------------------------------------------------
 
 //!\cond
-template <typename source_t, template <auto ...> typename target_template>
+template <typename source_t, template <auto...> typename target_template>
 struct is_value_specialisation_of : std::false_type
 {};
 //!\endcond
@@ -204,13 +200,13 @@ struct is_value_specialisation_of : std::false_type
  * \see bio::detail::is_type_specialisation_of
  * \see bio::detail::is_value_specialisation_of_v
  */
-template <typename source_t, template <auto ...> typename target_template>
-//!\cond
-    requires (!std::same_as<transformation_trait_or_t<transfer_template_vargs_onto<source_t, target_template>, void>,
-                            void>)
+template <typename source_t, template <auto...> typename target_template>
+    //!\cond
+    requires(
+      !std::same_as<transformation_trait_or_t<transfer_template_vargs_onto<source_t, target_template>, void>, void>)
 //!\endcond
 struct is_value_specialisation_of<source_t, target_template> :
-    std::is_same<source_t, transfer_template_vargs_onto_t<source_t, target_template>>
+  std::is_same<source_t, transfer_template_vargs_onto_t<source_t, target_template>>
 {};
 
 /*!\brief Helper variable template for bio::detail::is_value_specialisation_of (unary_type_trait shortcut).
@@ -218,7 +214,7 @@ struct is_value_specialisation_of<source_t, target_template> :
  * \tparam source_type      The source type.
  * \tparam target_template  The type template you wish to compare against (must take only types as template arguments).
  */
-template <typename source_t, template <auto ...> typename target_template>
+template <typename source_t, template <auto...> typename target_template>
 inline constexpr bool is_value_specialisation_of_v = is_value_specialisation_of<source_t, target_template>::value;
 
 /*!
@@ -230,7 +226,7 @@ inline constexpr bool is_value_specialisation_of_v = is_value_specialisation_of<
  * \tparam templ_t    The type template that should be specialised.
  * \tparam spec_t     The specialisation for the type template.
  */
-template <typename fallback_t, template <typename ...> typename templ_t, typename ...spec_t>
+template <typename fallback_t, template <typename...> typename templ_t, typename... spec_t>
 struct valid_template_spec_or
 {
     //!\brief The resulting type.
@@ -238,9 +234,9 @@ struct valid_template_spec_or
 };
 
 //!\overload
-template <typename fallback_t, template <typename ...> typename templ_t, typename ...spec_t>
-//!\cond
-    requires requires { typename templ_t<spec_t...>; }
+template <typename fallback_t, template <typename...> typename templ_t, typename... spec_t>
+    //!\cond
+    requires(requires { typename templ_t<spec_t...>; })
 //!\endcond
 struct valid_template_spec_or<fallback_t, templ_t, spec_t...>
 {
@@ -255,7 +251,7 @@ struct valid_template_spec_or<fallback_t, templ_t, spec_t...>
  * \tparam templ_t    The type template that should be specialised.
  * \tparam spec_t     The specialisation for the type template.
  */
-template <typename fallback_t, template <typename ...> typename templ_t, typename ...spec_t>
+template <typename fallback_t, template <typename...> typename templ_t, typename... spec_t>
 using valid_template_spec_or_t = typename valid_template_spec_or<fallback_t, templ_t, spec_t...>::type;
 
 // ----------------------------------------------------------------------------
@@ -266,7 +262,6 @@ using valid_template_spec_or_t = typename valid_template_spec_or<fallback_t, tem
  * \tparam t The type to operate on.
  */
 template <typename t>
-using strip_type_identity_t = std::conditional_t<is_type_specialisation_of_v<t, std::type_identity>,
-                                                 transformation_trait_or_t<t, void>,
-                                                 t>;
+using strip_type_identity_t =
+  std::conditional_t<is_type_specialisation_of_v<t, std::type_identity>, transformation_trait_or_t<t, void>, t>;
 } // namespace bio::detail

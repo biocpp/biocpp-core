@@ -17,141 +17,11 @@
 #include <type_traits>
 
 #include <bio/meta/platform.hpp>
-#include <bio/meta/type_traits/pre.hpp>
 #include <iterator>
-
-namespace bio
-{
 
 /*!\addtogroup type_traits
  * \{
  */
-
-// ----------------------------------------------------------------------------
-// value_type
-// ----------------------------------------------------------------------------
-
-#ifdef BIOCPP_DEPRECATED_310
-namespace detail
-{
-/*!\brief Exposes the `value_type` of another type.
- * \implements bio::transformation_trait
- * \tparam it_t The type you wish to query; must model std::input_iterator.
- * \deprecated This is deprecated use std::iter_value_t.
- */
-template <std::input_iterator it_t>
-struct value_type<it_t>
-{
-    //!\brief Return the member type as return type.
-    using type = std::iter_value_t<it_t>;
-};
-} // namespace bio::detail
-#endif // BIOCPP_DEPRECATED_310
-
-// see specialisation for ranges in core/type_traits/range.hpp
-
-// ----------------------------------------------------------------------------
-// reference
-// ----------------------------------------------------------------------------
-
-#ifdef BIOCPP_DEPRECATED_310
-namespace detail
-{
-/*!\brief Exposes the `reference` type of another type.
- * \implements bio::transformation_trait
- * \tparam it_t The type you wish to query; must model std::input_iterator.
- * \deprecated This is deprecated use std::iter_reference_t.
- */
-template <std::input_iterator it_t>
-struct reference<it_t>
-{
-    //!\brief Return the member type as return type.
-    using type = std::iter_reference_t<it_t>;
-};
-} // namespace bio::detail
-#endif // BIOCPP_DEPRECATED_310
-
-// see specialisation for ranges in core/type_traits/range.hpp
-
-// ----------------------------------------------------------------------------
-// rvalue_reference
-// ----------------------------------------------------------------------------
-
-#ifdef BIOCPP_DEPRECATED_310
-namespace detail
-{
-/*!\brief Exposes the `rvalue_reference` type of another type.
- * \implements bio::transformation_trait
- * \tparam it_t The type you wish to query; must model std::input_iterator.
- * \deprecated This is deprecated use std::iter_rvalue_reference_t.
- */
-template <std::input_iterator it_t>
-struct rvalue_reference<it_t>
-{
-    //!\brief Return the member type as return type.
-    using type = std::iter_rvalue_reference_t<it_t>;
-};
-} // namespace bio::detail
-#endif // BIOCPP_DEPRECATED_310
-
-// see specialisation for ranges in core/type_traits/range.hpp
-
-// ----------------------------------------------------------------------------
-// const_reference
-// ----------------------------------------------------------------------------
-
-// only defined for ranges
-
-// ----------------------------------------------------------------------------
-// difference_type
-// ----------------------------------------------------------------------------
-
-#ifdef BIOCPP_DEPRECATED_310
-namespace detail
-{
-/*!\brief Exposes the `difference_type` of another type.
- * \implements bio::transformation_trait
- * \tparam it_t The type you wish to query; must model std::weakly_incrementable.
- * \deprecated This is deprecated use std::iter_difference_t.
- */
-template <std::weakly_incrementable it_t>
-struct difference_type<it_t>
-{
-    //!\brief Return the member type as return type.
-    using type = std::iter_difference_t<it_t>;
-};
-} // namespace bio::detail
-#endif // BIOCPP_DEPRECATED_310
-
-// see specialisation for ranges in core/type_traits/range.hpp
-
-// ----------------------------------------------------------------------------
-// size_type
-// ----------------------------------------------------------------------------
-
-#ifdef BIOCPP_DEPRECATED_310
-namespace detail
-{
-/*!\brief Exposes the `size_type` of another type.
- * \implements bio::transformation_trait
- * \tparam it_t The type you wish to query; must model std::weakly_incrementable.
- * \deprecated This is deprecated. There is no alternative! Unlike std::ranges::range_size_t, the Standard has no
- *            std::iter_size_t. We decided that it does not make sense to define it on the difference type of the
- *            iterator.
- */
-template <std::weakly_incrementable it_t>
-struct size_type<it_t>
-{
-    //!\brief Return the member type as return type.
-    using type = std::make_unsigned_t<std::iter_difference_t<it_t>>;
-};
-} // namespace bio::detail
-#endif // BIOCPP_DEPRECATED_310
-
-// see specialisation for ranges in core/type_traits/range.hpp
-//!\}
-
-} // namespace bio
 
 namespace bio::detail
 {
@@ -164,7 +34,7 @@ struct iterator_category_tag
 };
 
 template <typename it_t>
-    requires requires { typename std::iterator_traits<it_t>::iterator_category; }
+    requires(requires { typename std::iterator_traits<it_t>::iterator_category; })
 struct iterator_category_tag<it_t>
 {
     using type = typename std::iterator_traits<it_t>::iterator_category;
@@ -181,7 +51,7 @@ struct iterator_category_tag<it_t>
  */
 template <typename it_t>
 using iterator_category_tag_t = typename iterator_category_tag<it_t>::type;
-#else // ^^^ workaround / no workaround vvv
+#else  // ^^^ workaround / no workaround vvv
 // TODO: Change the description / the definition of iterator_category_tag_t depending on how the standard resolves this
 // https://github.com/seqan/product_backlog/issues/151
 
@@ -196,8 +66,8 @@ using iterator_category_tag_t = typename iterator_category_tag<it_t>::type;
  * If not, this means that `it_t` is no "legacy" iterator and this transformation trait will give a substitution error.
  */
 template <typename it_t>
-//!\cond
-    requires requires { typename std::iterator_traits<it_t>::iterator_category; }
+    //!\cond
+    requires(requires { typename std::iterator_traits<it_t>::iterator_category; })
 //!\endcond
 using iterator_category_tag_t = typename std::iterator_traits<it_t>::iterator_category;
 #endif // BIOCPP_WORKAROUND_GCC_96070
@@ -208,26 +78,21 @@ using iterator_category_tag_t = typename std::iterator_traits<it_t>::iterator_ca
  * \tparam it_t The type to operate on.
  */
 template <typename it_t>
-//!\cond
+    //!\cond
     requires std::input_or_output_iterator<it_t>
 //!\endcond
-using iterator_concept_tag_t =
-    std::conditional_t<
-        std::contiguous_iterator<it_t>,
-        std::contiguous_iterator_tag,
-        std::conditional_t<
-            std::random_access_iterator<it_t>,
-            std::random_access_iterator_tag,
-            std::conditional_t<
-                std::bidirectional_iterator<it_t>,
-                std::bidirectional_iterator_tag,
-                std::conditional_t<
-                    std::forward_iterator<it_t>,
-                    std::forward_iterator_tag,
-                    std::conditional_t<
-                        std::input_iterator<it_t>,
-                        std::input_iterator_tag,
-                        std::output_iterator_tag>>>>>;
+using iterator_concept_tag_t = std::conditional_t<
+  std::contiguous_iterator<it_t>,
+  std::contiguous_iterator_tag,
+  std::conditional_t<std::random_access_iterator<it_t>,
+                     std::random_access_iterator_tag,
+                     std::conditional_t<std::bidirectional_iterator<it_t>,
+                                        std::bidirectional_iterator_tag,
+                                        std::conditional_t<std::forward_iterator<it_t>,
+                                                           std::forward_iterator_tag,
+                                                           std::conditional_t<std::input_iterator<it_t>,
+                                                                              std::input_iterator_tag,
+                                                                              std::output_iterator_tag>>>>>;
 
 } // namespace bio::detail
 
@@ -255,7 +120,7 @@ struct iter_pointer
 
 //!\cond
 template <typename it_t>
-    requires requires { typename std::iterator_traits<it_t>::pointer; }
+    requires(requires { typename std::iterator_traits<it_t>::pointer; })
 struct iter_pointer<it_t>
 {
     //!\brief This is defined for every legacy input-iterator.

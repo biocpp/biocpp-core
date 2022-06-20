@@ -25,9 +25,9 @@ TEST(type_trait, remove_cvref_t)
     EXPECT_TRUE((std::is_same_v<int, std::remove_cvref_t<int const &&>>));
     EXPECT_TRUE((std::is_same_v<int, std::remove_cvref_t<int const volatile &&>>));
     // don't decay pointers and arrays:
-    EXPECT_FALSE((std::is_same_v<int, std::remove_cvref_t<int*>>));      // type stays same
-    EXPECT_FALSE((std::is_same_v<int, std::remove_cvref_t<int[3]>>));    // type stays same
-    EXPECT_FALSE((std::is_same_v<int*, std::remove_cvref_t<int[3]>>));   // type stays same
+    EXPECT_FALSE((std::is_same_v<int, std::remove_cvref_t<int *>>));    // type stays same
+    EXPECT_FALSE((std::is_same_v<int, std::remove_cvref_t<int[3]>>));   // type stays same
+    EXPECT_FALSE((std::is_same_v<int *, std::remove_cvref_t<int[3]>>)); // type stays same
     // the last example would be true for std::decay_t
 }
 
@@ -35,47 +35,57 @@ TEST(type_trait, remove_cvref_t)
 // Tests for is_constexpr
 //------------------------------------------------------------------------------
 
-constexpr int constexpr_nonvoid_free_fun(int i) { return i; }
-int nonconstexpr_nonvoid_free_fun(int i) { return i; }
+constexpr int constexpr_nonvoid_free_fun(int i)
+{
+    return i;
+}
+int nonconstexpr_nonvoid_free_fun(int i)
+{
+    return i;
+}
 
-constexpr int constexpr_nonvoid_free_fun_const_ref(int const & i) { return i; }
-int nonconstexpr_nonvoid_free_fun_const_ref(int const & i) { return i; }
+constexpr int constexpr_nonvoid_free_fun_const_ref(int const & i)
+{
+    return i;
+}
+int nonconstexpr_nonvoid_free_fun_const_ref(int const & i)
+{
+    return i;
+}
 
-constexpr void constexpr_void_free_fun(int) { return; }
-void nonconstexpr_void_free_fun(int) { return; }
+constexpr void constexpr_void_free_fun(int)
+{
+    return;
+}
+void nonconstexpr_void_free_fun(int)
+{
+    return;
+}
 
 struct constexpr_nonvoid_member_t
 {
-    int constexpr get_i(int i)
-    {
-        return i;
-    }
+    constexpr int get_i(int i) { return i; }
 };
 
 struct constexpr_void_member_t
 {
-    void constexpr get_i(int)
-    {}
+    constexpr void get_i(int) {}
 };
 
 struct nonconstexpr_nonvoid_member_t
 {
-    int get_i(int i)
-    {
-        return i;
-    }
+    int get_i(int i) { return i; }
 };
 
 struct nonconstexpr_void_member_t
 {
-    void get_i(int)
-    {}
+    void get_i(int) {}
 };
 
 TEST(type_trait, is_constexpr_invocable)
 {
-    int i = 32;
-    int constexpr j = 42;
+    int           i = 32;
+    constexpr int j = 42;
 
     EXPECT_TRUE((BIOCPP_IS_CONSTEXPR(constexpr_nonvoid_free_fun(3))));
     EXPECT_TRUE((BIOCPP_IS_CONSTEXPR(constexpr_nonvoid_free_fun(j))));

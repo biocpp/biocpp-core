@@ -27,10 +27,7 @@ struct is_integral_fn
     bool operator()(identity_t) { return true; }
 };
 
-auto is_value_type_integral = [] (auto value)
-{
-    return std::is_integral_v<decltype(value)>;
-};
+auto is_value_type_integral = [](auto value) { return std::is_integral_v<decltype(value)>; };
 
 TEST(pack_algorithm, all_of_in_type_list)
 {
@@ -52,7 +49,7 @@ TEST(pack_algorithm, all_of_values)
 
 TEST(pack_algorithm, for_each_value)
 {
-    int i = 0;
+    int  i  = 0;
     auto fn = [&i](int arg)
     {
         EXPECT_EQ(i, arg);
@@ -77,7 +74,7 @@ TEST(pack_algorithm, for_each_value2)
 
     auto fn = [&stream](auto const & arg)
     {
-        if constexpr(bio::alphabet<decltype(arg)>)
+        if constexpr (bio::alphabet<decltype(arg)>)
             stream << bio::to_char(arg) << ";";
         else
             stream << arg << ";";
@@ -118,10 +115,7 @@ TEST(pack_algorithm, for_each_type_in_type_list)
 {
     std::stringstream stream{};
 
-    auto fn = [&stream](auto id)
-    {
-        print_to_stream(stream, id);
-    };
+    auto fn = [&stream](auto id) { print_to_stream(stream, id); };
 
     using types = bio::type_list<bool, uint8_t, int8_t, uint16_t, int16_t, uint32_t, int32_t, uint64_t, int64_t>;
     bio::detail::for_each<types>(fn);

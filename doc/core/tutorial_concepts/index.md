@@ -94,7 +94,7 @@ constraints; all of the following are equivalent.
 
 ```cpp
 template <typename t1, typename t2>
-    requires std::integral<t1> && std::integral<t2> // && MyOtherConcept<t1>
+    requires (std::integral<t1> && std::integral<t2>) // && MyOtherConcept<t1>
 auto add(t1 const v1, t2 const v2)
 {
     return v1 + v2;

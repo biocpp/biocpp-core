@@ -20,8 +20,8 @@
 // remove if is_basic_string is not needed anymore
 #include <string>
 
-#include <iterator>
 #include <concepts>
+#include <iterator>
 
 #include <bio/meta/platform.hpp>
 
@@ -55,7 +55,7 @@ constexpr bool is_basic_string_v = is_basic_string<basic_string_t>::value;
 
 //!\publicsection
 
-} // bio::detail
+} // namespace bio::detail
 
 namespace bio
 {
@@ -79,13 +79,13 @@ namespace bio
  */
 //!\cond
 template <typename type>
-concept container = requires (type val, type val2, type const cval, typename type::iterator it)
+concept container = requires(type val, type val2, type const cval, typename type::iterator it)
 {
     // member types
     typename type::value_type;
     typename type::reference;
     typename type::const_reference;
-/*
+    /*
     typename type::iterator;
     requires std::forward_iterator<typename type::iterator>;
     // NOTE check whether iterator is const convertible
@@ -105,6 +105,8 @@ concept container = requires (type val, type val2, type const cval, typename typ
         typename std::iterator_traits<typename type::const_iterator>::difference_type
     >;
 */
+
+    // clang-format off
     // methods and operator
     { type{} } -> std::same_as<type>; // default constructor
     { type{type{}} } -> std::same_as<type>; // copy/move constructor
@@ -127,6 +129,7 @@ concept container = requires (type val, type val2, type const cval, typename typ
     { val.size() } -> std::same_as<typename type::size_type>;
     { val.max_size() } -> std::same_as<typename type::size_type>;
     { val.empty() } -> std::same_as<bool>;
+    // clang-format on
 };
 //!\endcond
 
@@ -144,10 +147,11 @@ concept container = requires (type val, type val2, type const cval, typename typ
  */
 //!\cond
 template <typename type>
-concept sequence_container = requires (type val, type val2, type const cval)
+concept sequence_container = requires(type val, type val2, type const cval)
 {
     requires container<type>;
 
+    // clang-format off
     // construction
     { type{typename type::size_type{}, typename type::value_type{}} };
     { type{val2.begin(), val2.end()}                                }; // NOTE that this could be any input iterator:
@@ -188,6 +192,7 @@ concept sequence_container = requires (type val, type val2, type const cval)
     { cval.front() } -> std::same_as<typename type::const_reference>;
     { val.back() } -> std::same_as<typename type::reference>;
     { cval.back() } -> std::same_as<typename type::const_reference>;
+    // clang-format on
 };
 //!\endcond
 
@@ -207,10 +212,11 @@ concept sequence_container = requires (type val, type val2, type const cval)
  */
 //!\cond
 template <typename type>
-concept random_access_container = requires (type val)
+concept random_access_container = requires(type val)
 {
     requires sequence_container<type>;
 
+    // clang-format off
     // access container
     { val[0] } -> std::same_as<typename type::reference>;
     { val.at(0) } -> std::same_as<typename type::reference>;
@@ -218,6 +224,7 @@ concept random_access_container = requires (type val)
     // modify container
     { val.resize(0) } -> std::same_as<void>;
     { val.resize(0, typename type::value_type{}) } -> std::same_as<void>;
+    // clang-format on
 };
 //!\endcond
 
@@ -233,13 +240,15 @@ concept random_access_container = requires (type val)
  */
 //!\cond
 template <typename type>
-concept reservible_container = requires (type val)
+concept reservible_container = requires(type val)
 {
     requires random_access_container<type>;
 
+    // clang-format off
     { val.capacity() } -> std::same_as<typename type::size_type>;
     { val.reserve(0) } -> std::same_as<void>;
     { val.shrink_to_fit() } -> std::same_as<void>;
+    // clang-format on
 };
 //!\endcond
 

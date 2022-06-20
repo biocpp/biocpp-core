@@ -13,8 +13,8 @@
 #include <gtest/gtest.h>
 
 #include <bio/ranges/concept.hpp>
-#include <bio/test/expect_range_eq.hpp>
 #include <bio/ranges/views/persist.hpp>
+#include <bio/test/expect_range_eq.hpp>
 
 // ============================================================================
 //  test templates
@@ -54,9 +54,9 @@ TEST(view_persist, wrap_temporary)
 
     // combinability
     EXPECT_RANGE_EQ("fo"sv, std::string{"foo"} | bio::views::persist | std::views::take(2));
-    EXPECT_RANGE_EQ("o"sv, std::string{"foo"} | bio::views::persist
-                                              | std::views::filter([](char const chr){return chr == 'o';})
-                                              | std::views::take(1));
+    EXPECT_RANGE_EQ("o"sv,
+                    std::string{"foo"} | bio::views::persist |
+                      std::views::filter([](char const chr) { return chr == 'o'; }) | std::views::take(1));
 }
 
 TEST(view_persist, const)
@@ -72,7 +72,7 @@ TEST(view_persist, const)
     EXPECT_RANGE_EQ("foo"sv, v2);
 
     // inner + outer const
-    using t = std::string const;
+    using t         = std::string const;
     auto const & v3 = t{"foo"} | bio::views::persist;
     EXPECT_RANGE_EQ("foo"sv, v3);
 }

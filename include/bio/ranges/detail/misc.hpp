@@ -28,7 +28,7 @@ namespace bio::detail
 template <std::ranges::input_range rng_t>
 constexpr void consume(rng_t && rng)
 {
-    auto it = begin(rng);
+    auto it     = begin(rng);
     auto it_end = end(rng);
     while (it != it_end)
         ++it;

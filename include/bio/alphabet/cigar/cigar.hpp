@@ -66,12 +66,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr cigar()                          noexcept = default; //!< Defaulted.
-    constexpr cigar(cigar const &)             noexcept = default; //!< Defaulted.
-    constexpr cigar(cigar &&)                  noexcept = default; //!< Defaulted.
+    constexpr cigar() noexcept                          = default; //!< Defaulted.
+    constexpr cigar(cigar const &) noexcept             = default; //!< Defaulted.
+    constexpr cigar(cigar &&) noexcept                  = default; //!< Defaulted.
     constexpr cigar & operator=(cigar const &) noexcept = default; //!< Defaulted.
-    constexpr cigar & operator=(cigar &&)      noexcept = default; //!< Defaulted.
-    ~cigar()                                   noexcept = default; //!< Defaulted.
+    constexpr cigar & operator=(cigar &&) noexcept      = default; //!< Defaulted.
+    ~cigar() noexcept                                   = default; //!< Defaulted.
 
     // Inherit constructors from base
     using base_t::base_t;
@@ -82,7 +82,7 @@ public:
      *
      * \include test/snippet/alphabet/cigar/cigar_value_construction.cpp
      */
-    BIOCPP_DOXYGEN_ONLY(( constexpr cigar(component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY((constexpr cigar(component_type const alph) noexcept {}))
 
     /*!\brief Assignment via a value of one of the components.
      * \tparam component_type One of the component types; must be uniquely contained in the type list of the composite.
@@ -90,7 +90,7 @@ public:
      *
      * \include test/snippet/alphabet/cigar/cigar_value_assignment.cpp
      */
-    BIOCPP_DOXYGEN_ONLY(( constexpr cigar & operator=(component_type const alph) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY((constexpr cigar & operator=(component_type const alph) noexcept {}))
     //!\}
 
     // Inherit operators from base
@@ -105,7 +105,7 @@ public:
         small_string<11> ret{}; // maximum number of digits for uint32_t + 1 char for the cigar_op
         ret.resize(11);
 
-        auto [ ptr, errc ] = std::to_chars(ret.data(), ret.data() + 10, get<0>(*this));
+        auto [ptr, errc] = std::to_chars(ret.data(), ret.data() + 10, get<0>(*this));
 
         *ptr = bio::to_char(get<1>(*this));
         (void)errc;
@@ -122,7 +122,7 @@ public:
     cigar & assign_string(small_string<11> const s) noexcept
     {
         uint32_t num{};
-        auto [ ptr, errc ] = std::from_chars(s.data(), s.data() + 10, num);
+        auto [ptr, errc] = std::from_chars(s.data(), s.data() + 10, num);
 
         if ((errc != std::errc{}) || (!char_is_valid_for<cigar_op>(*ptr)) || (*(ptr + 1) != 0))
         {
@@ -146,7 +146,7 @@ public:
      *
      * \include test/snippet/alphabet/cigar/cigar_get_index.cpp
      */
-    BIOCPP_DOXYGEN_ONLY(( template <size_t index> constexpr auto get(cigar & l) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY((template <size_t index> constexpr auto get(cigar & l) noexcept {}))
 
     /*!\copybrief get
      * \tparam type Return the element of specified type; only available if the type is unique in the set of components.
@@ -154,7 +154,7 @@ public:
      *
      * \include test/snippet/alphabet/cigar/cigar_get_type.cpp
      */
-    BIOCPP_DOXYGEN_ONLY(( template <typename type> constexpr auto get(cigar & l) noexcept {} ))
+    BIOCPP_DOXYGEN_ONLY((template <typename type> constexpr auto get(cigar & l) noexcept {}))
     //!\}
 };
 
@@ -162,14 +162,14 @@ public:
 
 #if __has_include(<fmt/format.h>)
 
-#include <fmt/format.h>
+#    include <fmt/format.h>
 
 template <>
 struct fmt::formatter<bio::cigar> : fmt::formatter<std::string_view>
 {
     constexpr auto format(bio::cigar const a, auto & ctx) const
     {
-        auto tmp = a.to_string();
+        auto             tmp = a.to_string();
         std::string_view v{tmp.data(), tmp.size()};
         return fmt::formatter<std::string_view>::format(v, ctx);
     }

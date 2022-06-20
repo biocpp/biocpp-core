@@ -83,17 +83,14 @@ TEST(dna15, string_literal)
 
 TEST(dna15, char_is_valid)
 {
-    constexpr auto validator = bio::is_char<'A'> || bio::is_char<'C'> || bio::is_char<'G'> ||
-                               bio::is_char<'T'> || bio::is_char<'U'> || bio::is_char<'a'> ||
-                               bio::is_char<'c'> || bio::is_char<'g'> || bio::is_char<'t'> ||
-                               bio::is_char<'u'> || bio::is_char<'N'> || bio::is_char<'n'> ||
-                               bio::is_char<'R'> || bio::is_char<'Y'> || bio::is_char<'S'> ||
-                               bio::is_char<'W'> || bio::is_char<'K'> || bio::is_char<'M'> ||
-                               bio::is_char<'B'> || bio::is_char<'D'> || bio::is_char<'H'> ||
-                               bio::is_char<'V'> || bio::is_char<'r'> || bio::is_char<'y'> ||
-                               bio::is_char<'s'> || bio::is_char<'w'> || bio::is_char<'k'> ||
-                               bio::is_char<'m'> || bio::is_char<'b'> || bio::is_char<'d'> ||
-                               bio::is_char<'h'> || bio::is_char<'v'>;
+    constexpr auto validator = bio::is_char<'A'> || bio::is_char<'C'> || bio::is_char<'G'> || bio::is_char<'T'> ||
+                               bio::is_char<'U'> || bio::is_char<'a'> || bio::is_char<'c'> || bio::is_char<'g'> ||
+                               bio::is_char<'t'> || bio::is_char<'u'> || bio::is_char<'N'> || bio::is_char<'n'> ||
+                               bio::is_char<'R'> || bio::is_char<'Y'> || bio::is_char<'S'> || bio::is_char<'W'> ||
+                               bio::is_char<'K'> || bio::is_char<'M'> || bio::is_char<'B'> || bio::is_char<'D'> ||
+                               bio::is_char<'H'> || bio::is_char<'V'> || bio::is_char<'r'> || bio::is_char<'y'> ||
+                               bio::is_char<'s'> || bio::is_char<'w'> || bio::is_char<'k'> || bio::is_char<'m'> ||
+                               bio::is_char<'b'> || bio::is_char<'d'> || bio::is_char<'h'> || bio::is_char<'v'>;
     for (char c : std::views::iota(std::numeric_limits<char>::min(), std::numeric_limits<char>::max()))
         EXPECT_EQ(bio::dna15::char_is_valid(c), validator(c));
 }

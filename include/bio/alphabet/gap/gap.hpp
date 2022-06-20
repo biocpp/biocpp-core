@@ -51,14 +51,14 @@ public:
      * \{
      */
     constexpr gap() noexcept : base_t{} {}            //!< Defaulted.
-    constexpr gap(gap const &) = default;             //!< Defaulted.
-    constexpr gap(gap &&) = default;                  //!< Defaulted.
+    constexpr gap(gap const &)             = default; //!< Defaulted.
+    constexpr gap(gap &&)                  = default; //!< Defaulted.
     constexpr gap & operator=(gap const &) = default; //!< Defaulted.
-    constexpr gap & operator=(gap &&) = default;      //!< Defaulted.
-    ~gap() = default;                                 //!< Defaulted.
+    constexpr gap & operator=(gap &&)      = default; //!< Defaulted.
+    ~gap()                                 = default; //!< Defaulted.
 
     using base_t::base_t;
     //!\}
 };
 
-}
+} // namespace bio

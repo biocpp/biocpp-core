@@ -26,8 +26,8 @@
 #include <bio/meta/type_traits/transformation_trait_or.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/container/concept.hpp>
-#include <bio/ranges/views/detail.hpp>
 #include <bio/ranges/detail/inherited_iterator_base.hpp>
+#include <bio/ranges/views/detail.hpp>
 
 namespace bio::detail
 {
@@ -68,7 +68,7 @@ private:
      * \{
      */
     //!\brief The iterator type of this view (a random access iterator).
-    using iterator = basic_iterator<urng_t>;
+    using iterator       = basic_iterator<urng_t>;
     /*!\brief Note that this declaration does not give any compiler errors for non-const iterable ranges. Although
      * `basic_iterator` inherits from std::ranges::iterator_t which is not defined on a const-range, i.e. `urng_t const,
      *  if it is not const-iterable. We only just declare this type and never instantiate it, i.e. use this type within
@@ -81,20 +81,19 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    view_take() = default; //!< Defaulted.
-    view_take(view_take const & rhs) = default; //!< Defaulted.
-    view_take(view_take && rhs) = default; //!< Defaulted.
+    view_take()                                  = default; //!< Defaulted.
+    view_take(view_take const & rhs)             = default; //!< Defaulted.
+    view_take(view_take && rhs)                  = default; //!< Defaulted.
     view_take & operator=(view_take const & rhs) = default; //!< Defaulted.
-    view_take & operator=(view_take && rhs) = default; //!< Defaulted.
-    ~view_take() = default; //!< Defaulted.
+    view_take & operator=(view_take && rhs)      = default; //!< Defaulted.
+    ~view_take()                                 = default; //!< Defaulted.
 
     /*!\brief Construct from another View.
      * \param[in] _urange The underlying range.
      * \param[in] _size   The desired size (after which to stop returning elements).
      * \throws std::runtime_error If `exactly && or_throw && bio::sized_range<urng_t>`.
      */
-    constexpr view_take(urng_t _urange, size_t const _size)
-        : urange{std::move(_urange)}, target_size{_size}
+    constexpr view_take(urng_t _urange, size_t const _size) : urange{std::move(_urange)}, target_size{_size}
     {
         if constexpr (std::ranges::sized_range<urng_t>)
         {
@@ -102,11 +101,9 @@ public:
             {
                 if constexpr (exactly && or_throw)
                 {
-                    throw std::invalid_argument
-                    {
-                        "You are trying to construct a views::take_exactly_or_throw from a range that is strictly "
-                        "smaller."
-                    };
+                    throw std::invalid_argument{
+                      "You are trying to construct a views::take_exactly_or_throw from a range that is strictly "
+                      "smaller."};
                 }
                 else
                 {
@@ -123,11 +120,11 @@ public:
      * \throws std::runtime_error If `exactly && or_throw && bio::sized_range<urng_t>`.
      */
     template <std::ranges::viewable_range rng_t>
-    //!\cond
+        //!\cond
         requires std::constructible_from<rng_t, std::views::all_t<rng_t>>
     //!\endcond
-    constexpr view_take(rng_t && _urange, size_t const _size)
-        : view_take{std::views::all(std::forward<rng_t>(_urange)), _size}
+    constexpr view_take(rng_t && _urange, size_t const _size) :
+      view_take{std::views::all(std::forward<rng_t>(_urange)), _size}
     {}
     //!\}
 
@@ -156,8 +153,7 @@ public:
     }
 
     //!\copydoc begin()
-    constexpr auto begin() const noexcept
-        requires const_iterable_range<urng_t>
+    constexpr auto begin() const noexcept requires const_iterable_range<urng_t>
     {
         if constexpr (std::ranges::random_access_range<urng_t> && std::ranges::sized_range<urng_t>)
             return std::ranges::cbegin(urange);
@@ -187,8 +183,7 @@ public:
     }
 
     //!\copydoc end()
-    constexpr auto end() const noexcept
-        requires const_iterable_range<urng_t>
+    constexpr auto end() const noexcept requires const_iterable_range<urng_t>
     {
         if constexpr (std::ranges::random_access_range<urng_t> && std::ranges::sized_range<urng_t>)
             return std::ranges::cbegin(urange) + target_size;
@@ -212,32 +207,26 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr auto size() const noexcept
-        requires exactly || std::ranges::sized_range<urng_t>
-    {
-        return target_size;
-    }
+    constexpr auto size() const noexcept requires exactly || std::ranges::sized_range<urng_t> { return target_size; }
 };
 
 //!\brief Template argument type deduction guide that strips references.
 //!\relates bio::detail::view_take
-template <typename urng_t,
-          bool exactly = false,
-          bool or_throw = false>
-view_take(urng_t && , size_t) -> view_take<std::views::all_t<urng_t>, exactly, or_throw>;
+template <typename urng_t, bool exactly = false, bool or_throw = false>
+view_take(urng_t &&, size_t) -> view_take<std::views::all_t<urng_t>, exactly, or_throw>;
 
 //!\brief The iterator for the view_take. It inherits from the underlying type, but overwrites several operators.
 //!\tparam rng_t Should be `urng_t` for defining #iterator and `urng_t const` for defining #const_iterator.
 template <std::ranges::view urng_t, bool exactly, bool or_throw>
 template <typename rng_t>
 class view_take<urng_t, exactly, or_throw>::basic_iterator :
-    public inherited_iterator_base<basic_iterator<rng_t>, std::ranges::iterator_t<rng_t>>
+  public inherited_iterator_base<basic_iterator<rng_t>, std::ranges::iterator_t<rng_t>>
 {
 private:
     //!\brief The iterator type of the underlying range.
     using base_base_t = std::ranges::iterator_t<rng_t>;
     //!\brief The CRTP wrapper type.
-    using base_t = inherited_iterator_base<basic_iterator, std::ranges::iterator_t<rng_t>>;
+    using base_t      = inherited_iterator_base<basic_iterator, std::ranges::iterator_t<rng_t>>;
 
     //!\brief The sentinel type is identical to that of the underlying range.
     using sentinel_type = std::ranges::sentinel_t<urng_t>;
@@ -256,24 +245,22 @@ public:
      * \brief Exceptions specification is implicitly inherited.
      * \{
      */
-    basic_iterator() = default; //!< Defaulted.
-    basic_iterator(basic_iterator const & rhs) = default; //!< Defaulted.
-    basic_iterator(basic_iterator && rhs) = default; //!< Defaulted.
+    basic_iterator()                                       = default; //!< Defaulted.
+    basic_iterator(basic_iterator const & rhs)             = default; //!< Defaulted.
+    basic_iterator(basic_iterator && rhs)                  = default; //!< Defaulted.
     basic_iterator & operator=(basic_iterator const & rhs) = default; //!< Defaulted.
-    basic_iterator & operator=(basic_iterator && rhs) = default; //!< Defaulted.
-    ~basic_iterator() = default; //!< Defaulted.
+    basic_iterator & operator=(basic_iterator && rhs)      = default; //!< Defaulted.
+    ~basic_iterator()                                      = default; //!< Defaulted.
 
     //!\brief Constructor that delegates to the CRTP layer.
-    constexpr basic_iterator(base_base_t const & it) noexcept(noexcept(base_t{it})) :
-        base_t{std::move(it)}
-    {}
+    constexpr basic_iterator(base_base_t const & it) noexcept(noexcept(base_t{it})) : base_t{std::move(it)} {}
 
     //!\brief Constructor that delegates to the CRTP layer and initialises the members.
-    constexpr basic_iterator(base_base_t it,
+    constexpr basic_iterator(base_base_t  it,
                              size_t const _pos,
                              size_t const _max_pos,
-                             view_take * host = nullptr) noexcept(noexcept(base_t{it})) :
-        base_t{std::move(it)}, pos{_pos}, max_pos(_max_pos)
+                             view_take *  host = nullptr) noexcept(noexcept(base_t{it})) :
+      base_t{std::move(it)}, pos{_pos}, max_pos(_max_pos)
     {
         host_ptr = host;
     }
@@ -285,17 +272,17 @@ public:
      */
 
     //!\brief The difference type.
-    using difference_type = std::iter_difference_t<base_base_t>;
+    using difference_type   = std::iter_difference_t<base_base_t>;
     //!\brief The value type.
-    using value_type = std::iter_value_t<base_base_t>;
+    using value_type        = std::iter_value_t<base_base_t>;
     //!\brief The reference type.
-    using reference = std::iter_reference_t<base_base_t>;
+    using reference         = std::iter_reference_t<base_base_t>;
     //!\brief The pointer type.
-    using pointer = detail::iter_pointer_t<base_base_t>;
+    using pointer           = detail::iter_pointer_t<base_base_t>;
     //!\brief The iterator category tag.
     using iterator_category = detail::iterator_category_tag_t<base_base_t>;
     //!\brief The iterator concept tag.
-    using iterator_concept = detail::iterator_concept_tag_t<base_base_t>;
+    using iterator_concept  = detail::iterator_concept_tag_t<base_base_t>;
     //!\}
 
     /*!\name Arithmetic operators
@@ -324,8 +311,8 @@ public:
 
     //!\brief Decrements the iterator by one.
     constexpr basic_iterator & operator--() noexcept(noexcept(--std::declval<base_base_t &>()))
-    //!\cond
-        requires std::bidirectional_iterator<base_base_t>
+      //!\cond
+      requires std::bidirectional_iterator<base_base_t>
     //!\endcond
     {
         base_t::operator--();
@@ -336,8 +323,8 @@ public:
     //!\brief Returns an iterator decremented by one.
     constexpr basic_iterator operator--(int) noexcept(noexcept(--std::declval<basic_iterator &>()) &&
                                                       std::is_nothrow_copy_constructible_v<basic_iterator>)
-    //!\cond
-        requires std::bidirectional_iterator<base_base_t>
+      //!\cond
+      requires std::bidirectional_iterator<base_base_t>
     //!\endcond
     {
         basic_iterator cpy{*this};
@@ -346,10 +333,10 @@ public:
     }
 
     //!\brief Advances the iterator by skip positions.
-    constexpr basic_iterator & operator+=(difference_type const skip)
-        noexcept(noexcept(std::declval<base_t &>() += skip))
-    //!\cond
-        requires std::random_access_iterator<base_base_t>
+    constexpr basic_iterator & operator+=(difference_type const skip) noexcept(noexcept(std::declval<base_t &>() +=
+                                                                                        skip))
+      //!\cond
+      requires std::random_access_iterator<base_base_t>
     //!\endcond
     {
         base_t::operator+=(skip);
@@ -358,10 +345,10 @@ public:
     }
 
     //!\brief Advances the iterator by -skip positions.
-    constexpr basic_iterator & operator-=(difference_type const skip)
-        noexcept(noexcept(std::declval<base_t &>() -= skip))
-    //!\cond
-        requires std::random_access_iterator<base_base_t>
+    constexpr basic_iterator & operator-=(difference_type const skip) noexcept(noexcept(std::declval<base_t &>() -=
+                                                                                        skip))
+      //!\cond
+      requires std::random_access_iterator<base_base_t>
     //!\endcond
     {
         base_t::operator-=(skip);
@@ -377,9 +364,9 @@ public:
 
     //!\brief Checks whether `*this` is equal to `rhs`.
     constexpr bool operator==(basic_iterator const & rhs) const
-        noexcept(!or_throw && noexcept(std::declval<base_base_t &>() == std::declval<base_base_t &>()))
-    //!\cond
-        requires std::forward_iterator<base_base_t>
+      noexcept(!or_throw && noexcept(std::declval<base_base_t &>() == std::declval<base_base_t &>()))
+      //!\cond
+      requires std::forward_iterator<base_base_t>
     //!\endcond
     {
         return *base_t::this_to_base() == *rhs.this_to_base();
@@ -387,7 +374,7 @@ public:
 
     //!\copydoc operator==()
     constexpr bool operator==(sentinel_type const & rhs) const
-        noexcept(!or_throw && noexcept(std::declval<base_base_t const &>() == std::declval<sentinel_type const &>()))
+      noexcept(!or_throw && noexcept(std::declval<base_base_t const &>() == std::declval<sentinel_type const &>()))
     {
         if (pos >= max_pos)
             return true;
@@ -406,32 +393,32 @@ public:
     }
 
     //!\brief Checks whether `lhs` is equal to `rhs`.
-    constexpr friend bool operator==(sentinel_type const & lhs, basic_iterator const & rhs)
-        noexcept(noexcept(rhs == lhs))
+    constexpr friend bool operator==(sentinel_type const &  lhs,
+                                     basic_iterator const & rhs) noexcept(noexcept(rhs == lhs))
     {
         return rhs == lhs;
     }
 
     //!\brief Checks whether `*this` is not equal to `rhs`.
     constexpr bool operator!=(sentinel_type const & rhs) const
-        noexcept(noexcept(std::declval<basic_iterator &>() == rhs))
+      noexcept(noexcept(std::declval<basic_iterator &>() == rhs))
     {
         return !(*this == rhs);
     }
 
     //!\copydoc operator!=()
     constexpr bool operator!=(basic_iterator const & rhs) const
-        noexcept(noexcept(std::declval<basic_iterator &>() == rhs))
-    //!\cond
-        requires std::forward_iterator<base_base_t>
+      noexcept(noexcept(std::declval<basic_iterator &>() == rhs))
+      //!\cond
+      requires std::forward_iterator<base_base_t>
     //!\endcond
     {
         return !(*this == rhs);
     }
 
     //!\brief Checks whether `lhs` is not equal to `rhs`.
-    constexpr friend bool operator!=(sentinel_type const & lhs, basic_iterator const & rhs)
-        noexcept(noexcept(rhs != lhs))
+    constexpr friend bool operator!=(sentinel_type const &  lhs,
+                                     basic_iterator const & rhs) noexcept(noexcept(rhs != lhs))
     {
         return rhs != lhs;
     }
@@ -447,9 +434,9 @@ public:
      * \return A reference to the element at relative location.
      */
     constexpr reference operator[](std::make_unsigned_t<difference_type> const n) const
-        noexcept(noexcept(std::declval<base_base_t &>()[0]))
-    //!\cond
-        requires std::random_access_iterator<base_base_t>
+      noexcept(noexcept(std::declval<base_base_t &>()[0]))
+      //!\cond
+      requires std::random_access_iterator<base_base_t>
     //!\endcond
     {
         return base_base_t::operator[](n);
@@ -468,10 +455,7 @@ template <bool exactly, bool or_throw>
 struct take_fn
 {
     //!\brief Store the arguments and return a range adaptor closure object.
-    constexpr auto operator()(size_t const size) const
-    {
-        return adaptor_from_functor{*this, size};
-    }
+    constexpr auto operator()(size_t const size) const { return adaptor_from_functor{*this, size}; }
 
     /*!\brief Type erase if possible and return view_take if not.
      * \returns An instance of std::span, std::basic_string_view, std::ranges::subrange or bio::detail::view_take.
@@ -489,8 +473,9 @@ struct take_fn
             {
                 if (target_size > std::ranges::size(urange))
                 {
-                    throw std::invalid_argument{"You are trying to construct a views::take_exactly_or_throw from a "
-                                                "range that is strictly smaller."};
+                    throw std::invalid_argument{
+                      "You are trying to construct a views::take_exactly_or_throw from a "
+                      "range that is strictly smaller."};
                 }
             }
             else
@@ -511,32 +496,24 @@ struct take_fn
             return std::basic_string_view{std::ranges::data(urange), target_size};
         }
         // contiguous
-        else if constexpr (std::ranges::borrowed_range<urng_t> &&
-                           std::ranges::contiguous_range<urng_t> &&
+        else if constexpr (std::ranges::borrowed_range<urng_t> && std::ranges::contiguous_range<urng_t> &&
                            std::ranges::sized_range<urng_t>)
         {
             return std::span{std::ranges::data(urange), target_size};
         }
         // random_access
-        else if constexpr (std::ranges::borrowed_range<urng_t> &&
-                           std::ranges::random_access_range<urng_t> &&
+        else if constexpr (std::ranges::borrowed_range<urng_t> && std::ranges::random_access_range<urng_t> &&
                            std::ranges::sized_range<urng_t>)
         {
-            return std::ranges::subrange<std::ranges::iterator_t<urng_t>, std::ranges::iterator_t<urng_t>>
-            {
-                std::ranges::begin(urange),
-                std::ranges::begin(urange) + target_size,
-                target_size
-            };
+            return std::ranges::subrange<std::ranges::iterator_t<urng_t>, std::ranges::iterator_t<urng_t>>{
+              std::ranges::begin(urange),
+              std::ranges::begin(urange) + target_size,
+              target_size};
         }
         // our type
         else
         {
-            return view_take<std::views::all_t<urng_t>, exactly, or_throw>
-            {
-                std::forward<urng_t>(urange),
-                target_size
-            };
+            return view_take<std::views::all_t<urng_t>, exactly, or_throw>{std::forward<urng_t>(urange), target_size};
         }
     }
 };

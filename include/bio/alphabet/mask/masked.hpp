@@ -13,8 +13,8 @@
 
 #pragma once
 
-#include <bio/alphabet/mask/mask.hpp>
 #include <bio/alphabet/composite/alphabet_tuple_base.hpp>
+#include <bio/alphabet/mask/mask.hpp>
 #include <bio/meta/char_operations/predicate.hpp>
 #include <bio/meta/char_operations/transform.hpp>
 
@@ -38,8 +38,8 @@ namespace bio
  *
  * \include test/snippet/alphabet/mask/masked.cpp
  */
- template <writable_alphabet sequence_alphabet_t>
-//!\cond
+template <writable_alphabet sequence_alphabet_t>
+    //!\cond
     requires std::regular<sequence_alphabet_t>
 //!\endcond
 class masked : public alphabet_tuple_base<masked<sequence_alphabet_t>, sequence_alphabet_t, mask>
@@ -61,12 +61,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr masked() = default;                            //!< Defaulted.
-    constexpr masked(masked const &) = default;              //!< Defaulted.
-    constexpr masked(masked &&) = default;                   //!< Defaulted.
-    constexpr masked & operator =(masked const &) = default; //!< Defaulted.
-    constexpr masked & operator =(masked &&) = default;      //!< Defaulted.
-    ~masked() = default;                                     //!< Defaulted.
+    constexpr masked()                           = default; //!< Defaulted.
+    constexpr masked(masked const &)             = default; //!< Defaulted.
+    constexpr masked(masked &&)                  = default; //!< Defaulted.
+    constexpr masked & operator=(masked const &) = default; //!< Defaulted.
+    constexpr masked & operator=(masked &&)      = default; //!< Defaulted.
+    ~masked()                                    = default; //!< Defaulted.
 
     using base_t::base_t; // Inherit non-default constructors
     //!\}
@@ -90,55 +90,44 @@ public:
      * \{
      */
     //!\brief Return a character.
-    constexpr char_type to_char() const noexcept
-    {
-        return rank_to_char[base_t::to_rank()];
-    }
+    constexpr char_type to_char() const noexcept { return rank_to_char[base_t::to_rank()]; }
     //!\}
 
 protected:
     //!\brief Rank to char conversion table.
-    static constexpr std::array<char_type, alphabet_size> rank_to_char
+    static constexpr std::array<char_type, alphabet_size> rank_to_char = []()
     {
-        [] ()
-        {
-            std::array<char_type, alphabet_size> ret{};
+        std::array<char_type, alphabet_size> ret{};
 
-            for (size_t i = 0; i < alphabet_size; ++i)
-            {
-                ret[i] = (i < alphabet_size / 2)
+        for (size_t i = 0; i < alphabet_size; ++i)
+        {
+            ret[i] = (i < alphabet_size / 2)
                        ? bio::to_char(bio::assign_rank_to(i, sequence_alphabet_type{}))
                        : to_lower(bio::to_char(bio::assign_rank_to(i / 2, sequence_alphabet_type{})));
-            }
+        }
 
-            return ret;
-        } ()
-    };
+        return ret;
+    }();
 
     //!\brief Char to rank conversion table.
-    static constexpr std::array<rank_type, detail::size_in_values_v<char_type>> char_to_rank
+    static constexpr std::array<rank_type, detail::size_in_values_v<char_type>> char_to_rank = []()
     {
-        [] ()
+        std::array<rank_type, detail::size_in_values_v<char_type>> ret{};
+
+        for (size_t i = 0; i < 256; ++i)
         {
-            std::array<rank_type, detail::size_in_values_v<char_type>> ret{};
+            char_type c = static_cast<char_type>(i);
 
-            for (size_t i = 0; i < 256; ++i)
-            {
-                char_type c = static_cast<char_type>(i);
+            ret[i] = is_lower(c) ? bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{})) * 2
+                                 : bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{}));
+        }
 
-                ret[i] = is_lower(c)
-                       ? bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{})) * 2
-                       : bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{}));
-            }
-
-            return ret;
-        } ()
-    };
+        return ret;
+    }();
 };
 
 //!\brief Type deduction guide enables usage of masked without specifying template args.
 //!\relates masked
 template <typename sequence_alphabet_type>
-masked(sequence_alphabet_type &&, mask const &)
-    -> masked<std::decay_t<sequence_alphabet_type>>;
+masked(sequence_alphabet_type &&, mask const &) -> masked<std::decay_t<sequence_alphabet_type>>;
 } //namespace bio

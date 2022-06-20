@@ -14,7 +14,7 @@
 #pragma once
 
 #if defined(__GNUC__) || defined(__clang__)
-#include <cxxabi.h>
+#    include <cxxabi.h>
 #endif // defined(__GNUC__) || defined(__clang__)
 
 #include <functional>
@@ -42,17 +42,17 @@ namespace bio::detail
  * \note The returned name is implementation defined and might change between different tool chains.
  */
 template <typename type>
-inline std::string const type_name_as_string = [] ()
+inline std::string const type_name_as_string = []()
 {
     std::string demangled_name{};
 #if defined(__GNUC__) || defined(__clang__) // clang and gcc only return a mangled name.
     using safe_ptr_t = std::unique_ptr<char, std::function<void(char *)>>;
 
-    int status{};
+    int        status{};
     safe_ptr_t demangled_name_ptr{abi::__cxa_demangle(typeid(type).name(), 0, 0, &status),
-                                  [] (char * name_ptr) { free(name_ptr); }};
+                                  [](char * name_ptr) { free(name_ptr); }};
     demangled_name = std::string{std::addressof(*demangled_name_ptr)};
-#else // e.g. MSVC
+#else  // e.g. MSVC
     demangled_name = typeid(type).name();
 #endif // defined(__GNUC__) || defined(__clang__)
 
@@ -66,4 +66,4 @@ inline std::string const type_name_as_string = [] ()
     return demangled_name;
 }();
 
-}  // namespace bio::detail
+} // namespace bio::detail

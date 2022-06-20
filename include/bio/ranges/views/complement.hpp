@@ -67,13 +67,14 @@ namespace bio::views
  * \hideinitializer
  */
 
-inline auto const complement = deep{std::views::transform([] (auto const in)
-{
-    static_assert(nucleotide_alphabet<decltype(in)>,
-                  "The innermost value type must satisfy the nucleotide_alphabet.");
-    // call element-wise complement from the nucleotide_alphabet
-    return bio::complement(in);
-})};
+inline auto const complement = deep{std::views::transform(
+  [](auto const in)
+  {
+      static_assert(nucleotide_alphabet<decltype(in)>,
+                    "The innermost value type must satisfy the nucleotide_alphabet.");
+      // call element-wise complement from the nucleotide_alphabet
+      return bio::complement(in);
+  })};
 
 //!\}
 

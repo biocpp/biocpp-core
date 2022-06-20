@@ -94,7 +94,7 @@ namespace bio::views
  *
  * \hideinitializer
  */
-constexpr inline auto repeat_n = detail::repeat_n_fn{};
+inline constexpr auto repeat_n = detail::repeat_n_fn{};
 //!\}
 
 } // namespace bio::views

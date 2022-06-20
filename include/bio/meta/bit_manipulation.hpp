@@ -21,9 +21,9 @@
 
 // Find correct header for byte-order conversion functions.
 #if __has_include(<endian.h>) // unix GLIBC
-    #include <endian.h>
-#elif __has_include(<sys/endian.h>)  // *BSD
-    #include <sys/endian.h>
+#    include <endian.h>
+#elif __has_include(<sys/endian.h>) // *BSD
+#    include <sys/endian.h>
 #endif // __has_include(endian.h)
 
 #include <bio/meta/detail/endian.hpp>
@@ -52,7 +52,7 @@ constexpr auto sizeof_bits = min_viable_uint_v<CHAR_BIT * sizeof(type_t)>;
  */
 constexpr bool is_power_of_two(size_t const n)
 {
-    return n > 0 && (n & (n-1)) == 0;
+    return n > 0 && (n & (n - 1)) == 0;
 }
 
 /*!\brief Returns \f$2^{\lceil\log_2(n)\rceil}\f$ for an \f$n\f$.
@@ -267,7 +267,7 @@ constexpr type to_little_endian(type const in) noexcept
         else if constexpr (sizeof(type) == 8)
             return htole64(in);
         else
-            return in;  // single byte.
+            return in; // single byte.
     }
     else
     {

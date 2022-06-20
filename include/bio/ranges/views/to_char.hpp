@@ -63,11 +63,13 @@ namespace bio::views
  * \include test/snippet/ranges/views/range_view_to_char.cpp
  * \hideinitializer
  */
-inline auto const to_char = deep{std::views::transform([] (auto const in) noexcept
-{
-    static_assert(alphabet<std::remove_cvref_t<decltype(in)>>, "The value type of bio::views::to_char must model the bio::alphabet.");
-    return bio::to_char(in);
-})};
+inline auto const to_char = deep{std::views::transform(
+  [](auto const in) noexcept
+  {
+      static_assert(alphabet<std::remove_cvref_t<decltype(in)>>,
+                    "The value type of bio::views::to_char must model the bio::alphabet.");
+      return bio::to_char(in);
+  })};
 
 //!\}
 

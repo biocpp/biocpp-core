@@ -26,31 +26,30 @@ enum class my_enum
 template <>
 constexpr bool bio::add_enum_bitwise_operators<bio::my_enum> = true;
 
-
 TEST(add_enum_bitwise_operators, AND)
 {
-    bio::my_enum e = bio::my_enum::VAL1;
+    bio::my_enum e  = bio::my_enum::VAL1;
     bio::my_enum e2 = e & bio::my_enum::VAL2;
     EXPECT_EQ(e2, bio::my_enum::ZERO);
 }
 
 TEST(add_enum_bitwise_operators, OR)
 {
-    bio::my_enum e = bio::my_enum::VAL1;
+    bio::my_enum e  = bio::my_enum::VAL1;
     bio::my_enum e2 = e | bio::my_enum::VAL2;
     EXPECT_EQ(e2, bio::my_enum::COMB);
 }
 
 TEST(add_enum_bitwise_operators, XOR)
 {
-    bio::my_enum e = bio::my_enum::VAL1;
+    bio::my_enum e  = bio::my_enum::VAL1;
     bio::my_enum e2 = e ^ bio::my_enum::VAL2;
     EXPECT_EQ(e2, bio::my_enum::COMB);
 }
 
 TEST(add_enum_bitwise_operators, NOT)
 {
-    bio::my_enum e = bio::my_enum::VAL1;
+    bio::my_enum e  = bio::my_enum::VAL1;
     bio::my_enum e2 = ~e;
     EXPECT_NE(e, e2);
     e2 = ~e2;

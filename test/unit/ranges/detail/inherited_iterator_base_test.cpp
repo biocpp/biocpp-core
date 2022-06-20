@@ -17,28 +17,27 @@
 
 //! [inherited_iterator_base def]
 
-class skip_odd_numbers_it : public bio::detail::inherited_iterator_base<skip_odd_numbers_it,
-                                                                           std::vector<int>::iterator>
+class skip_odd_numbers_it : public bio::detail::inherited_iterator_base<skip_odd_numbers_it, std::vector<int>::iterator>
 {
 private:
     using base_base_t = std::vector<int>::iterator;
     using base_t      = bio::detail::inherited_iterator_base<skip_odd_numbers_it, std::vector<int>::iterator>;
 
 public:
-    skip_odd_numbers_it() = default;
-    skip_odd_numbers_it(skip_odd_numbers_it const & rhs) = default;
-    skip_odd_numbers_it(skip_odd_numbers_it && rhs) = default;
+    skip_odd_numbers_it()                                            = default;
+    skip_odd_numbers_it(skip_odd_numbers_it const & rhs)             = default;
+    skip_odd_numbers_it(skip_odd_numbers_it && rhs)                  = default;
     skip_odd_numbers_it & operator=(skip_odd_numbers_it const & rhs) = default;
-    skip_odd_numbers_it & operator=(skip_odd_numbers_it && rhs) = default;
-    ~skip_odd_numbers_it() = default;
+    skip_odd_numbers_it & operator=(skip_odd_numbers_it && rhs)      = default;
+    ~skip_odd_numbers_it()                                           = default;
 
     skip_odd_numbers_it(base_base_t it) : base_t{it} {}
 
-    using difference_type       = typename std::iterator_traits<base_base_t>::difference_type;
-    using value_type            = typename std::iterator_traits<base_base_t>::value_type;
-    using reference             = typename std::iterator_traits<base_base_t>::reference;
-    using pointer               = typename std::iterator_traits<base_base_t>::pointer;
-    using iterator_category     = typename std::iterator_traits<base_base_t>::iterator_category;
+    using difference_type   = typename std::iterator_traits<base_base_t>::difference_type;
+    using value_type        = typename std::iterator_traits<base_base_t>::value_type;
+    using reference         = typename std::iterator_traits<base_base_t>::reference;
+    using pointer           = typename std::iterator_traits<base_base_t>::pointer;
+    using iterator_category = typename std::iterator_traits<base_base_t>::iterator_category;
 
     skip_odd_numbers_it & operator++()
     {
@@ -62,7 +61,7 @@ public:
 TEST(inherited_iterator_base, minimal)
 {
     //! [inherited_iterator_base desired]
-    std::vector<int> vec{0,1,2,3,4,5,6,7,8,9};
+    std::vector<int> vec{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
     skip_odd_numbers_it it = begin(vec);
 

@@ -17,9 +17,7 @@
 template <typename t>
 using alphabet_cereal = ::testing::Test;
 
-using test_types = ::testing::Types<bio::dna4,
-                                    bio::qualified<bio::dna4, bio::phred42>,
-                                    bio::gapped<bio::dna4>>;
+using test_types = ::testing::Types<bio::dna4, bio::qualified<bio::dna4, bio::phred42>, bio::gapped<bio::dna4>>;
 
 TYPED_TEST_SUITE(alphabet_cereal, test_types, );
 

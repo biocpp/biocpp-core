@@ -10,8 +10,8 @@
 
 #include <gtest/gtest.h>
 
-#include <bio/alphabet/concept.hpp>
 #include <bio/alphabet/aminoacid/all.hpp>
+#include <bio/alphabet/concept.hpp>
 #include <bio/meta/char_operations/predicate.hpp>
 
 template <typename T>
@@ -35,9 +35,9 @@ TYPED_TEST_P(aminoacid, comparators)
 {
     EXPECT_TRUE(TypeParam{}.assign_char('A') == TypeParam{}.assign_char('A'));
     EXPECT_TRUE(TypeParam{}.assign_char('A') != TypeParam{}.assign_char('B'));
-    EXPECT_TRUE(TypeParam{}.assign_char('A') <  TypeParam{}.assign_char('B'));
+    EXPECT_TRUE(TypeParam{}.assign_char('A') < TypeParam{}.assign_char('B'));
     EXPECT_TRUE(TypeParam{}.assign_char('A') <= TypeParam{}.assign_char('B'));
-    EXPECT_TRUE(TypeParam{}.assign_char('B') >  TypeParam{}.assign_char('A'));
+    EXPECT_TRUE(TypeParam{}.assign_char('B') > TypeParam{}.assign_char('A'));
     EXPECT_TRUE(TypeParam{}.assign_char('B') >= TypeParam{}.assign_char('A'));
 }
 

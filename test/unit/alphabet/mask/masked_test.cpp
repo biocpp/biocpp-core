@@ -8,10 +8,10 @@
 
 #include <gtest/gtest.h>
 
+#include <bio/alphabet/aminoacid/aa20.hpp>
 #include <bio/alphabet/mask/masked.hpp>
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/alphabet/nucleotide/dna5.hpp>
-#include <bio/alphabet/aminoacid/aa20.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"

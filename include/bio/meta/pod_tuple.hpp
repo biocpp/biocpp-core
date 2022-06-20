@@ -23,7 +23,7 @@ namespace bio
 {
 
 //!cond
-template <typename ...types>
+template <typename... types>
 struct pod_tuple
 {};
 //!\endcond
@@ -48,12 +48,12 @@ struct pod_tuple
  * \include test/snippet/meta/pod_tuple.cpp
  *
  */
-template <typename type0, typename ...types>
+template <typename type0, typename... types>
 struct pod_tuple<type0, types...>
 {
     //!\cond DEV
     //!\brief The first element as member.
-    type0 _head;
+    type0               _head;
     //!\brief The rest of the elements defined as a "recursive member".
     pod_tuple<types...> _tail;
     //!\endcond
@@ -118,40 +118,22 @@ struct pod_tuple<type0>
      */
 
     //!\brief Checks whether `*this` is equal to `rhs`.
-    constexpr bool operator==(pod_tuple const & rhs) const noexcept
-    {
-        return _head == rhs._head;
-    }
+    constexpr bool operator==(pod_tuple const & rhs) const noexcept { return _head == rhs._head; }
 
     //!\brief Checks whether `*this` is not equal to `rhs`.
-    constexpr bool operator!=(pod_tuple const & rhs) const noexcept
-    {
-        return _head != rhs._head;
-    }
+    constexpr bool operator!=(pod_tuple const & rhs) const noexcept { return _head != rhs._head; }
 
     //!\brief Checks whether `*this` is less than `rhs`.
-    constexpr bool operator<(pod_tuple const & rhs) const noexcept
-    {
-        return _head < rhs._head;
-    }
+    constexpr bool operator<(pod_tuple const & rhs) const noexcept { return _head < rhs._head; }
 
     //!\brief Checks whether `*this` is greater than `rhs`.
-    constexpr bool operator>(pod_tuple const & rhs) const noexcept
-    {
-        return _head > rhs._head;
-    }
+    constexpr bool operator>(pod_tuple const & rhs) const noexcept { return _head > rhs._head; }
 
     //!\brief Checks whether `*this` is less than or equal to `rhs`.
-    constexpr bool operator<=(pod_tuple const & rhs) const noexcept
-    {
-        return _head <= rhs._head;
-    }
+    constexpr bool operator<=(pod_tuple const & rhs) const noexcept { return _head <= rhs._head; }
 
     //!\brief Checks whether `*this` is greater than or equal to `rhs`.
-    constexpr bool operator>=(pod_tuple const & rhs) const noexcept
-    {
-        return _head >= rhs._head;
-    }
+    constexpr bool operator>=(pod_tuple const & rhs) const noexcept { return _head >= rhs._head; }
     //!\}
 };
 
@@ -159,8 +141,8 @@ struct pod_tuple<type0>
 
 //!\brief User defined deduction guide enables easy use.
 //!\relates pod_tuple
-template <typename ...types>
-pod_tuple(types && ...) -> pod_tuple<types...>;
+template <typename... types>
+pod_tuple(types &&...) -> pod_tuple<types...>;
 
 /*!\name Access an element of a pod_tuple by index
  * \{
@@ -170,59 +152,59 @@ pod_tuple(types && ...) -> pod_tuple<types...>;
  */
 //!\brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
 //!\relates bio::pod_tuple
-template <std::size_t i, typename ...types>
+template <std::size_t i, typename... types>
 constexpr auto & get(bio::pod_tuple<types...> & t) noexcept
-//!\cond
-    requires (i < sizeof...(types))
+  //!\cond
+  requires(i < sizeof...(types))
 //!\endcond
 {
     if constexpr (i == 0)
         return t._head;
     else
-        return bio::get<i-1>(t._tail);
+        return bio::get<i - 1>(t._tail);
 }
 
 //!\brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
 //!\relates bio::pod_tuple
-template <std::size_t i, typename ...types>
+template <std::size_t i, typename... types>
 constexpr auto const & get(bio::pod_tuple<types...> const & t) noexcept
-//!\cond
-    requires (i < sizeof...(types))
+  //!\cond
+  requires(i < sizeof...(types))
 //!\endcond
 {
     if constexpr (i == 0)
         return t._head;
     else
-        return bio::get<i-1>(t._tail);
+        return bio::get<i - 1>(t._tail);
 }
 
 // extra overloads for temporaries required, because members of temporaries may only be returned as temporaries
 //!\brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
 //!\relates bio::pod_tuple
-template <std::size_t i, typename ...types>
+template <std::size_t i, typename... types>
 constexpr auto && get(bio::pod_tuple<types...> && t) noexcept
-//!\cond
-    requires (i < sizeof...(types))
+  //!\cond
+  requires(i < sizeof...(types))
 //!\endcond
 {
     if constexpr (i == 0)
         return std::move(t._head);
     else
-        return bio::get<i-1>(std::move(t._tail));
+        return bio::get<i - 1>(std::move(t._tail));
 }
 
 //!\brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
 //!\relates bio::pod_tuple
-template <std::size_t i, typename ...types>
+template <std::size_t i, typename... types>
 constexpr auto const && get(bio::pod_tuple<types...> const && t) noexcept
-//!\cond
-    requires (i < sizeof...(types))
+  //!\cond
+  requires(i < sizeof...(types))
 //!\endcond
 {
     if constexpr (i == 0)
         return std::move(t._head);
     else
-        return bio::get<i-1>(std::move(t._tail));
+        return bio::get<i - 1>(std::move(t._tail));
 }
 //!\}
 
@@ -236,10 +218,10 @@ constexpr auto const && get(bio::pod_tuple<types...> const && t) noexcept
  */
 //!\brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
 //!\relates bio::pod_tuple
-template <typename type, typename ...arg_types>
+template <typename type, typename... arg_types>
 constexpr auto & get(bio::pod_tuple<arg_types...> & t) noexcept
-//!\cond
-    requires (bio::pack_traits::count<type, arg_types...> == 1)
+  //!\cond
+  requires(bio::pack_traits::count<type, arg_types...> == 1)
 //!\endcond
 {
     return bio::get<bio::pack_traits::find<type, arg_types...>>(t);
@@ -247,10 +229,10 @@ constexpr auto & get(bio::pod_tuple<arg_types...> & t) noexcept
 
 //!\brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
 //!\relates bio::pod_tuple
-template <typename type, typename ...arg_types>
+template <typename type, typename... arg_types>
 constexpr auto const & get(bio::pod_tuple<arg_types...> const & t) noexcept
-//!\cond
-    requires (bio::pack_traits::count<type, arg_types...> == 1)
+  //!\cond
+  requires(bio::pack_traits::count<type, arg_types...> == 1)
 //!\endcond
 {
     return bio::get<bio::pack_traits::find<type, arg_types...>>(t);
@@ -258,10 +240,10 @@ constexpr auto const & get(bio::pod_tuple<arg_types...> const & t) noexcept
 
 //!\brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
 //!\relates bio::pod_tuple
-template <typename type, typename ...arg_types>
+template <typename type, typename... arg_types>
 constexpr auto && get(bio::pod_tuple<arg_types...> && t) noexcept
-//!\cond
-    requires (bio::pack_traits::count<type, arg_types...> == 1)
+  //!\cond
+  requires(bio::pack_traits::count<type, arg_types...> == 1)
 //!\endcond
 {
     return bio::get<bio::pack_traits::find<type, arg_types...>>(std::move(t));
@@ -269,10 +251,10 @@ constexpr auto && get(bio::pod_tuple<arg_types...> && t) noexcept
 
 //!\brief The same as [std::get](https://en.cppreference.com/w/cpp/utility/tuple/get) on an std::tuple.
 //!\relates bio::pod_tuple
-template <typename type, typename ...arg_types>
+template <typename type, typename... arg_types>
 constexpr auto const && get(bio::pod_tuple<arg_types...> const && t) noexcept
-//!\cond
-    requires (bio::pack_traits::count<type, arg_types...> == 1)
+  //!\cond
+  requires(bio::pack_traits::count<type, arg_types...> == 1)
 //!\endcond
 {
     return bio::get<bio::pack_traits::find<type, arg_types...>>(std::move(t));
@@ -285,58 +267,52 @@ namespace std
 {
 
 //!\cond
-template <std::size_t i, typename ...types>
-constexpr auto & get(bio::pod_tuple<types...> & t) noexcept
-    requires (i < sizeof...(types))
+template <std::size_t i, typename... types>
+constexpr auto & get(bio::pod_tuple<types...> & t) noexcept requires(i < sizeof...(types))
 {
     return bio::get<i>(t);
 }
 
-template <std::size_t i, typename ...types>
-constexpr auto const & get(bio::pod_tuple<types...> const & t) noexcept
-    requires (i < sizeof...(types))
+template <std::size_t i, typename... types>
+constexpr auto const & get(bio::pod_tuple<types...> const & t) noexcept requires(i < sizeof...(types))
 {
     return bio::get<i>(t);
 }
 
-template <std::size_t i, typename ...types>
-constexpr auto && get(bio::pod_tuple<types...> && t) noexcept
-    requires (i < sizeof...(types))
+template <std::size_t i, typename... types>
+constexpr auto && get(bio::pod_tuple<types...> && t) noexcept requires(i < sizeof...(types))
 {
     return bio::get<i>(std::move(t));
 }
 
-template <std::size_t i, typename ...types>
-constexpr auto const && get(bio::pod_tuple<types...> const && t) noexcept
-    requires (i < sizeof...(types))
+template <std::size_t i, typename... types>
+constexpr auto const && get(bio::pod_tuple<types...> const && t) noexcept requires(i < sizeof...(types))
 {
     return bio::get<i>(std::move(t));
 }
 
-template <typename type, typename ...types>
-constexpr auto & get(bio::pod_tuple<types...> & t) noexcept
-    requires (bio::pack_traits::count<type, types...> == 1)
+template <typename type, typename... types>
+constexpr auto & get(bio::pod_tuple<types...> & t) noexcept requires(bio::pack_traits::count<type, types...> == 1)
 {
     return bio::get<type>(t);
 }
 
-template <typename type, typename ...types>
+template <typename type, typename... types>
 constexpr auto const & get(bio::pod_tuple<types...> const & t) noexcept
-    requires (bio::pack_traits::count<type, types...> == 1)
+  requires(bio::pack_traits::count<type, types...> == 1)
 {
     return bio::get<type>(t);
 }
 
-template <typename type, typename ...types>
-constexpr auto && get(bio::pod_tuple<types...> && t) noexcept
-    requires (bio::pack_traits::count<type, types...> == 1)
+template <typename type, typename... types>
+constexpr auto && get(bio::pod_tuple<types...> && t) noexcept requires(bio::pack_traits::count<type, types...> == 1)
 {
     return bio::get<type>(std::move(t));
 }
 
-template <typename type, typename ...types>
+template <typename type, typename... types>
 constexpr auto const && get(bio::pod_tuple<types...> const && t) noexcept
-    requires (bio::pack_traits::count<type, types...> == 1)
+  requires(bio::pack_traits::count<type, types...> == 1)
 {
     return bio::get<type>(std::move(t));
 }
@@ -347,12 +323,12 @@ constexpr auto const && get(bio::pod_tuple<types...> const && t) noexcept
  * \relates bio::pod_tuple
  * \see [std::tuple_element](https://en.cppreference.com/w/cpp/utility/tuple/tuple_element)
  */
-template <std::size_t i, template <typename ...> typename t, typename ...types>
-//!\cond
-    requires (i < sizeof...(types)) &&
-            std::is_base_of_v<bio::pod_tuple<types...>, t<types...>>
-//!\endcond
-struct tuple_element<i, t<types...>>
+template <std::size_t i, template <typename...> typename t, typename... types>
+    //!\cond
+    requires(i < sizeof...(types))
+&&std::is_base_of_v<bio::pod_tuple<types...>, t<types...>>
+  //!\endcond
+  struct tuple_element<i, t<types...>>
 {
     //!\brief Element type.
     using type = bio::pack_traits::at<i, types...>;
@@ -363,10 +339,9 @@ struct tuple_element<i, t<types...>>
  * \see std::tuple_size_v
  * \relates bio::pod_tuple
  */
-template <template <typename ...> typename t, typename ...types>
+template <template <typename...> typename t, typename... types>
     requires std::is_base_of_v<bio::pod_tuple<types...>, t<types...>>
-struct tuple_size<t<types...>> :
-    public std::integral_constant<std::size_t, sizeof...(types)>
+struct tuple_size<t<types...>> : public std::integral_constant<std::size_t, sizeof...(types)>
 {};
 
 } // namespace std

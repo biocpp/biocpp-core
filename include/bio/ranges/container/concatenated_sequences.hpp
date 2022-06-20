@@ -26,7 +26,7 @@
 #include <ranges>
 
 #if BIOCPP_WITH_CEREAL
-#include <cereal/types/vector.hpp>
+#    include <cereal/types/vector.hpp>
 #endif
 
 namespace bio::detail
@@ -46,15 +46,15 @@ namespace bio::detail
  */
 template <typename value_type, bool const_>
 struct concatenated_sequences_reference_proxy :
-    public std::conditional_t<const_,
-                              decltype(std::declval<value_type const &>() | views::as_const | views::slice(0,1)),
-                              decltype(std::declval<value_type &>() | views::slice(0,1))>
+  public std::conditional_t<const_,
+                            decltype(std::declval<value_type const &>() | views::as_const | views::slice(0, 1)),
+                            decltype(std::declval<value_type &>() | views::slice(0, 1))>
 {
     //!\brief The base type.
     using base_t =
-        std::conditional_t<const_,
-                           decltype(std::declval<value_type const &>() | views::as_const | views::slice(0,1)),
-                           decltype(std::declval<value_type &>() | views::slice(0,1))>;
+      std::conditional_t<const_,
+                         decltype(std::declval<value_type const &>() | views::as_const | views::slice(0, 1)),
+                         decltype(std::declval<value_type &>() | views::slice(0, 1))>;
 
     //!\brief Inherit the base type's constructors.
     using base_t::base_t;
@@ -122,12 +122,12 @@ namespace bio
  * a non-`const` member function at the same time).
  *
  */
-template <typename inner_type,
-          typename data_delimiters_type = std::vector<typename inner_type::size_type>>
-//!\cond
-    requires reservible_container<std::remove_reference_t<inner_type>> &&
-             reservible_container<std::remove_reference_t<data_delimiters_type>> &&
-             std::is_same_v<std::ranges::range_size_t<inner_type>, std::ranges::range_value_t<data_delimiters_type>>
+template <typename inner_type, typename data_delimiters_type = std::vector<typename inner_type::size_type>>
+    //!\cond
+    requires(
+      reservible_container<std::remove_reference_t<inner_type>> &&
+          reservible_container<std::remove_reference_t<data_delimiters_type>> &&
+          std::is_same_v<std::ranges::range_size_t<inner_type>, std::ranges::range_value_t<data_delimiters_type>>)
 //!\endcond
 class concatenated_sequences
 {
@@ -136,7 +136,7 @@ protected:
     //!\brief Where the concatenation is stored.
     std::decay_t<inner_type> data_values;
     //!\brief Where the delimiters are stored; begins with 0, has size of size() + 1.
-    data_delimiters_type data_delimiters{0};
+    data_delimiters_type     data_delimiters{0};
 
 public:
     //!\publicsection
@@ -174,7 +174,7 @@ public:
 
     //!\cond
     // this signals to range-v3 that something is a container :|
-    using allocator_type    = void;
+    using allocator_type = void;
     //!\endcond
 
 protected:
@@ -191,10 +191,7 @@ protected:
                std::convertible_to<std::ranges::range_reference_t<t>, std::ranges::range_value_t<value_type>>;
     }
 
-    static constexpr bool is_compatible_with_value_type_aux(...)
-    {
-        return false;
-    }
+    static constexpr bool is_compatible_with_value_type_aux(...) { return false; }
     //!\endcond
 
     //!\brief Whether a type satisfies bio::range_compatible with this class's `value_type` or `reference` type.
@@ -207,7 +204,7 @@ protected:
     //!\hideinitializer
     // cannot use the concept, because this class is not yet fully defined
     template <typename t>
-    //!\cond
+        //!\cond
         requires is_compatible_with_value_type<std::iter_reference_t<t>>
     //!\endcond
     static constexpr bool iter_value_t_is_compatible_with_value_type = true;
@@ -216,7 +213,7 @@ protected:
     //!\hideinitializer
     // cannot use the concept, because this class is not yet fully defined
     template <std::ranges::range t>
-    //!\cond
+        //!\cond
         requires is_compatible_with_value_type<std::ranges::range_reference_t<t>>
     //!\endcond
     static constexpr bool range_value_t_is_compatible_with_value_type = true;
@@ -227,17 +224,17 @@ public:
      * \{
      */
     //!\brief Default constructors.
-    concatenated_sequences() = default;
+    concatenated_sequences()                                                     = default;
     //!\brief Default constructors.
-    constexpr concatenated_sequences(concatenated_sequences const &) = default;
+    constexpr concatenated_sequences(concatenated_sequences const &)             = default;
     //!\brief Default constructors.
-    constexpr concatenated_sequences(concatenated_sequences &&) = default;
+    constexpr concatenated_sequences(concatenated_sequences &&)                  = default;
     //!\brief Default constructors.
     constexpr concatenated_sequences & operator=(concatenated_sequences const &) = default;
     //!\brief Default constructors.
-    constexpr concatenated_sequences & operator=(concatenated_sequences &&) = default;
+    constexpr concatenated_sequences & operator=(concatenated_sequences &&)      = default;
     //!\brief Default constructors.
-    ~concatenated_sequences() = default;
+    ~concatenated_sequences()                                                    = default;
 
     /*!\brief Construct/assign from a different range.
      * \tparam rng_of_rng_type The type of range to be inserted; must satisfy
@@ -254,8 +251,8 @@ public:
      */
     template <std::ranges::input_range rng_of_rng_type>
     concatenated_sequences(rng_of_rng_type && rng_of_rng)
-    //!\cond
-        requires range_value_t_is_compatible_with_value_type<rng_of_rng_type>
+      //!\cond
+      requires range_value_t_is_compatible_with_value_type<rng_of_rng_type>
     //!\endcond
     {
         if constexpr (std::ranges::sized_range<rng_of_rng_type>)
@@ -283,8 +280,8 @@ public:
      */
     template <std::ranges::forward_range rng_type>
     concatenated_sequences(size_type const count, rng_type && value)
-    //!\cond
-        requires is_compatible_with_value_type<rng_type>
+      //!\cond
+      requires is_compatible_with_value_type<rng_type>
     //!\endcond
     {
         // TODO SEQAN_UNLIKELY
@@ -311,9 +308,9 @@ public:
      */
     template <std::forward_iterator begin_iterator_type, typename end_iterator_type>
     concatenated_sequences(begin_iterator_type begin_it, end_iterator_type end_it)
-    //!\cond
-        requires std::sized_sentinel_for<end_iterator_type, begin_iterator_type> &&
-                 iter_value_t_is_compatible_with_value_type<begin_iterator_type>
+      //!\cond
+      requires(std::sized_sentinel_for<end_iterator_type, begin_iterator_type> &&
+                 iter_value_t_is_compatible_with_value_type<begin_iterator_type>)
     //!\endcond
     {
         insert(cend(), begin_it, end_it);
@@ -332,13 +329,13 @@ public:
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
     template <std::ranges::forward_range value_type_t = value_type>
-    //!\cond
+        //!\cond
         requires is_compatible_with_value_type<value_type_t>
-    //!\endcond
-    concatenated_sequences(std::initializer_list<value_type_t> ilist)
-    {
-        assign(std::begin(ilist), std::end(ilist));
-    }
+        //!\endcond
+        concatenated_sequences(std::initializer_list<value_type_t> ilist)
+        {
+            assign(std::begin(ilist), std::end(ilist));
+        }
 
     /*!\brief Construct/assign from `std::initializer_list`.
      * \tparam value_type_t The type of range to be inserted; must satisfy \ref is_compatible_with_value_type.
@@ -354,8 +351,8 @@ public:
      */
     template <std::ranges::forward_range value_type_t>
     concatenated_sequences & operator=(std::initializer_list<value_type_t> ilist)
-    //!\cond
-        requires is_compatible_with_value_type<value_type_t>
+      //!\cond
+      requires is_compatible_with_value_type<value_type_t>
     //!\endcond
     {
         assign(std::begin(ilist), std::end(ilist));
@@ -377,8 +374,8 @@ public:
      */
     template <std::ranges::input_range rng_of_rng_type>
     void assign(rng_of_rng_type && rng_of_rng)
-    //!\cond
-        requires range_value_t_is_compatible_with_value_type<rng_of_rng_type>
+      //!\cond
+      requires range_value_t_is_compatible_with_value_type<rng_of_rng_type>
     //!\endcond
     {
         concatenated_sequences rhs{std::forward<rng_of_rng_type>(rng_of_rng)};
@@ -400,8 +397,8 @@ public:
      */
     template <std::ranges::forward_range rng_type>
     void assign(size_type const count, rng_type && value)
-    //!\cond
-        requires (is_compatible_with_value_type<rng_type>)
+      //!\cond
+      requires(is_compatible_with_value_type<rng_type>)
     //!\endcond
     {
         concatenated_sequences rhs{count, value};
@@ -425,9 +422,9 @@ public:
      */
     template <std::forward_iterator begin_iterator_type, typename end_iterator_type>
     void assign(begin_iterator_type begin_it, end_iterator_type end_it)
-    //!\cond
-        requires iter_value_t_is_compatible_with_value_type<begin_iterator_type> &&
-                 std::sized_sentinel_for<end_iterator_type, begin_iterator_type>
+      //!\cond
+      requires(iter_value_t_is_compatible_with_value_type<begin_iterator_type> &&
+                 std::sized_sentinel_for<end_iterator_type, begin_iterator_type>)
     //!\endcond
     {
         concatenated_sequences rhs{begin_it, end_it};
@@ -448,8 +445,8 @@ public:
      */
     template <std::ranges::forward_range rng_type = value_type>
     void assign(std::initializer_list<rng_type> ilist)
-    //!\cond
-        requires is_compatible_with_value_type<rng_type>
+      //!\cond
+      requires is_compatible_with_value_type<rng_type>
     //!\endcond
     {
         assign(std::begin(ilist), std::end(ilist));
@@ -473,22 +470,13 @@ public:
      *
      * No-throw guarantee.
      */
-    iterator begin() noexcept
-    {
-        return iterator{*this};
-    }
+    iterator begin() noexcept { return iterator{*this}; }
 
     //!\copydoc begin()
-    const_iterator begin() const noexcept
-    {
-        return const_iterator{*this};
-    }
+    const_iterator begin() const noexcept { return const_iterator{*this}; }
 
     //!\copydoc begin()
-    const_iterator cbegin() const noexcept
-    {
-        return const_iterator{*this};
-    }
+    const_iterator cbegin() const noexcept { return const_iterator{*this}; }
 
     /*!\brief Returns an iterator to the element following the last element of the container.
      * \returns Iterator to the first element.
@@ -503,22 +491,13 @@ public:
      *
      * No-throw guarantee.
      */
-    iterator end() noexcept
-    {
-        return iterator{*this, size()};
-    }
+    iterator end() noexcept { return iterator{*this, size()}; }
 
     //!\copydoc end()
-    const_iterator end() const noexcept
-    {
-        return const_iterator{*this, size()};
-    }
+    const_iterator end() const noexcept { return const_iterator{*this, size()}; }
 
     //!\copydoc end()
-    const_iterator cend() const noexcept
-    {
-        return const_iterator{*this, size()};
-    }
+    const_iterator cend() const noexcept { return const_iterator{*this, size()}; }
     //!\}
 
     /*!\name Element access
@@ -571,14 +550,14 @@ public:
     reference operator[](size_type const i)
     {
         assert(i < size());
-        return data_values | views::slice(data_delimiters[i], data_delimiters[i+1]);
+        return data_values | views::slice(data_delimiters[i], data_delimiters[i + 1]);
     }
 
     //!\copydoc operator[]()
     const_reference operator[](size_type const i) const
     {
         assert(i < size());
-        return data_values | views::as_const | views::slice(data_delimiters[i], data_delimiters[i+1]);
+        return data_values | views::as_const | views::slice(data_delimiters[i], data_delimiters[i + 1]);
     }
 
     /*!\brief Return the first element as a view. Calling front on an empty container is undefined.
@@ -621,14 +600,14 @@ public:
     reference back()
     {
         assert(size() > 0);
-        return (*this)[size()-1];
+        return (*this)[size() - 1];
     }
 
     //!\copydoc back()
     const_reference back() const
     {
         assert(size() > 0);
-        return (*this)[size()-1];
+        return (*this)[size() - 1];
     }
 
     /*!\brief Return the concatenation of all members.
@@ -645,10 +624,7 @@ public:
      *
      * Strong exception guarantee (never modifies data).
      */
-    reference concat()
-    {
-        return data_values | views::slice(static_cast<size_type>(0), concat_size());
-    }
+    reference concat() { return data_values | views::slice(static_cast<size_type>(0), concat_size()); }
 
     //!\copydoc concat()
     const_reference concat() const
@@ -676,10 +652,7 @@ public:
 
     //!\copydoc raw_data()
     //!\deprecated Use raw_data() instead.
-    BIOCPP_DEPRECATED_310 std::pair<decltype(data_values) &, decltype(data_delimiters) &> data()
-    {
-        return raw_data();
-    }
+    BIOCPP_DEPRECATED_310 std::pair<decltype(data_values) &, decltype(data_delimiters) &> data() { return raw_data(); }
 
     //!\copydoc raw_data()
     //!\deprecated Use raw_data() instead.
@@ -703,10 +676,7 @@ public:
      *
      * No-throw guarantee.
      */
-    bool empty() const noexcept
-    {
-        return size() == 0;
-    }
+    bool empty() const noexcept { return size() == 0; }
 
     /*!\brief Returns the number of elements in the container, i.e. std::distance(begin(), end()).
      * \returns The number of elements in the container.
@@ -719,10 +689,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type size() const noexcept
-    {
-        return data_delimiters.size() - 1;
-    }
+    size_type size() const noexcept { return data_delimiters.size() - 1; }
 
     /*!\brief Returns the maximum number of elements the container is able to hold due to system or library
      * implementation limitations, i.e. std::distance(begin(), end()) for the largest container.
@@ -738,10 +705,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type max_size() const noexcept
-    {
-        return data_delimiters.max_size() - 1;
-    }
+    size_type max_size() const noexcept { return data_delimiters.max_size() - 1; }
 
     /*!\brief Returns the number of elements that the container has currently allocated space for.
      * \returns The capacity of the currently allocated storage.
@@ -758,10 +722,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type capacity() const noexcept
-    {
-        return data_delimiters.capacity();
-    }
+    size_type capacity() const noexcept { return data_delimiters.capacity(); }
 
     /*!\brief Increase the capacity to a value that's greater or equal to new_cap.
      * \param new_cap The new capacity.
@@ -785,10 +746,7 @@ public:
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
-    void reserve(size_type const new_cap)
-    {
-        data_delimiters.reserve(new_cap + 1);
-    }
+    void reserve(size_type const new_cap) { data_delimiters.reserve(new_cap + 1); }
 
     /*!\brief Requests the removal of unused capacity.
      *
@@ -830,10 +788,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type concat_size() const noexcept
-    {
-        return data_values.size();
-    }
+    size_type concat_size() const noexcept { return data_values.size(); }
 
     /*!\brief Returns the concatenated size the container has currently allocated space for.
      * \returns The capacity of the currently allocated storage.
@@ -846,10 +801,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type concat_capacity() const noexcept
-    {
-        return data_values.capacity();
-    }
+    size_type concat_capacity() const noexcept { return data_values.capacity(); }
 
     /*!\brief Increase the concat_capacity() to a value that's greater or equal to new_cap.
      * \param new_cap The new capacity.
@@ -869,12 +821,8 @@ public:
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
-    void concat_reserve(size_type const new_cap)
-    {
-        data_values.reserve(new_cap);
-    }
+    void concat_reserve(size_type const new_cap) { data_values.reserve(new_cap); }
     //!\}
-
 
     /*!\name Modifiers
      * \{
@@ -923,8 +871,8 @@ public:
      */
     template <std::ranges::forward_range rng_type>
     iterator insert(const_iterator pos, rng_type && value)
-    //!\cond
-        requires is_compatible_with_value_type<rng_type>
+      //!\cond
+      requires is_compatible_with_value_type<rng_type>
     //!\endcond
     {
         return insert(pos, 1, std::forward<rng_type>(value));
@@ -957,8 +905,8 @@ public:
      */
     template <std::ranges::forward_range rng_type>
     iterator insert(const_iterator pos, size_type const count, rng_type && value)
-    //!\cond
-        requires is_compatible_with_value_type<rng_type>
+      //!\cond
+      requires is_compatible_with_value_type<rng_type>
     //!\endcond
     {
         auto const pos_as_num = std::distance(cbegin(), pos); // we want to insert BEFORE this position
@@ -982,8 +930,8 @@ public:
             value_len = std::distance(std::ranges::begin(value), std::ranges::end(value));
 
         data_values.reserve(data_values.size() + count * value_len);
-        auto placeholder = views::repeat_n(std::ranges::range_value_t<rng_type>{}, count * value_len)
-                         | std::views::common;
+        auto placeholder =
+          views::repeat_n(std::ranges::range_value_t<rng_type>{}, count * value_len) | std::views::common;
         // insert placeholder so the tail is moved once:
         data_values.insert(data_values.begin() + data_delimiters[pos_as_num],
                            std::ranges::begin(placeholder),
@@ -996,9 +944,7 @@ public:
                 data_values[i++] = v;
 
         data_delimiters.reserve(data_values.size() + count);
-        data_delimiters.insert(data_delimiters.begin() + pos_as_num,
-                               count,
-                               *(data_delimiters.begin() + pos_as_num));
+        data_delimiters.insert(data_delimiters.begin() + pos_as_num, count, *(data_delimiters.begin() + pos_as_num));
 
         // adapt delimiters of inserted
         for (size_type i = 0; i < count; ++i)
@@ -1008,7 +954,7 @@ public:
         // TODO parallel execution policy or vectorization?
         std::for_each(data_delimiters.begin() + pos_as_num + count + 1,
                       data_delimiters.end(),
-                      [full_len = value_len * count] (auto & d) { d += full_len; });
+                      [full_len = value_len * count](auto & d) { d += full_len; });
 
         return begin() + pos_as_num;
     }
@@ -1039,9 +985,9 @@ public:
      */
     template <std::forward_iterator begin_iterator_type, typename end_iterator_type>
     iterator insert(const_iterator pos, begin_iterator_type first, end_iterator_type last)
-    //!\cond
-        requires iter_value_t_is_compatible_with_value_type<begin_iterator_type> &&
-                 std::sized_sentinel_for<end_iterator_type, begin_iterator_type>
+      //!\cond
+      requires(iter_value_t_is_compatible_with_value_type<begin_iterator_type> &&
+                 std::sized_sentinel_for<end_iterator_type, begin_iterator_type>)
     //!\endcond
     {
         auto const pos_as_num = std::distance(cbegin(), pos);
@@ -1050,15 +996,14 @@ public:
             return begin() + pos_as_num;
 
         auto const ilist =
-            std::ranges::subrange<begin_iterator_type, end_iterator_type>(first,
-                                                                          last,
-                                                                          std::ranges::distance(first, last));
+          std::ranges::subrange<begin_iterator_type, end_iterator_type>(first,
+                                                                        last,
+                                                                        std::ranges::distance(first, last));
 
         data_delimiters.reserve(data_values.size() + ilist.size());
         data_delimiters.insert(data_delimiters.begin() + pos_as_num,
                                ilist.size(),
                                *(data_delimiters.begin() + pos_as_num));
-
 
         // adapt delimiters of inserted region
         size_type full_len = 0;
@@ -1069,8 +1014,7 @@ public:
         }
 
         // adapt values of inserted region
-        auto placeholder = views::repeat_n(std::ranges::range_value_t<value_type>{}, full_len)
-                         | std::views::common;
+        auto placeholder = views::repeat_n(std::ranges::range_value_t<value_type>{}, full_len) | std::views::common;
         // insert placeholder so the tail is moved only once:
         data_values.insert(data_values.begin() + data_delimiters[pos_as_num],
                            std::ranges::begin(placeholder),
@@ -1082,12 +1026,11 @@ public:
             for (auto && v1 : v0)
                 data_values[i++] = v1;
 
-
         // adapt delimiters behind inserted region
         // TODO parallel execution policy or vectorization?
         std::for_each(data_delimiters.begin() + pos_as_num + ilist.size() + 1,
                       data_delimiters.end(),
-                      [full_len] (auto & d) { d += full_len; });
+                      [full_len](auto & d) { d += full_len; });
 
         return begin() + pos_as_num;
     }
@@ -1113,8 +1056,8 @@ public:
      */
     template <std::ranges::forward_range rng_type>
     iterator insert(const_iterator pos, std::initializer_list<rng_type> const & ilist)
-    //!\cond
-        requires is_compatible_with_value_type<rng_type>
+      //!\cond
+      requires is_compatible_with_value_type<rng_type>
     //!\endcond
     {
         return insert(pos, ilist.begin(), ilist.end());
@@ -1152,17 +1095,15 @@ public:
         for (; first != last; ++first)
             sum_size += std::ranges::size(*first);
 
-        data_values.erase(data_values.begin() + data_delimiters[distf],
-                          data_values.begin() + data_delimiters[dist]);
+        data_values.erase(data_values.begin() + data_delimiters[distf], data_values.begin() + data_delimiters[dist]);
 
-        data_delimiters.erase(data_delimiters.begin() + distf + 1,
-                              data_delimiters.begin() + dist + 1);
+        data_delimiters.erase(data_delimiters.begin() + distf + 1, data_delimiters.begin() + dist + 1);
 
         // adapt delimiters after that
         // TODO parallel execution policy or vectorization?
         std::for_each(data_delimiters.begin() + distf + 1,
                       data_delimiters.end(),
-                      [sum_size] (auto & d) { d -= sum_size; });
+                      [sum_size](auto & d) { d -= sum_size; });
         return begin() + dist;
     }
 
@@ -1184,10 +1125,7 @@ public:
      * Basic exception guarantee, i.e. guaranteed not to leak, but container my contain invalid data after exceptions is
      * thrown.
      */
-    iterator erase(const_iterator pos)
-    {
-       return erase(pos, pos + 1);
-    }
+    iterator erase(const_iterator pos) { return erase(pos, pos + 1); }
 
     /*!\brief Appends the given element value to the end of the container.
      * \tparam rng_type The type of range to be inserted; must satisfy \ref is_compatible_with_value_type.
@@ -1207,8 +1145,8 @@ public:
      */
     template <std::ranges::forward_range rng_type>
     void push_back(rng_type && value)
-    //!\cond
-        requires is_compatible_with_value_type<rng_type>
+      //!\cond
+      requires is_compatible_with_value_type<rng_type>
     //!\endcond
     {
         data_values.insert(data_values.end(), std::ranges::begin(value), std::ranges::end(value));
@@ -1279,8 +1217,8 @@ public:
      */
     template <std::ranges::forward_range rng_type>
     void resize(size_type const count, rng_type && value)
-    //!\cond
-        requires is_compatible_with_value_type<rng_type>
+      //!\cond
+      requires is_compatible_with_value_type<rng_type>
     //!\endcond
     {
         assert(count < max_size());
@@ -1334,16 +1272,10 @@ public:
     }
 
     //!\brief Checks whether `*this` is less than `rhs`.
-    constexpr bool operator<(concatenated_sequences const & rhs) const noexcept
-    {
-        return raw_data() < rhs.raw_data();
-    }
+    constexpr bool operator<(concatenated_sequences const & rhs) const noexcept { return raw_data() < rhs.raw_data(); }
 
     //!\brief Checks whether `*this` is greater than `rhs`.
-    constexpr bool operator>(concatenated_sequences const & rhs) const noexcept
-    {
-        return raw_data() > rhs.raw_data();
-    }
+    constexpr bool operator>(concatenated_sequences const & rhs) const noexcept { return raw_data() > rhs.raw_data(); }
 
     //!\brief Checks whether `*this` is less than or equal to `rhs`.
     constexpr bool operator<=(concatenated_sequences const & rhs) const noexcept

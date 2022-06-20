@@ -36,7 +36,7 @@ TYPED_TEST_P(alphabet, concept_check)
 TYPED_TEST_P(alphabet, assign_char_to)
 {
     using char_t = bio::alphabet_char_t<TypeParam>;
-    if constexpr(std::integral<char_t>)
+    if constexpr (std::integral<char_t>)
     {
         char_t i = std::numeric_limits<char_t>::min();
         char_t j = std::numeric_limits<char_t>::max();
@@ -61,7 +61,7 @@ TYPED_TEST_P(alphabet, char_is_valid_for) // only test negative example for most
 TYPED_TEST_P(alphabet, assign_char_strictly_to)
 {
     using char_t = bio::alphabet_char_t<TypeParam>;
-    if constexpr(std::integral<char_t>)
+    if constexpr (std::integral<char_t>)
     {
         char_t i = std::numeric_limits<char_t>::min();
         char_t j = std::numeric_limits<char_t>::max();
@@ -82,7 +82,6 @@ TYPED_TEST_P(alphabet, to_char)
     EXPECT_TRUE((std::is_same_v<decltype(bio::to_char(t0)), bio::alphabet_char_t<TypeParam>>));
 
     // more elaborate tests are done in specific alphabets
-
 }
 
 REGISTER_TYPED_TEST_SUITE_P(alphabet,

@@ -10,7 +10,7 @@
 
 #include <bio/meta/math.hpp>
 
-static constexpr size_t max_iterations = 1;//1 << 15;
+static constexpr size_t max_iterations = 1; //1 << 15;
 
 using unsigned_types = ::testing::Types<uint8_t, uint16_t, uint32_t, uint64_t>;
 
@@ -22,12 +22,12 @@ TYPED_TEST_SUITE(unsigned_operations, unsigned_types, );
 
 TYPED_TEST(unsigned_operations, floor_log2)
 {
-    using unsigned_t = TypeParam;
-    constexpr size_t zero = bio::detail::floor_log2<unsigned_t>(0b0001);
-    constexpr size_t one1 = bio::detail::floor_log2<unsigned_t>(0b0010);
-    constexpr size_t one2 = bio::detail::floor_log2<unsigned_t>(0b0011);
-    constexpr size_t two1 = bio::detail::floor_log2<unsigned_t>(0b0101);
-    constexpr size_t two2 = bio::detail::floor_log2<unsigned_t>(0b0111);
+    using unsigned_t       = TypeParam;
+    constexpr size_t zero  = bio::detail::floor_log2<unsigned_t>(0b0001);
+    constexpr size_t one1  = bio::detail::floor_log2<unsigned_t>(0b0010);
+    constexpr size_t one2  = bio::detail::floor_log2<unsigned_t>(0b0011);
+    constexpr size_t two1  = bio::detail::floor_log2<unsigned_t>(0b0101);
+    constexpr size_t two2  = bio::detail::floor_log2<unsigned_t>(0b0111);
     constexpr size_t seven = bio::detail::floor_log2<unsigned_t>(0b10010010);
     EXPECT_EQ(zero, 0u);
     EXPECT_EQ(one1, 1u);
@@ -39,7 +39,7 @@ TYPED_TEST(unsigned_operations, floor_log2)
     for (uint8_t log2_value = 0; log2_value < bio::detail::sizeof_bits<unsigned_t>; ++log2_value)
     {
         unsigned_t start = unsigned_t{1u} << log2_value;
-        unsigned_t end = start << 1u;
+        unsigned_t end   = start << 1u;
         for (unsigned_t n = start, k = 0u; n < end && k < max_iterations; ++n, ++k)
         {
             EXPECT_EQ(bio::detail::floor_log2(n), log2_value);
@@ -51,13 +51,13 @@ TYPED_TEST(unsigned_operations, floor_log2)
 
 TYPED_TEST(unsigned_operations, ceil_log2)
 {
-    using unsigned_t = TypeParam;
-    constexpr size_t zero = bio::detail::ceil_log2<unsigned_t>(0b0001);
-    constexpr size_t one = bio::detail::ceil_log2<unsigned_t>(0b0010);
-    constexpr size_t two = bio::detail::ceil_log2<unsigned_t>(0b0011);
+    using unsigned_t        = TypeParam;
+    constexpr size_t zero   = bio::detail::ceil_log2<unsigned_t>(0b0001);
+    constexpr size_t one    = bio::detail::ceil_log2<unsigned_t>(0b0010);
+    constexpr size_t two    = bio::detail::ceil_log2<unsigned_t>(0b0011);
     constexpr size_t three1 = bio::detail::ceil_log2<unsigned_t>(0b0101);
     constexpr size_t three2 = bio::detail::ceil_log2<unsigned_t>(0b0111);
-    constexpr size_t eight = bio::detail::ceil_log2<unsigned_t>(0b10010010);
+    constexpr size_t eight  = bio::detail::ceil_log2<unsigned_t>(0b10010010);
     EXPECT_EQ(zero, 0u);
     EXPECT_EQ(one, 1u);
     EXPECT_EQ(two, 2u);
@@ -68,7 +68,7 @@ TYPED_TEST(unsigned_operations, ceil_log2)
     for (uint8_t log2_value = 0; log2_value < bio::detail::sizeof_bits<unsigned_t>; ++log2_value)
     {
         unsigned_t start = unsigned_t{1u} << log2_value;
-        unsigned_t end = start << 1u;
+        unsigned_t end   = start << 1u;
         EXPECT_EQ(bio::detail::ceil_log2(start), log2_value);
         EXPECT_EQ(std::ceil(std::log2(start)), log2_value) << "ceil_log2 of " << start << " should be " << log2_value
                                                            << "; If this fails this might be a floating point rounding "
@@ -80,10 +80,10 @@ TYPED_TEST(unsigned_operations, ceil_log2)
 
             if constexpr (bio::detail::sizeof_bits<unsigned_t> <= 32u) // known to fail for 64bit unsigned integers
             {
-                EXPECT_EQ(std::ceil(std::log2(n)), log2_value + 1u) << "ceil_log2 of " << start << " should be "
-                                                                    << log2_value
-                                                                    << "; If this fails this might be a floating point"
-                                                                    << "rounding error on your machine.";
+                EXPECT_EQ(std::ceil(std::log2(n)), log2_value + 1u)
+                  << "ceil_log2 of " << start << " should be " << log2_value
+                  << "; If this fails this might be a floating point"
+                  << "rounding error on your machine.";
             }
         }
     }

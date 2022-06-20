@@ -75,70 +75,54 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr aa20()                         noexcept = default; //!< Defaulted.
-    constexpr aa20(aa20 const &)             noexcept = default; //!< Defaulted.
-    constexpr aa20(aa20 &&)                  noexcept = default; //!< Defaulted.
+    constexpr aa20() noexcept                         = default; //!< Defaulted.
+    constexpr aa20(aa20 const &) noexcept             = default; //!< Defaulted.
+    constexpr aa20(aa20 &&) noexcept                  = default; //!< Defaulted.
     constexpr aa20 & operator=(aa20 const &) noexcept = default; //!< Defaulted.
-    constexpr aa20 & operator=(aa20 &&)      noexcept = default; //!< Defaulted.
-    ~aa20()                                  noexcept = default; //!< Defaulted.
+    constexpr aa20 & operator=(aa20 &&) noexcept      = default; //!< Defaulted.
+    ~aa20() noexcept                                  = default; //!< Defaulted.
 
     using base_t::base_t;
     //!\}
 
 protected:
     //!\brief Value to char conversion table.
-    static constexpr char_type rank_to_char[alphabet_size]
-    {
-        'A',
-        'C',
-        'D',
-        'E',
-        'F',
-        'G',
-        'H',
-        'I',
-        'K',
-        'L',
-        'M',
-        'N',
-        'P',
-        'Q',
-        'R',
-        'S',
-        'T',
-        'V',
-        'W',
-        'Y',
+    static constexpr char_type rank_to_char[alphabet_size]{
+      'A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y',
     };
 
     //!\brief Char to value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank
+    static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
     {
-        [] () constexpr
+        std::array<rank_type, 256> ret{};
+
+        // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
+        for (auto & c : ret)
+            c = 15; // value of 'S', because that appears most frequently
+
+        // reverse mapping for characters and their lowercase
+        for (rank_type rnk = 0u; rnk < alphabet_size; ++rnk)
         {
-            std::array<rank_type, 256> ret{};
+            ret[static_cast<rank_type>(rank_to_char[rnk])]           = rnk;
+            ret[static_cast<rank_type>(to_lower(rank_to_char[rnk]))] = rnk;
+        }
 
-            // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
-            for (auto & c : ret)
-                c = 15; // value of 'S', because that appears most frequently
-
-            // reverse mapping for characters and their lowercase
-            for (rank_type rnk = 0u; rnk < alphabet_size; ++rnk)
-            {
-                ret[static_cast<rank_type>(         rank_to_char[rnk]) ] = rnk;
-                ret[static_cast<rank_type>(to_lower(rank_to_char[rnk]))] = rnk;
-            }
-
-            ret['B'] = ret['D']; ret['b'] = ret['D']; // Convert b (either D/N) to D, since D occurs more frequently.
-            ret['J'] = ret['L']; ret['j'] = ret['L']; // Convert j (either I/L) to L, since L occurs more frequently.
-            ret['O'] = ret['L']; ret['o'] = ret['L']; // Convert Pyrrolysine to lysine.
-            ret['U'] = ret['C']; ret['u'] = ret['C']; // Convert Selenocysteine to cysteine.
-            ret['X'] = ret['S']; ret['x'] = ret['S']; // Convert unknown amino acids to serine.
-            ret['Z'] = ret['E']; ret['z'] = ret['E']; // Convert z (either E/Q) to E, since E occurs more frequently.
-            ret['*'] = ret['W']; // The most common stop codon is UGA. This is most similar to a Tryptophan.
-            return ret;
-        }()
-    };
+        ret['B'] = ret['D'];
+        ret['b'] = ret['D']; // Convert b (either D/N) to D, since D occurs more frequently.
+        ret['J'] = ret['L'];
+        ret['j'] = ret['L']; // Convert j (either I/L) to L, since L occurs more frequently.
+        ret['O'] = ret['L'];
+        ret['o'] = ret['L']; // Convert Pyrrolysine to lysine.
+        ret['U'] = ret['C'];
+        ret['u'] = ret['C']; // Convert Selenocysteine to cysteine.
+        ret['X'] = ret['S'];
+        ret['x'] = ret['S']; // Convert unknown amino acids to serine.
+        ret['Z'] = ret['E'];
+        ret['z'] = ret['E']; // Convert z (either E/Q) to E, since E occurs more frequently.
+        ret['*'] = ret['W']; // The most common stop codon is UGA. This is most similar to a Tryptophan.
+        return ret;
+    }
+    ();
 };
 
 } // namespace bio
@@ -193,7 +177,7 @@ constexpr aa20 operator""_aa20(char const c) noexcept
  * All BioC++ literals are in the namespace bio!
  */
 
-inline aa20_vector operator""_aa20(const char * s, std::size_t n)
+inline aa20_vector operator""_aa20(char const * s, std::size_t n)
 {
     aa20_vector r;
     r.resize(n);

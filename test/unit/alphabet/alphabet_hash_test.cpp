@@ -17,20 +17,18 @@
 template <typename T>
 using alphabet_hashing = ::testing::Test;
 
-using test_types = ::testing::Types<bio::dna4,
-                                    bio::qualified<bio::dna4, bio::phred42>,
-                                    bio::gapped<bio::dna4>>;
+using test_types = ::testing::Types<bio::dna4, bio::qualified<bio::dna4, bio::phred42>, bio::gapped<bio::dna4>>;
 
 TYPED_TEST_SUITE(alphabet_hashing, test_types, );
 
 TYPED_TEST(alphabet_hashing, hash)
 {
     {
-        TypeParam t0{};
+        TypeParam            t0{};
         std::hash<TypeParam> h{};
         if constexpr (std::same_as<TypeParam, char>)
         {
-            for (size_t i = 0; i < bio::alphabet_size<TypeParam>/2; ++i)
+            for (size_t i = 0; i < bio::alphabet_size<TypeParam> / 2; ++i)
             {
                 bio::assign_rank_to(i, t0);
                 ASSERT_EQ(h(t0), i);
@@ -59,7 +57,7 @@ TYPED_TEST(alphabet_hashing, hash)
         std::hash<TypeParam const> h{};
         if constexpr (std::same_as<TypeParam, char>)
         {
-            for (size_t i = 0; i < bio::alphabet_size<TypeParam>/2; ++i)
+            for (size_t i = 0; i < bio::alphabet_size<TypeParam> / 2; ++i)
             {
                 TypeParam const t0 = bio::assign_rank_to(i, TypeParam{});
                 ASSERT_EQ(h(t0), i);
@@ -76,7 +74,7 @@ TYPED_TEST(alphabet_hashing, hash)
     }
     {
         std::vector<TypeParam> const text(4, bio::assign_rank_to(0, TypeParam{}));
-        std::hash<decltype(text)> h{};
+        std::hash<decltype(text)>    h{};
         ASSERT_EQ(h(text), 0u);
     }
 }

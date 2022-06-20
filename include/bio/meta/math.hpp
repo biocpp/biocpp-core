@@ -117,8 +117,8 @@ namespace bio
  * \include test/snippet/meta/pow.cpp
  */
 template <typename base_t, std::unsigned_integral exp_t>
-//!\cond
-    requires (std::same_as<base_t, uint64_t> || std::same_as<base_t, int64_t>)
+    //!\cond
+    requires(std::same_as<base_t, uint64_t> || std::same_as<base_t, int64_t>)
 //!\endcond
 base_t pow(base_t base, exp_t exp)
 {
@@ -150,7 +150,7 @@ base_t pow(base_t base, exp_t exp)
 //!\cond
 // If base and exponent are unsigned integrals, promote the base to `uint64_t`.
 template <std::integral base_t, std::unsigned_integral exp_t>
-    requires (std::unsigned_integral<base_t> && !std::same_as<base_t, uint64_t>)
+    requires(std::unsigned_integral<base_t> && !std::same_as<base_t, uint64_t>)
 uint64_t pow(base_t base, exp_t exp)
 {
     return pow(static_cast<uint64_t>(base), exp);
@@ -158,7 +158,7 @@ uint64_t pow(base_t base, exp_t exp)
 
 // If the base is a signed integral and the exponent is an unsigned integral, promote the base to `int64_t`.
 template <std::integral base_t, std::unsigned_integral exp_t>
-    requires (!std::unsigned_integral<base_t> && !std::same_as<base_t, int64_t>)
+    requires(!std::unsigned_integral<base_t> && !std::same_as<base_t, int64_t>)
 int64_t pow(base_t base, exp_t exp)
 {
     return pow(static_cast<int64_t>(base), exp);
@@ -166,7 +166,7 @@ int64_t pow(base_t base, exp_t exp)
 
 // Otherwise delegate to `std::pow`.
 template <typename base_t, typename exp_t>
-    requires (!(std::integral<base_t> && std::unsigned_integral<exp_t>))
+    requires(!(std::integral<base_t> && std::unsigned_integral<exp_t>))
 auto pow(base_t base, exp_t exp)
 {
     return std::pow(base, exp);

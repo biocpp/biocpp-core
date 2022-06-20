@@ -8,14 +8,14 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <bio/meta/type_traits/iterator.hpp>
 #include <bio/meta/type_traits/range.hpp>
 #include <bio/ranges/views/persist.hpp>
 #include <bio/ranges/views/repeat_n.hpp>
 #include <bio/ranges/views/take.hpp>
-#include <algorithm>
-#include <ranges>
 #include <bio/test/expect_range_eq.hpp>
+#include <ranges>
 
 TEST(general, construction)
 {
@@ -31,7 +31,7 @@ TEST(general, construction)
 
     // char const
     char const chr_const{'A'};
-    auto v_const = bio::views::repeat_n(chr_const, 20);
+    auto       v_const = bio::views::repeat_n(chr_const, 20);
 
     EXPECT_TRUE((std::is_default_constructible_v<decltype(v_const)>));
     EXPECT_TRUE((std::is_copy_constructible_v<decltype(v_const)>));
@@ -62,7 +62,7 @@ TEST(view, factory)
     // const char
     {
         char const chr{'X'};
-        auto v = bio::views::repeat_n(chr, 3);
+        auto       v = bio::views::repeat_n(chr, 3);
         EXPECT_EQ(v.size(), 3u);
         EXPECT_RANGE_EQ(v, (std::vector<char>{chr, chr, chr}));
     }
@@ -70,7 +70,7 @@ TEST(view, factory)
     // string
     {
         std::string str{"foobar"};
-        auto v = bio::views::repeat_n(str, 2);
+        auto        v = bio::views::repeat_n(str, 2);
         EXPECT_EQ(v.size(), 2u);
         EXPECT_EQ(*v.begin(), str);
         EXPECT_EQ(v[0], str);
@@ -79,14 +79,14 @@ TEST(view, factory)
     // view
     {
         auto view = std::string{"foobar"} | bio::views::persist | std::views::take(3);
-        auto v = bio::views::repeat_n(std::move(view), 5);
+        auto v    = bio::views::repeat_n(std::move(view), 5);
         EXPECT_RANGE_EQ(*v.begin(), std::string{"foo"});
     }
 
     // combinability
     {
         std::string str{"foobar"};
-        auto v = bio::views::repeat_n(str, 2) | std::views::transform([] (auto & str) { return str.substr(3); });
+        auto        v = bio::views::repeat_n(str, 2) | std::views::transform([](auto & str) { return str.substr(3); });
         EXPECT_RANGE_EQ(v, (std::vector<std::string>{"bar", "bar"}));
     }
 }
@@ -95,7 +95,7 @@ constexpr char constexpr_view()
 {
     char chr{'A'};
     auto v = bio::views::repeat_n(chr, 10);
-    v[0] = 'X';
+    v[0]   = 'X';
 
     return *v.begin();
 }

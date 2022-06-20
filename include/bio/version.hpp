@@ -25,9 +25,7 @@
 #define BIOCPP_VERSION_PATCH 0
 
 //!\brief The full version as MACRO (number).
-#define BIOCPP_VERSION (BIOCPP_VERSION_MAJOR * 10000 \
-                     + BIOCPP_VERSION_MINOR * 100 \
-                     + BIOCPP_VERSION_PATCH)
+#define BIOCPP_VERSION (BIOCPP_VERSION_MAJOR * 10000 + BIOCPP_VERSION_MINOR * 100 + BIOCPP_VERSION_PATCH)
 
 namespace bio
 {

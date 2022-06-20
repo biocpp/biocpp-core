@@ -10,8 +10,8 @@
 
 #include <bio/alphabet/mask/mask.hpp>
 
-#include "../semi_alphabet_test_template.hpp"
 #include "../semi_alphabet_constexpr_test_template.hpp"
+#include "../semi_alphabet_test_template.hpp"
 
 INSTANTIATE_TYPED_TEST_SUITE_P(mask, semi_alphabet_test, bio::mask, );
 INSTANTIATE_TYPED_TEST_SUITE_P(mask, semi_alphabet_constexpr, bio::mask, );

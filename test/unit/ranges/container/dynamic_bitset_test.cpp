@@ -87,7 +87,7 @@ TEST(dynamic_bitset, comparison)
 constexpr bool size_test()
 {
     constexpr bio::dynamic_bitset t1{0b11'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111};
-    bool res = t1.size() == 58u;
+    bool                          res = t1.size() == 58u;
 
     constexpr bio::dynamic_bitset t2{0b11'1111'1111'1111'1111'1111'1100'1111'1111'1111'1111'1111'1111'1111'1111};
     res &= t2.size() == 58u;
@@ -114,7 +114,7 @@ TEST(dynamic_bitset, size)
 constexpr bool count_test()
 {
     constexpr bio::dynamic_bitset t1{0b11'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111};
-    bool res = t1.count() == 58u;
+    bool                          res = t1.count() == 58u;
 
     constexpr bio::dynamic_bitset t2{0b11'1111'1111'1111'1111'1111'1100'1111'1111'1111'1111'1111'1111'1111'1111};
     res &= t2.count() == 56u;
@@ -141,7 +141,7 @@ TEST(dynamic_bitset, count)
 constexpr bool all_test()
 {
     constexpr bio::dynamic_bitset t1{0b11'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111};
-    bool res = t1.all();
+    bool                          res = t1.all();
 
     constexpr bio::dynamic_bitset t2{0b11'1111'1111'1111'1111'1111'1100'1111'1111'1111'1111'1111'1111'1111'1111};
     res &= !t2.all();
@@ -168,7 +168,7 @@ TEST(dynamic_bitset, all)
 constexpr bool any_test()
 {
     constexpr bio::dynamic_bitset t1{0b11'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111};
-    bool res = t1.any();
+    bool                          res = t1.any();
 
     constexpr bio::dynamic_bitset t2{0b11'1111'1111'1111'1111'1111'1100'1111'1111'1111'1111'1111'1111'1111'1111};
     res &= t2.any();
@@ -195,7 +195,7 @@ TEST(dynamic_bitset, any)
 constexpr bool none_test()
 {
     constexpr bio::dynamic_bitset t1{0b11'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111};
-    bool res = !t1.none();
+    bool                          res = !t1.none();
 
     constexpr bio::dynamic_bitset t2{0b11'1111'1111'1111'1111'1111'1100'1111'1111'1111'1111'1111'1111'1111'1111};
     res &= !t2.none();
@@ -222,7 +222,7 @@ TEST(dynamic_bitset, none)
 constexpr bool set_test()
 {
     bio::dynamic_bitset t1{0b11'1110'1111'1111'1111'1111'1100'1111'1111'1111'1111'1111'1111'1111'1110};
-    bool res = !t1.all();
+    bool                res = !t1.all();
     t1.set();
     res &= t1.all();
 
@@ -250,7 +250,7 @@ TEST(dynamic_bitset, set)
 constexpr bool reset_test()
 {
     bio::dynamic_bitset t1{0b11'1110'1111'1111'1111'1111'1100'1111'1111'1111'1111'1111'1111'1111'1110};
-    bool res = !t1.none();
+    bool                res = !t1.none();
     t1.reset();
     res &= t1.none();
 
@@ -273,7 +273,7 @@ TEST(dynamic_bitset, reset)
 constexpr bool flip_test()
 {
     bio::dynamic_bitset t1{0b1111111111111111111111111111111111111111111111111111111111};
-    bool res = t1.all();
+    bool                res = t1.all();
     t1.flip();
     res &= t1.none();
 
@@ -297,9 +297,9 @@ constexpr bool access_test()
 {
     bool res = true;
 
-    bio::dynamic_bitset t1{0b1111'0000'0000'0000};
+    bio::dynamic_bitset       t1{0b1111'0000'0000'0000};
     bio::dynamic_bitset const t2{0b1111'0000'0000'0000};
-    bio::dynamic_bitset expected{"0111000000000001"};
+    bio::dynamic_bitset       expected{"0111000000000001"};
 
     for (size_t i = 0u; i < t1.size() - 4u; ++i)
     {
@@ -509,7 +509,7 @@ TEST(dynamic_bitset, assign)
 
 constexpr bool iterator_test()
 {
-    bio::dynamic_bitset t1{0b1111'0001'0000'1100};
+    bio::dynamic_bitset       t1{0b1111'0001'0000'1100};
     bio::dynamic_bitset const t2{0b1010'0001'0000'0011};
 
     bool res = !*t1.begin();
@@ -539,8 +539,8 @@ TEST(dynamic_bitset, iterators)
 
 constexpr bool capacity_test()
 {
-    bio::dynamic_bitset t0{};
-    bio::dynamic_bitset t1{0b1111'0001'0000'1100};
+    bio::dynamic_bitset       t0{};
+    bio::dynamic_bitset       t1{0b1111'0001'0000'1100};
     bio::dynamic_bitset const t2{0b1010'0001'0000'0011};
 
     bool res = t0.empty();
@@ -767,8 +767,8 @@ TEST(dynamic_bitset, to_ullong)
 
 TEST(dynamic_bitset, std_hash)
 {
-    bio::dynamic_bitset t1{"0011000"};
-    bio::dynamic_bitset t2{0b001100};
+    bio::dynamic_bitset                t1{"0011000"};
+    bio::dynamic_bitset                t2{0b001100};
     std::hash<bio::dynamic_bitset<58>> hasher{};
 
     EXPECT_EQ(hasher(t1), 24ULL);

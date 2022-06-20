@@ -43,52 +43,45 @@ constexpr bool add_enum_bitwise_operators = false;
  * \{
  */
 template <typename t>
-constexpr t operator& (t lhs, t rhs) noexcept
-    requires std::is_enum_v<t> && add_enum_bitwise_operators<t>
+constexpr t operator&(t lhs, t rhs) noexcept requires(std::is_enum_v<t> && add_enum_bitwise_operators<t>)
 {
     return static_cast<t>(static_cast<std::underlying_type_t<t>>(lhs) & static_cast<std::underlying_type_t<t>>(rhs));
 }
 
 template <typename t>
-constexpr t operator| (t lhs, t rhs) noexcept
-    requires std::is_enum_v<t> && add_enum_bitwise_operators<t>
+constexpr t operator|(t lhs, t rhs) noexcept requires(std::is_enum_v<t> && add_enum_bitwise_operators<t>)
 {
     return static_cast<t>(static_cast<std::underlying_type_t<t>>(lhs) | static_cast<std::underlying_type_t<t>>(rhs));
 }
 
 template <typename t>
-constexpr t operator^ (t lhs, t rhs) noexcept
-    requires std::is_enum_v<t> && add_enum_bitwise_operators<t>
+constexpr t operator^(t lhs, t rhs) noexcept requires(std::is_enum_v<t> && add_enum_bitwise_operators<t>)
 {
     return static_cast<t>(static_cast<std::underlying_type_t<t>>(lhs) ^ static_cast<std::underlying_type_t<t>>(rhs));
 }
 
 template <typename t>
-constexpr t operator~ (t lhs) noexcept
-    requires std::is_enum_v<t> && add_enum_bitwise_operators<t>
+constexpr t operator~(t lhs) noexcept requires(std::is_enum_v<t> && add_enum_bitwise_operators<t>)
 {
     return static_cast<t>(~static_cast<std::underlying_type_t<t>>(lhs));
 }
 
 template <typename t>
-constexpr t & operator&= (t & lhs, t rhs) noexcept
-    requires std::is_enum_v<t> && add_enum_bitwise_operators<t>
+constexpr t & operator&=(t & lhs, t rhs) noexcept requires(std::is_enum_v<t> && add_enum_bitwise_operators<t>)
 {
     lhs = lhs & rhs;
     return lhs;
 }
 
 template <typename t>
-constexpr t & operator|= (t & lhs, t rhs) noexcept
-    requires std::is_enum_v<t> && add_enum_bitwise_operators<t>
+constexpr t & operator|=(t & lhs, t rhs) noexcept requires(std::is_enum_v<t> && add_enum_bitwise_operators<t>)
 {
     lhs = lhs | rhs;
     return lhs;
 }
 
 template <typename t>
-constexpr t & operator^= (t & lhs, t rhs) noexcept
-    requires std::is_enum_v<t> && add_enum_bitwise_operators<t>
+constexpr t & operator^=(t & lhs, t rhs) noexcept requires(std::is_enum_v<t> && add_enum_bitwise_operators<t>)
 {
     lhs = lhs ^ rhs;
     return lhs;

@@ -14,15 +14,15 @@
 #pragma once
 
 #include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/nucleotide/dna15.hpp>
+#include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/nucleotide/dna5.hpp>
+#include <bio/alphabet/nucleotide/rna15.hpp>
+#include <bio/alphabet/nucleotide/rna4.hpp>
+#include <bio/alphabet/nucleotide/rna5.hpp>
 #include <bio/alphabet/quality/concept.hpp>
 #include <bio/alphabet/quality/phred42.hpp>
 #include <bio/alphabet/quality/qualified.hpp>
-#include <bio/alphabet/nucleotide/dna4.hpp>
-#include <bio/alphabet/nucleotide/dna5.hpp>
-#include <bio/alphabet/nucleotide/dna15.hpp>
-#include <bio/alphabet/nucleotide/rna4.hpp>
-#include <bio/alphabet/nucleotide/rna5.hpp>
-#include <bio/alphabet/nucleotide/rna15.hpp>
 
 namespace bio
 {

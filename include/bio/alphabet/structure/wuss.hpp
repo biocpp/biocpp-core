@@ -69,20 +69,20 @@ private:
 
 public:
     using base_t::alphabet_size;
-    using base_t::to_rank;
     using base_t::to_char;
-    using typename base_t::rank_type;
+    using base_t::to_rank;
     using typename base_t::char_type;
+    using typename base_t::rank_type;
 
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr wuss()                         noexcept = default; //!< Defaulted.
-    constexpr wuss(wuss const &)             noexcept = default; //!< Defaulted.
-    constexpr wuss(wuss &&)                  noexcept = default; //!< Defaulted.
+    constexpr wuss() noexcept                         = default; //!< Defaulted.
+    constexpr wuss(wuss const &) noexcept             = default; //!< Defaulted.
+    constexpr wuss(wuss &&) noexcept                  = default; //!< Defaulted.
     constexpr wuss & operator=(wuss const &) noexcept = default; //!< Defaulted.
-    constexpr wuss & operator=(wuss &&)      noexcept = default; //!< Defaulted.
-    ~wuss()                                  noexcept = default; //!< Defaulted.
+    constexpr wuss & operator=(wuss &&) noexcept      = default; //!< Defaulted.
+    ~wuss() noexcept                                  = default; //!< Defaulted.
     //!\}
 
     /*!\name RNA structure properties
@@ -91,26 +91,17 @@ public:
     /*!\brief Check whether the character represents a rightward interaction in an RNA structure.
      * \returns True if the letter represents a rightward interaction, False otherwise.
      */
-    constexpr bool is_pair_open() const noexcept
-    {
-        return interaction_tab[to_rank()] < 0;
-    }
+    constexpr bool is_pair_open() const noexcept { return interaction_tab[to_rank()] < 0; }
 
     /*!\brief Check whether the character represents a leftward interaction in an RNA structure.
      * \returns True if the letter represents a leftward interaction, False otherwise.
      */
-    constexpr bool is_pair_close() const noexcept
-    {
-        return interaction_tab[to_rank()] > 0;
-    }
+    constexpr bool is_pair_close() const noexcept { return interaction_tab[to_rank()] > 0; }
 
     /*!\brief Check whether the character represents an unpaired position in an RNA structure.
      * \returns True if the letter represents an unpaired site, False otherwise.
      */
-    constexpr bool is_unpaired() const noexcept
-    {
-        return interaction_tab[to_rank()] == 0;
-    }
+    constexpr bool is_unpaired() const noexcept { return interaction_tab[to_rank()] == 0; }
 
     /*!\brief The ability of this alphabet to represent pseudoknots, i.e. crossing interactions, up to a certain depth.
      *        It is the number of distinct pairs of interaction symbols the format supports: 4..30 (depends on size)
@@ -135,44 +126,38 @@ public:
 protected:
     //!\privatesection
     //!\brief Value-to-char conversion table.
-    static constexpr std::array<char_type, alphabet_size> rank_to_char
+    static constexpr std::array<char_type, alphabet_size> rank_to_char = []() constexpr
     {
-        [] () constexpr
+        std::array<char_type, alphabet_size>
+          chars{'.', ':', ',', '-', '_', '~', ';', '<', '(', '[', '{', '>', ')', ']', '}'};
+
+        // pseudoknot letters
+        for (rank_type rnk = 15u; rnk + 1u < alphabet_size; rnk += 2u)
         {
-            std::array<char_type, alphabet_size> chars
-            {
-                '.', ':', ',', '-', '_', '~', ';', '<', '(', '[', '{', '>', ')', ']', '}'
-            };
+            char_type const off = static_cast<char_type>((rnk - 15u) / 2u);
+            chars[rnk]          = 'A' + off;
+            chars[rnk + 1u]     = 'a' + off;
+        }
 
-            // pseudoknot letters
-            for (rank_type rnk = 15u; rnk + 1u < alphabet_size; rnk += 2u)
-            {
-                char_type const off = static_cast<char_type>((rnk - 15u) / 2u);
-                chars[rnk] = 'A' + off;
-                chars[rnk + 1u] = 'a' + off;
-            }
-
-            return chars;
-        } ()
-    };
+        return chars;
+    }
+    ();
 
     //!\brief Char-to-value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank
+    static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
     {
-        [] () constexpr
-        {
-            std::array<rank_type, 256> rank_table{};
+        std::array<rank_type, 256> rank_table{};
 
-            // initialize with unpaired (std::array::fill unfortunately not constexpr)
-            for (rank_type & rnk : rank_table)
-                rnk = 6u;
+        // initialize with unpaired (std::array::fill unfortunately not constexpr)
+        for (rank_type & rnk : rank_table)
+            rnk = 6u;
 
-            // set alphabet values
-            for (rank_type rnk = 0u; rnk < alphabet_size; ++rnk)
-                rank_table[rank_to_char[rnk]] = rnk;
-            return rank_table;
-        } ()
-    };
+        // set alphabet values
+        for (rank_type rnk = 0u; rnk < alphabet_size; ++rnk)
+            rank_table[rank_to_char[rnk]] = rnk;
+        return rank_table;
+    }
+    ();
 
     /*!\brief Lookup table for interactions: unpaired (0), pair-open (< 0), pair-close (> 0).
      * Paired brackets have the same absolute value.
@@ -181,11 +166,11 @@ protected:
 };
 
 template <uint8_t SIZE>
-constexpr std::array<int8_t, SIZE> wuss<SIZE>::interaction_tab = [] () constexpr
+constexpr std::array<int8_t, SIZE> wuss<SIZE>::interaction_tab = []() constexpr
 {
     std::array<int8_t, alphabet_size> interaction_table{};
-    int cnt_open = 0;
-    int cnt_close = 0;
+    int                               cnt_open  = 0;
+    int                               cnt_close = 0;
 
     for (rank_type rnk = 0u; rnk <= 6u; ++rnk)
     {
@@ -209,7 +194,8 @@ constexpr std::array<int8_t, SIZE> wuss<SIZE>::interaction_tab = [] () constexpr
     }
 
     return interaction_table;
-} ();
+}
+();
 
 //!\brief Alias for the default type wuss51.
 //!\relates bio::wuss
@@ -228,7 +214,7 @@ using wuss51 = wuss<51>;
  * You can use this string literal to easily assign to a vector of bio::wuss51 characters:
  * \include test/snippet/alphabet/structure/wuss_literal.cpp
  */
-inline std::vector<wuss51> operator""_wuss51(const char * str, std::size_t len)
+inline std::vector<wuss51> operator""_wuss51(char const * str, std::size_t len)
 {
     std::vector<wuss51> vec;
     vec.resize(len);

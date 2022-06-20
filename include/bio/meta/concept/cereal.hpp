@@ -18,8 +18,8 @@
 #include <bio/meta/platform.hpp>
 
 #if BIOCPP_WITH_CEREAL
-#include <cereal/details/traits.hpp>
-#include <cereal/archives/binary.hpp>
+#    include <cereal/archives/binary.hpp>
+#    include <cereal/details/traits.hpp>
 #endif
 
 namespace bio
@@ -140,15 +140,12 @@ concept cereal_text_archive = false;
 //!\cond
 #if BIOCPP_WITH_CEREAL
 template <typename value_t,
-          typename input_archive_t = cereal::BinaryInputArchive,
+          typename input_archive_t  = cereal::BinaryInputArchive,
           typename output_archive_t = cereal::BinaryOutputArchive>
-concept cerealisable =
-    cereal::traits::is_input_serializable<value_t, input_archive_t>::value &&
-    cereal::traits::is_output_serializable<value_t, output_archive_t>::value;
+concept cerealisable = cereal::traits::is_input_serializable<value_t, input_archive_t>::value &&
+  cereal::traits::is_output_serializable<value_t, output_archive_t>::value;
 #else
-template <typename value_t,
-          typename input_archive_t = void,
-          typename output_archive_t = void>
+template <typename value_t, typename input_archive_t = void, typename output_archive_t = void>
 concept cerealisable = false;
 #endif
 //!\endcond

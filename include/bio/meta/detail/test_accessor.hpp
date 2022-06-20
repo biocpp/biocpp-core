@@ -24,4 +24,4 @@ namespace bio::detail
  */
 struct test_accessor;
 
-} // bio::detail
+} // namespace bio::detail

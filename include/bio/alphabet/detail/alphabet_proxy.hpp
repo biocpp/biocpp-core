@@ -52,30 +52,30 @@ namespace bio
  * See bio::bitcompressed_vector or bio::alphabet_tuple_base for examples of how this class is used.
  */
 template <typename derived_type, writable_semialphabet alphabet_type>
-//!\cond
+    //!\cond
     requires std::regular<alphabet_type>
 //!\endcond
-class alphabet_proxy : public
-    std::conditional_t<std::is_class_v<alphabet_type>,
-                       alphabet_type,
-                       alphabet_base<derived_type,
-                                     alphabet_size<alphabet_type>,
-                                     detail::valid_template_spec_or_t<void, alphabet_char_t, alphabet_type>>>
+class alphabet_proxy :
+  public std::conditional_t<std::is_class_v<alphabet_type>,
+                            alphabet_type,
+                            alphabet_base<derived_type,
+                                          alphabet_size<alphabet_type>,
+                                          detail::valid_template_spec_or_t<void, alphabet_char_t, alphabet_type>>>
 {
 private:
     //!\brief Type of the base class.
     using base_t =
-        std::conditional_t<std::is_class_v<alphabet_type>,
-                           alphabet_type,                                   // inherit from emulated type if possible
-                           alphabet_base<derived_type,                      // else: alphabet_base
-                                         alphabet_size<alphabet_type>,
-                                         detail::valid_template_spec_or_t<void, alphabet_char_t, alphabet_type>>>;
+      std::conditional_t<std::is_class_v<alphabet_type>,
+                         alphabet_type,              // inherit from emulated type if possible
+                         alphabet_base<derived_type, // else: alphabet_base
+                                       alphabet_size<alphabet_type>,
+                                       detail::valid_template_spec_or_t<void, alphabet_char_t, alphabet_type>>>;
 
     //!\brief Befriend the base type.
     friend base_t;
 
     //!\brief The type of the alphabet character.
-    using char_type  = detail::valid_template_spec_or_t<char, alphabet_char_t, alphabet_type>;
+    using char_type = detail::valid_template_spec_or_t<char, alphabet_char_t, alphabet_type>;
 
     //!\brief The type of the phred score.
     using phred_type = detail::valid_template_spec_or_t<int8_t, alphabet_phred_t, alphabet_type>;
@@ -84,27 +84,28 @@ private:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr alphabet_proxy() noexcept = default;                          //!< Defaulted.
-    constexpr alphabet_proxy(alphabet_proxy const &) = default;             //!< Defaulted.
-    constexpr alphabet_proxy(alphabet_proxy &&) = default;                  //!< Defaulted.
+    constexpr alphabet_proxy() noexcept                          = default; //!< Defaulted.
+    constexpr alphabet_proxy(alphabet_proxy const &)             = default; //!< Defaulted.
+    constexpr alphabet_proxy(alphabet_proxy &&)                  = default; //!< Defaulted.
     constexpr alphabet_proxy & operator=(alphabet_proxy const &) = default; //!< Defaulted.
-    constexpr alphabet_proxy & operator=(alphabet_proxy &&) = default;      //!< Defaulted.
-    ~alphabet_proxy() = default;                                            //!< Defaulted.
+    constexpr alphabet_proxy & operator=(alphabet_proxy &&)      = default; //!< Defaulted.
+    ~alphabet_proxy()                                            = default; //!< Defaulted.
 
     //!\brief Construction from the emulated type.
     constexpr alphabet_proxy(alphabet_type const a) noexcept
-    //!\cond
-        requires std::is_class_v<alphabet_type>
-    //!\endcond
-        : base_t{a}
+      //!\cond
+      requires std::is_class_v<alphabet_type>
+      //!\endcond
+      : base_t{a}
     {}
 
     //!\brief Construction from the emulated type.
     constexpr alphabet_proxy(alphabet_type const a) noexcept
-    //!\cond
-        requires (!std::is_class_v<alphabet_type>)
-    //!\endcond
-        : base_t{}
+      //!\cond
+      requires(!std::is_class_v<alphabet_type>)
+      //!\endcond
+      :
+      base_t{}
     {
         base_t::assign_rank(bio::to_rank(a));
     }
@@ -124,8 +125,8 @@ private:
     //!\brief Assignment from any type that the emulated type is assignable from.
     template <typename indirect_assignable_type>
     constexpr derived_type & operator=(indirect_assignable_type const & c) noexcept
-    //!\cond
-        requires weakly_assignable_from<alphabet_type, indirect_assignable_type>
+      //!\cond
+      requires weakly_assignable_from<alphabet_type, indirect_assignable_type>
     //!\endcond
     {
         alphabet_type a{};
@@ -156,8 +157,8 @@ public:
 
     //!\brief Assigns a character.
     constexpr derived_type & assign_char(char_type const c) noexcept
-    //!\cond
-        requires writable_alphabet<alphabet_type>
+      //!\cond
+      requires writable_alphabet<alphabet_type>
     //!\endcond
     {
         alphabet_type tmp{};
@@ -167,8 +168,8 @@ public:
 
     //!\brief Assigns a phred.
     constexpr derived_type & assign_phred(phred_type const c) noexcept
-    //!\cond
-        requires writable_quality_alphabet<alphabet_type>
+      //!\cond
+      requires writable_quality_alphabet<alphabet_type>
     //!\endcond
     {
         alphabet_type tmp{};
@@ -206,24 +207,18 @@ public:
 
     //!\brief Implicit conversion to types that the emulated type is convertible to.
     template <typename other_t>
-    //!\cond
-        requires (!std::is_class_v<alphabet_type>) && std::convertible_to<alphabet_type, other_t>
+        //!\cond
+        requires(!std::is_class_v<alphabet_type> && std::convertible_to<alphabet_type, other_t>)
     //!\endcond
-    constexpr operator other_t() const noexcept
-    {
-        return operator alphabet_type();
-    }
+    constexpr operator other_t() const noexcept { return operator alphabet_type(); }
 
     //!\brief Returns the rank.
-    constexpr auto to_rank() const noexcept
-    {
-        return bio::to_rank(operator alphabet_type());
-    }
+    constexpr auto to_rank() const noexcept { return bio::to_rank(operator alphabet_type()); }
 
     //!\brief Returns the character.
     constexpr auto to_char() const noexcept
-    //!\cond
-        requires alphabet<alphabet_type>
+      //!\cond
+      requires alphabet<alphabet_type>
     //!\endcond
     {
         return bio::to_char(operator alphabet_type());
@@ -231,8 +226,8 @@ public:
 
     //!\brief Returns the phred score.
     constexpr auto to_phred() const noexcept
-    //!\cond
-        requires quality_alphabet<alphabet_type>
+      //!\cond
+      requires quality_alphabet<alphabet_type>
     //!\endcond
     {
         return bio::to_phred(operator alphabet_type());
@@ -240,8 +235,8 @@ public:
 
     //!\brief Returns the complement.
     constexpr alphabet_type complement() const noexcept
-    //!\cond
-        requires nucleotide_alphabet<alphabet_type>
+      //!\cond
+      requires nucleotide_alphabet<alphabet_type>
     //!\endcond
     {
         return bio::complement(operator alphabet_type());
@@ -249,8 +244,8 @@ public:
 
     //!\brief Delegate to the emulated type's validator.
     static constexpr bool char_is_valid(char_type const c) noexcept
-    //!\cond
-        requires writable_alphabet<alphabet_type>
+      //!\cond
+      requires writable_alphabet<alphabet_type>
     //!\endcond
     {
         return char_is_valid_for<alphabet_type>(c);
@@ -265,14 +260,14 @@ public:
 private:
     //!\brief work around a gcc bug that disables short-circuiting of operator&& in an enable_if_t of a friend function
     template <typename t>
-    static constexpr bool is_alphabet_comparable_with = !std::is_same_v<derived_type, t> &&
-                                                        detail::weakly_equality_comparable_with<alphabet_type, t>;
+    static constexpr bool is_alphabet_comparable_with =
+      !std::is_same_v<derived_type, t> && detail::weakly_equality_comparable_with<alphabet_type, t>;
 
 public:
     //!\brief Allow (in-)equality comparison with types that the emulated type is comparable with.
     template <typename t>
     friend constexpr auto operator==(derived_type const lhs, t const rhs) noexcept
-        -> std::enable_if_t<is_alphabet_comparable_with<t>, bool>
+      -> std::enable_if_t<is_alphabet_comparable_with<t>, bool>
     {
         return (lhs.operator alphabet_type() == rhs);
     }
@@ -280,7 +275,7 @@ public:
     //!\brief Allow (in-)equality comparison with types that the emulated type is comparable with.
     template <typename t>
     friend constexpr auto operator==(t const lhs, derived_type const rhs) noexcept
-        -> std::enable_if_t<is_alphabet_comparable_with<t>, bool>
+      -> std::enable_if_t<is_alphabet_comparable_with<t>, bool>
     {
         return (rhs == lhs);
     }
@@ -288,7 +283,7 @@ public:
     //!\brief Allow (in-)equality comparison with types that the emulated type is comparable with.
     template <typename t>
     friend constexpr auto operator!=(derived_type const lhs, t const rhs) noexcept
-        -> std::enable_if_t<is_alphabet_comparable_with<t>, bool>
+      -> std::enable_if_t<is_alphabet_comparable_with<t>, bool>
     {
         return !(lhs == rhs);
     }
@@ -296,7 +291,7 @@ public:
     //!\brief Allow (in-)equality comparison with types that the emulated type is comparable with.
     template <typename t>
     friend constexpr auto operator!=(t const lhs, derived_type const rhs) noexcept
-        -> std::enable_if_t<is_alphabet_comparable_with<t>, bool>
+      -> std::enable_if_t<is_alphabet_comparable_with<t>, bool>
     {
         return (rhs != lhs);
     }

@@ -57,70 +57,41 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr aa27()                         noexcept = default; //!< Defaulted.
-    constexpr aa27(aa27 const &)             noexcept = default; //!< Defaulted.
-    constexpr aa27(aa27 &&)                  noexcept = default; //!< Defaulted.
+    constexpr aa27() noexcept                         = default; //!< Defaulted.
+    constexpr aa27(aa27 const &) noexcept             = default; //!< Defaulted.
+    constexpr aa27(aa27 &&) noexcept                  = default; //!< Defaulted.
     constexpr aa27 & operator=(aa27 const &) noexcept = default; //!< Defaulted.
-    constexpr aa27 & operator=(aa27 &&)      noexcept = default; //!< Defaulted.
-    ~aa27()                                  noexcept = default; //!< Defaulted.
+    constexpr aa27 & operator=(aa27 &&) noexcept      = default; //!< Defaulted.
+    ~aa27() noexcept                                  = default; //!< Defaulted.
 
     using base_t::base_t;
     //!\}
 
 protected:
     //!\brief Value to char conversion table.
-    static constexpr char_type rank_to_char[alphabet_size]
-    {
-        'A',
-        'B',
-        'C',
-        'D',
-        'E',
-        'F',
-        'G',
-        'H',
-        'I',
-        'J',
-        'K',
-        'L',
-        'M',
-        'N',
-        'O',
-        'P',
-        'Q',
-        'R',
-        'S',
-        'T',
-        'U',
-        'V',
-        'W',
-        'X',
-        'Y',
-        'Z',
-        '*'
-    };
+    static constexpr char_type rank_to_char[alphabet_size]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+                                                           'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+                                                           'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '*'};
 
     //!\brief Char to value conversion table.
-    static constexpr std::array<rank_type, 256> char_to_rank
+    static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
     {
-        [] () constexpr
+        std::array<rank_type, 256> ret{};
+
+        // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
+        for (auto & c : ret)
+            c = 23; // value of 'X'
+
+        // reverse mapping for characters and their lowercase
+        for (rank_type rnk = 0u; rnk < alphabet_size; ++rnk)
         {
-            std::array<rank_type, 256> ret{};
+            ret[static_cast<rank_type>(rank_to_char[rnk])]           = rnk;
+            ret[static_cast<rank_type>(to_lower(rank_to_char[rnk]))] = rnk;
+        }
 
-            // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
-            for (auto & c : ret)
-                c = 23; // value of 'X'
-
-            // reverse mapping for characters and their lowercase
-            for (rank_type rnk = 0u; rnk < alphabet_size; ++rnk)
-            {
-                ret[static_cast<rank_type>(         rank_to_char[rnk]) ] = rnk;
-                ret[static_cast<rank_type>(to_lower(rank_to_char[rnk]))] = rnk;
-            }
-
-            return ret;
-        }()
-    };
+        return ret;
+    }
+    ();
 };
 
 } // namespace bio
@@ -175,7 +146,7 @@ constexpr aa27 operator""_aa27(char const c) noexcept
  * All BioC++ literals are in the namespace bio!
  */
 
-inline aa27_vector operator""_aa27(const char * s, std::size_t n)
+inline aa27_vector operator""_aa27(char const * s, std::size_t n)
 {
     aa27_vector r;
     r.resize(n);

@@ -14,12 +14,11 @@
 
 #pragma once
 
-#include <bio/alphabet/gap/gap.hpp>
 #include <bio/alphabet/composite/alphabet_variant.hpp>
+#include <bio/alphabet/gap/gap.hpp>
 
 namespace bio
 {
-
 
 /*!\brief Extends a given alphabet with a gap character.
  * \ingroup gap
@@ -37,7 +36,7 @@ namespace bio
  * \sa For more details see alphabet_variant, which is the base class and more general than the gapped alphabet.
  */
 template <typename alphabet_t>
-//!\cond
+    //!\cond
     requires writable_alphabet<alphabet_t>
 //!\endcond
 using gapped = alphabet_variant<alphabet_t, gap>;

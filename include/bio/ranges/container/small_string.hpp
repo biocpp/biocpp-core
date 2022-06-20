@@ -49,17 +49,18 @@ private:
     // make data inherited members visible
     using base_t::data_;
     using base_t::sz;
+
 public:
     /*!\name Associated types
      * \{
      */
-    using typename base_t::value_type;
-    using typename base_t::reference;
-    using typename base_t::const_reference;
-    using typename base_t::iterator;
     using typename base_t::const_iterator;
+    using typename base_t::const_reference;
     using typename base_t::difference_type;
+    using typename base_t::iterator;
+    using typename base_t::reference;
     using typename base_t::size_type;
+    using typename base_t::value_type;
     //!\}
 
     /*!\name Constructors, destructor and assignment
@@ -94,10 +95,7 @@ public:
      *
      * No-throw guarantee.
      */
-    explicit constexpr small_string(char const c) noexcept : small_string{}
-    {
-        assign(1, c);
-    }
+    explicit constexpr small_string(char const c) noexcept : small_string{} { assign(1, c); }
 
     /*!\brief Assign from literal.
      * \param _lit The literal to assign the string from.
@@ -140,7 +138,7 @@ public:
     {
         static_assert(N <= capacity_ + 1, "Length of string literal exceeds capacity of small_string.");
         assert(_lit[N - 1] == '\0');
-        assign(&_lit[0], &_lit[N-1]);
+        assign(&_lit[0], &_lit[N - 1]);
     }
 
     /*!\brief Assign from pair of iterators.
@@ -159,9 +157,9 @@ public:
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
     template <std::forward_iterator begin_it_type, typename end_it_type>
-    //!\cond
-        requires std::sentinel_for<end_it_type, begin_it_type> &&
-                 std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>
+        //!\cond
+        requires(std::sentinel_for<end_it_type, begin_it_type> &&
+                   std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
     //!\endcond
     constexpr void assign(begin_it_type begin_it, end_it_type end_it) noexcept
     {
@@ -174,16 +172,10 @@ public:
      * \{
      */
     //!\brief Returns the maximal size which equals the capacity.
-    static constexpr size_type max_size() noexcept
-    {
-        return capacity_;
-    }
+    static constexpr size_type max_size() noexcept { return capacity_; }
 
     //!\brief Returns the maximal capacity.
-    static constexpr size_type capacity() noexcept
-    {
-        return capacity_;
-    }
+    static constexpr size_type capacity() noexcept { return capacity_; }
     //!\}
 
     /*!\name Modifiers
@@ -192,7 +184,7 @@ public:
     //!\copydoc bio::small_vector::clear
     constexpr void clear() noexcept
     {
-        sz = 0;
+        sz       = 0;
         data_[0] = '\0';
     }
 
@@ -214,20 +206,17 @@ public:
     }
 
     //!\copydoc bio::small_vector::resize(size_type const)
-    constexpr void resize(size_type const count) noexcept
-    {
-        resize(count, '\0');
-    }
+    constexpr void resize(size_type const count) noexcept { resize(count, '\0'); }
 
     //!\copydoc bio::small_vector::resize(size_type const, value_type const value)
     constexpr void resize(size_type const count, char const value) noexcept
     {
         assert(count <= capacity_);
 
-        for (size_t i = sz; i < count; ++i)  // sz < count; add `value` in [sz, count)
+        for (size_t i = sz; i < count; ++i) // sz < count; add `value` in [sz, count)
             data_[i] = value;
 
-        sz = count;
+        sz        = count;
         data_[sz] = '\0';
     }
 
@@ -276,7 +265,7 @@ public:
      * Linear in the size of the strings.
      */
     template <size_t capacity2>
-    constexpr friend small_string<capacity_ + capacity2> operator+(small_string const & lhs,
+    constexpr friend small_string<capacity_ + capacity2> operator+(small_string const &            lhs,
                                                                    small_string<capacity2> const & rhs) noexcept
     {
         small_string<capacity_ + capacity2> tmp{lhs};
@@ -301,10 +290,7 @@ public:
      *
      * Linear in the size of the string.
      */
-    std::string str() const
-    {
-        return std::string{this->cbegin(), this->cend()};
-    }
+    std::string str() const { return std::string{this->cbegin(), this->cend()}; }
 
     /*!\brief Returns the content represented as 0-terminated c-style string.
      *
@@ -318,10 +304,7 @@ public:
      *
      * Constant.
      */
-    constexpr char const * c_str() const noexcept
-    {
-        return data_.data();
-    }
+    constexpr char const * c_str() const noexcept { return data_.data(); }
 
     /*!\brief Implicit conversion to std::string which delegates to bio::small_string::str().
      *
@@ -333,10 +316,7 @@ public:
      *
      * Linear in the size of the string.
      */
-    operator std::string() const
-    {
-        return str();
-    }
+    operator std::string() const { return str(); }
     //!\}
 
     /*!\name Input/output
@@ -376,9 +356,8 @@ public:
         if (s)
         {
             str.erase(); // clear the string
-            std::streamsize num_char = (is.width() > 0)
-                ? std::min<std::streamsize>(is.width(), str.max_size())
-                : str.max_size();
+            std::streamsize num_char =
+              (is.width() > 0) ? std::min<std::streamsize>(is.width(), str.max_size()) : str.max_size();
             assert(num_char > 0);
             for (std::streamsize n = num_char; n > 0 && !std::isspace(static_cast<char>(is.peek()), is.getloc()); --n)
             {
@@ -414,14 +393,14 @@ small_string(std::array<char, N> const &) -> small_string<N>;
 
 //!\brief Deduces small_string from char.
 //!\relates small_string
-small_string(char const) -> small_string<1>;
+small_string(char const)->small_string<1>;
 //!\}
 
 } // namespace bio
 
 #if __has_include(<fmt/format.h>)
 
-#include <fmt/ranges.h>
+#    include <fmt/ranges.h>
 
 template <size_t N>
 struct fmt::formatter<bio::small_string<N>> : fmt::formatter<std::string_view>

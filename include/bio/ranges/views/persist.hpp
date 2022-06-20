@@ -53,19 +53,17 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    view_persist()                                               noexcept = default; //!< Defaulted.
-    constexpr view_persist(view_persist const & rhs)             noexcept = default; //!< Defaulted.
-    constexpr view_persist(view_persist && rhs)                  noexcept = default; //!< Defaulted.
+    view_persist() noexcept                                               = default; //!< Defaulted.
+    constexpr view_persist(view_persist const & rhs) noexcept             = default; //!< Defaulted.
+    constexpr view_persist(view_persist && rhs) noexcept                  = default; //!< Defaulted.
     constexpr view_persist & operator=(view_persist const & rhs) noexcept = default; //!< Defaulted.
-    constexpr view_persist & operator=(view_persist && rhs)      noexcept = default; //!< Defaulted.
-    ~view_persist()                                              noexcept = default; //!< Defaulted.
+    constexpr view_persist & operator=(view_persist && rhs) noexcept      = default; //!< Defaulted.
+    ~view_persist() noexcept                                              = default; //!< Defaulted.
 
     /*!\brief Construct from another range.
      * \param[in] _urange The underlying range.
      */
-    view_persist(urng_t && _urange) :
-        urange{new urng_t{std::move(_urange)}}
-    {}
+    view_persist(urng_t && _urange) : urange{new urng_t{std::move(_urange)}} {}
     //!\}
 
     /*!\name Iterators
@@ -84,15 +82,12 @@ public:
      *
      * No-throw guarantee.
      */
-    auto begin() noexcept
-    {
-        return std::ranges::begin(*urange);
-    }
+    auto begin() noexcept { return std::ranges::begin(*urange); }
 
     //!\copydoc begin()
     auto begin() const noexcept
-    //!\cond
-        requires const_iterable_range<urng_t>
+      //!\cond
+      requires const_iterable_range<urng_t>
     //!\endcond
     {
         return std::ranges::cbegin(*urange);
@@ -111,15 +106,12 @@ public:
      *
      * No-throw guarantee.
      */
-    auto end() noexcept
-    {
-        return std::ranges::end(*urange);
-    }
+    auto end() noexcept { return std::ranges::end(*urange); }
 
     //!\copydoc end()
     auto end() const noexcept
-    //!\cond
-        requires const_iterable_range<urng_t>
+      //!\cond
+      requires const_iterable_range<urng_t>
     //!\endcond
     {
         return std::ranges::cend(*urange);
@@ -230,7 +222,7 @@ namespace bio::views
  *
  * \hideinitializer
  */
-inline auto constexpr persist = detail::persist_fn{};
+inline constexpr auto persist = detail::persist_fn{};
 
 //!\}
 
