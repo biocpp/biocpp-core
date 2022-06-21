@@ -29,10 +29,9 @@ namespace bio::detail
 // clang-format off
 //!\brief Given a value, return the smallest unsigned integer that can hold it.
 template <uint64_t value>
-using min_viable_uint_t = std::conditional_t<value <= 1ull,          bool,
-                          std::conditional_t<value <= 255ull,        uint8_t,
+using min_viable_uint_t = std::conditional_t<value <= 255ull,        uint8_t,
                           std::conditional_t<value <= 65535ull,      uint16_t,
-                          std::conditional_t<value <= 4294967295ull, uint32_t, uint64_t>>>>;
+                          std::conditional_t<value <= 4294967295ull, uint32_t, uint64_t>>>;
 // clang-format on
 
 //!\brief Given a value, cast the value as the smallest unsigned integer that can hold it.

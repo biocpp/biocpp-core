@@ -239,7 +239,7 @@ protected:
     //!\copybrief bio::alphabet_base::char_type
     using char_type = std::conditional_t<std::same_as<char_t, void>, char, char_t>;
     //!\copybrief bio::alphabet_base::rank_type
-    using rank_type = bool;
+    using rank_type = uint8_t;
     //!\}
 
 public:
@@ -287,7 +287,7 @@ public:
     //!\}
 
     //!\brief The size of the alphabet, i.e. the number of different values it can take.
-    static constexpr bool alphabet_size = 1;
+    static constexpr uint8_t alphabet_size = 1;
 
     //!\name Comparison operators
     //!\{

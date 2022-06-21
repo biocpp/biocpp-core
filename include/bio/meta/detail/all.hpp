@@ -13,6 +13,5 @@
 
 #pragma once
 
-#include <bio/meta/detail/endian.hpp>
 #include <bio/meta/detail/int_types.hpp>
 #include <bio/meta/detail/type_inspection.hpp>

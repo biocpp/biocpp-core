@@ -17,6 +17,8 @@
 #include <stdexcept>
 #include <string>
 
+#include <bio/meta/platform.hpp>
+
 namespace bio
 {
 

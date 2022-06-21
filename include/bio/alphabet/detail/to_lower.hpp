@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <bio/meta/platform.hpp>
+
 /*!\cond DEV
  * \file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>

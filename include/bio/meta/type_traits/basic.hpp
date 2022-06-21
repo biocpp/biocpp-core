@@ -36,16 +36,6 @@ namespace bio
  */
 
 // ----------------------------------------------------------------------------
-// remove_cvref_t
-// ----------------------------------------------------------------------------
-
-/*!\brief Return the input type with `const`, `volatile` and references removed (type trait).
- * \tparam t The type to operate on.
- */
-template <typename t>
-using remove_cvref_t BIOCPP_DEPRECATED_310 = std::remove_cv_t<std::remove_reference_t<t>>;
-
-// ----------------------------------------------------------------------------
 // remove_rvalue_reference
 // ----------------------------------------------------------------------------
 
