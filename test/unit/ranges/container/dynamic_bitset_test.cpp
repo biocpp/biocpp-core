@@ -30,7 +30,7 @@ TEST(dynamic_bitset, standard_construction)
     EXPECT_TRUE((std::is_nothrow_move_assignable_v<bio::dynamic_bitset<58>>));
     EXPECT_THROW(bio::dynamic_bitset{std::numeric_limits<uint64_t>::max()}, std::invalid_argument);
     EXPECT_THROW(bio::dynamic_bitset{"10101011x0101"}, std::invalid_argument);
-    EXPECT_EQ(bio::detail::sizeof_bits<decltype(*std::declval<bio::dynamic_bitset<58>>().raw_data())>, 64u);
+    EXPECT_EQ(sizeof(*std::declval<bio::dynamic_bitset<58>>().raw_data()), 8u);
 }
 
 TEST(dynamic_bitset, concepts)

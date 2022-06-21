@@ -8,12 +8,12 @@
 
 #include <gtest/gtest.h>
 
+#include <bit>
 #include <deque>
 #include <list>
 #include <map>
 #include <vector>
 
-#include <bio/meta/bit_manipulation.hpp>
 #include <bio/ranges/container/aligned_allocator.hpp>
 
 // standard construction.
@@ -89,8 +89,8 @@ TEST(aligned_allocator, memory_alignment)
 
 TEST(aligned_allocator, memory_alignment_bigger_than_default_new_alignment)
 {
-    size_t           size      = 10;
-    constexpr size_t alignment = bio::detail::next_power_of_two(__STDCPP_DEFAULT_NEW_ALIGNMENT__ + 1);
+    size_t                                 size      = 10;
+    constexpr size_t                       alignment = std::bit_ceil(__STDCPP_DEFAULT_NEW_ALIGNMENT__ + 1ul);
     bio::aligned_allocator<int, alignment> alloc{};
 
     int * begin = alloc.allocate(size);

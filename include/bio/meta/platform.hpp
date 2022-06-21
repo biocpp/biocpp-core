@@ -58,7 +58,7 @@ static_assert(sdsl::sdsl_version_major == 3, "Only version 3 of the SDSL is supp
 // Cereal [optional]
 /*!\def BIOCPP_WITH_CEREAL
  * \brief Whether CEREAL support is available or not.
- * \ingroup core
+ * \ingroup meta
  */
 #ifndef BIOCPP_WITH_CEREAL
 #    if __has_include(<cereal/cereal.hpp>)
@@ -75,7 +75,7 @@ static_assert(sdsl::sdsl_version_major == 3, "Only version 3 of the SDSL is supp
 #if !BIOCPP_WITH_CEREAL
 /*!\cond DEV
      * \name Cereal function macros
-     * \ingroup core
+     * \ingroup meta
      * \brief These can be changed by apps so we used the macros instead of the values internally.
      * \{
      */

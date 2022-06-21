@@ -16,8 +16,8 @@
 #include <vector>
 
 #include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/detail/to_lower.hpp>
 #include <bio/alphabet/structure/concept.hpp>
-#include <bio/meta/char_operations/transform.hpp>
 
 // ------------------------------------------------------------------
 // dot_bracket3

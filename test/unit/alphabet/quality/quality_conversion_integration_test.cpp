@@ -14,7 +14,7 @@
 #include <gtest/gtest.h>
 
 #include <bio/alphabet/quality/all.hpp>
-#include <bio/meta/type_pack/detail/type_pack_algorithm.hpp>
+#include <bio/meta/type_list/function.hpp>
 
 template <typename T>
 using quality_conversion = ::testing::Test;

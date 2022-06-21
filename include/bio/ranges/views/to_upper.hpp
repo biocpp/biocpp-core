@@ -14,7 +14,7 @@
 #pragma once
 
 #include <bio/alphabet/concept.hpp>
-#include <bio/meta/char_operations/transform.hpp>
+#include <bio/alphabet/detail/to_lower.hpp>
 #include <bio/ranges/views/deep.hpp>
 #include <ranges>
 
@@ -69,7 +69,7 @@ inline auto const to_upper = deep{std::views::transform(
   {
       static_assert(builtin_character<std::remove_cvref_t<decltype(in)>>,
                     "The value type of bio::views::to_upper must model the bio::builtin_character.");
-      return bio::to_upper(in);
+      return detail::to_upper(in);
   })};
 
 //!\}

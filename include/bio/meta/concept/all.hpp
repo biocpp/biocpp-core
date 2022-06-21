@@ -18,7 +18,7 @@
 #include <bio/meta/concept/tuple.hpp>
 
 /*!\defgroup concept Concept
- * \ingroup core
+ * \ingroup meta
  * \brief Additional concepts that are not specific to a BioC++ module.
  *
  * \details

@@ -12,7 +12,7 @@
 #include <bio/alphabet/aminoacid/aa10murphy.hpp>
 #include <bio/alphabet/aminoacid/aa20.hpp>
 #include <bio/alphabet/aminoacid/aa27.hpp>
-#include <bio/meta/type_list/detail/type_list_algorithm.hpp>
+#include <bio/meta/type_list/function.hpp>
 #include <bio/meta/type_list/type_list.hpp>
 
 template <typename T>

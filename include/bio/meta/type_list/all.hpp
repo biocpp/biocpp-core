@@ -13,7 +13,7 @@
 
 /*!\defgroup core_type_list Type List
  * \brief Provides bio::type_list and metaprogramming utilities for working on type lists.
- * \ingroup core
+ * \ingroup meta
  * \see core
  *
  * \details

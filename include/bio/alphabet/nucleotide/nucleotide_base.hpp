@@ -15,8 +15,8 @@
 
 #include <bio/alphabet/alphabet_base.hpp>
 #include <bio/alphabet/detail/convert.hpp>
+#include <bio/alphabet/detail/to_lower.hpp>
 #include <bio/alphabet/nucleotide/concept.hpp>
-#include <bio/meta/char_operations/transform.hpp>
 
 namespace bio
 {
@@ -74,10 +74,10 @@ public:
     //!\brief Allow explicit construction from any other nucleotide type and convert via the character representation.
     template <typename other_nucl_type>
         //!\cond
-        requires(!std::same_as<nucleotide_base, other_nucl_type>)
-    &&(!std::same_as<derived_type, other_nucl_type>)&&nucleotide_alphabet<other_nucl_type>
-      //!\endcond
-      explicit constexpr nucleotide_base(other_nucl_type const & other) noexcept
+        requires((!std::same_as<nucleotide_base, other_nucl_type>)&&(
+          !std::same_as<derived_type, other_nucl_type>)&&nucleotide_alphabet<other_nucl_type>)
+    //!\endcond
+    explicit constexpr nucleotide_base(other_nucl_type const & other) noexcept
     {
         static_cast<derived_type &>(*this) =
           detail::convert_through_char_representation<derived_type, other_nucl_type>[bio::to_rank(other)];
@@ -141,8 +141,8 @@ private:
         // the original valid chars and their lower cases
         for (uint8_t c : derived_type::rank_to_char)
         {
-            ret[c]           = true;
-            ret[to_lower(c)] = true;
+            ret[c]                   = true;
+            ret[detail::to_lower(c)] = true;
         }
 
         // U and T shall be accepted for all

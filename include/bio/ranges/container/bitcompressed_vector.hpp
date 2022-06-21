@@ -19,7 +19,6 @@
 
 #include <bio/alphabet/detail/alphabet_proxy.hpp>
 #include <bio/meta/concept/cereal.hpp>
-#include <bio/meta/math.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
 #include <bio/ranges/views/convert.hpp>
 #include <bio/ranges/views/to_char.hpp>
@@ -67,7 +66,7 @@ class bitcompressed_vector
 {
 private:
     //!\brief The number of bits needed to represent a single letter of the alphabet_type.
-    static constexpr size_t bits_per_letter = detail::ceil_log2(alphabet_size<alphabet_type>);
+    static constexpr size_t bits_per_letter = std::bit_width(alphabet_size<alphabet_type>);
 
     static_assert(bits_per_letter <= 64, "alphabet must be representable in at most 64bit.");
 

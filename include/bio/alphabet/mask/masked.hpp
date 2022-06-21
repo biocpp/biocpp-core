@@ -14,9 +14,8 @@
 #pragma once
 
 #include <bio/alphabet/composite/alphabet_tuple_base.hpp>
+#include <bio/alphabet/detail/to_lower.hpp>
 #include <bio/alphabet/mask/mask.hpp>
-#include <bio/meta/char_operations/predicate.hpp>
-#include <bio/meta/char_operations/transform.hpp>
 
 namespace bio
 {
@@ -103,7 +102,7 @@ protected:
         {
             ret[i] = (i < alphabet_size / 2)
                        ? bio::to_char(bio::assign_rank_to(i, sequence_alphabet_type{}))
-                       : to_lower(bio::to_char(bio::assign_rank_to(i / 2, sequence_alphabet_type{})));
+                       : detail::to_lower(bio::to_char(bio::assign_rank_to(i / 2, sequence_alphabet_type{})));
         }
 
         return ret;
@@ -118,8 +117,8 @@ protected:
         {
             char_type c = static_cast<char_type>(i);
 
-            ret[i] = is_lower(c) ? bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{})) * 2
-                                 : bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{}));
+            ret[i] = detail::is_lower(c) ? bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{})) * 2
+                                         : bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{}));
         }
 
         return ret;

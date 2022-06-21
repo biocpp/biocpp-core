@@ -28,7 +28,7 @@ namespace bio
 /*!\interface bio::cereal_output_archive <>
  * \brief All output archives of the Cereal library satisfy this.
  * \extends bio::cereal_archive
- * \ingroup core
+ * \ingroup meta
  *
  * This includes cereal::BinaryOutputArchive, cereal::PortableBinaryOutputArchive, cereal::JSONOutputArchive,
  * and cereal::XMLOutputArchive.
@@ -49,7 +49,7 @@ concept cereal_output_archive = false;
 /*!\interface bio::cereal_input_archive <>
  * \brief All input archives of the Cereal library satisfy this.
  * \extends bio::cereal_archive
- * \ingroup core
+ * \ingroup meta
  *
  * This includes cereal::BinaryInputArchive, cereal::PortableBinaryInputArchive, cereal::JSONInputArchive,
  * and cereal::XMLInputArchive.
@@ -69,7 +69,7 @@ concept cereal_input_archive = false;
 
 /*!\interface bio::cereal_archive <>
  * \brief All archives of the Cereal library satisfy this.
- * \ingroup core
+ * \ingroup meta
  *
  * \attention
  * The cereal library is an optional dependency of BioC++, if it is not found **no types** satisfy this concept.
@@ -87,7 +87,7 @@ concept cereal_archive = false;
 /*!\interface bio::cereal_text_archive <>
  * \brief All text archives of the Cereal library satisfy this.
  * \extends bio::cereal_archive
- * \ingroup core
+ * \ingroup meta
  *
  * This includes cereal::JSONOutputArchive, cereal::XMLOutputArchive, cereal::JSONInputArchive,
  * and cereal::XMLInputArchive.
@@ -106,7 +106,7 @@ concept cereal_text_archive = false;
 //!\endcond
 
 /*!\interface bio::cerealisable <>
- * \ingroup core
+ * \ingroup meta
  * \brief Specifies the requirements for types that are serialisable via Cereal.
  *
  * The `value_t` type satisfy the cerealisable, if `value_t` can be
@@ -157,7 +157,7 @@ namespace bio::detail
 
 /*!\brief Removes type-mangling that Cereal does with certain types on loading.
  * \details Helpful when defining templatised save/load/serialize functions.
- * \ingroup core
+ * \ingroup meta
  */
 #if BIOCPP_WITH_CEREAL
 template <typename type>

@@ -166,7 +166,7 @@ inline constexpr bool is_type_specialisation_of_v = is_type_specialisation_of<so
 /*!\interface bio::detail::template_specialisation_of <>
  * \brief Provides concept `bio::template_specialisation_of<mytype, [...]>` for checking the type specialisation of
  *        some type with a given template, for example a specialized `type_list<float>` with the `type_list` template.
- * \ingroup core
+ * \ingroup meta
  *
  * \tparam mytype           The query type.
  * \tparam type_template    The type template you wish to compare against mytype.
