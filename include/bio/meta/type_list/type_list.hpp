@@ -23,7 +23,7 @@ namespace bio
 // ----------------------------------------------------------------------------
 
 /*!\brief Type that contains multiple types.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  */
 template <typename... types>
 struct type_list

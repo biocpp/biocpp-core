@@ -16,7 +16,7 @@
 #include <bio/alphabet/alphabet_base.hpp>
 #include <bio/alphabet/aminoacid/concept.hpp>
 #include <bio/alphabet/detail/convert.hpp>
-#include <bio/meta/char_operations/transform.hpp>
+#include <bio/alphabet/detail/to_lower.hpp>
 
 namespace bio
 {
@@ -121,8 +121,8 @@ private:
         // the original valid chars and their lower cases
         for (uint8_t c : derived_type::rank_to_char)
         {
-            ret[c]           = true;
-            ret[to_lower(c)] = true;
+            ret[c]                   = true;
+            ret[detail::to_lower(c)] = true;
         }
 
         return ret;

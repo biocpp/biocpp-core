@@ -19,7 +19,7 @@ namespace bio::detail
 {
 
 //!\brief An empty class type used in meta programming.
-//!\ingroup core
+//!\ingroup meta
 struct empty_type
 {};
 

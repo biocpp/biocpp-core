@@ -15,8 +15,8 @@
 
 #include <vector>
 
+#include <bio/alphabet/detail/to_lower.hpp>
 #include <bio/alphabet/nucleotide/nucleotide_base.hpp>
-#include <bio/meta/char_operations/transform.hpp>
 
 // ------------------------------------------------------------------
 // dna3bs
@@ -93,8 +93,8 @@ protected:
         // reverse mapping for characters and their lowercase
         for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
         {
-            ret[rank_to_char[rnk]]           = rnk;
-            ret[to_lower(rank_to_char[rnk])] = rnk;
+            ret[rank_to_char[rnk]]                   = rnk;
+            ret[detail::to_lower(rank_to_char[rnk])] = rnk;
         }
 
         // set C and U equal to T

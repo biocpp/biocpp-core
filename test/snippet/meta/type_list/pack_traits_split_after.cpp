@@ -2,7 +2,7 @@
 
 int main()
 {
-    using split_t = bio::pack_traits::split_after<3, int, float, bool, double, char, int>;
+    using split_t = bio::detail::pack_traits::split_after<3, int, float, bool, double, char, int>;
 
     // Use ::first_type and ::second_type to access the type lists after being split.
     static_assert(std::same_as<bio::type_list<int, float, bool>,

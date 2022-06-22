@@ -97,7 +97,7 @@ TEST(literals, vector)
 
 TEST(aa10li, char_is_valid)
 {
-    constexpr auto aa27_validator = (bio::is_alpha || bio::is_char<'*'>);
+    constexpr auto aa27_validator = [](char c) { return std::isalpha(c) || c == '*'; };
 
     for (char c : std::views::iota(std::numeric_limits<char>::min(), std::numeric_limits<char>::max()))
     {

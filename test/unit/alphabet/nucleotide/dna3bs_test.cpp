@@ -7,7 +7,6 @@
 // -----------------------------------------------------------------------------------------------------
 
 #include <bio/alphabet/nucleotide/dna3bs.hpp>
-#include <bio/meta/char_operations/predicate.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"
@@ -97,8 +96,8 @@ TEST(dna3bs, string_literal)
 
 TEST(dna3bs, char_is_valid)
 {
-    constexpr auto validator = bio::is_char<'A'> || bio::is_char<'G'> || bio::is_char<'T'> || bio::is_char<'U'> ||
-                               bio::is_char<'a'> || bio::is_char<'g'> || bio::is_char<'t'> || bio::is_char<'u'>;
+    constexpr auto validator = [](char const c)
+    { return c == 'A' || c == 'G' || c == 'T' || c == 'U' || c == 'a' || c == 'g' || c == 't' || c == 'u'; };
     for (char c : std::views::iota(std::numeric_limits<char>::min(), std::numeric_limits<char>::max()))
         EXPECT_EQ(bio::dna3bs::char_is_valid(c), validator(c));
 }

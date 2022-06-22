@@ -104,7 +104,7 @@ TEST(literals, vector)
 
 TEST(aa27, char_is_valid)
 {
-    constexpr auto validator = bio::is_alpha || bio::is_char<'*'>;
+    constexpr auto validator = [](char c) { return std::isalpha(c) || c == '*'; };
     for (char c : std::views::iota(std::numeric_limits<char>::min(), std::numeric_limits<char>::max()))
         EXPECT_EQ(bio::aa27::char_is_valid(c), validator(c));
 }

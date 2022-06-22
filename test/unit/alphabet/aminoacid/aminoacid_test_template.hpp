@@ -12,7 +12,6 @@
 
 #include <bio/alphabet/aminoacid/all.hpp>
 #include <bio/alphabet/concept.hpp>
-#include <bio/meta/char_operations/predicate.hpp>
 
 template <typename T>
 using aminoacid = ::testing::Test;

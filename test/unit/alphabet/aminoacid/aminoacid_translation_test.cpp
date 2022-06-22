@@ -40,17 +40,3 @@ TEST(translate_triplets, dna15)
 
     EXPECT_EQ(t1, c);
 }
-
-TEST(translate_triplets, tuple)
-{
-    bio::dna15 n1{'C'_dna15};
-    bio::dna15 n2{'T'_dna15};
-    bio::dna15 n3{'A'_dna15};
-    bio::aa27  c{'L'_aa27};
-
-    std::tuple tuple_triplet{n1, n2, n3};
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-    bio::aa27 t3{bio::translate_triplet(tuple_triplet)};
-
-    EXPECT_EQ(t3, c);
-}

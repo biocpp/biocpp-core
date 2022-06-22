@@ -88,8 +88,8 @@ protected:
         // reverse mapping for characters and their lowercase
         for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
         {
-            ret[rank_to_char[rnk]]           = rnk;
-            ret[to_lower(rank_to_char[rnk])] = rnk;
+            ret[rank_to_char[rnk]]                   = rnk;
+            ret[detail::to_lower(rank_to_char[rnk])] = rnk;
         }
 
         // set U equal to T

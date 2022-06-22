@@ -169,7 +169,7 @@ public:
     template <typename alternative_t>
     static constexpr bool is_alternative() noexcept
     {
-        return bio::pack_traits::contains<alternative_t, alternative_types...>;
+        return bio::detail::pack_traits::contains<alternative_t, alternative_types...>;
     }
 
     /*!\name Constructors, destructor and assignment

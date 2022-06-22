@@ -17,7 +17,7 @@
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/alphabet/nucleotide/rna4.hpp>
 #include <bio/alphabet/nucleotide/rna5.hpp>
-#include <bio/meta/type_list/detail/type_list_algorithm.hpp>
+#include <bio/meta/type_list/function.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"

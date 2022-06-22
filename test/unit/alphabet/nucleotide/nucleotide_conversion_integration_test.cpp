@@ -14,7 +14,7 @@
 #include <bio/alphabet/nucleotide/rna15.hpp>
 #include <bio/alphabet/nucleotide/rna4.hpp>
 #include <bio/alphabet/nucleotide/rna5.hpp>
-#include <bio/meta/type_list/detail/type_list_algorithm.hpp>
+#include <bio/meta/type_list/function.hpp>
 #include <bio/meta/type_list/type_list.hpp>
 
 template <typename T>

@@ -61,7 +61,7 @@ struct function_traits<std::function<return_t(args_t...)>>
         //!\cond
         requires(index < argument_count)
     //!\endcond
-    using argument_type_at = pack_traits::at<index, args_t...>;
+    using argument_type_at = bio::detail::pack_traits::at<index, args_t...>;
 };
 
 //!\cond

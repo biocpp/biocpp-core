@@ -23,7 +23,7 @@ namespace bio::detail
 {
 
 /*!\brief Helper function for bio::tuple_split.
- * \ingroup core
+ * \ingroup meta
  *
  * \tparam    beg     A template value containing the start position from where to extract the values.
  * \tparam    tuple_t A template alias for a tuple like object.
@@ -62,7 +62,7 @@ namespace bio
  * \{
  */
 /*!\brief Splits a tuple like data structure at the given position.
- * \ingroup core
+ * \ingroup meta
  *
  * \tparam    pivot_c A template value specifying the split position.
  * \tparam    tuple_t A template alias for a tuple like object.
@@ -115,7 +115,7 @@ constexpr auto tuple_split(tuple_t<ts...> && t)
 }
 
 /*!\brief Splits a tuple like data structure at the first position of the given type.
- * \ingroup core
+ * \ingroup meta
  *
  * \tparam    pivot_t A template type specifying the split position.
  * \param[in] t       The original tuple to split.
@@ -151,7 +151,7 @@ constexpr auto tuple_split(tuple_t && t)
 }
 
 /*!\brief Removes the first element of a tuple.
- * \ingroup core
+ * \ingroup meta
  *
  * \param[in] t  The original tuple.
  *

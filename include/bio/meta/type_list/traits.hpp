@@ -15,8 +15,8 @@
 
 #include <type_traits>
 
+#include <bio/meta/type_list/traits_detail.hpp>
 #include <bio/meta/type_list/type_list.hpp>
-#include <bio/meta/type_pack/traits.hpp>
 
 // ----------------------------------------------------------------------------
 // bio::list_traits::detail
@@ -28,29 +28,29 @@ namespace bio::list_traits::detail
 /*!\brief Implementation for bio::list_traits::at.
  * \tparam idx      The index.
  * \tparam pack_t   Types in the type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  */
 template <ptrdiff_t idx, typename... pack_t>
-std::type_identity<bio::pack_traits::at<idx, pack_t...>> at(type_list<pack_t...>);
+std::type_identity<bio::detail::pack_traits::at<idx, pack_t...>> at(type_list<pack_t...>);
 
 /*!\brief Implementation for bio::list_traits::front.
  * \tparam pack_t   Types in the type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  */
 template <typename... pack_t>
-std::type_identity<bio::pack_traits::front<pack_t...>> front(type_list<pack_t...>);
+std::type_identity<bio::detail::pack_traits::front<pack_t...>> front(type_list<pack_t...>);
 
 /*!\brief Implementation for bio::list_traits::back.
  * \tparam pack_t   Types in the type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  */
 template <typename... pack_t>
-std::type_identity<bio::pack_traits::back<pack_t...>> back(type_list<pack_t...>);
+std::type_identity<bio::detail::pack_traits::back<pack_t...>> back(type_list<pack_t...>);
 
 /*!\brief Implementation for bio::list_traits::concat.
  * \tparam pack1_t   Types in the first type list.
  * \tparam pack2_t   Types in the second type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  */
 template <typename... pack1_t, typename... pack2_t>
 type_list<pack1_t..., pack2_t...> concat(type_list<pack1_t...>, type_list<pack2_t...>);
@@ -59,7 +59,7 @@ type_list<pack1_t..., pack2_t...> concat(type_list<pack1_t...>, type_list<pack2_
  * \tparam pack1_t      Types in the first type list.
  * \tparam pack2_t      Types in the second type list.
  * \tparam more_lists_t The remaining type lists.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  */
 template <typename... pack1_t, typename... pack2_t, typename... more_lists_t>
 auto concat(type_list<pack1_t...>, type_list<pack2_t...>, more_lists_t...)
@@ -69,31 +69,31 @@ auto concat(type_list<pack1_t...>, type_list<pack2_t...>, more_lists_t...)
 
 /*!\brief Implementation for bio::list_traits::drop_front.
  * \tparam pack_t   Types in the type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  */
 template <typename... pack_t>
-pack_traits::drop_front<pack_t...> drop_front(type_list<pack_t...>);
+bio::detail::pack_traits::drop_front<pack_t...> drop_front(type_list<pack_t...>);
 
 /*!\brief Implementation for bio::list_traits::transform.
  * \tparam trait_t The trait to transform, **must be an alias template**, e.g. a transformation trait shortcut.
  * \tparam pack_t  Types in the type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  */
 template <template <typename> typename trait_t, typename... pack_t>
-pack_traits::transform<trait_t, pack_t...> transform(type_list<pack_t...>);
+bio::detail::pack_traits::transform<trait_t, pack_t...> transform(type_list<pack_t...>);
 
 /*!\brief Implementation for bio::list_traits::split_after.
  * \tparam idx The index after which to split.
  * \tparam pack_t Types in the type list to split
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  */
 template <ptrdiff_t idx, typename... pack1_t>
-pack_traits::split_after<idx, pack1_t...> split_after(type_list<pack1_t...>);
+bio::detail::pack_traits::split_after<idx, pack1_t...> split_after(type_list<pack1_t...>);
 
 /*!\brief Implementation for bio::list_traits::repeat.
  * \tparam count The number of repititions.
  * \tparam t The type to repeat
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  */
 template <size_t count, typename t>
 auto repeat()
@@ -118,10 +118,10 @@ auto repeat()
  * \tparam replace_t The type replacing the old one.
  * \tparam idx The index of the type to replace.
  * \tparam pack_t Types in the type list to be modified.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  */
 template <typename replace_t, ptrdiff_t idx, typename... pack_t>
-pack_traits::replace_at<replace_t, idx, pack_t...> replace_at(type_list<pack_t...>);
+bio::detail::pack_traits::replace_at<replace_t, idx, pack_t...> replace_at(type_list<pack_t...>);
 
 //!\brief A replacement for meta::reverse [recursion anchor]
 inline constexpr type_list<> reverse(type_list<>)
@@ -138,7 +138,7 @@ auto reverse(type_list<head_t, pack_t...>)
 
 //!\brief Constructs the multiset difference `list1 \ list2` [recursion anchor]
 template <typename... current_list_t>
-constexpr bio::type_list<current_list_t...> type_list_difference(bio::type_list<current_list_t...>, bio::type_list<>)
+constexpr type_list<current_list_t...> type_list_difference(type_list<current_list_t...>, type_list<>)
 {
     return {};
 }
@@ -147,10 +147,10 @@ constexpr bio::type_list<current_list_t...> type_list_difference(bio::type_list<
 template <typename... current_list_t, typename remove_t, typename... remove_list_t>
 constexpr auto type_list_difference(bio::type_list<current_list_t...>, bio::type_list<remove_t, remove_list_t...>)
 {
-    constexpr auto pos = bio::pack_traits::find<remove_t, current_list_t...>;
+    constexpr auto pos = bio::detail::pack_traits::find<remove_t, current_list_t...>;
     if constexpr (pos >= 0)
     {
-        using split_list_t = bio::pack_traits::split_after<pos, current_list_t...>;
+        using split_list_t = bio::detail::pack_traits::split_after<pos, current_list_t...>;
 
         using split_list1_t   = typename split_list_t::first_type;
         using split_list2_t   = decltype(drop_front(typename split_list_t::second_type{}));
@@ -186,8 +186,13 @@ inline constexpr size_t size = 0;
 //!\endcond
 
 /*!\brief The size of a type list.
- * \ingroup core_type_list
- * \copydetails bio::pack_traits::size
+ * \ingroup meta_type_list
+ * \details
+ *
+ * ### (Compile-time) Complexity
+ *
+ * * Number of template instantiations: O(1)
+ * * Other operations: O(1)
  *
  * \include test/snippet/meta/type_list/list_traits_size.cpp
  */
@@ -201,13 +206,18 @@ inline constexpr ptrdiff_t count = -1;
 //!\endcond
 
 /*!\brief Count the occurrences of a type in a type list.
- * \ingroup core_type_list
- * \copydetails bio::pack_traits::count
+ * \ingroup meta_type_list
+ * \details
+ *
+ * ### (Compile-time) Complexity
+ *
+ * * Number of template instantiations: O(1)
+ * * Other operations: O(n)
  *
  * \include test/snippet/meta/type_list/list_traits_count.cpp
  */
 template <typename query_t, typename... pack_t>
-inline constexpr ptrdiff_t count<query_t, type_list<pack_t...>> = bio::pack_traits::count<query_t, pack_t...>;
+inline constexpr ptrdiff_t count<query_t, type_list<pack_t...>> = bio::detail::pack_traits::count<query_t, pack_t...>;
 
 //!\cond
 template <typename query_t, typename list_t>
@@ -216,13 +226,19 @@ inline constexpr ptrdiff_t find = -1;
 //!\endcond
 
 /*!\brief Get the index of the first occurrence of a type in a type list.
- * \ingroup core_type_list
- * \copydetails bio::pack_traits::find
+ * \ingroup meta_type_list
+ * \details
+ *
+ * ### (Compile-time) Complexity
+ *
+ * * Number of template instantiations: O(1)
+ * * Other operations: O(n), possibly == `i`, where `i` is the return value
  *
  * \include test/snippet/meta/type_list/list_traits_find.cpp
  */
 template <typename query_t, typename... pack_t>
-inline constexpr ptrdiff_t find<query_t, type_list<pack_t...>> = bio::pack_traits::detail::find<query_t, pack_t...>();
+inline constexpr ptrdiff_t find<query_t, type_list<pack_t...>> =
+  bio::detail::pack_traits::detail::find<query_t, pack_t...>();
 
 //!\cond
 template <template <typename> typename pred_t, typename list_t>
@@ -231,18 +247,33 @@ inline constexpr ptrdiff_t find_if = -1;
 //!\endcond
 
 /*!\brief Get the index of the first type in a type list that satisfies the given predicate.
- * \ingroup core_type_list
- * \copydetails bio::pack_traits::find_if
+ * \ingroup meta_type_list
+ * \details
+ *
+ * Note that the predicate must be given as a type template (variable templates cannot be passed as template arguments
+ * unfortunately). This means e.g. `find_if<std::is_integral, float, double, int, float>` (not `std::is_integral_v`!).
+ *
+ * ### (Compile-time) Complexity
+ *
+ * * Number of template instantiations: O(n), possibly == `i`, where `i` is the return value
+ * * Other operations: O(n), possibly == `i`, where `i` is the return value
+ *
+ *  Only the predicate is instantiated.
  *
  * \include test/snippet/meta/type_list/list_traits_find_if.cpp
  */
 template <template <typename> typename pred_t, typename... pack_t>
 inline constexpr ptrdiff_t find_if<pred_t, type_list<pack_t...>> =
-  bio::pack_traits::detail::find_if<pred_t, pack_t...>();
+  bio::detail::pack_traits::detail::find_if<pred_t, pack_t...>();
 
 /*!\brief Whether a type occurs in a type list or not.
- * \ingroup core_type_list
- * \copydetails bio::pack_traits::contains
+ * \ingroup meta_type_list
+ * \details
+ *
+ * ### (Compile-time) Complexity
+ *
+ * * Number of template instantiations: O(1)
+ * * Other operations: O(n), possibly == `i`, where `i` is the index of the first occurrence
  *
  * \include test/snippet/meta/type_list/list_traits_contains.cpp
  */
@@ -261,7 +292,7 @@ inline constexpr bool contains = (find<query_t, list_t> != -1);
 /*!\brief Return the type at given index from the type list.
  * \tparam idx    The index; must be smaller than the size of the type list.
  * \tparam list_t The type_list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  *
  * \details
  *
@@ -283,7 +314,7 @@ using at = typename decltype(detail::at<idx>(list_t{}))::type;
 
 /*!\brief Return the first type from the type list.
  * \tparam list_t The type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  *
  * \details
  *
@@ -302,7 +333,7 @@ using front = typename decltype(detail::front(list_t{}))::type;
 
 /*!\brief Return the last type from the type list.
  * \tparam list_t The type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  *
  * \details
  *
@@ -311,7 +342,7 @@ using front = typename decltype(detail::front(list_t{}))::type;
  * * Number of template instantiations: O(n) (possibly O(1))
  * * Other operations: O(1)
  *
- * Notably faster than `bio::pack_traits::at<size<pack...> - 1, pack...>` (no recursive template
+ * Notably faster than `bio::detail::pack_traits::at<size<pack...> - 1, pack...>` (no recursive template
  * instantiations).
  *
  * \include test/snippet/meta/type_list/list_traits_back.cpp
@@ -331,7 +362,7 @@ using back = typename decltype(detail::back(list_t{}))::type;
 /*!\brief Join two bio::type_list s into one.
  * \tparam list1_t The first (input) type list.
  * \tparam list2_t The second (input) type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  *
  * \details
  *
@@ -352,7 +383,7 @@ using concat = decltype(detail::concat(lists_t{}...));
 
 /*!\brief Return a bio::type_list of all the types in the type list, except the first.
  * \tparam list_t The (input) type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  *
  * \details
  *
@@ -372,7 +403,7 @@ using drop_front = decltype(detail::drop_front(list_t{}));
 /*!\brief Return a bio::type_list of the first `n` types in the input type list.
  * \tparam i        The target size; must be >= 0 and <= the size of the input type list.
  * \tparam list_t   The (input) type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  *
  * \details
  *
@@ -392,7 +423,7 @@ using take = typename decltype(detail::split_after<i>(list_t{}))::first_type;
 /*!\brief Return a bio::type_list of the types in the input type list, except the first `n`.
  * \tparam i        The amount to drop; must be >= 0 and <= the size of the input type list.
  * \tparam list_t   The (input) type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  *
  * \details
  *
@@ -412,7 +443,7 @@ using drop = typename decltype(detail::split_after<i>(list_t{}))::second_type;
 /*!\brief Return a bio::type_list of the last `n` types in the input type list.
  * \tparam i        The target size; must be >= 0 and <= the size of the input type list.
  * \tparam list_t   The (input) type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  *
  * \details
  *
@@ -432,7 +463,7 @@ using take_last = drop<size<list_t> - i, list_t>;
 /*!\brief Return a bio::type_list of the types the input type list, except the last `n`.
  * \tparam i        The amount to drop; must be >= 0 and <= the size of the input type list.
  * \tparam list_t   The (input) type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  *
  * \details
  *
@@ -452,7 +483,7 @@ using drop_last = take<size<list_t> - i, list_t>;
 /*!\brief Split a bio::type_list into two parts returned as a pair of bio::type_list.
  * \tparam i        The number of elements after which to split; must be >= 0 and <= the size of the input type list.
  * \tparam list_t   The (input) type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  *
  * \details
  *
@@ -472,7 +503,7 @@ using split_after = decltype(detail::split_after<i>(list_t{}));
 /*!\brief Apply a transformation trait to every type in the list and return a bio::type_list of the results.
  * \tparam trait_t The trait to transform, **must be an alias template**, e.g. a transformation trait shortcut.
  * \tparam list_t  The (input) type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  *
  * \details
  *
@@ -496,7 +527,7 @@ using transform = decltype(detail::transform<trait_t>(list_t{}));
  * \tparam replace_t The type to replace the old type with.
  * \tparam i         The index of the type to be replaced.
  * \tparam list_t    The (input) type list.
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  *
  * \details
  *
@@ -516,7 +547,7 @@ using replace_at = decltype(detail::replace_at<replace_t, i>(list_t{}));
 /*!\brief Create a type list with the given type repeated `count` times..
  * \tparam count The number of repititions.
  * \tparam t The type to repeat
- * \ingroup core_type_list
+ * \ingroup meta_type_list
  *
  * ### (Compile-time) Complexity
  *

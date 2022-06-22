@@ -17,7 +17,7 @@
 
 #include <bio/alphabet/aminoacid/aminoacid_base.hpp>
 #include <bio/alphabet/aminoacid/concept.hpp>
-#include <bio/meta/char_operations/transform.hpp>
+#include <bio/alphabet/detail/to_lower.hpp>
 
 namespace bio
 {
@@ -85,8 +85,8 @@ protected:
         // reverse mapping for characters and their lowercase
         for (rank_type rnk = 0u; rnk < alphabet_size; ++rnk)
         {
-            ret[static_cast<rank_type>(rank_to_char[rnk])]           = rnk;
-            ret[static_cast<rank_type>(to_lower(rank_to_char[rnk]))] = rnk;
+            ret[static_cast<rank_type>(rank_to_char[rnk])]                   = rnk;
+            ret[static_cast<rank_type>(detail::to_lower(rank_to_char[rnk]))] = rnk;
         }
 
         return ret;

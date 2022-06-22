@@ -19,10 +19,6 @@
 #include <bio/meta/platform.hpp>
 #include <iterator>
 
-/*!\addtogroup type_traits
- * \{
- */
-
 namespace bio::detail
 {
 #if BIOCPP_WORKAROUND_GCC_96070
@@ -44,6 +40,7 @@ struct iterator_category_tag<it_t>
  * [iterator_category](https://en.cppreference.com/w/cpp/iterator/iterator_tags) from the modelled concept.
  * \implements bio::transformation_trait
  * \tparam it_t The type to operate on.
+ * \ingroup type_traits
  *
  * \attention
  * If [std::iterator_traits<it_t>::iterator_category](https://en.cppreference.com/w/cpp/iterator/iterator_traits)
@@ -58,6 +55,7 @@ using iterator_category_tag_t = typename iterator_category_tag<it_t>::type;
 /*!\brief Exposes the
  * [iterator_category](https://en.cppreference.com/w/cpp/iterator/iterator_tags) from the modelled concept.
  * \tparam it_t The type to operate on.
+ * \ingroup type_traits
  *
  * \attention
  * If [std::iterator_traits<it_t>::iterator_category](https://en.cppreference.com/w/cpp/iterator/iterator_traits)
@@ -76,6 +74,7 @@ using iterator_category_tag_t = typename std::iterator_traits<it_t>::iterator_ca
  * [iterator_concept](https://en.cppreference.com/w/cpp/iterator/iterator_tags) from the modelled concept.
  * \implements bio::transformation_trait
  * \tparam it_t The type to operate on.
+ * \ingroup type_traits
  */
 template <typename it_t>
     //!\cond
@@ -106,6 +105,7 @@ namespace bio::detail
  * \implements bio::transformation_trait
  * \tparam it_t The type to operate on.
  * \see bio::detail::iter_pointer_t
+ * \ingroup type_traits
  *
  * \attention
  * C++20 does not provide a `std::iter_pointer_t`, because the new C++20 iterators do not need to provide a pointer
@@ -132,6 +132,7 @@ struct iter_pointer<it_t>
 /*!\brief Return the `pointer` type of the input type (transformation_trait shortcut).
  * \tparam it_t The type to operate on.
  * \see bio::detail::iter_pointer
+ * \ingroup type_traits
  */
 template <typename it_t>
 using iter_pointer_t = typename iter_pointer<it_t>::type;

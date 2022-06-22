@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Meta-header for the \link core core module \endlink.
+ * \brief Meta-header for the \link meta meta module \endlink.
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  * \author Rene Rahn <rene.rahn AT fu-berlin.de>
  */
@@ -27,7 +27,7 @@
 #include <bio/meta/type_list/type_list.hpp>
 #include <bio/meta/type_traits/all.hpp>
 
-/*!\defgroup core Meta
+/*!\defgroup meta Meta
  * \brief Provides core functionality used by multiple modules.
  *
  * The core module contains concepts, functions and some classes that

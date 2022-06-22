@@ -21,7 +21,7 @@
 #include <bio/alphabet/composite/detail.hpp>
 #include <bio/alphabet/concept.hpp>
 #include <bio/alphabet/detail/alphabet_proxy.hpp>
-#include <bio/meta/type_list/detail/type_list_algorithm.hpp>
+#include <bio/meta/type_list/function.hpp>
 #include <bio/meta/type_list/traits.hpp>
 #include <bio/meta/type_list/type_list.hpp>
 #include <bio/meta/type_traits/template_inspection.hpp>
@@ -590,7 +590,7 @@ private:
         else
         {
             return (to_rank() / cummulative_alph_sizes[index]) %
-                   bio::alphabet_size<pack_traits::at<index, component_types...>>;
+                   bio::alphabet_size<bio::detail::pack_traits::at<index, component_types...>>;
         }
     }
 
