@@ -11,9 +11,9 @@ struct foo
 };
 
 // foo is declarable with int, i.e. foo<int> is a valid expression
-static_assert(bio::detail::is_class_template_declarable_with_v<foo, int>);
+static_assert(bio::meta::detail::is_class_template_declarable_with_v<foo, int>);
 // foo is not declarable with double, because it does not fulfil the requires clause of foo.
-static_assert(!bio::detail::is_class_template_declarable_with_v<foo, double>);
+static_assert(!bio::meta::detail::is_class_template_declarable_with_v<foo, double>);
 
 // This also works with std::enable_if and producing a substitution failure.
 template <typename t, typename = std::enable_if_t<std::is_same_v<t, int>>>
@@ -23,14 +23,14 @@ struct bar
 };
 
 // bar is declarable with int, i.e. bar<int> is a valid expression
-static_assert(bio::detail::is_class_template_declarable_with_v<bar, int>);
+static_assert(bio::meta::detail::is_class_template_declarable_with_v<bar, int>);
 // bar is not declarable with double, because it produces an substitution failure (SFINAE).
-static_assert(!bio::detail::is_class_template_declarable_with_v<bar, double>);
+static_assert(!bio::meta::detail::is_class_template_declarable_with_v<bar, double>);
 
 // is_class_template_declarable_with_v works well with lazy_conditional_t
 template <typename t>
-using maybe_foo_t = bio::detail::lazy_conditional_t<bio::detail::is_class_template_declarable_with_v<foo, t>,
-                                                    bio::detail::lazy<foo, t>,
+using maybe_foo_t = bio::meta::detail::lazy_conditional_t<bio::meta::detail::is_class_template_declarable_with_v<foo, t>,
+                                                    bio::meta::detail::lazy<foo, t>,
                                                     t>;
 
 int main()

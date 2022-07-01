@@ -26,8 +26,8 @@ namespace bio
  * \ingroup cigar
  * \implements bio::writable_alphabet
  * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
- * \implements bio::trivially_copyable
- * \implements bio::standard_layout
+ * \implements bio::meta::trivially_copyable
+ * \implements bio::meta::standard_layout
  * \implements std::regular
  *
  * \details
@@ -47,7 +47,7 @@ namespace bio
  *
  * \note Usually you do not want to manipulate cigar elements and vectors on
  *       your own but convert an alignment to a cigar and back. See
- *       bio::get_cigar_vector for how to convert two aligned sequences into
+ *       bio::meta::get_cigar_vector for how to convert two aligned sequences into
  *       a cigar_vector.
  */
 class cigar_op : public alphabet_base<cigar_op, 9, char>

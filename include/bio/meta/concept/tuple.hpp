@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides bio::tuple_like.
+ * \brief Provides bio::meta::tuple_like.
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
@@ -22,13 +22,13 @@
 #include <bio/meta/type_traits/basic.hpp>
 #include <bio/meta/type_traits/template_inspection.hpp>
 
-namespace bio::detail
+namespace bio::meta::detail
 {
 
 /*!\interface bio::detail::tuple_size <>
  * \ingroup utility_tuple
- * \brief Subconcept definition for bio::tuple_like to test for std::tuple_size-interface.
- * \see bio::tuple_like
+ * \brief Subconcept definition for bio::meta::tuple_like to test for std::tuple_size-interface.
+ * \see bio::meta::tuple_like
  */
 //!\cond
 template <typename tuple_t>
@@ -42,8 +42,8 @@ concept tuple_size = requires(tuple_t v)
 
 /*!\interface bio::detail::tuple_get <>
  * \ingroup utility_tuple
- * \brief Subconcept definition for bio::tuple_like to test for std::get-interface.
- * \see bio::tuple_like
+ * \brief Subconcept definition for bio::meta::tuple_like to test for std::get-interface.
+ * \see bio::meta::tuple_like
  */
 //!\cond
 template <typename tuple_t>
@@ -73,11 +73,11 @@ concept tuple_get = requires(tuple_t & v, tuple_t const & v_c)
 };
 //!\endcond
 
-/*!\brief Transformation trait to expose the tuple element types as bio::type_list
+/*!\brief Transformation trait to expose the tuple element types as bio::meta::type_list
  * \ingroup utility_tuple
  * \tparam tuple_t The tuple to extract the element types from.
  *
- * \returns A bio::type_list over the element types of the given tuple.
+ * \returns A bio::meta::type_list over the element types of the given tuple.
  * \see bio::detail::tuple_type_list_t
  */
 template <detail::tuple_size tuple_t>
@@ -92,7 +92,7 @@ protected:
     }
 
 public:
-    //!\brief The generated bio::type_list.
+    //!\brief The generated bio::meta::type_list.
     using type = decltype(invoke_to_type_list(std::make_index_sequence<std::tuple_size<tuple_t>::value>{}));
 };
 
@@ -108,7 +108,7 @@ using tuple_type_list_t = typename tuple_type_list<tuple_t>::type;
  * \ingroup utility_tuple
  */
 template <typename... elements_t>
-inline constexpr auto all_elements_model_totally_ordered(bio::type_list<elements_t...>)
+inline constexpr auto all_elements_model_totally_ordered(meta::type_list<elements_t...>)
   -> std::bool_constant<(std::totally_ordered<elements_t> && ... && true)>;
 
 /*!\brief Helper type trait function to check for std::totally_ordered on all elements of the given tuple type.
@@ -121,34 +121,34 @@ template <typename tuple_t>
 //!\endcond
 static constexpr bool all_elements_model_totally_ordered_v =
   decltype(detail::all_elements_model_totally_ordered(tuple_type_list_t<tuple_t>{}))::value;
-} // namespace bio::detail
+} // namespace bio::meta::detail
 
-namespace bio
+namespace bio::meta
 {
 
 // ----------------------------------------------------------------------------
 // tuple_like
 // ----------------------------------------------------------------------------
 
-/*!\interface bio::tuple_like
+/*!\interface bio::meta::tuple_like
  * \extends std::totally_ordered
  * \ingroup utility_tuple
  * \brief Whether a type behaves like a tuple.
  *
  * \details
  *
- * Types that meet this concept are for example std::tuple, std::pair, std::array, bio::pod_tuple, bio::record.
+ * Types that meet this concept are for example std::tuple, std::pair, std::array, bio::meta::pod_tuple, bio::record.
  * The std::totally_ordered will only be required if all types contained in the tuple-like
  * data structure are themselves strict totally ordered.
  */
-/*!\name Requirements for bio::tuple_like
- * \brief You can expect these (meta-)functions on all types that implement bio::tuple_like.
+/*!\name Requirements for bio::meta::tuple_like
+ * \brief You can expect these (meta-)functions on all types that implement bio::meta::tuple_like.
  * \{
  */
 /*!\var         size_t std::tuple_size_v<type>
  * \brief       A unary type trait that holds the number of elements in the tuple.
  * \tparam      type The tuple-like type.
- * \relates     bio::tuple_like
+ * \relates     bio::meta::tuple_like
  *
  * \details
  * \attention This is a concept requirement, not an actual function (however types satisfying this concept
@@ -158,7 +158,7 @@ namespace bio
  * \brief       A transformation trait that holds the type of elements in the tuple.
  * \tparam      i Index of the queried element type.
  * \tparam      type The tuple-like type.
- * \relates     bio::tuple_like
+ * \relates     bio::meta::tuple_like
  *
  * \details
  * \attention This is a concept requirement, not an actual function (however types satisfying this concept
@@ -167,7 +167,7 @@ namespace bio
  */
 /*!\fn              auto && std::get<i>(type && val)
  * \brief           Return the i-th element of the tuple.
- * \relates         bio::tuple_like
+ * \relates         bio::meta::tuple_like
  * \tparam          i The index of the element to return (of type `size_t`).
  * \param[in,out]   val The tuple-like object to operate on.
  * \returns         The i-th value in the tuple.
@@ -196,13 +196,13 @@ concept tuple_like = detail::tuple_size<std::remove_reference_t<t>> && requires(
 //!\endcond
 
 /*!\interface bio::pair_like
- * \extends bio::tuple_like
+ * \extends bio::meta::tuple_like
  * \ingroup utility_tuple
  * \brief Whether a type behaves like a tuple with exactly two elements.
  *
  * \details
  *
- * Types that meet this concept are for example std::tuple, std::pair, std::array, bio::pod_tuple,
+ * Types that meet this concept are for example std::tuple, std::pair, std::array, bio::meta::pod_tuple,
  * iff std::tuple_size equals `2`.
  */
 //!\cond
@@ -211,4 +211,4 @@ concept pair_like = tuple_like<t> && std::tuple_size_v<std::remove_reference_t<t
 == 2;
 //!\endcond
 
-} // namespace bio
+} // namespace bio::meta

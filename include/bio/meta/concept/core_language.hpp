@@ -18,7 +18,7 @@
 #include <bio/meta/platform.hpp>
 #include <concepts>
 
-namespace bio::detail
+namespace bio::meta
 {
 
 /*!\addtogroup concept
@@ -63,17 +63,7 @@ concept weakly_ordered_with = requires(std::remove_reference_t<t1> const & v1, s
 };
 //!\endcond
 
-//!\}
-
-} // namespace bio::detail
-
-namespace bio
-{
-
-/*!\addtogroup concept
- * \{
- */
-
+//TODO replace all occurrences of this with std::cosntructible_from
 /*!\interface   bio::implicitly_convertible_to <>
  * \brief       Resolves to `std::ranges::implicitly_convertible_to<type1, type2>()`.
  */
@@ -82,6 +72,7 @@ template <typename t, typename u>
 concept implicitly_convertible_to = std::is_convertible_v<t, u>;
 //!\endcond
 
+//TODO replace all occurrences of this with std::convertible_to
 /*!\interface   bio::explicitly_convertible_to <>
  * \brief       Resolves to `std::ranges::explicitly_convertible_to<type1, type2>()`.
  */
@@ -128,7 +119,7 @@ concept builtin_character = std::integral<t> &&
    std::same_as<t, char16_t> || std::same_as<t, char32_t> || std::same_as<t, wchar_t>);
 //!\endcond
 
-/*!\interface   bio::trivially_destructible <>
+/*!\interface   bio::meta::trivially_destructible <>
  * \extends     std::destructible
  * \brief       A type that satisfies std::is_trivially_destructible_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_destructible
@@ -138,7 +129,7 @@ template <typename t>
 concept trivially_destructible = std::destructible<t> && std::is_trivially_destructible_v<t>;
 //!\endcond
 
-/*!\interface   bio::trivially_copyable
+/*!\interface   bio::meta::trivially_copyable
  * \brief       A type that satisfies std::is_trivially_copyable_v<t>.
  * \extends     std::copyable
  * \sa          https://en.cppreference.com/w/cpp/types/is_trivially_copyable
@@ -148,10 +139,10 @@ template <typename t>
 concept trivially_copyable = std::copyable<t> && std::is_trivially_copyable_v<t>;
 //!\endcond
 
-/*!\interface   bio::trivial
- * \brief       A type that satisfies bio::trivially_copyable and bio::trivially_destructible.
- * \extends     bio::trivially_copyable
- * \extends     bio::trivially_destructible
+/*!\interface   bio::meta::trivial
+ * \brief       A type that satisfies bio::meta::trivially_copyable and bio::meta::trivially_destructible.
+ * \extends     bio::meta::trivially_copyable
+ * \extends     bio::meta::trivially_destructible
  * \sa          https://en.cppreference.com/w/cpp/types/is_trivial
  */
 //!\cond
@@ -159,7 +150,7 @@ template <typename t>
 concept trivial = trivially_copyable<t> && trivially_destructible<t> && std::is_trivial_v<t>;
 //!\endcond
 
-/*!\interface   bio::standard_layout
+/*!\interface   bio::meta::standard_layout
  * \brief       Resolves to std::is_standard_layout_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_standard_layout
  */
@@ -182,4 +173,6 @@ template <typename t, typename u>
 concept weakly_assignable_from = std::is_assignable_v<t, u>;
 //!\endcond
 
-} // namespace bio
+//!\}
+
+} // namespace bio::meta

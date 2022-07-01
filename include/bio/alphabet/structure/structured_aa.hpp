@@ -25,8 +25,8 @@ namespace bio
  * \ingroup structure
  * \implements bio::writable_alphabet
  * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
- * \implements bio::trivially_copyable
- * \implements bio::standard_layout
+ * \implements bio::meta::trivially_copyable
+ * \implements bio::meta::standard_layout
  * \tparam sequence_alphabet_t Type of the first aminoacid letter; must model bio::writable_alphabet,
  * bio::aminoacid_alphabet and satisfy the requirements on arguments by bio::alphabet_tuple_base.
  * \tparam structure_alphabet_t Types of further structure letters; must model bio::writable_alphabet and satisfy

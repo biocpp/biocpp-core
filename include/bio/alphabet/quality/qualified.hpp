@@ -26,8 +26,8 @@ namespace bio
  * \tparam quality_alphabet_t  Type of the quality; must satisfy bio::writable_quality_alphabet.
  * \implements bio::writable_quality_alphabet
  * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
- * \implements bio::trivially_copyable
- * \implements bio::standard_layout
+ * \implements bio::meta::trivially_copyable
+ * \implements bio::meta::standard_layout
  * \implements std::regular
  *
  *

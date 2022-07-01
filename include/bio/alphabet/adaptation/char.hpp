@@ -53,8 +53,8 @@ template <typename char_type>
 struct alphabet<char_type>
 {
     //!\brief The number of values the char type can take (e.g. 256 for `char`).
-    static constexpr auto alphabet_size =
-      detail::min_viable_uint_t<detail::size_in_values_v<char_type>>{detail::size_in_values_v<char_type>};
+    static constexpr auto alphabet_size = meta::detail::min_viable_uint_t<meta::detail::size_in_values_v<char_type>>{
+      meta::detail::size_in_values_v<char_type>};
 
     /*!\brief Converting char to char is no-op (it will just return the value you pass in).
      * \param[in] chr The alphabet letter that you wish to convert to char (no-op).
@@ -68,7 +68,7 @@ struct alphabet<char_type>
      */
     static constexpr auto to_rank(char_type const chr) noexcept
     {
-        return static_cast<detail::min_viable_uint_t<alphabet_size - 1>>(chr);
+        return static_cast<meta::detail::min_viable_uint_t<alphabet_size - 1>>(chr);
     }
 
     /*!\brief Assign a char to the char type (same as calling `=`).

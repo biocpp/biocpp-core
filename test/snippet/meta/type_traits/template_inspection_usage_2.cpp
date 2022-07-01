@@ -7,7 +7,7 @@ int main()
 {
     using my_type = std::vector<int>;
 
-    if constexpr (bio::detail::is_type_specialisation_of_v<my_type, std::vector>) // std::vector has no <> !
+    if constexpr (bio::meta::is_type_specialisation_of_v<my_type, std::vector>) // std::vector without "<>" !
     {
         // ...
     }

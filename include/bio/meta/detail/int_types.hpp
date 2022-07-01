@@ -19,7 +19,7 @@
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
-namespace bio::detail
+namespace bio::meta::detail
 {
 
 // ------------------------------------------------------------------
@@ -48,4 +48,4 @@ template <std::integral int_t>
 inline constexpr size_t size_in_values_v =
   static_cast<size_t>(std::numeric_limits<int_t>::max()) - std::numeric_limits<int_t>::lowest() + 1;
 
-} // namespace bio::detail
+} // namespace bio::meta::detail

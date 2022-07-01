@@ -26,8 +26,8 @@ namespace bio
  * \implements bio::aminoacid_alphabet
  * \implements bio::writable_alphabet
  * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
- * \implements bio::trivially_copyable
- * \implements bio::standard_layout
+ * \implements bio::meta::trivially_copyable
+ * \implements bio::meta::standard_layout
  * \implements std::regular
  *
  * \details

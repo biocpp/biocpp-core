@@ -22,8 +22,8 @@ namespace bio
  * \ingroup nucleotide
  * \implements bio::writable_alphabet
  * \implements bio::nucleotide_alphabet
- * \implements bio::trivially_copyable
- * \implements bio::standard_layout
+ * \implements bio::meta::trivially_copyable
+ * \implements bio::meta::standard_layout
  * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
  *
  * \details

@@ -62,7 +62,7 @@ protected:
     //!\brief The char representation; conditional needed to make semi alphabet definitions legal.
     using char_type = std::conditional_t<std::same_as<char_t, void>, char, char_t>;
     //!\brief The type of the alphabet when represented as a number (e.g. via to_rank()).
-    using rank_type = detail::min_viable_uint_t<size - 1>;
+    using rank_type = meta::detail::min_viable_uint_t<size - 1>;
     //!\}
 
 public:
@@ -171,7 +171,7 @@ public:
     //!\}
 
     //!\brief The size of the alphabet, i.e. the number of different values it can take.
-    static constexpr detail::min_viable_uint_t<size> alphabet_size = size;
+    static constexpr meta::detail::min_viable_uint_t<size> alphabet_size = size;
 
     //!\name Comparison operators
     //!\{

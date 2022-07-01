@@ -351,7 +351,7 @@ TYPED_TEST(alphabet_variant_test, char_is_valid_for)
     for (; i_no_overflow <= static_cast<uint64_t>(end); ++i, ++i_no_overflow)
     {
         bool is_valid{};
-        bio::detail::for_each<gapped_alphabet_bases_t>(
+        bio::meta::detail::for_each<gapped_alphabet_bases_t>(
           [&is_valid, i](auto id)
           {
               using type = typename decltype(id)::type;

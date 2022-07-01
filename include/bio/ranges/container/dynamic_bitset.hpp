@@ -170,7 +170,7 @@ public:
     //!\brief A `std::ptrdiff_t`.
     using difference_type = ptrdiff_t;
     //!\brief An unsigned integer type (usually `std::size_t`).
-    using size_type       = detail::min_viable_uint_t<bit_capacity>;
+    using size_type       = meta::detail::min_viable_uint_t<bit_capacity>;
     //!\}
 
     //!\cond

@@ -13,7 +13,7 @@ constexpr bool bio::add_enum_bitwise_operators<my_enum> = true;
 int main()
 {
     using bio::operator|;
-    
+
     my_enum e = my_enum::VAL1;
     my_enum e2 = e | my_enum::VAL2;
 

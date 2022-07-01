@@ -53,7 +53,7 @@ namespace bio::views
  * | std::ranges::output_range        |                                       | *preserved*                                                        |
  * | bio::const_iterable_range     |                                       | *preserved*                                                        |
  * |                                  |                                       |                                                                    |
- * | std::ranges::range_reference_t   | bio::tuple_like                    | std::tuple_element_t<index, std::ranges::range_reference_t<urng_t>>|
+ * | std::ranges::range_reference_t   | bio::meta::tuple_like                    | std::tuple_element_t<index, std::ranges::range_reference_t<urng_t>>|
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
@@ -67,14 +67,14 @@ inline auto const get = std::views::transform(
   [](auto && in) -> decltype(auto)
   {
       using std::get;
-      using bio::get;
-      static_assert(tuple_like<decltype(in)>,
+      using meta::get;
+      static_assert(meta::tuple_like<decltype(in)>,
                     "You may only pass ranges to views::get whose reference_t models the tuple_like.");
 
       // we need to explicitly remove && around temporaries to return values as values (and not as rvalue references)
       // we cannot simply cast to std::tuple_element_t (or set that as return value), because some tuples, like
       // our alphabet_tuple_base alphabets do not return that type when get is called on them (they return a proxy)
-      using ret_type = remove_rvalue_reference_t<decltype(get<index>(std::forward<decltype(in)>(in)))>;
+      using ret_type = meta::remove_rvalue_reference_t<decltype(get<index>(std::forward<decltype(in)>(in)))>;
       return static_cast<ret_type>(get<index>(std::forward<decltype(in)>(in)));
   });
 

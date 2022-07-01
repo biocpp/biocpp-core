@@ -39,8 +39,8 @@ int main()
     };
 
     // prints each type name, i.e. "int, float, bool, incomplete::type, \n"
-    using types = bio::type_list<int, float, bool, incomplete::type>;
-    bio::detail::for_each<types>(fn);
+    using types = bio::meta::type_list<int, float, bool, incomplete::type>;
+    bio::meta::detail::for_each<types>(fn);
     fmt::print("\n");
 
     // is the same as explicitly writing

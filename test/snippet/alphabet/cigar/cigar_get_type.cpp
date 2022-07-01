@@ -4,7 +4,6 @@
 
 int main()
 {
-    using bio::get;
     using bio::operator""_cigar_op;
 
     bio::cigar letter{10, 'M'_cigar_op};

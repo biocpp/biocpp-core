@@ -17,7 +17,7 @@
 
 #include <bio/meta/type_list/traits.hpp>
 
-namespace bio
+namespace bio::meta
 {
 // ----------------------------------------------------------------------------
 // function_traits
@@ -61,7 +61,7 @@ struct function_traits<std::function<return_t(args_t...)>>
         //!\cond
         requires(index < argument_count)
     //!\endcond
-    using argument_type_at = bio::detail::pack_traits::at<index, args_t...>;
+    using argument_type_at = meta::detail::pack_traits::at<index, args_t...>;
 };
 
 //!\cond
@@ -71,12 +71,9 @@ template <typename function_t>
 struct function_traits<function_t> : function_traits<decltype(std::function{std::declval<function_t>()})>
 {};
 //!\endcond
-} // namespace bio
 
-namespace bio::detail
-{
 // ----------------------------------------------------------------------------
-// multi_invocable
+// overloaded
 // ----------------------------------------------------------------------------
 
 /*!\brief A type that can conveniently inherit multiple invocables and acts as a union over them.
@@ -84,14 +81,14 @@ namespace bio::detail
  * \ingroup type_traits
  */
 template <typename... invocable_ts>
-struct multi_invocable : invocable_ts...
+struct overloaded : invocable_ts...
 {
     //!\brief Inherit the function call operators.
     using invocable_ts::operator()...;
 };
 
-//!\brief Deduction guides for bio::detail::multi_invocable.
+//!\brief Deduction guides for bio::meta::overloaded.
 template <typename... invocable_ts>
-multi_invocable(invocable_ts...) -> multi_invocable<invocable_ts...>;
+overloaded(invocable_ts...) -> overloaded<invocable_ts...>;
 
-} // namespace bio::detail
+} // namespace bio::meta

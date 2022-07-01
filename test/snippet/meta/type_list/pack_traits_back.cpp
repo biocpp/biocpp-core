@@ -3,5 +3,5 @@
 int main()
 {
     // Check if the last value is float.
-    static_assert(std::same_as<float, bio::detail::pack_traits::back<int, float, bool, int, float>>);
+    static_assert(std::same_as<float, bio::meta::detail::pack_traits::back<int, float, bool, int, float>>);
 }

@@ -22,22 +22,22 @@ struct constraint_bar
 
 TEST(template_inspect, concept_check)
 {
-    using tl = bio::type_list<int, char, double>;
+    using tl = bio::meta::type_list<int, char, double>;
 
-    EXPECT_FALSE((bio::transformation_trait<bio::detail::transfer_template_args_onto<int, std::tuple>>));
-    EXPECT_TRUE((bio::transformation_trait<bio::detail::transfer_template_args_onto<tl, std::tuple>>));
+    EXPECT_FALSE((bio::meta::transformation_trait<bio::meta::transfer_template_args_onto<int, std::tuple>>));
+    EXPECT_TRUE((bio::meta::transformation_trait<bio::meta::transfer_template_args_onto<tl, std::tuple>>));
 
-    EXPECT_TRUE((bio::unary_type_trait<bio::detail::is_type_specialisation_of<int, bio::type_list>>));
+    EXPECT_TRUE((bio::meta::unary_type_trait<bio::meta::is_type_specialisation_of<int, bio::meta::type_list>>));
 }
 
 TEST(template_inspect, transfer_template_args_onto_t)
 {
-    using tl = bio::type_list<int, char, double>;
-    using t  = bio::detail::transfer_template_args_onto<tl, std::tuple>::type;
+    using tl = bio::meta::type_list<int, char, double>;
+    using t  = bio::meta::transfer_template_args_onto<tl, std::tuple>::type;
     EXPECT_TRUE((std::is_same_v<t, std::tuple<int, char, double>>));
 
     // shortcut
-    using t = bio::detail::transfer_template_args_onto_t<tl, std::tuple>;
+    using t = bio::meta::transfer_template_args_onto_t<tl, std::tuple>;
     EXPECT_TRUE((std::is_same_v<t, std::tuple<int, char, double>>));
 }
 
@@ -50,32 +50,32 @@ TEST(template_inspect, transfer_template_args_onto_with_constraint)
     using bar_int  = constraint_bar<int>;
 
     // float does not fulfil integral constraint
-    using bar_float_identity = bio::detail::transfer_template_args_onto<bio::type_list<float>, constraint_bar>;
-    EXPECT_FALSE(bio::transformation_trait<bar_float_identity>);
+    using bar_float_identity = bio::meta::transfer_template_args_onto<bio::meta::type_list<float>, constraint_bar>;
+    EXPECT_FALSE(bio::meta::transformation_trait<bar_float_identity>);
 
     // int fulfils integral constraint and static_assert
-    using bar_int_identity = bio::detail::transfer_template_args_onto<bio::type_list<int>, constraint_bar>;
-    EXPECT_TRUE(bio::transformation_trait<bar_int_identity>);
+    using bar_int_identity = bio::meta::transfer_template_args_onto<bio::meta::type_list<int>, constraint_bar>;
+    EXPECT_TRUE(bio::meta::transformation_trait<bar_int_identity>);
     EXPECT_TRUE((std::is_same_v<typename bar_int_identity::type, bar_int>));
 
     // char fulfils integral constraint, but not static_assert
-    using bar_char_identity = bio::detail::transfer_template_args_onto<bio::type_list<char>, constraint_bar>;
-    EXPECT_TRUE(bio::transformation_trait<bar_char_identity>);
+    using bar_char_identity = bio::meta::transfer_template_args_onto<bio::meta::type_list<char>, constraint_bar>;
+    EXPECT_TRUE(bio::meta::transformation_trait<bar_char_identity>);
     EXPECT_TRUE((std::is_same_v<typename bar_char_identity::type, bar_char>));
 }
 
 TEST(template_inspect, is_type_specialisation_of)
 {
-    using tl = bio::type_list<int, char, double>;
-    EXPECT_TRUE((bio::detail::is_type_specialisation_of<tl, bio::type_list>::value));
-    EXPECT_FALSE((bio::detail::is_type_specialisation_of<int, bio::type_list>::value));
+    using tl = bio::meta::type_list<int, char, double>;
+    EXPECT_TRUE((bio::meta::is_type_specialisation_of<tl, bio::meta::type_list>::value));
+    EXPECT_FALSE((bio::meta::is_type_specialisation_of<int, bio::meta::type_list>::value));
 }
 
 TEST(template_inspect, is_type_specialisation_of_v)
 {
-    using tl = bio::type_list<int, char, double>;
-    EXPECT_TRUE((bio::detail::is_type_specialisation_of_v<tl, bio::type_list>));
-    EXPECT_FALSE((bio::detail::is_type_specialisation_of_v<int, bio::type_list>));
+    using tl = bio::meta::type_list<int, char, double>;
+    EXPECT_TRUE((bio::meta::is_type_specialisation_of_v<tl, bio::meta::type_list>));
+    EXPECT_FALSE((bio::meta::is_type_specialisation_of_v<int, bio::meta::type_list>));
 }
 
 TEST(template_inspect, is_type_specialisation_with_constraint)
@@ -86,11 +86,11 @@ TEST(template_inspect, is_type_specialisation_with_constraint)
     using bar_char = constraint_bar<char>; // this is fine, even though it contains a static_assert
     using bar_int  = constraint_bar<char>;
 
-    EXPECT_FALSE((bio::detail::is_type_specialisation_of<std::tuple<float>, constraint_bar>::value));
-    EXPECT_FALSE((bio::detail::is_type_specialisation_of<std::tuple<int>, constraint_bar>::value));
+    EXPECT_FALSE((bio::meta::is_type_specialisation_of<std::tuple<float>, constraint_bar>::value));
+    EXPECT_FALSE((bio::meta::is_type_specialisation_of<std::tuple<int>, constraint_bar>::value));
 
-    EXPECT_TRUE((bio::detail::is_type_specialisation_of<bar_char, constraint_bar>::value));
-    EXPECT_TRUE((bio::detail::is_type_specialisation_of<bar_int, constraint_bar>::value));
+    EXPECT_TRUE((bio::meta::is_type_specialisation_of<bar_char, constraint_bar>::value));
+    EXPECT_TRUE((bio::meta::is_type_specialisation_of<bar_int, constraint_bar>::value));
 }
 
 template <int i, char c>
@@ -133,50 +133,50 @@ struct bar2
 
 TEST(template_inspect, transfer_template_vargs_onto_enum)
 {
-    using foo_e2_bar = bio::detail::transfer_template_vargs_onto<bar<e2::bar>, foo>;
-    EXPECT_TRUE((std::is_same_v<bio::detail::transformation_trait_or_t<foo_e2_bar, void>, void>));
+    using foo_e2_bar = bio::meta::transfer_template_vargs_onto<bar<e2::bar>, foo>;
+    EXPECT_TRUE((std::is_same_v<bio::meta::transformation_trait_or_t<foo_e2_bar, void>, void>));
 
-    using ta2 = bio::detail::transfer_template_vargs_onto<bar<e2::bar>, bar>::type;
+    using ta2 = bio::meta::transfer_template_vargs_onto<bar<e2::bar>, bar>::type;
     EXPECT_TRUE((std::is_same_v<ta2, bar<e2::bar>>));
 
     // ensures that transfer_template_vargs_onto uses internally only type declarations and not type instantiations
-    using ta3 = bio::detail::transfer_template_vargs_onto<bar<e2::bar>, bar2>::type;
+    using ta3 = bio::meta::transfer_template_vargs_onto<bar<e2::bar>, bar2>::type;
     EXPECT_TRUE((std::is_same_v<ta3, bar2<e2::bar>>));
 }
 
 TEST(template_inspect, transfer_template_vargs_onto_t)
 {
-    using ta = bio::detail::transfer_template_vargs_onto<t1<1, 'a'>, t2>::type;
+    using ta = bio::meta::transfer_template_vargs_onto<t1<1, 'a'>, t2>::type;
     EXPECT_EQ(1, ta::i);
     EXPECT_EQ('a', ta::c);
 
     // ensures that transfer_template_vargs_onto uses internally only type declarations and not type instantiations
     // 'b' does not fulfil the static_assert != 'a'
-    using t2_identity = bio::detail::transfer_template_vargs_onto<t1<10, 'b'>, t2>;
-    EXPECT_TRUE(bio::transformation_trait<t2_identity>);
+    using t2_identity = bio::meta::transfer_template_vargs_onto<t1<10, 'b'>, t2>;
+    EXPECT_TRUE(bio::meta::transformation_trait<t2_identity>);
     EXPECT_TRUE((std::is_same_v<typename t2_identity::type, t2<10, 'b'>>));
     // typename t2_identity::type{}; // instantiation of the type will static_assert
 
     // shortcut
-    using ta2 = bio::detail::transfer_template_vargs_onto_t<t1<2, 'a'>, t2>;
+    using ta2 = bio::meta::transfer_template_vargs_onto_t<t1<2, 'a'>, t2>;
     EXPECT_EQ(2, ta2::i);
     EXPECT_EQ('a', ta2::c);
 }
 
 TEST(template_inspect, is_value_specialisation_of)
 {
-    EXPECT_TRUE((bio::detail::is_value_specialisation_of<t1<1, 'a'>, t1>::value));
-    EXPECT_FALSE((bio::detail::is_value_specialisation_of<int, t1>::value));
+    EXPECT_TRUE((bio::meta::is_value_specialisation_of<t1<1, 'a'>, t1>::value));
+    EXPECT_FALSE((bio::meta::is_value_specialisation_of<int, t1>::value));
 }
 
 TEST(template_inspect, is_value_specialisation_of_v)
 {
-    EXPECT_TRUE((bio::detail::is_value_specialisation_of_v<t2<1, 'a'>, t2>));
+    EXPECT_TRUE((bio::meta::is_value_specialisation_of_v<t2<1, 'a'>, t2>));
 
     // ensures that is_value_specialisation_of_v uses internally only type declarations and not type instantiations
-    EXPECT_TRUE((bio::detail::is_value_specialisation_of_v<t2<1, 'b'>, t2>));
+    EXPECT_TRUE((bio::meta::is_value_specialisation_of_v<t2<1, 'b'>, t2>));
 
-    EXPECT_FALSE((bio::detail::is_value_specialisation_of_v<int, t1>));
+    EXPECT_FALSE((bio::meta::is_value_specialisation_of_v<int, t1>));
 }
 
 template <int varg>
@@ -190,5 +190,5 @@ struct vargs_foo
 
 TEST(template_inspect, is_type_specialisation_of_with_ill_formed_non_type_template)
 {
-    EXPECT_FALSE((bio::detail::is_value_specialisation_of_v<vargs_foo<5>, constraint_vbar>));
+    EXPECT_FALSE((bio::meta::is_value_specialisation_of_v<vargs_foo<5>, constraint_vbar>));
 }

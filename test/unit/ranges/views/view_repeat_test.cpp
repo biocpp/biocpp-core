@@ -9,8 +9,7 @@
 #include <gtest/gtest.h>
 
 #include <algorithm>
-#include <bio/meta/type_traits/iterator.hpp>
-#include <bio/meta/type_traits/range.hpp>
+#include <bio/ranges/type_traits.hpp>
 #include <bio/ranges/views/persist.hpp>
 #include <bio/ranges/views/repeat.hpp>
 #include <bio/ranges/views/take.hpp>

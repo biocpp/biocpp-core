@@ -1,8 +1,5 @@
 biocpp_test(basic_test.cpp)
-biocpp_test(deferred_crtp_base_test.cpp)
 biocpp_test(function_test.cpp)
 biocpp_test(lazy_test.cpp)
-biocpp_test(range_iterator_test.cpp)
 biocpp_test(template_inspection_test.cpp)
 biocpp_test(transformation_trait_or_test.cpp)
-biocpp_test(type_traits_iterator_test.cpp)

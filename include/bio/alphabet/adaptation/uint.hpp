@@ -53,8 +53,8 @@ template <typename uint_type>
 struct alphabet<uint_type>
 {
     //!\brief Return the number of values the uint type can take (e.g. 256 for `uint8_t`).
-    static constexpr auto alphabet_size =
-      detail::min_viable_uint_t<detail::size_in_values_v<uint_type>>{detail::size_in_values_v<uint_type>};
+    static constexpr auto alphabet_size = meta::detail::min_viable_uint_t<meta::detail::size_in_values_v<uint_type>>{
+      meta::detail::size_in_values_v<uint_type>};
 
     /*!\brief Converting uint to char casts to a character type of same size.
      * \param[in] intgr The alphabet letter that you wish to convert to char.

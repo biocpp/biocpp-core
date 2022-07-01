@@ -58,8 +58,8 @@ struct expect_same_type
 
         return ::testing::internal::CmpHelperEQFailure(remove_wrap_type_identity(lhs_expression).c_str(),
                                                        remove_wrap_type_identity(rhs_expression).c_str(),
-                                                       bio::detail::type_name_as_string<lhs_t>,
-                                                       bio::detail::type_name_as_string<rhs_t>);
+                                                       bio::meta::detail::type_name_as_string<lhs_t>,
+                                                       bio::meta::detail::type_name_as_string<rhs_t>);
     }
 };
 

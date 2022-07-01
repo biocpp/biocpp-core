@@ -13,9 +13,10 @@
 
 #pragma once
 
-#include <bio/meta/concept/core_language.hpp>
 #include <concepts>
 #include <ranges>
+
+#include <bio/meta/platform.hpp>
 
 namespace bio::views
 {
@@ -72,7 +73,7 @@ template <typename out_t>
 auto const convert = std::views::transform(
   [](auto && in) -> out_t
   {
-      static_assert(std::convertible_to<decltype(in) &&, out_t> || explicitly_convertible_to<decltype(in) &&, out_t>,
+      static_assert(std::convertible_to<decltype(in) &&, out_t> || std::constructible_from<out_t, decltype(in) &&>,
                     "The reference type of the input to views::convert is not convertible to out_t.");
 
       if constexpr (std::convertible_to<decltype(in) &&, out_t>)

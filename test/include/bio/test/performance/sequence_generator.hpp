@@ -16,6 +16,7 @@
 #include <random>
 
 #include <bio/alphabet/concept.hpp>
+#include <bio/meta/concept/core_language.hpp>
 #include <bio/test/seqan2.hpp>
 
 #ifdef BIOCPP_HAS_SEQAN2
@@ -56,7 +57,7 @@ auto generate_sequence(size_t const len = 500,
     return sequence;
 }
 
-template <arithmetic number_type>
+template <meta::arithmetic number_type>
 auto generate_numeric_sequence(size_t const len = 500,
                                number_type const min = std::numeric_limits<number_type>::lowest(),
                                number_type const max = std::numeric_limits<number_type>::max(),

@@ -2,7 +2,7 @@
 
 int main()
 {
-    using list_t = bio::type_list<int, float, bool, int, float>;
+    using list_t = bio::meta::type_list<int, float, bool, int, float>;
 
-    static_assert(std::same_as<int, bio::list_traits::front<list_t>>); // Check if the first value is int.
+    static_assert(std::same_as<int, bio::meta::list_traits::front<list_t>>); // Check if the first value is int.
 }

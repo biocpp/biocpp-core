@@ -20,20 +20,20 @@
 template <typename T>
 using nucleotide_conversion = ::testing::Test;
 
-using nucleotide_types       = bio::type_list<bio::dna4,
-                                        bio::dna5,
-                                        bio::dna15,
-                                        bio::rna4,
-                                        bio::rna5,
-                                        bio::rna15>; // needed for some tests
-using nucleotide_gtest_types = bio::detail::transfer_template_args_onto_t<nucleotide_types, ::testing::Types>;
+using nucleotide_types       = bio::meta::type_list<bio::dna4,
+                                              bio::dna5,
+                                              bio::dna15,
+                                              bio::rna4,
+                                              bio::rna5,
+                                              bio::rna15>; // needed for some tests
+using nucleotide_gtest_types = bio::meta::transfer_template_args_onto_t<nucleotide_types, ::testing::Types>;
 
 TYPED_TEST_SUITE(nucleotide_conversion, nucleotide_gtest_types, );
 
 // conversion to any other nucleotide type
 TYPED_TEST(nucleotide_conversion, explicit_conversion)
 {
-    bio::detail::for_each<nucleotide_types>([&](auto nucl) constexpr {
+    bio::meta::detail::for_each<nucleotide_types>([&](auto nucl) constexpr {
         using out_type = std::decay_t<typename decltype(nucl)::type>;
         EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('A')), out_type{}.assign_char('A'));
         EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('C')), out_type{}.assign_char('C'));

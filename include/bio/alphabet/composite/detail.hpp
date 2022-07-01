@@ -47,8 +47,8 @@ concept alphabet_tuple_like = requires
 // required_types
 // ------------------------------------------------------------------
 
-/*!\brief A bio::type_list with types that the given type depends on.
- * \implements bio::transformation_trait
+/*!\brief A bio::meta::type_list with types that the given type depends on.
+ * \implements bio::meta::transformation_trait
  * \ingroup alphabet_composite
  *
  * \details
@@ -60,12 +60,12 @@ template <typename t>
 struct required_types
 {
     //!\brief The returned type.
-    using type = type_list<>;
+    using type = meta::type_list<>;
 };
 
-/*!\brief A bio::type_list with types that the given type depends on.
+/*!\brief A bio::meta::type_list with types that the given type depends on.
  *        [specialisation for bio::alphabet_variant and derivates of bio::alphabet_tuple_base].
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  * \ingroup alphabet_composite
  *
  * \details
@@ -82,7 +82,7 @@ struct required_types<t>
     using type = typename t::biocpp_required_types;
 };
 
-/*!\brief A bio::type_list with types that the given type depends on. [Trait shortcut]
+/*!\brief A bio::meta::type_list with types that the given type depends on. [Trait shortcut]
  * \relates bio::detail::required_types
  */
 template <typename t>
@@ -95,18 +95,18 @@ using required_types_t = typename required_types<t>::type;
 //TODO: This can be replaced with metaprogramming magic once a few more functions land in list_traits.
 
 /*!\brief Like bio::detail::required_types, but recursive.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  * \ingroup alphabet_composite
  */
 template <typename t>
 struct recursive_required_types
 {
     //!\brief The returned type.
-    using type = type_list<>;
+    using type = meta::type_list<>;
 };
 
 /*!\brief Like bio::detail::required_types, but recursive.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  * \ingroup alphabet_composite
  */
 template <typename t>
@@ -150,7 +150,7 @@ struct implicitly_convertible_from
 {
     //!\brief The returned type when invoked.
     template <typename type>
-    using invoke = std::integral_constant<bool, implicitly_convertible_to<T, type>>;
+    using invoke = std::integral_constant<bool, meta::implicitly_convertible_to<T, type>>;
 };
 
 /*!\brief 'Callable' helper class that is invokable by meta::invoke.
@@ -162,7 +162,7 @@ struct assignable_from
 {
     //!\brief The returned type when invoked.
     template <typename type>
-    using invoke = std::integral_constant<bool, weakly_assignable_from<type, T>>;
+    using invoke = std::integral_constant<bool, meta::weakly_assignable_from<type, T>>;
 };
 
 /*!\brief 'Callable' helper class that is invokable by meta::invoke.
@@ -174,7 +174,7 @@ struct weakly_equality_comparable_with_
 {
     //!\brief The returned type when invoked.
     template <typename type>
-    using invoke = std::integral_constant<bool, weakly_equality_comparable_with<type, T>>;
+    using invoke = std::integral_constant<bool, meta::weakly_equality_comparable_with<type, T>>;
 };
 
 /*!\brief 'Callable' helper class that is invokable by meta::invoke.
@@ -186,7 +186,7 @@ struct weakly_ordered_with_
 {
     //!\brief The returned type when invoked.
     template <typename type>
-    using invoke = std::integral_constant<bool, weakly_ordered_with<type, T>>;
+    using invoke = std::integral_constant<bool, meta::weakly_ordered_with<type, T>>;
 };
 
 // ------------------------------------------------------------------
@@ -198,14 +198,14 @@ struct weakly_ordered_with_
  */
 template <typename lhs_t, typename rhs_t>
 struct weakly_equality_comparable_with_trait :
-  std::integral_constant<bool, weakly_equality_comparable_with<lhs_t, rhs_t>>
+  std::integral_constant<bool, meta::weakly_equality_comparable_with<lhs_t, rhs_t>>
 {};
 
 /*!\brief Binary type trait that behaves like the bio::detail::weakly_ordered_with concept.
  * \ingroup alphabet_composite
  */
 template <typename lhs_t, typename rhs_t>
-struct weakly_ordered_with_trait : std::integral_constant<bool, weakly_ordered_with<lhs_t, rhs_t>>
+struct weakly_ordered_with_trait : std::integral_constant<bool, meta::weakly_ordered_with<lhs_t, rhs_t>>
 {};
 
 } // namespace bio::detail

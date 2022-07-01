@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-#include <bio/meta/type_traits/range.hpp>
+#include <bio/ranges/type_traits.hpp>
 
 int main()
 {

@@ -7,7 +7,6 @@ int main()
 {
     using bio::operator""_rna4;
     using bio::operator""_db3;
-    using bio::get;
 
     bio::structured_rna<bio::rna4, bio::dot_bracket3> letter{'G'_rna4, '('_db3};
     fmt::print("{} {} {}\n",

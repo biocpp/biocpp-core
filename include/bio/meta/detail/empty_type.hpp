@@ -15,7 +15,7 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace bio::detail
+namespace bio::meta::detail
 {
 
 //!\brief An empty class type used in meta programming.
@@ -23,4 +23,4 @@ namespace bio::detail
 struct empty_type
 {};
 
-} // namespace bio::detail
+} // namespace bio::meta::detail

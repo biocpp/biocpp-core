@@ -16,9 +16,10 @@
 
 TEST(lazy, instantiate)
 {
-    EXPECT_TRUE((std::is_same_v<bio::detail::instantiate_t<std::vector<int>>, std::vector<int>>));
+    EXPECT_TRUE((std::is_same_v<bio::meta::detail::instantiate_t<std::vector<int>>, std::vector<int>>));
 
-    EXPECT_TRUE((std::is_same_v<bio::detail::instantiate_t<bio::detail::lazy<std::vector, int>>, std::vector<int>>));
+    EXPECT_TRUE(
+      (std::is_same_v<bio::meta::detail::instantiate_t<bio::meta::detail::lazy<std::vector, int>>, std::vector<int>>));
 }
 
 template <typename t>
@@ -29,23 +30,25 @@ TEST(lazy, lazy_conditional)
 {
     // regular conditional behaviour
     EXPECT_TRUE(
-      (std::is_same_v<bio::detail::lazy_conditional_t<true, std::true_type, std::false_type>, std::true_type>));
+      (std::is_same_v<bio::meta::detail::lazy_conditional_t<true, std::true_type, std::false_type>, std::true_type>));
     EXPECT_TRUE(
-      (std::is_same_v<bio::detail::lazy_conditional_t<false, std::true_type, std::false_type>, std::false_type>));
+      (std::is_same_v<bio::meta::detail::lazy_conditional_t<false, std::true_type, std::false_type>, std::false_type>));
 
     // lazy behaviour, safe
-    EXPECT_TRUE(
-      (std::is_same_v<
-        bio::detail::lazy_conditional_t<true, bio::detail::lazy<std::vector, int>, bio::detail::lazy<std::list, int>>,
-        std::vector<int>>));
-    EXPECT_TRUE(
-      (std::is_same_v<
-        bio::detail::lazy_conditional_t<false, bio::detail::lazy<std::vector, int>, bio::detail::lazy<std::list, int>>,
-        std::list<int>>));
+    EXPECT_TRUE((std::is_same_v<bio::meta::detail::lazy_conditional_t<true,
+                                                                      bio::meta::detail::lazy<std::vector, int>,
+                                                                      bio::meta::detail::lazy<std::list, int>>,
+                                std::vector<int>>));
+    EXPECT_TRUE((std::is_same_v<bio::meta::detail::lazy_conditional_t<false,
+                                                                      bio::meta::detail::lazy<std::vector, int>,
+                                                                      bio::meta::detail::lazy<std::list, int>>,
+                                std::list<int>>));
 
     // lazy behaviour, important
-    EXPECT_TRUE(
-      (std::is_same_v<bio::detail::lazy_conditional_t<true, bio::detail::lazy<integral_identity_t, int>, void>, int>));
-    EXPECT_TRUE(
-      (std::is_same_v<bio::detail::lazy_conditional_t<false, void, bio::detail::lazy<integral_identity_t, int>>, int>));
+    EXPECT_TRUE((std::is_same_v<
+                 bio::meta::detail::lazy_conditional_t<true, bio::meta::detail::lazy<integral_identity_t, int>, void>,
+                 int>));
+    EXPECT_TRUE((std::is_same_v<
+                 bio::meta::detail::lazy_conditional_t<false, void, bio::meta::detail::lazy<integral_identity_t, int>>,
+                 int>));
 }

@@ -32,7 +32,7 @@ using reflection_types = ::testing::Types<char,
                                           foo::bar<foo::bar<char, double>>>;
 
 // Helper type list to use some traits functions on type lists.
-using as_type_list_t = bio::detail::transfer_template_args_onto_t<reflection_types, bio::type_list>;
+using as_type_list_t = bio::meta::transfer_template_args_onto_t<reflection_types, bio::meta::type_list>;
 
 template <typename param_type>
 class type_inspection : public ::testing::Test
@@ -48,7 +48,7 @@ class type_inspection : public ::testing::Test
 
 public:
     // Returns the name of the type according to the list of names defined above.
-    std::string expected_name() { return names[bio::list_traits::find<param_type, as_type_list_t>]; }
+    std::string expected_name() { return names[bio::meta::list_traits::find<param_type, as_type_list_t>]; }
 };
 
 // Register test.
@@ -56,5 +56,5 @@ TYPED_TEST_SUITE(type_inspection, reflection_types, );
 
 TYPED_TEST(type_inspection, type_name_as_string)
 {
-    EXPECT_EQ(bio::detail::type_name_as_string<TypeParam>, this->expected_name());
+    EXPECT_EQ(bio::meta::detail::type_name_as_string<TypeParam>, this->expected_name());
 }

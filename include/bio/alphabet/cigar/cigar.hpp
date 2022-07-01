@@ -30,8 +30,8 @@ namespace bio
 /*!\brief The cigar semialphabet pairs a counter with a bio::cigar_op letter.
  * \ingroup cigar
  * \implements bio::writable_semialphabet
- * \implements bio::trivially_copyable
- * \implements bio::standard_layout
+ * \implements bio::meta::trivially_copyable
+ * \implements bio::meta::standard_layout
  * \implements std::regular
  *
  * \details

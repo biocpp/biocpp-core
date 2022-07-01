@@ -24,7 +24,7 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace bio::detail
+namespace bio::meta::detail
 {
 
 /*!\brief Defines the human-readable name of the given type using the
@@ -66,4 +66,4 @@ inline std::string const type_name_as_string = []()
     return demangled_name;
 }();
 
-} // namespace bio::detail
+} // namespace bio::meta::detail

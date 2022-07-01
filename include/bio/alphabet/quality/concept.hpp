@@ -39,16 +39,16 @@ public:
     //!\brief Operator definition.
     template <typename alph_t>
         //!\cond
-        requires(requires(alph_t const chr) { {impl(priority_tag<2>{}, chr)}; })
+        requires(requires(alph_t const chr) { {impl(meta::detail::priority_tag<2>{}, chr)}; })
     //!\endcond
     constexpr auto operator()(alph_t const chr) const noexcept
     {
-        static_assert(noexcept(impl(priority_tag<2>{}, chr)),
+        static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, chr)),
                       "Only overloads that are marked noexcept are picked up by bio::to_phred().");
-        static_assert(std::constructible_from<size_t, decltype(impl(priority_tag<2>{}, chr))>,
+        static_assert(std::constructible_from<size_t, decltype(impl(meta::detail::priority_tag<2>{}, chr))>,
                       "The return type of your to_phred() implementation must be convertible to size_t.");
 
-        return impl(priority_tag<2>{}, chr);
+        return impl(meta::detail::priority_tag<2>{}, chr);
     }
 };
 
@@ -125,23 +125,26 @@ public:
     //!\brief Operator definition for lvalues.
     template <typename alph_t>
         //!\cond
-        requires(requires(bio::alphabet_phred_t<alph_t> const p, alph_t & a) { {impl(priority_tag<2>{}, a, p)}; })
+        requires(requires(bio::alphabet_phred_t<alph_t> const p, alph_t & a) {
+            {impl(meta::detail::priority_tag<2>{}, a, p)};
+        })
     //!\endcond
     constexpr alph_t & operator()(bio::alphabet_phred_t<alph_t> const p, alph_t & a) const noexcept
     {
-        static_assert(noexcept(impl(priority_tag<2>{}, a, p)),
+        static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, a, p)),
                       "Only overloads that are marked noexcept are picked up by bio::assign_phred_to().");
-        static_assert(std::same_as<alph_t &, decltype(impl(priority_tag<2>{}, a, p))>,
+        static_assert(std::same_as<alph_t &, decltype(impl(meta::detail::priority_tag<2>{}, a, p))>,
                       "The return type of your assign_phred_to() implementation must be 'alph_t &'.");
 
-        return impl(priority_tag<2>{}, a, p);
+        return impl(meta::detail::priority_tag<2>{}, a, p);
     }
 
     //!\brief Operator definition for rvalues.
     template <typename alph_t>
         //!\cond
-        requires(requires(bio::alphabet_phred_t<alph_t> const p, alph_t & a) { {impl(priority_tag<2>{}, a, p)}; } &&
-                 (!std::is_lvalue_reference_v<alph_t>))
+        requires(requires(bio::alphabet_phred_t<alph_t> const p, alph_t & a) {
+            {impl(meta::detail::priority_tag<2>{}, a, p)};
+        } && (!std::is_lvalue_reference_v<alph_t>))
     //!\endcond
     constexpr alph_t operator()(bio::alphabet_phred_t<alph_t> const p, alph_t && a) const noexcept
     {

@@ -17,7 +17,7 @@
 #include <tuple>
 
 #include <bio/meta/type_traits/basic.hpp>
-#include <bio/meta/type_traits/range.hpp>
+#include <bio/ranges/type_traits.hpp>
 #include <ranges>
 
 namespace bio::detail

@@ -18,15 +18,15 @@
 template <typename T>
 using aminoacid_conversion = ::testing::Test;
 
-using aminoacid_types       = bio::type_list<bio::aa10li, bio::aa10murphy, bio::aa20, bio::aa27>;
-using aminoacid_gtest_types = bio::detail::transfer_template_args_onto_t<aminoacid_types, ::testing::Types>;
+using aminoacid_types       = bio::meta::type_list<bio::aa10li, bio::aa10murphy, bio::aa20, bio::aa27>;
+using aminoacid_gtest_types = bio::meta::transfer_template_args_onto_t<aminoacid_types, ::testing::Types>;
 
 TYPED_TEST_SUITE(aminoacid_conversion, aminoacid_gtest_types, );
 
 // conversion to any other amino acid type
 TYPED_TEST(aminoacid_conversion, explicit_conversion)
 {
-    bio::detail::for_each<aminoacid_types>([&](auto aa) constexpr {
+    bio::meta::detail::for_each<aminoacid_types>([&](auto aa) constexpr {
         using out_type = std::decay_t<typename decltype(aa)::type>;
         EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('A')), out_type{}.assign_char('A'));
         EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('C')), out_type{}.assign_char('C'));

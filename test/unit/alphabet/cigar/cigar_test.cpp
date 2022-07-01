@@ -13,8 +13,6 @@
 #include "../semi_alphabet_constexpr_test_template.hpp"
 #include "../semi_alphabet_test_template.hpp"
 
-using bio::get;
-
 INSTANTIATE_TYPED_TEST_SUITE_P(cigar, semi_alphabet_test, bio::cigar, );
 INSTANTIATE_TYPED_TEST_SUITE_P(cigar, semi_alphabet_constexpr, bio::cigar, );
 

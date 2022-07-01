@@ -60,7 +60,7 @@ class alphabet_proxy :
                             alphabet_type,
                             alphabet_base<derived_type,
                                           alphabet_size<alphabet_type>,
-                                          detail::valid_template_spec_or_t<void, alphabet_char_t, alphabet_type>>>
+                                          meta::valid_template_spec_or_t<void, alphabet_char_t, alphabet_type>>>
 {
 private:
     //!\brief Type of the base class.
@@ -69,16 +69,16 @@ private:
                          alphabet_type,              // inherit from emulated type if possible
                          alphabet_base<derived_type, // else: alphabet_base
                                        alphabet_size<alphabet_type>,
-                                       detail::valid_template_spec_or_t<void, alphabet_char_t, alphabet_type>>>;
+                                       meta::valid_template_spec_or_t<void, alphabet_char_t, alphabet_type>>>;
 
     //!\brief Befriend the base type.
     friend base_t;
 
     //!\brief The type of the alphabet character.
-    using char_type = detail::valid_template_spec_or_t<char, alphabet_char_t, alphabet_type>;
+    using char_type = meta::valid_template_spec_or_t<char, alphabet_char_t, alphabet_type>;
 
     //!\brief The type of the phred score.
-    using phred_type = detail::valid_template_spec_or_t<int8_t, alphabet_phred_t, alphabet_type>;
+    using phred_type = meta::valid_template_spec_or_t<int8_t, alphabet_phred_t, alphabet_type>;
 
 private:
     /*!\name Constructors, destructor and assignment
@@ -126,7 +126,7 @@ private:
     template <typename indirect_assignable_type>
     constexpr derived_type & operator=(indirect_assignable_type const & c) noexcept
       //!\cond
-      requires weakly_assignable_from<alphabet_type, indirect_assignable_type>
+      requires meta::weakly_assignable_from<alphabet_type, indirect_assignable_type>
     //!\endcond
     {
         alphabet_type a{};
@@ -261,7 +261,7 @@ private:
     //!\brief work around a gcc bug that disables short-circuiting of operator&& in an enable_if_t of a friend function
     template <typename t>
     static constexpr bool is_alphabet_comparable_with =
-      !std::is_same_v<derived_type, t> && detail::weakly_equality_comparable_with<alphabet_type, t>;
+      !std::is_same_v<derived_type, t> && meta::weakly_equality_comparable_with<alphabet_type, t>;
 
 public:
     //!\brief Allow (in-)equality comparison with types that the emulated type is comparable with.

@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides traits for bio::type_list.
+ * \brief Provides traits for meta::type_list.
  */
 
 #pragma once
@@ -22,7 +22,7 @@
 // bio::list_traits::detail
 // ----------------------------------------------------------------------------
 
-namespace bio::list_traits::detail
+namespace bio::meta::list_traits::detail
 {
 
 /*!\brief Implementation for bio::list_traits::at.
@@ -31,21 +31,21 @@ namespace bio::list_traits::detail
  * \ingroup meta_type_list
  */
 template <ptrdiff_t idx, typename... pack_t>
-std::type_identity<bio::detail::pack_traits::at<idx, pack_t...>> at(type_list<pack_t...>);
+std::type_identity<meta::detail::pack_traits::at<idx, pack_t...>> at(type_list<pack_t...>);
 
 /*!\brief Implementation for bio::list_traits::front.
  * \tparam pack_t   Types in the type list.
  * \ingroup meta_type_list
  */
 template <typename... pack_t>
-std::type_identity<bio::detail::pack_traits::front<pack_t...>> front(type_list<pack_t...>);
+std::type_identity<meta::detail::pack_traits::front<pack_t...>> front(type_list<pack_t...>);
 
 /*!\brief Implementation for bio::list_traits::back.
  * \tparam pack_t   Types in the type list.
  * \ingroup meta_type_list
  */
 template <typename... pack_t>
-std::type_identity<bio::detail::pack_traits::back<pack_t...>> back(type_list<pack_t...>);
+std::type_identity<meta::detail::pack_traits::back<pack_t...>> back(type_list<pack_t...>);
 
 /*!\brief Implementation for bio::list_traits::concat.
  * \tparam pack1_t   Types in the first type list.
@@ -72,7 +72,7 @@ auto concat(type_list<pack1_t...>, type_list<pack2_t...>, more_lists_t...)
  * \ingroup meta_type_list
  */
 template <typename... pack_t>
-bio::detail::pack_traits::drop_front<pack_t...> drop_front(type_list<pack_t...>);
+meta::detail::pack_traits::drop_front<pack_t...> drop_front(type_list<pack_t...>);
 
 /*!\brief Implementation for bio::list_traits::transform.
  * \tparam trait_t The trait to transform, **must be an alias template**, e.g. a transformation trait shortcut.
@@ -80,7 +80,7 @@ bio::detail::pack_traits::drop_front<pack_t...> drop_front(type_list<pack_t...>)
  * \ingroup meta_type_list
  */
 template <template <typename> typename trait_t, typename... pack_t>
-bio::detail::pack_traits::transform<trait_t, pack_t...> transform(type_list<pack_t...>);
+meta::detail::pack_traits::transform<trait_t, pack_t...> transform(type_list<pack_t...>);
 
 /*!\brief Implementation for bio::list_traits::split_after.
  * \tparam idx The index after which to split.
@@ -88,7 +88,7 @@ bio::detail::pack_traits::transform<trait_t, pack_t...> transform(type_list<pack
  * \ingroup meta_type_list
  */
 template <ptrdiff_t idx, typename... pack1_t>
-bio::detail::pack_traits::split_after<idx, pack1_t...> split_after(type_list<pack1_t...>);
+meta::detail::pack_traits::split_after<idx, pack1_t...> split_after(type_list<pack1_t...>);
 
 /*!\brief Implementation for bio::list_traits::repeat.
  * \tparam count The number of repititions.
@@ -121,7 +121,7 @@ auto repeat()
  * \ingroup meta_type_list
  */
 template <typename replace_t, ptrdiff_t idx, typename... pack_t>
-bio::detail::pack_traits::replace_at<replace_t, idx, pack_t...> replace_at(type_list<pack_t...>);
+meta::detail::pack_traits::replace_at<replace_t, idx, pack_t...> replace_at(type_list<pack_t...>);
 
 //!\brief A replacement for meta::reverse [recursion anchor]
 inline constexpr type_list<> reverse(type_list<>)
@@ -145,34 +145,34 @@ constexpr type_list<current_list_t...> type_list_difference(type_list<current_li
 
 //!\brief Constructs the multiset difference `list1 \ list2` [recursion]
 template <typename... current_list_t, typename remove_t, typename... remove_list_t>
-constexpr auto type_list_difference(bio::type_list<current_list_t...>, bio::type_list<remove_t, remove_list_t...>)
+constexpr auto type_list_difference(meta::type_list<current_list_t...>, meta::type_list<remove_t, remove_list_t...>)
 {
-    constexpr auto pos = bio::detail::pack_traits::find<remove_t, current_list_t...>;
+    constexpr auto pos = meta::detail::pack_traits::find<remove_t, current_list_t...>;
     if constexpr (pos >= 0)
     {
-        using split_list_t = bio::detail::pack_traits::split_after<pos, current_list_t...>;
+        using split_list_t = meta::detail::pack_traits::split_after<pos, current_list_t...>;
 
         using split_list1_t   = typename split_list_t::first_type;
         using split_list2_t   = decltype(drop_front(typename split_list_t::second_type{}));
         using filtered_list_t = decltype(concat(split_list1_t{}, split_list2_t{}));
-        return type_list_difference(filtered_list_t{}, bio::type_list<remove_t, remove_list_t...>{});
+        return type_list_difference(filtered_list_t{}, meta::type_list<remove_t, remove_list_t...>{});
     }
     else
     {
         // remove_t not contained in current_list_t
-        using filtered_list_t = bio::type_list<current_list_t...>;
-        return type_list_difference(filtered_list_t{}, bio::type_list<remove_list_t...>{});
+        using filtered_list_t = meta::type_list<current_list_t...>;
+        return type_list_difference(filtered_list_t{}, meta::type_list<remove_list_t...>{});
     }
 }
 
-} // namespace bio::list_traits::detail
+} // namespace bio::meta::list_traits::detail
 
 // ----------------------------------------------------------------------------
 // bio::list_traits
 // ----------------------------------------------------------------------------
 
-//!\brief Namespace containing traits for working on bio::type_list.
-namespace bio::list_traits
+//!\brief Namespace containing traits for working on meta::type_list.
+namespace bio::meta::list_traits
 {
 
 /*!\name Type list traits (return a value)
@@ -181,7 +181,7 @@ namespace bio::list_traits
 
 //!\cond
 template <typename list_t>
-    requires bio::detail::template_specialisation_of<list_t, bio::type_list>
+    requires template_specialisation_of<list_t, meta::type_list>
 inline constexpr size_t size = 0;
 //!\endcond
 
@@ -201,7 +201,7 @@ inline constexpr size_t size<type_list<pack_t...>> = sizeof...(pack_t);
 
 //!\cond
 template <typename query_t, typename list_t>
-    requires bio::detail::template_specialisation_of<list_t, bio::type_list>
+    requires template_specialisation_of<list_t, meta::type_list>
 inline constexpr ptrdiff_t count = -1;
 //!\endcond
 
@@ -217,11 +217,11 @@ inline constexpr ptrdiff_t count = -1;
  * \include test/snippet/meta/type_list/list_traits_count.cpp
  */
 template <typename query_t, typename... pack_t>
-inline constexpr ptrdiff_t count<query_t, type_list<pack_t...>> = bio::detail::pack_traits::count<query_t, pack_t...>;
+inline constexpr ptrdiff_t count<query_t, type_list<pack_t...>> = meta::detail::pack_traits::count<query_t, pack_t...>;
 
 //!\cond
 template <typename query_t, typename list_t>
-    requires bio::detail::template_specialisation_of<list_t, bio::type_list>
+    requires template_specialisation_of<list_t, meta::type_list>
 inline constexpr ptrdiff_t find = -1;
 //!\endcond
 
@@ -238,11 +238,11 @@ inline constexpr ptrdiff_t find = -1;
  */
 template <typename query_t, typename... pack_t>
 inline constexpr ptrdiff_t find<query_t, type_list<pack_t...>> =
-  bio::detail::pack_traits::detail::find<query_t, pack_t...>();
+  meta::detail::pack_traits::detail::find<query_t, pack_t...>();
 
 //!\cond
 template <template <typename> typename pred_t, typename list_t>
-    requires bio::detail::template_specialisation_of<list_t, bio::type_list>
+    requires template_specialisation_of<list_t, meta::type_list>
 inline constexpr ptrdiff_t find_if = -1;
 //!\endcond
 
@@ -264,7 +264,7 @@ inline constexpr ptrdiff_t find_if = -1;
  */
 template <template <typename> typename pred_t, typename... pack_t>
 inline constexpr ptrdiff_t find_if<pred_t, type_list<pack_t...>> =
-  bio::detail::pack_traits::detail::find_if<pred_t, pack_t...>();
+  meta::detail::pack_traits::detail::find_if<pred_t, pack_t...>();
 
 /*!\brief Whether a type occurs in a type list or not.
  * \ingroup meta_type_list
@@ -279,7 +279,7 @@ inline constexpr ptrdiff_t find_if<pred_t, type_list<pack_t...>> =
  */
 template <typename query_t, typename list_t>
     //!\cond
-    requires bio::detail::template_specialisation_of<list_t, bio::type_list>
+    requires template_specialisation_of<list_t, meta::type_list>
 //!\endcond
 inline constexpr bool contains = (find<query_t, list_t> != -1);
 
@@ -307,8 +307,8 @@ inline constexpr bool contains = (find<query_t, list_t> != -1);
  */
 template <ptrdiff_t idx, typename list_t>
     //!\cond
-    requires((bio::detail::template_specialisation_of<list_t, bio::type_list>)&&((idx >= 0 && idx < size<list_t>) ||
-                                                                                 (-idx <= size<list_t>)))
+    requires((template_specialisation_of<list_t, meta::type_list>)&&((idx >= 0 && idx < size<list_t>) ||
+                                                                     (-idx <= size<list_t>)))
 //!\endcond
 using at = typename decltype(detail::at<idx>(list_t{}))::type;
 
@@ -327,7 +327,7 @@ using at = typename decltype(detail::at<idx>(list_t{}))::type;
  */
 template <typename list_t>
     //!\cond
-    requires((bio::detail::template_specialisation_of<list_t, bio::type_list>)&&(size<list_t> > 0))
+    requires((template_specialisation_of<list_t, meta::type_list>)&&(size<list_t> > 0))
 //!\endcond
 using front = typename decltype(detail::front(list_t{}))::type;
 
@@ -342,14 +342,14 @@ using front = typename decltype(detail::front(list_t{}))::type;
  * * Number of template instantiations: O(n) (possibly O(1))
  * * Other operations: O(1)
  *
- * Notably faster than `bio::detail::pack_traits::at<size<pack...> - 1, pack...>` (no recursive template
+ * Notably faster than `meta::detail::pack_traits::at<size<pack...> - 1, pack...>` (no recursive template
  * instantiations).
  *
  * \include test/snippet/meta/type_list/list_traits_back.cpp
  */
 template <typename list_t>
     //!\cond
-    requires((bio::detail::template_specialisation_of<list_t, bio::type_list>)&&(size<list_t> > 0))
+    requires((template_specialisation_of<list_t, meta::type_list>)&&(size<list_t> > 0))
 //!\endcond
 using back = typename decltype(detail::back(list_t{}))::type;
 
@@ -359,7 +359,7 @@ using back = typename decltype(detail::back(list_t{}))::type;
  * \{
  */
 
-/*!\brief Join two bio::type_list s into one.
+/*!\brief Join two meta::type_list s into one.
  * \tparam list1_t The first (input) type list.
  * \tparam list2_t The second (input) type list.
  * \ingroup meta_type_list
@@ -377,11 +377,11 @@ using back = typename decltype(detail::back(list_t{}))::type;
  */
 template <typename... lists_t>
     //!\cond
-    requires((bio::detail::template_specialisation_of<lists_t, bio::type_list> && ...))
+    requires((template_specialisation_of<lists_t, meta::type_list> && ...))
 //!\endcond
 using concat = decltype(detail::concat(lists_t{}...));
 
-/*!\brief Return a bio::type_list of all the types in the type list, except the first.
+/*!\brief Return a meta::type_list of all the types in the type list, except the first.
  * \tparam list_t The (input) type list.
  * \ingroup meta_type_list
  *
@@ -396,11 +396,11 @@ using concat = decltype(detail::concat(lists_t{}...));
  */
 template <typename list_t>
     //!\cond
-    requires((bio::detail::template_specialisation_of<list_t, bio::type_list>)&&(size<list_t> > 0))
+    requires((template_specialisation_of<list_t, meta::type_list>)&&(size<list_t> > 0))
 //!\endcond
 using drop_front = decltype(detail::drop_front(list_t{}));
 
-/*!\brief Return a bio::type_list of the first `n` types in the input type list.
+/*!\brief Return a meta::type_list of the first `n` types in the input type list.
  * \tparam i        The target size; must be >= 0 and <= the size of the input type list.
  * \tparam list_t   The (input) type list.
  * \ingroup meta_type_list
@@ -416,11 +416,11 @@ using drop_front = decltype(detail::drop_front(list_t{}));
  */
 template <ptrdiff_t i, typename list_t>
     //!\cond
-    requires((bio::detail::template_specialisation_of<list_t, bio::type_list>)&&(i >= 0 && i <= size<list_t>))
+    requires((template_specialisation_of<list_t, meta::type_list>)&&(i >= 0 && i <= size<list_t>))
 //!\endcond
 using take = typename decltype(detail::split_after<i>(list_t{}))::first_type;
 
-/*!\brief Return a bio::type_list of the types in the input type list, except the first `n`.
+/*!\brief Return a meta::type_list of the types in the input type list, except the first `n`.
  * \tparam i        The amount to drop; must be >= 0 and <= the size of the input type list.
  * \tparam list_t   The (input) type list.
  * \ingroup meta_type_list
@@ -436,11 +436,11 @@ using take = typename decltype(detail::split_after<i>(list_t{}))::first_type;
  */
 template <ptrdiff_t i, typename list_t>
     //!\cond
-    requires((bio::detail::template_specialisation_of<list_t, bio::type_list>)&&(i >= 0 && i <= size<list_t>))
+    requires((template_specialisation_of<list_t, meta::type_list>)&&(i >= 0 && i <= size<list_t>))
 //!\endcond
 using drop = typename decltype(detail::split_after<i>(list_t{}))::second_type;
 
-/*!\brief Return a bio::type_list of the last `n` types in the input type list.
+/*!\brief Return a meta::type_list of the last `n` types in the input type list.
  * \tparam i        The target size; must be >= 0 and <= the size of the input type list.
  * \tparam list_t   The (input) type list.
  * \ingroup meta_type_list
@@ -456,11 +456,11 @@ using drop = typename decltype(detail::split_after<i>(list_t{}))::second_type;
  */
 template <ptrdiff_t i, typename list_t>
     //!\cond
-    requires((bio::detail::template_specialisation_of<list_t, bio::type_list>)&&(i >= 0 && i <= size<list_t>))
+    requires((template_specialisation_of<list_t, meta::type_list>)&&(i >= 0 && i <= size<list_t>))
 //!\endcond
 using take_last = drop<size<list_t> - i, list_t>;
 
-/*!\brief Return a bio::type_list of the types the input type list, except the last `n`.
+/*!\brief Return a meta::type_list of the types the input type list, except the last `n`.
  * \tparam i        The amount to drop; must be >= 0 and <= the size of the input type list.
  * \tparam list_t   The (input) type list.
  * \ingroup meta_type_list
@@ -476,11 +476,11 @@ using take_last = drop<size<list_t> - i, list_t>;
  */
 template <ptrdiff_t i, typename list_t>
     //!\cond
-    requires((bio::detail::template_specialisation_of<list_t, bio::type_list>)&&(i >= 0 && i <= size<list_t>))
+    requires((template_specialisation_of<list_t, meta::type_list>)&&(i >= 0 && i <= size<list_t>))
 //!\endcond
 using drop_last = take<size<list_t> - i, list_t>;
 
-/*!\brief Split a bio::type_list into two parts returned as a pair of bio::type_list.
+/*!\brief Split a meta::type_list into two parts returned as a pair of meta::type_list.
  * \tparam i        The number of elements after which to split; must be >= 0 and <= the size of the input type list.
  * \tparam list_t   The (input) type list.
  * \ingroup meta_type_list
@@ -496,11 +496,11 @@ using drop_last = take<size<list_t> - i, list_t>;
  */
 template <ptrdiff_t i, typename list_t>
     //!\cond
-    requires((bio::detail::template_specialisation_of<list_t, bio::type_list>)&&(i >= 0 && i <= size<list_t>))
+    requires((template_specialisation_of<list_t, meta::type_list>)&&(i >= 0 && i <= size<list_t>))
 //!\endcond
 using split_after = decltype(detail::split_after<i>(list_t{}));
 
-/*!\brief Apply a transformation trait to every type in the list and return a bio::type_list of the results.
+/*!\brief Apply a transformation trait to every type in the list and return a meta::type_list of the results.
  * \tparam trait_t The trait to transform, **must be an alias template**, e.g. a transformation trait shortcut.
  * \tparam list_t  The (input) type list.
  * \ingroup meta_type_list
@@ -519,7 +519,7 @@ using split_after = decltype(detail::split_after<i>(list_t{}));
  */
 template <template <typename> typename trait_t, typename list_t>
     //!\cond
-    requires bio::detail::template_specialisation_of<list_t, bio::type_list>
+    requires template_specialisation_of<list_t, meta::type_list>
 //!\endcond
 using transform = decltype(detail::transform<trait_t>(list_t{}));
 
@@ -540,7 +540,7 @@ using transform = decltype(detail::transform<trait_t>(list_t{}));
  */
 template <typename replace_t, std::ptrdiff_t i, typename list_t>
     //!\cond
-    requires((bio::detail::template_specialisation_of<list_t, bio::type_list>)&&(i >= 0 && i < size<list_t>))
+    requires((template_specialisation_of<list_t, meta::type_list>)&&(i >= 0 && i < size<list_t>))
 //!\endcond
 using replace_at = decltype(detail::replace_at<replace_t, i>(list_t{}));
 
@@ -560,4 +560,4 @@ template <size_t count, typename t>
 using repeat = decltype(detail::repeat<count, t>());
 //!\}
 
-} // namespace bio::list_traits
+} // namespace bio::meta::list_traits

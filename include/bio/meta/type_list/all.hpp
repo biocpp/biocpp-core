@@ -8,22 +8,21 @@
 
 /*!\file
  * \author Rene Rahn <rene.rahn AT fu-berlin.de>
- * \brief Meta-header for the \link core_type_list Utility / Type List submodule \endlink.
+ * \brief Meta-header for the \link meta_type_list Utility / Type List submodule \endlink.
  */
 
-/*!\defgroup core_type_list Type List
- * \brief Provides bio::type_list and metaprogramming utilities for working on type lists.
+/*!\defgroup meta_type_list Type List
+ * \brief Provides bio::meta::type_list and metaprogramming utilities for working on type lists.
  * \ingroup meta
- * \see core
  *
  * \details
  *
- * All traits on type lists are defined in the header `<bio/core/type_list/traits.hpp>`.
+ * All traits on type lists are defined in the header `<bio/meta/type_list/traits.hpp>`.
  *
  */
 
-/*!\namespace bio::list_traits
- * \brief Namespace containing traits for working on bio::type_list.
+/*!\namespace bio::meta::list_traits
+ * \brief Namespace containing traits for working on bio::meta::type_list.
  */
 
 #pragma once
