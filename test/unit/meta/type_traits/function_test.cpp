@@ -23,23 +23,23 @@ using function_ptr_t = std::string (*)(int, double const &&, bool &);
 TEST(function_traits, argument_count)
 {
     using function_t = decltype(test_function_object);
-    EXPECT_EQ(bio::function_traits<function_t>::argument_count, 2u);
-    EXPECT_EQ(bio::function_traits<function_ptr_t>::argument_count, 3u);
+    EXPECT_EQ(bio::meta::function_traits<function_t>::argument_count, 2u);
+    EXPECT_EQ(bio::meta::function_traits<function_ptr_t>::argument_count, 3u);
 }
 
 TEST(function_traits, result_type)
 {
     using function_t = decltype(test_function_object);
-    EXPECT_TRUE((std::same_as<bio::function_traits<function_t>::result_type, char>));
-    EXPECT_TRUE((std::same_as<bio::function_traits<function_ptr_t>::result_type, std::string>));
+    EXPECT_TRUE((std::same_as<bio::meta::function_traits<function_t>::result_type, char>));
+    EXPECT_TRUE((std::same_as<bio::meta::function_traits<function_ptr_t>::result_type, std::string>));
 }
 
 TEST(function_traits, argument_type_at)
 {
     using function_t = decltype(test_function_object);
-    EXPECT_TRUE((std::same_as<bio::function_traits<function_t>::argument_type_at<0>, size_t>));
-    EXPECT_TRUE((std::same_as<bio::function_traits<function_t>::argument_type_at<1>, std::string &>));
-    EXPECT_TRUE((std::same_as<bio::function_traits<function_ptr_t>::argument_type_at<0>, int>));
-    EXPECT_TRUE((std::same_as<bio::function_traits<function_ptr_t>::argument_type_at<1>, double const &&>));
-    EXPECT_TRUE((std::same_as<bio::function_traits<function_ptr_t>::argument_type_at<2>, bool &>));
+    EXPECT_TRUE((std::same_as<bio::meta::function_traits<function_t>::argument_type_at<0>, size_t>));
+    EXPECT_TRUE((std::same_as<bio::meta::function_traits<function_t>::argument_type_at<1>, std::string &>));
+    EXPECT_TRUE((std::same_as<bio::meta::function_traits<function_ptr_t>::argument_type_at<0>, int>));
+    EXPECT_TRUE((std::same_as<bio::meta::function_traits<function_ptr_t>::argument_type_at<1>, double const &&>));
+    EXPECT_TRUE((std::same_as<bio::meta::function_traits<function_ptr_t>::argument_type_at<2>, bool &>));
 }

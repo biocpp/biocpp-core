@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Marcel Ehrhardt <marcel.ehrhardt AT fu-berlin.de>
- * \brief Provides bio::detail::transformation_trait_or.
+ * \brief Provides bio::transformation_trait_or.
  */
 
 #pragma once
@@ -18,15 +18,15 @@
 #include <bio/meta/type_traits/concept.hpp>
 #include <type_traits>
 
-namespace bio::detail
+namespace bio::meta
 {
 
 /*!\brief This gives a fallback type if *type_t::type* is not defined.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  * \ingroup type_traits
  * \tparam type_t    The type to use if *type_t::type* is defined.
  * \tparam default_t The type to use otherwise.
- * \see bio::detail::transformation_trait_or_t
+ * \see bio::meta::transformation_trait_or_t
  *
  * \details
  *
@@ -37,19 +37,20 @@ namespace bio::detail
  * \attention This might get removed if one of our used libraries offers the same
  * functionality.
  *
- * ###Helper types
- *   bio::detail::transformation_trait_or_t as a shorthand for *bio::detail::transformation_trait_or::type*
+ * ### Helper types
+ *
+ * bio::meta::transformation_trait_or_t as a shorthand for typename bio::meta::transformation_trait_or::type
  */
 template <typename type_t, typename default_t>
 using transformation_trait_or = std::conditional_t<transformation_trait<type_t>,   // check if type_t::type exists
                                                    type_t,                         // if yes, return type_t
                                                    std::type_identity<default_t>>; // else return default_t as trait
 
-/*!\brief Helper type of bio::detail::transformation_trait_or (transformation_trait shortcut).
+/*!\brief Helper type of bio::meta::transformation_trait_or (transformation_trait shortcut).
  * \ingroup type_traits
- * \see bio::detail::transformation_trait_or
+ * \see bio::meta::transformation_trait_or
  */
 template <typename type_t, typename default_t>
 using transformation_trait_or_t = typename transformation_trait_or<type_t, default_t>::type;
 
-} // namespace bio::detail
+} // namespace bio::meta

@@ -14,8 +14,8 @@
 #pragma once
 
 #include <bio/alphabet/hash.hpp>
-#include <bio/meta/type_traits/range.hpp>
 #include <bio/ranges/concept.hpp>
+#include <bio/ranges/type_traits.hpp>
 #include <ranges>
 
 namespace std

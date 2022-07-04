@@ -94,12 +94,12 @@ constexpr bool add_enum_bitwise_operators = false;
 
 /*!\name Binary operators for scoped enums
  * \brief Perform binary operations like on ints or weak enums. These overloads are available if
- * seqan3::add_enum_bitwise_operators is defined for your type.
+ * bio::add_enum_bitwise_operators is defined for your type.
  * \ingroup meta
  *
  * \details
  *
- * \see seqan3::add_enum_bitwise_operators
+ * \see bio::meta::add_enum_bitwise_operators
  * \{
  */
 template <typename t>

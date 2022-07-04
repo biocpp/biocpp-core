@@ -3,7 +3,7 @@
 
 int main()
 {
-    using tl = bio::type_list<int, char, double>;
-    using t = bio::detail::transfer_template_args_onto_t<tl, std::tuple>;
+    using tl = bio::meta::type_list<int, char, double>;
+    using t = bio::meta::transfer_template_args_onto_t<tl, std::tuple>;
     // t is std::tuple<int, char, double>
 }

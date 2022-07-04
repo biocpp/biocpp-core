@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#include <bio/meta/type_traits/range.hpp>
+#include <bio/ranges/type_traits.hpp>
 #include <bio/ranges/views/pairwise_combine.hpp>
 #include <bio/ranges/views/take.hpp>
 
@@ -33,7 +33,7 @@ public:
 protected:
     void SetUp() override
     {
-        if constexpr (bio::detail::is_type_specialisation_of_v<t, std::forward_list>)
+        if constexpr (bio::meta::is_type_specialisation_of_v<t, std::forward_list>)
         {
             container.push_front('d');
             container.push_front('c');

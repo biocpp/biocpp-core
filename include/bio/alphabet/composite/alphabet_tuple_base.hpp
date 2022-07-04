@@ -34,22 +34,22 @@ template <typename tuple_derived_t, typename rhs_t, typename... component_types>
 inline constexpr bool tuple_general_guard =
   (!std::same_as<rhs_t, tuple_derived_t>)&&(!std::same_as<rhs_t, alphabet_tuple_base<component_types...>>)&&(
     !std::is_base_of_v<tuple_derived_t, rhs_t>)&&(!(std::same_as<rhs_t, component_types> || ...)) &&
-  (!list_traits::contains<tuple_derived_t, recursive_required_types_t<rhs_t>>);
+  (!meta::list_traits::contains<tuple_derived_t, recursive_required_types_t<rhs_t>>);
 
 //!\brief Prevents wrong instantiations of bio::alphabet_tuple_base's equality comparison operators.
 template <typename lhs_t, typename tuple_derived_t, typename rhs_t, typename... component_types>
 inline constexpr bool tuple_eq_guard =
-  (instantiate_if_v<lazy<weakly_equality_comparable_with_trait, rhs_t, component_types>,
-                    std::same_as<lhs_t, tuple_derived_t> &&
-                      tuple_general_guard<tuple_derived_t, rhs_t, component_types...>> ||
+  (meta::detail::instantiate_if_v<meta::detail::lazy<weakly_equality_comparable_with_trait, rhs_t, component_types>,
+                                  std::same_as<lhs_t, tuple_derived_t> &&
+                                    tuple_general_guard<tuple_derived_t, rhs_t, component_types...>> ||
    ...);
 
 //!\brief Prevents wrong instantiations of bio::alphabet_tuple_base's ordered comparison operators.
 template <typename lhs_t, typename tuple_derived_t, typename rhs_t, typename... component_types>
 inline constexpr bool tuple_order_guard =
-  (instantiate_if_v<lazy<weakly_ordered_with_trait, rhs_t, component_types>,
-                    std::same_as<lhs_t, tuple_derived_t> &&
-                      tuple_general_guard<lhs_t, tuple_derived_t, rhs_t, component_types...>> ||
+  (meta::detail::instantiate_if_v<meta::detail::lazy<weakly_ordered_with_trait, rhs_t, component_types>,
+                                  std::same_as<lhs_t, tuple_derived_t> &&
+                                    tuple_general_guard<lhs_t, tuple_derived_t, rhs_t, component_types...>> ||
    ...);
 
 } // namespace bio::detail
@@ -83,7 +83,7 @@ decltype(auto) get();
  *
  * Short description:
  *   * combines multiple alphabets as independent components, similar to a tuple;
- *   * models bio::tuple_like, i.e. provides a get interface to its component_list;
+ *   * models bio::meta::tuple_like, i.e. provides a get interface to its component_list;
  *   * is itself a bio::writable_semialphabet, but most derived types implement the full bio::writable_alphabet;
  *   * its alphabet size is the product of the individual sizes;
  *   * constructible, assignable and comparable with each component type and also all types that
@@ -120,16 +120,16 @@ private:
                                  (1 * ... * alphabet_size<component_types>),
                                  void>; // no char type, because this is only semi_alphabet
 
-    //!\brief A bio::type_list The types of each component in the composite
-    using component_list = bio::type_list<component_types...>;
+    //!\brief A bio::meta::type_list The types of each component in the composite
+    using component_list = meta::type_list<component_types...>;
 
     //!\brief Is set to `true` if the type is contained in the type list.
     template <typename type>
-    static constexpr bool is_component = bio::list_traits::contains<type, component_list>;
+    static constexpr bool is_component = meta::list_traits::contains<type, component_list>;
 
     //!\brief Is set to `true` if the type is uniquely contained in the type list.
     template <typename type>
-    static constexpr bool is_unique_component = (bio::list_traits::count<type, component_list> == 1);
+    static constexpr bool is_unique_component = (meta::list_traits::count<type, component_list> == 1);
 
     // forward declaration: see implementation below
     template <typename alphabet_type, size_t index>
@@ -166,9 +166,9 @@ public:
     using biocpp_required_types           = component_list;
     //!\brief Export this type's components and possibly the components' components in a visible manner.
     //!\private
-    using biocpp_recursive_required_types = list_traits::concat<
+    using biocpp_recursive_required_types = meta::list_traits::concat<
       component_list,
-      detail::transformation_trait_or_t<detail::recursive_required_types<component_types>, bio::type_list<>>...>;
+      meta::transformation_trait_or_t<detail::recursive_required_types<component_types>, meta::type_list<>>...>;
     //!\brief Make specialisations of this template identifiable in metapgrogramming contexts.
     //!\private
     static constexpr bool biocpp_alphabet_tuple_like = true;
@@ -220,8 +220,8 @@ public:
      */
     template <typename indirect_component_type>
         //!\cond
-        requires((detail::instantiate_if_v<
-                    detail::lazy<std::is_convertible, indirect_component_type, component_types>,
+        requires((meta::detail::instantiate_if_v<
+                    meta::detail::lazy<std::is_convertible, indirect_component_type, component_types>,
                     detail::tuple_general_guard<derived_type, indirect_component_type, component_types...>> ||
                   ...))
     //!\endcond
@@ -229,28 +229,28 @@ public:
     {
         using component_predicate = detail::implicitly_convertible_from<indirect_component_type>;
         constexpr auto component_position =
-          bio::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type = bio::list_traits::at<component_position, component_list>;
+          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
+        using component_type = meta::list_traits::at<component_position, component_list>;
         component_type tmp(alph); // delegate construction
         get<component_type>(*this) = tmp;
     }
 
     //!\cond
     template <typename indirect_component_type>
-        requires((!(detail::instantiate_if_v<
-                      detail::lazy<std::is_convertible, indirect_component_type, component_types>,
+        requires((!(meta::detail::instantiate_if_v<
+                      meta::detail::lazy<std::is_convertible, indirect_component_type, component_types>,
                       detail::tuple_general_guard<derived_type, indirect_component_type, component_types...>> ||
                     ...)) &&
-                 (detail::instantiate_if_v<
-                    detail::lazy<std::is_constructible, component_types, indirect_component_type>,
+                 (meta::detail::instantiate_if_v<
+                    meta::detail::lazy<std::is_constructible, component_types, indirect_component_type>,
                     detail::tuple_general_guard<derived_type, indirect_component_type, component_types...>> ||
                   ...))
     constexpr explicit alphabet_tuple_base(indirect_component_type const alph) noexcept : alphabet_tuple_base{}
     {
         using component_predicate = detail::constructible_from<indirect_component_type>;
         constexpr auto component_position =
-          bio::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type = bio::list_traits::at<component_position, component_list>;
+          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
+        using component_type = meta::list_traits::at<component_position, component_list>;
         component_type tmp(alph); // delegate construction
         get<component_type>(*this) = tmp;
     }
@@ -296,8 +296,8 @@ public:
     {
         using component_predicate = detail::assignable_from<indirect_component_type>;
         constexpr auto component_position =
-          bio::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type       = bio::list_traits::at<component_position, component_list>;
+          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
+        using component_type       = meta::list_traits::at<component_position, component_list>;
         get<component_type>(*this) = alph; // delegate assignment
         return static_cast<derived_type &>(*this);
     }
@@ -313,8 +313,8 @@ public:
     {
         using component_predicate = detail::implicitly_convertible_from<indirect_component_type>;
         constexpr auto component_position =
-          bio::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type = bio::list_traits::at<component_position, component_list>;
+          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
+        using component_type = meta::list_traits::at<component_position, component_list>;
         component_type tmp(alph);
         get<component_type>(*this) = tmp;
         return static_cast<derived_type &>(*this);
@@ -331,8 +331,8 @@ public:
     {
         using component_predicate = detail::constructible_from<indirect_component_type>;
         constexpr auto component_position =
-          bio::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type = bio::list_traits::at<component_position, component_list>;
+          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
+        using component_type = meta::list_traits::at<component_position, component_list>;
         component_type tmp(alph); // delegate construction
         get<component_type>(*this) = tmp;
         return static_cast<derived_type &>(*this);
@@ -354,7 +354,7 @@ public:
     {
         static_assert(index < sizeof...(component_types), "Index out of range.");
 
-        using t = bio::list_traits::at<index, component_list>;
+        using t = meta::list_traits::at<index, component_list>;
         t val{};
 
         bio::assign_rank_to(l.to_component_rank<index>(), val);
@@ -373,7 +373,7 @@ public:
       requires is_unique_component<type>
     //!\endcond
     {
-        return get<bio::list_traits::find<type, component_list>>(l);
+        return get<meta::list_traits::find<type, component_list>>(l);
     }
 
     /*!\copybrief get
@@ -386,7 +386,7 @@ public:
     {
         static_assert(index < sizeof...(component_types), "Index out of range.");
 
-        using t = bio::list_traits::at<index, component_list>;
+        using t = meta::list_traits::at<index, component_list>;
 
         return bio::assign_rank_to(l.to_component_rank<index>(), t{});
     }
@@ -402,7 +402,7 @@ public:
       requires is_unique_component<type>
     //!\endcond
     {
-        return get<bio::list_traits::find<type, component_list>>(l);
+        return get<meta::list_traits::find<type, component_list>>(l);
     }
 
     /*!\brief Implicit cast to a single letter. Works only if the type is unique in the type list.
@@ -442,8 +442,8 @@ public:
     {
         using component_predicate = detail::weakly_equality_comparable_with_<indirect_component_type>;
         constexpr auto component_position =
-          bio::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type = bio::list_traits::at<component_position, component_list>;
+          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
+        using component_type = meta::list_traits::at<component_position, component_list>;
         return get<component_type>(lhs) == rhs;
     }
 
@@ -466,8 +466,8 @@ public:
     {
         using component_predicate = detail::weakly_equality_comparable_with_<indirect_component_type>;
         constexpr auto component_position =
-          bio::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type = bio::list_traits::at<component_position, component_list>;
+          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
+        using component_type = meta::list_traits::at<component_position, component_list>;
         return get<component_type>(lhs) != rhs;
     }
 
@@ -490,8 +490,8 @@ public:
     {
         using component_predicate = detail::weakly_ordered_with_<indirect_component_type>;
         constexpr auto component_position =
-          bio::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type = bio::list_traits::at<component_position, component_list>;
+          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
+        using component_type = meta::list_traits::at<component_position, component_list>;
         return get<component_type>(lhs) < rhs;
     }
 
@@ -514,8 +514,8 @@ public:
     {
         using component_predicate = detail::weakly_ordered_with_<indirect_component_type>;
         constexpr auto component_position =
-          bio::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type = bio::list_traits::at<component_position, component_list>;
+          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
+        using component_type = meta::list_traits::at<component_position, component_list>;
         return get<component_type>(lhs) <= rhs;
     }
 
@@ -538,8 +538,8 @@ public:
     {
         using component_predicate = detail::weakly_ordered_with_<indirect_component_type>;
         constexpr auto component_position =
-          bio::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type = bio::list_traits::at<component_position, component_list>;
+          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
+        using component_type = meta::list_traits::at<component_position, component_list>;
         return get<component_type>(lhs) > rhs;
     }
 
@@ -562,8 +562,8 @@ public:
     {
         using component_predicate = detail::weakly_ordered_with_<indirect_component_type>;
         constexpr auto component_position =
-          bio::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type = bio::list_traits::at<component_position, component_list>;
+          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
+        using component_type = meta::list_traits::at<component_position, component_list>;
         return get<component_type>(lhs) >= rhs;
     }
 
@@ -590,7 +590,7 @@ private:
         else
         {
             return (to_rank() / cummulative_alph_sizes[index]) %
-                   bio::alphabet_size<bio::detail::pack_traits::at<index, component_types...>>;
+                   bio::alphabet_size<meta::detail::pack_traits::at<index, component_types...>>;
         }
     }
 
@@ -609,8 +609,8 @@ private:
         std::array<rank_type, component_list::size() + 1> ret{};
         ret[0]               = 1;
         size_t count         = 1;
-        using reverse_list_t = decltype(bio::list_traits::detail::reverse(component_list{}));
-        bio::detail::for_each<reverse_list_t>([&](auto alphabet_type_identity) constexpr {
+        using reverse_list_t = decltype(meta::list_traits::detail::reverse(component_list{}));
+        bio::meta::detail::for_each<reverse_list_t>([&](auto alphabet_type_identity) constexpr {
             using alphabet_t = typename decltype(alphabet_type_identity)::type;
             ret[count]       = static_cast<rank_type>(bio::alphabet_size<alphabet_t> * ret[count - 1]);
             ++count;
@@ -638,19 +638,19 @@ private:
     //!\brief Conversion table from rank to the i-th component's rank.
     static constexpr std::array < std::array<rank_type,
                                              alphabet_size<1024 ? alphabet_size : 0>, // not for big alphs
-                                             list_traits::size<component_list>>
+                                             meta::list_traits::size<component_list>>
                                     rank_to_component_rank = []() constexpr
     {
         std::array < std::array<rank_type,
                                 alphabet_size<1024 ? alphabet_size : 0>, // not for big alphs
-                                list_traits::size<component_list>>
+                                meta::list_traits::size<component_list>>
                        ret{};
 
         if constexpr (alphabet_size < 1024)
         {
             std::array<size_t, alphabet_size> alph_sizes{bio::alphabet_size<component_types>...};
 
-            for (size_t i = 0; i < list_traits::size<component_list>; ++i)
+            for (size_t i = 0; i < meta::list_traits::size<component_list>; ++i)
                 for (size_t j = 0; j < static_cast<size_t>(alphabet_size); ++j)
                     ret[i][j] = (j / cummulative_alph_sizes[i]) % alph_sizes[i];
         }
@@ -795,7 +795,7 @@ namespace std
 {
 
 /*!\brief Obtains the type of the specified element.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  * \ingroup alphabet_composite
  * \see [std::tuple_element](https://en.cppreference.com/w/cpp/utility/tuple/tuple_element)
  *
@@ -804,18 +804,18 @@ template <std::size_t i, bio::detail::alphabet_tuple_like tuple_t>
 struct tuple_element<i, tuple_t>
 {
     //!\brief Element type.
-    using type = bio::list_traits::at<i, typename tuple_t::biocpp_required_types>;
+    using type = bio::meta::list_traits::at<i, typename tuple_t::biocpp_required_types>;
 };
 
 /*!\brief Provides access to the number of elements in a tuple as a compile-time constant expression.
- * \implements bio::unary_type_trait
+ * \implements bio::meta::unary_type_trait
  * \ingroup alphabet_composite
  * \see std::tuple_size_v
  *
  */
 template <bio::detail::alphabet_tuple_like tuple_t>
 struct tuple_size<tuple_t> :
-  public std::integral_constant<size_t, bio::list_traits::size<typename tuple_t::biocpp_required_types>>
+  public std::integral_constant<size_t, bio::meta::list_traits::size<typename tuple_t::biocpp_required_types>>
 {};
 
 } // namespace std

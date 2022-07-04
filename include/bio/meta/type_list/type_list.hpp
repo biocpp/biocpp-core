@@ -8,14 +8,14 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides bio::type_list.
+ * \brief Provides bio::meta::type_list.
  */
 
 #pragma once
 
 #include <bio/meta/type_traits/template_inspection.hpp>
 
-namespace bio
+namespace bio::meta
 {
 
 // ----------------------------------------------------------------------------
@@ -35,4 +35,4 @@ struct type_list
     static constexpr size_t size() noexcept { return sizeof...(types); }
 };
 
-} // namespace bio
+} // namespace bio::meta

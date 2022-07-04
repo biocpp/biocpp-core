@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides the concepts bio::transformation_trait and bio::unary_type_trait.
+ * \brief Provides the concepts bio::meta::transformation_trait and bio::meta::unary_type_trait.
  * \author Svenja Mehringer <avenja.mehringer AT fu-berlin.de>
  */
 
@@ -17,10 +17,10 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace bio
+namespace bio::meta
 {
 
-/*!\interface bio::transformation_trait
+/*!\interface bio::meta::transformation_trait
  * \ingroup type_traits
  * \brief Concept for a transformation trait.
  *
@@ -34,7 +34,7 @@ concept transformation_trait = requires
 };
 //!\endcond
 
-/*!\interface bio::unary_type_trait
+/*!\interface bio::meta::unary_type_trait
  * \ingroup type_traits
  * \brief Concept for a unary traits type.
  *
@@ -45,4 +45,4 @@ template <typename t>
 concept unary_type_trait = std::is_base_of_v<std::integral_constant<typename t::value_type, t::value>, t>;
 //!\endcond
 
-} // namespace bio
+} // namespace bio::meta

@@ -3,5 +3,5 @@
 int main()
 {
     // Drop the last two types in the pack.
-    static_assert(std::same_as<bio::type_list<int, float>, bio::detail::pack_traits::drop_last<2, int, float, bool, int>>);
+    static_assert(std::same_as<bio::meta::type_list<int, float>, bio::meta::detail::pack_traits::drop_last<2, int, float, bool, int>>);
 }

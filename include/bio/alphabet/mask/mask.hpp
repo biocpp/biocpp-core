@@ -22,8 +22,8 @@ namespace bio
  * \ingroup mask
  * \implements bio::writable_semialphabet
  * \if DEV \implements bio::detail::Constexprwritable_semialphabet \endif
- * \implements bio::trivially_copyable
- * \implements bio::standard_layout
+ * \implements bio::meta::trivially_copyable
+ * \implements bio::meta::standard_layout
  * \implements std::regular
  *
  * \details

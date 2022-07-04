@@ -22,7 +22,7 @@
 // bio::pack_traits::detail
 // ----------------------------------------------------------------------------
 
-namespace bio::detail::pack_traits::detail
+namespace bio::meta::detail::pack_traits::detail
 {
 
 /*!\brief Implementation for bio::pack_traits::find.
@@ -116,13 +116,13 @@ auto split_after(type_list<pack1_t...>)
 template <typename replace_t, ptrdiff_t idx, typename... pack_t, size_t... i>
 auto replace_at(std::index_sequence<i...>) -> type_list<std::conditional_t<i == idx, replace_t, pack_t>...>;
 
-} // namespace bio::detail::pack_traits::detail
+} // namespace bio::meta::detail::pack_traits::detail
 
 // ----------------------------------------------------------------------------
 // bio::pack_traits
 // ----------------------------------------------------------------------------
 
-namespace bio::detail::pack_traits
+namespace bio::meta::detail::pack_traits
 {
 
 /*!\name Type pack traits (return a value)
@@ -297,7 +297,7 @@ using back = typename decltype((std::type_identity<pack_t>{}, ...))::type; // us
  * \{
  */
 
-/*!\brief Return a bio::type_list of all the types in the type pack, except the first.
+/*!\brief Return a bio::meta::type_list of all the types in the type pack, except the first.
  * \tparam pack_t The type pack.
  * \ingroup meta_type_pack
  *
@@ -316,7 +316,7 @@ template <typename... pack_t>
 //!\endcond
 using drop_front = typename decltype(detail::drop_front<pack_t...>())::type;
 
-/*!\brief Apply a transformation trait to every type in the pack and return a bio::type_list of the results.
+/*!\brief Apply a transformation trait to every type in the pack and return a bio::meta::type_list of the results.
  * \tparam trait_t The transformation trait, **can be an alias template**, e.g. a transformation trait shortcut.
  * \tparam pack_t  The type pack.
  * \ingroup meta_type_pack
@@ -342,7 +342,7 @@ using transform = type_list<trait_t<pack_t>...>;
  * \{
  */
 
-/*!\brief Return a bio::type_list of the first `n` types in the type pack.
+/*!\brief Return a bio::meta::type_list of the first `n` types in the type pack.
  * \tparam i        The target size; must be >= 0 and <= the size of the type pack.
  * \tparam pack_t   The type pack.
  * \ingroup meta_type_pack
@@ -362,7 +362,7 @@ template <ptrdiff_t i, typename... pack_t>
 //!\endcond
 using take = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))::first_type;
 
-/*!\brief Return a bio::type_list of the types in the type pack, except the first `n`.
+/*!\brief Return a bio::meta::type_list of the types in the type pack, except the first `n`.
  * \tparam i        The amount to drop; must be >= 0 and <= the size of the type pack.
  * \tparam pack_t   The type pack.
  * \ingroup meta_type_pack
@@ -382,7 +382,7 @@ template <ptrdiff_t i, typename... pack_t>
 //!\endcond
 using drop = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))::second_type;
 
-/*!\brief Return a bio::type_list of the last `n` types in the type pack.
+/*!\brief Return a bio::meta::type_list of the last `n` types in the type pack.
  * \tparam i        The target size; must be >= 0 and <= the size of the type pack.
  * \tparam pack_t   The type pack.
  * \ingroup meta_type_pack
@@ -402,7 +402,7 @@ template <ptrdiff_t i, typename... pack_t>
 //!\endcond
 using take_last = drop<size<pack_t...> - i, pack_t...>;
 
-/*!\brief Return a bio::type_list of the types the type pack, except the last `n`.
+/*!\brief Return a bio::meta::type_list of the types the type pack, except the last `n`.
  * \tparam i        The amount to drop; must be >= 0 and <= the size of the type pack.
  * \tparam pack_t   The type pack.
  * \ingroup meta_type_pack
@@ -422,7 +422,7 @@ template <ptrdiff_t i, typename... pack_t>
 //!\endcond
 using drop_last = take<size<pack_t...> - i, pack_t...>;
 
-/*!\brief Split a type pack into two parts returned as a pair of bio::type_list.
+/*!\brief Split a type pack into two parts returned as a pair of bio::meta::type_list.
  * \tparam i        The number of elements after which to split; must be >= 0 and <= the size of the type pack.
  * \tparam pack_t   The type pack.
  * \ingroup meta_type_pack
@@ -465,4 +465,4 @@ using replace_at = decltype(detail::replace_at<replace_t, i, pack_t...>(std::mak
 
 //!\}
 
-} // namespace bio::detail::pack_traits
+} // namespace bio::meta::detail::pack_traits

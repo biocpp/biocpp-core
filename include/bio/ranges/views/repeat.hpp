@@ -16,9 +16,8 @@
 #include <algorithm>
 #include <ranges>
 
-#include <bio/meta/type_traits/iterator.hpp>
-#include <bio/meta/type_traits/range.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
+#include <bio/ranges/type_traits.hpp>
 
 namespace bio::detail
 {

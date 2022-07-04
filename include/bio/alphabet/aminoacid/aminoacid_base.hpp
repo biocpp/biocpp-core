@@ -71,13 +71,8 @@ public:
     //!\endcond
     explicit constexpr aminoacid_base(other_aa_type const other) noexcept
     {
-        if constexpr (is_constexpr_default_constructible_v<other_aa_type> &&
-#if BIOCPP_WORKAROUND_GCC7_AND_8_CONCEPT_ISSUES
-                      writable_alphabet<other_aa_type>
-#else
-                      detail::writable_constexpr_alphabet<other_aa_type>
-#endif // BIOCPP_WORKAROUND_GCC7_AND_8_CONCEPT_ISSUES
-        )
+        if constexpr (meta::is_constexpr_default_constructible_v<other_aa_type> &&
+                      detail::writable_constexpr_alphabet<other_aa_type>)
         {
             static_cast<derived_type &>(*this) =
               detail::convert_through_char_representation<derived_type, other_aa_type>[bio::to_rank(other)];

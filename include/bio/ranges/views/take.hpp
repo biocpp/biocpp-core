@@ -20,13 +20,12 @@
 #include <span>
 #include <type_traits>
 
-#include <bio/meta/type_traits/iterator.hpp>
-#include <bio/meta/type_traits/range.hpp>
 #include <bio/meta/type_traits/template_inspection.hpp>
 #include <bio/meta/type_traits/transformation_trait_or.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/container/concept.hpp>
 #include <bio/ranges/detail/inherited_iterator_base.hpp>
+#include <bio/ranges/type_traits.hpp>
 #include <bio/ranges/views/detail.hpp>
 
 namespace bio::detail
@@ -238,7 +237,7 @@ private:
     size_t max_pos{};
 
     //!\brief A pointer to host, s.t. the size of the view can shrink on pure input ranges.
-    std::conditional_t<exactly && !std::forward_iterator<base_base_t>, view_take *, detail::ignore_t> host_ptr;
+    std::conditional_t<exactly && !std::forward_iterator<base_base_t>, view_take *, meta::ignore_t> host_ptr;
 
 public:
     /*!\name Constructors, destructor and assignment
@@ -485,12 +484,12 @@ struct take_fn
         }
 
         // string_view
-        if constexpr (is_type_specialisation_of_v<std::remove_cvref_t<urng_t>, std::basic_string_view>)
+        if constexpr (meta::is_type_specialisation_of_v<std::remove_cvref_t<urng_t>, std::basic_string_view>)
         {
             return urange.substr(0, target_size);
         }
         // string const &
-        else if constexpr (is_type_specialisation_of_v<std::remove_cvref_t<urng_t>, std::basic_string> &&
+        else if constexpr (meta::is_type_specialisation_of_v<std::remove_cvref_t<urng_t>, std::basic_string> &&
                            std::is_const_v<std::remove_reference_t<urng_t>>)
         {
             return std::basic_string_view{std::ranges::data(urange), target_size};

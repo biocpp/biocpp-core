@@ -447,8 +447,6 @@ TEST(composite, custom_comparison)
 
 TEST(composite, get)
 {
-    using bio::get;
-
     qualified_qualified_gapped_dna_phred42_phred42 t51{
       qualified_gapped_dna_phred42{'C'_dna4, '$'_phred42}
     };

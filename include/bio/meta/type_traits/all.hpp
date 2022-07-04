@@ -19,8 +19,5 @@
 #pragma once
 
 #include <bio/meta/type_traits/basic.hpp>
-#include <bio/meta/type_traits/deferred_crtp_base.hpp>
-#include <bio/meta/type_traits/iterator.hpp>
-#include <bio/meta/type_traits/range.hpp>
 #include <bio/meta/type_traits/template_inspection.hpp>
 #include <bio/meta/type_traits/transformation_trait_or.hpp>

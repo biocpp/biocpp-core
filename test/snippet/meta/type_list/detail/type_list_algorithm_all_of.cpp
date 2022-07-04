@@ -33,5 +33,5 @@ auto fn = [](auto id)
         return false;
 };
 
-static_assert(bio::detail::all_of<bio::type_list<int, float, bool>>(fn)); // evalates to true
-static_assert(!bio::detail::all_of<bio::type_list<int, float, bool, incomplete::type>>(fn)); // evalates to false
+static_assert(bio::meta::detail::all_of<bio::meta::type_list<int, float, bool>>(fn)); // evalates to true
+static_assert(!bio::meta::detail::all_of<bio::meta::type_list<int, float, bool, incomplete::type>>(fn)); // evalates to false

@@ -17,11 +17,10 @@
 #include <concepts>
 #include <ranges>
 
-#include <bio/meta/type_traits/iterator.hpp>
-#include <bio/meta/type_traits/range.hpp>
 #include <bio/meta/type_traits/transformation_trait_or.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/container/concept.hpp>
+#include <bio/ranges/type_traits.hpp>
 #include <bio/ranges/views/detail.hpp>
 
 namespace bio::detail

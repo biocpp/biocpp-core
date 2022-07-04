@@ -35,16 +35,17 @@ inline constexpr bool variant_general_guard =
   ((!std::same_as<other_t, alphabet_variant<alternative_types...>>)&&(
      !std::is_base_of_v<alphabet_variant<alternative_types...>,
                         other_t>)&&(!(std::same_as<other_t, alternative_types> || ...)) &&
-   (!list_traits::contains<alphabet_variant<alternative_types...>, recursive_required_types_t<other_t>>));
+   (!meta::list_traits::contains<alphabet_variant<alternative_types...>, recursive_required_types_t<other_t>>));
 
 //!\brief Prevents wrong instantiations of std::alphabet_variant's comparison operators.
 template <typename lhs_t, typename rhs_t, bool lhs_rhs_switched, typename... alternative_types>
 inline constexpr bool variant_comparison_guard =
-  (instantiate_if_v<
-     lazy<weakly_equality_comparable_with_trait, rhs_t, alternative_types>,
+  (meta::detail::instantiate_if_v<
+     meta::detail::lazy<weakly_equality_comparable_with_trait, rhs_t, alternative_types>,
      (std::same_as<lhs_t, alphabet_variant<alternative_types...>>)&&(
        variant_general_guard<rhs_t, alternative_types...>)&&!(lhs_rhs_switched &&
-                                                              is_type_specialisation_of_v<rhs_t, alphabet_variant>)> ||
+                                                              meta::is_type_specialisation_of_v<rhs_t,
+                                                                                                alphabet_variant>)> ||
    ...);
 } // namespace bio::detail
 
@@ -63,8 +64,8 @@ namespace bio
  *                              bio::writable_alphabet need to be callable in a `constexpr`-context.
  * \endif
  * \implements bio::writable_alphabet
- * \implements bio::trivially_copyable
- * \implements bio::standard_layout
+ * \implements bio::meta::trivially_copyable
+ * \implements bio::meta::standard_layout
 
  * \details
  *
@@ -132,10 +133,10 @@ private:
     //!\brief Befriend the base type.
     friend base_t;
 
-    //!\brief A bio::type_list of the types of each alternative in the composite
-    using alternatives = bio::type_list<alternative_types...>;
+    //!\brief A bio::meta::type_list of the types of each alternative in the composite
+    using alternatives = meta::type_list<alternative_types...>;
 
-    static_assert(((bio::list_traits::count<alternative_types, alternatives> == 1) && ... && true),
+    static_assert(((meta::list_traits::count<alternative_types, alternatives> == 1) && ... && true),
                   "All types in a alphabet_variant must be distinct.");
 
     using typename base_t::char_type;
@@ -151,14 +152,14 @@ public:
     * \private
     * \details
     */
-    using biocpp_required_types           = type_list<alternative_types...>;
+    using biocpp_required_types           = meta::type_list<alternative_types...>;
     /*!\brief Expose the recursive alternative types to concept checks in metaprogramming.
     * \private
     * \details
     */
-    using biocpp_recursive_required_types = list_traits::concat<
+    using biocpp_recursive_required_types = meta::list_traits::concat<
       biocpp_required_types,
-      detail::transformation_trait_or_t<detail::recursive_required_types<alternative_types>, type_list<>>...>;
+      meta::transformation_trait_or_t<detail::recursive_required_types<alternative_types>, meta::type_list<>>...>;
 
     /*!\brief Returns true if alternative_t is one of the given alternative types.
      * \tparam alternative_t The type to check.
@@ -169,7 +170,7 @@ public:
     template <typename alternative_t>
     static constexpr bool is_alternative() noexcept
     {
-        return bio::detail::pack_traits::contains<alternative_t, alternative_types...>;
+        return meta::detail::pack_traits::contains<alternative_t, alternative_types...>;
     }
 
     /*!\name Constructors, destructor and assignment
@@ -193,9 +194,10 @@ public:
         //!\cond
         requires(
           (!std::same_as<alternative_t, alphabet_variant>)&&(!std::is_base_of_v<alphabet_variant, alternative_t>)&&(
-            !list_traits::contains<alphabet_variant,
-                                   detail::transformation_trait_or_t<detail::recursive_required_types<alternative_t>,
-                                                                     type_list<>>>)&&(is_alternative<alternative_t>()))
+            !meta::list_traits::contains<
+              alphabet_variant,
+              meta::transformation_trait_or_t<detail::recursive_required_types<alternative_t>,
+                                              meta::type_list<>>>)&&(is_alternative<alternative_t>()))
     //!\endcond
     constexpr alphabet_variant(alternative_t const alternative) noexcept { assign_rank(rank_by_type_(alternative)); }
 
@@ -218,17 +220,17 @@ public:
      */
     template <typename indirect_alternative_t>
         //!\cond
-        requires(
-          (detail::instantiate_if_v<detail::lazy<std::is_convertible, indirect_alternative_t, alternative_types>,
-                                    detail::variant_general_guard<indirect_alternative_t, alternative_types...>> ||
-           ...))
+        requires((meta::detail::instantiate_if_v<
+                    meta::detail::lazy<std::is_convertible, indirect_alternative_t, alternative_types>,
+                    detail::variant_general_guard<indirect_alternative_t, alternative_types...>> ||
+                  ...))
     //!\endcond
     constexpr alphabet_variant(indirect_alternative_t const rhs) noexcept
     {
         using alternative_predicate = detail::implicitly_convertible_from<indirect_alternative_t>;
         constexpr auto alternative_position =
-          bio::list_traits::find_if<alternative_predicate::template invoke, alternatives>;
-        using alternative_t = bio::list_traits::at<alternative_position, alternatives>;
+          meta::list_traits::find_if<alternative_predicate::template invoke, alternatives>;
+        using alternative_t = meta::list_traits::at<alternative_position, alternatives>;
         assign_rank(rank_by_type_(alternative_t(rhs)));
     }
 
@@ -249,20 +251,21 @@ public:
      */
     template <typename indirect_alternative_t>
         //!\cond
-        requires(
-          (!(detail::instantiate_if_v<detail::lazy<std::is_convertible, indirect_alternative_t, alternative_types>,
-                                      detail::variant_general_guard<indirect_alternative_t, alternative_types...>> ||
-             ...)) &&
-          (detail::instantiate_if_v<detail::lazy<std::is_constructible, alternative_types, indirect_alternative_t>,
-                                    detail::variant_general_guard<indirect_alternative_t, alternative_types...>> ||
-           ...))
+        requires((!(meta::detail::instantiate_if_v<
+                      meta::detail::lazy<std::is_convertible, indirect_alternative_t, alternative_types>,
+                      detail::variant_general_guard<indirect_alternative_t, alternative_types...>> ||
+                    ...)) &&
+                 (meta::detail::instantiate_if_v<
+                    meta::detail::lazy<std::is_constructible, alternative_types, indirect_alternative_t>,
+                    detail::variant_general_guard<indirect_alternative_t, alternative_types...>> ||
+                  ...))
     //!\endcond
     constexpr explicit alphabet_variant(indirect_alternative_t const rhs) noexcept
     {
         using alternative_predicate = detail::constructible_from<indirect_alternative_t>;
         constexpr auto alternative_position =
-          bio::list_traits::find_if<alternative_predicate::template invoke, alternatives>;
-        using alternative_t = bio::list_traits::at<alternative_position, alternatives>;
+          meta::list_traits::find_if<alternative_predicate::template invoke, alternatives>;
+        using alternative_t = meta::list_traits::at<alternative_position, alternatives>;
         assign_rank(rank_by_type_(alternative_t(rhs)));
     }
 
@@ -279,14 +282,14 @@ public:
     template <typename indirect_alternative_t>
         //!\cond
         requires(detail::variant_general_guard<indirect_alternative_t, alternative_types...> &&
-                 (weakly_assignable_from<alternative_types, indirect_alternative_t> || ...))
+                 (meta::weakly_assignable_from<alternative_types, indirect_alternative_t> || ...))
     //!\endcond
     constexpr alphabet_variant & operator=(indirect_alternative_t const & rhs) noexcept
     {
         using alternative_predicate = detail::assignable_from<indirect_alternative_t>;
         constexpr auto alternative_position =
-          bio::list_traits::find_if<alternative_predicate::template invoke, alternatives>;
-        using alternative_t = bio::list_traits::at<alternative_position, alternatives>;
+          meta::list_traits::find_if<alternative_predicate::template invoke, alternatives>;
+        using alternative_t = meta::list_traits::at<alternative_position, alternatives>;
         alternative_t alternative{};
         alternative = rhs;
         assign_rank(rank_by_type_(alternative));
@@ -344,7 +347,7 @@ public:
       requires(is_alternative<alternative_t>())
     //!\endcond
     {
-        constexpr size_t index = bio::list_traits::find<alternative_t, alternatives>;
+        constexpr size_t index = meta::list_traits::find<alternative_t, alternatives>;
         return holds_alternative<index>();
     }
 
@@ -359,7 +362,7 @@ public:
       requires(is_alternative<alternative_t>())
     //!\endcond
     {
-        constexpr size_t index = bio::list_traits::find<alternative_t, alternatives>;
+        constexpr size_t index = meta::list_traits::find<alternative_t, alternatives>;
         return convert_impl<index, true>();
     }
 
@@ -373,7 +376,7 @@ public:
       requires(is_alternative<alternative_t>())
     //!\endcond
     {
-        constexpr size_t index = bio::list_traits::find<alternative_t, alternatives>;
+        constexpr size_t index = meta::list_traits::find<alternative_t, alternatives>;
         return convert_impl<index, false>();
     }
     //!\}
@@ -407,8 +410,8 @@ public:
     {
         using alternative_predicate = detail::weakly_equality_comparable_with_<indirect_alternative_type>;
         constexpr auto alternative_position =
-          bio::list_traits::find_if<alternative_predicate::template invoke, alternatives>;
-        using alternative_t = bio::list_traits::at<alternative_position, alternatives>;
+          meta::list_traits::find_if<alternative_predicate::template invoke, alternatives>;
+        using alternative_t = meta::list_traits::at<alternative_position, alternatives>;
         return lhs.template holds_alternative<alternative_t>() &&
                (lhs.template convert_unsafely_to<alternative_t>() == rhs);
     }
@@ -461,10 +464,10 @@ protected:
      * \tparam throws Whether to perform checks (and throw) or not.
      */
     template <size_t index, bool throws>
-    constexpr auto convert_impl() const noexcept(!throws) -> bio::list_traits::at<index, alternatives>
+    constexpr auto convert_impl() const noexcept(!throws) -> meta::list_traits::at<index, alternatives>
     {
         static_assert(index < alphabet_size, "The alphabet_variant contains less alternatives than you are checking.");
-        using alternative_t = bio::list_traits::at<index, alternatives>;
+        using alternative_t = meta::list_traits::at<index, alternatives>;
 
         if constexpr (throws)
         {
@@ -557,7 +560,7 @@ protected:
     //!\endcond
     static constexpr rank_type rank_by_type_(alternative_t const & alternative) noexcept
     {
-        constexpr size_t index = bio::list_traits::find<alternative_t, alternatives>;
+        constexpr size_t index = meta::list_traits::find<alternative_t, alternatives>;
         return rank_by_index_<index>(alternative);
     }
 
@@ -567,8 +570,8 @@ protected:
     static constexpr auto first_valid_char_table = []() constexpr
     {
         constexpr size_t alternative_size = sizeof...(alternative_types);
-        constexpr size_t table_size       = detail::size_in_values_v<char_type>;
-        using first_alphabet_t            = detail::min_viable_uint_t<alternative_size>;
+        constexpr size_t table_size       = meta::detail::size_in_values_v<char_type>;
+        using first_alphabet_t            = meta::detail::min_viable_uint_t<alternative_size>;
 
         std::array<first_alphabet_t, table_size> lookup_table{};
 
@@ -600,10 +603,10 @@ protected:
      * alternatives and the value is the corresponding rank over all alternatives (by
      * conflict will default to the first).
      */
-    static constexpr std::array<rank_type, detail::size_in_values_v<char_type>> char_to_rank = []() constexpr
+    static constexpr std::array<rank_type, meta::detail::size_in_values_v<char_type>> char_to_rank = []() constexpr
     {
         constexpr size_t alternative_size = sizeof...(alternative_types);
-        constexpr size_t table_size       = detail::size_in_values_v<char_type>;
+        constexpr size_t table_size       = meta::detail::size_in_values_v<char_type>;
 
         std::array<rank_type, table_size> char_to_rank{};
 

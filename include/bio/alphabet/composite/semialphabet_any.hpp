@@ -21,8 +21,8 @@ namespace bio
 /*!\brief A semi-alphabet that type erases all other semi-alphabets of the same size.
  * \ingroup alphabet_composite
  * \implements bio::semialphabet
- * \implements bio::trivially_copyable
- * \implements bio::standard_layout
+ * \implements bio::meta::trivially_copyable
+ * \implements bio::meta::standard_layout
  *
  * \details
  * This alphabet provides a generic representation for different alphabets of the same size by erasing

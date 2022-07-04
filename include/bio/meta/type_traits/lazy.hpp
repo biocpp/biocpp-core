@@ -19,7 +19,7 @@
 #include <bio/meta/type_traits/function.hpp>
 #include <type_traits>
 
-namespace bio::detail
+namespace bio::meta::detail
 {
 
 /*!\addtogroup type_traits
@@ -44,7 +44,7 @@ struct lazy
 
 /*!\brief A transformation trait that instantiates bio::lazy types. Base template is the identity transformation.
  * \tparam t The type to operate on.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  */
 template <typename t>
 struct instantiate : std::type_identity<t>
@@ -53,7 +53,7 @@ struct instantiate : std::type_identity<t>
 /*!\brief A transformation trait that instantiates bio::lazy types.
  * \tparam template_t The uninstantiated template.
  * \tparam spec_t     The arguments to template_t.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  */
 template <template <typename...> typename template_t, typename... spec_t>
 struct instantiate<lazy<template_t, spec_t...>>
@@ -64,7 +64,7 @@ struct instantiate<lazy<template_t, spec_t...>>
 
 /*!\brief A transformation trait that instantiates bio::lazy types. Transformation trait shortcut.
  * \tparam t The type to operate on.
- * \relates bio::detail::instantiate
+ * \relates bio::meta::detail::instantiate
  */
 template <typename t>
     //!\cond
@@ -79,7 +79,7 @@ using instantiate_t = typename instantiate<t>::type;
 /*!\brief A transformation trait that instantiates bio::lazy types given a boolean condition.
  *        Base template is std::false_type.
  * \tparam t The type to operate on.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  */
 template <typename t, bool condition>
 struct instantiate_if : std::false_type
@@ -88,7 +88,7 @@ struct instantiate_if : std::false_type
 /*!\brief A transformation trait that instantiates bio::lazy types given a boolean condition.
  *        If condition is true and parameter is not lazy, the type identity.
  * \tparam t The type to operate on.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  */
 template <typename t>
 struct instantiate_if<t, true> : std::type_identity<t>
@@ -98,7 +98,7 @@ struct instantiate_if<t, true> : std::type_identity<t>
  *        If condition is true and parameter is lazy, the instantiated type.
  * \tparam template_t The uninstantiated template.
  * \tparam spec_t     The arguments to template_t.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  */
 template <template <typename...> typename template_t, typename... spec_t>
 struct instantiate_if<lazy<template_t, spec_t...>, true>
@@ -109,7 +109,7 @@ struct instantiate_if<lazy<template_t, spec_t...>, true>
 
 /*!\brief A transformation trait that instantiates bio::lazy types, conditionally. Transformation trait shortcut.
  * \tparam t The type to operate on.
- * \relates bio::detail::instantiate_if
+ * \relates bio::meta::detail::instantiate_if
  */
 template <typename t, bool condition>
     //!\cond
@@ -119,7 +119,7 @@ using instantiate_if_t = typename instantiate_if<t, condition>::type;
 
 /*!\brief A transformation trait that instantiates bio::lazy types, conditionally. Type trait shortcut.
  * \tparam t The type to operate on.
- * \relates bio::detail::instantiate_if
+ * \relates bio::meta::detail::instantiate_if
  */
 template <typename t, bool condition>
     //!\cond
@@ -135,7 +135,7 @@ inline constexpr auto instantiate_if_v = instantiate_if_t<t, condition>::value;
  * \tparam decision   Whether to resolve to the first type or the second.
  * \tparam on_true_t  The return type in case `decision` is true.
  * \tparam on_false_t The return type in case `decision` is false.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  *
  * \details
  *
@@ -151,7 +151,7 @@ struct lazy_conditional : instantiate<std::conditional_t<decision, on_true_t, on
  * \tparam decision   Whether to resolve to the first type or the second.
  * \tparam on_true_t  The return type in case `decision` is true.
  * \tparam on_false_t The return type in case `decision` is false.
- * \relates bio::detail::lazy_conditional
+ * \relates bio::meta::detail::lazy_conditional
  */
 template <bool decision, typename on_true_t, typename on_false_t>
     //!\cond
@@ -161,13 +161,13 @@ using lazy_conditional_t = instantiate_t<std::conditional_t<decision, on_true_t,
 
 /*!\brief An unary type trait that tests whether a template class can be declared with the given template type
  *        parameters.
- * \implements bio::unary_type_trait
+ * \implements bio::meta::unary_type_trait
  * \tparam query_t The type of the template class to test.
  * \tparam args_t  The template parameter pack to instantiate the template class with.
  *
  * \details
  *
- * Note, this unary type trait can be used in a bio::detail::lazy_conditional expression to check if instantiating
+ * Note, this unary type trait can be used in a bio::meta::detail::lazy_conditional expression to check if instantiating
  * a template class with specific template arguments would result in a valid template declaration. Thus, the template
  * parameters of the checked class must be constrained accordingly. It is, however, not possible to test if the
  * the resulting type is incomplete or not, such that it can not be tested if an instance of the class template with
@@ -200,4 +200,4 @@ template <template <typename...> typename query_t, typename... args_t>
 inline constexpr bool is_class_template_declarable_with_v =
   is_class_template_declarable_with<query_t, args_t...>::value;
 //!\}
-} // namespace bio::detail
+} // namespace bio::meta::detail

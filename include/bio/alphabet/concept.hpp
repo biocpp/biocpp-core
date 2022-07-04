@@ -88,12 +88,12 @@ public:
     template <typename alph_t>
         //!\cond
         requires(requires(alph_t const a) {
-            {impl(priority_tag<2>{}, a)};
-            requires noexcept(impl(priority_tag<2>{}, a));
-            requires std::integral<decltype(impl(priority_tag<2>{}, a))>;
+            {impl(meta::detail::priority_tag<2>{}, a)};
+            requires noexcept(impl(meta::detail::priority_tag<2>{}, a));
+            requires std::integral<decltype(impl(meta::detail::priority_tag<2>{}, a))>;
         })
     //!\endcond
-    constexpr auto operator()(alph_t const a) const noexcept { return impl(priority_tag<2>{}, a); }
+    constexpr auto operator()(alph_t const a) const noexcept { return impl(meta::detail::priority_tag<2>{}, a); }
 };
 
 } // namespace bio::detail::adl_only
@@ -175,14 +175,14 @@ public:
     template <typename alph_t>
         //!\cond
         requires(requires(bio::alphabet_rank_t<alph_t> const r, alph_t & a) {
-            {impl(priority_tag<2>{}, a, r)};
-            requires noexcept(impl(priority_tag<2>{}, a, r));
-            requires std::same_as<alph_t &, decltype(impl(priority_tag<2>{}, a, r))>;
+            {impl(meta::detail::priority_tag<2>{}, a, r)};
+            requires noexcept(impl(meta::detail::priority_tag<2>{}, a, r));
+            requires std::same_as<alph_t &, decltype(impl(meta::detail::priority_tag<2>{}, a, r))>;
         })
     //!\endcond
     constexpr alph_t operator()(bio::alphabet_rank_t<alph_t> const r, alph_t && a) const noexcept
     {
-        return impl(priority_tag<2>{}, a, r);
+        return impl(meta::detail::priority_tag<2>{}, a, r);
     }
 };
 
@@ -260,12 +260,15 @@ public:
     template <typename alph_t>
         //!\cond
         requires(requires(alph_t const a) {
-            {impl(priority_tag<2>{}, a)};
-            requires noexcept(impl(priority_tag<2>{}, a));
-            requires builtin_character<decltype(impl(priority_tag<2>{}, a))>;
+            {impl(meta::detail::priority_tag<2>{}, a)};
+            requires noexcept(impl(meta::detail::priority_tag<2>{}, a));
+            requires meta::builtin_character<decltype(impl(meta::detail::priority_tag<2>{}, a))>;
         })
     //!\endcond
-    constexpr decltype(auto) operator()(alph_t const a) const noexcept { return impl(priority_tag<2>{}, a); }
+    constexpr decltype(auto) operator()(alph_t const a) const noexcept
+    {
+        return impl(meta::detail::priority_tag<2>{}, a);
+    }
 };
 
 } // namespace bio::detail::adl_only
@@ -294,7 +297,7 @@ namespace bio
  *   3. A member function called `to_char()`.
  *
  * Functions are only considered for one of the above cases if they are marked `noexcept` (`constexpr` is not required,
- * but recommended) and if the returned type models bio::builtin_character.
+ * but recommended) and if the returned type models bio::meta::builtin_character.
  *
  * Every alphabet type must provide one of the above.
  *
@@ -348,14 +351,14 @@ public:
     template <typename alph_t>
         //!\cond
         requires(requires(bio::alphabet_char_t<alph_t> const r, alph_t & a) {
-            {impl(priority_tag<2>{}, a, r)};
-            requires noexcept(impl(priority_tag<2>{}, a, r));
-            requires std::same_as<alph_t &, decltype(impl(priority_tag<2>{}, a, r))>;
+            {impl(meta::detail::priority_tag<2>{}, a, r)};
+            requires noexcept(impl(meta::detail::priority_tag<2>{}, a, r));
+            requires std::same_as<alph_t &, decltype(impl(meta::detail::priority_tag<2>{}, a, r))>;
         })
     //!\endcond
     constexpr alph_t operator()(bio::alphabet_char_t<alph_t> const r, alph_t && a) const noexcept
     {
-        return impl(priority_tag<2>{}, a, r);
+        return impl(meta::detail::priority_tag<2>{}, a, r);
     }
 };
 
@@ -433,24 +436,28 @@ public:
                                         std::remove_cvref_t<alph_t>,
                                         std::type_identity<alph_t>>;
 
-    BIOCPP_CPO_IMPL(3, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::char_is_valid(v))) // expl. cst.
-    BIOCPP_CPO_IMPL(2, (char_is_valid_for(v, s_alph_t{})))                                              // ADL
-    BIOCPP_CPO_IMPL(1, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::char_is_valid(v)))   // member
-    BIOCPP_CPO_IMPL(0, (bio::to_char(bio::assign_char_to(v, s_alph_t{})) == v))                         // fallback
+    BIOCPP_CPO_IMPL(3,
+                    (meta::deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::char_is_valid(v))) // expl. cst.
+    BIOCPP_CPO_IMPL(2, (char_is_valid_for(v, s_alph_t{})))                                                 // ADL
+    BIOCPP_CPO_IMPL(1, (meta::deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::char_is_valid(v))) // member
+    BIOCPP_CPO_IMPL(0, (bio::to_char(bio::assign_char_to(v, s_alph_t{})) == v))                             // fallback
 
 public:
     //!\brief Operator definition.
     template <typename dummy = int> // need to make this a template to enforce deferred instantiation
                                     //!\cond
         requires(requires(alphabet_char_t<alph_t> const a) {
-            {impl(priority_tag<3>{}, a, dummy{})};
-            requires noexcept(impl(priority_tag<3>{}, a, dummy{}));
+            {impl(meta::detail::priority_tag<3>{}, a, dummy{})};
+            requires noexcept(impl(meta::detail::priority_tag<3>{}, a, dummy{}));
             {
-                impl(priority_tag<3>{}, a, dummy{})
+                impl(meta::detail::priority_tag<3>{}, a, dummy{})
                 } -> std::convertible_to<bool>;
         })
     //!\endcond
-    constexpr bool operator()(alphabet_char_t<alph_t> const a) const noexcept { return impl(priority_tag<3>{}, a); }
+    constexpr bool operator()(alphabet_char_t<alph_t> const a) const noexcept
+    {
+        return impl(meta::detail::priority_tag<3>{}, a);
+    }
 };
 
 } // namespace bio::detail::adl_only
@@ -538,7 +545,7 @@ struct assign_char_strictly_to_fn
     decltype(auto) operator()(bio::alphabet_char_t<alph_t> const r, alph_t & a) const
     {
         if (!bio::char_is_valid_for<alph_t>(r))
-            throw bio::invalid_char_assignment{detail::type_name_as_string<alph_t>, r};
+            throw bio::invalid_char_assignment{meta::detail::type_name_as_string<alph_t>, r};
 
         return bio::assign_char_to(r, a);
     }
@@ -615,31 +622,32 @@ struct alphabet_size_fn
 public:
     //!\brief `alph_t` with cvref removed and possibly wrapped in std::type_identity.
     using s_alph_t = std::conditional_t<std::is_nothrow_default_constructible_v<std::remove_cvref_t<alph_t>> &&
-                                          bio::is_constexpr_default_constructible_v<std::remove_cvref_t<alph_t>>,
+                                          meta::is_constexpr_default_constructible_v<std::remove_cvref_t<alph_t>>,
                                         std::remove_cvref_t<alph_t>,
                                         std::type_identity<alph_t>>;
 
-    BIOCPP_CPO_IMPL(2, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::alphabet_size)) // expl. cst.
-    BIOCPP_CPO_IMPL(1, (alphabet_size(v)))                                                           // ADL
-    BIOCPP_CPO_IMPL(0, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::alphabet_size))   // member
+    BIOCPP_CPO_IMPL(2, (meta::deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::alphabet_size)) // expl. cst.
+    BIOCPP_CPO_IMPL(1, (alphabet_size(v)))                                                                 // ADL
+    BIOCPP_CPO_IMPL(0, (meta::deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::alphabet_size))   // member
 
 public:
     //!\brief Operator definition.
     template <typename dummy = int> // need to make this a template to enforce deferred instantiation
                                     //!\cond
         requires(requires {
-            {impl(priority_tag<2>{}, s_alph_t{}, dummy{})};
-            requires noexcept(impl(priority_tag<2>{}, s_alph_t{}, dummy{}));
-            requires std::integral<std::remove_cvref_t<decltype(impl(priority_tag<2>{}, s_alph_t{}, dummy{}))>>;
+            {impl(meta::detail::priority_tag<2>{}, s_alph_t{}, dummy{})};
+            requires noexcept(impl(meta::detail::priority_tag<2>{}, s_alph_t{}, dummy{}));
+            requires std::integral<
+              std::remove_cvref_t<decltype(impl(meta::detail::priority_tag<2>{}, s_alph_t{}, dummy{}))>>;
         })
     //!\endcond
     constexpr auto operator()() const noexcept
     {
         // The following cannot be added to the list of constraints, because it is not properly deferred
         // for incomplete types which leads to breakage.
-        static_assert(BIOCPP_IS_CONSTEXPR(impl(priority_tag<2>{}, s_alph_t{})),
+        static_assert(BIOCPP_IS_CONSTEXPR(impl(meta::detail::priority_tag<2>{}, s_alph_t{})),
                       "Only overloads that are marked constexpr are picked up by bio::alphabet_size.");
-        return impl(priority_tag<2>{}, s_alph_t{});
+        return impl(meta::detail::priority_tag<2>{}, s_alph_t{});
     }
 };
 
@@ -678,7 +686,7 @@ namespace bio
  * Every (semi-)alphabet type must provide one of the above.
  *
  * *Note* that if the (semi-)alphabet type with cvref removed is not std::is_nothrow_default_constructible or not
- * bio::is_constexpr_default_constructible, this object will instead look for
+ * bio::meta::is_constexpr_default_constructible, this object will instead look for
  * `alphabet_size(std::type_identity<your_type> const &)` with the same semantics (in case 2.).
  *
  * ### Example
@@ -732,7 +740,7 @@ inline constexpr auto alphabet_size = detail::adl_only::alphabet_size_obj<alph_t
  *
  *   * std::regular
  *   * std::is_trivially_copyable
- *   * bio::standard_layout
+ *   * bio::meta::standard_layout
  *
  * All alphabets available in BioC++ (with very few exceptions) do so.
  *

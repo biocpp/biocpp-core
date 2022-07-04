@@ -20,10 +20,10 @@
 #include <bio/alphabet/aminoacid/translation.hpp>
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/meta/add_enum_bitwise_operators.hpp>
-#include <bio/meta/type_traits/range.hpp>
 #include <bio/ranges/container/concept.hpp>
 #include <bio/ranges/container/small_string.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
+#include <bio/ranges/type_traits.hpp>
 #include <bio/ranges/views/deep.hpp>
 #include <bio/ranges/views/detail.hpp>
 #include <concepts>

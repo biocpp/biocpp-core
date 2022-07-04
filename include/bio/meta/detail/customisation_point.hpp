@@ -15,7 +15,7 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace bio::detail
+namespace bio::meta::detail
 {
 
 // ============================================================================
@@ -36,7 +36,7 @@ template <>
 struct priority_tag<0>
 {};
 
-} // namespace bio::detail
+} // namespace bio::meta::detail
 
 // ============================================================================
 // BIOCPP_CPO_IMPL
@@ -47,12 +47,12 @@ struct priority_tag<0>
 #define BIOCPP_CPO_IMPL(PRIO, TERM)                                                                                  \
 /*!\brief A customisation point overload.*/                                                                          \
 template <typename t, typename ...arg_ts>                                                                            \
-static constexpr decltype(auto) impl(bio::detail::priority_tag<PRIO>,                                             \
+static constexpr decltype(auto) impl(meta::detail::priority_tag<PRIO>,                                               \
                                      [[maybe_unused]] t && v,                                                        \
                                      [[maybe_unused]] arg_ts && ... args)                                            \
     noexcept(noexcept(TERM))                                                                                         \
-    requires (requires (bio::detail::priority_tag<PRIO> const &/*<- need for doxygen*/, t && v, arg_ts && ... args)\
-    { { TERM }; })                                                                                                    \
+    requires (requires (meta::detail::priority_tag<PRIO> const &/*<- need for doxygen*/, t && v, arg_ts && ... args) \
+    { { TERM }; })                                                                                                   \
 {                                                                                                                    \
     return TERM;                                                                                                     \
 }

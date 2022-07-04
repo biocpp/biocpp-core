@@ -19,10 +19,10 @@
 #include <bio/meta/pod_tuple.hpp>
 #include <bio/meta/type_list/traits.hpp>
 
-namespace bio::detail
+namespace bio::meta::detail
 {
 
-/*!\brief Helper function for bio::tuple_split.
+/*!\brief Helper function for bio::meta::tuple_split.
  * \ingroup meta
  *
  * \tparam    beg     A template value containing the start position from where to extract the values.
@@ -44,7 +44,7 @@ constexpr auto tuple_split(tuple_t<ts...> const & t, std::index_sequence<Is...> 
     return tuple_t<std::tuple_element_t<beg + Is, tuple_t<ts...>>...>{std::get<beg + Is>(t)...};
 }
 
-//!\copydoc bio::detail::tuple_split
+//!\copydoc bio::meta::detail::tuple_split
 template <size_t beg, template <typename...> typename tuple_t, size_t... Is, typename... ts>
     //!\cond
     requires(tuple_like<tuple_t<ts...>> && tuple_like<tuple_t<>>)
@@ -53,9 +53,9 @@ constexpr auto tuple_split(tuple_t<ts...> && t, std::index_sequence<Is...> const
 {
     return tuple_t<std::tuple_element_t<beg + Is, tuple_t<ts...>>...>{std::move(std::get<beg + Is>(t))...};
 }
-} // namespace bio::detail
+} // namespace bio::meta::detail
 
-namespace bio
+namespace bio::meta
 {
 /*!\name Tuple utility functions
  * \brief Helper functions for tuple like objects.
@@ -101,7 +101,7 @@ constexpr auto tuple_split(tuple_t<ts...> const & t)
                    detail::tuple_split<pivot_c>(t, std::make_index_sequence<sizeof...(ts) - pivot_c>{})};
 }
 
-//!\copydoc bio::tuple_split
+//!\copydoc bio::meta::tuple_split
 template <size_t pivot_c, template <typename...> typename tuple_t, typename... ts>
     //!\cond
     requires tuple_like<tuple_t<ts...>>
@@ -179,4 +179,4 @@ constexpr auto tuple_pop_front(tuple_t && t)
 }
 //!\}
 
-} // namespace bio
+} // namespace bio::meta

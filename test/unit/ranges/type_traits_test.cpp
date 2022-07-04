@@ -6,16 +6,56 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
-
-#include <concepts>
 #include <forward_list>
-#include <iterator>
 #include <list>
 #include <ranges>
 #include <vector>
 
-#include <bio/meta/type_traits/iterator.hpp>
+#include <gtest/gtest.h>
+
+#include <bio/meta/detail/type_inspection.hpp>
+#include <bio/meta/type_list/all.hpp>
+#include <bio/meta/type_traits/all.hpp>
+#include <bio/ranges/detail/random_access_iterator.hpp>
+#include <bio/ranges/views/take_exactly.hpp>
+#include <bio/test/expect_same_type.hpp>
+
+TEST(range_and_iterator, range_innermost_value)
+{
+    using vector_of_int_vector = std::vector<std::vector<int>>;
+    using type_list_example = bio::meta::type_list<typename bio::range_innermost_value<std::vector<int>>::type, //long
+                                                   bio::range_innermost_value_t<std::vector<int>>,              //short
+                                                   bio::range_innermost_value_t<vector_of_int_vector>>; // two-level
+
+    using comp_list = bio::meta::type_list<int, int, int>;
+
+    EXPECT_SAME_TYPE(type_list_example, comp_list);
+}
+
+TEST(range_and_iterator, dimension)
+{
+    EXPECT_EQ(1u, bio::range_dimension_v<std::vector<int>>);
+    EXPECT_EQ(2u, bio::range_dimension_v<std::vector<std::vector<int>>>);
+}
+
+TEST(range_and_iterator, range_compatible)
+{
+    // true for "compatible" ranges
+    EXPECT_TRUE((bio::range_compatible<std::vector<int>, std::list<int>>));
+    EXPECT_TRUE((bio::range_compatible<std::list<std::vector<char>>, std::vector<std::string>>));
+
+    // false for un-"compatible" ranges
+    EXPECT_FALSE((bio::range_compatible<std::list<std::vector<char>>, std::string>));
+    EXPECT_FALSE((bio::range_compatible<std::list<int>, int>));
+    EXPECT_FALSE((bio::range_compatible<std::vector<int>, std::string>));
+
+    // compatible not defined on iterators
+    EXPECT_FALSE((bio::range_compatible<std::vector<int>, std::ranges::iterator_t<std::vector<int>>>));
+    EXPECT_FALSE((bio::range_compatible<std::vector<int>, std::ranges::iterator_t<std::vector<int> const>>));
+    EXPECT_FALSE(
+      (bio::range_compatible<std::list<std::vector<char>>, std::ranges::iterator_t<std::vector<std::string>>>));
+    EXPECT_FALSE((bio::range_compatible<std::list<std::vector<char>>, std::ranges::iterator_t<std::string>>));
+}
 
 template <typename iterator_t>
 concept iterator_traits_has_iterator_category = requires()
@@ -67,33 +107,31 @@ struct my_iterator : inherit_iterator_tag<base_t>
 };
 #endif // BIOCPP_WORKAROUND_GCC_96070
 
-#ifdef __cpp_lib_ranges // This is C++20 behaviour.
 TEST(iterator_category_tag_t, no_legacy_iterator)
 {
     {
         using view_t     = std::ranges::basic_istream_view<char, char, std::char_traits<char>>;
         using iterator_t = std::ranges::iterator_t<view_t>;
-#    if BIOCPP_WORKAROUND_GCC_96070
+#if BIOCPP_WORKAROUND_GCC_96070
         EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>, void>));
-#    else  // ^^^ workaround / no workaround vvv
+#else  // ^^^ workaround / no workaround vvv
         EXPECT_FALSE(has_iterator_category_tag_t<iterator_t>);
-#    endif // BIOCPP_WORKAROUND_GCC_96070
+#endif // BIOCPP_WORKAROUND_GCC_96070
         EXPECT_FALSE(iterator_traits_has_iterator_category<iterator_t>);
     }
 
     {
         using view_t     = std::ranges::basic_istream_view<char, char, std::char_traits<char>>;
         using iterator_t = my_iterator<std::ranges::iterator_t<view_t>>;
-#    if BIOCPP_WORKAROUND_GCC_96070
+#if BIOCPP_WORKAROUND_GCC_96070
         EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>, void>));
         EXPECT_TRUE((std::same_as<std::iterator_traits<iterator_t>::iterator_category, void>));
-#    else  // ^^^ workaround / no workaround vvv
+#else  // ^^^ workaround / no workaround vvv
         EXPECT_FALSE(has_iterator_category_tag_t<iterator_t>);
         EXPECT_FALSE(iterator_traits_has_iterator_category<iterator_t>);
-#    endif // BIOCPP_WORKAROUND_GCC_96070
+#endif // BIOCPP_WORKAROUND_GCC_96070
     }
 }
-#endif // __cpp_lib_ranges
 
 TEST(iterator_category_tag_t, output_iterator_tag)
 {
@@ -101,25 +139,25 @@ TEST(iterator_category_tag_t, output_iterator_tag)
     EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>, std::output_iterator_tag>));
 }
 
-TEST(iterator_category_tag_t, input_iterator_tag){{using iterator_t = std::istream_iterator<int>;
-EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>, std::input_iterator_tag>));
-EXPECT_TRUE((std::same_as<typename my_iterator<iterator_t>::iterator_category, std::input_iterator_tag>));
-}
-
-#ifdef __cpp_lib_ranges
+TEST(iterator_category_tag_t, input_iterator_tag)
 {
-    // std::views::transform will drop the iterator_category if the lambda doesn't return a lvalue.
-    // This is C++20 behaviour.
-    using range_t = std::vector<int>;
-    auto lambda   = [](auto & element) -> auto
     {
-        return element;
-    };
-    using view_t     = decltype(std::declval<range_t &>() | std::views::transform(lambda));
-    using iterator_t = std::ranges::iterator_t<view_t>;
-    EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>, std::input_iterator_tag>));
-}
-#endif // __cpp_lib_ranges
+        using iterator_t = std::istream_iterator<int>;
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>, std::input_iterator_tag>));
+        EXPECT_TRUE((std::same_as<typename my_iterator<iterator_t>::iterator_category, std::input_iterator_tag>));
+    }
+
+    {
+        // std::views::transform will drop the iterator_category if the lambda doesn't return a lvalue.
+        using range_t = std::vector<int>;
+        auto lambda   = [](auto & element) -> auto
+        {
+            return element;
+        };
+        using view_t     = decltype(std::declval<range_t &>() | std::views::transform(lambda));
+        using iterator_t = std::ranges::iterator_t<view_t>;
+        EXPECT_TRUE((std::same_as<bio::detail::iterator_category_tag_t<iterator_t>, std::input_iterator_tag>));
+    }
 }
 
 TEST(iterator_category_tag_t, forward_iterator_tag)

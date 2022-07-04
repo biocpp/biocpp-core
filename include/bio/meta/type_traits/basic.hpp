@@ -28,7 +28,7 @@
  */
 #define BIOCPP_IS_CONSTEXPR(...) std::integral_constant<bool, __builtin_constant_p((__VA_ARGS__, 0))>::value
 
-namespace bio
+namespace bio::meta
 {
 
 /*!\addtogroup type_traits
@@ -40,7 +40,7 @@ namespace bio
 // ----------------------------------------------------------------------------
 
 /*!\brief Return the input type with `&&` removed, but lvalue references preserved.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  * \tparam t The type to operate on.
  * \see bio::remove_rvalue_reference_t
  */
@@ -63,7 +63,7 @@ using remove_rvalue_reference_t = typename remove_rvalue_reference<t>::type;
 // ----------------------------------------------------------------------------
 
 /*!\brief Whether a type std::is_default_constructible in `constexpr`-context.
- * \implements bio::unary_type_trait
+ * \implements bio::meta::unary_type_trait
  * \tparam t The type to operate on.
  */
 template <typename t>
@@ -88,25 +88,15 @@ struct is_constexpr_default_constructible<t> : std::integral_constant<bool, BIOC
 template <typename t>
 inline constexpr bool is_constexpr_default_constructible_v = is_constexpr_default_constructible<t>::value;
 
-//!\}
-} // namespace bio
-
-namespace bio::detail
-{
-
-/*!\addtogroup type_traits
- * \{
- */
-
 // ----------------------------------------------------------------------------
 // deferred_type
 // ----------------------------------------------------------------------------
 
 /*!\brief Return the type identity; further arguments are ignored, but can make this type dependent if they are.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  * \tparam t The type to operate on.
  * \tparam dependent_ts Any provided types are ignored.
- * \see bio::detail::deferred_type_t
+ * \see bio::meta::deferred_type_t
  */
 template <typename t, typename... dependent_ts>
 struct deferred_type
@@ -119,7 +109,7 @@ struct deferred_type
  *        (transformation_trait shortcut).
  * \tparam t The type to operate on.
  * \tparam dependent_ts Any provided types are ignored.
- * \see bio::detail::deferred_type
+ * \see bio::meta::deferred_type
  */
 template <typename t, typename... dependent_ts>
 using deferred_type_t = typename deferred_type<t, dependent_ts...>::type;
@@ -136,11 +126,11 @@ using ignore_t = std::remove_cvref_t<decltype(std::ignore)>;
  * \tparam t The type to operate on.
  */
 template <typename t>
-constexpr bool decays_to_ignore_v = std::is_same_v<std::remove_cvref_t<t>, ignore_t>;
+inline constexpr bool decays_to_ignore_v = std::is_same_v<std::remove_cvref_t<t>, ignore_t>;
 
 //!\}
 
-} // namespace bio::detail
+} // namespace bio::meta
 
 // ----------------------------------------------------------------------------
 // BIOCPP_IS_SAME

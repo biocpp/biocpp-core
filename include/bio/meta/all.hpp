@@ -35,17 +35,17 @@
  * to most users of the library.
  */
 
-/*!\namespace bio
+/*!\namespace bio::meta
  * \brief The main BioC++ namespace.
  */
 
-/*!\namespace bio::custom
+/*!\namespace bio::meta::custom
  * \brief A namespace for third party and standard library specialisations of BioC++ customisation points.
  * \see \ref biocpp_customisation
  */
 
 /*!\if DEV
- * \namespace bio::detail
+ * \namespace bio::meta::detail
  * \brief The internal BioC++ namespace.
  * \details
  * The contents of this namespace are not visible to consumers of the library and the documentation is

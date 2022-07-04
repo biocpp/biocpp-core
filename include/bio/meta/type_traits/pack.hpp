@@ -17,14 +17,14 @@
 
 #include <bio/meta/platform.hpp>
 
-namespace bio::detail
+namespace bio::meta::detail
 {
 
 //!\addtogroup type_traits
 //!\{
 
 //!\brief Indicates whether the first template argument is contained in the remaining.
-//!\implements bio::unary_type_trait
+//!\implements bio::meta::unary_type_trait
 template <typename target_t, typename... pack>
 struct type_in_pack : std::false_type
 {};
@@ -46,4 +46,4 @@ inline constexpr bool type_in_pack_v = type_in_pack<target_t, pack...>::value;
 
 //!\}
 
-} // namespace bio::detail
+} // namespace bio::meta::detail

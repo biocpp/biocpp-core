@@ -43,16 +43,16 @@ public:
     //!\brief Operator definition.
     template <typename rna_structure_t>
         //!\cond
-        requires(requires(rna_structure_t const chr) { {impl(priority_tag<2>{}, chr)}; })
+        requires(requires(rna_structure_t const chr) { {impl(meta::detail::priority_tag<2>{}, chr)}; })
     //!\endcond
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
-        static_assert(noexcept(impl(priority_tag<2>{}, chr)),
+        static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, chr)),
                       "Only overloads that are marked noexcept are picked up by bio::is_pair_open().");
-        static_assert(std::same_as<bool, decltype(impl(priority_tag<2>{}, chr))>,
+        static_assert(std::same_as<bool, decltype(impl(meta::detail::priority_tag<2>{}, chr))>,
                       "The return type of your is_pair_open() implementation must be 'bool'.");
 
-        return impl(priority_tag<2>{}, chr);
+        return impl(meta::detail::priority_tag<2>{}, chr);
     }
 };
 
@@ -122,16 +122,16 @@ public:
     //!\brief Operator definition.
     template <typename rna_structure_t>
         //!\cond
-        requires(requires(rna_structure_t const chr) { {impl(priority_tag<2>{}, chr)}; })
+        requires(requires(rna_structure_t const chr) { {impl(meta::detail::priority_tag<2>{}, chr)}; })
     //!\endcond
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
-        static_assert(noexcept(impl(priority_tag<2>{}, chr)),
+        static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, chr)),
                       "Only overloads that are marked noexcept are picked up by bio::is_pair_close().");
-        static_assert(std::same_as<bool, decltype(impl(priority_tag<2>{}, chr))>,
+        static_assert(std::same_as<bool, decltype(impl(meta::detail::priority_tag<2>{}, chr))>,
                       "The return type of your is_pair_close() implementation must be 'bool'.");
 
-        return impl(priority_tag<2>{}, chr);
+        return impl(meta::detail::priority_tag<2>{}, chr);
     }
 };
 
@@ -201,16 +201,16 @@ public:
     //!\brief Operator definition.
     template <typename rna_structure_t>
         //!\cond
-        requires(requires(rna_structure_t const chr) { {impl(priority_tag<2>{}, chr)}; })
+        requires(requires(rna_structure_t const chr) { {impl(meta::detail::priority_tag<2>{}, chr)}; })
     //!\endcond
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
-        static_assert(noexcept(impl(priority_tag<2>{}, chr)),
+        static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, chr)),
                       "Only overloads that are marked noexcept are picked up by bio::is_unpaired().");
-        static_assert(std::same_as<bool, decltype(impl(priority_tag<2>{}, chr))>,
+        static_assert(std::same_as<bool, decltype(impl(meta::detail::priority_tag<2>{}, chr))>,
                       "The return type of your is_unpaired() implementation must be 'bool'.");
 
-        return impl(priority_tag<2>{}, chr);
+        return impl(meta::detail::priority_tag<2>{}, chr);
     }
 };
 
@@ -276,32 +276,34 @@ void max_pseudoknot_depth(args_t...) = delete;
 template <typename alph_t,
           typename s_alph_t =
             std::conditional_t<std::is_nothrow_default_constructible_v<std::remove_cvref_t<alph_t>> &&
-                                 bio::is_constexpr_default_constructible_v<std::remove_cvref_t<alph_t>>,
+                                 bio::meta::is_constexpr_default_constructible_v<std::remove_cvref_t<alph_t>>,
                                std::remove_cvref_t<alph_t>,
                                std::type_identity<alph_t>>>
 struct max_pseudoknot_depth_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, (deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::max_pseudoknot_depth)) // custom
-    BIOCPP_CPO_IMPL(1, (max_pseudoknot_depth(v)))                                                           // ADL
-    BIOCPP_CPO_IMPL(0, (deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::max_pseudoknot_depth))   // member
+    BIOCPP_CPO_IMPL(2,
+                    (meta::deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::max_pseudoknot_depth)) // custom
+    BIOCPP_CPO_IMPL(1, (max_pseudoknot_depth(v)))                                                              // ADL
+    BIOCPP_CPO_IMPL(0,
+                    (meta::deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::max_pseudoknot_depth)) // member
 
 public:
     //!\brief Operator definition.
     template <typename dummy = int>
         //!\cond
-        requires(requires { {impl(priority_tag<2>{}, s_alph_t{}, dummy{})}; })
+        requires(requires { {impl(meta::detail::priority_tag<2>{}, s_alph_t{}, dummy{})}; })
     //!\endcond
     constexpr auto operator()() const noexcept
     {
-        static_assert(noexcept(impl(priority_tag<2>{}, s_alph_t{})),
+        static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, s_alph_t{})),
                       "Only overloads that are marked noexcept are picked up by bio::max_pseudoknot_depth.");
-        static_assert(std::constructible_from<size_t, decltype(impl(priority_tag<2>{}, s_alph_t{}))>,
+        static_assert(std::constructible_from<size_t, decltype(impl(meta::detail::priority_tag<2>{}, s_alph_t{}))>,
                       "The return type of your max_pseudoknot_depth implementation must be convertible to size_t.");
-        static_assert(BIOCPP_IS_CONSTEXPR(impl(priority_tag<2>{}, s_alph_t{})),
+        static_assert(BIOCPP_IS_CONSTEXPR(impl(meta::detail::priority_tag<2>{}, s_alph_t{})),
                       "Only overloads that are marked constexpr are picked up by bio::max_pseudoknot_depth.");
 
-        return impl(priority_tag<2>{}, s_alph_t{});
+        return impl(meta::detail::priority_tag<2>{}, s_alph_t{});
     }
 };
 
@@ -392,17 +394,17 @@ public:
     //!\brief Operator definition.
     template <typename rna_structure_t>
         //!\cond
-        requires(requires(rna_structure_t const chr) { {impl(priority_tag<2>{}, chr)}; })
+        requires(requires(rna_structure_t const chr) { {impl(meta::detail::priority_tag<2>{}, chr)}; })
     //!\endcond
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
-        static_assert(noexcept(impl(priority_tag<2>{}, chr)),
+        static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, chr)),
                       "Only overloads that are marked noexcept are picked up by bio::pseudoknot_id().");
         static_assert(
-          std::constructible_from<std::optional<size_t>, decltype(impl(priority_tag<2>{}, chr))>,
+          std::constructible_from<std::optional<size_t>, decltype(impl(meta::detail::priority_tag<2>{}, chr))>,
           "The return type of your pseudoknot_id() implementation must be convertible to std::optional<size_t>.");
 
-        return impl(priority_tag<2>{}, chr);
+        return impl(meta::detail::priority_tag<2>{}, chr);
     }
 };
 

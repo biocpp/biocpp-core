@@ -16,9 +16,9 @@
 #include <stdexcept>
 #include <vector>
 
-#include <bio/meta/type_traits/range.hpp>
 #include <bio/ranges/container/small_string.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
+#include <bio/ranges/type_traits.hpp>
 #include <bio/ranges/views/translate.hpp>
 #include <concepts>
 #include <ranges>

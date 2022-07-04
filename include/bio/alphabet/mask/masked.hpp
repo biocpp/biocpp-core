@@ -24,8 +24,8 @@ namespace bio
  * \ingroup mask
  * \implements bio::writable_alphabet
  * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
- * \implements bio::trivially_copyable
- * \implements bio::standard_layout
+ * \implements bio::meta::trivially_copyable
+ * \implements bio::meta::standard_layout
  * \implements std::regular
  *
  * \tparam sequence_alphabet_t Type of the first letter; must satisfy bio::writable_alphabet and std::regular.
@@ -109,9 +109,9 @@ protected:
     }();
 
     //!\brief Char to rank conversion table.
-    static constexpr std::array<rank_type, detail::size_in_values_v<char_type>> char_to_rank = []()
+    static constexpr std::array<rank_type, meta::detail::size_in_values_v<char_type>> char_to_rank = []()
     {
-        std::array<rank_type, detail::size_in_values_v<char_type>> ret{};
+        std::array<rank_type, meta::detail::size_in_values_v<char_type>> ret{};
 
         for (size_t i = 0; i < 256; ++i)
         {

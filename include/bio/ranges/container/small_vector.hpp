@@ -52,13 +52,13 @@ public:
     /*!\name Associated types
      * \{
      */
-    using value_type      = value_type_;                          //!< The value_type type.
-    using reference       = value_type &;                         //!< The reference type.
-    using const_reference = value_type const &;                   //!< The const_reference type.
-    using iterator        = value_type *;                         //!< The iterator type.
-    using const_iterator  = value_type const *;                   //!< The const_iterator type.
-    using difference_type = ptrdiff_t;                            //!< The difference_type type.
-    using size_type       = detail::min_viable_uint_t<capacity_>; //!< The size_type type.
+    using value_type      = value_type_;                                //!< The value_type type.
+    using reference       = value_type &;                               //!< The reference type.
+    using const_reference = value_type const &;                         //!< The const_reference type.
+    using iterator        = value_type *;                               //!< The iterator type.
+    using const_iterator  = value_type const *;                         //!< The const_iterator type.
+    using difference_type = ptrdiff_t;                                  //!< The difference_type type.
+    using size_type       = meta::detail::min_viable_uint_t<capacity_>; //!< The size_type type.
 
     //!\}
 

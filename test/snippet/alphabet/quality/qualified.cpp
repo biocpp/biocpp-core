@@ -6,7 +6,6 @@
 int main()
 {
     using bio::operator""_dna4;
-    using bio::get;
 
     bio::qualified<bio::dna4, bio::phred42> letter{'A'_dna4, bio::phred42{7}};
     fmt::print("{} {} {}\n",

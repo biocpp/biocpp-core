@@ -131,6 +131,10 @@ jobs:
       - name: Install compiler ${{ matrix.cxx }}
         run: sudo apt-get install --yes ${{ matrix.cxx }}
 
+      - name: Install documentation deps
+        if: matrix.build == 'documentation'
+        run: sudo apt-get install --yes texlive-font-utils ghostscript texlive-latex-extra graphviz
+
       - name: Install gcovr
         if: matrix.build == 'coverage'
         env:
@@ -175,7 +179,7 @@ jobs:
           make -k -j2
           ccache -sv
       - name: Run tests
-        if: matrix.build != 'coverage' && matrix.build != 'documentation'
+        if: matrix.build != 'coverage'
         run: |
           cd biocpp-core-build
           ctest . -j2 --output-on-failure

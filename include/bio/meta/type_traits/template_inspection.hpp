@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides bio::type_list and auxiliary type traits.
+ * \brief Provides various traits to inspect templates.
  */
 
 #pragma once
@@ -17,7 +17,7 @@
 
 #include <concepts>
 
-namespace bio::detail
+namespace bio::meta
 {
 
 // ----------------------------------------------------------------------------
@@ -31,22 +31,22 @@ struct transfer_template_args_onto
 //!\endcond
 
 /*!\brief Extracts a type template's **type** arguments and specialises another template with them.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  * \ingroup type_traits
  * \tparam source_template   The source type; must be a specialisation of a template.
  * \tparam target_template   The type template you wish to specialise.
  * \tparam source_arg_types  The **type** arguments to the source_template (deduced implicitly).
- * \see bio::detail::transfer_template_vargs_onto
+ * \see bio::meta::transfer_template_vargs_onto
  *
  * \details
  *
- * Among other use cases, it enables using the types contained in a bio::type_list to specialise another type
+ * Among other use cases, it enables using the types contained in a bio::meta::type_list to specialise another type
  * template.
  *
- * A type trait shortcut is also defined: bio::detail::transfer_template_args_onto_t
+ * A type trait shortcut is also defined: bio::meta::transfer_template_args_onto_t
  *
  * This type trait works for templates that have **only type-arguments**. See
- * bio::detail::transfer_template_vargs_onto for a type trait that transfers non-type arguments. There is
+ * bio::meta::transfer_template_vargs_onto for a type trait that transfers non-type arguments. There is
  * no type trait that can handle a combination of type and non-type arguments.
  * If the `source_type` is a not a template class, e.g. an `int`, the member type `type` is not defined.
  *
@@ -67,9 +67,9 @@ struct transfer_template_args_onto<source_template<source_arg_types...>, target_
     using type = target_template<source_arg_types...>;
 };
 
-/*!\brief Shortcut for bio::detail::transfer_template_args_onto (transformation_trait shortcut).
+/*!\brief Shortcut for bio::meta::transfer_template_args_onto (transformation_trait shortcut).
  * \ingroup type_traits
- * \see bio::detail::transfer_template_args_onto
+ * \see bio::meta::transfer_template_args_onto
  */
 template <typename source_type, template <typename...> typename target_template>
 using transfer_template_args_onto_t = typename transfer_template_args_onto<source_type, target_template>::type;
@@ -85,19 +85,19 @@ struct transfer_template_vargs_onto
 //!\endcond
 
 /*!\brief Extracts a type template's **non-type** arguments and specialises another template with them.
- * \implements bio::transformation_trait
+ * \implements bio::meta::transformation_trait
  * \ingroup type_traits
  * \tparam source_template   The source type; must be a specialisation of a template.
  * \tparam target_template   The type template you wish to specialise.
  * \tparam source_varg_types The **non-type** arguments to the source_template (deduced implicitly).
- * \see bio::detail::transfer_template_vargs_onto
+ * \see bio::meta::transfer_template_vargs_onto
  *
  * \details
  *
- * A shortcut is also defined: bio::detail::transfer_template_vargs_onto_t
+ * A shortcut is also defined: bio::meta::transfer_template_vargs_onto_t
  *
  * This transformation trait works for templates that have **only non-type-arguments**. See
- * bio::detail::transfer_template_args_onto for a transformation trait that transfers type arguments. There is
+ * bio::meta::transfer_template_args_onto for a transformation trait that transfers type arguments. There is
  * no transformation trait that can handle a combination of type and non-type arguments.
  * If the `source_type` is a not a template class, e.g. an `int`, the member type `type` is not defined.
  */
@@ -114,9 +114,9 @@ struct transfer_template_vargs_onto<source_template<source_varg_types...>, targe
     using type = target_template<source_varg_types...>;
 };
 
-/*!\brief Shortcut for bio::detail::transfer_template_vargs_onto (transformation_trait shortcut).
+/*!\brief Shortcut for bio::meta::transfer_template_vargs_onto (transformation_trait shortcut).
  * \ingroup type_traits
- * \see bio::detail::transfer_template_vargs_onto
+ * \see bio::meta::transfer_template_vargs_onto
  */
 template <typename source_type, template <auto...> typename target_template>
 using transfer_template_vargs_onto_t = typename transfer_template_vargs_onto<source_type, target_template>::type;
@@ -126,7 +126,7 @@ using transfer_template_vargs_onto_t = typename transfer_template_vargs_onto<sou
 // ----------------------------------------------------------------------------
 
 /*!\brief Determines whether a source_type is a specialisation of another template.
- * \implements bio::unary_type_trait
+ * \implements bio::meta::unary_type_trait
  * \ingroup type_traits
  * \tparam source_type      The source type.
  * \tparam target_template  The type template you wish to compare against (must take only types as template arguments).
@@ -151,8 +151,8 @@ struct is_type_specialisation_of<source_t, target_template> :
   std::is_same<source_t, transfer_template_args_onto_t<source_t, target_template>>
 {};
 
-/*!\brief Helper variable template for bio::detail::is_type_specialisation_of (unary_type_trait shortcut).
- * \relates bio::detail::is_type_specialisation_of
+/*!\brief Helper variable template for bio::meta::detail::is_type_specialisation_of (unary_type_trait shortcut).
+ * \relates bio::meta::detail::is_type_specialisation_of
  * \tparam source_type      The source type.
  * \tparam target_template  The type template you wish to compare against (must take only types as template arguments).
  */
@@ -163,15 +163,15 @@ inline constexpr bool is_type_specialisation_of_v = is_type_specialisation_of<so
 // template_specialisation_of
 // ----------------------------------------------------------------------------
 
-/*!\interface bio::detail::template_specialisation_of <>
- * \brief Provides concept `bio::template_specialisation_of<mytype, [...]>` for checking the type specialisation of
+/*!\interface bio::meta::template_specialisation_of <>
+ * \brief Provides concept `bio::meta::template_specialisation_of<mytype, [...]>` for checking the type specialisation of
  *        some type with a given template, for example a specialized `type_list<float>` with the `type_list` template.
- * \ingroup meta
+ * \ingroup type_traits
  *
  * \tparam mytype           The query type.
  * \tparam type_template    The type template you wish to compare against mytype.
  *
- * \see bio::detail::is_type_specialisation_of_v
+ * \see bio::meta::detail::is_type_specialisation_of_v
  *
  * ### Example
  *
@@ -192,13 +192,13 @@ struct is_value_specialisation_of : std::false_type
 //!\endcond
 
 /*!\brief Determines whether a source_type is a specialisation of another template.
- * \implements bio::unary_type_trait
+ * \implements bio::meta::unary_type_trait
  * \ingroup type_traits
  * \tparam source_type      The source type.
  * \tparam target_template  The type template you wish to compare against (must take only non-types as template
  * arguments).
- * \see bio::detail::is_type_specialisation_of
- * \see bio::detail::is_value_specialisation_of_v
+ * \see bio::meta::is_type_specialisation_of
+ * \see bio::meta::is_value_specialisation_of_v
  */
 template <typename source_t, template <auto...> typename target_template>
     //!\cond
@@ -209,8 +209,8 @@ struct is_value_specialisation_of<source_t, target_template> :
   std::is_same<source_t, transfer_template_vargs_onto_t<source_t, target_template>>
 {};
 
-/*!\brief Helper variable template for bio::detail::is_value_specialisation_of (unary_type_trait shortcut).
- * \relates bio::detail::is_value_specialisation_of
+/*!\brief Helper variable template for bio::meta::is_value_specialisation_of (unary_type_trait shortcut).
+ * \relates bio::meta::is_value_specialisation_of
  * \tparam source_type      The source type.
  * \tparam target_template  The type template you wish to compare against (must take only types as template arguments).
  */
@@ -219,8 +219,8 @@ inline constexpr bool is_value_specialisation_of_v = is_value_specialisation_of<
 
 /*!
  * \brief Exposes `templ_t<spec_t...>` if that is valid, otherwise `fallback_t`.
- * \implements bio::transformation_trait
- * \see bio::detail::valid_template_spec_or_t
+ * \implements bio::meta::transformation_trait
+ * \see bio::meta::valid_template_spec_or_t
  * \ingroup type_traits
  * \tparam fallback_t The fallback type.
  * \tparam templ_t    The type template that should be specialised.
@@ -244,9 +244,9 @@ struct valid_template_spec_or<fallback_t, templ_t, spec_t...>
     using type = templ_t<spec_t...>;
 };
 
-/*!\brief Helper for bio::detail::valid_template_spec_or (transformation_trait shortcut).
+/*!\brief Helper for bio::meta::valid_template_spec_or (transformation_trait shortcut).
  * \ingroup type_traits
- * \see bio::detail::valid_template_spec_or
+ * \see bio::meta::valid_template_spec_or
  * \tparam fallback_t The fallback type.
  * \tparam templ_t    The type template that should be specialised.
  * \tparam spec_t     The specialisation for the type template.
@@ -259,9 +259,11 @@ using valid_template_spec_or_t = typename valid_template_spec_or<fallback_t, tem
 // ----------------------------------------------------------------------------
 
 /*!\brief A transformation trait shortcut that returns the type inside a std::type_identity or the type itself.
+ * \ingroup type_traits
  * \tparam t The type to operate on.
  */
 template <typename t>
 using strip_type_identity_t =
   std::conditional_t<is_type_specialisation_of_v<t, std::type_identity>, transformation_trait_or_t<t, void>, t>;
-} // namespace bio::detail
+
+} // namespace bio::meta

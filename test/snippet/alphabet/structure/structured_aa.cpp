@@ -6,7 +6,6 @@ int main()
 {
     using bio::operator""_aa27;
     using bio::operator""_dssp9;
-    using bio::get;
 
     bio::structured_aa<bio::aa27, bio::dssp9> letter{'W'_aa27, 'B'_dssp9};
 

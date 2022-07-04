@@ -27,10 +27,10 @@ struct D
 
 TEST(transformation_trait_or, transformation_trait_or)
 {
-    using a_type                    = bio::detail::transformation_trait_or_t<A, void>;
-    using b_transformation_trait_or = bio::detail::transformation_trait_or_t<B, void>;
-    using c_transformation_trait_or = bio::detail::transformation_trait_or_t<C, double>;
-    using d_transformation_trait_or = bio::detail::transformation_trait_or<D, B>::type;
+    using a_type                    = bio::meta::transformation_trait_or_t<A, void>;
+    using b_transformation_trait_or = bio::meta::transformation_trait_or_t<B, void>;
+    using c_transformation_trait_or = bio::meta::transformation_trait_or_t<C, double>;
+    using d_transformation_trait_or = bio::meta::transformation_trait_or<D, B>::type;
 
     EXPECT_TRUE((std::is_same_v<a_type, int>));
     EXPECT_TRUE((std::is_same_v<b_transformation_trait_or, void>));

@@ -14,11 +14,11 @@
 #pragma once
 
 #include <cmath>
+#include <ranges>
 
 #include <bio/meta/type_traits/transformation_trait_or.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/views/detail.hpp>
-#include <ranges>
 
 namespace bio::detail
 {
@@ -56,7 +56,7 @@ private:
     using iterator = basic_iterator<underlying_range_type>;
     //!\brief The const iterator type. Evaluates to void if the underlying range is not const iterable.
     using const_iterator =
-      transformation_trait_or_t<std::type_identity<basic_iterator<underlying_range_type const>>, void>;
+      meta::transformation_trait_or_t<std::type_identity<basic_iterator<underlying_range_type const>>, void>;
     //!\}
 
 public:

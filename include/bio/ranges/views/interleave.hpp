@@ -69,9 +69,9 @@ private:
       std::common_reference_t<std::ranges::range_reference_t<urng_t>, std::ranges::range_reference_t<inserted_rng_t>>;
     //!\brief The const_reference type is equal to the reference type.
     using const_reference =
-      detail::transformation_trait_or_t<std::common_reference<std::ranges::range_reference_t<urng_t const>,
-                                                              std::ranges::range_reference_t<inserted_rng_t const>>,
-                                        void>;
+      meta::transformation_trait_or_t<std::common_reference<std::ranges::range_reference_t<urng_t const>,
+                                                            std::ranges::range_reference_t<inserted_rng_t const>>,
+                                      void>;
     //!\brief The value_type (which equals the reference_type with any references removed).
     using value_type      = std::ranges::range_value_t<urng_t>;
     //!\brief A signed integer type, usually std::ptrdiff_t.

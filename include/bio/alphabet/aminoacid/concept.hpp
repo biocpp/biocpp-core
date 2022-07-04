@@ -51,24 +51,25 @@ struct enable_aminoacid_dispatcher
 {
 public:
     // explicit customisation
-    BIOCPP_CPO_IMPL(2, std::bool_constant<bio::custom::alphabet<strip_type_identity_t<t>>::enable_aminoacid>::value)
+    BIOCPP_CPO_IMPL(2,
+                    std::bool_constant<bio::custom::alphabet<meta::strip_type_identity_t<t>>::enable_aminoacid>::value)
     // ADL
     BIOCPP_CPO_IMPL(1, std::bool_constant<enable_aminoacid(t{})>::value)
     // default: derived from base class or not (valid for any type)
-    BIOCPP_CPO_IMPL(0, (std::is_base_of_v<bio::aminoacid_empty_base, strip_type_identity_t<t>>))
+    BIOCPP_CPO_IMPL(0, (std::is_base_of_v<bio::aminoacid_empty_base, meta::strip_type_identity_t<t>>))
 
     //!\brief Main dispatching function.
     template <typename alph_t>
     static constexpr bool dispatch() noexcept
     {
         if constexpr (std::is_nothrow_default_constructible_v<alph_t> &&
-                      bio::is_constexpr_default_constructible_v<alph_t>)
+                      meta::is_constexpr_default_constructible_v<alph_t>)
         {
-            return impl(priority_tag<2>{}, alph_t{});
+            return impl(meta::detail::priority_tag<2>{}, alph_t{});
         }
         else
         {
-            return impl(priority_tag<2>{}, std::type_identity<alph_t>{});
+            return impl(meta::detail::priority_tag<2>{}, std::type_identity<alph_t>{});
         }
     }
 };
@@ -105,7 +106,7 @@ namespace bio
  * to `bool`.
  * Implementations of 2. are required to be marked `noexcept`. The value passed to functions implementing 2.
  * shall be ignored, it is only used for finding the function via argument-dependent lookup.
- * In case that your type is not bio::is_constexpr_default_constructible_v and you wish to provide an implementation
+ * In case that your type is not bio::meta::is_constexpr_default_constructible_v and you wish to provide an implementation
  * for 2., instead overload for `std::type_identity<t>`.
  *
  * To make a type model bio::aminoacid_alphabet, it is recommended that you derive from bio::aminoacid_base.

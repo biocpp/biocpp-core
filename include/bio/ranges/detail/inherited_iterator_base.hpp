@@ -17,7 +17,7 @@
 #include <type_traits>
 
 #include <bio/meta/detail/empty_type.hpp>
-#include <bio/meta/type_traits/iterator.hpp>
+#include <bio/ranges/type_traits.hpp>
 #include <iterator>
 
 namespace bio::detail
@@ -48,7 +48,7 @@ namespace bio::detail
  */
 template <typename derived_t, std::input_or_output_iterator base_t>
 class inherited_iterator_base :
-  public std::conditional_t<std::is_pointer_v<base_t> || !std::semiregular<base_t>, empty_type, base_t>
+  public std::conditional_t<std::is_pointer_v<base_t> || !std::semiregular<base_t>, meta::detail::empty_type, base_t>
 {
 private:
     //!\brief Whether this iterator inherits or wraps.
@@ -393,7 +393,7 @@ public:
 
 private:
     //!\brief If the base is a pointer, we wrap it instead of inheriting.
-    std::conditional_t<wrap_base, base_t, empty_type> member;
+    std::conditional_t<wrap_base, base_t, meta::detail::empty_type> member;
 
     //!\brief Befriend the derived type so it can access the private members.
     friend derived_t;

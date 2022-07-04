@@ -41,14 +41,18 @@ public:
     template <typename nucleotide_t>
         //!\cond
         requires(requires(nucleotide_t const nucl) {
-            {impl(priority_tag<2>{}, nucl)};
-            requires noexcept(impl(priority_tag<2>{}, nucl));
-            // requires std::common_with<decltype(impl(priority_tag<2>{}, nucl)), nucleotide_t>; // triggers an ICE
-            requires alphabet<decltype(impl(priority_tag<2>{}, nucl))>;
-            {impl(priority_tag<2>{}, impl(priority_tag<2>{}, nucl))}; // you can take the complement again
+            {impl(meta::detail::priority_tag<2>{}, nucl)};
+            requires noexcept(impl(meta::detail::priority_tag<2>{}, nucl));
+            // requires std::common_with<decltype(impl(meta::detail::priority_tag<2>{}, nucl)), nucleotide_t>; // triggers an ICE
+            requires alphabet<decltype(impl(meta::detail::priority_tag<2>{}, nucl))>;
+            {impl(meta::detail::priority_tag<2>{},
+                  impl(meta::detail::priority_tag<2>{}, nucl))}; // you can take the complement again
         })
     //!\endcond
-    constexpr auto operator()(nucleotide_t const nucl) const noexcept { return impl(priority_tag<2>{}, nucl); }
+    constexpr auto operator()(nucleotide_t const nucl) const noexcept
+    {
+        return impl(meta::detail::priority_tag<2>{}, nucl);
+    }
 };
 
 } // namespace bio::detail::adl_only

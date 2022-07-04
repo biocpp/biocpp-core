@@ -18,7 +18,7 @@
 #include <bio/alphabet/aminoacid/aa27.hpp>
 #include <bio/alphabet/aminoacid/translation_details.hpp>
 #include <bio/alphabet/aminoacid/translation_genetic_code.hpp>
-#include <bio/meta/type_traits/range.hpp>
+#include <bio/ranges/type_traits.hpp>
 
 namespace bio
 {

@@ -77,14 +77,14 @@
  * To solve this problem, alphabets in BioC++ define two interfaces:
  *
  *   1. a **rank based interface** with
- *     * bio::to_rank to produce the numerical representation;
- *     * bio::assign_rank_to to assign from the numerical representation;
+ *     * bio::to_rank() to produce the numerical representation;
+ *     * bio::assign_rank_to() to assign from the numerical representation;
  *     * the numerical representation is an unsigned integral type like `size_t`; the exact type can be retrieved via
  *       the bio::alphabet_rank_t.
  *   2. a **character based interface** with
- *     * bio::to_char to produce the visual representation;
- *     * bio::assign_char_to to assign from the visual representation;
- *     * bio::char_is_valid_for that checks whether a character value has a one-to-one mapping to an alphabet value;
+ *     * bio::to_char() to produce the visual representation;
+ *     * bio::assign_char_to() to assign from the visual representation;
+ *     * bio::char_is_valid_for() that checks whether a character value has a one-to-one mapping to an alphabet value;
  *     * the visual representation is a character type (almost always `char`, but could be `char16_t` or `char32_t`,
  *       as well); the exact type can be retrieved via bio::alphabet_char_t.
  *
@@ -125,17 +125,17 @@
  * bio::writable_alphabet whenever the values might be changed.
  * Semi-alphabets are less useful in application code.
  *
- * |                                                            | [semialphabet](@ref bio::semialphabet) | [writable_semialphabet](@ref bio::writable_semialphabet) | [alphabet](@ref bio::alphabet) | [writable_alphabet](@ref bio::writable_alphabet) | Aux |
- * |-----------------------------------------------------------:|:------------------------------------:|:------------------------------------------------------:|:----------------------------:|:----------------------------------------------:|:---:|
- * | [alphabet_size](@ref bio::alphabet_size)                     | ✅                                    | ✅                                                      | ✅                            | ✅                                               |     |
- * | [to_rank](@ref bio::to_rank)                                 | ✅                                    | ✅                                                      | ✅                            | ✅                                               |     |
- * | [alphabet_rank_t](@ref bio::alphabet_rank_t)                 | ✅                                    | ✅                                                      | ✅                            | ✅                                               |  🔗  |
- * | [assign_rank_to](@ref bio::assign_rank_to)                   |                                      | ✅                                                      |                              | ✅                                               |     |
- * | [to_char](@ref bio::to_char)                                 |                                      |                                                        | ✅                            | ✅                                               |     |
- * | [alphabet_char_t](@ref bio::alphabet_char_t)                 |                                      |                                                        | ✅                            | ✅                                               |  🔗  |
- * | [assign_char_to](@ref bio::assign_char_to)                   |                                      |                                                        |                              | ✅                                               |     |
- * | [char_is_valid_for](@ref bio::char_is_valid_for)             |                                      |                                                        |                              | ✅                                               |     |
- * | [assign_char_strictly_to](@ref bio::assign_char_strictly_to) |                                      |                                                        |                              | ✅                                               |  🔗  |
+ * |                                | [semialphabet](\ref bio::semialphabet) | [writable_semialphabet](\ref bio::writable_semialphabet) | [alphabet](\ref bio::alphabet) | [writable_alphabet](\ref bio::writable_alphabet) | Aux |
+ * |-------------------------------:|:------------------------------------:|:------------------------------------------------------:|:----------------------------:|:----------------------------------------------:|:---:|
+ * | bio::alphabet_size             | ✅                                    | ✅                                                      | ✅                            | ✅                                               |     |
+ * | bio::to_rank()                 | ✅                                    | ✅                                                      | ✅                            | ✅                                               |     |
+ * | bio::alphabet_rank_t           | ✅                                    | ✅                                                      | ✅                            | ✅                                               |  🔗  |
+ * | bio::assign_rank_to()          |                                      | ✅                                                      |                              | ✅                                               |     |
+ * | bio::to_char()                 |                                      |                                                        | ✅                            | ✅                                               |     |
+ * | bio::alphabet_char_t           |                                      |                                                        | ✅                            | ✅                                               |  🔗  |
+ * | bio::assign_char_to()          |                                      |                                                        |                              | ✅                                               |     |
+ * | bio::char_is_valid_for()       |                                      |                                                        |                              | ✅                                               |     |
+ * | bio::assign_char_strictly_to() |                                      |                                                        |                              | ✅                                               |  🔗  |
  *
  * The above table shows all alphabet concepts and related functions and type traits.
  * The entities marked as "auxiliary" provide shortcuts to the other "essential" entities.
@@ -154,7 +154,7 @@
  * that accepts different alphabet types, you need to use the free function / type trait interface, because
  * it is the only interface guaranteed to exist (member functions are **not** required/enforced by the concept).
  *
- * # containers over alphabets
+ * # Containers over alphabets
  *
  * In BioC++ it is recommended you use the STL container classes like std::vector for storing sequence data,
  * but you can use other class templates if they satisfy the respective bio::container, e.g. `std::deque` or

@@ -56,7 +56,7 @@ namespace bio::views
  * | std::ranges::output_range        |                                  | *lost*                                                             |
  * | bio::const_iterable_range     |                                  | *preserved*                                                        |
  * |                                  |                                  |                                                                    |
- * | std::ranges::range_reference_t   | bio::builtin_character        | bio::remove_reference_t<std::ranges::range_reference_t<urngt_>> |
+ * | std::ranges::range_reference_t   | bio::meta::builtin_character        | bio::remove_reference_t<std::ranges::range_reference_t<urngt_>> |
   *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
@@ -67,8 +67,8 @@ namespace bio::views
 inline auto const to_upper = deep{std::views::transform(
   [](auto const in) noexcept
   {
-      static_assert(builtin_character<std::remove_cvref_t<decltype(in)>>,
-                    "The value type of bio::views::to_upper must model the bio::builtin_character.");
+      static_assert(meta::builtin_character<std::remove_cvref_t<decltype(in)>>,
+                    "The value type of bio::views::to_upper must model the bio::meta::builtin_character.");
       return detail::to_upper(in);
   })};
 
