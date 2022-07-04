@@ -14,13 +14,13 @@
 
 #pragma once
 
+#include <ranges>
 #include <tuple>
 
 #include <bio/meta/type_traits/basic.hpp>
 #include <bio/ranges/type_traits.hpp>
-#include <ranges>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 // ============================================================================
@@ -61,16 +61,16 @@ class combined_adaptor;
  * \snippet include/bio/ranges/views/persist.hpp adaptor_def
  *
  * This adaptor directly derives from adaptor_base (instead of just using
- * `bio::detail::adaptor_for_view_without_args`) so that it can decide between
+ * `bio::ranges::detail::adaptor_for_view_without_args`) so that it can decide between
  * actually calling the respective view's constructor and delegating to a different view
  * (in this case `std::views::all`) based on the type of input.
  *
  * ## Derived templates
  *
  * * `bio::detail::combined_adaptor` : Combine two adaptor closure objects into a new one.
- * * `bio::detail::adaptor_for_view_without_args` : Create an adaptor closure object for a view that doesn't require
+ * * `bio::ranges::detail::adaptor_for_view_without_args` : Create an adaptor closure object for a view that doesn't require
  *   args.
- * * `bio::detail::adaptor_from_functor` : Create an adaptor closure object with possibly stored arguments that
+ * * `bio::ranges::detail::adaptor_from_functor` : Create an adaptor closure object with possibly stored arguments that
  *   delegates to a functor, usually a stored proto-adaptor (for view classes that require arguments or adaptors that
  *   just forward to other adaptors).
  * * `bio::views::deep` : Wraps an adaptor closure object or proto adaptor object and modifies the behaviour.
@@ -265,18 +265,18 @@ public:
  * \details
  *
  * Use this adaptor template when you always want to delegate to the view's constructor and you have no arguments.
- * Since it's a one-line it's easier than specialising bio::detail::adaptor_base.
+ * Since it's a one-line it's easier than specialising bio::ranges::detail::adaptor_base.
  *
  * # Example
  *
  * (from include/bio/ranges/views/single_pass_input.hpp)
  *
- * This is the signature of the view type template in namespace bio::detail:
+ * This is the signature of the view type template in namespace bio::ranges::detail:
  *
  * \snippet include/bio/ranges/views/single_pass_input.hpp view_def
  *
  * This is the definition of the range adaptor closure object, it will always delegate to the
- * constructor: bio::detail::single_pass_input_view::single_pass_input_view():
+ * constructor: bio::ranges::detail::single_pass_input_view::single_pass_input_view():
  *
  * \snippet include/bio/ranges/views/single_pass_input.hpp adaptor_def
  */
@@ -404,4 +404,4 @@ public:
     //!\}
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail

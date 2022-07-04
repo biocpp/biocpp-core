@@ -17,7 +17,7 @@
 #include <bio/meta/type_traits/basic.hpp>
 #include <ranges>
 
-namespace bio::views
+namespace bio::ranges::views
 {
 /*!\name General purpose views
  * \{
@@ -51,7 +51,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                       | *preserved*                                                        |
  * | std::ranges::common_range        |                                       | *preserved*                                                        |
  * | std::ranges::output_range        |                                       | *preserved*                                                        |
- * | bio::const_iterable_range     |                                       | *preserved*                                                        |
+ * | bio::ranges::const_iterable_range     |                                       | *preserved*                                                        |
  * |                                  |                                       |                                                                    |
  * | std::ranges::range_reference_t   | bio::meta::tuple_like                    | std::tuple_element_t<index, std::ranges::range_reference_t<urng_t>>|
  *
@@ -80,4 +80,4 @@ inline auto const get = std::views::transform(
 
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

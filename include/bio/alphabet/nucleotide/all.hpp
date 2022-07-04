@@ -68,7 +68,7 @@
  *   3. if you use specialised algorithms that profit from a 2-bit representation, use bio::dna4
  *   4. if you are doing only RNA input/output, use the respective bio::rna* type
  *   5. to actually save space from using smaller alphabets, you need a compressed container (e.g.
- *      bio::bitcompressed_vector)
+ *      bio::ranges::bitcompressed_vector)
  *   6. if you are working with bisulfite data use bio::dna3bs
  *
  * ###Printing and conversion to char

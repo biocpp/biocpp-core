@@ -24,16 +24,17 @@ TEST(view_to_rank, basic)
     std::vector<uint8_t> cmp{0, 1, 4, 4, 4, 2, 0, 4, 0};
 
     // pipe notation
-    std::vector<uint8_t> v = vec | bio::views::to_rank | bio::views::to<std::vector>();
+    std::vector<uint8_t> v = vec | bio::ranges::views::to_rank | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmp, v);
 
     // function notation
-    std::vector<uint8_t> v2(bio::views::to_rank(vec) | bio::views::to<std::vector>());
+    std::vector<uint8_t> v2(bio::ranges::views::to_rank(vec) | bio::ranges::views::to<std::vector>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
     std::vector<uint8_t> cmp2{0, 4, 0, 2, 4, 4, 4, 1, 0};
-    std::vector<uint8_t> v3 = vec | bio::views::to_rank | std::views::reverse | bio::views::to<std::vector>();
+    std::vector<uint8_t> v3 =
+      vec | bio::ranges::views::to_rank | std::views::reverse | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmp2, v3);
 }
 
@@ -47,10 +48,10 @@ TEST(view_to_rank, concepts)
     EXPECT_FALSE(std::ranges::view<decltype(vec)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(vec)>);
-    EXPECT_TRUE(bio::const_iterable_range<decltype(vec)>);
+    EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(vec), bio::dna5>));
 
-    auto v1 = vec | bio::views::to_rank;
+    auto v1 = vec | bio::ranges::views::to_rank;
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);
@@ -58,7 +59,7 @@ TEST(view_to_rank, concepts)
     EXPECT_TRUE(std::ranges::view<decltype(v1)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(v1)>);
-    EXPECT_TRUE(bio::const_iterable_range<decltype(v1)>);
+    EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(v1)>);
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), bio::dna5>));
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), uint8_t>));
 }

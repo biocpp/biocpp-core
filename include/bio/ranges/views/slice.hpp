@@ -24,7 +24,7 @@
 #include <span>
 #include <type_traits>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 // ============================================================================
@@ -41,7 +41,7 @@ struct slice_fn
     }
 
     /*!\brief       Call the view's constructor with the underlying view as argument.
-     * \returns     An instance of bio::detail::view_slice.
+     * \returns     An instance of bio::ranges::detail::view_slice.
      */
     template <std::ranges::viewable_range urng_t>
     constexpr auto operator()(urng_t && urange, ptrdiff_t begin_pos, ptrdiff_t end_pos) const
@@ -62,13 +62,13 @@ struct slice_fn
     // does not require special overloads, because views::drop and views::take handle the flattening.
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
 // ============================================================================
 //  views::slice (adaptor instance definition)
 // ============================================================================
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\name General purpose views
@@ -104,7 +104,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                   | *preserved*                            |
  * | std::ranges::common_range        |                                   | *preserved*                            |
  * | std::ranges::output_range        |                                   | *preserved*                            |
- * | bio::const_iterable_range     |                                   | *preserved*                            |
+ * | bio::ranges::const_iterable_range     |                                   | *preserved*                            |
  * |                                  |                                   |                                        |
  * | std::ranges::range_reference_t   |                                   | std::ranges::range_reference_t<urng_t> |
  *
@@ -142,4 +142,4 @@ inline constexpr auto slice = detail::slice_fn{};
 
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

@@ -28,20 +28,33 @@
 #include <bio/meta/type_traits/all.hpp>
 
 /*!\defgroup meta Meta
- * \brief Provides core functionality used by multiple modules.
+ * \brief Provides metaprogramming utilities, concepts and some helper classes.
  *
- * The core module contains concepts, functions and some classes that
- * are used by multiple other modules, but that usually are not relevant
+ * The meta module is used strongly by other modules, but the content is usually not relevant
  * to most users of the library.
  */
 
-/*!\namespace bio::meta
+/*!\namespace bio
  * \brief The main BioC++ namespace.
  */
 
-/*!\namespace bio::meta::custom
+/*!\namespace bio::meta
+ * \brief The Meta module's namespace.
+ */
+
+/*!\namespace bio::custom
  * \brief A namespace for third party and standard library specialisations of BioC++ customisation points.
  * \see \ref biocpp_customisation
+ */
+
+/*!\if DEV
+ * \namespace bio::detail
+ * \brief The internal BioC++ namespace.
+ * \details
+ * The contents of this namespace are not visible to consumers of the library and the documentation is
+ * only generated for developers.
+ * \sa https://github.com/biocpp/biocpp-core/wiki/Documentation
+ * \endif
  */
 
 /*!\if DEV

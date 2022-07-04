@@ -25,11 +25,11 @@
 #include <bio/meta/type_traits/template_inspection.hpp>
 #include <bio/ranges/views/repeat_n.hpp>
 
-namespace bio
+namespace bio::ranges
 {
 
 /*!\brief A constexpr vector implementation with dynamic size at compile time.
- * \implements bio::reservible_container
+ * \implements bio::ranges::detail::reservible_container
  * \implements bio::cerealisable
  * \ingroup container
  * \tparam value_type_ The underlying value type stored in the vector.
@@ -309,19 +309,19 @@ public:
     //!\brief Returns the begin to the string.
     constexpr iterator begin() noexcept { return &data_[0]; }
 
-    //!\copydoc bio::small_vector::begin()
+    //!\copydoc bio::ranges::small_vector::begin()
     constexpr const_iterator begin() const noexcept { return &data_[0]; }
 
-    //!\copydoc bio::small_vector::begin()
+    //!\copydoc bio::ranges::small_vector::begin()
     constexpr const_iterator cbegin() const noexcept { return &data_[0]; }
 
     //!\brief Returns iterator past the end of the vector.
     constexpr iterator end() noexcept { return &data_[sz]; }
 
-    //!\copydoc bio::small_vector::end()
+    //!\copydoc bio::ranges::small_vector::end()
     constexpr const_iterator end() const noexcept { return &data_[sz]; }
 
-    //!\copydoc bio::small_vector::end()
+    //!\copydoc bio::ranges::small_vector::end()
     constexpr const_iterator cend() const noexcept { return &data_[sz]; }
     //!\}
 
@@ -901,4 +901,4 @@ template <size_t capacity2, typename value_type>
 small_vector(const value_type (&array)[capacity2]) -> small_vector<value_type, capacity2>;
 //!\}
 
-} // namespace bio
+} // namespace bio::ranges

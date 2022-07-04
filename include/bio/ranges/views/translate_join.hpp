@@ -23,7 +23,7 @@
 #include <concepts>
 #include <ranges>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 // ============================================================================
@@ -50,7 +50,7 @@ private:
     small_vector<translation_frames, 6> selected_frames{};
 
     /*!\name Associated types iterator
-     * \brief These associated types are needed in bio::detail::random_access_iterator.
+     * \brief These associated types are needed in bio::ranges::detail::random_access_iterator.
      * \{
      */
     //!\brief The reference_type.
@@ -294,13 +294,13 @@ struct translate_join_fn
     }
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
 // ============================================================================
 //  translate (adaptor object)
 // ============================================================================
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\name Alphabet related views
@@ -349,7 +349,7 @@ namespace bio::views
  * | std::ranges::sized_range         | *required*                            | *preserved*                                        |
  * | std::ranges::common_range        |                                       | *guaranteed*                                       |
  * | std::ranges::output_range        |                                       | *lost*                                             |
- * | bio::const_iterable_range     | *required*                            | *preserved*                                        |
+ * | bio::ranges::const_iterable_range     | *required*                            | *preserved*                                        |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   | bio::nucleotide_alphabet            | std::ranges::view && std::ranges::random_access_range && std::ranges::sized_range |
  *
@@ -366,4 +366,4 @@ namespace bio::views
 inline constexpr auto translate_join = detail::translate_join_fn{};
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

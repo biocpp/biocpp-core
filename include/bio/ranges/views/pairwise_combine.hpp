@@ -20,7 +20,7 @@
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/views/detail.hpp>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 /*!\brief Generates all pairwise combinations of the elements in the underlying range.
  * \ingroup views
@@ -120,7 +120,7 @@ public:
     }
 
     /*!\brief Constructs from a view.
-     * \tparam    other_range_t  The type of the range to be wrapped with bio::detail::pairwise_combine_view;
+     * \tparam    other_range_t  The type of the range to be wrapped with bio::ranges::detail::pairwise_combine_view;
      *                           must model std::ranges::viewable_range and underlying_range_type must be constructible
      *                           with other_range wrapped in std::views::all.
      * \param[in] range          The underlying range to be wrapped.
@@ -622,9 +622,9 @@ private:
     underlying_iterator_type end_it{};
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
-namespace bio::views
+namespace bio::ranges::views
 {
 /*!\name General purpose views
  * \{
@@ -671,7 +671,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                       | *preserved*                                                                                  |
  * | std::ranges::common_range        | *required*                            | *guaranteed*                                                                                 |
  * | std::ranges::output_range        |                                       | *preserved*                                                                                  |
- * | bio::const_iterable_range     |                                       | *preserved*                                                                                  |
+ * | bio::ranges::const_iterable_range     |                                       | *preserved*                                                                                  |
  * |                                  |                                       |                                                                                              |
  * | std::ranges::range_reference_t   |                                       | common_tuple<std::ranges::range_reference_t<urng_t>, std::ranges::range_reference_t<urng_t>> |
  *
@@ -693,4 +693,4 @@ namespace bio::views
 inline constexpr auto pairwise_combine = detail::adaptor_for_view_without_args<detail::pairwise_combine_view>{};
 
 //!\}
-} // namespace bio::views
+} // namespace bio::ranges::views

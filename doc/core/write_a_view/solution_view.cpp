@@ -10,7 +10,7 @@ using bio::operator""_dna5;
 
 /* The iterator template */
 template <std::ranges::forward_range urng_t>            // CRTP derivation ↓
-class my_iterator : public bio::detail::inherited_iterator_base<my_iterator<urng_t>,
+class my_iterator : public bio::ranges::detail::inherited_iterator_base<my_iterator<urng_t>,
                                                                 std::ranges::iterator_t<urng_t>>
 {
 private:
@@ -18,7 +18,7 @@ private:
                   "You can only iterate over ranges of nucleotides!");
 
     // the immediate base type is the CRTP-layer
-    using base_t = bio::detail::inherited_iterator_base<my_iterator<urng_t>,
+    using base_t = bio::ranges::detail::inherited_iterator_base<my_iterator<urng_t>,
                                                         std::ranges::iterator_t<urng_t>>;
 
 public:

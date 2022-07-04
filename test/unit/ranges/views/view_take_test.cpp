@@ -34,20 +34,20 @@ void do_test(adaptor_t const & adaptor, std::string const & vec)
 {
     // pipe notation
     auto v = vec | adaptor(3);
-    EXPECT_EQ("foo", v | bio::views::to<std::string>());
+    EXPECT_EQ("foo", v | bio::ranges::views::to<std::string>());
 
     // iterators (code coverage)
     EXPECT_EQ(v.begin(), v.begin());
     EXPECT_NE(v.begin(), v.end());
 
     // function notation
-    std::string v2{adaptor(vec, 3) | bio::views::to<std::string>()};
+    std::string v2{adaptor(vec, 3) | bio::ranges::views::to<std::string>()};
     EXPECT_EQ("foo", v2);
 
     // combinability
     auto v3 = vec | adaptor(3) | adaptor(2);
-    EXPECT_EQ("fo", v3 | bio::views::to<std::string>());
-    std::string v3b = vec | std::views::reverse | adaptor(3) | bio::views::to<std::string>();
+    EXPECT_EQ("fo", v3 | bio::ranges::views::to<std::string>());
+    std::string v3b = vec | std::views::reverse | adaptor(3) | bio::ranges::views::to<std::string>();
     EXPECT_EQ("rab", v3b);
 
     // comparability against self
@@ -65,7 +65,7 @@ void do_concepts(adaptor_t && adaptor, bool const exactly)
     EXPECT_FALSE(std::ranges::view<decltype(vec)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(vec)>);
-    EXPECT_TRUE(bio::const_iterable_range<decltype(vec)>);
+    EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(vec), int>));
 
     auto v1 = vec | adaptor;
@@ -77,7 +77,7 @@ void do_concepts(adaptor_t && adaptor, bool const exactly)
     EXPECT_TRUE(std::ranges::view<decltype(v1)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(v1)>);
-    EXPECT_TRUE(bio::const_iterable_range<decltype(v1)>);
+    EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(v1)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(v1), int>));
 
     auto v3 = vec | std::views::transform([](auto && v) { return v; }) | adaptor;
@@ -89,10 +89,10 @@ void do_concepts(adaptor_t && adaptor, bool const exactly)
     EXPECT_TRUE(std::ranges::view<decltype(v3)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(v3)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(v3)>);
-    EXPECT_TRUE(bio::const_iterable_range<decltype(v3)>);
+    EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(v3)>);
     EXPECT_FALSE((std::ranges::output_range<decltype(v3), int>));
 
-    auto v2 = vec | bio::views::single_pass_input | adaptor;
+    auto v2 = vec | bio::ranges::views::single_pass_input | adaptor;
 
     EXPECT_TRUE(std::ranges::input_range<decltype(v2)>);
     EXPECT_FALSE(std::ranges::forward_range<decltype(v2)>);
@@ -101,7 +101,7 @@ void do_concepts(adaptor_t && adaptor, bool const exactly)
     EXPECT_TRUE(std::ranges::view<decltype(v2)>);
     EXPECT_EQ(std::ranges::sized_range<decltype(v2)>, exactly);
     EXPECT_FALSE(std::ranges::common_range<decltype(v2)>);
-    EXPECT_FALSE(bio::const_iterable_range<decltype(v2)>);
+    EXPECT_FALSE(bio::ranges::const_iterable_range<decltype(v2)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(v2), int>));
 
     // explicit test for non const-iterable views
@@ -115,7 +115,7 @@ void do_concepts(adaptor_t && adaptor, bool const exactly)
     EXPECT_FALSE(std::ranges::view<decltype(v2_cref)>);
     EXPECT_FALSE(std::ranges::sized_range<decltype(v2_cref)>);
     EXPECT_FALSE(std::ranges::common_range<decltype(v2_cref)>);
-    EXPECT_FALSE(bio::const_iterable_range<decltype(v2_cref)>);
+    EXPECT_FALSE(bio::ranges::const_iterable_range<decltype(v2_cref)>);
     EXPECT_FALSE((std::ranges::output_range<decltype(v2_cref), int>));
 }
 
@@ -125,32 +125,32 @@ void do_concepts(adaptor_t && adaptor, bool const exactly)
 
 TEST(view_take_exactly, regular)
 {
-    do_test(bio::views::take_exactly, "foobar");
+    do_test(bio::ranges::views::take_exactly, "foobar");
 }
 
 TEST(view_take_exactly, concepts)
 {
-    do_concepts(bio::views::take_exactly(3), true);
+    do_concepts(bio::ranges::views::take_exactly(3), true);
 }
 
 TEST(view_take_exactly, underlying_is_shorter)
 {
     std::string vec{"foo"};
-    EXPECT_NO_THROW((bio::views::take_exactly(vec, 4))); // no parsing
+    EXPECT_NO_THROW((bio::ranges::views::take_exactly(vec, 4))); // no parsing
 
     std::string v;
-    EXPECT_NO_THROW((v = vec | bio::views::single_pass_input | bio::views::take_exactly(4) |
-                         bio::views::to<std::string>())); // full parsing on conversion
+    EXPECT_NO_THROW((v = vec | bio::ranges::views::single_pass_input | bio::ranges::views::take_exactly(4) |
+                         bio::ranges::views::to<std::string>())); // full parsing on conversion
     EXPECT_EQ("foo", v);
 
-    auto v2 = vec | bio::views::single_pass_input | bio::views::take_exactly(4);
+    auto v2 = vec | bio::ranges::views::single_pass_input | bio::ranges::views::take_exactly(4);
     EXPECT_EQ(size(v2), 4u); // here be dragons
 }
 
 TEST(view_take_exactly, shrink_size_on_input_ranges)
 {
     std::string vec{"foobar"};
-    auto        v = vec | bio::views::single_pass_input | bio::views::take_exactly(3);
+    auto        v = vec | bio::ranges::views::single_pass_input | bio::ranges::views::take_exactly(3);
 
     EXPECT_EQ(std::ranges::size(v), 3u);
     EXPECT_EQ(*std::ranges::begin(v), 'f');
@@ -173,26 +173,26 @@ TEST(view_take_exactly, shrink_size_on_input_ranges)
 
 TEST(view_take_exactly_or_throw, regular)
 {
-    do_test(bio::views::take_exactly_or_throw, "foo\nbar");
+    do_test(bio::ranges::views::take_exactly_or_throw, "foo\nbar");
 }
 
 TEST(view_take_exactly_or_throw, concepts)
 {
-    do_concepts(bio::views::take_exactly_or_throw(3), true);
+    do_concepts(bio::ranges::views::take_exactly_or_throw(3), true);
 }
 
 TEST(view_take_exactly_or_throw, underlying_is_shorter)
 {
     std::string vec{"foo"};
-    EXPECT_THROW((bio::views::take_exactly_or_throw(vec, 4)),
+    EXPECT_THROW((bio::ranges::views::take_exactly_or_throw(vec, 4)),
                  std::invalid_argument); // no parsing, but throws in adaptor
 
     std::list l{'f', 'o', 'o'};
-    EXPECT_THROW((bio::detail::view_take<std::views::all_t<std::list<char> &>, true, true>(l, 4)),
+    EXPECT_THROW((bio::ranges::detail::view_take<std::views::all_t<std::list<char> &>, true, true>(l, 4)),
                  std::invalid_argument); // no parsing, but throws on construction
 
     std::string v;
-    EXPECT_THROW(
-      (v = vec | bio::views::single_pass_input | bio::views::take_exactly_or_throw(4) | bio::views::to<std::string>()),
-      std::runtime_error); // full parsing on conversion, throw on conversion
+    EXPECT_THROW((v = vec | bio::ranges::views::single_pass_input | bio::ranges::views::take_exactly_or_throw(4) |
+                      bio::ranges::views::to<std::string>()),
+                 std::runtime_error); // full parsing on conversion, throw on conversion
 }

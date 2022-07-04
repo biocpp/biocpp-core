@@ -43,7 +43,7 @@ TEST(dot_bracket3, assign_char)
                                        '.'_db3, '.'_db3, '.'_db3, '.'_db3, '.'_db3, '.'_db3, '.'_db3, '.'_db3,
                                        '.'_db3, '.'_db3, '.'_db3, '.'_db3, '.'_db3, '.'_db3};
 
-    for (auto [ch, cm] : bio::views::zip(input, cmp))
+    for (auto [ch, cm] : bio::ranges::views::zip(input, cmp))
         EXPECT_EQ((bio::assign_char_to(ch, bio::dot_bracket3{})), cm);
 }
 

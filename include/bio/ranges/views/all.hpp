@@ -122,7 +122,7 @@
  * | std::ranges::sized_range         | [required] <i>(or not)</i>       | [preserved\|lost\|guaranteed]                      |
  * | std::ranges::common_range        | [required] <i>(or not)</i>       | [preserved\|lost\|guaranteed]                      |
  * | std::ranges::output_range        | [required] <i>(or not)</i>       | [preserved\|lost\|guaranteed]                      |
- * | bio::const_iterable_range     | [required] <i>(or not)</i>       | [preserved\|lost]                                  |
+ * | bio::ranges::const_iterable_range     | [required] <i>(or not)</i>       | [preserved\|lost]                                  |
  * |                                  |                                  |                                                    |
  * | std::ranges::range_reference_t   | optionally a type or concept     | optionally a type or concept                       |
  *
@@ -174,7 +174,7 @@
  */
 
 /*!
- * \namespace bio::views
+ * \namespace bio::ranges::views
  * \brief The BioC++ namespace for views.
  *
  * Since views often have name clashes with regular functions and ranges they are implemented in the sub

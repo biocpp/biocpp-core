@@ -79,4 +79,70 @@ constexpr aa27 translate_triplet(nucl_type const & n1, nucl_type const & n2, nuc
     }
 }
 
+//!\brief Specialisation values for single and multiple translation frames.
+//!\ingroup aminoacid
+enum class translation_frames : uint8_t
+{
+    FWD_FRAME_0 = 1,                                       //!< The first forward frame starting at position 0
+    FWD_FRAME_1 = 1 << 1,                                  //!< The second forward frame starting at position 1
+    FWD_FRAME_2 = 1 << 2,                                  //!< The third forward frame starting at position 2
+    REV_FRAME_0 = 1 << 3,                                  //!< The first reverse frame starting at position 0
+    REV_FRAME_1 = 1 << 4,                                  //!< The second reverse frame starting at position 1
+    REV_FRAME_2 = 1 << 5,                                  //!< The third reverse frame starting at position 2
+    FWD_REV_0   = FWD_FRAME_0 | REV_FRAME_0,               //!< The first forward and first reverse frame
+    FWD_REV_1   = FWD_FRAME_1 | REV_FRAME_1,               //!< The second forward and second reverse frame
+    FWD_REV_2   = FWD_FRAME_2 | REV_FRAME_2,               //!< The first third and third reverse frame
+    FWD         = FWD_FRAME_0 | FWD_FRAME_1 | FWD_FRAME_2, //!< All forward frames
+    REV         = REV_FRAME_0 | REV_FRAME_1 | REV_FRAME_2, //!< All reverse frames
+    SIX_FRAME   = FWD | REV                                //!< All frames
+};
+
+/*!\name Binary operators for bio::translation_frames.
+ * \brief Perform binary operations like on ints or weak enums.
+ * \{
+ */
+//!\brief Binary operators for bio::translation_frames.
+constexpr translation_frames operator&(translation_frames lhs, translation_frames rhs) noexcept
+{
+    using u_t = std::underlying_type_t<translation_frames>;
+    return static_cast<translation_frames>(static_cast<u_t>(lhs) & static_cast<u_t>(rhs));
+}
+
+constexpr translation_frames operator|(translation_frames lhs, translation_frames rhs) noexcept
+{
+    using u_t = std::underlying_type_t<translation_frames>;
+    return static_cast<translation_frames>(static_cast<u_t>(lhs) | static_cast<u_t>(rhs));
+}
+
+constexpr translation_frames operator^(translation_frames lhs, translation_frames rhs) noexcept
+{
+    using u_t = std::underlying_type_t<translation_frames>;
+    return static_cast<translation_frames>(static_cast<u_t>(lhs) ^ static_cast<u_t>(rhs));
+}
+
+constexpr translation_frames operator~(translation_frames lhs) noexcept
+{
+    using u_t = std::underlying_type_t<translation_frames>;
+    return static_cast<translation_frames>(~static_cast<u_t>(lhs));
+}
+
+constexpr translation_frames & operator&=(translation_frames & lhs, translation_frames rhs) noexcept
+{
+    lhs = lhs & rhs;
+    return lhs;
+}
+
+constexpr translation_frames & operator|=(translation_frames & lhs, translation_frames rhs) noexcept
+{
+    lhs = lhs | rhs;
+    return lhs;
+}
+
+constexpr translation_frames & operator^=(translation_frames & lhs, translation_frames rhs) noexcept
+{
+    lhs = lhs ^ rhs;
+    return lhs;
+}
+//!\}
+
 } // namespace bio

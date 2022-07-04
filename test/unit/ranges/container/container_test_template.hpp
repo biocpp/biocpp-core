@@ -24,7 +24,7 @@ TYPED_TEST_SUITE_P(container_over_dna4_test);
 
 TYPED_TEST_P(container_over_dna4_test, concepts)
 {
-    EXPECT_TRUE(bio::reservible_container<TypeParam>);
+    EXPECT_TRUE(bio::ranges::detail::reservible_container<TypeParam>);
 }
 
 TYPED_TEST_P(container_over_dna4_test, construction)
@@ -175,7 +175,7 @@ TYPED_TEST_P(container_over_dna4_test, capacity)
     EXPECT_GE(t1.capacity(), t1.size());
     EXPECT_GE(t2.capacity(), t2.size());
 
-    if constexpr (!std::same_as<TypeParam, bio::small_vector<bio::dna4, 1000>>)
+    if constexpr (!std::same_as<TypeParam, bio::ranges::small_vector<bio::dna4, 1000>>)
     {
         // max_size
         EXPECT_GT(t0.max_size(), 1'000'000'000'000u);

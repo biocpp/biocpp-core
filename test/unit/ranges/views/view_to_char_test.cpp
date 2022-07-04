@@ -24,16 +24,16 @@ TEST(view_to_char, basic)
     std::string      cmp{"ACTTTGATA"};
 
     // pipe notation
-    std::string v = vec | bio::views::to_char | bio::views::to<std::string>();
+    std::string v = vec | bio::ranges::views::to_char | bio::ranges::views::to<std::string>();
     EXPECT_EQ(cmp, v);
 
     // function notation
-    std::string v2(bio::views::to_char(vec) | bio::views::to<std::string>());
+    std::string v2(bio::ranges::views::to_char(vec) | bio::ranges::views::to<std::string>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
     std::string cmp2{"ATAGTTTCA"};
-    std::string v3 = vec | bio::views::to_char | std::views::reverse | bio::views::to<std::string>();
+    std::string v3 = vec | bio::ranges::views::to_char | std::views::reverse | bio::ranges::views::to<std::string>();
     EXPECT_EQ(cmp2, v3);
 }
 
@@ -47,10 +47,10 @@ TEST(view_to_char, concepts)
     EXPECT_FALSE(std::ranges::view<decltype(vec)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(vec)>);
-    EXPECT_TRUE(bio::const_iterable_range<decltype(vec)>);
+    EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(vec), bio::dna5>));
 
-    auto v1 = vec | bio::views::to_char;
+    auto v1 = vec | bio::ranges::views::to_char;
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);
@@ -58,7 +58,7 @@ TEST(view_to_char, concepts)
     EXPECT_TRUE(std::ranges::view<decltype(v1)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(v1)>);
-    EXPECT_TRUE(bio::const_iterable_range<decltype(v1)>);
+    EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(v1)>);
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), bio::dna5>));
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), char>));
 }

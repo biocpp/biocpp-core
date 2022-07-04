@@ -86,7 +86,7 @@ views as "underlying range + algorithm".
 The storage behaviour is orthogonal to the range concepts defined by the iterators mentioned above, i.e. you
 can have a container that satisfies std::ranges::random_access_range (e.g. `std::vector` does, but `std::list`
 does not) and you can have views or decorators that do so or don't. For some combinations of iterator capabilities
-and storage behaviour there are extra concept definitions, e.g. bio::random_access_container.
+and storage behaviour there are extra concept definitions, e.g. bio::ranges::detail::random_access_container.
 
 # Views
 
@@ -263,21 +263,21 @@ For certain use-cases we have introduced our own containers, though.
 
 All standard library containers model std::ranges::forward_range (see above), but we have introduced container
 concepts that encompass more of a containers interface.
-Have a look at the API documentation of bio::container and unfold the inheritance diagram.
+Have a look at the API documentation of bio::ranges::detail::container and unfold the inheritance diagram.
 What can you learn about the different refinements and their relation to the range concepts?
 
 ## The bitcompressed vector
 
 If you followed the alphabet tutorial closely, you will know that bio::dna4 needs only two bits to represent its state.
 However, single objects are always at least a byte (eight bits) big in C++.
-To store sequences of small alphabets more space-efficiently, we have developed bio::bitcompressed_vector.
+To store sequences of small alphabets more space-efficiently, we have developed bio::ranges::bitcompressed_vector.
 
-Open the API documentation of bio::bitcompressed_vector, display the inheritance diagram and read through the
+Open the API documentation of bio::ranges::bitcompressed_vector, display the inheritance diagram and read through the
 interface overview and the detailed description.
 
 \assignment{Assignment 4: The bitcompressed vector}
 Create a small program that asks the user for a size and then creates a vector of bio::dna4 of that size.
-Add an argument parser flag that allows the user to decide whether std::vector or bio::bitcompressed_vector is used.
+Add an argument parser flag that allows the user to decide whether std::vector or bio::ranges::bitcompressed_vector is used.
 After creating the vector, print its size.
 
 Measure and compare the amount of main memory that your program uses depending on the vector implementation.

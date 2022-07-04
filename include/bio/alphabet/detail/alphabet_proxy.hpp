@@ -49,7 +49,7 @@ namespace bio
  * The derived type needs to provide an `.on_update()` member function that performs the changes in the underlying
  * data structure.
  *
- * See bio::bitcompressed_vector or bio::alphabet_tuple_base for examples of how this class is used.
+ * See bio::ranges::bitcompressed_vector or bio::alphabet_tuple_base for examples of how this class is used.
  */
 template <typename derived_type, writable_semialphabet alphabet_type>
     //!\cond

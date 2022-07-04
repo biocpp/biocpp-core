@@ -24,7 +24,7 @@
 
 // Tags used to define the benchmark type
 struct baseline_tag{}; // Baseline where view is applied and only iterating the output range is benchmarked
-struct translate_tag{}; // Benchmark bio::views::translate_single
+struct translate_tag{}; // Benchmark bio::ranges::views::translate_single
 
 // ============================================================================
 //  sequential_read
@@ -45,13 +45,13 @@ void sequential_read(benchmark::State & state)
 
     if constexpr (std::is_same_v<tag_t, baseline_tag>)
     {
-        bio::aa27_vector translated_aa_sequence = dna_sequence | bio::views::translate_single
-                                                                  | bio::views::to<bio::aa27_vector>();
+        bio::aa27_vector translated_aa_sequence = dna_sequence | bio::ranges::views::translate_single
+                                                                  | bio::ranges::views::to<bio::aa27_vector>();
         sequential_read_impl(state, translated_aa_sequence);
     }
     else if constexpr (std::is_same_v<tag_t, translate_tag>)
     {
-        auto translated_aa_view = dna_sequence | bio::views::translate_single;
+        auto translated_aa_view = dna_sequence | bio::ranges::views::translate_single;
         sequential_read_impl(state, translated_aa_view);
     }
 }
@@ -86,13 +86,13 @@ void random_access(benchmark::State & state)
 
     if constexpr (std::is_same_v<tag_t, baseline_tag>)
     {
-        bio::aa27_vector translated_aa_sequence = dna_sequence | bio::views::translate_single
-                                                                  | bio::views::to<bio::aa27_vector>();
+        bio::aa27_vector translated_aa_sequence = dna_sequence | bio::ranges::views::translate_single
+                                                                  | bio::ranges::views::to<bio::aa27_vector>();
         random_access_impl(state, translated_aa_sequence, access_positions);
     }
     else
     {
-        auto translated_aa_view = dna_sequence | bio::views::translate_single;
+        auto translated_aa_view = dna_sequence | bio::ranges::views::translate_single;
         random_access_impl(state, translated_aa_view, access_positions);
     }
 }
@@ -111,7 +111,7 @@ void copy_impl(benchmark::State & state, std::vector<bio::dna4> const & dna_sequ
     {
         bio::aa27_vector translated_aa_sequence{};
         benchmark::DoNotOptimize(translated_aa_sequence = dna_sequence | adaptor
-                                                                       | bio::views::to<bio::aa27_vector>());
+                                                                       | bio::ranges::views::to<bio::aa27_vector>());
     }
 }
 
@@ -138,7 +138,7 @@ void copy(benchmark::State & state)
 
     if constexpr (std::is_same_v<tag_t, translate_tag>)
     {
-        auto adaptor = bio::views::translate_single;
+        auto adaptor = bio::ranges::views::translate_single;
         copy_impl(state, seqan3_dna_sequence, adaptor);
     }
 #ifdef BIOCPP_HAS_SEQAN2

@@ -33,7 +33,7 @@
 //  forwards
 // ============================================================================
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 template <std::ranges::view urng_t>
@@ -49,41 +49,6 @@ template <std::ranges::view urng_t>
       nucleotide_alphabet<std::ranges::range_reference_t<urng_t>>
 //!\endcond
 class view_translate_single;
-
-} // namespace bio::detail
-
-// ============================================================================
-//  translation_frames
-// ============================================================================
-
-namespace bio
-{
-
-//!\brief Specialisation values for single and multiple translation frames.
-enum class translation_frames : uint8_t
-{
-    FWD_FRAME_0 = 1,                                       //!< The first forward frame starting at position 0
-    FWD_FRAME_1 = 1 << 1,                                  //!< The second forward frame starting at position 1
-    FWD_FRAME_2 = 1 << 2,                                  //!< The third forward frame starting at position 2
-    REV_FRAME_0 = 1 << 3,                                  //!< The first reverse frame starting at position 0
-    REV_FRAME_1 = 1 << 4,                                  //!< The second reverse frame starting at position 1
-    REV_FRAME_2 = 1 << 5,                                  //!< The third reverse frame starting at position 2
-    FWD_REV_0   = FWD_FRAME_0 | REV_FRAME_0,               //!< The first forward and first reverse frame
-    FWD_REV_1   = FWD_FRAME_1 | REV_FRAME_1,               //!< The second forward and second reverse frame
-    FWD_REV_2   = FWD_FRAME_2 | REV_FRAME_2,               //!< The first third and third reverse frame
-    FWD         = FWD_FRAME_0 | FWD_FRAME_1 | FWD_FRAME_2, //!< All forward frames
-    REV         = REV_FRAME_0 | REV_FRAME_1 | REV_FRAME_2, //!< All reverse frames
-    SIX_FRAME   = FWD | REV                                //!< All frames
-};
-
-//!\brief Enable bitwise operators for enum translation_frames.
-template <>
-constexpr bool add_enum_bitwise_operators<translation_frames> = true;
-
-} // namespace bio
-
-namespace bio::detail
-{
 
 // ============================================================================
 //  translate_fn (adaptor definition for both views)
@@ -432,13 +397,13 @@ view_translate_single(urng_t &&, translation_frames const) -> view_translate_sin
 template <typename urng_t>
 view_translate_single(urng_t &&) -> view_translate_single<std::views::all_t<urng_t>>;
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
 // ============================================================================
 //  translate_single (adaptor object)
 // ============================================================================
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\name Alphabet related views
@@ -473,7 +438,7 @@ namespace bio::views
  * | std::ranges::sized_range         | *required*                            | *preserved*                                        |
  * | std::ranges::common_range        |                                       | *guaranteed*                                       |
  * | std::ranges::output_range        |                                       | *lost*                                             |
- * | bio::const_iterable_range     | *required*                            | *preserved*                                        |
+ * | bio::ranges::const_iterable_range     | *required*                            | *preserved*                                        |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   | bio::nucleotide_alphabet            | bio::aa27                                       |
  *
@@ -489,13 +454,13 @@ namespace bio::views
  */
 inline constexpr auto translate_single = deep{detail::translate_fn<true>{}};
 
-} // namespace bio::views
+} // namespace bio::ranges::views
 
 // ============================================================================
 //  view_translate (range definition)
 // ============================================================================
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 /*!\brief The return type of bio::views::translate.
@@ -543,7 +508,7 @@ public:
 
 protected:
     /*!\name Compatibility
-     * \brief Static constexpr variables that emulate/encapsulate bio::range_compatible (which doesn't work for types during their definition).
+     * \brief Static constexpr variables that emulate/encapsulate bio::ranges::range_compatible (which doesn't work for types during their definition).
      * \{
      */
     //!\cond
@@ -699,13 +664,13 @@ template <typename urng_t>
       view_translate(urng_t &&, translation_frames const = translation_frames{})
 ->view_translate<std::views::all_t<urng_t>>;
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
 // ============================================================================
 //  translate (adaptor object)
 // ============================================================================
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\name Alphabet related views
@@ -740,7 +705,7 @@ namespace bio::views
  * | std::ranges::sized_range         | *required*                            | *preserved*                                        |
  * | std::ranges::common_range        |                                       | *guaranteed*                                       |
  * | std::ranges::output_range        |                                       | *lost*                                             |
- * | bio::const_iterable_range     | *required*                            | *preserved*                                        |
+ * | bio::ranges::const_iterable_range     | *required*                            | *preserved*                                        |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   | bio::nucleotide_alphabet            | std::ranges::view && std::ranges::random_access_range && std::ranges::sized_range |
  *
@@ -757,4 +722,4 @@ namespace bio::views
 inline constexpr auto translate = deep{detail::translate_fn<false>{}};
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

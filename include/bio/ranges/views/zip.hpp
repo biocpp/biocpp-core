@@ -21,7 +21,7 @@
 
 //!\cond
 // Contains helpers for bio::views::zip.
-namespace bio::detail::zip
+namespace bio::ranges::detail::zip
 {
 
 template <class range_t>
@@ -111,9 +111,9 @@ struct iterator_category_t<false>
 {};
 #endif
 
-} // namespace bio::detail::zip
+} // namespace bio::ranges::detail::zip
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 template <std::ranges::input_range... Views>
@@ -458,10 +458,10 @@ struct zip_fn
     }
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 //!\endcond
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\brief A view adaptor that produces a tuple-like value of all passed views.
@@ -471,6 +471,6 @@ namespace bio::views
  *
  * \sa https://en.cppreference.com/w/cpp/ranges/zip_view
  */
-inline constexpr auto zip = bio::detail::zip_fn{};
+inline constexpr auto zip = detail::zip_fn{};
 
-} // namespace bio::views
+} // namespace bio::ranges::views

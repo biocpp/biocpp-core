@@ -18,7 +18,7 @@ template <typename t>
 using sdsl_int_vec = sdsl::int_vector<sizeof(t) * 8>;
 
 template <typename t>
-using small_vec = bio::small_vector<t, 10'000>;
+using small_vec = bio::ranges::small_vector<t, 10'000>;
 
 // ============================================================================
 //  push_back
@@ -83,13 +83,13 @@ BENCHMARK_TEMPLATE(push_back, sdsl_int_vec, uint16_t);
 BENCHMARK_TEMPLATE(push_back, sdsl_int_vec, uint32_t);
 BENCHMARK_TEMPLATE(push_back, sdsl_int_vec, uint64_t);
 
-BENCHMARK_TEMPLATE(push_back, bio::bitcompressed_vector, char);
-BENCHMARK_TEMPLATE(push_back, bio::bitcompressed_vector, bio::gap);
-BENCHMARK_TEMPLATE(push_back, bio::bitcompressed_vector, bio::dna4);
-BENCHMARK_TEMPLATE(push_back, bio::bitcompressed_vector, bio::gapped<bio::dna4>);
-BENCHMARK_TEMPLATE(push_back, bio::bitcompressed_vector, bio::dna15);
-BENCHMARK_TEMPLATE(push_back, bio::bitcompressed_vector, bio::aa27);
-BENCHMARK_TEMPLATE(push_back, bio::bitcompressed_vector, bio::alphabet_variant<char, bio::dna4>);
+BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, char);
+BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::gap);
+BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::dna4);
+BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::gapped<bio::dna4>);
+BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::dna15);
+BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::aa27);
+BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::alphabet_variant<char, bio::dna4>);
 
 BENCHMARK_TEMPLATE(push_back, small_vec, char);
 BENCHMARK_TEMPLATE(push_back, small_vec, bio::gap);

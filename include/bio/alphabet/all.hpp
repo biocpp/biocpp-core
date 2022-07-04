@@ -56,7 +56,7 @@
  * A main reason for choosing a smaller alphabet over a bigger one is the possibility of **optimising for
  * space efficiency**. Note, however, that a single letter by itself can never be smaller than a byte for
  * architectural reasons. Actual space improvements are realised via secondary structures, e.g. when
- * using a `bio::bitcompressed_vector<bio::dna4>` instead of `std::vector<bio::dna4>`. Also
+ * using a `bio::ranges::bitcompressed_vector<bio::dna4>` instead of `std::vector<bio::dna4>`. Also
  * the single letter quality composite `bio::qualified<bio::dna4, bio::phred42>` fits into one byte, because
  * the product of the alphabet sizes (4 * 42) is smaller than 256; whereas the same composite
  * with bio::dna15 requires two bytes per letter (15 * 42 > 256).
@@ -157,7 +157,7 @@
  * # Containers over alphabets
  *
  * In BioC++ it is recommended you use the STL container classes like std::vector for storing sequence data,
- * but you can use other class templates if they satisfy the respective bio::container, e.g. `std::deque` or
+ * but you can use other class templates if they satisfy the respective bio::ranges::detail::container, e.g. `std::deque` or
  * <a href="https://github.com/facebook/folly/blob/master/folly/docs/FBVector.md" target="_blank">
  * <tt>folly::fbvector</tt></a> or even <a href="https://doc.qt.io/qt-5/qvector.html" target="_blank">
  * <tt>Qt::QVector</tt></a>.

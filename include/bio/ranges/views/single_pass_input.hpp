@@ -25,7 +25,7 @@
 // Implementation of single pass input view.
 //-----------------------------------------------------------------------------
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 //!\brief Forward declaration.
@@ -127,7 +127,7 @@ public:
 };
 
 /*!\name Deduction guide.
- * \relates bio::detail::single_pass_input_view
+ * \relates bio::ranges::detail::single_pass_input_view
  * \{
  */
 
@@ -135,13 +135,13 @@ public:
 template <std::ranges::viewable_range urng_t>
 single_pass_input_view(urng_t &&) -> single_pass_input_view<std::views::all_t<urng_t>>;
 //!\}
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
 //-----------------------------------------------------------------------------
 // Iterator for single pass input view.
 //-----------------------------------------------------------------------------
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 /*!\brief An input_iterator over the associated range.
  * \implements std::input_iterator
@@ -273,14 +273,14 @@ protected:
         return view_ptr->state_ptr->cached_urng_iter;
     }
 };
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
 //-----------------------------------------------------------------------------
 // View shortcut for functor.
 //-----------------------------------------------------------------------------
 
 //![adaptor_def]
-namespace bio::views
+namespace bio::ranges::views
 {
 /*!\name General purpose views
  * \{
@@ -318,7 +318,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                       | *lost*                                             |
  * | std::ranges::common_range        |                                       | *lost*                                             |
  * | std::ranges::output_range        |                                       | *preserved*                                        |
- * | bio::const_iterable_range     |                                       | *lost*                                             |
+ * | bio::ranges::const_iterable_range     |                                       | *lost*                                             |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   |                                       | std::ranges::range_reference_t<urng_t>             |
  *
@@ -336,5 +336,5 @@ namespace bio::views
 inline constexpr auto single_pass_input = detail::adaptor_for_view_without_args<detail::single_pass_input_view>{};
 
 //!\}
-} // namespace bio::views
+} // namespace bio::ranges::views
 //![adaptor_def]

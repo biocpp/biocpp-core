@@ -16,9 +16,9 @@
 #include <concepts>
 #include <ranges>
 
-#include <bio/meta/platform.hpp>
+#include <bio/ranges/biocpp.hpp>
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\name General purpose views
@@ -51,7 +51,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                       | *preserved*                     |
  * | std::ranges::common_range        |                                       | *preserved*                     |
  * | std::ranges::output_range        |                                       | <i>lost</i>¹                    |
- * | bio::const_iterable_range     |                                       | *preserved*                     |
+ * | bio::ranges::const_iterable_range     |                                       | *preserved*                     |
  * |                                  |                                       |                                 |
  * | std::ranges::range_reference_t   | bio::convertible_to<out_t>         | `out_t`                         |
  *
@@ -84,4 +84,4 @@ auto const convert = std::views::transform(
 
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

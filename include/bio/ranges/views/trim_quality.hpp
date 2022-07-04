@@ -17,7 +17,7 @@
 #include <bio/ranges/views/deep.hpp>
 #include <ranges>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 /*!\brief The underlying type of bio::views::trim_quality.
@@ -72,9 +72,9 @@ struct trim_fn
     }
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\name Alphabet related views
@@ -112,7 +112,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                       | *lost*                                 |
  * | std::ranges::common_range        |                                       | *lost*                                 |
  * | std::ranges::output_range        |                                       | *preserved*                            |
- * | bio::const_iterable_range     |                                       | *preserved*                            |
+ * | bio::ranges::const_iterable_range     |                                       | *preserved*                            |
  * |                                  |                                       |                                        |
  * | std::ranges::range_reference_t   | bio::quality_alphabet              | std::ranges::range_reference_t<urng_t> |
  *
@@ -128,8 +128,8 @@ namespace bio::views
  * \hideinitializer
  */
 
-inline constexpr auto trim_quality = deep{bio::detail::trim_fn{}};
+inline constexpr auto trim_quality = deep{detail::trim_fn{}};
 
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

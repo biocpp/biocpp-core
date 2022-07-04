@@ -17,10 +17,10 @@
 
 #include <bio/alphabet/concept.hpp>
 
-namespace bio
+namespace bio::ranges
 {
 
-/*!\interface bio::const_iterable_range <>
+/*!\interface bio::ranges::const_iterable_range <>
  * \ingroup range
  * \extends std::input_range
  * \brief Specifies requirements of an input range type for which the `const` version of that type satisfies the
@@ -49,7 +49,7 @@ concept const_iterable_range = std::ranges::input_range<std::remove_const_t<type
                                                     std::ranges::random_access_range<type const>);
 //!\endcond
 
-/*!\interface bio::pseudo_random_access_iterator <>
+/*!\interface bio::ranges::pseudo_random_access_iterator <>
  * \ingroup range
  * \extends   std::forward_iterator
  * \brief     This concept checks if an iterator type models pseudo random access.
@@ -98,7 +98,7 @@ concept pseudo_random_access_iterator =
 };
 //!\endcond
 
-/*!\interface bio::pseudo_random_access_range <>
+/*!\interface bio::ranges::pseudo_random_access_range <>
  * \ingroup range
  * \extends   std::ranges::forward_range
  * \brief     This concept checks if a type models a pseudo random access range.
@@ -118,7 +118,7 @@ concept pseudo_random_access_range =
   std::ranges::forward_range<rng_t> && pseudo_random_access_iterator<std::ranges::iterator_t<rng_t>>;
 //!\endcond
 
-/*!\interface bio::sequence <>
+/*!\interface bio::ranges::sequence <>
  * \brief The generic concept for a sequence.
  * \ingroup range
  * \extends std::ranges::input_range
@@ -137,4 +137,4 @@ template <typename rng_t>
 concept sequence = std::ranges::input_range<rng_t> && alphabet<std::ranges::range_reference_t<rng_t>>;
 //!\endcond
 
-} // namespace bio
+} // namespace bio::ranges

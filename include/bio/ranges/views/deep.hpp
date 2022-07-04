@@ -16,7 +16,7 @@
 #include <bio/ranges/views/detail.hpp>
 #include <ranges>
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\brief   A wrapper type around an existing view adaptor that enables "deep view" behaviour for that view.
@@ -67,7 +67,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                       | *preserved*                                        |
  * | std::ranges::common_range        |                                       | *preserved*                                        |
  * | std::ranges::output_range        |                                       | *lost*                                             |
- * | bio::const_iterable_range     |                                       | *preserved*                                        |
+ * | bio::ranges::const_iterable_range     |                                       | *preserved*                                        |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   | std::ranges::input_range           | std::ranges::input_range + std::ranges::view |
  *
@@ -238,4 +238,4 @@ deep(underlying_adaptor_t && inner) -> deep<underlying_adaptor_t>;
 
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

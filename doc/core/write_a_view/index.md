@@ -316,7 +316,7 @@ other in memory (the elements of our view are created on demand and are not stor
 
 If you have looked at the `std::random_access_iterator`, you will have seen that it is quite a bit of work to implement
 all the operators, many of whom just need to be overloaded to fix the return type.
-To make this a little bit easier BioC++ provides `bio::detail::inherited_iterator_base`, it fixes the issue with the
+To make this a little bit easier BioC++ provides `bio::ranges::detail::inherited_iterator_base`, it fixes the issue with the
 return type via CRTP.
 A solution to the previous exercise looks like this:
 
@@ -435,11 +435,11 @@ complicated quickly. Therefore BioC++ provides some convenience templates for yo
 ```cpp
 // in our example, this is all you need:
 //                                      your view type goes here ↓
-using my_view_fn = bio::detail::adaptor_for_view_without_args<my_view>;
+using my_view_fn = bio::ranges::detail::adaptor_for_view_without_args<my_view>;
 ```
 
-See `bio::detail::adaptor_base`, `bio::detail::adaptor_for_view_without_args` and
-`bio::detail::adaptor_from_functor` for more details.
+See `bio::ranges::detail::adaptor_base`, `bio::ranges::detail::adaptor_for_view_without_args` and
+`bio::ranges::detail::adaptor_from_functor` for more details.
 
 ### Adaptor object definition
 

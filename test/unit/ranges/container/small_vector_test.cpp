@@ -18,64 +18,65 @@
 
 #include "container_test_template.hpp"
 
-using small_vector_over_dna4_t = bio::small_vector<bio::dna4, 1000>;
+using small_vector_over_dna4_t = bio::ranges::small_vector<bio::dna4, 1000>;
 INSTANTIATE_TYPED_TEST_SUITE_P(small_vector, container_over_dna4_test, small_vector_over_dna4_t, );
 
 // standard construction.
 TEST(small_vector, standard_construction)
 {
-    EXPECT_TRUE((std::is_default_constructible_v<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::is_nothrow_default_constructible_v<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::is_copy_constructible_v<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::is_trivially_copy_constructible_v<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::is_nothrow_copy_constructible_v<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::is_move_constructible_v<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::is_trivially_move_constructible_v<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::is_nothrow_move_constructible_v<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::is_copy_assignable_v<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::is_trivially_copy_assignable_v<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::is_nothrow_copy_assignable_v<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::is_move_assignable_v<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::is_trivially_move_assignable_v<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::is_nothrow_move_assignable_v<bio::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_default_constructible_v<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_nothrow_default_constructible_v<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_copy_constructible_v<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_trivially_copy_constructible_v<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_nothrow_copy_constructible_v<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_move_constructible_v<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_trivially_move_constructible_v<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_nothrow_move_constructible_v<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_copy_assignable_v<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_trivially_copy_assignable_v<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_nothrow_copy_assignable_v<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_move_assignable_v<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_trivially_move_assignable_v<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::is_nothrow_move_assignable_v<bio::ranges::small_vector<char, 4>>));
 }
 
 TEST(small_vector, concepts)
 {
-    EXPECT_TRUE((bio::reservible_container<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::ranges::random_access_range<bio::small_vector<char, 4>>));
-    EXPECT_TRUE((std::ranges::contiguous_range<bio::small_vector<char, 4>>));
+    EXPECT_TRUE((bio::ranges::detail::reservible_container<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::ranges::random_access_range<bio::ranges::small_vector<char, 4>>));
+    EXPECT_TRUE((std::ranges::contiguous_range<bio::ranges::small_vector<char, 4>>));
 }
 
 TEST(small_vector, construct_from_array)
 {
     // Deduce value type and N
-    EXPECT_TRUE((std::same_as<decltype(bio::small_vector{
+    EXPECT_TRUE((std::same_as<decltype(bio::ranges::small_vector{
                                 std::array{'h', 'e', 'l', 'l', 'o'}
     }),
-                              bio::small_vector<char, 5>>));
+                              bio::ranges::small_vector<char, 5>>));
 
     // construct from different sized array (size has to be smaller)
-    EXPECT_TRUE((std::same_as<decltype(bio::small_vector<char, 10>{
+    EXPECT_TRUE((std::same_as<decltype(bio::ranges::small_vector<char, 10>{
                                 std::array{'h', 'e', 'l', 'l', 'o'}
     }),
-                              bio::small_vector<char, 10>>));
+                              bio::ranges::small_vector<char, 10>>));
 }
 
 TEST(small_vector, construct_from_built_in_array)
 {
     // Deduce value type and N
     int arr[3] = {1, 2, 3};
-    EXPECT_TRUE((std::same_as<decltype(bio::small_vector{arr}), bio::small_vector<int, 3>>));
+    EXPECT_TRUE((std::same_as<decltype(bio::ranges::small_vector{arr}), bio::ranges::small_vector<int, 3>>));
 
     // Deduce value type and N
-    EXPECT_TRUE((std::same_as<decltype(bio::small_vector<int, 5>{arr}), bio::small_vector<int, 5>>));
+    EXPECT_TRUE((std::same_as<decltype(bio::ranges::small_vector<int, 5>{arr}), bio::ranges::small_vector<int, 5>>));
 
     // char const *
-    EXPECT_TRUE((std::same_as<decltype(bio::small_vector{"hi"}), bio::small_vector<char, 3>>));
+    EXPECT_TRUE((std::same_as<decltype(bio::ranges::small_vector{"hi"}), bio::ranges::small_vector<char, 3>>));
 
     // parameter pack
-    EXPECT_TRUE((std::same_as<decltype(bio::small_vector<char, 3>{'A', 'C', 'X'}), bio::small_vector<char, 3>>));
+    EXPECT_TRUE(
+      (std::same_as<decltype(bio::ranges::small_vector<char, 3>{'A', 'C', 'X'}), bio::ranges::small_vector<char, 3>>));
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -83,10 +84,10 @@ TEST(small_vector, construct_from_built_in_array)
 // ---------------------------------------------------------------------------------------------------------------------
 constexpr bool comparison_test()
 {
-    bio::small_vector<char, 20> t1{'A', 'C', 'C', 'G', 'T'};
-    bio::small_vector<char, 20> t2{'A', 'C', 'C', 'G', 'T'};
-    bio::small_vector<char, 2>  t3{'A', 'C'};
-    bio::small_vector<char, 20> t4{'A', 'G', 'C', 'G', 'T'};
+    bio::ranges::small_vector<char, 20> t1{'A', 'C', 'C', 'G', 'T'};
+    bio::ranges::small_vector<char, 20> t2{'A', 'C', 'C', 'G', 'T'};
+    bio::ranges::small_vector<char, 2>  t3{'A', 'C'};
+    bio::ranges::small_vector<char, 20> t4{'A', 'G', 'C', 'G', 'T'};
 
     bool res = t1 == t2;
     res      = res && (t1 <= t2);
@@ -114,8 +115,8 @@ TEST(small_vector, comparison)
 
 constexpr bool begin_end_test()
 {
-    std::array        src{'h', 'e', 'l', 'l', 'o'};
-    bio::small_vector vec{src};
+    std::array                src{'h', 'e', 'l', 'l', 'o'};
+    bio::ranges::small_vector vec{src};
 
     auto it_s = src.begin();
     auto it_v = vec.begin();
@@ -129,8 +130,8 @@ constexpr bool begin_end_test()
 
 constexpr bool cbegin_cend_test()
 {
-    std::array        src{'h', 'e', 'l', 'l', 'o'};
-    bio::small_vector vec{src};
+    std::array                src{'h', 'e', 'l', 'l', 'o'};
+    bio::ranges::small_vector vec{src};
 
     auto it_s = src.cbegin();
     auto it_v = vec.cbegin();
@@ -155,9 +156,9 @@ TEST(small_string, size_and_maxsize)
 {
     // auto deduction -> capacity == size
     {
-        constexpr bio::small_vector vec{"hello"};
-        constexpr auto              size  = vec.size();
-        constexpr auto              msize = vec.max_size();
+        constexpr bio::ranges::small_vector vec{"hello"};
+        constexpr auto                      size  = vec.size();
+        constexpr auto                      msize = vec.max_size();
 
         EXPECT_EQ(size, 6u); // incl. null character
         EXPECT_EQ(msize, 6u);
@@ -165,9 +166,9 @@ TEST(small_string, size_and_maxsize)
 
     // capacity != size
     {
-        constexpr bio::small_vector<char, 10> vec{'h', 'e', 'l', 'l', 'o'};
-        constexpr auto                        size  = vec.size();
-        constexpr auto                        msize = vec.max_size();
+        constexpr bio::ranges::small_vector<char, 10> vec{'h', 'e', 'l', 'l', 'o'};
+        constexpr auto                                size  = vec.size();
+        constexpr auto                                msize = vec.max_size();
 
         EXPECT_EQ(size, 5u);
         EXPECT_EQ(msize, 10u);
@@ -176,11 +177,11 @@ TEST(small_string, size_and_maxsize)
 
 constexpr bool swap_test()
 {
-    bio::small_vector<char, 20> t0{};
-    bio::small_vector<char, 20> t1{"AC"};
+    bio::ranges::small_vector<char, 20> t0{};
+    bio::ranges::small_vector<char, 20> t1{"AC"};
 
     t0.swap(t1);
-    return (t0 == bio::small_vector<char, 20>{"AC"}) && (t1 == bio::small_vector<char, 20>{});
+    return (t0 == bio::ranges::small_vector<char, 20>{"AC"}) && (t1 == bio::ranges::small_vector<char, 20>{});
 }
 
 TEST(small_vector, swap)
@@ -191,28 +192,28 @@ TEST(small_vector, swap)
 
 constexpr bool assign_test()
 {
-    bio::small_vector<char, 20> t0{'C', 'C'};
-    bio::small_vector<char, 20> t1{'A', 'C', 'C', 'G', 'T'};
+    bio::ranges::small_vector<char, 20> t0{'C', 'C'};
+    bio::ranges::small_vector<char, 20> t1{'A', 'C', 'C', 'G', 'T'};
 
     // n * value
-    bio::small_vector<char, 20> t3;
+    bio::ranges::small_vector<char, 20> t3;
     t3.assign(2, 'C');
     bool res = (t3 == t0);
 
     // from another container's sub-range
-    bio::small_vector<char, 20> t4;
+    bio::ranges::small_vector<char, 20> t4;
     t4.assign(t1.cbegin(), t1.cend());
     res = res && (t4 == t1);
 
     // initializer list
-    bio::small_vector<char, 20> t5, t6;
+    bio::ranges::small_vector<char, 20> t5, t6;
     t5.assign({'A', 'C', 'C', 'G', 'T'});
     t6  = {'A', 'C', 'C', 'G', 'T'};
     res = res && (t5 == t1);
     res = res && (t6 == t1);
 
     // direct from another container
-    bio::small_vector<char, 20> t7;
+    bio::ranges::small_vector<char, 20> t7;
     t7.assign(std::array<char, 5>{'A', 'C', 'C', 'G', 'T'});
     res = res && (t7 == t1);
 
@@ -227,8 +228,8 @@ TEST(small_vector, assign)
 
 constexpr bool element_access_test()
 {
-    bio::small_vector<char, 20>       t1{'A', 'C', 'C', 'G', 'T'};
-    bio::small_vector<char, 20> const t2{'A', 'C', 'C', 'G', 'T'};
+    bio::ranges::small_vector<char, 20>       t1{'A', 'C', 'C', 'G', 'T'};
+    bio::ranges::small_vector<char, 20> const t2{'A', 'C', 'C', 'G', 'T'};
 
     // at() cannot be constexpr because it throws
 
@@ -245,14 +246,14 @@ constexpr bool element_access_test()
 
     // mutability
     t1[0] = 'T';
-    res   = res && (t1 == bio::small_vector<char, 20>{'T', 'C', 'C', 'G', 'T'});
-    res   = res && !(t1 == bio::small_vector<char, 20>{'T', 'C', 'C'}); // for code coverage
+    res   = res && (t1 == bio::ranges::small_vector<char, 20>{'T', 'C', 'C', 'G', 'T'});
+    res   = res && !(t1 == bio::ranges::small_vector<char, 20>{'T', 'C', 'C'}); // for code coverage
 
     t1.front() = 'C';
-    res        = res && (t1 == bio::small_vector<char, 20>{'C', 'C', 'C', 'G', 'T'});
+    res        = res && (t1 == bio::ranges::small_vector<char, 20>{'C', 'C', 'C', 'G', 'T'});
 
     t1.back() = 'G';
-    res       = res && (t1 == bio::small_vector<char, 20>{'C', 'C', 'C', 'G', 'G'});
+    res       = res && (t1 == bio::ranges::small_vector<char, 20>{'C', 'C', 'C', 'G', 'G'});
 
     // data()
     res = res && (*t1.data() == 'C');
@@ -269,8 +270,8 @@ TEST(small_vector, element_access)
 
 constexpr bool clear_test()
 {
-    bio::small_vector<char, 20> t0{};
-    bio::small_vector<char, 20> t1{'A', 'C', 'C', 'G', 'T'};
+    bio::ranges::small_vector<char, 20> t0{};
+    bio::ranges::small_vector<char, 20> t1{'A', 'C', 'C', 'G', 'T'};
 
     t1.clear();
 
@@ -285,8 +286,8 @@ TEST(small_vector, clear)
 
 constexpr bool insert_test()
 {
-    bio::small_vector<char, 20> t0{};
-    bio::small_vector<char, 20> t1{'A', 'C', 'C', 'G', 'T'};
+    bio::ranges::small_vector<char, 20> t0{};
+    bio::ranges::small_vector<char, 20> t1{'A', 'C', 'C', 'G', 'T'};
 
     // position, value
     t0.insert(t0.cend(), 'A');
@@ -329,15 +330,15 @@ TEST(small_vector, insert)
 
 constexpr bool erase_test()
 {
-    bio::small_vector<char, 20> t1{'A', 'C', 'C', 'G', 'T'};
+    bio::ranges::small_vector<char, 20> t1{'A', 'C', 'C', 'G', 'T'};
 
     // one element
     t1.erase(t1.begin());
-    bool res = (t1 == (bio::small_vector<char, 20>{'C', 'C', 'G', 'T'}));
+    bool res = (t1 == (bio::ranges::small_vector<char, 20>{'C', 'C', 'G', 'T'}));
 
     // range
     t1.erase(t1.begin() + 1, t1.begin() + 3);
-    res = res && (t1 == (bio::small_vector<char, 20>{'C', 'T'}));
+    res = res && (t1 == (bio::ranges::small_vector<char, 20>{'C', 'T'}));
 
     return res;
 }
@@ -350,19 +351,19 @@ TEST(small_vector, erase)
 
 constexpr bool push_pop_test()
 {
-    bio::small_vector<char, 20> t0{};
+    bio::ranges::small_vector<char, 20> t0{};
 
     // push_back
     t0.push_back('A');
-    bool res = (t0 == (bio::small_vector<char, 20>{'A'}));
+    bool res = (t0 == (bio::ranges::small_vector<char, 20>{'A'}));
     t0.push_back('C');
-    res = res && (t0 == (bio::small_vector<char, 20>{'A', 'C'}));
+    res = res && (t0 == (bio::ranges::small_vector<char, 20>{'A', 'C'}));
 
     // pop_back
     t0.pop_back();
-    res = res && (t0 == (bio::small_vector<char, 20>{'A'}));
+    res = res && (t0 == (bio::ranges::small_vector<char, 20>{'A'}));
     t0.pop_back();
-    res = res && (t0 == (bio::small_vector<char, 20>{}));
+    res = res && (t0 == (bio::ranges::small_vector<char, 20>{}));
 
     return res;
 }
@@ -375,23 +376,23 @@ TEST(small_vector, push_pop)
 
 constexpr bool resize_test()
 {
-    bio::small_vector<int, 20> t0{};
+    bio::ranges::small_vector<int, 20> t0{};
 
     // enlarge without values
     t0.resize(3);
-    bool res = (t0 == (bio::small_vector<int, 20>{0, 0, 0}));
+    bool res = (t0 == (bio::ranges::small_vector<int, 20>{0, 0, 0}));
 
     // enlarge with value
     t0.resize(5, 11);
-    res = res && (t0 == (bio::small_vector<int, 20>{0, 0, 0, 11, 11}));
+    res = res && (t0 == (bio::ranges::small_vector<int, 20>{0, 0, 0, 11, 11}));
 
     // shrink with value (no effect)
     t0.resize(4, 500);
-    res = res && (t0 == (bio::small_vector<int, 20>{0, 0, 0, 11}));
+    res = res && (t0 == (bio::ranges::small_vector<int, 20>{0, 0, 0, 11}));
 
     // shrink without value
     t0.resize(2);
-    res = res && (t0 == (bio::small_vector<int, 20>{0, 0}));
+    res = res && (t0 == (bio::ranges::small_vector<int, 20>{0, 0}));
 
     return res;
 }
@@ -404,7 +405,7 @@ TEST(small_vector, resize)
 
 TEST(small_vector, serialisation)
 {
-    bio::small_vector hello{
+    bio::ranges::small_vector hello{
       std::array{'h', 'e', 'l', 'l', 'o'}
     };
     bio::test::do_serialisation(hello);

@@ -25,29 +25,31 @@ TEST(view_complement, basic)
     bio::dna5_vector foo{"ACGTA"_dna5};
 
     // pipe notation
-    bio::dna5_vector v = foo | bio::views::complement | bio::views::to<std::vector>();
+    bio::dna5_vector v = foo | bio::ranges::views::complement | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(v, "TGCAT"_dna5);
 
     // function notation
-    bio::dna5_vector v2(bio::views::complement(foo) | bio::views::to<std::vector>());
+    bio::dna5_vector v2(bio::ranges::views::complement(foo) | bio::ranges::views::to<std::vector>());
     EXPECT_EQ(v2, "TGCAT"_dna5);
 
     // combinability
-    bio::dna5_vector v3 = foo | bio::views::complement | std::views::reverse | bio::views::to<std::vector>();
+    bio::dna5_vector v3 =
+      foo | bio::ranges::views::complement | std::views::reverse | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(v3, "TACGT"_dna5);
 
     bio::dna5_vector const bar{"ACGTA"_dna5};
 
     // const pipe notation
-    bio::dna5_vector v4 = bar | bio::views::complement | bio::views::to<std::vector>();
+    bio::dna5_vector v4 = bar | bio::ranges::views::complement | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(v4, "TGCAT"_dna5);
 
     // const function notation
-    bio::dna5_vector v5(bio::views::complement(bar) | bio::views::to<std::vector>());
+    bio::dna5_vector v5(bio::ranges::views::complement(bar) | bio::ranges::views::to<std::vector>());
     EXPECT_EQ(v5, "TGCAT"_dna5);
 
     // const combinability
-    bio::dna5_vector v6 = bar | bio::views::complement | std::views::reverse | bio::views::to<std::vector>();
+    bio::dna5_vector v6 =
+      bar | bio::ranges::views::complement | std::views::reverse | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(v6, "TACGT"_dna5);
 }
 
@@ -55,7 +57,7 @@ TEST(view_complement, deep_view)
 {
     std::vector<bio::dna5_vector> foo{"ACGTA"_dna5, "TGCAT"_dna5};
 
-    auto v = foo | bio::views::complement;
+    auto v = foo | bio::ranges::views::complement;
 
     ASSERT_EQ(size(v), 2u);
     EXPECT_RANGE_EQ(v[0], "TGCAT"_dna5);
@@ -63,7 +65,7 @@ TEST(view_complement, deep_view)
 
     std::vector<bio::dna5_vector> const bar{"ACGTA"_dna5, "TGCAT"_dna5};
 
-    auto v2 = bar | bio::views::complement;
+    auto v2 = bar | bio::ranges::views::complement;
 
     ASSERT_EQ(size(v2), 2u);
     EXPECT_RANGE_EQ(v2[0], "TGCAT"_dna5);
@@ -80,10 +82,10 @@ TEST(view_complement, concepts)
     EXPECT_FALSE(std::ranges::view<decltype(vec)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(vec)>);
-    EXPECT_TRUE(bio::const_iterable_range<decltype(vec)>);
+    EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(vec), bio::dna5>));
 
-    auto v1 = vec | bio::views::complement;
+    auto v1 = vec | bio::ranges::views::complement;
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);
@@ -91,7 +93,7 @@ TEST(view_complement, concepts)
     EXPECT_TRUE(std::ranges::view<decltype(v1)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(v1)>);
-    EXPECT_TRUE(bio::const_iterable_range<decltype(v1)>);
+    EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(v1)>);
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), bio::dna5>));
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), char>));
 
@@ -103,10 +105,10 @@ TEST(view_complement, concepts)
     EXPECT_FALSE(std::ranges::view<decltype(vec2)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec2)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(vec2)>);
-    EXPECT_TRUE(bio::const_iterable_range<decltype(vec2)>);
+    EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec2)>);
     EXPECT_FALSE((std::ranges::output_range<decltype(vec2), bio::dna5>));
 
-    auto v2 = vec2 | bio::views::complement;
+    auto v2 = vec2 | bio::ranges::views::complement;
     EXPECT_TRUE(std::ranges::input_range<decltype(v2)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v2)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v2)>);
@@ -114,7 +116,7 @@ TEST(view_complement, concepts)
     EXPECT_TRUE(std::ranges::view<decltype(v2)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(v2)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(v2)>);
-    EXPECT_TRUE(bio::const_iterable_range<decltype(v2)>);
+    EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(v2)>);
     EXPECT_FALSE((std::ranges::output_range<decltype(v2), bio::dna5>));
     EXPECT_FALSE((std::ranges::output_range<decltype(v2), char>));
 }

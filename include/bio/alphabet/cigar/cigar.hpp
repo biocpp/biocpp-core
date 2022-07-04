@@ -100,9 +100,9 @@ public:
      * \{
      */
     //!\brief Return the string representation.
-    small_string<11> to_string() const noexcept
+    ranges::small_string<11> to_string() const noexcept
     {
-        small_string<11> ret{}; // maximum number of digits for uint32_t + 1 char for the cigar_op
+        ranges::small_string<11> ret{}; // maximum number of digits for uint32_t + 1 char for the cigar_op
         ret.resize(11);
 
         auto [ptr, errc] = std::to_chars(ret.data(), ret.data() + 10, get<0>(*this));
@@ -119,7 +119,7 @@ public:
      * \{
      */
     //!\brief Assign from the string representation.
-    cigar & assign_string(small_string<11> const s) noexcept
+    cigar & assign_string(ranges::small_string<11> const s) noexcept
     {
         uint32_t num{};
         auto [ptr, errc] = std::from_chars(s.data(), s.data() + 10, num);

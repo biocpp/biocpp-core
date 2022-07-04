@@ -29,29 +29,31 @@ TEST(view_interleave, basic)
     size_t      cmpsize = 18;
 
     // pipe notation
-    // explicitly call bio::views::type_reduce
-    auto v0 = bio::views::type_reduce(u) | bio::views::interleave(s, bio::views::type_reduce(i));
+    // explicitly call bio::ranges::views::type_reduce
+    auto v0 =
+      bio::ranges::views::type_reduce(u) | bio::ranges::views::interleave(s, bio::ranges::views::type_reduce(i));
     EXPECT_RANGE_EQ(cmp, v0);
     EXPECT_EQ(cmpsize, v0.size());
-    // don't call bio::views::type_reduce
-    auto v1 = u | bio::views::interleave(s, i);
+    // don't call bio::ranges::views::type_reduce
+    auto v1 = u | bio::ranges::views::interleave(s, i);
     EXPECT_RANGE_EQ(cmp, v1);
 
     // function notation
-    // explicitly call bio::views::type_reduce
-    auto v2{bio::views::interleave(bio::views::type_reduce(u), s, bio::views::type_reduce(i))};
+    // explicitly call bio::ranges::views::type_reduce
+    auto v2{bio::ranges::views::interleave(bio::ranges::views::type_reduce(u), s, bio::ranges::views::type_reduce(i))};
     EXPECT_RANGE_EQ(cmp, v2);
-    // don't call bio::views::type_reduce
-    auto v3{bio::views::interleave(u, s, i)};
+    // don't call bio::ranges::views::type_reduce
+    auto v3{bio::ranges::views::interleave(u, s, i)};
     EXPECT_RANGE_EQ(cmp, v3);
 
     //combinability
-    // explicitly call bio::views::type_reduce
-    auto v4 = bio::views::type_reduce(u) | bio::views::interleave(s, bio::views::type_reduce(i)) | std::views::reverse |
+    // explicitly call bio::ranges::views::type_reduce
+    auto v4 = bio::ranges::views::type_reduce(u) |
+              bio::ranges::views::interleave(s, bio::ranges::views::type_reduce(i)) | std::views::reverse |
               std::views::take(5);
     EXPECT_RANGE_EQ(cmp_rev, v4);
-    // don't call bio::views::type_reduce
-    auto v5 = u | bio::views::interleave(s, i) | std::views::reverse | std::views::take(5);
+    // don't call bio::ranges::views::type_reduce
+    auto v5 = u | bio::ranges::views::interleave(s, i) | std::views::reverse | std::views::take(5);
     EXPECT_RANGE_EQ(cmp_rev, v5);
 }
 
@@ -60,8 +62,9 @@ TEST(view_interleave, concepts)
     // random_access_range, viewable_range, sized_range
     std::string u{"FOOBARBAXBAT"};
     std::string i{"in"};
-    size_t      s  = 3;
-    auto        v1 = bio::detail::view_interleave(bio::views::type_reduce(u), s, bio::views::type_reduce(i));
+    size_t      s = 3;
+    auto        v1 =
+      bio::ranges::detail::view_interleave(bio::ranges::views::type_reduce(u), s, bio::ranges::views::type_reduce(i));
 
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);

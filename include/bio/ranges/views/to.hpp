@@ -13,7 +13,7 @@
 
 #include <bio/ranges/views/detail.hpp>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 //!\brief Functor that creates the given container from a range.
@@ -90,9 +90,9 @@ struct to_template_template_fn
     }
 };
 
-} //namespace bio::detail
+} //namespace bio::ranges::detail
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\brief Converts a range to a container.
@@ -134,4 +134,4 @@ constexpr auto to(rng_t && rng, args_t &&... args)
                                         std::forward<args_t>(args)...}(std::forward<rng_t>(rng));
 }
 
-} // namespace bio::views
+} // namespace bio::ranges::views

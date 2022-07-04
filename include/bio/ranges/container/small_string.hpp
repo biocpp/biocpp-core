@@ -15,12 +15,12 @@
 
 #include <bio/ranges/container/small_vector.hpp>
 
-namespace bio
+namespace bio::ranges
 {
 
 /*!\brief Implements a small string that can be used for compile time computations.
  * \ingroup container
- * \implements bio::reservible_container
+ * \implements bio::ranges::detail::reservible_container
  * \tparam capacity_ The capacity of the small string.
  *
  * This class provides a string type for small strings and compile-time contexts. It has fixed capacity, but variable
@@ -181,14 +181,14 @@ public:
     /*!\name Modifiers
      * \{
      */
-    //!\copydoc bio::small_vector::clear
+    //!\copydoc bio::ranges::small_vector::clear
     constexpr void clear() noexcept
     {
         sz       = 0;
         data_[0] = '\0';
     }
 
-    //!\copydoc bio::small_vector::push_back(value_type const value)
+    //!\copydoc bio::ranges::small_vector::push_back(value_type const value)
     constexpr void push_back(char const value) noexcept
     {
         assert(sz < capacity_);
@@ -197,7 +197,7 @@ public:
         data_[sz] = '\0';
     }
 
-    //!\copydoc bio::small_vector::pop_back
+    //!\copydoc bio::ranges::small_vector::pop_back
     constexpr void pop_back() noexcept
     {
         assert(sz > 0);
@@ -205,10 +205,10 @@ public:
         data_[sz] = '\0';
     }
 
-    //!\copydoc bio::small_vector::resize(size_type const)
+    //!\copydoc bio::ranges::small_vector::resize(size_type const)
     constexpr void resize(size_type const count) noexcept { resize(count, '\0'); }
 
-    //!\copydoc bio::small_vector::resize(size_type const, value_type const value)
+    //!\copydoc bio::ranges::small_vector::resize(size_type const, value_type const value)
     constexpr void resize(size_type const count, char const value) noexcept
     {
         assert(count <= capacity_);
@@ -306,7 +306,7 @@ public:
      */
     constexpr char const * c_str() const noexcept { return data_.data(); }
 
-    /*!\brief Implicit conversion to std::string which delegates to bio::small_string::str().
+    /*!\brief Implicit conversion to std::string which delegates to bio::ranges::small_string::str().
      *
      * ### Exceptions
      *
@@ -323,9 +323,9 @@ public:
      * \{
      */
 
-    /*!\brief Formatted output for the bio::small_string.
+    /*!\brief Formatted output for the bio::ranges::small_string.
      * \param[in,out] os  The std::basic_ostream to write to.
-     * \param[in]     str The bio::small_string to read from.
+     * \param[in]     str The bio::ranges::small_string to read from.
      * \returns `os`.
      *
      * \details
@@ -338,14 +338,14 @@ public:
         return os;
     }
 
-    /*!\brief Formatted input for the bio::small_string.
+    /*!\brief Formatted input for the bio::ranges::small_string.
      * \param[in,out] is  The std::basic_istream to read from.
-     * \param[out]    str The bio::small_string to write to.
+     * \param[out]    str The bio::ranges::small_string to write to.
      * \returns `is`.
      *
      * \details
      *
-     * Reads at most bio::small_string::max_size characters from the stream.
+     * Reads at most bio::ranges::small_string::max_size characters from the stream.
      * If a stream error occurred or no characters could be extracted the std::ios_base::failbit is set.
      * This may throw an exception.
      */
@@ -396,16 +396,16 @@ small_string(std::array<char, N> const &) -> small_string<N>;
 small_string(char const)->small_string<1>;
 //!\}
 
-} // namespace bio
+} // namespace bio::ranges
 
 #if __has_include(<fmt/format.h>)
 
 #    include <fmt/ranges.h>
 
 template <size_t N>
-struct fmt::formatter<bio::small_string<N>> : fmt::formatter<std::string_view>
+struct fmt::formatter<bio::ranges::small_string<N>> : fmt::formatter<std::string_view>
 {
-    constexpr auto format(bio::small_string<N> const & a, auto & ctx) const
+    constexpr auto format(bio::ranges::small_string<N> const & a, auto & ctx) const
     {
         return fmt::formatter<std::string_view>::format(std::string_view{a.data(), a.size()}, ctx);
     }

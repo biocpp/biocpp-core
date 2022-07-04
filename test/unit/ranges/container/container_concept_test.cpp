@@ -33,73 +33,69 @@ TEST(range_concept, forward_range)
     EXPECT_TRUE((std::ranges::forward_range<std::deque<char>>));
     EXPECT_TRUE((std::ranges::forward_range<std::string>));
 
-    EXPECT_TRUE((std::ranges::forward_range<bio::concatenated_sequences<std::string>>));
-    EXPECT_TRUE((std::ranges::forward_range<bio::concatenated_sequences<std::vector<char>>>));
-    EXPECT_TRUE((std::ranges::forward_range<bio::bitcompressed_vector<bio::dna4>>));
-    EXPECT_TRUE((std::ranges::forward_range<bio::bitcompressed_vector<bio::qualified<bio::dna4, bio::phred42>>>));
+    EXPECT_TRUE((std::ranges::forward_range<bio::ranges::concatenated_sequences<std::string>>));
+    EXPECT_TRUE((std::ranges::forward_range<bio::ranges::concatenated_sequences<std::vector<char>>>));
+    EXPECT_TRUE((std::ranges::forward_range<bio::ranges::bitcompressed_vector<bio::dna4>>));
+    EXPECT_TRUE(
+      (std::ranges::forward_range<bio::ranges::bitcompressed_vector<bio::qualified<bio::dna4, bio::phred42>>>));
 }
 
 TEST(container, container)
 {
-    EXPECT_TRUE((bio::container<std::array<char, 2>>));
-    EXPECT_TRUE((bio::container<std::list<char>>));
-    EXPECT_FALSE((bio::container<std::forward_list<char>>)); // `.size()` missing
-    EXPECT_TRUE((bio::container<std::vector<char>>));
-    EXPECT_TRUE((bio::container<std::deque<char>>));
-    EXPECT_TRUE((bio::container<std::string>));
+    EXPECT_TRUE((bio::ranges::detail::container<std::array<char, 2>>));
+    EXPECT_TRUE((bio::ranges::detail::container<std::list<char>>));
+    EXPECT_FALSE((bio::ranges::detail::container<std::forward_list<char>>)); // `.size()` missing
+    EXPECT_TRUE((bio::ranges::detail::container<std::vector<char>>));
+    EXPECT_TRUE((bio::ranges::detail::container<std::deque<char>>));
+    EXPECT_TRUE((bio::ranges::detail::container<std::string>));
 
-    EXPECT_TRUE((bio::container<bio::concatenated_sequences<std::string>>));
-    EXPECT_TRUE((bio::container<bio::concatenated_sequences<std::vector<char>>>));
+    EXPECT_TRUE((bio::ranges::detail::container<bio::ranges::concatenated_sequences<std::string>>));
+    EXPECT_TRUE((bio::ranges::detail::container<bio::ranges::concatenated_sequences<std::vector<char>>>));
 }
 
 TEST(container, sequence_container)
 {
-    EXPECT_FALSE((bio::sequence_container<std::array<char, 2>>));
-    EXPECT_TRUE((bio::sequence_container<std::list<char>>));
-    EXPECT_FALSE((bio::sequence_container<std::forward_list<char>>));
-    EXPECT_TRUE((bio::sequence_container<std::vector<char>>));
-    EXPECT_TRUE((bio::sequence_container<std::deque<char>>));
-    EXPECT_TRUE((bio::sequence_container<std::string>));
+    EXPECT_FALSE((bio::ranges::detail::sequence_container<std::array<char, 2>>));
+    EXPECT_TRUE((bio::ranges::detail::sequence_container<std::list<char>>));
+    EXPECT_FALSE((bio::ranges::detail::sequence_container<std::forward_list<char>>));
+    EXPECT_TRUE((bio::ranges::detail::sequence_container<std::vector<char>>));
+    EXPECT_TRUE((bio::ranges::detail::sequence_container<std::deque<char>>));
+    EXPECT_TRUE((bio::ranges::detail::sequence_container<std::string>));
 
-    EXPECT_TRUE((bio::sequence_container<bio::concatenated_sequences<std::string>>));
-    EXPECT_TRUE((bio::sequence_container<bio::concatenated_sequences<std::vector<char>>>));
+    EXPECT_TRUE((bio::ranges::detail::sequence_container<bio::ranges::concatenated_sequences<std::string>>));
+    EXPECT_TRUE((bio::ranges::detail::sequence_container<bio::ranges::concatenated_sequences<std::vector<char>>>));
 }
 
 TEST(container, random_access_container)
 {
-    EXPECT_FALSE((bio::random_access_container<std::array<char, 2>>));
-    EXPECT_FALSE((bio::random_access_container<std::list<char>>));
-    EXPECT_FALSE((bio::random_access_container<std::forward_list<char>>));
-    EXPECT_TRUE((bio::random_access_container<std::vector<char>>));
-    EXPECT_TRUE((bio::random_access_container<std::deque<char>>));
-    EXPECT_TRUE((bio::random_access_container<std::string>));
+    EXPECT_FALSE((bio::ranges::detail::random_access_container<std::array<char, 2>>));
+    EXPECT_FALSE((bio::ranges::detail::random_access_container<std::list<char>>));
+    EXPECT_FALSE((bio::ranges::detail::random_access_container<std::forward_list<char>>));
+    EXPECT_TRUE((bio::ranges::detail::random_access_container<std::vector<char>>));
+    EXPECT_TRUE((bio::ranges::detail::random_access_container<std::deque<char>>));
+    EXPECT_TRUE((bio::ranges::detail::random_access_container<std::string>));
 
-    EXPECT_TRUE((bio::random_access_container<bio::concatenated_sequences<std::string>>));
-    EXPECT_TRUE((bio::random_access_container<bio::concatenated_sequences<std::vector<char>>>));
+    EXPECT_TRUE((bio::ranges::detail::random_access_container<bio::ranges::concatenated_sequences<std::string>>));
+    EXPECT_TRUE((bio::ranges::detail::random_access_container<bio::ranges::concatenated_sequences<std::vector<char>>>));
 }
 
 TEST(container, reservible_container)
 {
-    EXPECT_FALSE((bio::reservible_container<std::array<char, 2>>));
-    EXPECT_FALSE((bio::reservible_container<std::list<char>>));
-    EXPECT_FALSE((bio::reservible_container<std::forward_list<char>>));
-    EXPECT_TRUE((bio::reservible_container<std::vector<char>>));
-    EXPECT_FALSE((bio::reservible_container<std::deque<char>>));
-    EXPECT_TRUE((bio::reservible_container<std::string>));
+    EXPECT_FALSE((bio::ranges::detail::reservible_container<std::array<char, 2>>));
+    EXPECT_FALSE((bio::ranges::detail::reservible_container<std::list<char>>));
+    EXPECT_FALSE((bio::ranges::detail::reservible_container<std::forward_list<char>>));
+    EXPECT_TRUE((bio::ranges::detail::reservible_container<std::vector<char>>));
+    EXPECT_FALSE((bio::ranges::detail::reservible_container<std::deque<char>>));
+    EXPECT_TRUE((bio::ranges::detail::reservible_container<std::string>));
 
-    EXPECT_TRUE((bio::reservible_container<bio::concatenated_sequences<std::string>>));
-    EXPECT_TRUE((bio::reservible_container<bio::concatenated_sequences<std::vector<char>>>));
+    EXPECT_TRUE((bio::ranges::detail::reservible_container<bio::ranges::concatenated_sequences<std::string>>));
+    EXPECT_TRUE((bio::ranges::detail::reservible_container<bio::ranges::concatenated_sequences<std::vector<char>>>));
 
-    EXPECT_TRUE((bio::reservible_container<sdsl::bit_vector>));
-    EXPECT_TRUE((bio::reservible_container<sdsl::int_vector<>>));
-    EXPECT_TRUE((bio::reservible_container<sdsl::int_vector<13>>));
-    EXPECT_TRUE((bio::reservible_container<sdsl::int_vector<64>>));
-    EXPECT_TRUE((bio::reservible_container<bio::bitcompressed_vector<bio::dna4>>));
-    EXPECT_TRUE((bio::reservible_container<bio::bitcompressed_vector<bio::qualified<bio::dna4, bio::phred42>>>));
+    EXPECT_TRUE((bio::ranges::detail::reservible_container<sdsl::bit_vector>));
+    EXPECT_TRUE((bio::ranges::detail::reservible_container<sdsl::int_vector<>>));
+    EXPECT_TRUE((bio::ranges::detail::reservible_container<sdsl::int_vector<13>>));
+    EXPECT_TRUE((bio::ranges::detail::reservible_container<sdsl::int_vector<64>>));
+    EXPECT_TRUE((bio::ranges::detail::reservible_container<bio::ranges::bitcompressed_vector<bio::dna4>>));
+    EXPECT_TRUE((bio::ranges::detail::reservible_container<
+                 bio::ranges::bitcompressed_vector<bio::qualified<bio::dna4, bio::phred42>>>));
 }
-
-/* Check the SDSL containers */
-//TODO
-
-/* Check our containers */
-//TODO
