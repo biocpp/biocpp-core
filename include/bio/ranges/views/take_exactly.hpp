@@ -19,7 +19,7 @@
 //  views::take_exactly (adaptor instance definition)
 // ============================================================================
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\name General purpose views
@@ -54,7 +54,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                       | ***guaranteed***                                   |
  * | std::ranges::common_range        |                                       | *preserved*                                        |
  * | std::ranges::output_range        |                                       | *preserved* except if `urng_t` is std::basic_string|
- * | bio::const_iterable_range     |                                       | *preserved*                                        |
+ * | bio::ranges::const_iterable_range     |                                       | *preserved*                                        |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   |                                       | std::ranges::range_reference_t<urng_t>             |
  *
@@ -86,10 +86,10 @@ inline constexpr auto take_exactly = detail::take_fn<true, false>{};
  * \throws bio::unexpected_end_of_input If the underlying range is smaller than `size`.
  * \ingroup views
  *
- * \copydetails bio::views::take_exactly
+ * \copydetails bio::ranges::views::take_exactly
  * \hideinitializer
  */
 inline constexpr auto take_exactly_or_throw = detail::take_fn<true, true>{};
 
 //!\}
-} // namespace bio::views
+} // namespace bio::ranges::views

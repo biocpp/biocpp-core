@@ -28,7 +28,7 @@ int main(int argc, char ** argv)
 
     if (use_bitvector)
     {
-        bio::bitcompressed_vector<bio::dna4> vector;
+        bio::r::bitcompressed_vector<bio::dna4> vector;
         vector.resize(size, 'A'_dna4);
         fmt::print("Allocated bio::bitcompressed_vector<bio::dna4> of size {}\n", vector.size());
     }

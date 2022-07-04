@@ -55,19 +55,19 @@ void sequential_read(benchmark::State & state)
 
 BENCHMARK_TEMPLATE(sequential_read, std::string, void);
 BENCHMARK_TEMPLATE(sequential_read, std::string, decltype(std::views::all));
-BENCHMARK_TEMPLATE(sequential_read, std::string, decltype(bio::views::type_reduce));
+BENCHMARK_TEMPLATE(sequential_read, std::string, decltype(bio::ranges::views::type_reduce));
 
 BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, void);
 BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, decltype(std::views::all));
-BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, decltype(bio::views::type_reduce));
+BENCHMARK_TEMPLATE(sequential_read, std::vector<uint8_t>, decltype(bio::ranges::views::type_reduce));
 
 BENCHMARK_TEMPLATE(sequential_read, std::deque<uint8_t>, void);
 BENCHMARK_TEMPLATE(sequential_read, std::deque<uint8_t>, decltype(std::views::all));
-BENCHMARK_TEMPLATE(sequential_read, std::deque<uint8_t>, decltype(bio::views::type_reduce));
+BENCHMARK_TEMPLATE(sequential_read, std::deque<uint8_t>, decltype(bio::ranges::views::type_reduce));
 
 BENCHMARK_TEMPLATE(sequential_read, std::list<uint8_t>, void);
 BENCHMARK_TEMPLATE(sequential_read, std::list<uint8_t>, decltype(std::views::all));
-BENCHMARK_TEMPLATE(sequential_read, std::list<uint8_t>, decltype(bio::views::type_reduce));
+BENCHMARK_TEMPLATE(sequential_read, std::list<uint8_t>, decltype(bio::ranges::views::type_reduce));
 
 // ============================================================================
 //  run

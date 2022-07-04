@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides bio::bitcompressed_vector.
+ * \brief Provides bio::ranges::bitcompressed_vector.
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
@@ -27,12 +27,12 @@
 #include <iterator>
 #include <ranges>
 
-namespace bio
+namespace bio::ranges
 {
 
 /*!\brief A space-optimised version of std::vector that compresses multiple letters into a single byte.
  * \tparam alphabet_type The value type of the container, must satisfy bio::writable_semialphabet and std::regular.
- * \implements bio::reservible_container
+ * \implements bio::ranges::detail::reservible_container
  * \implements bio::cerealisable
  * \ingroup container
  *
@@ -76,7 +76,7 @@ private:
     //!\brief The data storage.
     data_type data;
 
-    //!\brief Proxy data type returned by bio::bitcompressed_vector as reference to element unless the alphabet_type
+    //!\brief Proxy data type returned by bio::ranges::bitcompressed_vector as reference to element unless the alphabet_type
     //!       is uint8_t, uint16_t, uint32_t or uint64_t (in which case a regular & is returned).
     class reference_proxy_type : public alphabet_proxy<reference_proxy_type, alphabet_type>
     {
@@ -942,4 +942,4 @@ public:
     //!\endcond
 };
 
-} // namespace bio
+} // namespace bio::ranges

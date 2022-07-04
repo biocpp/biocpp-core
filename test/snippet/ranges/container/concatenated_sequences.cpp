@@ -8,7 +8,7 @@ int main()
 {
     using bio::operator""_dna4;
 
-    bio::concatenated_sequences<bio::dna4_vector> concat1{"ACGT"_dna4, "GAGGA"_dna4};
+    bio::ranges::concatenated_sequences<bio::dna4_vector> concat1{"ACGT"_dna4, "GAGGA"_dna4};
     fmt::print("{}\n", concat1[0]); // "ACGT"
 
     std::vector<bio::dna4_vector> concat2{"ACTA"_dna4, "AGGA"_dna4};

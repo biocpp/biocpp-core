@@ -19,7 +19,7 @@ template <typename t>
 using sdsl_int_vec = sdsl::int_vector<sizeof(t) * 8>;
 
 template <typename t>
-using small_vec = bio::small_vector<t, 10'000>;
+using small_vec = bio::ranges::small_vector<t, 10'000>;
 
 // ============================================================================
 //  sequential_write
@@ -84,15 +84,15 @@ BENCHMARK_TEMPLATE(sequential_write, sdsl_int_vec, uint16_t);
 BENCHMARK_TEMPLATE(sequential_write, sdsl_int_vec, uint32_t);
 BENCHMARK_TEMPLATE(sequential_write, sdsl_int_vec, uint64_t);
 
-BENCHMARK_TEMPLATE(sequential_write, bio::bitcompressed_vector, char);
-BENCHMARK_TEMPLATE(sequential_write, bio::bitcompressed_vector, bio::gap);
-BENCHMARK_TEMPLATE(sequential_write, bio::bitcompressed_vector, bio::dna4);
+BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, char);
+BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::gap);
+BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::dna4);
 //TODO(bio): works on gcc10, fails on gc11
-// BENCHMARK_TEMPLATE(sequential_write, bio::bitcompressed_vector, bio::gapped<bio::dna4>);
-BENCHMARK_TEMPLATE(sequential_write, bio::bitcompressed_vector, bio::dna15);
-BENCHMARK_TEMPLATE(sequential_write, bio::bitcompressed_vector, bio::aa27);
+// BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::gapped<bio::dna4>);
+BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::dna15);
+BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::aa27);
 //TODO(bio): works on gcc10, fails on gc11
-// BENCHMARK_TEMPLATE(sequential_write, bio::bitcompressed_vector, bio::alphabet_variant<char, bio::dna4>);
+// BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet_variant<char, bio::dna4>);
 
 BENCHMARK_TEMPLATE(sequential_write, small_vec, char);
 BENCHMARK_TEMPLATE(sequential_write, small_vec, bio::gap);

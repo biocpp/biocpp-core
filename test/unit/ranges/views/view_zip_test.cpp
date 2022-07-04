@@ -25,7 +25,7 @@
 
 using range_t        = std::vector<int>;
 using other_range_t  = std::vector<std::string>;
-using zip_view_t     = decltype(bio::views::zip(std::declval<range_t &>(), std::declval<other_range_t &>()));
+using zip_view_t     = decltype(bio::ranges::views::zip(std::declval<range_t &>(), std::declval<other_range_t &>()));
 using zip_iterator_t = std::ranges::iterator_t<zip_view_t>;
 
 template <>
@@ -46,7 +46,7 @@ struct iterator_fixture<zip_iterator_t> : public ::testing::Test
       {3, "DDD"}
     };
 
-    zip_view_t test_range{bio::views::zip(range, other_range)};
+    zip_view_t test_range{bio::ranges::views::zip(range, other_range)};
 };
 INSTANTIATE_TYPED_TEST_SUITE_P(zip_iterator_test, iterator_fixture, zip_iterator_t, );
 
@@ -59,7 +59,7 @@ protected:
     using const_range_t   = std::vector<int> const;
     using other_range_t   = std::vector<std::string>;
     using forward_range_t = std::forward_list<int>;
-    using view_t          = decltype(bio::views::repeat('L'));
+    using view_t          = decltype(bio::ranges::views::repeat('L'));
 
     range_t                 range{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     const_range_t           const_range{range};
@@ -67,21 +67,21 @@ protected:
     forward_range_t         forward_range{range.begin(), range.end()};
     static constexpr view_t view{};
 
-    using zip_common_range_t     = decltype(bio::views::zip(range, other_range));
-    using zip_not_common_range_t = decltype(bio::views::zip(range, other_range, view));
-    using zip_const_range_t      = decltype(bio::views::zip(range, const_range));
-    using zip_forward_range_t    = decltype(bio::views::zip(range, other_range, forward_range));
-    using const_zip_t            = decltype(bio::views::zip(range, other_range)) const;
+    using zip_common_range_t     = decltype(bio::ranges::views::zip(range, other_range));
+    using zip_not_common_range_t = decltype(bio::ranges::views::zip(range, other_range, view));
+    using zip_const_range_t      = decltype(bio::ranges::views::zip(range, const_range));
+    using zip_forward_range_t    = decltype(bio::ranges::views::zip(range, other_range, forward_range));
+    using const_zip_t            = decltype(bio::ranges::views::zip(range, other_range)) const;
 
-    zip_common_range_t zip_common_range() { return bio::views::zip(range, other_range); }
+    zip_common_range_t zip_common_range() { return bio::ranges::views::zip(range, other_range); }
 
-    zip_not_common_range_t zip_not_common_range() { return bio::views::zip(range, other_range, view); }
+    zip_not_common_range_t zip_not_common_range() { return bio::ranges::views::zip(range, other_range, view); }
 
-    zip_const_range_t zip_const_range() { return bio::views::zip(range, const_range); }
+    zip_const_range_t zip_const_range() { return bio::ranges::views::zip(range, const_range); }
 
-    zip_forward_range_t zip_forward_range() { return bio::views::zip(range, other_range, forward_range); }
+    zip_forward_range_t zip_forward_range() { return bio::ranges::views::zip(range, other_range, forward_range); }
 
-    const_zip_t const_zip() { return bio::views::zip(range, other_range); }
+    const_zip_t const_zip() { return bio::ranges::views::zip(range, other_range); }
 };
 
 TEST_F(zip_test, concepts)
@@ -101,7 +101,7 @@ TEST_F(zip_test, concepts)
     EXPECT_FALSE(std::ranges::view<const_zip_t>); // const lvalue is not movable, because it cannot be assigned to
 
     EXPECT_TRUE(std::ranges::sized_range<zip_common_range_t>);
-    EXPECT_FALSE(std::ranges::sized_range<zip_not_common_range_t>); // bio::views::repeat has no size (infinite)
+    EXPECT_FALSE(std::ranges::sized_range<zip_not_common_range_t>); // bio::ranges::views::repeat has no size (infinite)
     EXPECT_TRUE(std::ranges::sized_range<zip_const_range_t>);
     EXPECT_FALSE(std::ranges::sized_range<zip_forward_range_t>); // std::forward_list is not sized
     EXPECT_TRUE(std::ranges::sized_range<const_zip_t>);
@@ -143,7 +143,7 @@ TEST_F(zip_test, basic)
         EXPECT_EQ(zip_view.size(), 4u);
     }
     {
-        auto   zip_view = bio::views::zip(other_range);
+        auto   zip_view = bio::ranges::views::zip(other_range);
         size_t i{};
         for (auto && [elem_1] : zip_view)
         {
@@ -194,6 +194,6 @@ TEST_F(zip_test, gcc10bug_rangev3_1480)
     std::vector<char> const first_sequence{};
     std::vector<char> const second_sequence{};
 
-    auto zip_view = bio::views::zip(first_sequence, second_sequence);
+    auto zip_view = bio::ranges::views::zip(first_sequence, second_sequence);
     std::ranges::for_each(zip_view, [&]([[maybe_unused]] auto && value) {});
 }

@@ -19,7 +19,7 @@
 #include <bio/ranges/detail/random_access_iterator.hpp>
 #include <bio/ranges/type_traits.hpp>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ private:
     using single_value_t = value_t; //decltype(std::views::single(std::declval<value_t>()));
 
     /*!\name Associated types
-     * These associated types are needed in bio::detail::random_access_iterator.
+     * These associated types are needed in bio::ranges::detail::random_access_iterator.
      * \{
      */
     //!\brief The value type (equals the value_t with any references removed).
@@ -260,7 +260,7 @@ public:
 //!\brief View factory definition for views::repeat.
 struct repeat_fn
 {
-    //!\brief Returns an instance of bio::detail::repeat_view constructed with \p value.
+    //!\brief Returns an instance of bio::ranges::detail::repeat_view constructed with \p value.
     template <typename value_t>
     constexpr auto operator()(value_t && value) const
     {
@@ -272,9 +272,9 @@ struct repeat_fn
     }
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -311,7 +311,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                                    |
  * | std::ranges::common_range        |                                                    |
  * | std::ranges::output_range        | *guaranteed*                                       |
- * | bio::const_iterable_range     | *guaranteed*                                       |
+ * | bio::ranges::const_iterable_range     | *guaranteed*                                       |
  * |                                  |                                                    |
  * | std::ranges::range_reference_t   | std::remove_reference_t<value_t> &                 |
  *
@@ -328,4 +328,4 @@ namespace bio::views
 inline constexpr detail::repeat_fn repeat{};
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

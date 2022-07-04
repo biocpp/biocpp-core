@@ -15,9 +15,9 @@
 
 #include <ranges>
 
-#include <bio/meta/platform.hpp>
+#include <bio/ranges/biocpp.hpp>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 /*!\brief Iterate over a range (consumes single-pass input ranges).
@@ -42,4 +42,4 @@ template <std::ranges::forward_range rng_t>
 constexpr void consume(rng_t &&)
 {}
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail

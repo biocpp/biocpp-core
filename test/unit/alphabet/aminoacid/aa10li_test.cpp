@@ -37,7 +37,7 @@ TEST(aa10li, assign_char)
       'A'_aa10li, 'F'_aa10li, 'B'_aa10li, 'H'_aa10li, 'K'_aa10li, 'P'_aa10li, 'B'_aa10li, 'K'_aa10li, 'A'_aa10li,
       'A'_aa10li, 'C'_aa10li, 'I'_aa10li, 'F'_aa10li, 'A'_aa10li, 'F'_aa10li, 'B'_aa10li, 'F'_aa10li, 'A'_aa10li};
 
-    for (auto [chr, alp] : bio::views::zip(chars, alphabets))
+    for (auto [chr, alp] : bio::ranges::views::zip(chars, alphabets))
         EXPECT_EQ((bio::assign_char_to(chr, bio::aa10li{})), alp);
 }
 
@@ -51,7 +51,7 @@ TEST(aa10li, to_char)
       'L'_aa10li, 'M'_aa10li, 'N'_aa10li, 'P'_aa10li, 'Q'_aa10li, 'R'_aa10li, 'S'_aa10li, 'T'_aa10li, 'V'_aa10li,
       'W'_aa10li, 'Y'_aa10li, 'B'_aa10li, 'J'_aa10li, 'O'_aa10li, 'U'_aa10li, 'X'_aa10li, 'Z'_aa10li};
 
-    for (auto [chr, alp] : bio::views::zip(chars, alphabets))
+    for (auto [chr, alp] : bio::ranges::views::zip(chars, alphabets))
         EXPECT_EQ(bio::to_char(alp), chr);
 }
 

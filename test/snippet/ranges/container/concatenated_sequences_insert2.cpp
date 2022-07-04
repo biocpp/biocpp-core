@@ -6,7 +6,7 @@ int main()
 {
     using bio::operator""_dna4;
 
-    bio::concatenated_sequences<bio::dna4_vector> foobar;
+    bio::ranges::concatenated_sequences<bio::dna4_vector> foobar;
     foobar.insert(foobar.end(), 2, "ACGT"_dna4);
     fmt::print("{}\n", foobar[0]); // "ACGT"
     fmt::print("{}\n", foobar[1]); // "ACGT"

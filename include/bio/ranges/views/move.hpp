@@ -13,10 +13,12 @@
 
 #pragma once
 
-#include <bio/meta/type_traits/function.hpp>
 #include <ranges>
 
-namespace bio::views
+#include <bio/meta/type_traits/function.hpp>
+#include <bio/ranges/biocpp.hpp>
+
+namespace bio::ranges::views
 {
 
 /*!\name General purpose views
@@ -50,7 +52,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                       | *preserved*                                        |
  * | std::ranges::common_range        |                                       | *preserved*                                        |
  * | std::ranges::output_range        |                                       | *lost*                                             |
- * | bio::const_iterable_range     |                                       | *preserved*                                        |
+ * | bio::ranges::const_iterable_range     |                                       | *preserved*                                        |
  * | std::semiregular                 |                                       | *preserved*                                        |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   |                                       | `t &` -> `t &&` but `t` -> `t`                     |
@@ -70,4 +72,4 @@ inline auto const move = std::views::transform(
                    [](auto & arg) -> decltype(auto) { return std::move(arg); }});
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

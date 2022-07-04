@@ -13,15 +13,14 @@
 
 #pragma once
 
-#include <type_traits>
-
-#include <bio/meta/platform.hpp>
-#include <bio/meta/type_traits/basic.hpp>
-#include <bio/ranges/type_traits.hpp>
 #include <iterator>
 #include <ranges>
+#include <type_traits>
 
-namespace bio::detail
+#include <bio/meta/type_traits/basic.hpp>
+#include <bio/ranges/biocpp.hpp>
+
+namespace bio::ranges::detail
 {
 
 // ----------------------------------------------------------------------------
@@ -148,9 +147,9 @@ concept has_range_value_type = requires
 };
 //!\endcond
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
-namespace bio
+namespace bio::ranges
 {
 
 /*!\addtogroup range
@@ -191,8 +190,8 @@ struct range_innermost_value<t>
 };
 //!\endcond
 
-//!\brief Shortcut for bio::range_innermost_value (transformation_trait shortcut).
-//!\see bio::range_innermost_value
+//!\brief Shortcut for bio::ranges::range_innermost_value (transformation_trait shortcut).
+//!\see bio::ranges::range_innermost_value
 template <typename t>
 using range_innermost_value_t = typename range_innermost_value<t>::type;
 
@@ -225,8 +224,8 @@ constexpr size_t range_dimension_v<t> = range_dimension_v<std::ranges::range_val
 // range_compatible
 // ----------------------------------------------------------------------------
 
-/*!\interface bio::range_compatible <>
- * \brief Two types are "compatible" if their bio::range_dimension_v and their bio::range_innermost_value_t are
+/*!\interface bio::ranges::range_compatible <>
+ * \brief Two types are "compatible" if their bio::ranges::range_dimension_v and their bio::ranges::range_innermost_value_t are
  * the same.
  *
  * \details
@@ -248,4 +247,4 @@ concept range_compatible = requires(t1, t2)
 
 //!\}
 
-} // namespace bio
+} // namespace bio::ranges

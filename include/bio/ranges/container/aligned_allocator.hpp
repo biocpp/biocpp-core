@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Marcel Ehrhardt <marcel.ehrhardt AT fu-berlin.de>
- * \brief Provides bio::aligned_allocator.
+ * \brief Provides bio::ranges::aligned_allocator.
  */
 
 #pragma once
@@ -17,9 +17,9 @@
 #include <memory>
 #include <type_traits>
 
-#include <bio/meta/platform.hpp>
+#include <bio/ranges/biocpp.hpp>
 
-namespace bio
+namespace bio::ranges
 {
 
 /*!\brief Allocates uninitialized storage whose memory-alignment is specified by *alignment*.
@@ -146,14 +146,14 @@ public:
     }
 
     /*!\brief Deallocates the storage referenced by the pointer p, which must be a pointer obtained by an earlier call
-     * to bio::aligned_allocator::allocate.
+     * to bio::ranges::aligned_allocator::allocate.
      *
      * \param[in] p The pointer to the memory to be deallocated.
      * \param[in] n The number of elements to be deallocated.
      *
      * \details
      *
-     * The argument `n` must be equal to the first argument of the call to bio::aligned_allocator::allocate that
+     * The argument `n` must be equal to the first argument of the call to bio::ranges::aligned_allocator::allocate that
      * originally produced `p`, otherwise the behavior is undefined. This function calls
      * [operator delete](https://en.cppreference.com/w/cpp/memory/new/operator_delete) to deallocate the memory of
      * specified size.
@@ -218,4 +218,4 @@ public:
     //!\}
 };
 
-} // namespace bio
+} // namespace bio::ranges

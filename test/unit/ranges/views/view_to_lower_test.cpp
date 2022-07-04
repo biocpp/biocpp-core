@@ -25,11 +25,11 @@ TEST(view_to_lower, basic)
     std::string cmp{"iamadnastring"};
 
     // pipe notation string
-    std::string s(input_string | bio::views::to_lower | bio::views::to<std::string>());
+    std::string s(input_string | bio::ranges::views::to_lower | bio::ranges::views::to<std::string>());
     EXPECT_EQ(cmp, s);
 
     // custom conversion operator
-    std::string s2(bio::views::to_lower(input_string) | bio::views::to<std::string>());
+    std::string s2(bio::ranges::views::to_lower(input_string) | bio::ranges::views::to<std::string>());
     EXPECT_EQ(cmp, s2);
 }
 
@@ -42,11 +42,13 @@ TEST(view_to_lower, combinability)
     std::string            cmp2{"aggcgt"};
 
     // output combinability
-    std::string s(input_string | bio::views::to_lower | std::views::reverse | bio::views::to<std::string>());
+    std::string s(input_string | bio::ranges::views::to_lower | std::views::reverse |
+                  bio::ranges::views::to<std::string>());
     EXPECT_EQ(cmp, s);
 
     // input combinability
-    std::string s2(dna_vec | bio::views::to_char | bio::views::to_lower | bio::views::to<std::string>());
+    std::string s2(dna_vec | bio::ranges::views::to_char | bio::ranges::views::to_lower |
+                   bio::ranges::views::to<std::string>());
     EXPECT_EQ(cmp2, s2);
 }
 
@@ -55,7 +57,8 @@ TEST(view_to_lower, deep)
     std::vector<std::string> input_vec{"IAmADnaString", "IAmAProteinString"};
     std::vector<std::string> cmp{"iamadnastring", "iamaproteinstring"};
 
-    std::vector<std::string> s(input_vec | bio::views::to_lower | bio::views::to<std::vector<std::string>>());
+    std::vector<std::string> s(input_vec | bio::ranges::views::to_lower |
+                               bio::ranges::views::to<std::vector<std::string>>());
     EXPECT_EQ(cmp, s);
 }
 
@@ -63,7 +66,7 @@ TEST(view_to_lower, concepts)
 {
     std::string   input_string{"AEIOU"};
     std::string & input_string_ref = input_string;
-    auto          lower_view       = input_string | bio::views::to_lower;
+    auto          lower_view       = input_string | bio::ranges::views::to_lower;
 
     // Required
     EXPECT_TRUE(std::ranges::input_range<decltype(input_string)>);
@@ -82,7 +85,8 @@ TEST(view_to_lower, concepts)
               std::ranges::viewable_range<decltype(lower_view)>);
     EXPECT_EQ(std::ranges::sized_range<decltype(input_string)>, std::ranges::sized_range<decltype(lower_view)>);
     EXPECT_EQ(std::ranges::common_range<decltype(input_string)>, std::ranges::common_range<decltype(lower_view)>);
-    EXPECT_EQ(bio::const_iterable_range<decltype(input_string)>, bio::const_iterable_range<decltype(lower_view)>);
+    EXPECT_EQ(bio::ranges::const_iterable_range<decltype(input_string)>,
+              bio::ranges::const_iterable_range<decltype(lower_view)>);
     EXPECT_TRUE((std::same_as<std::remove_reference_t<std::ranges::range_reference_t<decltype(input_string)>>,
                               std::remove_reference_t<std::ranges::range_reference_t<decltype(lower_view)>>>));
 

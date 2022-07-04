@@ -28,7 +28,7 @@
 #include <bio/ranges/type_traits.hpp>
 #include <bio/ranges/views/detail.hpp>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 // ============================================================================
@@ -210,7 +210,7 @@ public:
 };
 
 //!\brief Template argument type deduction guide that strips references.
-//!\relates bio::detail::view_take
+//!\relates bio::ranges::detail::view_take
 template <typename urng_t, bool exactly = false, bool or_throw = false>
 view_take(urng_t &&, size_t) -> view_take<std::views::all_t<urng_t>, exactly, or_throw>;
 
@@ -285,7 +285,7 @@ public:
     //!\}
 
     /*!\name Arithmetic operators
-     * \brief bio::detail::inherited_iterator_base operators are used unless specialised here.
+     * \brief bio::ranges::detail::inherited_iterator_base operators are used unless specialised here.
      * \{
      */
 
@@ -424,7 +424,7 @@ public:
     //!\}
 
     /*!\name Reference/Dereference operators
-     * \brief bio::detail::inherited_iterator_base operators are used unless specialised here.
+     * \brief bio::ranges::detail::inherited_iterator_base operators are used unless specialised here.
      * \{
      */
 
@@ -457,7 +457,7 @@ struct take_fn
     constexpr auto operator()(size_t const size) const { return adaptor_from_functor{*this, size}; }
 
     /*!\brief Type erase if possible and return view_take if not.
-     * \returns An instance of std::span, std::basic_string_view, std::ranges::subrange or bio::detail::view_take.
+     * \returns An instance of std::span, std::basic_string_view, std::ranges::subrange or bio::ranges::detail::view_take.
      */
     template <std::ranges::range urng_t>
     constexpr auto operator()(urng_t && urange, size_t target_size) const
@@ -517,4 +517,4 @@ struct take_fn
     }
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail

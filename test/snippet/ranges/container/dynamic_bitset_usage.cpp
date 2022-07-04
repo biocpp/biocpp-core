@@ -3,8 +3,8 @@
 
 int main()
 {
-    bio::dynamic_bitset t1{"10001100"};         // Construct from string.
-    bio::dynamic_bitset const t2{0b1011'1000};  // Construct from binary literal or integer.
+    bio::ranges::dynamic_bitset t1{"10001100"};         // Construct from string.
+    bio::ranges::dynamic_bitset const t2{0b1011'1000};  // Construct from binary literal or integer.
 
     fmt::print("{}\n", t1);                     // Debug printing inserts separators: 1000'1100
     fmt::print("{}\n", t2);                     // Standard printing does not: 10111000

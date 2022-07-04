@@ -3,7 +3,7 @@
 
 int main()
 {
-    bio::dynamic_bitset t1{0b1011'1000'1111};
+    bio::ranges::dynamic_bitset t1{0b1011'1000'1111};
 
     // begin() refers to the rightmost position.
     for (auto it = t1.begin(); it != t1.end(); ++it)

@@ -17,7 +17,7 @@
 #include <bio/ranges/views/take_exactly.hpp>
 #include <concepts>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 /*!\brief The underlying type of bio::views::repeat_n.
@@ -44,9 +44,9 @@ struct repeat_n_fn
     }
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\name General purpose views
@@ -80,7 +80,7 @@ namespace bio::views
  * | std::ranges::sized_range         | *guaranteed*                                       |
  * | std::ranges::common_range        |                                                    |
  * | std::ranges::output_range        | *guaranteed*                                       |
- * | bio::const_iterable_range     | *guaranteed*                                       |
+ * | bio::ranges::const_iterable_range     | *guaranteed*                                       |
  * |                                  |                                                    |
  * | std::ranges::range_reference_t   | std::remove_reference_t<value_t> &                 |
  *
@@ -97,4 +97,4 @@ namespace bio::views
 inline constexpr auto repeat_n = detail::repeat_n_fn{};
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

@@ -17,7 +17,7 @@
 #include <bio/ranges/views/deep.hpp>
 #include <ranges>
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\name Alphabet related views
@@ -55,7 +55,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                       | *preserved*                                                     |
  * | std::ranges::common_range        |                                       | *preserved*                                                     |
  * | std::ranges::output_range        |                                       | *lost*                                                          |
- * | bio::const_iterable_range     |                                       | *preserved*                                                     |
+ * | bio::ranges::const_iterable_range     |                                       | *preserved*                                                     |
  * |                                  |                                       |                                                                 |
  * | std::ranges::range_reference_t   | bio::nucleotide_alphabet           | std::remove_reference_t<std::ranges::range_reference_t<urng_t>> |
  *
@@ -78,4 +78,4 @@ inline auto const complement = deep{std::views::transform(
 
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

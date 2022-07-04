@@ -13,10 +13,12 @@
 
 #pragma once
 
-#include <bio/meta/type_traits/function.hpp>
 #include <ranges>
 
-namespace bio::detail
+#include <bio/meta/type_traits/function.hpp>
+#include <bio/ranges/biocpp.hpp>
+
+namespace bio::ranges::detail
 {
 
 //!\brief Function object for bio::views::as_const.
@@ -37,9 +39,9 @@ struct as_const_fn
     }
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\name General purpose views
@@ -73,7 +75,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                       | *preserved*                                        |
  * | std::ranges::common_range        |                                       | *preserved*                                        |
  * | std::ranges::output_range        |                                       | *lost*                                             |
- * | bio::const_iterable_range     |                                       | *preserved*                                        |
+ * | bio::ranges::const_iterable_range     |                                       | *preserved*                                        |
  * | std::semiregular                 |                                       | *preserved*                                        |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   |                                       | `t &` -> `t const &` but `t` -> `t`                |
@@ -85,7 +87,7 @@ namespace bio::views
  * \include test/snippet/ranges/views/as_const.cpp
  * \hideinitializer
  */
-inline auto const as_const = std::views::transform(bio::detail::as_const_fn{});
+inline auto const as_const = std::views::transform(detail::as_const_fn{});
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

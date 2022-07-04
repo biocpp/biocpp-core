@@ -44,21 +44,22 @@ struct fmt::is_range<rng_t, bio::alphabet_char_t<std::ranges::range_reference_t<
 
 template <bio_range rng_t, typename char_t>
 struct fmt::formatter<rng_t, char_t> :
-  fmt::formatter<fmt::join_view<std::ranges::iterator_t<decltype(std::declval<rng_t const &>() | bio::views::to_char)>,
-                                std::ranges::sentinel_t<decltype(std::declval<rng_t const &>() | bio::views::to_char)>,
-                                bio::alphabet_char_t<std::ranges::range_reference_t<rng_t const>>>,
-                 char_t>
+  fmt::formatter<
+    fmt::join_view<std::ranges::iterator_t<decltype(std::declval<rng_t const &>() | bio::ranges::views::to_char)>,
+                   std::ranges::sentinel_t<decltype(std::declval<rng_t const &>() | bio::ranges::views::to_char)>,
+                   bio::alphabet_char_t<std::ranges::range_reference_t<rng_t const>>>,
+    char_t>
 {
     // TODO const & is not ideal here, but some fmt-bug breaks other solutions
     // all our formattable ranges are also const-formattable, so it should be OK
     auto format(rng_t const & r, auto & ctx) const
     {
-        using trans_t = decltype(std::declval<rng_t const &>() | bio::views::to_char);
+        using trans_t = decltype(std::declval<rng_t const &>() | bio::ranges::views::to_char);
         using formatter_t =
           fmt::formatter<fmt::join_view<std::ranges::iterator_t<trans_t>,
                                         std::ranges::sentinel_t<trans_t>,
                                         bio::alphabet_char_t<std::ranges::range_reference_t<rng_t const>>>>;
-        return formatter_t::format(fmt::join(r | bio::views::to_char, ""), ctx);
+        return formatter_t::format(fmt::join(r | bio::ranges::views::to_char, ""), ctx);
     }
 };
 #else

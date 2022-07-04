@@ -41,10 +41,10 @@ struct copy_counter
 };
 
 struct adaptor_base_type_checker :
-  bio::detail::
+  bio::ranges::detail::
     adaptor_base<adaptor_base_type_checker, copy_counter, copy_counter const, copy_counter &, copy_counter const &>
 {
-    using base_t = bio::detail::
+    using base_t = bio::ranges::detail::
       adaptor_base<adaptor_base_type_checker, copy_counter, copy_counter const, copy_counter &, copy_counter const &>;
     using base_t::base_t;
 
@@ -192,8 +192,8 @@ struct dummy_view
 
 TEST(adaptor_combination, constexpr_combine)
 {
-    constexpr auto adaptor1 = bio::detail::adaptor_for_view_without_args<dummy_view>{};
-    constexpr auto adaptor2 = bio::detail::adaptor_for_view_without_args<dummy_view>{};
+    constexpr auto adaptor1 = bio::ranges::detail::adaptor_for_view_without_args<dummy_view>{};
+    constexpr auto adaptor2 = bio::ranges::detail::adaptor_for_view_without_args<dummy_view>{};
 
     EXPECT_TRUE((BIOCPP_IS_CONSTEXPR(adaptor1 | adaptor2)));
 }

@@ -3,7 +3,7 @@
 
 int main()
 {
-    bio::dynamic_bitset t1{"10001100"};
+    bio::ranges::dynamic_bitset t1{"10001100"};
 
     t1 >>= 3;
     fmt::print("{}\n", t1); // 0001'0001

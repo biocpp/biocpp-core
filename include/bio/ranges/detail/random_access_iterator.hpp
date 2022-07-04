@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides the bio::detail::random_access_iterator class.
+ * \brief Provides the bio::ranges::detail::random_access_iterator class.
  * \author Marie Hoffmann <marie.hoffmann AT fu-berlin.de>
  */
 
@@ -17,9 +17,9 @@
 #include <iterator>
 #include <type_traits>
 
-#include <bio/meta/platform.hpp>
+#include <bio/ranges/biocpp.hpp>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 /*!\brief A CRTP base template for creating random access iterators.
@@ -111,7 +111,7 @@ public:
     //!\}
 
     /*!\name Comparison operators
-     * \brief Compare iterators by position. bio::detail::random_access_iterator_base operators are used unless
+     * \brief Compare iterators by position. bio::ranges::detail::random_access_iterator_base operators are used unless
      * specialised in derived type.
      * \{
      */
@@ -178,7 +178,7 @@ public:
     //!\}
 
     /*!\name Arithmetic operators
-     * \brief bio::detail::random_access_iterator_base operators are used unless specialised in derived type.
+     * \brief bio::ranges::detail::random_access_iterator_base operators are used unless specialised in derived type.
      * \{
     */
     //!\brief Pre-increment, return updated iterator.
@@ -259,7 +259,7 @@ public:
     //!\}
 
     /*!\name Reference/Dereference operators
-     * \brief bio::detail::random_access_iterator_base operators are used unless specialised in derived type.
+     * \brief bio::ranges::detail::random_access_iterator_base operators are used unless specialised in derived type.
      * \{
     */
     //!\brief Dereference operator returns element currently pointed at.
@@ -317,4 +317,4 @@ public:
     using base::base;
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail

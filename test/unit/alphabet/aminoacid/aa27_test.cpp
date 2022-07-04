@@ -36,7 +36,7 @@ TEST(aa27, assign_char)
       'U'_aa27, 'V'_aa27, 'W'_aa27, 'X'_aa27, 'Y'_aa27, 'Z'_aa27, 'N'_aa27, 'O'_aa27, 'P'_aa27, 'Q'_aa27, 'R'_aa27,
       'S'_aa27, 'T'_aa27, 'U'_aa27, 'V'_aa27, 'W'_aa27, 'X'_aa27, 'Y'_aa27, 'Z'_aa27, '*'_aa27, 'X'_aa27};
 
-    for (auto [chr, alp] : bio::views::zip(chars, alphabets))
+    for (auto [chr, alp] : bio::ranges::views::zip(chars, alphabets))
         EXPECT_EQ((bio::assign_char_to(chr, bio::aa27{})), alp);
 }
 
@@ -50,7 +50,7 @@ TEST(aa27, to_char)
                                      'R'_aa27, 'S'_aa27, 'T'_aa27, 'V'_aa27, 'W'_aa27, 'Y'_aa27, 'B'_aa27,
                                      'J'_aa27, 'O'_aa27, 'U'_aa27, 'X'_aa27, 'Z'_aa27, '*'_aa27, 'X'_aa27};
 
-    for (auto [alp, chr] : bio::views::zip(alphabets, chars))
+    for (auto [alp, chr] : bio::ranges::views::zip(alphabets, chars))
         EXPECT_EQ(bio::to_char(alp), chr);
 }
 

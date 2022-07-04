@@ -23,7 +23,7 @@
 #include <bio/ranges/type_traits.hpp>
 #include <bio/ranges/views/detail.hpp>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 // ============================================================================
@@ -119,7 +119,7 @@ public:
 };
 
 //!\brief Template argument type deduction guide that strips references.
-//!\relates bio::detail::view_persist
+//!\relates bio::ranges::detail::view_persist
 template <typename urng_t>
 view_persist(urng_t &&) -> view_persist<std::remove_reference_t<urng_t>>;
 
@@ -154,7 +154,7 @@ private:
     }
 
     /*!\brief       For ranges that are not views and not lvalue-references, call view_persist's constructor.
-     * \returns     An instance of bio::detail::view_persist.
+     * \returns     An instance of bio::ranges::detail::view_persist.
      */
     template <std::ranges::range urng_t>
     static auto impl(urng_t && urange)
@@ -165,13 +165,13 @@ private:
 };
 //![adaptor_def]
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
 // ============================================================================
 //  views::persist (adaptor instance definition)
 // ============================================================================
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\name General purpose views
@@ -209,7 +209,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                       | *preserved*                                        |
  * | std::ranges::common_range        |                                       | *preserved*                                        |
  * | std::ranges::output_range        |                                       | *preserved*                                        |
- * | bio::const_iterable_range     |                                       | *preserved*                                        |
+ * | bio::ranges::const_iterable_range     |                                       | *preserved*                                        |
  * |                                  |                                       |                                                    |
  * | std::ranges::range_reference_t   |                                       | std::ranges::range_reference_t<urng_t>             |
  *
@@ -225,4 +225,4 @@ inline constexpr auto persist = detail::persist_fn{};
 
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

@@ -3,9 +3,9 @@
 
 int main()
 {
-    bio::dynamic_bitset t1{0b1011'1000'1111}; // Use binary literal.
-    bio::dynamic_bitset t2{0b0000'1000'1111}; // Leading zeros are stripped.
-    bio::dynamic_bitset t3{832};              // Use a number.
+    bio::ranges::dynamic_bitset t1{0b1011'1000'1111}; // Use binary literal.
+    bio::ranges::dynamic_bitset t2{0b0000'1000'1111}; // Leading zeros are stripped.
+    bio::ranges::dynamic_bitset t3{832};              // Use a number.
 
     fmt::print("{}\n", t1); // 1011'1000'1111
     fmt::print("{}\n", t2); // 1000'1111

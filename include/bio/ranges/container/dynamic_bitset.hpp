@@ -21,7 +21,7 @@
 #include <bio/ranges/views/repeat_n.hpp>
 #include <bio/ranges/views/to.hpp>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 //!\brief A bit field representing size and bit information stored in one `uint64_t`.
@@ -33,7 +33,7 @@ struct dynamic_bitset_bitfield
     uint64_t bits : 58u;
 };
 
-//!\brief Proxy data type returned by bio::dynamic_bitset as reference to the bit.
+//!\brief Proxy data type returned by bio::ranges::dynamic_bitset as reference to the bit.
 class dynamic_bitset_reference_proxy
 {
 public:
@@ -61,7 +61,7 @@ public:
     ~dynamic_bitset_reference_proxy() noexcept = default; //!< Defaulted.
     //!\}
 
-    //!\brief Initialise from bio::dynamic_bitset's underlying data and a bit position.
+    //!\brief Initialise from bio::ranges::dynamic_bitset's underlying data and a bit position.
     constexpr dynamic_bitset_reference_proxy(dynamic_bitset_bitfield & internal_, size_t const pos) noexcept :
       internal{internal_}, mask{1ULL << pos}
     {}
@@ -110,13 +110,13 @@ private:
     constexpr void reset() noexcept { internal.bits &= ~mask; }
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
-namespace bio
+namespace bio::ranges
 {
 
 /*!\brief A constexpr bitset implementation with dynamic size at compile time.
- * \implements bio::reservible_container
+ * \implements bio::ranges::detail::reservible_container
  * \implements bio::cerealisable
  * \ingroup container
  * \tparam bit_capacity The capacity of the dynamic bitset
@@ -940,7 +940,7 @@ public:
     {
         if (i >= size()) // [[unlikely]]
             throw std::out_of_range{"Trying to access position " + std::to_string(i) +
-                                    " in a bio::dynamic_bitset of size " + std::to_string(size()) + "."};
+                                    " in a bio::ranges::dynamic_bitset of size " + std::to_string(size()) + "."};
         return (*this)[i];
     }
 
@@ -949,7 +949,7 @@ public:
     {
         if (i >= size()) // [[unlikely]]
             throw std::out_of_range{"Trying to access position " + std::to_string(i) +
-                                    " in a bio::dynamic_bitset of size " + std::to_string(size()) + "."};
+                                    " in a bio::ranges::dynamic_bitset of size " + std::to_string(size()) + "."};
         return (*this)[i];
     }
 
@@ -1582,7 +1582,7 @@ public:
         if constexpr (std::numeric_limits<unsigned long>::max() < std::numeric_limits<size_t>::max())
         {
             if (data.bits > std::numeric_limits<unsigned long>::max())
-                throw std::overflow_error{"bio::dynamic_bitset cannot be represented as unsigned long."};
+                throw std::overflow_error{"bio::ranges::dynamic_bitset cannot be represented as unsigned long."};
         }
 
         return static_cast<unsigned long>(data.bits);
@@ -1607,7 +1607,7 @@ public:
         if constexpr (std::numeric_limits<unsigned long long>::max() < std::numeric_limits<size_t>::max())
         {
             if (data.bits >= std::numeric_limits<unsigned long long>::max())
-                throw std::overflow_error{"bio::dynamic_bitset cannot be represented as unsigned long long."};
+                throw std::overflow_error{"bio::ranges::dynamic_bitset cannot be represented as unsigned long long."};
         }
 
         return static_cast<unsigned long long>(data.bits);
@@ -1637,24 +1637,24 @@ public:
     //!\endcond
 };
 
-} // namespace bio
+} // namespace bio::ranges
 
 namespace std
 {
 
-/*!\brief Struct for hashing a `bio::dynamic_bitset`.
+/*!\brief Struct for hashing a `bio::ranges::dynamic_bitset`.
  * \ingroup container
- * \tparam cap Capacity of the `bio::dynamic_bitset`.
+ * \tparam cap Capacity of the `bio::ranges::dynamic_bitset`.
  */
 template <size_t cap>
-struct hash<bio::dynamic_bitset<cap>>
+struct hash<bio::ranges::dynamic_bitset<cap>>
 {
-    /*!\brief Compute the hash for a `bio::dynamic_bitset`.
-     * \param[in] arg The `bio::dynamic_bitset` to process.
+    /*!\brief Compute the hash for a `bio::ranges::dynamic_bitset`.
+     * \param[in] arg The `bio::ranges::dynamic_bitset` to process.
      * \returns `size_t`.
-     * \sa bio::dynamic_bitset.to_ullong().
+     * \sa bio::ranges::dynamic_bitset.to_ullong().
      */
-    size_t operator()(bio::dynamic_bitset<cap> const arg) const noexcept
+    size_t operator()(bio::ranges::dynamic_bitset<cap> const arg) const noexcept
     {
         return static_cast<size_t>(arg.to_ullong());
     }
@@ -1667,27 +1667,27 @@ struct hash<bio::dynamic_bitset<cap>>
 #    include <fmt/ranges.h>
 
 template <>
-struct fmt::formatter<bio::detail::dynamic_bitset_reference_proxy> : fmt::formatter<bool>
+struct fmt::formatter<bio::ranges::detail::dynamic_bitset_reference_proxy> : fmt::formatter<bool>
 {
-    constexpr auto format(bio::detail::dynamic_bitset_reference_proxy const a, auto & ctx) const
+    constexpr auto format(bio::ranges::detail::dynamic_bitset_reference_proxy const a, auto & ctx) const
     {
         return fmt::formatter<bool>::format(static_cast<bool>(a), ctx);
     }
 };
 
 template <size_t bit_capacity>
-struct fmt::is_range<bio::dynamic_bitset<bit_capacity>, char> : std::false_type
+struct fmt::is_range<bio::ranges::dynamic_bitset<bit_capacity>, char> : std::false_type
 {};
 
 template <size_t bit_capacity>
-struct fmt::formatter<bio::dynamic_bitset<bit_capacity>> : fmt::formatter<std::string>
+struct fmt::formatter<bio::ranges::dynamic_bitset<bit_capacity>> : fmt::formatter<std::string>
 {
-    constexpr auto format(bio::dynamic_bitset<bit_capacity> const s, auto & ctx) const
+    constexpr auto format(bio::ranges::dynamic_bitset<bit_capacity> const s, auto & ctx) const
     {
         std::string str{"0b"};
         str.reserve(s.size()); // TODO fix me
         auto v = s | std::views::reverse | std::views::transform([](bool const bit) { return bit ? '1' : '0'; }) |
-                 bio::views::interleave(4, std::string_view{"'"});
+                 bio::ranges::views::interleave(4, std::string_view{"'"});
         std::ranges::copy(v, std::back_inserter(str));
         return fmt::formatter<std::string>::format(str, ctx);
     }

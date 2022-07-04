@@ -30,20 +30,20 @@ TEST(view_trim, standalone)
     std::vector<bio::phred42> cmp2{bio::phred42{40}, bio::phred42{40}};
 
     // trim by phred_value
-    auto v1 = vec | bio::views::trim_quality(20u); // == ['I','I','?','5']
-    EXPECT_EQ(v1 | bio::views::to<std::vector>(), cmp1);
+    auto v1 = vec | bio::ranges::views::trim_quality(20u); // == ['I','I','?','5']
+    EXPECT_EQ(v1 | bio::ranges::views::to<std::vector>(), cmp1);
 
     // trim by quality character
-    auto v2 = vec | bio::views::trim_quality(bio::phred42{40}); // == ['I','I']
-    EXPECT_EQ(v2 | bio::views::to<std::vector>(), cmp2);
+    auto v2 = vec | bio::ranges::views::trim_quality(bio::phred42{40}); // == ['I','I']
+    EXPECT_EQ(v2 | bio::ranges::views::to<std::vector>(), cmp2);
 
     // function syntax
-    auto v3 = bio::views::trim_quality(vec, 20u); // == ['I','I','?','5']
-    EXPECT_EQ(v3 | bio::views::to<std::vector>(), cmp1);
+    auto v3 = bio::ranges::views::trim_quality(vec, 20u); // == ['I','I','?','5']
+    EXPECT_EQ(v3 | bio::ranges::views::to<std::vector>(), cmp1);
 
     // combinability
-    std::string v4 =
-      bio::views::trim_quality(vec, 20u) | bio::views::to_char | bio::views::to<std::string>(); //=="II?5"
+    std::string v4 = bio::ranges::views::trim_quality(vec, 20u) | bio::ranges::views::to_char |
+                     bio::ranges::views::to<std::string>(); //=="II?5"
     EXPECT_EQ("II?5", v4);
 }
 
@@ -68,19 +68,20 @@ TEST(view_trim, qualified)
     };
 
     // trim by phred_value
-    auto v1 = vec | bio::views::trim_quality(20u);
-    EXPECT_EQ(v1 | bio::views::to<std::vector>(), cmp1);
+    auto v1 = vec | bio::ranges::views::trim_quality(20u);
+    EXPECT_EQ(v1 | bio::ranges::views::to<std::vector>(), cmp1);
 
     // trim by quality character
-    auto v2 = vec | bio::views::trim_quality(bio::dna5q{'C'_dna5, bio::phred42{40}});
-    EXPECT_EQ(v2 | bio::views::to<std::vector>(), cmp2);
+    auto v2 = vec | bio::ranges::views::trim_quality(bio::dna5q{'C'_dna5, bio::phred42{40}});
+    EXPECT_EQ(v2 | bio::ranges::views::to<std::vector>(), cmp2);
 
     // function syntax
-    auto v3 = bio::views::trim_quality(vec, 20u);
-    EXPECT_EQ(v3 | bio::views::to<std::vector>(), cmp1);
+    auto v3 = bio::ranges::views::trim_quality(vec, 20u);
+    EXPECT_EQ(v3 | bio::ranges::views::to<std::vector>(), cmp1);
 
     // combinability
-    std::string v4 = bio::views::trim_quality(vec, 20u) | bio::views::to_char | bio::views::to<std::string>();
+    std::string v4 =
+      bio::ranges::views::trim_quality(vec, 20u) | bio::ranges::views::to_char | bio::ranges::views::to<std::string>();
     EXPECT_EQ("AGGA", v4);
 }
 
@@ -100,7 +101,7 @@ TEST(view_trim, concepts)
     EXPECT_TRUE((std::ranges::output_range<decltype(vec), bio::dna5q>));
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
 
-    auto v1 = vec | bio::views::trim_quality(20u);
+    auto v1 = vec | bio::ranges::views::trim_quality(20u);
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::random_access_range<decltype(v1)>);

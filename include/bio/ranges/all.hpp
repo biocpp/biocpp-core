@@ -63,7 +63,7 @@
  * The storage behaviour is orthogonal to the range concepts defined by the iterators mentioned above, i.e. you
  * can have a container that satisfies std::ranges::random_access_range (e.g. `std::vector` does, but `std::list`
  * does not) and you can have views or decorators that do so or don't. For some combinations of iterator capabilities
- * and storage behaviour there are extra concept definitions, e.g. bio::random_access_container.
+ * and storage behaviour there are extra concept definitions, e.g. bio::ranges::detail::random_access_container.
  *
  * \attention
  *
@@ -74,4 +74,17 @@
  *
  * \sa range.hpp
  * \sa https://ericniebler.github.io/range-v3/index.html
+ */
+
+/*!\namespace bio::ranges
+ * \brief The Ranges module's namespace.
+ */
+
+/*!\if DEV
+ * \namespace bio::ranges::detail
+ * \brief The internal BioC++ namespace.
+ * \details
+ * The contents of this namespace are not visible to consumers of the library and the documentation is
+ * only generated for developers.
+ * \endif
  */

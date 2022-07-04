@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides bio::concatenated_sequences.
+ * \brief Provides bio::ranges::concatenated_sequences.
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
@@ -29,18 +29,18 @@
 #    include <cereal/types/vector.hpp>
 #endif
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
-/*!\brief The reference type of bio::concatenated_sequences.
- * \tparam value_type The value_type of the bio::concatenated_sequences.
+/*!\brief The reference type of bio::ranges::concatenated_sequences.
+ * \tparam value_type The value_type of the bio::ranges::concatenated_sequences.
  * \tparam is_const_ref Reference type or const reference type.
  *
  * \details
  *
  * A light-weight type that inherits from the returned type of the bio::views::slice adaptor (std::span, std::ranges::subrange, ...),
  * but additionally provides implicit convertibility to the `value_type`. This is needed so that `value_type` and
- * `reference` type of bio::concatenated_sequences satisfy std::common_reference_with.
+ * `reference` type of bio::ranges::concatenated_sequences satisfy std::common_reference_with.
  *
  * The const version of this type additionally ensures deep constness to maintain container-like behaviour.
  */
@@ -62,7 +62,7 @@ struct concatenated_sequences_reference_proxy :
     //!\brief Construct from base type.
     concatenated_sequences_reference_proxy(base_t && rhs) : base_t{std::move(rhs)} {}
 
-    //!\brief Implicitly convert to the `value_type` of bio::concatenated_sequences.
+    //!\brief Implicitly convert to the `value_type` of bio::ranges::concatenated_sequences.
     operator value_type() const
     {
         value_type ret;
@@ -72,17 +72,17 @@ struct concatenated_sequences_reference_proxy :
     }
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
-namespace bio
+namespace bio::ranges
 {
 
 /*!\brief Container that stores sequences concatenated internally.
- * \tparam inner_type The type of sequences that will be stored. Must satisfy bio::reservible_container.
+ * \tparam inner_type The type of sequences that will be stored. Must satisfy bio::ranges::detail::reservible_container.
  * \tparam data_delimiters_type A container that stores the begin/end positions in the inner_type. Must be
- * bio::reservible_container and have inner_type's size_type as value_type.
+ * bio::ranges::detail::reservible_container and have inner_type's size_type as value_type.
  * \implements bio::cerealisable
- * \implements bio::reservible_container
+ * \implements bio::ranges::detail::reservible_container
  * \ingroup container
  *
  * This class may be used whenever you would usually use `std::vector<std::vector<some_alphabet>>` or
@@ -125,8 +125,8 @@ namespace bio
 template <typename inner_type, typename data_delimiters_type = std::vector<typename inner_type::size_type>>
     //!\cond
     requires(
-      reservible_container<std::remove_reference_t<inner_type>> &&
-          reservible_container<std::remove_reference_t<data_delimiters_type>> &&
+      detail::reservible_container<std::remove_reference_t<inner_type>> &&
+          detail::reservible_container<std::remove_reference_t<data_delimiters_type>> &&
           std::is_same_v<std::ranges::range_size_t<inner_type>, std::ranges::range_value_t<data_delimiters_type>>)
 //!\endcond
 class concatenated_sequences
@@ -179,7 +179,7 @@ public:
 
 protected:
     /*!\name Compatibility
-     * \brief Static constexpr variables that emulate/encapsulate bio::range_compatible (which doesn't work for types during their definition).
+     * \brief Static constexpr variables that emulate/encapsulate bio::ranges::range_compatible (which doesn't work for types during their definition).
      * \{
      */
     //!\cond
@@ -194,13 +194,13 @@ protected:
     static constexpr bool is_compatible_with_value_type_aux(...) { return false; }
     //!\endcond
 
-    //!\brief Whether a type satisfies bio::range_compatible with this class's `value_type` or `reference` type.
+    //!\brief Whether a type satisfies bio::ranges::range_compatible with this class's `value_type` or `reference` type.
     //!\hideinitializer
     // we explicitly check same-ness, because these types may not be fully resolved, yet
     template <std::ranges::range t>
     static constexpr bool is_compatible_with_value_type = is_compatible_with_value_type_aux(std::type_identity<t>{});
 
-    //!\brief Whether a type satisfies bio::range_compatible with this class.
+    //!\brief Whether a type satisfies bio::ranges::range_compatible with this class.
     //!\hideinitializer
     // cannot use the concept, because this class is not yet fully defined
     template <typename t>
@@ -209,7 +209,7 @@ protected:
     //!\endcond
     static constexpr bool iter_value_t_is_compatible_with_value_type = true;
 
-    //!\brief Whether a type satisfies bio::range_compatible with this class.
+    //!\brief Whether a type satisfies bio::ranges::range_compatible with this class.
     //!\hideinitializer
     // cannot use the concept, because this class is not yet fully defined
     template <std::ranges::range t>
@@ -1293,4 +1293,4 @@ public:
     //!\endcond
 };
 
-} // namespace bio
+} // namespace bio::ranges

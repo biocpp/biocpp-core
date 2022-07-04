@@ -3,7 +3,7 @@
 
 int main()
 {
-    constexpr bio::small_string sm{"hello"};     // construct from string literal at compile time!
+    constexpr bio::ranges::small_string sm{"hello"};     // construct from string literal at compile time!
 
     static_assert(sm[0] == 'h');                    // This way I can also test it at compile-time
 

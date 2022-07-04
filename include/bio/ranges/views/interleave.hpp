@@ -23,7 +23,7 @@
 #include <concepts>
 #include <ranges>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 // ============================================================================
@@ -59,7 +59,7 @@ private:
     inserted_rng_t inserted_range;
 
     /*!\name Associated types
-     * \brief These associated types are needed in bio::detail::random_access_iterator.
+     * \brief These associated types are needed in bio::ranges::detail::random_access_iterator.
      * \{
      */
     //!\brief This resolves to range_type::size_type as the underlying range is guaranteed to be sized.
@@ -228,7 +228,7 @@ public:
 };
 
 //!\brief Template argument type deduction guide for viewable_range inputs.
-//!\relates bio::detail::view_interleave
+//!\relates bio::ranges::detail::view_interleave
 template <std::ranges::random_access_range urng_t, std::ranges::random_access_range inserted_rng_t>
     //!\cond
     requires(std::ranges::viewable_range<urng_t> && std::ranges::sized_range<urng_t> && std::ranges::sized_range<
@@ -282,13 +282,13 @@ struct interleave_fn
     }
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
 // ============================================================================
 //  views::interleave (adaptor instance definition)
 // ============================================================================
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\name General purpose views
@@ -328,7 +328,7 @@ namespace bio::views
  * | std::ranges::sized_range         | *required*                            | *preserved*                            |
  * | std::ranges::common_range        |                                       | *preserved*                            |
  * | std::ranges::output_range        |                                       | *preserved*                            |
- * | bio::const_iterable_range     |                                       | *preserved*                            |
+ * | bio::ranges::const_iterable_range     |                                       | *preserved*                            |
  * |                                  |                                       |                                        |
  * | std::ranges::range_reference_t   |                                       | std::ranges::range_reference_t<urng_t> |
  *
@@ -350,7 +350,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                       | *lost*                               |
  * | std::ranges::common_range        |                                       | *lost*                               |
  * | std::ranges::output_range        |                                       | *lost*                               |
- * | bio::const_iterable_range     |                                       | *lost*                               |
+ * | bio::ranges::const_iterable_range     |                                       | *lost*                               |
  * |                                  |                                       |                                      |
  * | std::ranges::range_reference_t   |                                       | std::ranges::range_value_t<urng_t>   |
  *
@@ -367,4 +367,4 @@ inline constexpr auto interleave = detail::interleave_fn{};
 
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views

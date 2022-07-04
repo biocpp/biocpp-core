@@ -3,7 +3,7 @@
 
 int main()
 {
-    bio::dynamic_bitset t1{"10001100"};
+    bio::ranges::dynamic_bitset t1{"10001100"};
 
     t1.flip(0);
     t1.flip(3);

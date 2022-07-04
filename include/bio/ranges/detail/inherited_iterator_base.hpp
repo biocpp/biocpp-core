@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides the bio::detail::inherited_iterator_base template.
+ * \brief Provides the bio::ranges::detail::inherited_iterator_base template.
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
@@ -20,7 +20,7 @@
 #include <bio/ranges/type_traits.hpp>
 #include <iterator>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 /*!\brief A CRTP base template for creating iterators that inherit from other iterators.
@@ -423,4 +423,4 @@ private:
     }
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail

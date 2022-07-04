@@ -22,7 +22,7 @@
 #include <ranges>
 #include <span>
 
-namespace bio::detail
+namespace bio::ranges::detail
 {
 
 // ============================================================================
@@ -90,13 +90,13 @@ private:
     }
 };
 
-} // namespace bio::detail
+} // namespace bio::ranges::detail
 
 // ============================================================================
 //  views::type_reduce (adaptor instance definition)
 // ============================================================================
 
-namespace bio::views
+namespace bio::ranges::views
 {
 
 /*!\name General purpose views
@@ -129,7 +129,7 @@ namespace bio::views
  * | std::ranges::sized_range         |                                   | *preserved*                            |
  * | std::ranges::common_range        |                                   | *preserved*                            |
  * | std::ranges::output_range        |                                   | *preserved*                            |
- * | bio::const_iterable_range     |                                   | *preserved*                            |
+ * | bio::ranges::const_iterable_range     |                                   | *preserved*                            |
  * |                                  |                                   |                                        |
  * | std::ranges::range_reference_t   |                                   | std::ranges::range_reference_t<urng_t> |
  *
@@ -158,11 +158,11 @@ inline constexpr auto type_reduce = detail::type_reduce_fn{};
 
 //!\}
 
-} // namespace bio::views
+} // namespace bio::ranges::views
 
-namespace bio
+namespace bio::ranges
 {
 //!\brief Deduces the return value of bio::views::type_reduce.
 template <typename t>
 using type_reduce_view = decltype(views::type_reduce(std::declval<t>()));
-} // namespace bio
+} // namespace bio::ranges

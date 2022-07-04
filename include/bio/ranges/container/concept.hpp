@@ -25,49 +25,16 @@
 
 #include <bio/meta/platform.hpp>
 
-// TODO:
-// * remove is_basic_string
-// * remove #include <string> in this file
-// once the gcc bug [1] was fixed AND we require at least a gcc version which
-// contains this fix
-//
-// [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83328
-namespace bio::detail
+namespace bio::ranges::detail
 {
-//!\privatesection
-
-//!\brief Returns whether `basic_string_t` is of type `std::basic_string<value_t, traits_t, allocator_t>`.
-//!\attention Will be deleted once bio::detail::sequence_container_modified_by_const_iterator_bug is fixed.
-template <typename basic_string_t>
-struct is_basic_string : std::false_type
-{};
-
-//!\brief Returns whether `basic_string_t` is of type `std::basic_string<value_t, traits_t, allocator_t>`.
-//!\attention Will be deleted once bio::detail::sequence_container_modified_by_const_iterator_bug is fixed.
-template <typename value_t, typename traits_t, typename allocator_t>
-struct is_basic_string<std::basic_string<value_t, traits_t, allocator_t>> : std::true_type
-{};
-
-//!\brief Shorthand of bio::detail::is_basic_string
-//!\attention Will be deleted once bio::detail::sequence_container_modified_by_const_iterator_bug is fixed.
-template <typename basic_string_t>
-constexpr bool is_basic_string_v = is_basic_string<basic_string_t>::value;
-
-//!\publicsection
-
-} // namespace bio::detail
-
-namespace bio
-{
-
 /*!\addtogroup container
  * \{
  */
-/*!\interface bio::container <>
+/*!\interface bio::ranges::detail::container <>
  * \extends std::ranges::forward_range
  * \extends std::ranges::sized_range
  * \extends std::ranges::common_range
- * \extends bio::const_iterable_range
+ * \extends bio::ranges::const_iterable_range
  * \brief The (most general) container concept as defined by the standard library.
  * \details
  * The container concept is modelled as in the [STL](https://en.cppreference.com/w/cpp/named_req/Container), but
@@ -133,9 +100,9 @@ concept container = requires(type val, type val2, type const cval, typename type
 };
 //!\endcond
 
-/*!\interface bio::sequence_container <>
- * \extends bio::container
- * \brief A more refined container concept than bio::container.
+/*!\interface bio::ranges::detail::sequence_container <>
+ * \extends bio::ranges::detail::container
+ * \brief A more refined container concept than bio::ranges::detail::container.
  *
  * Includes constraints on constructors, `assign()`, `.insert()`, `.erase()`, `.push_back()`, `.pop_back`, `.clear()`,
  * `.size()`, `front()` and `.back()` member functions with corresponding signatures. Models the subset of the
@@ -172,12 +139,8 @@ concept sequence_container = requires(type val, type val2, type const cval)
     { val.insert(val.cbegin(), typename type::size_type{}, typename type::value_type{}) }
         -> std::same_as<typename type::iterator>;
     { val.insert(val.cbegin(), val2.begin(), val2.end()) } -> std::same_as<typename type::iterator>;
-    requires detail::is_basic_string_v<type> || requires(type val)
-    {
-        // TODO this function is not defined on strings (https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83328)
-        { val.insert(val.cbegin(), std::initializer_list<typename type::value_type>{}) } ->
+    { val.insert(val.cbegin(), std::initializer_list<typename type::value_type>{}) } ->
             std::same_as<typename type::iterator>;
-    };
 
     { val.erase(val.cbegin()) } -> std::same_as<typename type::iterator>;
     { val.erase(val.cbegin(), val.cend()) } -> std::same_as<typename type::iterator>;
@@ -196,10 +159,10 @@ concept sequence_container = requires(type val, type val2, type const cval)
 };
 //!\endcond
 
-/*!\interface bio::random_access_container <>
- * \extends bio::sequence_container
+/*!\interface bio::ranges::detail::random_access_container <>
+ * \extends bio::ranges::detail::sequence_container
  * \extends std::ranges::random_access_range
- * \brief A more refined container concept than bio::sequence_container.
+ * \brief A more refined container concept than bio::ranges::detail::sequence_container.
  *
  * Adds requirements for `.at()`, `.resize()` and the subscript operator `[]`. Models the subset of the
  * [STL SequenceConcept](https://en.cppreference.com/w/cpp/named_req/SequenceContainer) that is supported
@@ -228,9 +191,9 @@ concept random_access_container = requires(type val)
 };
 //!\endcond
 
-/*!\interface bio::reservible_container <>
- * \extends bio::random_access_container
- * \brief A more refined container concept than bio::random_access_container.
+/*!\interface bio::ranges::detail::reservible_container <>
+ * \extends bio::ranges::detail::random_access_container
+ * \brief A more refined container concept than bio::ranges::detail::random_access_container.
  *
  * Adds requirements for `.reserve()`, `.capacity()` and `.shrink_to_fit()`.
  * Satisfied by `std::vector` and `std::basic_string`.
@@ -254,4 +217,4 @@ concept reservible_container = requires(type val)
 
 //!\}
 
-} // namespace bio
+} // namespace bio::ranges::detail
