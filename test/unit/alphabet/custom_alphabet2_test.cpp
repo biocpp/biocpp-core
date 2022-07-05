@@ -29,12 +29,7 @@ public:
 
     constexpr my_alph(bool rank) : rank{rank} {}
 
-    constexpr friend bool operator==(my_alph lhs, my_alph rhs) { return lhs.rank == rhs.rank; }
-    constexpr friend bool operator!=(my_alph lhs, my_alph rhs) { return lhs.rank != rhs.rank; }
-    constexpr friend bool operator<=(my_alph lhs, my_alph rhs) { return lhs.rank <= rhs.rank; }
-    constexpr friend bool operator>=(my_alph lhs, my_alph rhs) { return lhs.rank >= rhs.rank; }
-    constexpr friend bool operator<(my_alph lhs, my_alph rhs) { return lhs.rank < rhs.rank; }
-    constexpr friend bool operator>(my_alph lhs, my_alph rhs) { return lhs.rank > rhs.rank; }
+    constexpr friend auto operator<=>(my_alph lhs, my_alph rhs) = default;
 };
 
 constexpr size_t alphabet_size(std::type_identity<my_alph> const &) noexcept

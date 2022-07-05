@@ -294,38 +294,12 @@ public:
         }
     }
 
-    friend constexpr bool operator<(iterator const & x,
-                                    iterator const & y) requires zip::all_random_access<Const, Views...>
-    {
-        return x.current_ < y.current_;
-    }
-
-    friend constexpr bool operator>(iterator const & x,
-                                    iterator const & y) requires zip::all_random_access<Const, Views...>
-    {
-        return y < x;
-    }
-
-    friend constexpr bool operator<=(iterator const & x,
-                                     iterator const & y) requires zip::all_random_access<Const, Views...>
-    {
-        return !(y < x);
-    }
-
-    friend constexpr bool operator>=(iterator const & x,
-                                     iterator const & y) requires zip::all_random_access<Const, Views...>
-    {
-        return !(x < y);
-    }
-
-#ifdef __cpp_lib_three_way_comparison
     friend constexpr auto operator<=>(iterator const & x,
                                       iterator const & y) requires zip::all_random_access<Const, Views...> &&
       (std::three_way_comparable<std::ranges::iterator_t<zip::maybe_const<Const, Views>>> &&...)
     {
         return x.current_ <=> y.current_;
     }
-#endif
 
     friend constexpr iterator operator+(iterator const & i,
                                         difference_type  n) requires zip::all_random_access<Const, Views...>

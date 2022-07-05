@@ -25,17 +25,7 @@ struct my_tuple
     int   el0;
     float el1;
 
-    constexpr bool operator==(my_tuple const & rhs) const { return std::tie(el0, el1) == std::tie(rhs.el0, rhs.el1); }
-
-    constexpr bool operator!=(my_tuple const & rhs) const { return !(*this == rhs); }
-
-    constexpr bool operator<(my_tuple const & rhs) const { return std::tie(el0, el1) < std::tie(rhs.el0, rhs.el1); }
-
-    constexpr bool operator<=(my_tuple const & rhs) const { return std::tie(el0, el1) <= std::tie(rhs.el0, rhs.el1); }
-
-    constexpr bool operator>(my_tuple const & rhs) const { return std::tie(el0, el1) > std::tie(rhs.el0, rhs.el1); }
-
-    constexpr bool operator>=(my_tuple const & rhs) const { return std::tie(el0, el1) >= std::tie(rhs.el0, rhs.el1); }
+    constexpr friend auto operator<=>(my_tuple const &, my_tuple const &) = default;
 };
 
 template <size_t elem>
