@@ -8,7 +8,7 @@ This HowTo documents how to write a view using the standard library and some hel
 
 \note
 Some of the links from this HowTo only resolve in the developer documentation because
-they refer to entities from the bio::detail namespace.
+they refer to entities from the bio::alphabet::detail namespace.
 We recommend you open this tutorial from [the developer documentation](https://docs.seqan.de/seqan/3-master-dev/).
 
 //TODO update this regarding use of {fmt}
@@ -117,8 +117,8 @@ Let's look at some examples!
 
 \assignment{Exercise 1: Your first custom adaptor object}
 In the alphabet module you learned that ranges of alphabets are not implicitly
-convertible to `char` so you **cannot** print a `std::vector<bio::dna5>` via `std::cout`¹.
-You also know that you can call `bio::to_char` on every object that models `bio::alphabet` which will convert it
+convertible to `char` so you **cannot** print a `std::vector<bio::alphabet::dna5>` via `std::cout`¹.
+You also know that you can call `bio::alphabet::to_char` on every object that models `bio::alphabet::alphabet` which will convert it
 to `char` or a similar type.
 
 We want to do the following:
@@ -130,14 +130,14 @@ We want to do the following:
 \snippet view_exercise1.cpp end
 
 Define a *range adaptor object* using an existing adaptor which applies a concrete transformation
-(calling bio::to_char) on every element.
+(calling bio::alphabet::to_char) on every element.
 
 \hint
 You need to need use `std::views::transform` and you need to set a fixed transformation function. `std::views::transform`
 takes an object that models `std::regular_invocable`, e.g. a lambda function with empty capture `[]`.
 \endhint
 
-<small>¹ You *can* print via `bio::debug_stream`, but let's ignore that for now. </small>
+<small>¹ You *can* print via `bio::alphabet::debug_stream`, but let's ignore that for now. </small>
 \endassignment
 
 \solution
@@ -153,7 +153,7 @@ provides `operator()` and `operator|` that each return a specialisation of `std:
 
 \assignment{Exercise 2: Combining two existing adaptor objects}
 
-Study the `bio::nucleotide_alphabet`. It states that you can call `bio::complement` on all nucleotides
+Study the `bio::alphabet::nucleotide_alphabet`. It states that you can call `bio::alphabet::complement` on all nucleotides
 which will give you <tt>'A'_dna5</tt> for <tt>'T'_dna5</tt> a.s.o. Think about how you can adapt the previous solution
 to write a view that transforms ranges of nucleotides into their complement.
 
@@ -173,7 +173,7 @@ Define a *range adaptor object* that presents a view of the reverse complement o
 \include view_exercise2.cpp
 
 The adaptor consists of `std::views::reverse` combined with `std::views::transform`. This time the lambda just
-performs the call to `bio::complement`.
+performs the call to `bio::alphabet::complement`.
 \endsolution
 
 # A full custom view implementation
@@ -261,7 +261,7 @@ In the previous assigment you have created a working – but pointless – itera
 It does not do anything differently from the original.
 
 Your task now is to implement the "complementing" behaviour, i.e.
-  * your iterator should only work on ranges of `bio::nucleotide_alphabet`
+  * your iterator should only work on ranges of `bio::alphabet::nucleotide_alphabet`
   * when accessing an element through the iterator it should not return the element from the underlying range but
     instead its complement
 
@@ -276,7 +276,7 @@ of that operator as your transformation might make a change necessary.
 You could have done this via an additional template constraint, too, but `static_assert` gives you the opportunity
 to give a readable message in case of an error.¹
 
-2. The operator that needs to call the `bio::complement` function is `operator*`:
+2. The operator that needs to call the `bio::alphabet::complement` function is `operator*`:
 \snippet solution_iterator.cpp dereference
 
 3. As previously noted, care needs to be taken with this function's return type:

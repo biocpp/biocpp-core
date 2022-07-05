@@ -38,8 +38,8 @@ void push_back(benchmark::State & state)
     }
 
     state.counters["sizeof"] = sizeof(alphabet_t);
-    if constexpr (bio::alphabet<alphabet_t>)
-        state.counters["alph_size"] = bio::alphabet_size<alphabet_t>;
+    if constexpr (bio::alphabet::alphabet<alphabet_t>)
+        state.counters["alph_size"] = bio::alphabet::alphabet_size<alphabet_t>;
 }
 
 BENCHMARK_TEMPLATE(push_back, std::vector, char);
@@ -47,36 +47,36 @@ BENCHMARK_TEMPLATE(push_back, std::vector, uint8_t);
 BENCHMARK_TEMPLATE(push_back, std::vector, uint16_t);
 BENCHMARK_TEMPLATE(push_back, std::vector, uint32_t);
 BENCHMARK_TEMPLATE(push_back, std::vector, uint64_t);
-BENCHMARK_TEMPLATE(push_back, std::vector, bio::gap);
-BENCHMARK_TEMPLATE(push_back, std::vector, bio::dna4);
-BENCHMARK_TEMPLATE(push_back, std::vector, bio::gapped<bio::dna4>);
-BENCHMARK_TEMPLATE(push_back, std::vector, bio::dna15);
-BENCHMARK_TEMPLATE(push_back, std::vector, bio::aa27);
-BENCHMARK_TEMPLATE(push_back, std::vector, bio::alphabet_variant<char, bio::dna4>);
+BENCHMARK_TEMPLATE(push_back, std::vector, bio::alphabet::gap);
+BENCHMARK_TEMPLATE(push_back, std::vector, bio::alphabet::dna4);
+BENCHMARK_TEMPLATE(push_back, std::vector, bio::alphabet::gapped<bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(push_back, std::vector, bio::alphabet::dna15);
+BENCHMARK_TEMPLATE(push_back, std::vector, bio::alphabet::aa27);
+BENCHMARK_TEMPLATE(push_back, std::vector, bio::alphabet::alphabet_variant<char, bio::alphabet::dna4>);
 
 BENCHMARK_TEMPLATE(push_back, std::deque, char);
 BENCHMARK_TEMPLATE(push_back, std::deque, uint8_t);
 BENCHMARK_TEMPLATE(push_back, std::deque, uint16_t);
 BENCHMARK_TEMPLATE(push_back, std::deque, uint32_t);
 BENCHMARK_TEMPLATE(push_back, std::deque, uint64_t);
-BENCHMARK_TEMPLATE(push_back, std::deque, bio::gap);
-BENCHMARK_TEMPLATE(push_back, std::deque, bio::dna4);
-BENCHMARK_TEMPLATE(push_back, std::deque, bio::gapped<bio::dna4>);
-BENCHMARK_TEMPLATE(push_back, std::deque, bio::dna15);
-BENCHMARK_TEMPLATE(push_back, std::deque, bio::aa27);
-BENCHMARK_TEMPLATE(push_back, std::deque, bio::alphabet_variant<char, bio::dna4>);
+BENCHMARK_TEMPLATE(push_back, std::deque, bio::alphabet::gap);
+BENCHMARK_TEMPLATE(push_back, std::deque, bio::alphabet::dna4);
+BENCHMARK_TEMPLATE(push_back, std::deque, bio::alphabet::gapped<bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(push_back, std::deque, bio::alphabet::dna15);
+BENCHMARK_TEMPLATE(push_back, std::deque, bio::alphabet::aa27);
+BENCHMARK_TEMPLATE(push_back, std::deque, bio::alphabet::alphabet_variant<char, bio::alphabet::dna4>);
 
 BENCHMARK_TEMPLATE(push_back, std::list, char);
 BENCHMARK_TEMPLATE(push_back, std::list, uint8_t);
 BENCHMARK_TEMPLATE(push_back, std::list, uint16_t);
 BENCHMARK_TEMPLATE(push_back, std::list, uint32_t);
 BENCHMARK_TEMPLATE(push_back, std::list, uint64_t);
-BENCHMARK_TEMPLATE(push_back, std::list, bio::gap);
-BENCHMARK_TEMPLATE(push_back, std::list, bio::dna4);
-BENCHMARK_TEMPLATE(push_back, std::list, bio::gapped<bio::dna4>);
-BENCHMARK_TEMPLATE(push_back, std::list, bio::dna15);
-BENCHMARK_TEMPLATE(push_back, std::list, bio::aa27);
-BENCHMARK_TEMPLATE(push_back, std::list, bio::alphabet_variant<char, bio::dna4>);
+BENCHMARK_TEMPLATE(push_back, std::list, bio::alphabet::gap);
+BENCHMARK_TEMPLATE(push_back, std::list, bio::alphabet::dna4);
+BENCHMARK_TEMPLATE(push_back, std::list, bio::alphabet::gapped<bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(push_back, std::list, bio::alphabet::dna15);
+BENCHMARK_TEMPLATE(push_back, std::list, bio::alphabet::aa27);
+BENCHMARK_TEMPLATE(push_back, std::list, bio::alphabet::alphabet_variant<char, bio::alphabet::dna4>);
 
 BENCHMARK_TEMPLATE(push_back, sdsl_int_vec, uint8_t);
 BENCHMARK_TEMPLATE(push_back, sdsl_int_vec, uint16_t);
@@ -84,20 +84,20 @@ BENCHMARK_TEMPLATE(push_back, sdsl_int_vec, uint32_t);
 BENCHMARK_TEMPLATE(push_back, sdsl_int_vec, uint64_t);
 
 BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, char);
-BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::gap);
-BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::dna4);
-BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::gapped<bio::dna4>);
-BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::dna15);
-BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::aa27);
-BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::alphabet_variant<char, bio::dna4>);
+BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::alphabet::gap);
+BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::alphabet::dna4);
+BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::alphabet::gapped<bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::alphabet::dna15);
+BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::alphabet::aa27);
+BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::alphabet::alphabet_variant<char, bio::alphabet::dna4>);
 
 BENCHMARK_TEMPLATE(push_back, small_vec, char);
-BENCHMARK_TEMPLATE(push_back, small_vec, bio::gap);
-BENCHMARK_TEMPLATE(push_back, small_vec, bio::dna4);
-BENCHMARK_TEMPLATE(push_back, small_vec, bio::gapped<bio::dna4>);
-BENCHMARK_TEMPLATE(push_back, small_vec, bio::dna15);
-BENCHMARK_TEMPLATE(push_back, small_vec, bio::aa27);
-BENCHMARK_TEMPLATE(push_back, small_vec, bio::alphabet_variant<char, bio::dna4>);
+BENCHMARK_TEMPLATE(push_back, small_vec, bio::alphabet::gap);
+BENCHMARK_TEMPLATE(push_back, small_vec, bio::alphabet::dna4);
+BENCHMARK_TEMPLATE(push_back, small_vec, bio::alphabet::gapped<bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(push_back, small_vec, bio::alphabet::dna15);
+BENCHMARK_TEMPLATE(push_back, small_vec, bio::alphabet::aa27);
+BENCHMARK_TEMPLATE(push_back, small_vec, bio::alphabet::alphabet_variant<char, bio::alphabet::dna4>);
 
 // ============================================================================
 //  run

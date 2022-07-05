@@ -10,7 +10,7 @@
  * \author Marcel Ehrhardt <marcel.ehrhardt AT fu-berlin.de>
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  * \author David Heller <david.heller AT fu-berlin.de>
- * \brief Provides bio::alphabet_variant.
+ * \brief Provides bio::alphabet::alphabet_variant.
  */
 
 #pragma once
@@ -26,7 +26,7 @@
 #include <bio/meta/type_list/traits.hpp>
 #include <bio/meta/type_traits/lazy.hpp>
 
-namespace bio::detail
+namespace bio::alphabet::detail
 {
 
 //!\brief Prevents wrong instantiations of std::alphabet_variant's constructors.
@@ -47,23 +47,23 @@ inline constexpr bool variant_comparison_guard =
                                                               meta::is_type_specialisation_of_v<rhs_t,
                                                                                                 alphabet_variant>)> ||
    ...);
-} // namespace bio::detail
+} // namespace bio::alphabet::detail
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief A combined alphabet that can hold values of either of its alternatives.
  * \ingroup alphabet_composite
  * \if DEV
  * \tparam ...alternative_types Types of possible values (at least 2); all must model
- *                              bio::detail::writable_constexpr_alphabet, std::regular and be unique.
- * \implements bio::detail::writable_constexpr_alphabet
+ *                              bio::alphabet::detail::writable_constexpr_alphabet, std::regular and be unique.
+ * \implements bio::alphabet::detail::writable_constexpr_alphabet
  * \else
- * \tparam ...alternative_types Types of possible values (at least 2); all must model bio::writable_alphabet,
+ * \tparam ...alternative_types Types of possible values (at least 2); all must model bio::alphabet::writable_alphabet,
  *                              std::regular and must be unique; all required functions for
- *                              bio::writable_alphabet need to be callable in a `constexpr`-context.
+ *                              bio::alphabet::writable_alphabet need to be callable in a `constexpr`-context.
  * \endif
- * \implements bio::writable_alphabet
+ * \implements bio::alphabet::writable_alphabet
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
 
@@ -72,11 +72,11 @@ namespace bio
  * The alphabet_variant represents the union of two or more alternative alphabets (e.g. the
  * four letter DNA alternative + the gap alternative). It behaves similar to a
  * [variant](https://en.cppreference.com/w/cpp/utility/variant) or std::variant, but it preserves the
- * bio::alphabet.
+ * bio::alphabet::alphabet.
  *
  * Short description:
  *   * combines multiple different alphabets in an "either-or"-fashion;
- *   * is itself a bio::alphabet;
+ *   * is itself a bio::alphabet::alphabet;
  *   * its alphabet size is the sum of the individual sizes;
  *   * default initialises to the the first alternative's default (no empty state like std::variant);
  *   * constructible, assignable and (in-)equality-comparable with each alternative type and also all types that
@@ -89,13 +89,13 @@ namespace bio
  *
  * ### The `char` representation of an alphabet_variant
  *
- * Part of the bio::alphabet concept requires that the alphabet_variant provides a char representation in addition
- * to the rank representation. For an object of bio::alphabet_variant, the `to_char()` member function will always
+ * Part of the bio::alphabet::alphabet concept requires that the alphabet_variant provides a char representation in addition
+ * to the rank representation. For an object of bio::alphabet::alphabet_variant, the `to_char()` member function will always
  * return the same character as if invoked on the respective alternative.
  * In contrast, the `assign_char()` member function might be ambiguous between the alternative alphabets in a variant.
  *
- * For example, assigning a '!' to bio::dna15 resolves to an object of rank 8 with char representation 'N' while
- * assigning '!' to bio::gap always resolves to rank 0, the gap symbol itself ('-'_gap).
+ * For example, assigning a '!' to bio::alphabet::dna15 resolves to an object of rank 8 with char representation 'N' while
+ * assigning '!' to bio::alphabet::gap always resolves to rank 0, the gap symbol itself ('-'_gap).
  * We tackle this ambiguousness by **defaulting unknown characters to the representation of the first alternative**
  * (e.g. `alphabet_variant<dna15, gap>{}.assign_char('!')` resolves to rank 8, representing `N`_dna15).
  *
@@ -213,7 +213,7 @@ public:
      *
      * \include test/snippet/alphabet/composite/alphabet_variant_conversion.cpp
      *
-     *   * bio::dna4 and bio::rna4 are implicitly convertible to each other so the variant accepts either.
+     *   * bio::alphabet::dna4 and bio::alphabet::rna4 are implicitly convertible to each other so the variant accepts either.
      *   * Construction via `{}` considers implicit and explicit conversions.
      *   * Construction via `=` considers only implicit conversions (but that is sufficient here).
      *
@@ -244,7 +244,7 @@ public:
      *
      * \include test/snippet/alphabet/composite/alphabet_variant_conversion_explicit.cpp
      *
-     *   * bio::dna4 and bio::dna5 are not implicitly convertible to each other, only explicitly.
+     *   * bio::alphabet::dna4 and bio::alphabet::dna5 are not implicitly convertible to each other, only explicitly.
      *   * Construction via `{}` considers implicit and explicit conversions so this works.
      *   * Construction via `=` considers only implicit conversions so it does not work.
      *
@@ -383,8 +383,8 @@ public:
 
     /*!\name Comparison operators (against indirect alternatives)
      * \brief Defines comparison against types that are not subject to implicit construction/conversion but are
-     *        comparable against alternatives, e.g. `alphabet_variant<bio::rna4, bio::gap>` vs
-     *        `alphabet_variant<bio::dna4, bio::gap>`. Only (in-)equality comparison is defined as reasoning
+     *        comparable against alternatives, e.g. `alphabet_variant<bio::alphabet::rna4, bio::alphabet::gap>` vs
+     *        `alphabet_variant<bio::alphabet::dna4, bio::alphabet::gap>`. Only (in-)equality comparison is defined as reasoning
      *        about order of variants is inherently difficult.
      * \{
      */
@@ -477,7 +477,7 @@ protected:
             }
         }
 
-        return bio::assign_rank_to(to_rank() - partial_sum_sizes[index], alternative_t{});
+        return bio::alphabet::assign_rank_to(to_rank() - partial_sum_sizes[index], alternative_t{});
     }
 
     /*!\brief Compile-time generated lookup table which contains the partial
@@ -491,7 +491,7 @@ protected:
     {
         constexpr size_t N = sizeof...(alternative_types) + 1;
 
-        std::array<rank_type, N> partial_sum{0, bio::alphabet_size<alternative_types>...};
+        std::array<rank_type, N> partial_sum{0, bio::alphabet::alphabet_size<alternative_types>...};
         for (size_t i = 1u; i < N; ++i)
             partial_sum[i] += partial_sum[i - 1];
 
@@ -512,7 +512,7 @@ protected:
         // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84684
         auto assign_rank_to_char = [](auto alternative, size_t rank) constexpr
         {
-            return bio::to_char(bio::assign_rank_to(rank, alternative));
+            return bio::alphabet::to_char(bio::alphabet::assign_rank_to(rank, alternative));
         };
 
         auto assign_value_to_char = [assign_rank_to_char](auto   alternative,
@@ -520,7 +520,7 @@ protected:
                                                           auto & value) constexpr
         {
             using alternative_t = std::decay_t<decltype(alternative)>;
-            for (size_t i = 0u; i < bio::alphabet_size<alternative_t>; ++i, ++value)
+            for (size_t i = 0u; i < bio::alphabet::alphabet_size<alternative_t>; ++i, ++value)
                 value_to_char[value] = assign_rank_to_char(alternative, i);
         };
 
@@ -547,7 +547,7 @@ protected:
     //!\endcond
     static constexpr rank_type rank_by_index_(alternative_t const & alternative) noexcept
     {
-        return partial_sum_sizes[index] + static_cast<rank_type>(bio::to_rank(alternative));
+        return partial_sum_sizes[index] + static_cast<rank_type>(bio::alphabet::to_rank(alternative));
     }
 
     //!\brief Converts an object of one of the given alternatives into the internal representation.
@@ -625,4 +625,4 @@ protected:
     ();
 };
 
-} // namespace bio
+} // namespace bio::alphabet

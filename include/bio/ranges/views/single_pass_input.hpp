@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Rene Rahn <rene.rahn AT fu-berlin.de>
- * \brief Provides bio::single_pass_input_view
+ * \brief Provides bio::alphabet::single_pass_input_view
  */
 
 #pragma once
@@ -46,7 +46,7 @@ private:
     //!\brief The iterator type for the underlying range.
     using urng_iterator_type = std::ranges::iterator_t<urng_t>;
 
-    //!\brief Friend declaration for bio::detail::basic_iterator.
+    //!\brief Friend declaration for bio::ranges::detail::basic_iterator.
     template <typename view_t>
     friend class basic_iterator;
 
@@ -161,7 +161,7 @@ class basic_iterator<single_pass_input_view<view_type>>
     //!\brief The pointer to the associated view.
     single_pass_input_view<view_type> * view_ptr{};
 
-    //!\brief Friend declaration to give bio::detail::single_pass_input_sentinel access to members of this class.
+    //!\brief Friend declaration to give bio::ranges::detail::single_pass_input's sentinel access to members of this class.
     template <typename input_view_type>
     friend class basic_iterator;
 
@@ -200,7 +200,7 @@ public:
     //!\brief Destruction.
     ~basic_iterator()                                                = default;
 
-    //!\brief Constructing from the underlying bio::single_pass_input_view.
+    //!\brief Constructing from the underlying bio::alphabet::single_pass_input_view.
     basic_iterator(single_pass_input_view<view_type> & view) noexcept : view_ptr{&view} {}
     //!\}
 

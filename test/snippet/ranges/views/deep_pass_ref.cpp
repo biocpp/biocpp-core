@@ -11,9 +11,9 @@ inline auto const deep_take = bio::views::deep{std::views::take};
 
 int main()
 {
-    using bio::operator""_dna5;
+    using bio::alphabet::operator""_dna5;
 
-    std::vector<bio::dna5_vector> foo{"AAATTT"_dna5, "CCCGGG"_dna5};
+    std::vector<bio::alphabet::dna5_vector> foo{"AAATTT"_dna5, "CCCGGG"_dna5};
 
     int i = 3;
     auto f = foo | my::deep_take(i); // takes `i` as a reference!

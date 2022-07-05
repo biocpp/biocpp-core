@@ -23,7 +23,7 @@ Exceptions to the previous rule:
      are often marked as experimental within the first minor release they appear in. This means we do not guarantee
      stability until the next minor release happens and the experimental flag is removed. Very few entities in namespace
      `bio` are permanently marked as "NOAPI" which designates them as subject to unannounced change. This is usually
-     the case for auxiliary data structures that would be part of `bio::detail` were they not needed to generate
+     the case for auxiliary data structures that would be part of `bio::alphabet::detail` were they not needed to generate
      correct API documentation for entities in `bio`.
   4. **Do not depend on the *signatures* of BioC++ APIs.** In particular you may not take the address of APIs in BioC++
      and you may not use metaprogramming tricks to depend on those signatures. We reserve the right to:
@@ -42,7 +42,7 @@ Exceptions to the previous rule:
   7. **Include What You Use.** We may make changes to the internal include-graph for BioC++ headers - if you use an
      API, please include the relevant header file directly.
   8. **Do not make unqualified calls in the global namespace.** A call like `f(a);` for a function `f` in the global
-     namespace can become ambiguous if/when we add `bio::f` (especially if `a` is a BioC++ type). We generally do
+     namespace can become ambiguous if/when we add `bio::alphabet::f` (especially if `a` is a BioC++ type). We generally do
      not recommend you use the global namespace for anything. If you must, please qualify any call that accepts a type
      provided by BioC++.
 

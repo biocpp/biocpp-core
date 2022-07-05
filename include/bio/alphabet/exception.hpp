@@ -17,9 +17,9 @@
 #include <stdexcept>
 #include <string>
 
-#include <bio/meta/platform.hpp>
+#include <bio/alphabet/biocpp.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 
 //!\brief An exception typically thrown by bio::alphabet::assign_char_strict.
@@ -32,7 +32,7 @@ struct invalid_char_assignment : std::runtime_error
                                                    : std::to_string((int)wrong_char)) +
                          " to an alphabet of type " + type_name +
                          " would incur information loss. If you want implicit conversion, use "
-                         "bio::assign_char instead of bio::assign_char_strict."}
+                         "bio::alphabet::assign_char instead of bio::alphabet::assign_char_strict."}
     {}
 
     //!\overload
@@ -41,4 +41,4 @@ struct invalid_char_assignment : std::runtime_error
     {}
 };
 
-} // namespace bio
+} // namespace bio::alphabet

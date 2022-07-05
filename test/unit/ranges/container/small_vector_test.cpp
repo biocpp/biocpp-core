@@ -18,7 +18,7 @@
 
 #include "container_test_template.hpp"
 
-using small_vector_over_dna4_t = bio::ranges::small_vector<bio::dna4, 1000>;
+using small_vector_over_dna4_t = bio::ranges::small_vector<bio::alphabet::dna4, 1000>;
 INSTANTIATE_TYPED_TEST_SUITE_P(small_vector, container_over_dna4_test, small_vector_over_dna4_t, );
 
 // standard construction.

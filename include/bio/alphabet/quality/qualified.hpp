@@ -17,15 +17,15 @@
 #include <bio/alphabet/nucleotide/concept.hpp>
 #include <bio/alphabet/quality/concept.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief Joins an arbitrary alphabet with a quality alphabet.
  * \ingroup quality
- * \tparam sequence_alphabet_t Type of the alphabet; must satisfy bio::writable_alphabet.
- * \tparam quality_alphabet_t  Type of the quality; must satisfy bio::writable_quality_alphabet.
- * \implements bio::writable_quality_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \tparam sequence_alphabet_t Type of the alphabet; must satisfy bio::alphabet::writable_alphabet.
+ * \tparam quality_alphabet_t  Type of the quality; must satisfy bio::alphabet::writable_quality_alphabet.
+ * \implements bio::alphabet::writable_quality_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -45,13 +45,13 @@ namespace bio
  * while the character values are taken from the sequence alphabet and the phred
  * values are taken from the quality alphabet.
  *
- * As with all `bio::alphabet_tuple_base` s you may access the individual
+ * As with all `bio::alphabet::alphabet_tuple_base` s you may access the individual
  * alphabet letters in regular c++ tuple notation, i.e. `get<0>(t)` and objects
  * can be brace-initialised with the individual members.
  *
  * \include test/snippet/alphabet/quality/qualified.cpp
  *
- * This bio::alphabet_tuple_base itself fulfils both bio::writable_alphabet and bio::writable_quality_alphabet.
+ * This bio::alphabet::alphabet_tuple_base itself fulfils both bio::alphabet::writable_alphabet and bio::alphabet::writable_quality_alphabet.
  */
 template <writable_alphabet sequence_alphabet_t, writable_quality_alphabet quality_alphabet_t>
 class qualified :
@@ -107,20 +107,20 @@ public:
     //!\brief Assign from a character. This modifies the internal sequence letter.
     constexpr qualified & assign_char(char_type const c) noexcept
     {
-        base_type::assign_rank(
-          (bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{})) * base_type::cummulative_alph_sizes[0]) +
-          (base_type::template to_component_rank<1>() * base_type::cummulative_alph_sizes[1]));
+        base_type::assign_rank((bio::alphabet::to_rank(bio::alphabet::assign_char_to(c, sequence_alphabet_type{})) *
+                                base_type::cummulative_alph_sizes[0]) +
+                               (base_type::template to_component_rank<1>() * base_type::cummulative_alph_sizes[1]));
 
         // The above is noticeably faster than (no subtraction and no division):
         // base_type::template assign_component_rank<0>(
-        //     bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{})));
+        //     bio::alphabet::to_rank(bio::alphabet::assign_char_to(c, sequence_alphabet_type{})));
         return *this;
     }
 
     //!\brief Assign from a phred value. This modifies the internal quality letter.
     constexpr qualified & assign_phred(phred_type const c) noexcept
     {
-        bio::assign_phred_to(c, get<1>(*this));
+        bio::alphabet::assign_phred_to(c, get<1>(*this));
         return *this;
     }
     //!\}
@@ -135,12 +135,12 @@ public:
     constexpr char_type to_char() const noexcept { return rank_to_char[to_rank()]; }
 
     /*!\brief Return a qualified where the quality is preserved, but the sequence letter is complemented.
-     * \sa bio::complement
-     * \sa bio::nucleotide_alphabet::complement
+     * \sa bio::alphabet::complement
+     * \sa bio::alphabet::nucleotide_alphabet::complement
      */
     constexpr qualified complement() const noexcept requires nucleotide_alphabet<sequence_alphabet_t>
     {
-        return qualified{bio::complement(get<0>(*this)), get<1>(*this)};
+        return qualified{bio::alphabet::complement(get<0>(*this)), get<1>(*this)};
     }
     //!\}
 
@@ -160,9 +160,10 @@ protected:
 
         for (size_t i = 0; i < alphabet_size; ++i)
         {
-            size_t seq_rank = (i / base_type::cummulative_alph_sizes[0]) % bio::alphabet_size<quality_alphabet_type>;
+            size_t seq_rank =
+              (i / base_type::cummulative_alph_sizes[0]) % bio::alphabet::alphabet_size<quality_alphabet_type>;
 
-            ret[i] = bio::to_char(bio::assign_rank_to(seq_rank, sequence_alphabet_type{}));
+            ret[i] = bio::alphabet::to_char(bio::alphabet::assign_rank_to(seq_rank, sequence_alphabet_type{}));
         }
 
         return ret;
@@ -176,9 +177,10 @@ protected:
 
         for (size_t i = 0; i < alphabet_size; ++i)
         {
-            size_t qual_rank = (i / base_type::cummulative_alph_sizes[1]) % bio::alphabet_size<quality_alphabet_type>;
+            size_t qual_rank =
+              (i / base_type::cummulative_alph_sizes[1]) % bio::alphabet::alphabet_size<quality_alphabet_type>;
 
-            ret[i] = bio::to_phred(bio::assign_rank_to(qual_rank, quality_alphabet_type{}));
+            ret[i] = bio::alphabet::to_phred(bio::alphabet::assign_rank_to(qual_rank, quality_alphabet_type{}));
         }
 
         return ret;
@@ -192,4 +194,4 @@ template <typename sequence_alphabet_type, typename quality_alphabet_type>
 qualified(sequence_alphabet_type &&, quality_alphabet_type &&)
   -> qualified<std::decay_t<sequence_alphabet_type>, std::decay_t<quality_alphabet_type>>;
 
-} // namespace bio
+} // namespace bio::alphabet

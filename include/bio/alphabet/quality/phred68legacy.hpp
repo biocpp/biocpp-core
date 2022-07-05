@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Marie Hoffmann <marie.hoffmann AT fu-berlin.de>
- * \brief Provides bio::phred68legacy quality scores.
+ * \brief Provides bio::alphabet::phred68legacy quality scores.
  */
 
 #pragma once
@@ -19,12 +19,12 @@
 // phred68legacy
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief Quality type for Solexa and deprecated Illumina formats.
- * \implements bio::writable_quality_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::writable_quality_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -45,9 +45,9 @@ private:
     //!\brief The base class.
     using base_t = quality_base<phred68legacy, 68>;
 
-    //!\brief Befriend bio::quality_base.
+    //!\brief Befriend bio::alphabet::quality_base.
     friend base_t;
-    //!\cond \brief Befriend bio::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -83,22 +83,22 @@ public:
 /*!\name Literals
  * \{
  */
-/*!\brief The bio::phred68legacy char literal.
- * \relates bio::phred68legacy
- * \returns bio::phred68legacy
+/*!\brief The bio::alphabet::phred68legacy char literal.
+ * \relates bio::alphabet::phred68legacy
+ * \returns bio::alphabet::phred68legacy
  */
 constexpr phred68legacy operator""_phred68legacy(char const c) noexcept
 {
     return phred68legacy{}.assign_char(c);
 }
 
-/*!\brief The bio::phred68legacy string literal.
+/*!\brief The bio::alphabet::phred68legacy string literal.
  * \param[in] s A pointer to the character sequence to assign from.
  * \param[in] n The length of the character sequence to assign from.
- * \relates bio::phred68legacy
- * \returns bio::std::vector<bio::phred68legacy>
+ * \relates bio::alphabet::phred68legacy
+ * \returns bio::alphabet::std::vector<bio::alphabet::phred68legacy>
  *
- * You can use this string literal to easily assign to std::vector<bio::phred68legacy>:
+ * You can use this string literal to easily assign to std::vector<bio::alphabet::phred68legacy>:
  *
  * \include test/snippet/alphabet/quality/phred68legacy_literal.cpp
  */
@@ -114,4 +114,4 @@ inline std::vector<phred68legacy> operator""_phred68legacy(char const * s, std::
 }
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet

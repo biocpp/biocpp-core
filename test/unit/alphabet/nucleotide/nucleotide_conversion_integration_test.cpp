@@ -20,12 +20,12 @@
 template <typename T>
 using nucleotide_conversion = ::testing::Test;
 
-using nucleotide_types       = bio::meta::type_list<bio::dna4,
-                                              bio::dna5,
-                                              bio::dna15,
-                                              bio::rna4,
-                                              bio::rna5,
-                                              bio::rna15>; // needed for some tests
+using nucleotide_types       = bio::meta::type_list<bio::alphabet::dna4,
+                                              bio::alphabet::dna5,
+                                              bio::alphabet::dna15,
+                                              bio::alphabet::rna4,
+                                              bio::alphabet::rna5,
+                                              bio::alphabet::rna15>; // needed for some tests
 using nucleotide_gtest_types = bio::meta::transfer_template_args_onto_t<nucleotide_types, ::testing::Types>;
 
 TYPED_TEST_SUITE(nucleotide_conversion, nucleotide_gtest_types, );
@@ -48,18 +48,19 @@ TYPED_TEST(nucleotide_conversion, explicit_conversion)
 TYPED_TEST(nucleotide_conversion, implicit_conversion)
 {
     using other_type = std::conditional_t<
-      std::is_same_v<TypeParam, bio::rna4>,
-      bio::dna4,
+      std::is_same_v<TypeParam, bio::alphabet::rna4>,
+      bio::alphabet::dna4,
       std::conditional_t<
-        std::is_same_v<TypeParam, bio::dna4>,
-        bio::rna4,
-        std::conditional_t<std::is_same_v<TypeParam, bio::rna5>,
-                           bio::dna5,
-                           std::conditional_t<std::is_same_v<TypeParam, bio::dna5>,
-                                              bio::rna5,
-                                              std::conditional_t<std::is_same_v<TypeParam, bio::dna15>,
-                                                                 bio::rna15,
-                                                                 /* must be bio::rna15 */ bio::dna15>>>>>;
+        std::is_same_v<TypeParam, bio::alphabet::dna4>,
+        bio::alphabet::rna4,
+        std::conditional_t<
+          std::is_same_v<TypeParam, bio::alphabet::rna5>,
+          bio::alphabet::dna5,
+          std::conditional_t<std::is_same_v<TypeParam, bio::alphabet::dna5>,
+                             bio::alphabet::rna5,
+                             std::conditional_t<std::is_same_v<TypeParam, bio::alphabet::dna15>,
+                                                bio::alphabet::rna15,
+                                                /* must be bio::alphabet::rna15 */ bio::alphabet::dna15>>>>>;
 
     // construct
     EXPECT_EQ(other_type{TypeParam{}.assign_char('C')}, other_type{}.assign_char('C'));

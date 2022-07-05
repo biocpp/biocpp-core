@@ -24,7 +24,7 @@ namespace bio::ranges::views
  * \{
  */
 
-/*!\brief               A view that calls bio::to_char() on each element in the input range.
+/*!\brief               A view that calls bio::alphabet::to_char() on each element in the input range.
  * \tparam urng_t       The type of the range being processed. See below for requirements. [template parameter is
  *                      omitted in pipe notation]
  * \param[in] urange    The range being processed. [parameter is omitted in pipe notation]
@@ -55,7 +55,7 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *lost*                                                        |
  * | bio::ranges::const_iterable_range     |                                       | *preserved*                                                   |
  * |                                  |                                       |                                                               |
- * | std::ranges::range_reference_t   | bio::alphabet                      | bio::alphabet_char_t<std::ranges::range_value_t<urng_t>>   |
+ * | std::ranges::range_reference_t   | bio::alphabet::alphabet                      | bio::alphabet::alphabet_char_t<std::ranges::range_value_t<urng_t>>   |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
@@ -66,9 +66,9 @@ namespace bio::ranges::views
 inline auto const to_char = deep{std::views::transform(
   [](auto const in) noexcept
   {
-      static_assert(alphabet<std::remove_cvref_t<decltype(in)>>,
-                    "The value type of bio::views::to_char must model the bio::alphabet.");
-      return bio::to_char(in);
+      static_assert(alphabet::alphabet<std::remove_cvref_t<decltype(in)>>,
+                    "The value type of bio::views::to_char must model the bio::alphabet::alphabet.");
+      return alphabet::to_char(in);
   })};
 
 //!\}

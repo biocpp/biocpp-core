@@ -17,7 +17,7 @@
 #include <bio/ranges/views/to_upper.hpp>
 #include <ranges>
 
-using bio::operator""_dna5;
+using bio::alphabet::operator""_dna5;
 
 TEST(view_to_upper, basic)
 {
@@ -38,8 +38,8 @@ TEST(view_to_upper, combinability)
     std::string input_string{"IAmADnaString"};
     std::string cmp{"GNIRTSANDAMAI"};
 
-    std::vector<bio::dna5> dna_vec{"aggcgt"_dna5};
-    std::string            cmp2{"AGGCGT"};
+    std::vector<bio::alphabet::dna5> dna_vec{"aggcgt"_dna5};
+    std::string                      cmp2{"AGGCGT"};
 
     // output combinability
     std::string s(input_string | bio::ranges::views::to_upper | std::views::reverse |

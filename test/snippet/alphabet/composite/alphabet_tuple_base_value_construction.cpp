@@ -5,12 +5,12 @@
 
 int main()
 {
-    using bio::operator""_dna4;
+    using bio::alphabet::operator""_dna4;
 
-    bio::qualified<bio::dna4, bio::phred42> letter1{'C'_dna4};
-    // creates {'C'_dna4, bio::phred42{0}}
-    bio::qualified<bio::dna4, bio::phred42> letter2{bio::phred42{1}};
-    // creates {'A'_dna4, bio::phred42{1}}
+    bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42> letter1{'C'_dna4};
+    // creates {'C'_dna4, bio::alphabet::phred42{0}}
+    bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42> letter2{bio::alphabet::phred42{1}};
+    // creates {'A'_dna4, bio::alphabet::phred42{1}}
 
     if (letter1 == letter2)
         fmt::print("{}", "yeah\n"); // yeah

@@ -127,7 +127,7 @@ concept cereal_text_archive = false;
  * static_assert(bio::cerealisable<std::array<int, 12>>);
  *
  * #include <bio/alphabet/nucleotide/dna4.hpp> // dna4 is serialisable
- * static_assert(bio::cerealisable<bio::dna4>);
+ * static_assert(bio::cerealisable<bio::alphabet::dna4>);
  * ```
  *
  * ### Example

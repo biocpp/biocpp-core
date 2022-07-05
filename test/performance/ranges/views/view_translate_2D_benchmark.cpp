@@ -43,17 +43,17 @@ void sequential_read_impl(benchmark::State & state, rng_t && rng)
 template <typename tag_t>
 void sequential_read(benchmark::State & state)
 {
-    std::vector<std::vector<bio::dna4>> dna_sequence_collection{};
+    std::vector<std::vector<bio::alphabet::dna4>> dna_sequence_collection{};
     dna_sequence_collection.resize(1000);
 
     for (size_t i = 0; i < dna_sequence_collection.size(); ++i)
-        dna_sequence_collection[i] = bio::test::generate_sequence<bio::dna4>(100, 0, 0);
+        dna_sequence_collection[i] = bio::test::generate_sequence<bio::alphabet::dna4>(100, 0, 0);
 
     if constexpr (std::is_same_v<tag_t, baseline_tag>)
     {
-        std::vector<bio::aa27_vector> translated_aa_sequences = dna_sequence_collection
+        std::vector<bio::alphabet::aa27_vector> translated_aa_sequences = dna_sequence_collection
                                                                  | bio::ranges::views::translate_join
-                                                                 | bio::ranges::views::to<std::vector<bio::aa27_vector>>();
+                                                                 | bio::ranges::views::to<std::vector<bio::alphabet::aa27_vector>>();
         sequential_read_impl(state, translated_aa_sequences);
     }
     else if constexpr (std::is_same_v<tag_t, translate_tag>)
@@ -87,11 +87,11 @@ void random_access_impl(benchmark::State & state, rng_t && rng, std::vector<size
 template <typename tag_t>
 void random_access(benchmark::State & state)
 {
-    std::vector<std::vector<bio::dna4>> dna_sequence_collection{};
+    std::vector<std::vector<bio::alphabet::dna4>> dna_sequence_collection{};
     dna_sequence_collection.resize(1000);
 
     for (size_t i = 0; i < dna_sequence_collection.size(); ++i)
-        dna_sequence_collection[i] = bio::test::generate_sequence<bio::dna4>(100, 0, 0);
+        dna_sequence_collection[i] = bio::test::generate_sequence<bio::alphabet::dna4>(100, 0, 0);
 
     std::vector<size_t> access_positions{};
     access_positions.resize(200);
@@ -103,9 +103,9 @@ void random_access(benchmark::State & state)
 
     if constexpr (std::is_same_v<tag_t, baseline_tag>)
     {
-        std::vector<bio::aa27_vector> translated_aa_sequences = dna_sequence_collection
+        std::vector<bio::alphabet::aa27_vector> translated_aa_sequences = dna_sequence_collection
                                                                  | bio::ranges::views::translate_join
-                                                                 | bio::ranges::views::to<std::vector<bio::aa27_vector>>();
+                                                                 | bio::ranges::views::to<std::vector<bio::alphabet::aa27_vector>>();
         random_access_impl(state, translated_aa_sequences, access_positions);
     }
     else

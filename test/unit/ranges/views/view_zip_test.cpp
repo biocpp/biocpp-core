@@ -50,7 +50,7 @@ struct iterator_fixture<zip_iterator_t> : public ::testing::Test
 };
 INSTANTIATE_TYPED_TEST_SUITE_P(zip_iterator_test, iterator_fixture, zip_iterator_t, );
 
-using bio::operator""_dna4;
+using bio::alphabet::operator""_dna4;
 
 class zip_test : public ::testing::Test
 {

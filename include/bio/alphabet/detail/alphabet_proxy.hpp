@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides bio::alphabet_proxy.
+ * \brief Provides bio::alphabet::alphabet_proxy.
  */
 
 #pragma once
@@ -21,13 +21,13 @@
 #include <bio/meta/type_traits/template_inspection.hpp>
 #include <concepts>
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief A CRTP-base that eases the definition of proxy types returned in place of regular alphabets.
  * \tparam derived_type  The CRTP parameter type.
  * \tparam alphabet_type The type of the alphabet that this proxy emulates; must model at least
- *                       bio::writable_semialphabet and std::regular.
+ *                       bio::alphabet::writable_semialphabet and std::regular.
  * \ingroup alphabet
  *
  * \details
@@ -40,8 +40,8 @@ namespace bio
  * This CRTP base facilitates the definition of such proxies. Most users of BioC++ will not need to understand the
  * details.
  *
- * This class ensures that the proxy itself also models bio::semialphabet, bio::alphabet,
- * bio::quality_alphabet, bio::nucleotide_alphabet and/or bio::aminoacid_alphabet if the emulated type models
+ * This class ensures that the proxy itself also models bio::alphabet::semialphabet, bio::alphabet::alphabet,
+ * bio::alphabet::quality_alphabet, bio::alphabet::nucleotide_alphabet and/or bio::alphabet::aminoacid_alphabet if the emulated type models
  * these. This makes sure that function templates which accept the original, also accept the proxy.
  *
  * ### Implementation notes
@@ -49,7 +49,7 @@ namespace bio
  * The derived type needs to provide an `.on_update()` member function that performs the changes in the underlying
  * data structure.
  *
- * See bio::ranges::bitcompressed_vector or bio::alphabet_tuple_base for examples of how this class is used.
+ * See bio::ranges::bitcompressed_vector or bio::alphabet::alphabet_tuple_base for examples of how this class is used.
  */
 template <typename derived_type, writable_semialphabet alphabet_type>
     //!\cond
@@ -107,16 +107,16 @@ private:
       :
       base_t{}
     {
-        base_t::assign_rank(bio::to_rank(a));
+        base_t::assign_rank(bio::alphabet::to_rank(a));
     }
 
     //!\brief Assigment from the emulated type. This function triggers the specialisation in the derived_type.
     constexpr derived_type & operator=(alphabet_type const & c) noexcept
     {
         if constexpr (std::is_class_v<alphabet_type>)
-            bio::assign_rank_to(bio::to_rank(c), static_cast<alphabet_type &>(*this));
+            bio::alphabet::assign_rank_to(bio::alphabet::to_rank(c), static_cast<alphabet_type &>(*this));
         else
-            base_t::assign_rank(bio::to_rank(c));
+            base_t::assign_rank(bio::alphabet::to_rank(c));
 
         static_cast<derived_type &>(*this).on_update(); // <- this invokes the actual proxy behaviour!
         return static_cast<derived_type &>(*this);
@@ -140,7 +140,7 @@ private:
 
 public:
     //!\brief The alphabet size.
-    static constexpr auto alphabet_size = bio::alphabet_size<alphabet_type>;
+    static constexpr auto alphabet_size = bio::alphabet::alphabet_size<alphabet_type>;
 
     /*!\name Write functions
      * \brief All of these call the emulated type's write functions and then delegate to
@@ -195,7 +195,7 @@ public:
          * This prevents errors associated with using alphabet_type's constructors.
          *
          * This is one of error cases:
-         * The tuple composite bio::qualified returns a component_proxy which inherits from alphabet_proxy_base.
+         * The tuple composite bio::alphabet::qualified returns a component_proxy which inherits from alphabet_proxy_base.
          * The qualified alphabet itself inherits from quality_base.
          * Now when accessing get<1>(seq_qual_alph) we want to call to_phred at some point because we want the quality,
          * therefore the to_phred function from alphabet_proxy is called, but this function did a static_cast to the
@@ -213,7 +213,7 @@ public:
     constexpr operator other_t() const noexcept { return operator alphabet_type(); }
 
     //!\brief Returns the rank.
-    constexpr auto to_rank() const noexcept { return bio::to_rank(operator alphabet_type()); }
+    constexpr auto to_rank() const noexcept { return bio::alphabet::to_rank(operator alphabet_type()); }
 
     //!\brief Returns the character.
     constexpr auto to_char() const noexcept
@@ -221,7 +221,7 @@ public:
       requires alphabet<alphabet_type>
     //!\endcond
     {
-        return bio::to_char(operator alphabet_type());
+        return bio::alphabet::to_char(operator alphabet_type());
     }
 
     //!\brief Returns the phred score.
@@ -230,7 +230,7 @@ public:
       requires quality_alphabet<alphabet_type>
     //!\endcond
     {
-        return bio::to_phred(operator alphabet_type());
+        return bio::alphabet::to_phred(operator alphabet_type());
     }
 
     //!\brief Returns the complement.
@@ -239,7 +239,7 @@ public:
       requires nucleotide_alphabet<alphabet_type>
     //!\endcond
     {
-        return bio::complement(operator alphabet_type());
+        return bio::alphabet::complement(operator alphabet_type());
     }
 
     //!\brief Delegate to the emulated type's validator.
@@ -254,7 +254,7 @@ public:
 
     /*!\name Comparison operators
      * \brief These are only required if the emulated type allows comparison with types it is not convertible to,
-     *        e.g. bio::alphabet_variant.
+     *        e.g. bio::alphabet::alphabet_variant.
      * \{
      */
 private:
@@ -298,4 +298,4 @@ public:
     //!\}
 };
 
-} // namespace bio
+} // namespace bio::alphabet

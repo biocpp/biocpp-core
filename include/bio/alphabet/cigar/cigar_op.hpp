@@ -19,13 +19,13 @@
 // cigar_op
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief The (extended) cigar operation alphabet of M,D,I,H,N,P,S,X,=.
  * \ingroup cigar
- * \implements bio::writable_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::writable_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -38,8 +38,8 @@ namespace bio
  * only indicated the aligned status with an 'M', without further
  * information if the bases are actually equal or not.
  *
- * The main purpose of the bio::cigar_op alphabet is to be used in the
- * bio::cigar composition, where a cigar operation is paired with a count
+ * The main purpose of the bio::alphabet::cigar_op alphabet is to be used in the
+ * bio::alphabet::cigar composition, where a cigar operation is paired with a count
  * value.
  *
  * Example usage:
@@ -56,7 +56,7 @@ private:
     //!\brief The base class.
     using base_t = alphabet_base<cigar_op, 9, char>;
 
-    //!\cond \brief Befriend bio::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet::alphabet_base.
     friend base_t;
     //!\endcond
 
@@ -102,13 +102,13 @@ protected:
  * \{
  */
 
-/*!\brief The bio::cigar_op char literal.
- * \relates bio::cigar_op
- * \returns bio::cigar_op
+/*!\brief The bio::alphabet::cigar_op char literal.
+ * \relates bio::alphabet::cigar_op
+ * \returns bio::alphabet::cigar_op
  */
 inline cigar_op operator""_cigar_op(char const c) noexcept
 {
     return cigar_op{}.assign_char(c);
 }
 //!\}
-} // namespace bio
+} // namespace bio::alphabet

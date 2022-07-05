@@ -9,7 +9,7 @@
 /*!\file
  * \author Marcel Ehrhardt <marcel.ehrhardt AT fu-berlin.de>
  * \author David Heller <david.heller AT fu-berlin.de>
- * \brief Provides bio::gap.
+ * \brief Provides bio::alphabet::gap.
  */
 
 #pragma once
@@ -18,13 +18,13 @@
 
 #include <bio/alphabet/alphabet_base.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief The alphabet of a gap character '-'
  * \ingroup gap
- * \implements bio::writable_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::writable_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -40,7 +40,7 @@ private:
     //!\brief The base class.
     using base_t = alphabet_base<gap, 1, char>;
 
-    //!\brief Befriend bio::alphabet_base.
+    //!\brief Befriend bio::alphabet::alphabet_base.
     friend base_t;
 
     //!\brief The character that will be printed.
@@ -61,4 +61,4 @@ public:
     //!\}
 };
 
-} // namespace bio
+} // namespace bio::alphabet

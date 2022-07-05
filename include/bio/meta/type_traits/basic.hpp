@@ -42,7 +42,7 @@ namespace bio::meta
 /*!\brief Return the input type with `&&` removed, but lvalue references preserved.
  * \implements bio::meta::transformation_trait
  * \tparam t The type to operate on.
- * \see bio::remove_rvalue_reference_t
+ * \see bio::meta::remove_rvalue_reference_t
  */
 template <typename t>
 struct remove_rvalue_reference
@@ -53,7 +53,7 @@ struct remove_rvalue_reference
 
 /*!\brief Return the input type with `&&` removed, but lvalue references preserved (transformation_trait shortcut).
  * \tparam t The type to operate on.
- * \see bio::remove_rvalue_reference
+ * \see bio::meta::remove_rvalue_reference
  */
 template <typename t>
 using remove_rvalue_reference_t = typename remove_rvalue_reference<t>::type;
@@ -72,7 +72,7 @@ struct is_constexpr_default_constructible : std::false_type
 
 /*!\brief Whether a type std::is_default_constructible in `constexpr`-context (unary_type_trait specialisation).
  * \tparam t A type that std::is_default_constructible.
- * \see bio::is_constexpr_default_constructible
+ * \see bio::meta::is_constexpr_default_constructible
  */
 template <typename t>
     //!\cond
@@ -83,7 +83,7 @@ struct is_constexpr_default_constructible<t> : std::integral_constant<bool, BIOC
 
 /*!\brief Whether a type std::is_default_constructible in `constexpr`-context (unary_type_trait shortcut).
  * \tparam t The type to operate on.
- * \relates bio::is_constexpr_default_constructible
+ * \relates bio::meta::is_constexpr_default_constructible
  */
 template <typename t>
 inline constexpr bool is_constexpr_default_constructible_v = is_constexpr_default_constructible<t>::value;

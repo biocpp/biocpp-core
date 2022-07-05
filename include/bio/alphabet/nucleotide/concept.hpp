@@ -9,7 +9,7 @@
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  * \author Jörg Winkler <j.winkler AT fu-berlin.de>
- * \brief Provides bio::nucleotide_alphabet.
+ * \brief Provides bio::alphabet::nucleotide_alphabet.
  */
 
 #pragma once
@@ -21,20 +21,20 @@
 // complement()
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void complement(args_t...) = delete;
 
-//!\brief Functor definition for bio::complement.
+//!\brief Functor definition for bio::alphabet::complement.
 struct complement_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::complement(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, complement(v))                                     // ADL
-    BIOCPP_CPO_IMPL(0, v.complement())                                    // member
+    BIOCPP_CPO_IMPL(2, bio::alphabet::custom::alphabet<decltype(v)>::complement(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, complement(v))                                               // ADL
+    BIOCPP_CPO_IMPL(0, v.complement())                                              // member
 
 public:
     //!\brief Operator definition.
@@ -55,9 +55,9 @@ public:
     }
 };
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects (Nucleotide)
@@ -75,7 +75,7 @@ namespace bio
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   1. A static member function `complement(your_type const a)` of the class `bio::custom::alphabet<your_type>`.
+ *   1. A static member function `complement(your_type const a)` of the class `bio::alphabet::custom::alphabet<your_type>`.
  *   2. A free function `complement(your_type const a)` in the namespace of your type (or as `friend`).
  *   3. A member function called `complement()`.
  *
@@ -100,20 +100,20 @@ inline constexpr auto complement = detail::adl_only::complement_fn{};
 // nucleotide_alphabet concept
 // ============================================================================
 
-/*!\interface bio::nucleotide_alphabet <>
- * \extends bio::alphabet
+/*!\interface bio::alphabet::nucleotide_alphabet <>
+ * \extends bio::alphabet::alphabet
  * \brief A concept that indicates whether an alphabet represents nucleotides.
  * \ingroup nucleotide
  *
  * \details
  *
- * In addition to the requirements for bio::alphabet, the nucleotide_alphabet introduces
- * a requirement for a complement function: bio::nucleotide_alphabet::complement.
+ * In addition to the requirements for bio::alphabet::alphabet, the nucleotide_alphabet introduces
+ * a requirement for a complement function: bio::alphabet::nucleotide_alphabet::complement.
  *
  * ### Requirements
  *
- *   1. `t` shall model bio::alphabet
- *   2. bio::complement needs to be defined for objects of type `t`
+ *   1. `t` shall model bio::alphabet::alphabet
+ *   2. bio::alphabet::complement needs to be defined for objects of type `t`
  *
  * See the documentation pages for the respective requirements.
  *
@@ -129,8 +129,8 @@ inline constexpr auto complement = detail::adl_only::complement_fn{};
 template <typename t>
 concept nucleotide_alphabet = alphabet<t> && requires(t val)
 {
-    {bio::complement(val)};
+    {bio::alphabet::complement(val)};
 };
 //!\endcond
 
-} // namespace bio
+} // namespace bio::alphabet

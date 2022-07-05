@@ -16,18 +16,18 @@
 #include <bio/alphabet/alphabet_base.hpp>
 #include <cassert>
 
-namespace bio
+namespace bio::alphabet
 {
 /*!\brief Implementation of a masked alphabet to be used for tuple composites.
  * \ingroup mask
- * \implements bio::writable_semialphabet
- * \if DEV \implements bio::detail::Constexprwritable_semialphabet \endif
+ * \implements bio::alphabet::writable_semialphabet
+ * \if DEV \implements bio::alphabet::detail::Constexprwritable_semialphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
  *
  * \details
- * This alphabet is not usually used directly, but instead via bio::masked.
+ * This alphabet is not usually used directly, but instead via bio::alphabet::masked.
  * For more information see the \link mask Mask submodule \endlink.
  *
  * \include test/snippet/alphabet/mask/mask.cpp
@@ -38,7 +38,7 @@ private:
     //!\brief The base class.
     using base_t = alphabet_base<mask, 2, void>;
 
-    //!\brief Befriend bio::alphabet_base.
+    //!\brief Befriend bio::alphabet::alphabet_base.
     friend base_t;
 
 public:
@@ -65,4 +65,4 @@ public:
 
 constexpr mask mask::UNMASKED{mask{}.assign_rank(0)};
 constexpr mask mask::MASKED{mask{}.assign_rank(1)};
-} // namespace bio
+} // namespace bio::alphabet

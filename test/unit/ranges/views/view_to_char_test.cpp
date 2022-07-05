@@ -16,12 +16,12 @@
 #include <bio/ranges/views/to_char.hpp>
 #include <ranges>
 
-using bio::operator""_dna5;
+using bio::alphabet::operator""_dna5;
 
 TEST(view_to_char, basic)
 {
-    bio::dna5_vector vec{"ACTTTGATA"_dna5};
-    std::string      cmp{"ACTTTGATA"};
+    bio::alphabet::dna5_vector vec{"ACTTTGATA"_dna5};
+    std::string                cmp{"ACTTTGATA"};
 
     // pipe notation
     std::string v = vec | bio::ranges::views::to_char | bio::ranges::views::to<std::string>();
@@ -39,7 +39,7 @@ TEST(view_to_char, basic)
 
 TEST(view_to_char, concepts)
 {
-    bio::dna5_vector vec{"ACTTTGATA"_dna5};
+    bio::alphabet::dna5_vector vec{"ACTTTGATA"_dna5};
     EXPECT_TRUE(std::ranges::input_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(vec)>);
@@ -48,7 +48,7 @@ TEST(view_to_char, concepts)
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(vec)>);
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec)>);
-    EXPECT_TRUE((std::ranges::output_range<decltype(vec), bio::dna5>));
+    EXPECT_TRUE((std::ranges::output_range<decltype(vec), bio::alphabet::dna5>));
 
     auto v1 = vec | bio::ranges::views::to_char;
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
@@ -59,6 +59,6 @@ TEST(view_to_char, concepts)
     EXPECT_TRUE(std::ranges::sized_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(v1)>);
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(v1)>);
-    EXPECT_FALSE((std::ranges::output_range<decltype(v1), bio::dna5>));
+    EXPECT_FALSE((std::ranges::output_range<decltype(v1), bio::alphabet::dna5>));
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), char>));
 }

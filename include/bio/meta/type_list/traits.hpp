@@ -19,13 +19,13 @@
 #include <bio/meta/type_list/type_list.hpp>
 
 // ----------------------------------------------------------------------------
-// bio::list_traits::detail
+// bio::meta::list_traits::detail
 // ----------------------------------------------------------------------------
 
 namespace bio::meta::list_traits::detail
 {
 
-/*!\brief Implementation for bio::list_traits::at.
+/*!\brief Implementation for bio::meta::list_traits::at.
  * \tparam idx      The index.
  * \tparam pack_t   Types in the type list.
  * \ingroup meta_type_list
@@ -33,21 +33,21 @@ namespace bio::meta::list_traits::detail
 template <ptrdiff_t idx, typename... pack_t>
 std::type_identity<meta::detail::pack_traits::at<idx, pack_t...>> at(type_list<pack_t...>);
 
-/*!\brief Implementation for bio::list_traits::front.
+/*!\brief Implementation for bio::meta::list_traits::front.
  * \tparam pack_t   Types in the type list.
  * \ingroup meta_type_list
  */
 template <typename... pack_t>
 std::type_identity<meta::detail::pack_traits::front<pack_t...>> front(type_list<pack_t...>);
 
-/*!\brief Implementation for bio::list_traits::back.
+/*!\brief Implementation for bio::meta::list_traits::back.
  * \tparam pack_t   Types in the type list.
  * \ingroup meta_type_list
  */
 template <typename... pack_t>
 std::type_identity<meta::detail::pack_traits::back<pack_t...>> back(type_list<pack_t...>);
 
-/*!\brief Implementation for bio::list_traits::concat.
+/*!\brief Implementation for bio::meta::list_traits::concat.
  * \tparam pack1_t   Types in the first type list.
  * \tparam pack2_t   Types in the second type list.
  * \ingroup meta_type_list
@@ -55,7 +55,7 @@ std::type_identity<meta::detail::pack_traits::back<pack_t...>> back(type_list<pa
 template <typename... pack1_t, typename... pack2_t>
 type_list<pack1_t..., pack2_t...> concat(type_list<pack1_t...>, type_list<pack2_t...>);
 
-/*!\brief Implementation for bio::list_traits::concat [overload for more than two lists].
+/*!\brief Implementation for bio::meta::list_traits::concat [overload for more than two lists].
  * \tparam pack1_t      Types in the first type list.
  * \tparam pack2_t      Types in the second type list.
  * \tparam more_lists_t The remaining type lists.
@@ -67,14 +67,14 @@ auto concat(type_list<pack1_t...>, type_list<pack2_t...>, more_lists_t...)
     return concat(type_list<pack1_t..., pack2_t...>{}, more_lists_t{}...);
 }
 
-/*!\brief Implementation for bio::list_traits::drop_front.
+/*!\brief Implementation for bio::meta::list_traits::drop_front.
  * \tparam pack_t   Types in the type list.
  * \ingroup meta_type_list
  */
 template <typename... pack_t>
 meta::detail::pack_traits::drop_front<pack_t...> drop_front(type_list<pack_t...>);
 
-/*!\brief Implementation for bio::list_traits::transform.
+/*!\brief Implementation for bio::meta::list_traits::transform.
  * \tparam trait_t The trait to transform, **must be an alias template**, e.g. a transformation trait shortcut.
  * \tparam pack_t  Types in the type list.
  * \ingroup meta_type_list
@@ -82,7 +82,7 @@ meta::detail::pack_traits::drop_front<pack_t...> drop_front(type_list<pack_t...>
 template <template <typename> typename trait_t, typename... pack_t>
 meta::detail::pack_traits::transform<trait_t, pack_t...> transform(type_list<pack_t...>);
 
-/*!\brief Implementation for bio::list_traits::split_after.
+/*!\brief Implementation for bio::meta::list_traits::split_after.
  * \tparam idx The index after which to split.
  * \tparam pack_t Types in the type list to split
  * \ingroup meta_type_list
@@ -90,7 +90,7 @@ meta::detail::pack_traits::transform<trait_t, pack_t...> transform(type_list<pac
 template <ptrdiff_t idx, typename... pack1_t>
 meta::detail::pack_traits::split_after<idx, pack1_t...> split_after(type_list<pack1_t...>);
 
-/*!\brief Implementation for bio::list_traits::repeat.
+/*!\brief Implementation for bio::meta::list_traits::repeat.
  * \tparam count The number of repititions.
  * \tparam t The type to repeat
  * \ingroup meta_type_list
@@ -114,7 +114,7 @@ auto repeat()
         return concat(repeat<5, t>(), repeat<count - 5, t>());
 }
 
-/*!\brief Implementation for bio::list_traits::replace_at.
+/*!\brief Implementation for bio::meta::list_traits::replace_at.
  * \tparam replace_t The type replacing the old one.
  * \tparam idx The index of the type to replace.
  * \tparam pack_t Types in the type list to be modified.
@@ -168,7 +168,7 @@ constexpr auto type_list_difference(meta::type_list<current_list_t...>, meta::ty
 } // namespace bio::meta::list_traits::detail
 
 // ----------------------------------------------------------------------------
-// bio::list_traits
+// bio::meta::list_traits
 // ----------------------------------------------------------------------------
 
 //!\brief Namespace containing traits for working on meta::type_list.

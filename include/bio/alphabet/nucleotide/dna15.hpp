@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Sara Hetzel <sara.hetzel AT fu-berlin.de>
- * \brief Provides bio::dna15, container aliases and string literals.
+ * \brief Provides bio::alphabet::dna15, container aliases and string literals.
  */
 
 #pragma once
@@ -22,16 +22,16 @@
 // dna15
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
 
 class rna15;
 
 /*!\brief The 15 letter DNA alphabet, containing all IUPAC smybols minus the gap.
  * \ingroup nucleotide
- * \implements bio::nucleotide_alphabet
- * \implements bio::writable_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::nucleotide_alphabet
+ * \implements bio::alphabet::writable_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -42,7 +42,7 @@ class rna15;
  *
  * Like most alphabets, this alphabet cannot be initialised directly from its character representation.
  * Instead initialise/assign from the character literal or use the
- * function bio::dna15::assign_char().
+ * function bio::alphabet::dna15::assign_char().
  *
  *\include test/snippet/alphabet/nucleotide/dna15.cpp
  */
@@ -52,12 +52,12 @@ private:
     //!\brief The base class.
     using base_t = nucleotide_base<dna15, 15>;
 
-    //!\brief Befriend bio::nucleotide_base.
+    //!\brief Befriend bio::alphabet::nucleotide_base.
     friend base_t;
-    //!\cond \brief Befriend bio::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet::alphabet_base.
     friend base_t::base_t;
     //!\endcond
-    //!\brief Befriend bio::rna15 so it can copy #char_to_rank.
+    //!\brief Befriend bio::alphabet::rna15 so it can copy #char_to_rank.
     friend rna15;
 
 public:
@@ -84,11 +84,11 @@ public:
 protected:
     //!\privatesection
 
-    //!\copydoc bio::dna4::rank_to_char
+    //!\copydoc bio::alphabet::dna4::rank_to_char
     static constexpr char_type
       rank_to_char[alphabet_size]{'A', 'B', 'C', 'D', 'G', 'H', 'K', 'M', 'N', 'R', 'S', 'T', 'V', 'W', 'Y'};
 
-    //!\copydoc bio::dna4::char_to_rank
+    //!\copydoc bio::alphabet::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
     {
         std::array<rank_type, 256> ret{};
@@ -112,7 +112,7 @@ protected:
     }
     ();
 
-    //!\copydoc bio::dna4::complement_table
+    //!\copydoc bio::alphabet::dna4::complement_table
     static const std::array<dna15, alphabet_size> complement_table;
 };
 
@@ -120,7 +120,7 @@ protected:
 // containers
 // ------------------------------------------------------------------
 
-//!\brief Alias for an std::vector of bio::dna15.
+//!\brief Alias for an std::vector of bio::alphabet::dna15.
 //!\relates dna15
 using dna15_vector = std::vector<dna15>;
 
@@ -132,18 +132,18 @@ using dna15_vector = std::vector<dna15>;
  * \{
  */
 
-/*!\brief The bio::dna15 char literal.
- * \relates bio::dna15
- * \returns bio::dna15
+/*!\brief The bio::alphabet::dna15 char literal.
+ * \relates bio::alphabet::dna15
+ * \returns bio::alphabet::dna15
  */
 constexpr dna15 operator""_dna15(char const c) noexcept
 {
     return dna15{}.assign_char(c);
 }
 
-/*!\brief The bio::dna15 string literal.
- * \relates bio::dna15
- * \returns bio::dna15_vector
+/*!\brief The bio::alphabet::dna15 string literal.
+ * \relates bio::alphabet::dna15
+ * \returns bio::alphabet::dna15_vector
  *
  * You can use this string literal to easily assign to dna15_vector:
  *
@@ -184,4 +184,4 @@ constexpr std::array<dna15, dna15::alphabet_size> dna15::complement_table{
   'R'_dna15  // complement of 'Y'_dna15
 };
 
-} // namespace bio
+} // namespace bio::alphabet

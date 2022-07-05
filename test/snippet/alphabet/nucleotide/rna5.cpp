@@ -2,9 +2,9 @@
 #include <bio/alphabet/fmt.hpp>
 int main()
 {
-    using bio::operator""_rna5;
+    using bio::alphabet::operator""_rna5;
 
-    bio::rna5 my_letter{'A'_rna5};
+    bio::alphabet::rna5 my_letter{'A'_rna5};
 
     my_letter.assign_char('C');
 

@@ -8,19 +8,19 @@
 
 /*!\file
  * \author Sara Hetzel <sara.hetzel AT fu-berlin.de>
- * \brief Provides bio::semialphabet_any.
+ * \brief Provides bio::alphabet::semialphabet_any.
  */
 
 #pragma once
 
 #include <bio/alphabet/alphabet_base.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief A semi-alphabet that type erases all other semi-alphabets of the same size.
  * \ingroup alphabet_composite
- * \implements bio::semialphabet
+ * \implements bio::alphabet::semialphabet
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  *
@@ -71,7 +71,7 @@ public:
         //!\cond
         requires(alphabet_size<other_alph_t> == size)
     //!\endcond
-    explicit semialphabet_any(other_alph_t const other) { assign_rank(bio::to_rank(other)); }
+    explicit semialphabet_any(other_alph_t const other) { assign_rank(bio::alphabet::to_rank(other)); }
     //!\}
 
     //!\brief Enable conversion of semialphabet_any into other (semi-)alphabet of the same size
@@ -87,4 +87,4 @@ public:
     }
 };
 
-} // namespace bio
+} // namespace bio::alphabet

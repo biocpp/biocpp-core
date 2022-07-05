@@ -16,7 +16,7 @@
 // Tests the ADL-capabilities of the alphabet customisation point objects
 
 //![my_alph]
-#include <bio/alphabet/concept.hpp> // for bio::alphabet
+#include <bio/alphabet/concept.hpp> // for bio::alphabet::alphabet
 #include <cstddef>                  // for size_t
 
 namespace my_namespace
@@ -86,7 +86,7 @@ constexpr my_alph & assign_char_to(char const c, my_alph & a) noexcept
 
 } // namespace my_namespace
 
-static_assert(bio::alphabet<my_namespace::my_alph>);
+static_assert(bio::alphabet::alphabet<my_namespace::my_alph>);
 //![my_alph]
 
 INSTANTIATE_TYPED_TEST_SUITE_P(my_alph, alphabet, my_namespace::my_alph, );

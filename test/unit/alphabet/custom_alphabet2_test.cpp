@@ -11,7 +11,7 @@
 // Tests the ADL-capabilities of the alphabet customisation point objects; type that isn't default constructible
 
 //![my_alph]
-#include <bio/alphabet/concept.hpp> // for bio::alphabet
+#include <bio/alphabet/concept.hpp> // for bio::alphabet::alphabet
 #include <cstddef>                  // for size_t
 #include <type_traits>              // for std::type_identity
 
@@ -94,11 +94,11 @@ constexpr bool char_is_valid_for(char const c, std::type_identity<my_alph> const
 
 } // namespace my_namespace
 
-static_assert(bio::alphabet_size<my_namespace::my_alph> == 2);
-static_assert(bio::char_is_valid_for<my_namespace::my_alph>('T'));
-static_assert(!bio::char_is_valid_for<my_namespace::my_alph>('!'));
-static_assert(bio::semialphabet<my_namespace::my_alph>);
-static_assert(bio::alphabet<my_namespace::my_alph>);
+static_assert(bio::alphabet::alphabet_size<my_namespace::my_alph> == 2);
+static_assert(bio::alphabet::char_is_valid_for<my_namespace::my_alph>('T'));
+static_assert(!bio::alphabet::char_is_valid_for<my_namespace::my_alph>('!'));
+static_assert(bio::alphabet::semialphabet<my_namespace::my_alph>);
+static_assert(bio::alphabet::alphabet<my_namespace::my_alph>);
 //![my_alph]
 
 // Not tested with rest of test-suite because the test-suite relies on default-constructibility

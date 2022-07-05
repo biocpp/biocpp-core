@@ -17,7 +17,7 @@
 #include <bio/ranges/views/to_lower.hpp>
 #include <ranges>
 
-using bio::operator""_dna5;
+using bio::alphabet::operator""_dna5;
 
 TEST(view_to_lower, basic)
 {
@@ -38,8 +38,8 @@ TEST(view_to_lower, combinability)
     std::string input_string{"IAmADnaString"};
     std::string cmp{"gnirtsandamai"};
 
-    std::vector<bio::dna5> dna_vec{"AGGCGT"_dna5};
-    std::string            cmp2{"aggcgt"};
+    std::vector<bio::alphabet::dna5> dna_vec{"AGGCGT"_dna5};
+    std::string                      cmp2{"aggcgt"};
 
     // output combinability
     std::string s(input_string | bio::ranges::views::to_lower | std::views::reverse |

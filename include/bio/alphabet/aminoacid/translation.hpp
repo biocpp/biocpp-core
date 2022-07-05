@@ -20,7 +20,7 @@
 #include <bio/alphabet/aminoacid/translation_genetic_code.hpp>
 #include <bio/ranges/type_traits.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 
 // forwards:
@@ -56,7 +56,7 @@ constexpr aa27 translate_triplet(nucl_type const & n1, nucl_type const & n2, nuc
     if constexpr (std::same_as<nucl_type, dna4> || std::same_as<nucl_type, dna5> || std::same_as<nucl_type, dna15>)
     {
         // table exists for dna15 and is generated for dna4 and dna5 (compile time ok, because small)
-        return bio::detail::translation_table<nucl_type, gc>::VALUE[to_rank(n1)][to_rank(n2)][to_rank(n3)];
+        return detail::translation_table<nucl_type, gc>::VALUE[to_rank(n1)][to_rank(n2)][to_rank(n3)];
     }
     else if constexpr (std::same_as<nucl_type, rna4> || std::same_as<nucl_type, rna5> || std::same_as<nucl_type, rna15>)
     {
@@ -68,13 +68,13 @@ constexpr aa27 translate_triplet(nucl_type const & n1, nucl_type const & n2, nuc
                                                 std::conditional_t<std::same_as<nucl_type, rna15>, dna15, void>>>;
 
         // we can use dna's tables, because ranks are identical
-        return bio::detail::translation_table<rna2dna_t, gc>::VALUE[to_rank(n1)][to_rank(n2)][to_rank(n3)];
+        return detail::translation_table<rna2dna_t, gc>::VALUE[to_rank(n1)][to_rank(n2)][to_rank(n3)];
     }
     else // composites or user defined nucleotide
     {
         // we cast to dna15; slightly slower run-time, but lot's of compile time saved for large alphabets.
         // (nucleotide types can be converted to dna15 by definition)
-        return bio::detail::translation_table<dna15, gc>::VALUE[to_rank(static_cast<dna15>(n1))][to_rank(
+        return detail::translation_table<dna15, gc>::VALUE[to_rank(static_cast<dna15>(n1))][to_rank(
           static_cast<dna15>(n2))][to_rank(static_cast<dna15>(n3))];
     }
 }
@@ -97,11 +97,11 @@ enum class translation_frames : uint8_t
     SIX_FRAME   = FWD | REV                                //!< All frames
 };
 
-/*!\name Binary operators for bio::translation_frames.
+/*!\name Binary operators for bio::alphabet::translation_frames.
  * \brief Perform binary operations like on ints or weak enums.
  * \{
  */
-//!\brief Binary operators for bio::translation_frames.
+//!\brief Binary operators for bio::alphabet::translation_frames.
 constexpr translation_frames operator&(translation_frames lhs, translation_frames rhs) noexcept
 {
     using u_t = std::underlying_type_t<translation_frames>;
@@ -145,4 +145,4 @@ constexpr translation_frames & operator^=(translation_frames & lhs, translation_
 }
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet

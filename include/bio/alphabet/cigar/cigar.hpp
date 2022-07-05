@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides the bio::cigar alphabet.
+ * \brief Provides the bio::alphabet::cigar alphabet.
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
@@ -24,12 +24,12 @@
 // cigar
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
 
-/*!\brief The cigar semialphabet pairs a counter with a bio::cigar_op letter.
+/*!\brief The cigar semialphabet pairs a counter with a bio::alphabet::cigar_op letter.
  * \ingroup cigar
- * \implements bio::writable_semialphabet
+ * \implements bio::alphabet::writable_semialphabet
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -37,16 +37,16 @@ namespace bio
  * \details
  *
  * This semialphabet represents a unit in a CIGAR string, typically found in the
- * SAM and BAM formats. It consists of a number and a bio::cigar_op symbol.
+ * SAM and BAM formats. It consists of a number and a bio::alphabet::cigar_op symbol.
  *
  * It has a "visual representation", but since this is a string and not a char,
- * the type only models bio::writable_semialphabet and not
- * bio::writable_alphabet.
+ * the type only models bio::alphabet::writable_semialphabet and not
+ * bio::alphabet::writable_alphabet.
  * Members for reading/writing the string are provided.
  *
  * To avoid confusion between string and char literal, this alphabet has
  * no user defined literal operators. Always assign from a pair of
- * uint32_t and bio::cigar_op.
+ * uint32_t and bio::alphabet::cigar_op.
  *
  * ### Example
  *
@@ -58,7 +58,7 @@ private:
     //!\brief The base class.
     using base_t = alphabet_tuple_base<cigar, uint32_t, cigar_op>;
 
-    //!\cond \brief Befriend bio::alphabet_tuple_base.
+    //!\cond \brief Befriend bio::alphabet::alphabet_tuple_base.
     friend base_t;
     //!\endcond
 
@@ -107,7 +107,7 @@ public:
 
         auto [ptr, errc] = std::to_chars(ret.data(), ret.data() + 10, get<0>(*this));
 
-        *ptr = bio::to_char(get<1>(*this));
+        *ptr = bio::alphabet::to_char(get<1>(*this));
         (void)errc;
 
         ret.resize(ptr - ret.data() + 1);
@@ -158,16 +158,16 @@ public:
     //!\}
 };
 
-} // namespace bio
+} // namespace bio::alphabet
 
 #if __has_include(<fmt/format.h>)
 
 #    include <fmt/format.h>
 
 template <>
-struct fmt::formatter<bio::cigar> : fmt::formatter<std::string_view>
+struct fmt::formatter<bio::alphabet::cigar> : fmt::formatter<std::string_view>
 {
-    constexpr auto format(bio::cigar const a, auto & ctx) const
+    constexpr auto format(bio::alphabet::cigar const a, auto & ctx) const
     {
         auto             tmp = a.to_string();
         std::string_view v{tmp.data(), tmp.size()};

@@ -14,7 +14,7 @@
 #include <bio/test/cereal.hpp>
 #include <bio/test/expect_range_eq.hpp>
 
-using bio::operator""_dna4;
+using bio::alphabet::operator""_dna4;
 
 template <typename T>
 class container_over_dna4_test : public ::testing::Test
@@ -87,7 +87,7 @@ TYPED_TEST_P(container_over_dna4_test, assign)
     EXPECT_EQ(t6, t1);
 
     // direct from another container
-    if constexpr (!std::is_same_v<TypeParam, std::vector<bio::dna4>>)
+    if constexpr (!std::is_same_v<TypeParam, std::vector<bio::alphabet::dna4>>)
     {
         TypeParam t7;
         t7.assign("ACCGT"_dna4);
@@ -175,7 +175,7 @@ TYPED_TEST_P(container_over_dna4_test, capacity)
     EXPECT_GE(t1.capacity(), t1.size());
     EXPECT_GE(t2.capacity(), t2.size());
 
-    if constexpr (!std::same_as<TypeParam, bio::ranges::small_vector<bio::dna4, 1000>>)
+    if constexpr (!std::same_as<TypeParam, bio::ranges::small_vector<bio::alphabet::dna4, 1000>>)
     {
         // max_size
         EXPECT_GT(t0.max_size(), 1'000'000'000'000u);

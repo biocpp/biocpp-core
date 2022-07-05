@@ -9,7 +9,7 @@
 /*!\cond DEV
  * \file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides bio::detail::convert_through_char_representation.
+ * \brief Provides bio::alphabet::detail::convert_through_char_representation.
  * \endcond
  */
 
@@ -23,13 +23,13 @@
 // conversion to/from char/rank types
 // ============================================================================
 
-namespace bio::detail
+namespace bio::alphabet::detail
 {
 
 /*!\brief A precomputed conversion table for two alphabets based on their char representations.
  * \ingroup alphabet
- * \tparam out_t The type of the output, must satisfy bio::alphabet.
- * \tparam in_t The type of the input, must satisfy bio::alphabet.
+ * \tparam out_t The type of the output, must satisfy bio::alphabet::alphabet.
+ * \tparam in_t The type of the input, must satisfy bio::alphabet::alphabet.
  * \hideinitializer
  */
 template <alphabet out_t, alphabet in_t>
@@ -43,4 +43,4 @@ constexpr std::array<out_t, alphabet_size<in_t>> convert_through_char_representa
 }
 ();
 
-} // namespace bio::detail
+} // namespace bio::alphabet::detail

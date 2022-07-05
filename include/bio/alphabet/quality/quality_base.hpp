@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Marie Hoffmann <marie.hoffmann AT fu-berlin.de>
- * \brief Provides bio::phred42 quality scores.
+ * \brief Provides bio::alphabet::phred42 quality scores.
  */
 
 #pragma once
@@ -17,10 +17,10 @@
 #include <bio/alphabet/detail/convert.hpp>
 #include <bio/alphabet/quality/concept.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 
-/*!\brief A CRTP-base that refines bio::alphabet_base and is used by the quality alphabets.
+/*!\brief A CRTP-base that refines bio::alphabet::alphabet_base and is used by the quality alphabets.
  * \ingroup quality
  * \tparam derived_type The CRTP parameter type.
  * \tparam size         The size of the alphabet.
@@ -77,7 +77,7 @@ public:
     //!\endcond
     explicit constexpr quality_base(other_qual_type const & other) noexcept
     {
-        assign_phred_to(bio::to_phred(other), static_cast<derived_type &>(*this));
+        assign_phred_to(bio::alphabet::to_phred(other), static_cast<derived_type &>(*this));
     }
     //!\}
 
@@ -96,7 +96,7 @@ public:
      *
      * \details
      *
-     * Satisfies the bio::writable_quality_alphabet::assign_phred() requirement via the bio::assign_rank() wrapper.
+     * Satisfies the bio::alphabet::writable_quality_alphabet::assign_phred() requirement via the bio::alphabet::assign_rank() wrapper.
      *
      * ###Complexity
      *
@@ -171,4 +171,4 @@ protected:
     ();
 };
 
-} // namespace bio
+} // namespace bio::alphabet

@@ -769,7 +769,7 @@ TEST(dynamic_bitset, to_ullong)
 // TEST(dynamic_bitset, debug_stream)
 // {
 //     std::ostringstream o;
-//     bio::debug_stream_type my_stream{o};
+//     bio::alphabet::debug_stream_type my_stream{o};
 //
 //     bio::ranges::dynamic_bitset t1{0b1100'1110'1010'1111};
 //

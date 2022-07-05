@@ -34,7 +34,7 @@
  * to represent them in a regular std::string, it makes sense to have specialised data structures in most cases.
  * This sub-module offers multiple nucleotide alphabets that can be used with regular containers and ranges.
  *
- * | Letter   | Description            |                   bio::dna15        |                   bio::dna5         |                  bio::dna4          |                  bio::dna3bs        |                bio::rna15           |                    bio::rna5        |                 bio::rna4           |
+ * | Letter   | Description            |                   bio::alphabet::dna15        |                   bio::alphabet::dna5         |                  bio::alphabet::dna4          |                  bio::alphabet::dna3bs        |                bio::alphabet::rna15           |                    bio::alphabet::rna5        |                 bio::alphabet::rna4           |
  * |:--------:|------------------------|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|
  * |   A      | Adenine                |                              A         |                              A         |                              A         |                              A         |                              A         |                              A         |                              A         |
  * |   C      | Cytosine               |                              C         |                              C         |                              C         | <span style="color:LightGrey">T</span> |                              C         |                              C         |                              C         |
@@ -63,42 +63,42 @@
  * `'U'` character, as well. See below for the details.
  *
  * Which alphabet to chose?
- *   1. in most cases, take bio::dna15 (includes all IUPAC characters)
- *   2. if you are memory constrained and sequence data is actually the main memory consumer, use bio::dna5
- *   3. if you use specialised algorithms that profit from a 2-bit representation, use bio::dna4
- *   4. if you are doing only RNA input/output, use the respective bio::rna* type
+ *   1. in most cases, take bio::alphabet::dna15 (includes all IUPAC characters)
+ *   2. if you are memory constrained and sequence data is actually the main memory consumer, use bio::alphabet::dna5
+ *   3. if you use specialised algorithms that profit from a 2-bit representation, use bio::alphabet::dna4
+ *   4. if you are doing only RNA input/output, use the respective bio::alphabet::rna* type
  *   5. to actually save space from using smaller alphabets, you need a compressed container (e.g.
  *      bio::ranges::bitcompressed_vector)
- *   6. if you are working with bisulfite data use bio::dna3bs
+ *   6. if you are working with bisulfite data use bio::alphabet::dna3bs
  *
  * ###Printing and conversion to char
  *
  * As with all alphabets in BioC++, none of the nucleotide alphabets can be directly converted to char or printed
  * with iostreams.
- * You need to explicitly call bio::to_char to convert to char or use the {fmt}-library which automatically converts.
+ * You need to explicitly call bio::alphabet::to_char to convert to char or use the {fmt}-library which automatically converts.
  *
  * `T` and `U` are represented by the same rank and you cannot differentiate between them. The only difference between
- * e.g. bio::dna4 and bio::rna4 is the output when calling to_char().
+ * e.g. bio::alphabet::dna4 and bio::alphabet::rna4 is the output when calling to_char().
  *
  * ###Assignment and conversions between nucleotide types
  *
  *   * Nucleotide types defined here are **implicitly** convertible to each other if they have the same size
- *     (e.g. bio::dna4 ↔ bio::rna4).
+ *     (e.g. bio::alphabet::dna4 ↔ bio::alphabet::rna4).
  *   * Other nucleotide types are **explicitly** convertible to each other through their character representation.
  *   * All ranges of nucleotide alphabets are convertible to each other via bio::views::convert.
  *   * None of the nucleotide alphabets can be directly converted or assigned from `char`. You need to explicitly call
  *     `assign_char` or use a literal (see below).
  *
  * When assigning from `char` or converting from a larger nucleotide alphabet to a smaller one, *loss of information*
- * can occur since obviously some bases are not available. When converting to bio::dna5 or bio::rna5,
+ * can occur since obviously some bases are not available. When converting to bio::alphabet::dna5 or bio::alphabet::rna5,
  * non-canonical bases
  * (letters other than A, C, G, T, U) are converted to `'N'` to preserve ambiguity at that position, while
- * for bio::dna4 and bio::rna4 they are converted to the first of the possibilities they represent (because
+ * for bio::alphabet::dna4 and bio::alphabet::rna4 they are converted to the first of the possibilities they represent (because
  * there is no letter `'N'` to represent ambiguity). See the greyed out values in the table at the top for
  * an overview of which conversions take place.
  *
  * `char` values that are none of the IUPAC symbols, e.g. 'P', are always converted to the equivalent of assigning 'N',
- * i.e. they result in 'A' for bio::dna4 and bio::rna4, and in 'N' for the other alphabets.
+ * i.e. they result in 'A' for bio::alphabet::dna4 and bio::alphabet::rna4, and in 'N' for the other alphabets.
  *
  * ###Literals
  *
@@ -108,8 +108,8 @@
  *
  * ###Concept
  *
- * The nucleotide submodule defines bio::nucleotide_alphabet which encompasses all the alphabets defined in the
- * submodule and refines bio::alphabet. The only additional requirement is that their values can be
+ * The nucleotide submodule defines bio::alphabet::nucleotide_alphabet which encompasses all the alphabets defined in the
+ * submodule and refines bio::alphabet::alphabet. The only additional requirement is that their values can be
  * complemented, see below.
  *
  * ###Complement
@@ -135,11 +135,11 @@
  *
  * In the typical structure of DNA molecules (or double-stranded RNA), each nucleotide has a complement that it
  * pairs with. To generate the complement value of a nucleotide letter, you can call an implementation of
- * bio::nucleotide_alphabet::complement() on it.
+ * bio::alphabet::nucleotide_alphabet::complement() on it.
  *
- * The only exception to this table is the bio::dna3bs alphabet. The complement for 'G' is defined as 'T' since 'C' and 'T'
- * are treated as the same letters. However, it is not recommended to use the complement of bio::dna3bs but rather
- * use the complement of another dna alphabet and afterwards transform it into bio::dna3bs.
+ * The only exception to this table is the bio::alphabet::dna3bs alphabet. The complement for 'G' is defined as 'T' since 'C' and 'T'
+ * are treated as the same letters. However, it is not recommended to use the complement of bio::alphabet::dna3bs but rather
+ * use the complement of another dna alphabet and afterwards transform it into bio::alphabet::dna3bs.
  *
  * For the ambiguous letters, the complement is the (possibly also ambiguous) letter representing the variant of the
  * individual complements.

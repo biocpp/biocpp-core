@@ -31,7 +31,7 @@ struct priority_tag
 //!\endcond
 {};
 
-//!\brief Recursion anchor for bio::detail::priority_tag.
+//!\brief Recursion anchor for bio::meta::detail::priority_tag.
 template <>
 struct priority_tag<0>
 {};

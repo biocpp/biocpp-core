@@ -7,44 +7,49 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Meta-header for the \link meta meta module \endlink.
+ * \brief Module header with module-wide definitions.
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \author Rene Rahn <rene.rahn AT fu-berlin.de>
  */
 
 #pragma once
 
-#include <bio/meta/concept/all.hpp>
-#include <bio/meta/detail/all.hpp>
-#include <bio/meta/platform.hpp>
-#include <bio/meta/pod_tuple.hpp>
-#include <bio/meta/tuple_utility.hpp>
-#include <bio/meta/type_list/type_list.hpp>
-#include <bio/meta/type_traits/all.hpp>
+#include <bio/meta/platform.hpp> // TODO: change to meta/biocpp.hpp
 
-/*!\defgroup meta Meta
- * \brief Provides metaprogramming utilities, concepts and some helper classes.
- *
- * The meta module is used strongly by other modules, but the content is usually not relevant
- * to most users of the library.
+/*!\namespace bio::alphabet
+ * \brief The alphabet module's namespace.
+ * \ingroup alphabet
+ * \see \ref biocpp_customisation
  */
 
-/*!\namespace bio
- * \brief The main BioC++ namespace.
+namespace bio::alphabet
+{}
+
+/*!\namespace bio::alphabet::custom
+ * \brief A namespace for third party and standard library specialisations of BioC++ customisation points.
+ * \ingroup alphabet
+ * \see \ref biocpp_customisation
  */
 
-/*!\namespace bio::meta
- * \brief The Meta module's namespace.
- * \ingroup meta
- */
+namespace bio::alphabet::custom
+{}
 
 /*!\if DEV
- * \namespace bio::meta::detail
- * \ingroup meta
+ * \namespace bio::alphabet::detail
  * \brief The internal BioC++ namespace.
+ * \ingroup alphabet
  * \details
  * The contents of this namespace are not visible to consumers of the library and the documentation is
  * only generated for developers.
  * \sa https://github.com/biocpp/biocpp-core/wiki/Documentation
  * \endif
  */
+
+namespace bio::alphabet::detail
+{}
+
+#ifndef BIOCPP_NO_NAMESPACE_ALIASES
+namespace bio
+{
+namespace a = alphabet;
+} // namespace bio
+#endif

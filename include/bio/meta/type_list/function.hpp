@@ -29,7 +29,7 @@ namespace bio::meta::detail
 /*!\brief Tests whether a given predicate evaluates to `true` for each type in a bio::meta::type_list.
  * \ingroup meta_type_list
  *
- * \tparam list_t A type list; must model bio::detail::template_specialisation_of a bio::meta::type_list
+ * \tparam list_t A type list; must model bio::meta::template_specialisation_of a bio::meta::type_list
  * \tparam unary_predicate_t The function type, like function pointers, functors and lambdas;
  *                           must model std::predicate expanded on each argument type wrapped in std::type_identity.
  *
@@ -76,7 +76,7 @@ template <typename type_list_t, typename unary_predicate_t>
 /*!\brief Applies a function element wise to all types of a type list.
  * \ingroup meta_type_list
  *
- * \tparam list_t A type list; must model bio::detail::template_specialisation_of a bio::meta::type_list.
+ * \tparam list_t A type list; must model bio::meta::template_specialisation_of a bio::meta::type_list.
  * \tparam unary_function_t The function type, like function pointers, functors and lambdas; must model
  *                          std::invocable on each type of the type list wrapped in std::type_identity.
  *

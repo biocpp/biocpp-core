@@ -22,18 +22,19 @@
 #include "../semi_alphabet_test_template.hpp"
 
 template <typename rna_type, typename structure_type>
-class alphabet_tuple_base_test<bio::structured_rna<rna_type, structure_type>> : public ::testing::Test
+class alphabet_tuple_base_test<bio::alphabet::structured_rna<rna_type, structure_type>> : public ::testing::Test
 {
 public:
-    using T = bio::structured_rna<rna_type, structure_type>;
+    using T = bio::alphabet::structured_rna<rna_type, structure_type>;
 
-    using dna_type = std::conditional_t<std::is_same_v<rna_type, bio::rna4>, bio::dna4, bio::dna5>;
+    using dna_type =
+      std::conditional_t<std::is_same_v<rna_type, bio::alphabet::rna4>, bio::alphabet::dna4, bio::alphabet::dna5>;
 
     T      instance      = T{value_1(), value_2()};
     T      zero_instance = T{decltype(value_1()){}, decltype(value_2()){}};
     size_t tup_size{2};
 
-    // bio::structured_rna<rna_type, structure_type>
+    // bio::alphabet::structured_rna<rna_type, structure_type>
     // -------------------------------------------------------------------------
     rna_type       value_1() { return rna_type{}.assign_char('G'); }
     dna_type       assignable_to_value_1() { return dna_type{}.assign_char('G'); }
@@ -54,7 +55,8 @@ public:
 };
 
 using structured_rna_types =
-  ::testing::Types<bio::structured_rna<bio::rna5, bio::dot_bracket3>, bio::structured_rna<bio::rna4, bio::wuss51>>;
+  ::testing::Types<bio::alphabet::structured_rna<bio::alphabet::rna5, bio::alphabet::dot_bracket3>,
+                   bio::alphabet::structured_rna<bio::alphabet::rna4, bio::alphabet::wuss51>>;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(structured_rna, alphabet, structured_rna_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(structured_rna, semi_alphabet_test, structured_rna_types, );

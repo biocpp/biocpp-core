@@ -23,23 +23,23 @@ namespace std
 /*!\brief Struct for hashing a range of characters.
  * \ingroup alphabet
  * \tparam urng_t The type of the range; Must model std::ranges::input_range and the reference type of the range of the
-                  range must model bio::semialphabet.
+                  range must model bio::alphabet::semialphabet.
  */
 template <ranges::input_range urng_t>
     //!\cond
-    requires bio::semialphabet<std::ranges::range_reference_t<urng_t>>
+    requires bio::alphabet::semialphabet<std::ranges::range_reference_t<urng_t>>
 //!\endcond
 struct hash<urng_t>
 {
     /*!\brief Compute the hash for a range of characters.
      * \tparam urng2_t  The same as `urng_t` (+- cvref); used to get forwarding reference in the interface.
      * \param[in] range The input range to process. Must model std::ranges::input_range and the reference type of the
-                        range of the range must model bio::semialphabet.
+                        range of the range must model bio::alphabet::semialphabet.
      * \returns size_t.
      */
     template <ranges::input_range urng2_t>
         //!\cond
-    requires bio::semialphabet<std::ranges::range_reference_t<urng2_t>>
+    requires bio::alphabet::semialphabet<std::ranges::range_reference_t<urng2_t>>
       //!\endcond
       size_t operator()(urng2_t && range) const noexcept
     {
@@ -48,7 +48,7 @@ struct hash<urng_t>
         hash<alphabet_t> h{};
         for (alphabet_t character : range)
         {
-            result *= bio::alphabet_size<alphabet_t>;
+            result *= bio::alphabet::alphabet_size<alphabet_t>;
             result += h(character);
         }
         return result;

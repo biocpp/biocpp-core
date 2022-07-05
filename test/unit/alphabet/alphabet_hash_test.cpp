@@ -17,7 +17,9 @@
 template <typename T>
 using alphabet_hashing = ::testing::Test;
 
-using test_types = ::testing::Types<bio::dna4, bio::qualified<bio::dna4, bio::phred42>, bio::gapped<bio::dna4>>;
+using test_types = ::testing::Types<bio::alphabet::dna4,
+                                    bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>,
+                                    bio::alphabet::gapped<bio::alphabet::dna4>>;
 
 TYPED_TEST_SUITE(alphabet_hashing, test_types, );
 
@@ -28,17 +30,17 @@ TYPED_TEST(alphabet_hashing, hash)
         std::hash<TypeParam> h{};
         if constexpr (std::same_as<TypeParam, char>)
         {
-            for (size_t i = 0; i < bio::alphabet_size<TypeParam> / 2; ++i)
+            for (size_t i = 0; i < bio::alphabet::alphabet_size<TypeParam> / 2; ++i)
             {
-                bio::assign_rank_to(i, t0);
+                bio::alphabet::assign_rank_to(i, t0);
                 ASSERT_EQ(h(t0), i);
             }
         }
         else
         {
-            for (size_t i = 0; i < bio::alphabet_size<TypeParam>; ++i)
+            for (size_t i = 0; i < bio::alphabet::alphabet_size<TypeParam>; ++i)
             {
-                bio::assign_rank_to(i, t0);
+                bio::alphabet::assign_rank_to(i, t0);
                 ASSERT_EQ(h(t0), i);
             }
         }
@@ -48,7 +50,7 @@ TYPED_TEST(alphabet_hashing, hash)
         text.reserve(4);
         for (size_t i = 0; i < 4; ++i)
         {
-            text.push_back(bio::assign_rank_to(0, TypeParam{}));
+            text.push_back(bio::alphabet::assign_rank_to(0, TypeParam{}));
         }
         std::hash<decltype(text)> h{};
         ASSERT_EQ(h(text), 0u);
@@ -57,23 +59,23 @@ TYPED_TEST(alphabet_hashing, hash)
         std::hash<TypeParam const> h{};
         if constexpr (std::same_as<TypeParam, char>)
         {
-            for (size_t i = 0; i < bio::alphabet_size<TypeParam> / 2; ++i)
+            for (size_t i = 0; i < bio::alphabet::alphabet_size<TypeParam> / 2; ++i)
             {
-                TypeParam const t0 = bio::assign_rank_to(i, TypeParam{});
+                TypeParam const t0 = bio::alphabet::assign_rank_to(i, TypeParam{});
                 ASSERT_EQ(h(t0), i);
             }
         }
         else
         {
-            for (size_t i = 0; i < bio::alphabet_size<TypeParam>; ++i)
+            for (size_t i = 0; i < bio::alphabet::alphabet_size<TypeParam>; ++i)
             {
-                TypeParam const t0 = bio::assign_rank_to(i, TypeParam{});
+                TypeParam const t0 = bio::alphabet::assign_rank_to(i, TypeParam{});
                 ASSERT_EQ(h(t0), i);
             }
         }
     }
     {
-        std::vector<TypeParam> const text(4, bio::assign_rank_to(0, TypeParam{}));
+        std::vector<TypeParam> const text(4, bio::alphabet::assign_rank_to(0, TypeParam{}));
         std::hash<decltype(text)>    h{};
         ASSERT_EQ(h(text), 0u);
     }

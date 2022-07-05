@@ -12,21 +12,21 @@
 #include <bio/alphabet/aminoacid/aa10murphy.hpp>
 #include <bio/alphabet/composite/semialphabet_any.hpp>
 
-using bio::operator""_aa10li;
-using bio::operator""_aa10murphy;
+using bio::alphabet::operator""_aa10li;
+using bio::alphabet::operator""_aa10murphy;
 
 TEST(semialphabet_any_test, initialise_from_alphabet)
 {
-    bio::semialphabet_any<10> letter0{'A'_aa10li};
-    bio::semialphabet_any<10> letter1{'B'_aa10li};
-    bio::semialphabet_any<10> letter2{'C'_aa10li};
-    bio::semialphabet_any<10> letter3{'F'_aa10li};
-    bio::semialphabet_any<10> letter4{'G'_aa10li};
-    bio::semialphabet_any<10> letter5{'H'_aa10li};
-    bio::semialphabet_any<10> letter6{'I'_aa10li};
-    bio::semialphabet_any<10> letter7{'J'_aa10li};
-    bio::semialphabet_any<10> letter8{'K'_aa10li};
-    bio::semialphabet_any<10> letter9{'P'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter0{'A'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter1{'B'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter2{'C'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter3{'F'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter4{'G'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter5{'H'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter6{'I'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter7{'J'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter8{'K'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter9{'P'_aa10li};
 
     EXPECT_EQ(letter0.to_rank(), 0);
     EXPECT_EQ(letter1.to_rank(), 1);
@@ -39,16 +39,16 @@ TEST(semialphabet_any_test, initialise_from_alphabet)
     EXPECT_EQ(letter8.to_rank(), 8);
     EXPECT_EQ(letter9.to_rank(), 9);
 
-    bio::aa10murphy new_letter0{'A'_aa10murphy};
-    bio::aa10murphy new_letter1{'B'_aa10murphy};
-    bio::aa10murphy new_letter2{'C'_aa10murphy};
-    bio::aa10murphy new_letter3{'F'_aa10murphy};
-    bio::aa10murphy new_letter4{'G'_aa10murphy};
-    bio::aa10murphy new_letter5{'H'_aa10murphy};
-    bio::aa10murphy new_letter6{'I'_aa10murphy};
-    bio::aa10murphy new_letter7{'K'_aa10murphy};
-    bio::aa10murphy new_letter8{'P'_aa10murphy};
-    bio::aa10murphy new_letter9{'S'_aa10murphy};
+    bio::alphabet::aa10murphy new_letter0{'A'_aa10murphy};
+    bio::alphabet::aa10murphy new_letter1{'B'_aa10murphy};
+    bio::alphabet::aa10murphy new_letter2{'C'_aa10murphy};
+    bio::alphabet::aa10murphy new_letter3{'F'_aa10murphy};
+    bio::alphabet::aa10murphy new_letter4{'G'_aa10murphy};
+    bio::alphabet::aa10murphy new_letter5{'H'_aa10murphy};
+    bio::alphabet::aa10murphy new_letter6{'I'_aa10murphy};
+    bio::alphabet::aa10murphy new_letter7{'K'_aa10murphy};
+    bio::alphabet::aa10murphy new_letter8{'P'_aa10murphy};
+    bio::alphabet::aa10murphy new_letter9{'S'_aa10murphy};
 
     EXPECT_EQ(letter0.to_rank(), new_letter0.to_rank());
     EXPECT_EQ(letter1.to_rank(), new_letter1.to_rank());
@@ -64,36 +64,36 @@ TEST(semialphabet_any_test, initialise_from_alphabet)
 
 TEST(semialphabet_any_test, convert_to_alphabet)
 {
-    bio::semialphabet_any<10> letter0{'A'_aa10li};
-    bio::semialphabet_any<10> letter1{'B'_aa10li};
-    bio::semialphabet_any<10> letter2{'C'_aa10li};
-    bio::semialphabet_any<10> letter3{'F'_aa10li};
-    bio::semialphabet_any<10> letter4{'G'_aa10li};
-    bio::semialphabet_any<10> letter5{'H'_aa10li};
-    bio::semialphabet_any<10> letter6{'I'_aa10li};
-    bio::semialphabet_any<10> letter7{'J'_aa10li};
-    bio::semialphabet_any<10> letter8{'K'_aa10li};
-    bio::semialphabet_any<10> letter9{'P'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter0{'A'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter1{'B'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter2{'C'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter3{'F'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter4{'G'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter5{'H'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter6{'I'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter7{'J'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter8{'K'_aa10li};
+    bio::alphabet::semialphabet_any<10> letter9{'P'_aa10li};
 
-    EXPECT_EQ(static_cast<bio::aa10li>(letter0), 'A'_aa10li);
-    EXPECT_EQ(static_cast<bio::aa10li>(letter1), 'B'_aa10li);
-    EXPECT_EQ(static_cast<bio::aa10li>(letter2), 'C'_aa10li);
-    EXPECT_EQ(static_cast<bio::aa10li>(letter3), 'F'_aa10li);
-    EXPECT_EQ(static_cast<bio::aa10li>(letter4), 'G'_aa10li);
-    EXPECT_EQ(static_cast<bio::aa10li>(letter5), 'H'_aa10li);
-    EXPECT_EQ(static_cast<bio::aa10li>(letter6), 'I'_aa10li);
-    EXPECT_EQ(static_cast<bio::aa10li>(letter7), 'J'_aa10li);
-    EXPECT_EQ(static_cast<bio::aa10li>(letter8), 'K'_aa10li);
-    EXPECT_EQ(static_cast<bio::aa10li>(letter9), 'P'_aa10li);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10li>(letter0), 'A'_aa10li);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10li>(letter1), 'B'_aa10li);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10li>(letter2), 'C'_aa10li);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10li>(letter3), 'F'_aa10li);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10li>(letter4), 'G'_aa10li);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10li>(letter5), 'H'_aa10li);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10li>(letter6), 'I'_aa10li);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10li>(letter7), 'J'_aa10li);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10li>(letter8), 'K'_aa10li);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10li>(letter9), 'P'_aa10li);
 
-    EXPECT_EQ(static_cast<bio::aa10murphy>(letter0), 'A'_aa10murphy);
-    EXPECT_EQ(static_cast<bio::aa10murphy>(letter1), 'B'_aa10murphy);
-    EXPECT_EQ(static_cast<bio::aa10murphy>(letter2), 'C'_aa10murphy);
-    EXPECT_EQ(static_cast<bio::aa10murphy>(letter3), 'F'_aa10murphy);
-    EXPECT_EQ(static_cast<bio::aa10murphy>(letter4), 'G'_aa10murphy);
-    EXPECT_EQ(static_cast<bio::aa10murphy>(letter5), 'H'_aa10murphy);
-    EXPECT_EQ(static_cast<bio::aa10murphy>(letter6), 'I'_aa10murphy);
-    EXPECT_EQ(static_cast<bio::aa10murphy>(letter7), 'K'_aa10murphy);
-    EXPECT_EQ(static_cast<bio::aa10murphy>(letter8), 'P'_aa10murphy);
-    EXPECT_EQ(static_cast<bio::aa10murphy>(letter9), 'S'_aa10murphy);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10murphy>(letter0), 'A'_aa10murphy);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10murphy>(letter1), 'B'_aa10murphy);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10murphy>(letter2), 'C'_aa10murphy);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10murphy>(letter3), 'F'_aa10murphy);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10murphy>(letter4), 'G'_aa10murphy);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10murphy>(letter5), 'H'_aa10murphy);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10murphy>(letter6), 'I'_aa10murphy);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10murphy>(letter7), 'K'_aa10murphy);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10murphy>(letter8), 'P'_aa10murphy);
+    EXPECT_EQ(static_cast<bio::alphabet::aa10murphy>(letter9), 'S'_aa10murphy);
 }

@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides bio::alphabet_tuple_base.
+ * \brief Provides bio::alphabet::alphabet_tuple_base.
  */
 
 #pragma once
@@ -26,17 +26,17 @@
 #include <bio/meta/type_list/type_list.hpp>
 #include <bio/meta/type_traits/template_inspection.hpp>
 
-namespace bio::detail
+namespace bio::alphabet::detail
 {
 
-//!\brief Prevents wrong instantiations of bio::alphabet_tuple_base's equality comparison operators.
+//!\brief Prevents wrong instantiations of bio::alphabet::alphabet_tuple_base's equality comparison operators.
 template <typename tuple_derived_t, typename rhs_t, typename... component_types>
 inline constexpr bool tuple_general_guard =
   (!std::same_as<rhs_t, tuple_derived_t>)&&(!std::same_as<rhs_t, alphabet_tuple_base<component_types...>>)&&(
     !std::is_base_of_v<tuple_derived_t, rhs_t>)&&(!(std::same_as<rhs_t, component_types> || ...)) &&
   (!meta::list_traits::contains<tuple_derived_t, recursive_required_types_t<rhs_t>>);
 
-//!\brief Prevents wrong instantiations of bio::alphabet_tuple_base's equality comparison operators.
+//!\brief Prevents wrong instantiations of bio::alphabet::alphabet_tuple_base's equality comparison operators.
 template <typename lhs_t, typename tuple_derived_t, typename rhs_t, typename... component_types>
 inline constexpr bool tuple_eq_guard =
   (meta::detail::instantiate_if_v<meta::detail::lazy<weakly_equality_comparable_with_trait, rhs_t, component_types>,
@@ -44,7 +44,7 @@ inline constexpr bool tuple_eq_guard =
                                     tuple_general_guard<tuple_derived_t, rhs_t, component_types...>> ||
    ...);
 
-//!\brief Prevents wrong instantiations of bio::alphabet_tuple_base's ordered comparison operators.
+//!\brief Prevents wrong instantiations of bio::alphabet::alphabet_tuple_base's ordered comparison operators.
 template <typename lhs_t, typename tuple_derived_t, typename rhs_t, typename... component_types>
 inline constexpr bool tuple_order_guard =
   (meta::detail::instantiate_if_v<meta::detail::lazy<weakly_ordered_with_trait, rhs_t, component_types>,
@@ -52,9 +52,9 @@ inline constexpr bool tuple_order_guard =
                                     tuple_general_guard<lhs_t, tuple_derived_t, rhs_t, component_types...>> ||
    ...);
 
-} // namespace bio::detail
+} // namespace bio::alphabet::detail
 
-namespace bio
+namespace bio::alphabet
 {
 
 // forwards
@@ -68,12 +68,12 @@ decltype(auto) get();
 
 /*!\brief The CRTP base for a combined alphabet that contains multiple values of different alphabets at the same time.
  * \ingroup alphabet_composite
- * \implements bio::writable_semialphabet
+ * \implements bio::alphabet::writable_semialphabet
  * \if DEV
- * \implements bio::detail::writable_constexpr_semialphabet
- * \tparam component_types Types of letters; must model bio::detail::writable_constexpr_semialphabet.
+ * \implements bio::alphabet::detail::writable_constexpr_semialphabet
+ * \tparam component_types Types of letters; must model bio::alphabet::detail::writable_constexpr_semialphabet.
  * \else
- * \tparam component_types Types of letters; must model std::regular and bio::writable_semialphabet and all
+ * \tparam component_types Types of letters; must model std::regular and bio::alphabet::writable_semialphabet and all
  * required function calls need to be callable in `constexpr`-context.
  * \endif
  *
@@ -84,7 +84,7 @@ decltype(auto) get();
  * Short description:
  *   * combines multiple alphabets as independent components, similar to a tuple;
  *   * models bio::meta::tuple_like, i.e. provides a get interface to its component_list;
- *   * is itself a bio::writable_semialphabet, but most derived types implement the full bio::writable_alphabet;
+ *   * is itself a bio::alphabet::writable_semialphabet, but most derived types implement the full bio::alphabet::writable_alphabet;
  *   * its alphabet size is the product of the individual sizes;
  *   * constructible, assignable and comparable with each component type and also all types that
  *     these are constructible/assignable/comparable with;
@@ -92,7 +92,7 @@ decltype(auto) get();
  *
  * \attention
  * This is a "pure base class", you cannot instantiate it, you can only inherit from it.
- * Most likely you are interested in using one of it's descendants like bio::qualified or bio::masked.
+ * Most likely you are interested in using one of it's descendants like bio::alphabet::qualified or bio::alphabet::masked.
  * \cond DEV
  * To make a derived class "complete", you should add at least the following:
  *   * .to_char() member
@@ -177,8 +177,8 @@ public:
      * \{
      * \attention Please do not directly use the CRTP base class. The functions
      *            are only public for the usage in their derived classes (e.g.
-     *            bio::qualified, bio::masked, bio::structure_rna and
-     *            bio::structure_aa).
+     *            bio::alphabet::qualified, bio::alphabet::masked, bio::alphabet::structure_rna and
+     *            bio::alphabet::structure_aa).
      */
     //!\brief Construction from initialiser-list.
     constexpr alphabet_tuple_base(component_types... components) noexcept
@@ -191,7 +191,7 @@ public:
      * \param  alph           The value of a component that should be assigned.
      *
      * Note: Since the alphabet_tuple_base is a CRTP base class, we show the working examples
-     * with one of its derived classes (bio::qualified).
+     * with one of its derived classes (bio::alphabet::qualified).
      * \include test/snippet/alphabet/composite/alphabet_tuple_base_value_construction.cpp
      *
      */
@@ -205,7 +205,7 @@ public:
     }
 
     /*!\brief Construction via a value of a subtype that is assignable to one of the components.
-     * \tparam indirect_component_type Type that models bio::weakly_assignable_from for
+     * \tparam indirect_component_type Type that models bio::alphabet::weakly_assignable_from for
      *                                 one of the component types.
      * \param  alph                    The value that should be assigned.
      *
@@ -214,7 +214,7 @@ public:
      * fit for assignment.
      *
      * Note: Since the alphabet_tuple_base is a CRTP base class, we show the working examples
-     * with one of its derived classes (bio::qualified).
+     * with one of its derived classes (bio::alphabet::qualified).
      * \include test/snippet/alphabet/composite/alphabet_tuple_base_subtype_construction.cpp
      *
      */
@@ -261,7 +261,7 @@ public:
      * \param  alph           The value of a component that should be assigned.
      *
      * Note: Since the alphabet_tuple_base is a CRTP base class, we show the working examples
-     * with one of its derived classes (bio::qualified).
+     * with one of its derived classes (bio::alphabet::qualified).
      * \include test/snippet/alphabet/composite/alphabet_tuple_base_value_assignment.cpp
      *
      */
@@ -276,12 +276,12 @@ public:
     }
 
     /*!\brief Assignment via a value of a subtype that is assignable to one of the components.
-     * \tparam indirect_component_type Type that models bio::weakly_assignable_from for
+     * \tparam indirect_component_type Type that models bio::alphabet::weakly_assignable_from for
      *                                 one of the component types.
      * \param  alph                    The value of a component that should be assigned.
      *
      * Note: Since the alphabet_tuple_base is a CRTP base class, we show the working examples
-     * with one of its derived classes (bio::qualified).
+     * with one of its derived classes (bio::alphabet::qualified).
      * \include test/snippet/alphabet/composite/alphabet_tuple_base_subtype_assignment.cpp
      *
      */
@@ -357,7 +357,7 @@ public:
         using t = meta::list_traits::at<index, component_list>;
         t val{};
 
-        bio::assign_rank_to(l.to_component_rank<index>(), val);
+        bio::alphabet::assign_rank_to(l.to_component_rank<index>(), val);
 
         return component_proxy<t, index>{val, l};
     }
@@ -388,7 +388,7 @@ public:
 
         using t = meta::list_traits::at<index, component_list>;
 
-        return bio::assign_rank_to(l.to_component_rank<index>(), t{});
+        return bio::alphabet::assign_rank_to(l.to_component_rank<index>(), t{});
     }
 
     /*!\copybrief get
@@ -590,7 +590,7 @@ private:
         else
         {
             return (to_rank() / cummulative_alph_sizes[index]) %
-                   bio::alphabet_size<meta::detail::pack_traits::at<index, component_types...>>;
+                   bio::alphabet::alphabet_size<meta::detail::pack_traits::at<index, component_types...>>;
         }
     }
 
@@ -612,7 +612,7 @@ private:
         using reverse_list_t = decltype(meta::list_traits::detail::reverse(component_list{}));
         bio::meta::detail::for_each<reverse_list_t>([&](auto alphabet_type_identity) constexpr {
             using alphabet_t = typename decltype(alphabet_type_identity)::type;
-            ret[count]       = static_cast<rank_type>(bio::alphabet_size<alphabet_t> * ret[count - 1]);
+            ret[count]       = static_cast<rank_type>(bio::alphabet::alphabet_size<alphabet_t> * ret[count - 1]);
             ++count;
         });
 
@@ -632,7 +632,7 @@ private:
     static constexpr rank_type rank_sum_helper(component_types... components,
                                                std::index_sequence<idx...> const &) noexcept
     {
-        return ((bio::to_rank(components) * cummulative_alph_sizes[idx]) + ...);
+        return ((bio::alphabet::to_rank(components) * cummulative_alph_sizes[idx]) + ...);
     }
 
     //!\brief Conversion table from rank to the i-th component's rank.
@@ -648,7 +648,7 @@ private:
 
         if constexpr (alphabet_size < 1024)
         {
-            std::array<size_t, alphabet_size> alph_sizes{bio::alphabet_size<component_types>...};
+            std::array<size_t, alphabet_size> alph_sizes{bio::alphabet::alphabet_size<component_types>...};
 
             for (size_t i = 0; i < meta::list_traits::size<component_list>; ++i)
                 for (size_t j = 0; j < static_cast<size_t>(alphabet_size); ++j)
@@ -660,7 +660,7 @@ private:
     ();
 };
 
-/*!\brief Specialisation of bio::alphabet_proxy that updates the rank of the alphabet_tuple_base.
+/*!\brief Specialisation of bio::alphabet::alphabet_proxy that updates the rank of the alphabet_tuple_base.
  * \tparam alphabet_type The type of the emulated component.
  * \tparam index         The index of the emulated component.
  *
@@ -677,7 +677,7 @@ template <typename derived_type, typename... component_types>
 private:
     //!\brief The base type.
     using base_t = alphabet_proxy<component_proxy<alphabet_type, index>, alphabet_type>;
-    //!\brief Befriend the base type so it can call our bio::alphabet_tuple_base::component_proxy::on_update().
+    //!\brief Befriend the base type so it can call our bio::alphabet::alphabet_tuple_base::component_proxy::on_update().
     friend base_t;
 
     //!\brief Store a pointer to the parent object so we can update it.
@@ -708,7 +708,7 @@ public:
     //!\}
 
     /*!\name Comparison operators (proxy type against parent)
-        * \brief Comparison against the bio::alphabet_tuple_base that this proxy originates from (necessary
+        * \brief Comparison against the bio::alphabet::alphabet_tuple_base that this proxy originates from (necessary
         *        to prevent recursive template instantiation in the tuple).
         * \{
         */
@@ -721,67 +721,67 @@ public:
         return get<index>(lhs) == static_cast<alphabet_type>(rhs);
     }
 
-    //!\copydoc bio::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
+    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
     friend constexpr bool operator==(component_proxy<alphabet_type, index> const lhs, derived_type const rhs) noexcept
     {
         return rhs == lhs;
     }
 
-    //!\copydoc bio::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
+    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
     friend constexpr bool operator!=(derived_type const lhs, component_proxy const rhs) noexcept
     {
         return get<index>(lhs) != static_cast<alphabet_type>(rhs);
     }
 
-    //!\copydoc bio::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
+    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
     friend constexpr bool operator!=(component_proxy<alphabet_type, index> const lhs, derived_type const rhs) noexcept
     {
         return rhs != lhs;
     }
 
-    //!\copydoc bio::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
+    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
     friend constexpr bool operator<(derived_type const lhs, component_proxy const rhs) noexcept
     {
         return get<index>(lhs) < static_cast<alphabet_type>(rhs);
     }
 
-    //!\copydoc bio::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
+    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
     friend constexpr bool operator<(component_proxy<alphabet_type, index> const lhs, derived_type const rhs) noexcept
     {
         return rhs > lhs;
     }
 
-    //!\copydoc bio::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
+    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
     friend constexpr bool operator<=(derived_type const lhs, component_proxy const rhs) noexcept
     {
         return get<index>(lhs) <= static_cast<alphabet_type>(rhs);
     }
 
-    //!\copydoc bio::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
+    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
     friend constexpr bool operator<=(component_proxy<alphabet_type, index> const lhs, derived_type const rhs) noexcept
     {
         return rhs >= lhs;
     }
 
-    //!\copydoc bio::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
+    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
     friend constexpr bool operator>(derived_type const lhs, component_proxy const rhs) noexcept
     {
         return get<index>(lhs) > static_cast<alphabet_type>(rhs);
     }
 
-    //!\copydoc bio::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
+    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
     friend constexpr bool operator>(component_proxy<alphabet_type, index> const lhs, derived_type const rhs) noexcept
     {
         return rhs < lhs;
     }
 
-    //!\copydoc bio::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
+    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
     friend constexpr bool operator>=(derived_type const lhs, component_proxy const rhs) noexcept
     {
         return get<index>(lhs) >= static_cast<alphabet_type>(rhs);
     }
 
-    //!\copydoc bio::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
+    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
     friend constexpr bool operator>=(component_proxy<alphabet_type, index> const lhs, derived_type const rhs) noexcept
     {
         return rhs <= lhs;
@@ -789,7 +789,7 @@ public:
     //!\}
 };
 
-} // namespace bio
+} // namespace bio::alphabet
 
 namespace std
 {
@@ -800,7 +800,7 @@ namespace std
  * \see [std::tuple_element](https://en.cppreference.com/w/cpp/utility/tuple/tuple_element)
  *
  */
-template <std::size_t i, bio::detail::alphabet_tuple_like tuple_t>
+template <std::size_t i, bio::alphabet::detail::alphabet_tuple_like tuple_t>
 struct tuple_element<i, tuple_t>
 {
     //!\brief Element type.
@@ -813,7 +813,7 @@ struct tuple_element<i, tuple_t>
  * \see std::tuple_size_v
  *
  */
-template <bio::detail::alphabet_tuple_like tuple_t>
+template <bio::alphabet::detail::alphabet_tuple_like tuple_t>
 struct tuple_size<tuple_t> :
   public std::integral_constant<size_t, bio::meta::list_traits::size<typename tuple_t::biocpp_required_types>>
 {};

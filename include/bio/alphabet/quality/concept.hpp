@@ -20,20 +20,20 @@
 // to_phred()
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void to_phred(args_t...) = delete;
 
-//!\brief Functor definition for bio::to_phred.
+//!\brief Functor definition for bio::alphabet::to_phred.
 struct to_phred_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_phred(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, to_phred(v))                                     // ADL
-    BIOCPP_CPO_IMPL(0, v.to_phred())                                    // member
+    BIOCPP_CPO_IMPL(2, bio::alphabet::custom::alphabet<decltype(v)>::to_phred(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, to_phred(v))                                               // ADL
+    BIOCPP_CPO_IMPL(0, v.to_phred())                                              // member
 
 public:
     //!\brief Operator definition.
@@ -44,7 +44,7 @@ public:
     constexpr auto operator()(alph_t const chr) const noexcept
     {
         static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, chr)),
-                      "Only overloads that are marked noexcept are picked up by bio::to_phred().");
+                      "Only overloads that are marked noexcept are picked up by bio::alphabet::to_phred().");
         static_assert(std::constructible_from<size_t, decltype(impl(meta::detail::priority_tag<2>{}, chr))>,
                       "The return type of your to_phred() implementation must be convertible to size_t.");
 
@@ -52,9 +52,9 @@ public:
     }
 };
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects (Quality)
@@ -62,7 +62,7 @@ namespace bio
  */
 
 /*!\brief The public getter function for the phred representation of a quality score.
- * \tparam your_type The type of alphabet. Must model the bio::quality_alphabet.
+ * \tparam your_type The type of alphabet. Must model the bio::alphabet::quality_alphabet.
  * \param  chr       The quality value to convert into the phred score.
  * \returns the phred representation of a quality score.
  * \ingroup quality
@@ -73,7 +73,7 @@ namespace bio
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   1. A static member function `to_phred(your_type const a)` of the class `bio::custom::alphabet<your_type>`.
+ *   1. A static member function `to_phred(your_type const a)` of the class `bio::alphabet::custom::alphabet<your_type>`.
  *   2. A free function `to_phred(your_type const a)` in the namespace of your type (or as `friend`).
  *   3. A member function called `to_phred()`.
  *
@@ -90,49 +90,51 @@ namespace bio
 inline constexpr auto to_phred = detail::adl_only::to_phred_fn{};
 //!\}
 
-/*!\brief The `phred_type` of the alphabet; defined as the return type of bio::to_phred.
+/*!\brief The `phred_type` of the alphabet; defined as the return type of bio::alphabet::to_phred.
  * \ingroup quality
  */
 template <typename alphabet_type>
     //!\cond
-    requires(requires { {bio::to_phred(std::declval<alphabet_type>())}; })
+    requires(requires { {bio::alphabet::to_phred(std::declval<alphabet_type>())}; })
 //!\endcond
-using alphabet_phred_t = decltype(bio::to_phred(std::declval<alphabet_type>()));
+using alphabet_phred_t = decltype(bio::alphabet::to_phred(std::declval<alphabet_type>()));
 
-} // namespace bio
+} // namespace bio::alphabet
 
 // ============================================================================
 // assign_phred_to()
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void assign_phred_to(args_t...) = delete;
 
-//!\brief Functor definition for bio::assign_phred_to.
+//!\brief Functor definition for bio::alphabet::assign_phred_to.
 //!\ingroup quality
 struct assign_phred_to_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_phred_to(args..., v))) // explicit customisation
-    BIOCPP_CPO_IMPL(1, (assign_phred_to(args..., v)))                                     // ADL
-    BIOCPP_CPO_IMPL(0, (v.assign_phred(args...)))                                         // member
+    BIOCPP_CPO_IMPL(2,
+                    (bio::alphabet::custom::alphabet<decltype(v)>::assign_phred_to(args...,
+                                                                                   v))) // explicit customisation
+    BIOCPP_CPO_IMPL(1, (assign_phred_to(args..., v)))                                   // ADL
+    BIOCPP_CPO_IMPL(0, (v.assign_phred(args...)))                                       // member
 
 public:
     //!\brief Operator definition for lvalues.
     template <typename alph_t>
         //!\cond
-        requires(requires(bio::alphabet_phred_t<alph_t> const p, alph_t & a) {
+        requires(requires(bio::alphabet::alphabet_phred_t<alph_t> const p, alph_t & a) {
             {impl(meta::detail::priority_tag<2>{}, a, p)};
         })
     //!\endcond
-    constexpr alph_t & operator()(bio::alphabet_phred_t<alph_t> const p, alph_t & a) const noexcept
+    constexpr alph_t & operator()(bio::alphabet::alphabet_phred_t<alph_t> const p, alph_t & a) const noexcept
     {
         static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, a, p)),
-                      "Only overloads that are marked noexcept are picked up by bio::assign_phred_to().");
+                      "Only overloads that are marked noexcept are picked up by bio::alphabet::assign_phred_to().");
         static_assert(std::same_as<alph_t &, decltype(impl(meta::detail::priority_tag<2>{}, a, p))>,
                       "The return type of your assign_phred_to() implementation must be 'alph_t &'.");
 
@@ -142,19 +144,19 @@ public:
     //!\brief Operator definition for rvalues.
     template <typename alph_t>
         //!\cond
-        requires(requires(bio::alphabet_phred_t<alph_t> const p, alph_t & a) {
+        requires(requires(bio::alphabet::alphabet_phred_t<alph_t> const p, alph_t & a) {
             {impl(meta::detail::priority_tag<2>{}, a, p)};
         } && (!std::is_lvalue_reference_v<alph_t>))
     //!\endcond
-    constexpr alph_t operator()(bio::alphabet_phred_t<alph_t> const p, alph_t && a) const noexcept
+    constexpr alph_t operator()(bio::alphabet::alphabet_phred_t<alph_t> const p, alph_t && a) const noexcept
     {
         return (*this)(p, a); // call above function but return by value
     }
 };
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects (Quality)
@@ -162,8 +164,8 @@ namespace bio
  */
 
 /*!\brief Assign a phred score to a quality alphabet object.
- * \tparam your_type The type of the target object. Must model the bio::quality_alphabet.
- * \param  chr       The phred score being assigned; must be of the bio::alphabet_phred_t of the target object.
+ * \tparam your_type The type of the target object. Must model the bio::alphabet::quality_alphabet.
+ * \param  chr       The phred score being assigned; must be of the bio::alphabet::alphabet_phred_t of the target object.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
  * \ingroup quality
  * \details
@@ -173,7 +175,7 @@ namespace bio
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
  *   1. A static member function `assign_phred_to(phred_type const chr, your_type & a)`
- *      of the class `bio::custom::alphabet<your_type>`.
+ *      of the class `bio::alphabet::custom::alphabet<your_type>`.
  *   2. A free function `assign_phred_to(phred_type const chr, your_type & a)` in the namespace of your type
  *      (or as `friend`).
  *   3. A member function called `assign_phred(phred_type const chr)` (not `assign_phred_to`).
@@ -192,31 +194,31 @@ namespace bio
 inline constexpr auto assign_phred_to = detail::adl_only::assign_phred_to_fn{};
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet
 
 // ============================================================================
-// bio::quality_alphabet
+// bio::alphabet::quality_alphabet
 // ============================================================================
 
-namespace bio
+namespace bio::alphabet
 {
 
-/*!\interface bio::quality_alphabet <>
- * \extends bio::alphabet
+/*!\interface bio::alphabet::quality_alphabet <>
+ * \extends bio::alphabet::alphabet
  * \brief A concept that indicates whether an alphabet represents quality scores.
  * \ingroup quality
  *
  * \details
  *
- * In addition to the requirements for bio::alphabet, the
+ * In addition to the requirements for bio::alphabet::alphabet, the
  * quality_alphabet introduces a requirement for conversion functions from and to
  * a Phred score.
  * ### Concepts and doxygen
  *
  * ### Requirements
  *
- *   1. `t` shall model bio::alphabet
- *   2. bio::to_phred needs to be defined for objects of type `t`
+ *   1. `t` shall model bio::alphabet::alphabet
+ *   2. bio::alphabet::to_phred needs to be defined for objects of type `t`
  *
  * See the documentation pages for the respective requirements.
  *
@@ -232,29 +234,29 @@ namespace bio
 template <typename t>
 concept quality_alphabet = alphabet<t> && requires(t qual)
 {
-    {bio::to_phred(qual)};
+    {bio::alphabet::to_phred(qual)};
 };
 //!\endcond
 
 // ============================================================================
-// bio::writable_quality_alphabet
+// bio::alphabet::writable_quality_alphabet
 // ============================================================================
 
-/*!\interface bio::writable_quality_alphabet <>
- * \extends bio::alphabet
+/*!\interface bio::alphabet::writable_quality_alphabet <>
+ * \extends bio::alphabet::alphabet
  * \brief A concept that indicates whether a writable alphabet represents quality scores.
  * \ingroup quality
  *
  * \details
  *
- * In addition to the requirements for bio::writable_alphabet, the bio::writable_quality_alphabet
- * introduces the requirements of bio::quality_alphabet.
+ * In addition to the requirements for bio::alphabet::writable_alphabet, the bio::alphabet::writable_quality_alphabet
+ * introduces the requirements of bio::alphabet::quality_alphabet.
  *
  * ### Requirements
  *
- *   1. `t` shall model bio::writable_alphabet
- *   2. `t` shall model bio::quality_alphabet
- *   3. bio::assign_phred_to needs to be defined for objects of type `t`
+ *   1. `t` shall model bio::alphabet::writable_alphabet
+ *   2. `t` shall model bio::alphabet::quality_alphabet
+ *   3. bio::alphabet::assign_phred_to needs to be defined for objects of type `t`
  *
  * See the documentation pages for the respective requirements.
  *
@@ -270,8 +272,8 @@ concept quality_alphabet = alphabet<t> && requires(t qual)
 template <typename t>
 concept writable_quality_alphabet = writable_alphabet<t> && quality_alphabet<t> && requires(t v, alphabet_phred_t<t> c)
 {
-    {bio::assign_phred_to(c, v)};
+    {bio::alphabet::assign_phred_to(c, v)};
 };
 //!\endcond
 
-} // namespace bio
+} // namespace bio::alphabet

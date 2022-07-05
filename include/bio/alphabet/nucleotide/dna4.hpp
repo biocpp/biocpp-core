@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides bio::dna4, container aliases and string literals.
+ * \brief Provides bio::alphabet::dna4, container aliases and string literals.
  */
 
 #pragma once
@@ -21,16 +21,16 @@
 // dna4
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
 
 class rna4;
 
 /*!\brief The four letter DNA alphabet of A,C,G,T.
  * \ingroup nucleotide
- * \implements bio::nucleotide_alphabet
- * \implements bio::writable_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::nucleotide_alphabet
+ * \implements bio::alphabet::writable_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -41,7 +41,7 @@ class rna4;
  *
  * Like most alphabets, this alphabet cannot be initialised directly from its character representation.
  * Instead initialise/assign from the character literal or use the
- * function bio::dna4::assign_char().
+ * function bio::alphabet::dna4::assign_char().
  *
  * \include test/snippet/alphabet/nucleotide/dna4.cpp
  */
@@ -51,12 +51,12 @@ private:
     //!\brief The base class.
     using base_t = nucleotide_base<dna4, 4>;
 
-    //!\brief Befriend bio::nucleotide_base.
+    //!\brief Befriend bio::alphabet::nucleotide_base.
     friend base_t;
-    //!\cond \brief Befriend bio::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet::alphabet_base.
     friend base_t::base_t;
     //!\endcond
-    //!\brief Befriend bio::rna4 so it can copy #char_to_rank.
+    //!\brief Befriend bio::alphabet::rna4 so it can copy #char_to_rank.
     friend rna4;
 
 public:
@@ -136,7 +136,7 @@ protected:
 // containers
 // ------------------------------------------------------------------
 
-//!\brief Alias for an std::vector of bio::dna4.
+//!\brief Alias for an std::vector of bio::alphabet::dna4.
 //!\relates dna4
 using dna4_vector = std::vector<dna4>;
 
@@ -148,18 +148,18 @@ using dna4_vector = std::vector<dna4>;
  * \{
  */
 
-/*!\brief The bio::dna4 char literal.
- * \relates bio::dna4
- * \returns bio::dna4
+/*!\brief The bio::alphabet::dna4 char literal.
+ * \relates bio::alphabet::dna4
+ * \returns bio::alphabet::dna4
  */
 constexpr dna4 operator""_dna4(char const c) noexcept
 {
     return dna4{}.assign_char(c);
 }
 
-/*!\brief The bio::dna4 string literal.
- * \relates bio::dna4
- * \returns bio::dna4_vector
+/*!\brief The bio::alphabet::dna4 string literal.
+ * \relates bio::alphabet::dna4
+ * \returns bio::alphabet::dna4_vector
  *
  * You can use this string literal to easily assign to dna4_vector:
  *
@@ -189,4 +189,4 @@ constexpr std::array<dna4, dna4::alphabet_size> dna4::complement_table{
   'A'_dna4  // complement of 'T'_dna4
 };
 
-} // namespace bio
+} // namespace bio::alphabet

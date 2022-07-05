@@ -1,7 +1,7 @@
 #include <vector>                               // std::vector
 #include <forward_list>                         // std::forward_list
-#include <bio/meta/type_traits/lazy.hpp>     // bio::lazy and bio::lazy_conditional_t
-#include <bio/ranges/type_traits.hpp>    // bio::size_type_t
+#include <bio/meta/type_traits/lazy.hpp>     // bio::alphabet::lazy and bio::alphabet::lazy_conditional_t
+#include <bio/ranges/type_traits.hpp>    // bio::alphabet::size_type_t
 #include <ranges>                    // std::ranges::input_range
 
 template <std::ranges::input_range rng_t>

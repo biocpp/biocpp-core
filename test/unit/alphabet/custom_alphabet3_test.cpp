@@ -16,7 +16,7 @@
 // Tests the capabilities of the explicit alphabet customisation
 
 //![third_party_type]
-#include <bio/alphabet/concept.hpp> // for bio::alphabet
+#include <bio/alphabet/concept.hpp> // for bio::alphabet::alphabet
 #include <cstddef>                  // for size_t
 
 // this is from some other library:
@@ -36,7 +36,7 @@ enum class third_party_type
 
 // this is in your code (no namespace):
 template <>
-struct bio::custom::alphabet<third_party_ns::third_party_type>
+struct bio::alphabet::custom::alphabet<third_party_ns::third_party_type>
 {
     static constexpr size_t alphabet_size = 3;
 
@@ -93,7 +93,7 @@ struct bio::custom::alphabet<third_party_ns::third_party_type>
     }
 };
 
-static_assert(bio::alphabet<third_party_ns::third_party_type>);
+static_assert(bio::alphabet::alphabet<third_party_ns::third_party_type>);
 //![third_party_type]
 
 INSTANTIATE_TYPED_TEST_SUITE_P(third_party_type, alphabet, third_party_ns::third_party_type, );

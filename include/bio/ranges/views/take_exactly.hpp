@@ -83,7 +83,7 @@ inline constexpr auto take_exactly = detail::take_fn<true, false>{};
 
 /*!\brief A view adaptor that returns the first `size` elements from the underlying range and also exposes size
  *        information; throws if the underlying range is smaller than `size`.
- * \throws bio::unexpected_end_of_input If the underlying range is smaller than `size`.
+ * \throws bio::alphabet::unexpected_end_of_input If the underlying range is smaller than `size`.
  * \ingroup views
  *
  * \copydetails bio::ranges::views::take_exactly

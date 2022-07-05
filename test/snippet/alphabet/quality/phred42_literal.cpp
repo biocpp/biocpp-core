@@ -4,13 +4,13 @@
 
 int main()
 {
-    using bio::operator""_phred42;
+    using bio::alphabet::operator""_phred42;
 
     // directly assign to a std::vector<phred42> using a string literal
-    std::vector<bio::phred42> qual_vec = "###!"_phred42;
+    std::vector<bio::alphabet::phred42> qual_vec = "###!"_phred42;
 
     // This is the same as a sequence of char literals:
-    std::vector<bio::phred42> qual_vec2 = {'#'_phred42, '#'_phred42, '#'_phred42, '!'_phred42};
+    std::vector<bio::alphabet::phred42> qual_vec2 = {'#'_phred42, '#'_phred42, '#'_phred42, '!'_phred42};
 
     fmt::print("{}\n", std::ranges::equal(qual_vec, qual_vec2)); // prints 1 (true)
 }

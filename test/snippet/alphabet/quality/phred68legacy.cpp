@@ -3,7 +3,7 @@
 
 int main()
 {
-    bio::phred68legacy phred;
+    bio::alphabet::phred68legacy phred;
     phred.assign_phred(-2);
     fmt::print("{}\n", (int) phred.to_phred()); // -2
     fmt::print("{}\n", phred.to_char());        // '>'

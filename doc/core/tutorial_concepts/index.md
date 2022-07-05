@@ -170,8 +170,8 @@ Write a small program, similar to the one above with the following "skeleton":
 ```cpp
 // which includes?
 
-using bio::operator""_dna5;
-using bio::operator""_aa27;
+using bio::alphabet::operator""_dna5;
+using bio::alphabet::operator""_aa27;
 
 // Add one or more `void print` function template(s) here //
 
@@ -179,7 +179,7 @@ int main()
 {
     auto d = 'A'_dna5;
     auto a = 'L'_aa27;
-    auto g = bio::gap{};
+    auto g = bio::alphabet::gap{};
 
     print(d);
     print(a);
@@ -188,7 +188,7 @@ int main()
 ```
 
 The `print` function (template) should print for every object `v` passed to it the result of `to_char(v)` and it should
-be constrained to only accepts types that model bio::alphabet.
+be constrained to only accepts types that model bio::alphabet::alphabet.
 Try calling `print` with a different type, e.g. `int` to make sure that it does.
 \endassignment
 \solution
@@ -229,11 +229,13 @@ In some parts of the documentation concepts are called "interfaces", please don'
 And the "verbose syntax" introduced above is not visible at all in the automatically generated documentation.
 That's why it's important to read the detailed documentation section where all requirements are documented.
 
-Have a look at the documentation of bio::argument_parser::add_positional_option().
+TODO(bio) the following needs to be updated
+
+Have a look at the documentation of bio::alphabet::argument_parser::add_positional_option().
 It has two template parameters, one seems unconstrained (`typename` in the signature) and one is constrained
 (`validator` in the signature).
 But in fact both are constrained as the detailed documentation reveals.
 
-Now, follow the link to bio::validator. We will check in the next section whether you understand the
+Now, follow the link to bio::alphabet::validator. We will check in the next section whether you understand the
 documentation for the concept.
 

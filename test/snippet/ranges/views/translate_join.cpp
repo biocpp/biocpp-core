@@ -6,12 +6,12 @@
 #include <bio/ranges/views/char_to.hpp>
 #include <bio/ranges/views/translate_join.hpp>
 
-using bio::operator""_dna4;
+using bio::alphabet::operator""_dna4;
 
 int main()
 {
     // Input range needs to be two-dimensional
-    std::vector<std::vector<bio::dna4> > vec{"ACGTACGTACGTA"_dna4, "TCGAGAGCTTTAGC"_dna4};
+    std::vector<std::vector<bio::alphabet::dna4> > vec{"ACGTACGTACGTA"_dna4, "TCGAGAGCTTTAGC"_dna4};
 
     // Translation with default parameters
     auto v1 = vec | bio::views::translate_join;
@@ -27,7 +27,7 @@ int main()
     fmt::print("{}\n", third_frame_second_seq); // ESFS
 
     // Translation with custom translation frame
-    auto v2 = vec | bio::views::translate_join(bio::translation_frames::FWD_FRAME_0);
+    auto v2 = vec | bio::views::translate_join(bio::alphabet::translation_frames::FWD_FRAME_0);
     fmt::print("{}\n", v2); // [TYVR,SRAL]
 
     return 0;

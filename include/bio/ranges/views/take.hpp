@@ -90,7 +90,7 @@ public:
     /*!\brief Construct from another View.
      * \param[in] _urange The underlying range.
      * \param[in] _size   The desired size (after which to stop returning elements).
-     * \throws std::runtime_error If `exactly && or_throw && bio::sized_range<urng_t>`.
+     * \throws std::runtime_error If `exactly && or_throw && bio::alphabet::sized_range<urng_t>`.
      */
     constexpr view_take(urng_t _urange, size_t const _size) : urange{std::move(_urange)}, target_size{_size}
     {
@@ -116,7 +116,7 @@ public:
      * \tparam rng_t      Type of the passed range; `urng_t` must be constructible from this.
      * \param[in] _urange The underlying range.
      * \param[in] _size   The desired size (after which to stop returning elements).
-     * \throws std::runtime_error If `exactly && or_throw && bio::sized_range<urng_t>`.
+     * \throws std::runtime_error If `exactly && or_throw && bio::alphabet::sized_range<urng_t>`.
      */
     template <std::ranges::viewable_range rng_t>
         //!\cond

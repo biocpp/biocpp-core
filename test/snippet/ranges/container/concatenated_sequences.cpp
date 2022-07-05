@@ -6,12 +6,12 @@
 
 int main()
 {
-    using bio::operator""_dna4;
+    using bio::alphabet::operator""_dna4;
 
-    bio::ranges::concatenated_sequences<bio::dna4_vector> concat1{"ACGT"_dna4, "GAGGA"_dna4};
+    bio::ranges::concatenated_sequences<bio::alphabet::dna4_vector> concat1{"ACGT"_dna4, "GAGGA"_dna4};
     fmt::print("{}\n", concat1[0]); // "ACGT"
 
-    std::vector<bio::dna4_vector> concat2{"ACTA"_dna4, "AGGA"_dna4};
+    std::vector<bio::alphabet::dna4_vector> concat2{"ACTA"_dna4, "AGGA"_dna4};
 
     concat1 = concat2;               // you can assign from other ranges
 
@@ -20,7 +20,7 @@ int main()
     fmt::print("{}\n", concat1[0]); // "ATTA"
 
     // if you know that you will be adding ten vectors of length ten:
-    std::vector<bio::dna4> vector_of_length10{"ACGTACGTAC"_dna4};
+    std::vector<bio::alphabet::dna4> vector_of_length10{"ACGTACGTAC"_dna4};
 
     concat1.reserve(10);
     concat1.concat_reserve(10 * vector_of_length10.size());

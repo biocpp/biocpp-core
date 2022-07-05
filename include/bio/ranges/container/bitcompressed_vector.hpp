@@ -31,14 +31,14 @@ namespace bio::ranges
 {
 
 /*!\brief A space-optimised version of std::vector that compresses multiple letters into a single byte.
- * \tparam alphabet_type The value type of the container, must satisfy bio::writable_semialphabet and std::regular.
+ * \tparam alphabet_type The value type of the container, must satisfy bio::alphabet::writable_semialphabet and std::regular.
  * \implements bio::ranges::detail::reservible_container
  * \implements bio::cerealisable
  * \ingroup container
  *
  * This class template behaves just like std::vector<alphabet_type> but has an internal representation where
- * multiple values are packed into a single byte/word to save space, e.g. bitcompressed_vector<bio::dna4> uses a
- * quarter of of the memory that std::vector<bio::dna4> uses, because a single bio::dna4 letter can be represented
+ * multiple values are packed into a single byte/word to save space, e.g. bitcompressed_vector<bio::alphabet::dna4> uses a
+ * quarter of of the memory that std::vector<bio::alphabet::dna4> uses, because a single bio::alphabet::dna4 letter can be represented
  * in two bits (instead of 8 which is the lower bound for a single object in C++).
  *
  * The disadvantages are slightly slower operations and unsafety towards parallel writes to adjacent positions
@@ -58,7 +58,7 @@ namespace bio::ranges
  * threads at the same time **is not safe** and will lead to corruption if both values are stored in the same
  * 64bit-block, i.e. if the distance between `i` and `j` is smaller than 64 / alphabet_size.
  */
-template <writable_semialphabet alphabet_type>
+template <alphabet::writable_semialphabet alphabet_type>
     //!\cond
     requires std::regular<alphabet_type>
 //!\endcond
@@ -66,7 +66,7 @@ class bitcompressed_vector
 {
 private:
     //!\brief The number of bits needed to represent a single letter of the alphabet_type.
-    static constexpr size_t bits_per_letter = std::bit_width(alphabet_size<alphabet_type>);
+    static constexpr size_t bits_per_letter = std::bit_width(alphabet::alphabet_size<alphabet_type>);
 
     static_assert(bits_per_letter <= 64, "alphabet must be representable in at most 64bit.");
 
@@ -78,11 +78,11 @@ private:
 
     //!\brief Proxy data type returned by bio::ranges::bitcompressed_vector as reference to element unless the alphabet_type
     //!       is uint8_t, uint16_t, uint32_t or uint64_t (in which case a regular & is returned).
-    class reference_proxy_type : public alphabet_proxy<reference_proxy_type, alphabet_type>
+    class reference_proxy_type : public alphabet::alphabet_proxy<reference_proxy_type, alphabet_type>
     {
     private:
         //!\brief The base type.
-        using base_t = alphabet_proxy<reference_proxy_type, alphabet_type>;
+        using base_t = alphabet::alphabet_proxy<reference_proxy_type, alphabet_type>;
         //!\brief Befriend the base type so it can call our #on_update().
         friend base_t;
 
@@ -116,7 +116,7 @@ private:
         //!\}
     };
 
-    static_assert(writable_alphabet<reference_proxy_type>);
+    static_assert(alphabet::writable_alphabet<reference_proxy_type>);
     //!\cond
     //NOTE(h-2): it is entirely unclear to me why we need this
     template <typename t>
@@ -192,7 +192,7 @@ public:
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
-    bitcompressed_vector(size_type const count, value_type const value) : data(count, to_rank(value)) {}
+    bitcompressed_vector(size_type const count, value_type const value) : data(count, alphabet::to_rank(value)) {}
 
     /*!\brief Construct from pair of iterators.
      * \tparam begin_iterator_type Must model std::forward_iterator and
@@ -439,7 +439,7 @@ public:
     const_reference operator[](size_type const i) const noexcept
     {
         assert(i < size());
-        return assign_rank_to(data[i], const_reference{});
+        return alphabet::assign_rank_to(data[i], const_reference{});
     }
 
     /*!\brief Return the first element. Calling front on an empty container is undefined.
@@ -665,7 +665,7 @@ public:
     {
         auto const pos_as_num = std::distance(cbegin(), pos); // we want to insert BEFORE this position
 
-        data.insert(data.begin() + pos_as_num, count, to_rank(value));
+        data.insert(data.begin() + pos_as_num, count, alphabet::to_rank(value));
 
         return begin() + pos_as_num;
     }
@@ -801,7 +801,7 @@ public:
      * Basic exception guarantee, i.e. guaranteed not to leak, but container may contain invalid data after exception is
      * thrown.
      */
-    void push_back(value_type const value) { data.push_back(to_rank(value)); }
+    void push_back(value_type const value) { data.push_back(alphabet::to_rank(value)); }
 
     /*!\brief Removes the last element of the container.
      *
@@ -864,7 +864,7 @@ public:
     void resize(size_type const count, value_type const value)
     {
         assert(count < max_size());
-        data.resize(count, to_rank(value));
+        data.resize(count, alphabet::to_rank(value));
     }
 
     /*!\brief Swap contents with another instance.

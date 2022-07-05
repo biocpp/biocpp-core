@@ -199,8 +199,8 @@ using range_innermost_value_t = typename range_innermost_value<t>::type;
 // range_dimension_v
 // ----------------------------------------------------------------------------
 
-/*!\brief Returns the number of times you can call `bio::value_type_t` recursively on t (type trait).
- * \tparam t The type to be queried; must resolve `bio::value_type_t` at least once.
+/*!\brief Returns the number of times you can call `std::ranges::value_type_t` recursively on t (type trait).
+ * \tparam t The type to be queried; must resolve `std::ranges::value_type_t` at least once.
  *
  * \details
  *

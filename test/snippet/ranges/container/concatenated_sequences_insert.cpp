@@ -4,9 +4,9 @@
 
 int main()
 {
-    using bio::operator""_dna4;
+    using bio::alphabet::operator""_dna4;
 
-    bio::ranges::concatenated_sequences<bio::dna4_vector> foobar;
+    bio::ranges::concatenated_sequences<bio::alphabet::dna4_vector> foobar;
     foobar.insert(foobar.end(), "ACGT"_dna4);
     fmt::print("{}\n", foobar[0]); // "ACGT"
 }

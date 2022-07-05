@@ -3,9 +3,9 @@
 
 int main()
 {
-    using bio::operator""_dna4;
+    using bio::alphabet::operator""_dna4;
 
-    bio::dna4_vector vec{"ACGGTC"_dna4};
+    bio::alphabet::dna4_vector vec{"ACGGTC"_dna4};
 
     // these are synonymous:
     auto vec_view1 = vec | bio::views::complement;

@@ -8,16 +8,16 @@
 
 #pragma once
 
-#include <bio/meta/platform.hpp>
+#include <bio/alphabet/biocpp.hpp>
 
 /*!\cond DEV
  * \file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides bio::detail::to_lower and bio::detail::to_upper.
+ * \brief Provides bio::alphabet::detail::to_lower and bio::alphabet::detail::to_upper.
  * \endcond
  */
 
-namespace bio::detail
+namespace bio::alphabet::detail
 {
 
 //!\brief True if the character is within 'a' ... 'z'.
@@ -52,4 +52,4 @@ constexpr char to_upper(char const c)
     return c & 0b0101'1111;
 }
 
-} // namespace bio::detail
+} // namespace bio::alphabet::detail

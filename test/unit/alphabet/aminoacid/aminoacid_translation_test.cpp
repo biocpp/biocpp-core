@@ -13,30 +13,31 @@
 #include <bio/alphabet/nucleotide/dna15.hpp>
 #include <bio/alphabet/nucleotide/dna4.hpp>
 
-using bio::operator""_aa27;
-using bio::operator""_dna4;
-using bio::operator""_dna15;
+using bio::alphabet::operator""_aa27;
+using bio::alphabet::operator""_dna4;
+using bio::alphabet::operator""_dna15;
 
 TEST(translate_triplets, dna4)
 {
-    bio::dna4 n1{'C'_dna4};
-    bio::dna4 n2{'T'_dna4};
-    bio::dna4 n3{'A'_dna4};
-    bio::aa27 c{'L'_aa27};
+    bio::alphabet::dna4 n1{'C'_dna4};
+    bio::alphabet::dna4 n2{'T'_dna4};
+    bio::alphabet::dna4 n3{'A'_dna4};
+    bio::alphabet::aa27 c{'L'_aa27};
 
-    bio::aa27 t1{bio::translate_triplet<bio::genetic_code::CANONICAL>(n1, n2, n3)};
+    bio::alphabet::aa27 t1{bio::alphabet::translate_triplet<bio::alphabet::genetic_code::CANONICAL>(n1, n2, n3)};
 
     EXPECT_EQ(t1, c);
 }
 
 TEST(translate_triplets, dna15)
 {
-    bio::dna15 n1{'C'_dna15};
-    bio::dna15 n2{'T'_dna15};
-    bio::dna15 n3{'A'_dna15};
-    bio::aa27  c{'L'_aa27};
+    bio::alphabet::dna15 n1{'C'_dna15};
+    bio::alphabet::dna15 n2{'T'_dna15};
+    bio::alphabet::dna15 n3{'A'_dna15};
+    bio::alphabet::aa27  c{'L'_aa27};
 
-    bio::aa27 t1{bio::translate_triplet<bio::genetic_code::CANONICAL, bio::dna15>(n1, n2, n3)};
+    bio::alphabet::aa27 t1{
+      bio::alphabet::translate_triplet<bio::alphabet::genetic_code::CANONICAL, bio::alphabet::dna15>(n1, n2, n3)};
 
     EXPECT_EQ(t1, c);
 }

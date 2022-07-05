@@ -3,9 +3,9 @@
 
 int main()
 {
-    using bio::operator""_dna4;
+    using bio::alphabet::operator""_dna4;
 
-    bio::dna4 my_letter{'C'_dna4};
+    bio::alphabet::dna4 my_letter{'C'_dna4};
 
     my_letter.assign_char('F'); // characters other than IUPAC characters are implicitly converted to A.
     fmt::print("{}", my_letter); // prints "F"

@@ -4,8 +4,8 @@
 
 int main()
 {
-    using bio::operator""_rna4;
+    using bio::alphabet::operator""_rna4;
 
-    bio::alphabet_variant<bio::dna4, bio::gap> letter1{'C'_rna4};
-    bio::alphabet_variant<bio::dna4, bio::gap> letter2 = 'C'_rna4;
+    bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::gap> letter1{'C'_rna4};
+    bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::gap> letter2 = 'C'_rna4;
 }

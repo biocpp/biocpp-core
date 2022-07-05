@@ -13,19 +13,21 @@
 
 #pragma once
 
+#include <type_traits>
+
+#include <bio/alphabet/biocpp.hpp>
 #include <bio/alphabet/exception.hpp>
 #include <bio/meta/concept/cereal.hpp>
 #include <bio/meta/concept/core_language.hpp>
 #include <bio/meta/detail/customisation_point.hpp>
 #include <bio/meta/detail/type_inspection.hpp>
 #include <bio/meta/type_traits/basic.hpp>
-#include <type_traits>
 
 // ============================================================================
 // forwards
 // ============================================================================
 
-namespace bio::custom
+namespace bio::alphabet::custom
 {
 
 /*!\brief A type that can be specialised to provide customisation point implementations so that third party types
@@ -62,26 +64,26 @@ struct alphabet<t const &> : alphabet<t>
 {};
 //!\endcond
 
-} // namespace bio::custom
+} // namespace bio::alphabet::custom
 
 // ============================================================================
 // to_rank()
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void to_rank(args_t...) = delete;
 
-//!\brief Functor definition for bio::to_rank.
+//!\brief Functor definition for bio::alphabet::to_rank.
 struct to_rank_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_rank(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, to_rank(v))                                     // ADL
-    BIOCPP_CPO_IMPL(0, v.to_rank())                                    // member
+    BIOCPP_CPO_IMPL(2, bio::alphabet::custom::alphabet<decltype(v)>::to_rank(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, to_rank(v))                                               // ADL
+    BIOCPP_CPO_IMPL(0, v.to_rank())                                              // member
 
 public:
     //!\brief Operator definition.
@@ -96,9 +98,9 @@ public:
     constexpr auto operator()(alph_t const a) const noexcept { return impl(meta::detail::priority_tag<2>{}, a); }
 };
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects
@@ -116,7 +118,7 @@ namespace bio
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   1. A static member function `to_rank(your_type const a)` of the class `bio::custom::alphabet<your_type>`.
+ *   1. A static member function `to_rank(your_type const a)` of the class `bio::alphabet::custom::alphabet<your_type>`.
  *   2. A free function `to_rank(your_type const a)` in the namespace of your type (or as `friend`).
  *   3. A member function called `to_rank()`.
  *
@@ -130,7 +132,7 @@ namespace bio
  * \include test/snippet/alphabet/to_rank.cpp
  *
  * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see bio::alphabet.
+ * see bio::alphabet::alphabet.
  *
  * ### Customisation point
  *
@@ -140,55 +142,57 @@ namespace bio
 inline constexpr auto to_rank = detail::adl_only::to_rank_fn{};
 //!\}
 
-//!\brief The `rank_type` of the semi-alphabet; defined as the return type of bio::to_rank.
+//!\brief The `rank_type` of the semi-alphabet; defined as the return type of bio::alphabet::to_rank.
 //!\ingroup alphabet
 template <typename semi_alphabet_type>
     //!\cond
-    requires(requires { {bio::to_rank(std::declval<semi_alphabet_type>())}; })
+    requires(requires { {bio::alphabet::to_rank(std::declval<semi_alphabet_type>())}; })
 //!\endcond
-using alphabet_rank_t = decltype(bio::to_rank(std::declval<semi_alphabet_type>()));
+using alphabet_rank_t = decltype(bio::alphabet::to_rank(std::declval<semi_alphabet_type>()));
 
-} // namespace bio
+} // namespace bio::alphabet
 
 // ============================================================================
 // assign_rank_to()
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void assign_rank_to(args_t...) = delete;
 
-//!\brief Functor definition for bio::assign_rank_to.
+//!\brief Functor definition for bio::alphabet::assign_rank_to.
 //!\ingroup alphabet
 struct assign_rank_to_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_rank_to(args..., v))) // explicit customisation
-    BIOCPP_CPO_IMPL(1, (assign_rank_to(args..., v)))                                     // ADL
-    BIOCPP_CPO_IMPL(0, (v.assign_rank(args...)))                                         // member
+    BIOCPP_CPO_IMPL(2,
+                    (bio::alphabet::custom::alphabet<decltype(v)>::assign_rank_to(args...,
+                                                                                  v))) // explicit customisation
+    BIOCPP_CPO_IMPL(1, (assign_rank_to(args..., v)))                                   // ADL
+    BIOCPP_CPO_IMPL(0, (v.assign_rank(args...)))                                       // member
 
 public:
     //!\brief Operator definition.
     template <typename alph_t>
         //!\cond
-        requires(requires(bio::alphabet_rank_t<alph_t> const r, alph_t & a) {
+        requires(requires(bio::alphabet::alphabet_rank_t<alph_t> const r, alph_t & a) {
             {impl(meta::detail::priority_tag<2>{}, a, r)};
             requires noexcept(impl(meta::detail::priority_tag<2>{}, a, r));
             requires std::same_as<alph_t &, decltype(impl(meta::detail::priority_tag<2>{}, a, r))>;
         })
     //!\endcond
-    constexpr alph_t operator()(bio::alphabet_rank_t<alph_t> const r, alph_t && a) const noexcept
+    constexpr alph_t operator()(bio::alphabet::alphabet_rank_t<alph_t> const r, alph_t && a) const noexcept
     {
         return impl(meta::detail::priority_tag<2>{}, a, r);
     }
 };
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects
@@ -197,7 +201,7 @@ namespace bio
 
 /*!\brief Assign a rank to an alphabet object.
  * \tparam your_type Type of the target object.
- * \param chr  The rank being assigned; must be of the bio::alphabet_rank_t of the target object.
+ * \param chr  The rank being assigned; must be of the bio::alphabet::alphabet_rank_t of the target object.
  * \param alph The target object.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
  * \ingroup alphabet
@@ -209,7 +213,7 @@ namespace bio
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
  *   1. A static member function `assign_rank_to(rank_type const chr, your_type & a)` of the class
- *      `bio::custom::alphabet<your_type>`.
+ *      `bio::alphabet::custom::alphabet<your_type>`.
  *   2. A free function `assign_rank_to(rank_type const chr, your_type & a)` in the namespace of your
  *      type (or as `friend`).
  *   3. A member function called `assign_rank(rank_type const chr)` (not `assign_rank_to`).
@@ -225,7 +229,7 @@ namespace bio
  * \include test/snippet/alphabet/assign_rank_to.cpp
  *
  * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see bio::alphabet.
+ * see bio::alphabet::alphabet.
  *
  * ### Customisation point
  *
@@ -234,26 +238,26 @@ namespace bio
  */
 inline constexpr auto assign_rank_to = detail::adl_only::assign_rank_to_fn{};
 //!\}
-} // namespace bio
+} // namespace bio::alphabet
 
 // ============================================================================
 // to_char()
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void to_char(args_t...) = delete;
 
-//!\brief Functor definition for bio::to_char.
+//!\brief Functor definition for bio::alphabet::to_char.
 struct to_char_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::to_char(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, to_char(v))                                     // ADL
-    BIOCPP_CPO_IMPL(0, v.to_char())                                    // member
+    BIOCPP_CPO_IMPL(2, bio::alphabet::custom::alphabet<decltype(v)>::to_char(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, to_char(v))                                               // ADL
+    BIOCPP_CPO_IMPL(0, v.to_char())                                              // member
 
 public:
     //!\brief Operator definition.
@@ -271,9 +275,9 @@ public:
     }
 };
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects
@@ -292,7 +296,7 @@ namespace bio
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   2. A static member function `to_char(your_type const a)` of the class `bio::custom::alphabet<your_type>`.
+ *   2. A static member function `to_char(your_type const a)` of the class `bio::alphabet::custom::alphabet<your_type>`.
  *   1. A free function `to_char(your_type const a)` in the namespace of your type (or as `friend`).
  *   3. A member function called `to_char()`.
  *
@@ -306,7 +310,7 @@ namespace bio
  * \include test/snippet/alphabet/to_char.cpp
  *
  * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see bio::alphabet.
+ * see bio::alphabet::alphabet.
  *
  * ### Customisation point
  *
@@ -316,55 +320,57 @@ namespace bio
 inline constexpr auto to_char = detail::adl_only::to_char_fn{};
 //!\}
 
-//!\brief The `char_type` of the alphabet; defined as the return type of bio::to_char.
+//!\brief The `char_type` of the alphabet; defined as the return type of bio::alphabet::to_char.
 //!\ingroup alphabet
 template <typename alphabet_type>
     //!\cond
-    requires(requires(alphabet_type const a) { {bio::to_char(a)}; })
+    requires(requires(alphabet_type const a) { {bio::alphabet::to_char(a)}; })
 //!\endcond
-using alphabet_char_t = decltype(bio::to_char(std::declval<alphabet_type const>()));
+using alphabet_char_t = decltype(bio::alphabet::to_char(std::declval<alphabet_type const>()));
 
-} // namespace bio
+} // namespace bio::alphabet
 
 // ============================================================================
 // assign_char_to()
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void assign_char_to(args_t...) = delete;
 
-//!\brief Functor definition for bio::assign_char_to.
+//!\brief Functor definition for bio::alphabet::assign_char_to.
 //!\ingroup alphabet
 struct assign_char_to_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, (bio::custom::alphabet<decltype(v)>::assign_char_to(args..., v))) // explicit customisation
-    BIOCPP_CPO_IMPL(1, (assign_char_to(args..., v)))                                     // ADL
-    BIOCPP_CPO_IMPL(0, (v.assign_char(args...)))                                         // member
+    BIOCPP_CPO_IMPL(2,
+                    (bio::alphabet::custom::alphabet<decltype(v)>::assign_char_to(args...,
+                                                                                  v))) // explicit customisation
+    BIOCPP_CPO_IMPL(1, (assign_char_to(args..., v)))                                   // ADL
+    BIOCPP_CPO_IMPL(0, (v.assign_char(args...)))                                       // member
 
 public:
     //!\brief Operator definition.
     template <typename alph_t>
         //!\cond
-        requires(requires(bio::alphabet_char_t<alph_t> const r, alph_t & a) {
+        requires(requires(bio::alphabet::alphabet_char_t<alph_t> const r, alph_t & a) {
             {impl(meta::detail::priority_tag<2>{}, a, r)};
             requires noexcept(impl(meta::detail::priority_tag<2>{}, a, r));
             requires std::same_as<alph_t &, decltype(impl(meta::detail::priority_tag<2>{}, a, r))>;
         })
     //!\endcond
-    constexpr alph_t operator()(bio::alphabet_char_t<alph_t> const r, alph_t && a) const noexcept
+    constexpr alph_t operator()(bio::alphabet::alphabet_char_t<alph_t> const r, alph_t && a) const noexcept
     {
         return impl(meta::detail::priority_tag<2>{}, a, r);
     }
 };
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects
@@ -373,8 +379,8 @@ namespace bio
 
 /*!\brief Assign a character to an alphabet object.
  * \tparam your_type Type of the target object.
- * \param chr  The character being assigned; must be of the bio::alphabet_char_t of the target object.
- * \param alph The target object; its type must model bio::alphabet.
+ * \param chr  The character being assigned; must be of the bio::alphabet::alphabet_char_t of the target object.
+ * \param alph The target object; its type must model bio::alphabet::alphabet.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
  * \ingroup alphabet
  *
@@ -385,7 +391,7 @@ namespace bio
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
  *   1. A static member function `assign_char_to(char_type const chr, your_type & a)`
- *      of the class `bio::custom::alphabet<your_type>`.
+ *      of the class `bio::alphabet::custom::alphabet<your_type>`.
  *   2. A free function `assign_char_to(char_type const chr, your_type & a)` in the namespace of your
  *      type (or as `friend`).
  *   3. A member function called `assign_char(char_type const chr)` (not `assign_char_to`).
@@ -401,7 +407,7 @@ namespace bio
  * \include test/snippet/alphabet/assign_char_to.cpp
  *
  * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see bio::alphabet.
+ * see bio::alphabet::alphabet.
  *
  * ### Customisation point
  *
@@ -410,20 +416,20 @@ namespace bio
  */
 inline constexpr auto assign_char_to = detail::adl_only::assign_char_to_fn{};
 //!\}
-} // namespace bio
+} // namespace bio::alphabet
 
 // ============================================================================
 // char_is_valid_for()
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void char_is_valid_for(args_t...) = delete;
 
-/*!\brief Functor definition for bio::char_is_valid_for.
+/*!\brief Functor definition for bio::alphabet::char_is_valid_for.
  * \tparam alph_t   The alphabet type being queried.
  * \ingroup alphabet
  */
@@ -436,11 +442,12 @@ public:
                                         std::remove_cvref_t<alph_t>,
                                         std::type_identity<alph_t>>;
 
-    BIOCPP_CPO_IMPL(3,
-                    (meta::deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::char_is_valid(v))) // expl. cst.
-    BIOCPP_CPO_IMPL(2, (char_is_valid_for(v, s_alph_t{})))                                                 // ADL
+    BIOCPP_CPO_IMPL(
+      3,
+      (meta::deferred_type_t<bio::alphabet::custom::alphabet<alph_t>, decltype(v)>::char_is_valid(v))) // expl. cst.
+    BIOCPP_CPO_IMPL(2, (char_is_valid_for(v, s_alph_t{})))                                             // ADL
     BIOCPP_CPO_IMPL(1, (meta::deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::char_is_valid(v))) // member
-    BIOCPP_CPO_IMPL(0, (bio::to_char(bio::assign_char_to(v, s_alph_t{})) == v))                             // fallback
+    BIOCPP_CPO_IMPL(0, (bio::alphabet::to_char(bio::alphabet::assign_char_to(v, s_alph_t{})) == v))         // fallback
 
 public:
     //!\brief Operator definition.
@@ -460,20 +467,20 @@ public:
     }
 };
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects
  * \{
  */
 
-/*!\brief Returns whether a character is in the valid set of a bio::alphabet (usually implies a bijective mapping
+/*!\brief Returns whether a character is in the valid set of a bio::alphabet::alphabet (usually implies a bijective mapping
  *        to an alphabet value).
  * \tparam your_type The alphabet type being queried.
- * \param  chr       The character being checked; must be convertible to `bio::alphabet_char_t<your_type>`.
- * \param  alph      The target object; its type must model bio::alphabet.
+ * \param  chr       The character being checked; must be convertible to `bio::alphabet::alphabet_char_t<your_type>`.
+ * \param  alph      The target object; its type must model bio::alphabet::alphabet.
  * \returns `true` or `false`.
  * \ingroup alphabet
  *
@@ -483,7 +490,7 @@ namespace bio
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   1. A static member function `char_is_valid(char_type const chr)` of the class `bio::custom::alphabet<your_type>`.
+ *   1. A static member function `char_is_valid(char_type const chr)` of the class `bio::alphabet::custom::alphabet<your_type>`.
  *   2. A free function `char_is_valid_for(char_type const chr, your_type const &)` in the namespace of your
  *      type (or as `friend`).
  *   3. A `static` member function called `char_is_valid(char_type)` (not `char_is_valid_for`).
@@ -494,7 +501,7 @@ namespace bio
  * [argument-dependent lookup](https://en.cppreference.com/w/cpp/language/adl).
  *
  * An alphabet type *may* provide one of the above. If none is provided, this function will declare every character
- * `c` as valid for whom it holds that `bio::to_char(bio::assign_char_to(c, alph_t{})) == c`, i.e. converting
+ * `c` as valid for whom it holds that `bio::alphabet::to_char(bio::alphabet::assign_char_to(c, alph_t{})) == c`, i.e. converting
  * back and forth results in the same value.
  *
  * *Note* that if the alphabet type with cvref removed is not std::is_nothrow_default_constructible, this function
@@ -517,60 +524,60 @@ template <typename alph_t>
 //!\endcond
 inline constexpr auto char_is_valid_for = detail::adl_only::char_is_valid_for_fn<alph_t>{};
 //!\}
-} // namespace bio
+} // namespace bio::alphabet
 
 // ============================================================================
 // assign_char_strictly_to()
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
-//!\brief Functor definition for bio::assign_char_strictly_to.
+//!\brief Functor definition for bio::alphabet::assign_char_strictly_to.
 //!\ingroup alphabet
 struct assign_char_strictly_to_fn
 {
     //!\brief Operator overload for lvalues.
     template <typename alph_t>
         //!\cond
-        requires(requires(alph_t a, bio::alphabet_char_t<alph_t> r) {
+        requires(requires(alph_t a, bio::alphabet::alphabet_char_t<alph_t> r) {
             {
-                bio::assign_char_to(r, a)
+                bio::alphabet::assign_char_to(r, a)
                 } -> std::convertible_to<alph_t>;
             {
-                bio::char_is_valid_for<alph_t>(r)
+                bio::alphabet::char_is_valid_for<alph_t>(r)
                 } -> std::same_as<bool>;
         })
     //!\endcond
-    decltype(auto) operator()(bio::alphabet_char_t<alph_t> const r, alph_t & a) const
+    decltype(auto) operator()(bio::alphabet::alphabet_char_t<alph_t> const r, alph_t & a) const
     {
-        if (!bio::char_is_valid_for<alph_t>(r))
-            throw bio::invalid_char_assignment{meta::detail::type_name_as_string<alph_t>, r};
+        if (!bio::alphabet::char_is_valid_for<alph_t>(r))
+            throw bio::alphabet::invalid_char_assignment{meta::detail::type_name_as_string<alph_t>, r};
 
-        return bio::assign_char_to(r, a);
+        return bio::alphabet::assign_char_to(r, a);
     }
 
     //!\brief Operator overload for rvalues.
     template <typename alph_t>
         //!\cond
-        requires(requires(alph_t a, bio::alphabet_char_t<alph_t> r) {
+        requires(requires(alph_t a, bio::alphabet::alphabet_char_t<alph_t> r) {
             {
-                bio::assign_char_to(r, a)
+                bio::alphabet::assign_char_to(r, a)
                 } -> std::convertible_to<alph_t>;
             {
-                bio::char_is_valid_for<alph_t>(r)
+                bio::alphabet::char_is_valid_for<alph_t>(r)
                 } -> std::same_as<bool>;
         })
     //!\endcond
-    auto operator()(bio::alphabet_char_t<alph_t> const r, alph_t && a) const
+    auto operator()(bio::alphabet::alphabet_char_t<alph_t> const r, alph_t && a) const
     {
         return operator()(r, a); // call above function but return by value
     }
 };
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects
@@ -579,10 +586,10 @@ namespace bio
 
 /*!\brief Assign a character to an alphabet object, throw if the character is not valid.
  * \tparam your_type Type of the target object.
- * \param chr  The character being assigned; must be of the bio::alphabet_char_t of the target object.
- * \param alph The target object; its type must model bio::alphabet.
+ * \param chr  The character being assigned; must be of the bio::alphabet::alphabet_char_t of the target object.
+ * \param alph The target object; its type must model bio::alphabet::alphabet.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
- * \throws bio::invalid_char_assignment If `bio::char_is_valid_for<decltype(alph)>(chr) == false`.
+ * \throws bio::alphabet::invalid_char_assignment If `bio::alphabet::char_is_valid_for<decltype(alph)>(chr) == false`.
  * \ingroup alphabet
 
  * \details
@@ -590,7 +597,7 @@ namespace bio
  * This is a function object. Invoke it with the parameters specified above.
  *
  * Note that this is not a customisation point and it cannot be "overloaded".
- * It simply invokes bio::char_is_valid_for and bio::assign_char_to.
+ * It simply invokes bio::alphabet::char_is_valid_for and bio::alphabet::assign_char_to.
  *
  * ### Example
  *
@@ -599,20 +606,20 @@ namespace bio
  */
 inline constexpr auto assign_char_strictly_to = detail::adl_only::assign_char_strictly_to_fn{};
 //!\}
-} // namespace bio
+} // namespace bio::alphabet
 
 // ============================================================================
 // alphabet_size
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void alphabet_size(args_t...) = delete;
 
-/*!\brief Functor definition used indirectly by for bio::detail::alphabet_size.
+/*!\brief Functor definition used indirectly by for bio::alphabet::alphabet_size.
  * \tparam alph_t   The type being queried.
  * \ingroup alphabet
  */
@@ -626,9 +633,11 @@ public:
                                         std::remove_cvref_t<alph_t>,
                                         std::type_identity<alph_t>>;
 
-    BIOCPP_CPO_IMPL(2, (meta::deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::alphabet_size)) // expl. cst.
-    BIOCPP_CPO_IMPL(1, (alphabet_size(v)))                                                                 // ADL
-    BIOCPP_CPO_IMPL(0, (meta::deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::alphabet_size))   // member
+    BIOCPP_CPO_IMPL(
+      2,
+      (meta::deferred_type_t<bio::alphabet::custom::alphabet<alph_t>, decltype(v)>::alphabet_size))      // expl. cst.
+    BIOCPP_CPO_IMPL(1, (alphabet_size(v)))                                                               // ADL
+    BIOCPP_CPO_IMPL(0, (meta::deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::alphabet_size)) // member
 
 public:
     //!\brief Operator definition.
@@ -646,7 +655,7 @@ public:
         // The following cannot be added to the list of constraints, because it is not properly deferred
         // for incomplete types which leads to breakage.
         static_assert(BIOCPP_IS_CONSTEXPR(impl(meta::detail::priority_tag<2>{}, s_alph_t{})),
-                      "Only overloads that are marked constexpr are picked up by bio::alphabet_size.");
+                      "Only overloads that are marked constexpr are picked up by bio::alphabet::alphabet_size.");
         return impl(meta::detail::priority_tag<2>{}, s_alph_t{});
     }
 };
@@ -658,9 +667,9 @@ template <typename alph_t>
 inline constexpr auto alphabet_size_obj = alphabet_size_fn<alph_t>{};
 //!\endcond
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief A type trait that holds the size of a (semi-)alphabet.
@@ -673,7 +682,7 @@ namespace bio
  *
  * It is only defined for types that provide one of the following (checked in this order):
  *
- *   1. A `static constexpr` data member of `bio::custom::alphabet<your_type>` called `alphabet_size`.
+ *   1. A `static constexpr` data member of `bio::alphabet::custom::alphabet<your_type>` called `alphabet_size`.
  *   2. A free function `alphabet_size(your_type const &)` in the namespace of your type (or as `friend`) that
  *      returns the size.
  *   3. A `static constexpr` data member of `your_type` called `alphabet_size`.
@@ -694,7 +703,7 @@ namespace bio
  * \include test/snippet/alphabet/alphabet_size.cpp
  *
  * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see bio::alphabet.
+ * see bio::alphabet::alphabet.
  *
  * ### Customisation point
  *
@@ -713,8 +722,8 @@ inline constexpr auto alphabet_size = detail::adl_only::alphabet_size_obj<alph_t
 // semialphabet
 // ============================================================================
 
-/*!\interface bio::semialphabet <>
- * \brief The basis for bio::alphabet, but requires only rank interface (not char).
+/*!\interface bio::alphabet::semialphabet <>
+ * \brief The basis for bio::alphabet::alphabet, but requires only rank interface (not char).
  * \extends std::totally_ordered
  * \extends std::copy_constructible
  * \ingroup alphabet
@@ -729,11 +738,11 @@ inline constexpr auto alphabet_size = detail::adl_only::alphabet_size_obj<alph_t
  *     * `t` shall model std::copy_constructible and be std::is_nothrow_copy_constructible
  *     * move construction shall not be more efficient than copy construction; this implies no dynamic memory
  *       (de-)allocation [this is a semantic requirement that cannot be checked]
- *   3. bio::alphabet_size needs to be defined for `t`
- *   4. bio::to_rank needs to be defined for objects of type `t`
+ *   3. bio::alphabet::alphabet_size needs to be defined for `t`
+ *   4. bio::alphabet::to_rank needs to be defined for objects of type `t`
  *
  * See the documentation pages for the respective requirements.
- * The implications of 2. are that you can always take function arguments of types that model bio::semialphabet
+ * The implications of 2. are that you can always take function arguments of types that model bio::alphabet::semialphabet
  * by value.
  *
  * It is highly recommended that non-reference types that model this concept, also model:
@@ -757,8 +766,8 @@ template <typename t>
 concept semialphabet = std::totally_ordered<t> && std::copy_constructible<t> &&
   std::is_nothrow_copy_constructible_v<t> && requires(t v)
 {
-    {bio::alphabet_size<t>};
-    {bio::to_rank(v)};
+    {bio::alphabet::alphabet_size<t>};
+    {bio::alphabet::to_rank(v)};
 };
 //!\endcond
 
@@ -766,12 +775,12 @@ concept semialphabet = std::totally_ordered<t> && std::copy_constructible<t> &&
 // writable_semialphabet
 // ============================================================================
 
-/*!\interface bio::writable_semialphabet <>
- * \brief A refinement of bio::semialphabet that adds assignability.
- * \extends bio::semialphabet
+/*!\interface bio::alphabet::writable_semialphabet <>
+ * \brief A refinement of bio::alphabet::semialphabet that adds assignability.
+ * \extends bio::alphabet::semialphabet
  * \ingroup alphabet
  *
- * This concept refines bio::semialphabet and adds the requirement to be able to change the value by
+ * This concept refines bio::alphabet::semialphabet and adds the requirement to be able to change the value by
  * assigning a value of the rank representation.
  *
  * For a detailed overview of how the different alphabet concepts are related, see
@@ -779,8 +788,8 @@ concept semialphabet = std::totally_ordered<t> && std::copy_constructible<t> &&
  *
  * ### Requirements
  *
- *   1. `t` shall model bio::semialphabet
- *   2. bio::assign_rank_to needs to be defined for objects of type `t`
+ *   1. `t` shall model bio::alphabet::semialphabet
+ *   2. bio::alphabet::assign_rank_to needs to be defined for objects of type `t`
  *
  * See the documentation pages for the respective requirements.
  *
@@ -802,7 +811,7 @@ concept semialphabet = std::totally_ordered<t> && std::copy_constructible<t> &&
 template <typename t>
 concept writable_semialphabet = semialphabet<t> && requires(t v, alphabet_rank_t<t> r)
 {
-    {bio::assign_rank_to(r, v)};
+    {bio::alphabet::assign_rank_to(r, v)};
 };
 //!\endcond
 
@@ -810,9 +819,9 @@ concept writable_semialphabet = semialphabet<t> && requires(t v, alphabet_rank_t
 // alphabet
 // ============================================================================
 
-/*!\interface bio::alphabet <>
+/*!\interface bio::alphabet::alphabet <>
  * \brief The generic alphabet concept that covers most data types used in ranges.
- * \extends bio::semialphabet
+ * \extends bio::alphabet::semialphabet
  * \ingroup alphabet
  *
  * This is the core alphabet concept that many other alphabet concepts refine.
@@ -822,8 +831,8 @@ concept writable_semialphabet = semialphabet<t> && requires(t v, alphabet_rank_t
  *
  * ### Requirements
  *
- *   1. `t` shall model bio::semialphabet ("has all rank representation")
- *   2. bio::to_char needs to be defined for objects of type `t`
+ *   1. `t` shall model bio::alphabet::semialphabet ("has all rank representation")
+ *   2. bio::alphabet::to_char needs to be defined for objects of type `t`
  *
  * See the documentation pages for the respective requirements.
  *
@@ -839,7 +848,7 @@ concept writable_semialphabet = semialphabet<t> && requires(t v, alphabet_rank_t
 template <typename t>
 concept alphabet = semialphabet<t> && requires(t v)
 {
-    {bio::to_char(v)};
+    {bio::alphabet::to_char(v)};
 };
 //!\endcond
 
@@ -847,13 +856,13 @@ concept alphabet = semialphabet<t> && requires(t v)
 // writable_alphabet
 // ============================================================================
 
-/*!\interface bio::writable_alphabet <>
- * \brief Refines bio::alphabet and adds assignability.
- * \extends bio::alphabet
- * \extends bio::writable_semialphabet
+/*!\interface bio::alphabet::writable_alphabet <>
+ * \brief Refines bio::alphabet::alphabet and adds assignability.
+ * \extends bio::alphabet::alphabet
+ * \extends bio::alphabet::writable_semialphabet
  * \ingroup alphabet
  *
- * This concept refines bio::alphabet and bio::writable_semialphabet and adds the requirement to be able to change
+ * This concept refines bio::alphabet::alphabet and bio::alphabet::writable_semialphabet and adds the requirement to be able to change
  * the value by assigning a value of the character representation.
  *
  * For a detailed overview of how the different alphabet concepts are related, see
@@ -861,10 +870,10 @@ concept alphabet = semialphabet<t> && requires(t v)
  *
  * ### Requirements
  *
- *   1. `t` shall model bio::alphabet
- *   2. `t` shall model bio::writable_semialphabet
- *   3. bio::assign_char_to needs to be defined for objects of type `t`
- *   4. bio::char_is_valid_for needs to be defined for type `t` and an argument of the character representation
+ *   1. `t` shall model bio::alphabet::alphabet
+ *   2. `t` shall model bio::alphabet::writable_semialphabet
+ *   3. bio::alphabet::assign_char_to needs to be defined for objects of type `t`
+ *   4. bio::alphabet::char_is_valid_for needs to be defined for type `t` and an argument of the character representation
  *
  * See the documentation pages for the respective requirements.
  *
@@ -886,9 +895,9 @@ concept alphabet = semialphabet<t> && requires(t v)
 template <typename t>
 concept writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires(t v, alphabet_char_t<t> c)
 {
-    {bio::assign_char_to(c, v)};
+    {bio::alphabet::assign_char_to(c, v)};
 
-    {bio::char_is_valid_for<t>(c)};
+    {bio::alphabet::char_is_valid_for<t>(c)};
 };
 //!\endcond
 
@@ -897,21 +906,21 @@ concept writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires(
 // ============================================================================
 
 /*!\cond DEV
- * \name Generic serialisation functions for all bio::semialphabet
- * \brief All types that satisfy bio::semialphabet can be serialised via Cereal.
+ * \name Generic serialisation functions for all bio::alphabet::semialphabet
+ * \brief All types that satisfy bio::alphabet::semialphabet can be serialised via Cereal.
  *
  * \{
  */
 /*!
  * \brief Save an alphabet letter to stream.
  * \tparam archive_t Must satisfy bio::cereal_output_archive.
- * \tparam alphabet_t Type of l; must satisfy bio::semialphabet.
+ * \tparam alphabet_t Type of l; must satisfy bio::alphabet::semialphabet.
  * \param l The alphabet letter.
- * \relates bio::semialphabet
+ * \relates bio::alphabet::semialphabet
  *
  * \details
  *
- * Delegates to bio::to_rank.
+ * Delegates to bio::alphabet::to_rank.
  *
  * \attention These functions are never called directly, see the \ref alphabet module on how to use serialisation.
  */
@@ -923,43 +932,44 @@ alphabet_rank_t<alphabet_t> CEREAL_SAVE_MINIMAL_FUNCTION_NAME(archive_t const &,
 
 /*!\brief Restore an alphabet letter from a saved rank.
  * \tparam archive_t Must satisfy bio::cereal_input_archive.
- * \tparam wrapped_alphabet_t A bio::semialphabet after Cereal mangles it up.
+ * \tparam wrapped_alphabet_t A bio::alphabet::semialphabet after Cereal mangles it up.
  * \param l The alphabet letter (cereal wrapped).
  * \param r The assigned value.
- * \relates bio::semialphabet
+ * \relates bio::alphabet::semialphabet
  *
  * \details
  *
- * Delegates to bio::assign_rank.
+ * Delegates to bio::alphabet::assign_rank.
  *
  * \attention These functions are never called directly, see the \ref alphabet module on how to use serialisation.
  */
 template <cereal_input_archive archive_t, typename wrapped_alphabet_t>
-void CEREAL_LOAD_MINIMAL_FUNCTION_NAME(archive_t const &,
-                                       wrapped_alphabet_t && l,
-                                       alphabet_rank_t<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>> const &
-                                         r) requires semialphabet<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>>
+void CEREAL_LOAD_MINIMAL_FUNCTION_NAME(
+  archive_t const &,
+  wrapped_alphabet_t &&                                                            l,
+  alphabet_rank_t<bio::detail::strip_cereal_wrapper_t<wrapped_alphabet_t>> const & r) requires
+  semialphabet<bio::detail::strip_cereal_wrapper_t<wrapped_alphabet_t>>
 {
-    assign_rank_to(r, static_cast<detail::strip_cereal_wrapper_t<wrapped_alphabet_t> &>(l));
+    assign_rank_to(r, static_cast<bio::detail::strip_cereal_wrapper_t<wrapped_alphabet_t> &>(l));
 }
 /*!\}
  * \endcond
  */
 
-} // namespace bio
+} // namespace bio::alphabet
 
-namespace bio::detail
+namespace bio::alphabet::detail
 {
 // ============================================================================
 // constexpr_semialphabet
 // ============================================================================
 
-/*!\interface bio::detail::constexpr_semialphabet <>
- * \brief A bio::semialphabet that has constexpr accessors.
- * \extends bio::semialphabet
+/*!\interface bio::alphabet::detail::constexpr_semialphabet <>
+ * \brief A bio::alphabet::semialphabet that has constexpr accessors.
+ * \extends bio::alphabet::semialphabet
  * \ingroup alphabet
  *
- * The same as bio::semialphabet, except that all required functions are also required to be callable
+ * The same as bio::alphabet::semialphabet, except that all required functions are also required to be callable
  * in a `constexpr`-context.
  */
 //!\cond
@@ -975,21 +985,21 @@ concept constexpr_semialphabet = semialphabet<t> && requires
 // writable_constexpr_semialphabet
 // ============================================================================
 
-/*!\interface bio::detail::writable_constexpr_semialphabet <>
- * \brief A bio::writable_semialphabet that has a constexpr assignment.
- * \extends bio::detail::constexpr_semialphabet
- * \extends bio::writable_semialphabet
+/*!\interface bio::alphabet::detail::writable_constexpr_semialphabet <>
+ * \brief A bio::alphabet::writable_semialphabet that has a constexpr assignment.
+ * \extends bio::alphabet::detail::constexpr_semialphabet
+ * \extends bio::alphabet::writable_semialphabet
  * \ingroup alphabet
  *
- * Refines bio::detail::constexpr_semialphabet and bio::writable_semialphabet and requires that the call to
- * bio::assign_rank_to can happen in a `constexpr`-context.
+ * Refines bio::alphabet::detail::constexpr_semialphabet and bio::alphabet::writable_semialphabet and requires that the call to
+ * bio::alphabet::assign_rank_to can happen in a `constexpr`-context.
  */
 //!\cond
 template <typename t>
 concept writable_constexpr_semialphabet = constexpr_semialphabet<t> && writable_semialphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
-    requires BIOCPP_IS_CONSTEXPR(bio::assign_rank_to(alphabet_rank_t<t>{}, std::remove_reference_t<t>{}));
+    requires BIOCPP_IS_CONSTEXPR(bio::alphabet::assign_rank_to(alphabet_rank_t<t>{}, std::remove_reference_t<t>{}));
 };
 //!\endcond
 
@@ -997,14 +1007,14 @@ concept writable_constexpr_semialphabet = constexpr_semialphabet<t> && writable_
 // constexpr_alphabet
 // ============================================================================
 
-/*!\interface bio::detail::constexpr_alphabet <>
- * \brief A bio::alphabet that has constexpr accessors.
- * \extends bio::detail::constexpr_semialphabet
- * \extends bio::alphabet
+/*!\interface bio::alphabet::detail::constexpr_alphabet <>
+ * \brief A bio::alphabet::alphabet that has constexpr accessors.
+ * \extends bio::alphabet::detail::constexpr_semialphabet
+ * \extends bio::alphabet::alphabet
  * \ingroup alphabet
  *
- * Refines bio::detail::constexpr_semialphabet and bio::alphabet and requires that the call to
- * bio::to_char can happen in a `constexpr`-context.
+ * Refines bio::alphabet::detail::constexpr_semialphabet and bio::alphabet::alphabet and requires that the call to
+ * bio::alphabet::to_char can happen in a `constexpr`-context.
  */
 //!\cond
 template <typename t>
@@ -1019,15 +1029,15 @@ concept constexpr_alphabet = constexpr_semialphabet<t> && alphabet<t> && require
 // writable_constexpr_alphabet
 // ============================================================================
 
-/*!\interface bio::detail::writable_constexpr_alphabet <>
- * \brief A bio::writable_alphabet that has constexpr accessors.
- * \extends bio::detail::constexpr_alphabet
- * \extends bio::detail::writable_constexpr_semialphabet
- * \extends bio::writable_alphabet
+/*!\interface bio::alphabet::detail::writable_constexpr_alphabet <>
+ * \brief A bio::alphabet::writable_alphabet that has constexpr accessors.
+ * \extends bio::alphabet::detail::constexpr_alphabet
+ * \extends bio::alphabet::detail::writable_constexpr_semialphabet
+ * \extends bio::alphabet::writable_alphabet
  * \ingroup alphabet
  *
- * Refines bio::detail::constexpr_alphabet, bio::detail::writable_constexpr_semialphabet and
- * bio::writable_alphabet and requires that the calls to bio::assign_char_to and bio::char_is_valid_for
+ * Refines bio::alphabet::detail::constexpr_alphabet, bio::alphabet::detail::writable_constexpr_semialphabet and
+ * bio::alphabet::writable_alphabet and requires that the calls to bio::alphabet::assign_char_to and bio::alphabet::char_is_valid_for
  * can happen in a `constexpr`-context.
  */
 //!\cond
@@ -1036,9 +1046,9 @@ concept writable_constexpr_alphabet =
   constexpr_alphabet<t> && writable_constexpr_semialphabet<t> && writable_alphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
-    requires BIOCPP_IS_CONSTEXPR(bio::assign_char_to(alphabet_char_t<t>{}, std::remove_reference_t<t>{}));
-    requires BIOCPP_IS_CONSTEXPR(bio::char_is_valid_for<t>(alphabet_char_t<t>{}));
+    requires BIOCPP_IS_CONSTEXPR(bio::alphabet::assign_char_to(alphabet_char_t<t>{}, std::remove_reference_t<t>{}));
+    requires BIOCPP_IS_CONSTEXPR(bio::alphabet::char_is_valid_for<t>(alphabet_char_t<t>{}));
 };
 //!\endcond
 
-} // namespace bio::detail
+} // namespace bio::alphabet::detail

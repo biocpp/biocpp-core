@@ -17,21 +17,21 @@
 #include <bio/alphabet/detail/to_lower.hpp>
 #include <bio/alphabet/mask/mask.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 /*!\brief Implementation of a masked composite, which extends a given alphabet
  * with a mask.
  * \ingroup mask
- * \implements bio::writable_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::writable_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
  *
- * \tparam sequence_alphabet_t Type of the first letter; must satisfy bio::writable_alphabet and std::regular.
+ * \tparam sequence_alphabet_t Type of the first letter; must satisfy bio::alphabet::writable_alphabet and std::regular.
  *
  * \details
- * The masked composite represents a bio::alphabet_tuple_base of any given alphabet with the
+ * The masked composite represents a bio::alphabet::alphabet_tuple_base of any given alphabet with the
  * masked alphabet. It allows one to specify which portions of a sequence should be masked,
  * without losing additional information by replacing the sequence directly.
  *
@@ -101,8 +101,9 @@ protected:
         for (size_t i = 0; i < alphabet_size; ++i)
         {
             ret[i] = (i < alphabet_size / 2)
-                       ? bio::to_char(bio::assign_rank_to(i, sequence_alphabet_type{}))
-                       : detail::to_lower(bio::to_char(bio::assign_rank_to(i / 2, sequence_alphabet_type{})));
+                       ? bio::alphabet::to_char(bio::alphabet::assign_rank_to(i, sequence_alphabet_type{}))
+                       : detail::to_lower(
+                           bio::alphabet::to_char(bio::alphabet::assign_rank_to(i / 2, sequence_alphabet_type{})));
         }
 
         return ret;
@@ -117,8 +118,9 @@ protected:
         {
             char_type c = static_cast<char_type>(i);
 
-            ret[i] = detail::is_lower(c) ? bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{})) * 2
-                                         : bio::to_rank(bio::assign_char_to(c, sequence_alphabet_type{}));
+            ret[i] = detail::is_lower(c)
+                       ? bio::alphabet::to_rank(bio::alphabet::assign_char_to(c, sequence_alphabet_type{})) * 2
+                       : bio::alphabet::to_rank(bio::alphabet::assign_char_to(c, sequence_alphabet_type{}));
         }
 
         return ret;
@@ -129,4 +131,4 @@ protected:
 //!\relates masked
 template <typename sequence_alphabet_type>
 masked(sequence_alphabet_type &&, mask const &) -> masked<std::decay_t<sequence_alphabet_type>>;
-} //namespace bio
+} //namespace bio::alphabet

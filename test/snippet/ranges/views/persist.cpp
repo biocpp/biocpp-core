@@ -4,7 +4,7 @@
 
 int main()
 {
-    using bio::operator""_dna4;
+    using bio::alphabet::operator""_dna4;
 
     // explicitly create an l-value of our dna vector:
     auto vec = "ACGT"_dna4;

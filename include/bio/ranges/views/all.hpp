@@ -154,7 +154,7 @@
  * (since dereferencing an iterator or calling operator[] returns the reference type). The reference type may or may
  * not actually contain a `&` (see below). For many BioC++ specific views additional concept requirements are defined
  * for the input range's reference type, e.g. bio::views::complement can only operate on ranges whose elements are
- * nucleotides (meet bio::nucleotide_alphabet_check). In some case the type may even be a specific type or the result
+ * nucleotides (meet bio::alphabet::nucleotide_alphabet_check). In some case the type may even be a specific type or the result
  * of a type trait.
  *
  * **Returned range's reference type:** Conversely certain views make guarantees on the concepts satisfied by the
@@ -171,14 +171,4 @@
  * you can't.
  *
  * \sa https://ericniebler.github.io/range-v3/index.html#range-views
- */
-
-/*!
- * \namespace bio::ranges::views
- * \brief The BioC++ namespace for views.
- *
- * Since views often have name clashes with regular functions and ranges they are implemented in the sub
- * namespace `view`.
- *
- * See the \link views views submodule \endlink of the range module for more details.
  */

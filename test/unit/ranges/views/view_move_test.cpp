@@ -20,7 +20,7 @@
 #include <bio/test/expect_range_eq.hpp>
 #include <ranges>
 
-using bio::operator""_dna5;
+using bio::alphabet::operator""_dna5;
 
 TEST(view_move, basic)
 {
@@ -35,10 +35,10 @@ TEST(view_move, basic)
     EXPECT_RANGE_EQ(vec, v2); // equality comparison does not move
 
     // combinability
-    bio::dna5_vector vec2{"ACGTA"_dna5};
-    bio::dna5_vector v3 = vec2 | bio::ranges::views::complement |
-                          bio::ranges::views::move // NOP, because already temporaries
-                          | bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna5_vector vec2{"ACGTA"_dna5};
+    bio::alphabet::dna5_vector v3 = vec2 | bio::ranges::views::complement |
+                                    bio::ranges::views::move // NOP, because already temporaries
+                                    | bio::ranges::views::to<std::vector>();
     EXPECT_EQ("TGCAT"_dna5, v3);
 }
 

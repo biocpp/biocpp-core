@@ -17,7 +17,9 @@
 template <typename t>
 using alphabet_cereal = ::testing::Test;
 
-using test_types = ::testing::Types<bio::dna4, bio::qualified<bio::dna4, bio::phred42>, bio::gapped<bio::dna4>>;
+using test_types = ::testing::Types<bio::alphabet::dna4,
+                                    bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>,
+                                    bio::alphabet::gapped<bio::alphabet::dna4>>;
 
 TYPED_TEST_SUITE(alphabet_cereal, test_types, );
 
@@ -25,12 +27,12 @@ TYPED_TEST(alphabet_cereal, serialisation)
 {
     TypeParam letter;
 
-    bio::assign_rank_to(1 % bio::alphabet_size<TypeParam>, letter);
+    bio::alphabet::assign_rank_to(1 % bio::alphabet::alphabet_size<TypeParam>, letter);
     bio::test::do_serialisation(letter);
 
     std::vector<TypeParam> vec;
     vec.resize(10);
     for (unsigned i = 0; i < 10; ++i)
-        bio::assign_rank_to(i % bio::alphabet_size<TypeParam>, vec[i]);
+        bio::alphabet::assign_rank_to(i % bio::alphabet::alphabet_size<TypeParam>, vec[i]);
     bio::test::do_serialisation(vec);
 }

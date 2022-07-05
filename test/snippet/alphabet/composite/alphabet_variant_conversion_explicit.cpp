@@ -4,10 +4,10 @@
 
 int main()
 {
-    using bio::operator""_dna5;
+    using bio::alphabet::operator""_dna5;
 
     // possible:
-    bio::alphabet_variant<bio::dna4, bio::gap> letter1{'C'_dna5};
+    bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::gap> letter1{'C'_dna5};
     // not possible:
-    // bio::alphabet_variant<bio::dna4, bio::gap> letter2 = 'C'_dna5;
+    // bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::gap> letter2 = 'C'_dna5;
 }

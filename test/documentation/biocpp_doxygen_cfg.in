@@ -58,7 +58,7 @@ EXPAND_AS_DEFINED      = BIOCPP_CPO_IMPL
 
 TAGFILES               += "${BIOCPP_DOXYGEN_STD_TAGFILE}=https://en.cppreference.com/w/"
 
-EXCLUDE_SYMBOLS        = bio::contrib
+EXCLUDE_SYMBOLS        = bio::alphabet::contrib
 
 FORMULA_FONTSIZE       = 14
 HTML_DYNAMIC_SECTIONS  = YES

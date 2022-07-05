@@ -3,14 +3,14 @@
 
 int main()
 {
-    using bio::operator""_dna4;
+    using bio::alphabet::operator""_dna4;
 
-    bio::gapped<bio::dna4> gapped_letter{};
-    bio::gapped<bio::dna4> converted_letter{'C'_dna4};
-    bio::gapped<bio::dna4> gap_letter{bio::gap{}};
+    bio::alphabet::gapped<bio::alphabet::dna4> gapped_letter{};
+    bio::alphabet::gapped<bio::alphabet::dna4> converted_letter{'C'_dna4};
+    bio::alphabet::gapped<bio::alphabet::dna4> gap_letter{bio::alphabet::gap{}};
 
-    bio::gapped<bio::dna4>{}.assign_char('C');
-    bio::gapped<bio::dna4>{}.assign_char('-'); // gap character
-    bio::gapped<bio::dna4>{}.assign_char('K'); // unknown characters map to the default/unknown
+    bio::alphabet::gapped<bio::alphabet::dna4>{}.assign_char('C');
+    bio::alphabet::gapped<bio::alphabet::dna4>{}.assign_char('-'); // gap character
+    bio::alphabet::gapped<bio::alphabet::dna4>{}.assign_char('K'); // unknown characters map to the default/unknown
                                                      // character of the given alphabet type (i.e. A of dna4)
 }

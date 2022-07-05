@@ -14,69 +14,69 @@
 #include "../semi_alphabet_test_template.hpp"
 #include "nucleotide_test_template.hpp"
 
-using bio::operator""_rna5;
+using bio::alphabet::operator""_rna5;
 
-INSTANTIATE_TYPED_TEST_SUITE_P(rna5, alphabet, bio::rna5, );
-INSTANTIATE_TYPED_TEST_SUITE_P(rna5, semi_alphabet_test, bio::rna5, );
-INSTANTIATE_TYPED_TEST_SUITE_P(rna5, alphabet_constexpr, bio::rna5, );
-INSTANTIATE_TYPED_TEST_SUITE_P(rna5, semi_alphabet_constexpr, bio::rna5, );
-INSTANTIATE_TYPED_TEST_SUITE_P(rna5, nucleotide, bio::rna5, );
+INSTANTIATE_TYPED_TEST_SUITE_P(rna5, alphabet, bio::alphabet::rna5, );
+INSTANTIATE_TYPED_TEST_SUITE_P(rna5, semi_alphabet_test, bio::alphabet::rna5, );
+INSTANTIATE_TYPED_TEST_SUITE_P(rna5, alphabet_constexpr, bio::alphabet::rna5, );
+INSTANTIATE_TYPED_TEST_SUITE_P(rna5, semi_alphabet_constexpr, bio::alphabet::rna5, );
+INSTANTIATE_TYPED_TEST_SUITE_P(rna5, nucleotide, bio::alphabet::rna5, );
 
 TEST(rna5, to_char_assign_char)
 {
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('A')), 'A');
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('C')), 'C');
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('G')), 'G');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('A')), 'A');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('C')), 'C');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('G')), 'G');
 
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('U')), 'U');
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('T')), 'U');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('U')), 'U');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('T')), 'U');
 
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('R')), 'N');
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('Y')), 'N');
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('S')), 'N');
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('W')), 'N');
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('K')), 'N');
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('M')), 'N');
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('B')), 'N');
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('D')), 'N');
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('H')), 'N');
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('V')), 'N');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('R')), 'N');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('Y')), 'N');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('S')), 'N');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('W')), 'N');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('K')), 'N');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('M')), 'N');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('B')), 'N');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('D')), 'N');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('H')), 'N');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('V')), 'N');
 
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('N')), 'N');
-    EXPECT_EQ(bio::to_char(bio::rna5{}.assign_char('!')), 'N');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('N')), 'N');
+    EXPECT_EQ(bio::alphabet::to_char(bio::alphabet::rna5{}.assign_char('!')), 'N');
 }
 
 TEST(rna5, char_literal)
 {
-    EXPECT_EQ(bio::to_char('A'_rna5), 'A');
-    EXPECT_EQ(bio::to_char('C'_rna5), 'C');
-    EXPECT_EQ(bio::to_char('G'_rna5), 'G');
+    EXPECT_EQ(bio::alphabet::to_char('A'_rna5), 'A');
+    EXPECT_EQ(bio::alphabet::to_char('C'_rna5), 'C');
+    EXPECT_EQ(bio::alphabet::to_char('G'_rna5), 'G');
 
-    EXPECT_EQ(bio::to_char('U'_rna5), 'U');
-    EXPECT_EQ(bio::to_char('T'_rna5), 'U');
+    EXPECT_EQ(bio::alphabet::to_char('U'_rna5), 'U');
+    EXPECT_EQ(bio::alphabet::to_char('T'_rna5), 'U');
 
-    EXPECT_EQ(bio::to_char('R'_rna5), 'N');
-    EXPECT_EQ(bio::to_char('Y'_rna5), 'N');
-    EXPECT_EQ(bio::to_char('S'_rna5), 'N');
-    EXPECT_EQ(bio::to_char('W'_rna5), 'N');
-    EXPECT_EQ(bio::to_char('K'_rna5), 'N');
-    EXPECT_EQ(bio::to_char('M'_rna5), 'N');
-    EXPECT_EQ(bio::to_char('B'_rna5), 'N');
-    EXPECT_EQ(bio::to_char('D'_rna5), 'N');
-    EXPECT_EQ(bio::to_char('H'_rna5), 'N');
-    EXPECT_EQ(bio::to_char('V'_rna5), 'N');
+    EXPECT_EQ(bio::alphabet::to_char('R'_rna5), 'N');
+    EXPECT_EQ(bio::alphabet::to_char('Y'_rna5), 'N');
+    EXPECT_EQ(bio::alphabet::to_char('S'_rna5), 'N');
+    EXPECT_EQ(bio::alphabet::to_char('W'_rna5), 'N');
+    EXPECT_EQ(bio::alphabet::to_char('K'_rna5), 'N');
+    EXPECT_EQ(bio::alphabet::to_char('M'_rna5), 'N');
+    EXPECT_EQ(bio::alphabet::to_char('B'_rna5), 'N');
+    EXPECT_EQ(bio::alphabet::to_char('D'_rna5), 'N');
+    EXPECT_EQ(bio::alphabet::to_char('H'_rna5), 'N');
+    EXPECT_EQ(bio::alphabet::to_char('V'_rna5), 'N');
 
-    EXPECT_EQ(bio::to_char('N'_rna5), 'N');
-    EXPECT_EQ(bio::to_char('!'_rna5), 'N');
+    EXPECT_EQ(bio::alphabet::to_char('N'_rna5), 'N');
+    EXPECT_EQ(bio::alphabet::to_char('!'_rna5), 'N');
 }
 
 TEST(rna5, string_literal)
 {
-    bio::rna5_vector v;
+    bio::alphabet::rna5_vector v;
     v.resize(5, 'A'_rna5);
     EXPECT_EQ(v, "AAAAA"_rna5);
 
-    std::vector<bio::rna5> w{'A'_rna5, 'C'_rna5, 'G'_rna5, 'T'_rna5, 'U'_rna5, 'N'_rna5};
+    std::vector<bio::alphabet::rna5> w{'A'_rna5, 'C'_rna5, 'G'_rna5, 'T'_rna5, 'U'_rna5, 'N'_rna5};
     EXPECT_EQ(w, "ACGUUN"_rna5);
 }
 
@@ -88,5 +88,5 @@ TEST(rna5, char_is_valid)
                c == 't' || c == 'u' || c == 'N' || c == 'n';
     };
     for (char c : std::views::iota(std::numeric_limits<char>::min(), std::numeric_limits<char>::max()))
-        EXPECT_EQ(bio::rna5::char_is_valid(c), validator(c));
+        EXPECT_EQ(bio::alphabet::rna5::char_is_valid(c), validator(c));
 }

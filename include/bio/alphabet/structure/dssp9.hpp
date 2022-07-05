@@ -23,13 +23,13 @@
 // dssp9
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief The protein structure alphabet of the characters "HGIEBTSCX".
- * \implements bio::writable_alphabet
- * \implements bio::writable_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::writable_alphabet
+ * \implements bio::alphabet::writable_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -64,7 +64,7 @@ private:
     //!\brief The base class.
     using base_t = alphabet_base<dssp9, 9>;
 
-    //!\brief Befriend bio::alphabet_base.
+    //!\brief Befriend bio::alphabet::alphabet_base.
     friend base_t;
 
 public:
@@ -108,13 +108,13 @@ protected:
 /*!\name Literals
  * \{
  */
-/*!\brief The bio::dssp9 string literal.
- * \relates bio::dssp9
+/*!\brief The bio::alphabet::dssp9 string literal.
+ * \relates bio::alphabet::dssp9
  * \param[in] str A pointer to the character string to assign.
  * \param[in] len The size of the character string to assign.
- * \returns std::vector<bio::dssp9>
+ * \returns std::vector<bio::alphabet::dssp9>
  *
- * You can use this string literal to easily assign to a vector of bio::dssp9 characters:
+ * You can use this string literal to easily assign to a vector of bio::alphabet::dssp9 characters:
  * \include test/snippet/alphabet/structure/dssp9_literal.cpp
  */
 inline std::vector<dssp9> operator""_dssp9(char const * str, std::size_t len)
@@ -128,12 +128,12 @@ inline std::vector<dssp9> operator""_dssp9(char const * str, std::size_t len)
     return vec;
 }
 
-/*!\brief The bio::dssp9 char literal.
- * \relates bio::dssp9
+/*!\brief The bio::alphabet::dssp9 char literal.
+ * \relates bio::alphabet::dssp9
  * \param[in] ch The character to represent as dssp.
- * \returns bio::dssp9
+ * \returns bio::alphabet::dssp9
  *
- * You can use this string literal to assign a bio::dssp9 character:
+ * You can use this string literal to assign a bio::alphabet::dssp9 character:
  * \include test/snippet/alphabet/structure/dssp9_char_literal.cpp
  */
 constexpr dssp9 operator""_dssp9(char const ch) noexcept
@@ -143,4 +143,4 @@ constexpr dssp9 operator""_dssp9(char const ch) noexcept
 
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet

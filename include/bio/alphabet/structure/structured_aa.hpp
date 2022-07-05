@@ -18,32 +18,32 @@
 #include <bio/alphabet/concept.hpp>
 #include <bio/alphabet/structure/dssp9.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 
-/*!\brief A bio::alphabet_tuple_base that joins an aminoacid alphabet with a protein structure alphabet.
+/*!\brief A bio::alphabet::alphabet_tuple_base that joins an aminoacid alphabet with a protein structure alphabet.
  * \ingroup structure
- * \implements bio::writable_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::writable_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
- * \tparam sequence_alphabet_t Type of the first aminoacid letter; must model bio::writable_alphabet,
- * bio::aminoacid_alphabet and satisfy the requirements on arguments by bio::alphabet_tuple_base.
- * \tparam structure_alphabet_t Types of further structure letters; must model bio::writable_alphabet and satisfy
- * the requirements on arguments by bio::alphabet_tuple_base.
+ * \tparam sequence_alphabet_t Type of the first aminoacid letter; must model bio::alphabet::writable_alphabet,
+ * bio::alphabet::aminoacid_alphabet and satisfy the requirements on arguments by bio::alphabet::alphabet_tuple_base.
+ * \tparam structure_alphabet_t Types of further structure letters; must model bio::alphabet::writable_alphabet and satisfy
+ * the requirements on arguments by bio::alphabet::alphabet_tuple_base.
  *
  * This composite pairs an aminoacid alphabet with a structure alphabet. The rank values
  * correpsond to numeric values in the size of the composite, while the character values
  * are taken from the sequence alphabet and the structure annotation is taken from the structure
  * alphabet.
  *
- * As with all `bio::alphabet_tuple_base` s you may access the individual alphabet letters in
+ * As with all `bio::alphabet::alphabet_tuple_base` s you may access the individual alphabet letters in
  * regular c++ tuple notation, i.e. `get<0>(t)` and objects can be brace-initialized
  * with the individual members.
  *
  * \include test/snippet/alphabet/structure/structured_aa.cpp
  *
- * This bio::alphabet_tuple_base itself fulfills bio::alphabet.
+ * This bio::alphabet::alphabet_tuple_base itself fulfills bio::alphabet::alphabet.
  */
 template <writable_alphabet sequence_alphabet_t = aa27, writable_alphabet structure_alphabet_t = dssp9>
     //!\cond
@@ -113,7 +113,7 @@ public:
     //!\brief Assign from a nucleotide character. This modifies the internal sequence letter.
     constexpr structured_aa & assign_char(char_type const c) noexcept
     {
-        bio::assign_char_to(c, get<0>(*this));
+        bio::alphabet::assign_char_to(c, get<0>(*this));
         return *this;
     }
     //!\}
@@ -124,7 +124,7 @@ public:
     //!\brief Return a character. This reads the internal sequence letter.
     constexpr char_type to_char() const noexcept
     {
-        return bio::to_char(get<0>(*this));
+        return bio::alphabet::to_char(get<0>(*this));
     }
     //!\}
 
@@ -141,4 +141,4 @@ template <typename sequence_alphabet_type, typename structure_alphabet_type>
 structured_aa(sequence_alphabet_type &&, structure_alphabet_type &&)
   -> structured_aa<std::decay_t<sequence_alphabet_type>, std::decay_t<structure_alphabet_type>>;
 
-} // namespace bio
+} // namespace bio::alphabet

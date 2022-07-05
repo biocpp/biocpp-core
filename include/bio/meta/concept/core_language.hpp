@@ -25,7 +25,7 @@ namespace bio::meta
  * \{
  */
 
-/*!\interface   bio::detail::weakly_equality_comparable_with <>
+/*!\interface   bio::meta::weakly_equality_comparable_with <>
  * \tparam t1   The first type to compare.
  * \tparam t2   The second type to compare.
  * \brief       Requires the two operands to be comparable with `==` and `!=` in both directions.
@@ -42,7 +42,7 @@ concept weakly_equality_comparable_with = requires(std::remove_reference_t<T> co
 };
 //!\endcond
 
-/*!\interface   bio::detail::weakly_ordered_with <>
+/*!\interface   bio::meta::weakly_ordered_with <>
  * \tparam t1   The first type to compare.
  * \tparam t2   The second type to compare.
  * \brief       Requires the two operands to be comparable with `<`, `<=`, `>` and `>=` in both directions.
@@ -64,7 +64,7 @@ concept weakly_ordered_with = requires(std::remove_reference_t<t1> const & v1, s
 //!\endcond
 
 //TODO replace all occurrences of this with std::cosntructible_from
-/*!\interface   bio::implicitly_convertible_to <>
+/*!\interface   bio::meta::implicitly_convertible_to <>
  * \brief       Resolves to `std::ranges::implicitly_convertible_to<type1, type2>()`.
  */
 //!\cond
@@ -73,7 +73,7 @@ concept implicitly_convertible_to = std::is_convertible_v<t, u>;
 //!\endcond
 
 //TODO replace all occurrences of this with std::convertible_to
-/*!\interface   bio::explicitly_convertible_to <>
+/*!\interface   bio::meta::explicitly_convertible_to <>
  * \brief       Resolves to `std::ranges::explicitly_convertible_to<type1, type2>()`.
  */
 //!\cond
@@ -84,7 +84,7 @@ concept explicitly_convertible_to = requires(t vt)
 };
 //!\endcond
 
-/*!\interface   bio::arithmetic <>
+/*!\interface   bio::meta::arithmetic <>
  * \brief       A type that satisfies std::is_arithmetic_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_arithmetic
  */
@@ -93,8 +93,8 @@ template <typename t>
 concept arithmetic = std::is_arithmetic_v<t>;
 //!\endcond
 
-/*!\interface   bio::floating_point <>
- * \extends     bio::arithmetic
+/*!\interface   bio::meta::floating_point <>
+ * \extends     bio::meta::arithmetic
  * \brief       An arithmetic type that also satisfies std::is_floating_point_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_floating_point
  */
@@ -103,7 +103,7 @@ template <typename t>
 concept floating_point = arithmetic<t> && std::is_floating_point_v<t>;
 //!\endcond
 
-/*!\interface   bio::builtin_character <>
+/*!\interface   bio::meta::builtin_character <>
  * \extends     std::integral
  * \brief       This concept encompasses exactly the types `char`, `signed char`, `unsigned char`, `wchar_t`,
  *              `char16_t` and `char32_t`.
@@ -159,7 +159,7 @@ template <typename t>
 concept standard_layout = std::is_standard_layout_v<t>;
 //!\endcond
 
-/*!\interface   bio::weakly_assignable_from
+/*!\interface   bio::meta::weakly_assignable_from
  * \brief       Resolves to std::is_assignable_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_assignable
  *

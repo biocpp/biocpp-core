@@ -11,7 +11,7 @@
 #include <bio/alphabet/concept.hpp>                   // alphabet concept checks
 
 // derive from alphabet_base
-struct dna2 : public bio::alphabet_base<dna2, 2>
+struct dna2 : public bio::alphabet::alphabet_base<dna2, 2>
 {
 private:
     // map 0 => 'S' and 1 => 'W'
@@ -30,10 +30,10 @@ private:
     };
 
     // make the base class a friend so it can access the tables:
-    friend bio::alphabet_base<dna2, 2>;
+    friend bio::alphabet::alphabet_base<dna2, 2>;
 };
 
 // check the concepts
-static_assert(bio::alphabet<dna2>);                   // ok
-static_assert(bio::writable_alphabet<dna2>);           // ok
+static_assert(bio::alphabet::alphabet<dna2>);                   // ok
+static_assert(bio::alphabet::writable_alphabet<dna2>);           // ok
 //! [dna2]

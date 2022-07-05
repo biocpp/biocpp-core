@@ -15,26 +15,28 @@
 
 #include "container_test_template.hpp"
 
-INSTANTIATE_TYPED_TEST_SUITE_P(bitcompressed, container_over_dna4_test, bio::ranges::bitcompressed_vector<bio::dna4>, );
+INSTANTIATE_TYPED_TEST_SUITE_P(bitcompressed,
+                               container_over_dna4_test,
+                               bio::ranges::bitcompressed_vector<bio::alphabet::dna4>, );
 
-using bio::operator""_dna4;
+using bio::alphabet::operator""_dna4;
 
 TEST(bitcompressed_vector_test, issue1743_complement_on_proxy)
 { // https://github.com/seqan/seqan3/issues/1743
-    bio::ranges::bitcompressed_vector<bio::dna4> v{'A'_dna4};
+    bio::ranges::bitcompressed_vector<bio::alphabet::dna4> v{'A'_dna4};
 
     auto proxy      = *v.begin();
-    auto complement = bio::complement(proxy);
+    auto complement = bio::alphabet::complement(proxy);
 
-    EXPECT_TRUE((std::same_as<decltype(complement), bio::dna4>));
+    EXPECT_TRUE((std::same_as<decltype(complement), bio::alphabet::dna4>));
     EXPECT_EQ(complement, 'T'_dna4);
 }
 
 TEST(bitcompressed_vector_test, issue1743_view_combinability)
 { // https://github.com/seqan/seqan3/issues/1743
-    bio::ranges::bitcompressed_vector<bio::dna4> v{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
-    auto                                         complement = v | bio::ranges::views::complement;
+    bio::ranges::bitcompressed_vector<bio::alphabet::dna4> v{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
+    auto                                                   complement = v | bio::ranges::views::complement;
 
     EXPECT_EQ(v.size(), complement.size());
-    EXPECT_RANGE_EQ(complement, (bio::dna4_vector{'T'_dna4, 'G'_dna4, 'C'_dna4, 'A'_dna4}));
+    EXPECT_RANGE_EQ(complement, (bio::alphabet::dna4_vector{'T'_dna4, 'G'_dna4, 'C'_dna4, 'A'_dna4}));
 }

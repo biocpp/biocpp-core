@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides bio::detail::empty_type.
+ * \brief Provides bio::meta::detail::empty_type.
  * \author Rene Rahn <rene.rahn AT fu-berlin.de>
  */
 

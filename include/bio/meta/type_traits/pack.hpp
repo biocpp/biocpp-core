@@ -39,8 +39,8 @@ struct type_in_pack<target_t, pack1, pack...> : type_in_pack<target_t, pack...>
 {};
 //!\endcond
 
-//!\brief Shortcut for bio::detail::type_in_pack (unary_type_trait shortcut).
-//!\relates bio::detail::type_in_pack
+//!\brief Shortcut for bio::meta::detail::type_in_pack (unary_type_trait shortcut).
+//!\relates bio::meta::detail::type_in_pack
 template <typename target_t, typename... pack>
 inline constexpr bool type_in_pack_v = type_in_pack<target_t, pack...>::value;
 

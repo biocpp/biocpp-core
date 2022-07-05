@@ -245,7 +245,7 @@ detailed description on that page now that you had a more gentle introduction.
 \assignment{Assignment 3: Fun with views III}
 Create a small program that
   1. reads a string from the command line (first argument to the program)
-  2. "converts" the string to a range of bio::dna5 (Bonus: throw an exception if loss of information occurs)
+  2. "converts" the string to a range of bio::alphabet::dna5 (Bonus: throw an exception if loss of information occurs)
   3. prints the string and it's reverse complement
   4. prints the six-frame translation of the string
 
@@ -268,7 +268,7 @@ What can you learn about the different refinements and their relation to the ran
 
 ## The bitcompressed vector
 
-If you followed the alphabet tutorial closely, you will know that bio::dna4 needs only two bits to represent its state.
+If you followed the alphabet tutorial closely, you will know that bio::alphabet::dna4 needs only two bits to represent its state.
 However, single objects are always at least a byte (eight bits) big in C++.
 To store sequences of small alphabets more space-efficiently, we have developed bio::ranges::bitcompressed_vector.
 
@@ -276,7 +276,7 @@ Open the API documentation of bio::ranges::bitcompressed_vector, display the inh
 interface overview and the detailed description.
 
 \assignment{Assignment 4: The bitcompressed vector}
-Create a small program that asks the user for a size and then creates a vector of bio::dna4 of that size.
+Create a small program that asks the user for a size and then creates a vector of bio::alphabet::dna4 of that size.
 Add an argument parser flag that allows the user to decide whether std::vector or bio::ranges::bitcompressed_vector is used.
 After creating the vector, print its size.
 
