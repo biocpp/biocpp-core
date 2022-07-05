@@ -105,7 +105,7 @@ concept pseudo_random_access_iterator =
  *
  * \details
  *
- * A pseudo random access range is a forward range whose iterator type models bio::pseudo_random_access_iterator.
+ * A pseudo random access range is a forward range whose iterator type models bio::ranges::pseudo_random_access_iterator.
  *
  * ### Concepts and doxygen
  *
@@ -123,9 +123,9 @@ concept pseudo_random_access_range =
  * \ingroup range
  * \extends std::ranges::input_range
  *
- * We define a range over an bio::alphabet as a *sequence*.
- * A type models bio::sequence if it is at least an std::ranges::input_range
- * and its references type models bio::alphabet.
+ * We define a range over an bio::alphabet::alphabet as a *sequence*.
+ * A type models bio::alphabet::sequence if it is at least an std::ranges::input_range
+ * and its references type models bio::alphabet::alphabet.
  *
  * ### Concepts and doxygen
  *
@@ -134,7 +134,7 @@ concept pseudo_random_access_range =
  */
 //!\cond
 template <typename rng_t>
-concept sequence = std::ranges::input_range<rng_t> && alphabet<std::ranges::range_reference_t<rng_t>>;
+concept sequence = std::ranges::input_range<rng_t> && alphabet::alphabet<std::ranges::range_reference_t<rng_t>>;
 //!\endcond
 
 } // namespace bio::ranges

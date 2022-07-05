@@ -28,7 +28,7 @@ std::array<alphabet_t, 256> create_alphabet_array(size_t const alphabet_size)
         if constexpr (is_seqan2)
              a = static_cast<uint8_t>(rank);
         else
-            bio::assign_rank_to(rank, a);
+            bio::alphabet::assign_rank_to(rank, a);
     };
 
     uint8_t i = 0;
@@ -38,40 +38,40 @@ std::array<alphabet_t, 256> create_alphabet_array(size_t const alphabet_size)
     return alphabet_array;
 }
 
-template <bio::semialphabet alphabet_t>
+template <bio::alphabet::semialphabet alphabet_t>
 void to_rank(benchmark::State & state)
 {
-    std::array<alphabet_t, 256> alphs = create_alphabet_array<alphabet_t, false>(bio::alphabet_size<alphabet_t>);
+    std::array<alphabet_t, 256> alphs = create_alphabet_array<alphabet_t, false>(bio::alphabet::alphabet_size<alphabet_t>);
 
     for (auto _ : state)
         for (alphabet_t a : alphs)
-            benchmark::DoNotOptimize(bio::to_rank(a));
+            benchmark::DoNotOptimize(bio::alphabet::to_rank(a));
 }
 
 /* regular alphabets, sorted by size */
-BENCHMARK_TEMPLATE(to_rank, bio::gap);
-BENCHMARK_TEMPLATE(to_rank, bio::dna4);
-BENCHMARK_TEMPLATE(to_rank, bio::rna4);
-BENCHMARK_TEMPLATE(to_rank, bio::dna5);
-BENCHMARK_TEMPLATE(to_rank, bio::rna5);
-BENCHMARK_TEMPLATE(to_rank, bio::dna15);
-BENCHMARK_TEMPLATE(to_rank, bio::rna15);
-BENCHMARK_TEMPLATE(to_rank, bio::aa20);
-BENCHMARK_TEMPLATE(to_rank, bio::aa27);
-BENCHMARK_TEMPLATE(to_rank, bio::phred42);
-BENCHMARK_TEMPLATE(to_rank, bio::phred63);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::gap);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::dna4);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::rna4);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::dna5);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::rna5);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::dna15);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::rna15);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::aa20);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::aa27);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::phred42);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::phred63);
 /* adaptations */
 BENCHMARK_TEMPLATE(to_rank, char);
 BENCHMARK_TEMPLATE(to_rank, char32_t);
 /* alphabet variant */
-BENCHMARK_TEMPLATE(to_rank, bio::gapped<bio::dna4>);
-BENCHMARK_TEMPLATE(to_rank, bio::alphabet_variant<bio::gap, bio::dna4, bio::dna5, bio::dna15,
-                                                     bio::rna15, bio::rna4, bio::rna5>);
-BENCHMARK_TEMPLATE(to_rank, bio::alphabet_variant<bio::dna4, char>);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::gapped<bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::alphabet_variant<bio::alphabet::gap, bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::dna15,
+                                                     bio::alphabet::rna15, bio::alphabet::rna4, bio::alphabet::rna5>);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::alphabet_variant<bio::alphabet::dna4, char>);
 /* alphabet tuple */
-BENCHMARK_TEMPLATE(to_rank, bio::masked<bio::dna4>);
-BENCHMARK_TEMPLATE(to_rank, bio::qualified<bio::dna4, bio::phred42>);
-BENCHMARK_TEMPLATE(to_rank, bio::qualified<bio::dna5, bio::phred63>);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::masked<bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>);
+BENCHMARK_TEMPLATE(to_rank, bio::alphabet::qualified<bio::alphabet::dna5, bio::alphabet::phred63>);
 
 #if BIOCPP_HAS_SEQAN2
 template <typename alphabet_t>

@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Joshua Kim <joshua.kim AT fu-berlin.de>
- * \brief Provides bio::aa20, container aliases and string literals.
+ * \brief Provides bio::alphabet::aa20, container aliases and string literals.
  */
 
 #pragma once
@@ -19,14 +19,14 @@
 #include <bio/alphabet/aminoacid/concept.hpp>
 #include <bio/alphabet/detail/to_lower.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief The canonical amino acid alphabet.
  * \ingroup aminoacid
- * \implements bio::aminoacid_alphabet
- * \implements bio::writable_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::aminoacid_alphabet
+ * \implements bio::alphabet::writable_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -65,9 +65,9 @@ private:
     //!\brief The base class.
     using base_t = aminoacid_base<aa20, 20>;
 
-    //!\brief Befriend bio::aminoacid_base.
+    //!\brief Befriend bio::alphabet::aminoacid_base.
     friend base_t;
-    //!\cond \brief Befriend bio::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -125,35 +125,35 @@ protected:
     ();
 };
 
-} // namespace bio
+} // namespace bio::alphabet
 
 // ------------------------------------------------------------------
 // containers
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
-//!\brief Alias for an std::vector of bio::aa20.
+//!\brief Alias for an std::vector of bio::alphabet::aa20.
 //!\relates aa20
 using aa20_vector = std::vector<aa20>;
 
-} // namespace bio
+} // namespace bio::alphabet
 
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Literals
  * \{
  */
 
-/*!\brief The bio::aa20 char literal.
+/*!\brief The bio::alphabet::aa20 char literal.
  * \param[in] c The character to assign.
- * \relates bio::aa20
- * \returns bio::aa20
+ * \relates bio::alphabet::aa20
+ * \returns bio::alphabet::aa20
  *
  * \include test/snippet/alphabet/aminoacid/aa20_char_literal.cpp
  *
@@ -163,18 +163,18 @@ constexpr aa20 operator""_aa20(char const c) noexcept
     return aa20{}.assign_char(c);
 }
 
-/*!\brief The bio::aa20  string literal.
+/*!\brief The bio::alphabet::aa20  string literal.
  * \param[in] s A pointer to the character string to assign.
  * \param[in] n The size of the character string to assign.
- * \relates bio::aa20
- * \returns bio::aa20_vector
+ * \relates bio::alphabet::aa20
+ * \returns bio::alphabet::aa20_vector
  *
  * You can use this string literal to easily assign to aa20_vector:
  *
  * \include test/snippet/alphabet/aminoacid/aa20_literal.cpp
  *
  * \attention
- * All BioC++ literals are in the namespace bio!
+ * All BioC++ literals are in the namespace bio::alphabet!
  */
 
 inline aa20_vector operator""_aa20(char const * s, std::size_t n)
@@ -189,4 +189,4 @@ inline aa20_vector operator""_aa20(char const * s, std::size_t n)
 }
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet

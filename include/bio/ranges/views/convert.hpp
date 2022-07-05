@@ -53,7 +53,7 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | <i>lost</i>¹                    |
  * | bio::ranges::const_iterable_range     |                                       | *preserved*                     |
  * |                                  |                                       |                                 |
- * | std::ranges::range_reference_t   | bio::convertible_to<out_t>         | `out_t`                         |
+ * | std::ranges::range_reference_t   | bio::alphabet::convertible_to<out_t>         | `out_t`                         |
  *
  * ¹ These are preserved if `out_t` is the same as `std::ranges::range_reference_t<urng_t>`, i.e. no conversion
  * takes place.
@@ -65,7 +65,7 @@ namespace bio::ranges::views
  * Convert from `int` to `bool`:
  * \include test/snippet/ranges/views/convert_int_to_bool.cpp
  *
- * Convert from bio::dna15 to bio::dna5:
+ * Convert from bio::alphabet::dna15 to bio::alphabet::dna5:
  * \include test/snippet/ranges/views/convert_15_to_5.cpp
  * \hideinitializer
  */

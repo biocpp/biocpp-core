@@ -21,7 +21,7 @@ void store(std::vector<int16_t> const & data, bio::test::tmp_filename & tmp_file
 int main()
 {
     // The following example is for an std::vector but any bio data structure that is documented as serialisable
-    // could be used, e.g. bio::fm_index.
+    // could be used, e.g. bio::alphabet::fm_index.
     bio::test::tmp_filename tmp_file{"data.out"}; // This is a temporary file, use any other filename.
 
     std::vector<int16_t> vec{1,2,3,4};

@@ -18,25 +18,27 @@
 #include <bio/test/expect_range_eq.hpp>
 #include <ranges>
 
-using bio::operator""_dna5;
+using bio::alphabet::operator""_dna5;
 
 TEST(view_char_to, basic)
 {
-    std::string      vec{"ACTTTGATA"};
-    bio::dna5_vector cmp{"ACTTTGATA"_dna5};
+    std::string                vec{"ACTTTGATA"};
+    bio::alphabet::dna5_vector cmp{"ACTTTGATA"_dna5};
 
     // pipe notation
-    bio::dna5_vector v = vec | bio::ranges::views::char_to<bio::dna5> | bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna5_vector v =
+      vec | bio::ranges::views::char_to<bio::alphabet::dna5> | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmp, v);
 
     // function notation
-    bio::dna5_vector v2(bio::ranges::views::char_to<bio::dna5>(vec) | bio::ranges::views::to<std::vector>());
+    bio::alphabet::dna5_vector v2(bio::ranges::views::char_to<bio::alphabet::dna5>(vec) |
+                                  bio::ranges::views::to<std::vector>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
-    bio::dna5_vector cmp2{"ATAGTTTCA"_dna5};
-    bio::dna5_vector v3 =
-      vec | bio::ranges::views::char_to<bio::dna5> | std::views::reverse | bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna5_vector cmp2{"ATAGTTTCA"_dna5};
+    bio::alphabet::dna5_vector v3 = vec | bio::ranges::views::char_to<bio::alphabet::dna5> | std::views::reverse |
+                                    bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmp2, v3);
 }
 
@@ -44,8 +46,8 @@ TEST(view_char_to, deep_view)
 {
     std::vector<std::string> foo{"ACGTA", "TGCAT"};
 
-    std::vector<bio::dna5_vector> v =
-      foo | bio::ranges::views::char_to<bio::dna5> | bio::ranges::views::to<std::vector<bio::dna5_vector>>();
+    std::vector<bio::alphabet::dna5_vector> v = foo | bio::ranges::views::char_to<bio::alphabet::dna5> |
+                                                bio::ranges::views::to<std::vector<bio::alphabet::dna5_vector>>();
 
     ASSERT_EQ(size(v), 2u);
     EXPECT_RANGE_EQ(v[0], "ACGTA"_dna5);
@@ -65,7 +67,7 @@ TEST(view_char_to, concepts)
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(vec), char>));
 
-    auto v1 = vec | bio::ranges::views::char_to<bio::dna5>;
+    auto v1 = vec | bio::ranges::views::char_to<bio::alphabet::dna5>;
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);
@@ -74,6 +76,6 @@ TEST(view_char_to, concepts)
     EXPECT_TRUE(std::ranges::sized_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(v1)>);
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(v1)>);
-    EXPECT_FALSE((std::ranges::output_range<decltype(v1), bio::dna5>));
+    EXPECT_FALSE((std::ranges::output_range<decltype(v1), bio::alphabet::dna5>));
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), char>));
 }

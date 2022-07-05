@@ -31,7 +31,7 @@ struct trim_fn
     template <typename threshold_t>
     constexpr auto operator()(threshold_t const threshold) const
     {
-        static_assert(quality_alphabet<threshold_t> || std::integral<threshold_t>,
+        static_assert(alphabet::quality_alphabet<threshold_t> || std::integral<threshold_t>,
                       "The threshold must either be a quality alphabet or an integral type "
                       "in which case it is compared with the underlying phred type.");
 
@@ -46,8 +46,8 @@ struct trim_fn
     template <std::ranges::input_range irng_t, typename threshold_t>
     constexpr auto operator()(irng_t && irange, threshold_t const threshold) const
     {
-        static_assert(quality_alphabet<std::remove_reference_t<std::ranges::range_reference_t<irng_t>>>,
-                      "views::trim_quality can only operate on ranges over bio::quality_alphabet.");
+        static_assert(alphabet::quality_alphabet<std::ranges::range_reference_t<irng_t>>,
+                      "views::trim_quality can only operate on ranges over bio::alphabet::quality_alphabet.");
         static_assert(
           std::same_as<std::remove_cvref_t<threshold_t>, std::remove_cvref_t<std::ranges::range_reference_t<irng_t>>> ||
             std::integral<std::remove_cvref_t<threshold_t>>,
@@ -61,12 +61,12 @@ struct trim_fn
               if constexpr (std::same_as<std::remove_cvref_t<threshold_t>,
                                          std::remove_cvref_t<std::ranges::range_reference_t<irng_t>>>)
               {
-                  return to_phred(value) >= to_phred(threshold);
+                  return alphabet::to_phred(value) >= alphabet::to_phred(threshold);
               }
               else
               {
-                  using c_t = std::common_type_t<decltype(to_phred(value)), threshold_t>;
-                  return static_cast<c_t>(to_phred(value)) >= static_cast<c_t>(threshold);
+                  using c_t = std::common_type_t<decltype(alphabet::to_phred(value)), threshold_t>;
+                  return static_cast<c_t>(alphabet::to_phred(value)) >= static_cast<c_t>(threshold);
               }
           });
     }
@@ -81,10 +81,10 @@ namespace bio::ranges::views
  * \{
  */
 
-/*!\brief               A view that does quality-threshold trimming on a range of bio::quality_alphabet.
+/*!\brief               A view that does quality-threshold trimming on a range of bio::alphabet::quality_alphabet.
  * \tparam urng_t       The type of the range being processed. See below for requirements.
  * \tparam threshold_t  Either std::ranges::range_value_t<urng_t> or
- *                      bio::alphabet_phred_t<std::ranges::range_value_t<urng_t>>.
+ *                      bio::alphabet::alphabet_phred_t<std::ranges::range_value_t<urng_t>>.
  * \param[in] urange    The range being processed. [parameter is omitted in pipe notation]
  * \param[in] threshold The minimum quality.
  * \returns             A trimmed range. See below for the properties of the returned range.
@@ -114,16 +114,16 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *preserved*                            |
  * | bio::ranges::const_iterable_range     |                                       | *preserved*                            |
  * |                                  |                                       |                                        |
- * | std::ranges::range_reference_t   | bio::quality_alphabet              | std::ranges::range_reference_t<urng_t> |
+ * | std::ranges::range_reference_t   | bio::alphabet::quality_alphabet              | std::ranges::range_reference_t<urng_t> |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
  * ###Example
  *
- * Operating on a range of bio::phred42:
+ * Operating on a range of bio::alphabet::phred42:
  * \include test/snippet/ranges/views/trim_phred42.cpp
  *
- * Or operating on a range of bio::dna5q:
+ * Or operating on a range of bio::alphabet::dna5q:
  * \include test/snippet/ranges/views/trim_dna5q.cpp
  * \hideinitializer
  */

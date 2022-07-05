@@ -15,13 +15,13 @@
 #include <bio/alphabet/aminoacid/aa10murphy.hpp>
 #include <bio/ranges/views/zip.hpp>
 
-using bio::operator""_aa10murphy;
+using bio::alphabet::operator""_aa10murphy;
 
-INSTANTIATE_TYPED_TEST_SUITE_P(aa10murphy, alphabet, bio::aa10murphy, );
-INSTANTIATE_TYPED_TEST_SUITE_P(aa10murphy, semi_alphabet_test, bio::aa10murphy, );
-INSTANTIATE_TYPED_TEST_SUITE_P(aa10murphy, alphabet_constexpr, bio::aa10murphy, );
-INSTANTIATE_TYPED_TEST_SUITE_P(aa10murphy, semi_alphabet_constexpr, bio::aa10murphy, );
-INSTANTIATE_TYPED_TEST_SUITE_P(aa10murphy, aminoacid, bio::aa10murphy, );
+INSTANTIATE_TYPED_TEST_SUITE_P(aa10murphy, alphabet, bio::alphabet::aa10murphy, );
+INSTANTIATE_TYPED_TEST_SUITE_P(aa10murphy, semi_alphabet_test, bio::alphabet::aa10murphy, );
+INSTANTIATE_TYPED_TEST_SUITE_P(aa10murphy, alphabet_constexpr, bio::alphabet::aa10murphy, );
+INSTANTIATE_TYPED_TEST_SUITE_P(aa10murphy, semi_alphabet_constexpr, bio::alphabet::aa10murphy, );
+INSTANTIATE_TYPED_TEST_SUITE_P(aa10murphy, aminoacid, bio::alphabet::aa10murphy, );
 
 TEST(aa10murphy, assign_char)
 {
@@ -29,7 +29,7 @@ TEST(aa10murphy, assign_char)
                             'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
                             'X', 'Y', 'Z', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '*', '!'};
 
-    std::vector<bio::aa10murphy> alphabets{
+    std::vector<bio::alphabet::aa10murphy> alphabets{
       'A'_aa10murphy, 'B'_aa10murphy, 'C'_aa10murphy, 'B'_aa10murphy, 'B'_aa10murphy, 'F'_aa10murphy, 'G'_aa10murphy,
       'H'_aa10murphy, 'I'_aa10murphy, 'I'_aa10murphy, 'K'_aa10murphy, 'I'_aa10murphy, 'I'_aa10murphy, 'A'_aa10murphy,
       'B'_aa10murphy, 'C'_aa10murphy, 'B'_aa10murphy, 'B'_aa10murphy, 'F'_aa10murphy, 'G'_aa10murphy, 'H'_aa10murphy,
@@ -40,7 +40,7 @@ TEST(aa10murphy, assign_char)
       'S'_aa10murphy, 'F'_aa10murphy, 'B'_aa10murphy, 'F'_aa10murphy, 'S'_aa10murphy};
 
     for (auto [chr, alp] : bio::ranges::views::zip(chars, alphabets))
-        EXPECT_EQ((bio::assign_char_to(chr, bio::aa10murphy{})), alp);
+        EXPECT_EQ((bio::alphabet::assign_char_to(chr, bio::alphabet::aa10murphy{})), alp);
 }
 
 TEST(aa10murphy, to_char)
@@ -48,14 +48,14 @@ TEST(aa10murphy, to_char)
     std::vector<char> chars{'A', 'C', 'B', 'B', 'F', 'G', 'H', 'I', 'K', 'I', 'I', 'B', 'P',
                             'B', 'K', 'S', 'S', 'I', 'F', 'F', 'B', 'I', 'K', 'C', 'S', 'B'};
 
-    std::vector<bio::aa10murphy> alphabets{
+    std::vector<bio::alphabet::aa10murphy> alphabets{
       'A'_aa10murphy, 'C'_aa10murphy, 'D'_aa10murphy, 'E'_aa10murphy, 'F'_aa10murphy, 'G'_aa10murphy, 'H'_aa10murphy,
       'I'_aa10murphy, 'K'_aa10murphy, 'L'_aa10murphy, 'M'_aa10murphy, 'N'_aa10murphy, 'P'_aa10murphy, 'Q'_aa10murphy,
       'R'_aa10murphy, 'S'_aa10murphy, 'T'_aa10murphy, 'V'_aa10murphy, 'W'_aa10murphy, 'Y'_aa10murphy, 'B'_aa10murphy,
       'J'_aa10murphy, 'O'_aa10murphy, 'U'_aa10murphy, 'X'_aa10murphy, 'Z'_aa10murphy};
 
     for (auto [chr, alp] : bio::ranges::views::zip(chars, alphabets))
-        EXPECT_EQ(bio::to_char(alp), chr);
+        EXPECT_EQ(bio::alphabet::to_char(alp), chr);
 }
 
 // ------------------------------------------------------------------
@@ -64,37 +64,37 @@ TEST(aa10murphy, to_char)
 
 TEST(literals, char_literal)
 {
-    EXPECT_EQ(bio::to_char('A'_aa10murphy), 'A');
-    EXPECT_EQ(bio::to_char('B'_aa10murphy), 'B');
-    EXPECT_EQ(bio::to_char('C'_aa10murphy), 'C');
-    EXPECT_EQ(bio::to_char('F'_aa10murphy), 'F');
-    EXPECT_EQ(bio::to_char('G'_aa10murphy), 'G');
-    EXPECT_EQ(bio::to_char('H'_aa10murphy), 'H');
-    EXPECT_EQ(bio::to_char('I'_aa10murphy), 'I');
-    EXPECT_EQ(bio::to_char('K'_aa10murphy), 'K');
-    EXPECT_EQ(bio::to_char('P'_aa10murphy), 'P');
-    EXPECT_EQ(bio::to_char('S'_aa10murphy), 'S');
+    EXPECT_EQ(bio::alphabet::to_char('A'_aa10murphy), 'A');
+    EXPECT_EQ(bio::alphabet::to_char('B'_aa10murphy), 'B');
+    EXPECT_EQ(bio::alphabet::to_char('C'_aa10murphy), 'C');
+    EXPECT_EQ(bio::alphabet::to_char('F'_aa10murphy), 'F');
+    EXPECT_EQ(bio::alphabet::to_char('G'_aa10murphy), 'G');
+    EXPECT_EQ(bio::alphabet::to_char('H'_aa10murphy), 'H');
+    EXPECT_EQ(bio::alphabet::to_char('I'_aa10murphy), 'I');
+    EXPECT_EQ(bio::alphabet::to_char('K'_aa10murphy), 'K');
+    EXPECT_EQ(bio::alphabet::to_char('P'_aa10murphy), 'P');
+    EXPECT_EQ(bio::alphabet::to_char('S'_aa10murphy), 'S');
 
-    EXPECT_EQ(bio::to_char('*'_aa10murphy), 'F');
-    EXPECT_EQ(bio::to_char('!'_aa10murphy), 'S');
+    EXPECT_EQ(bio::alphabet::to_char('*'_aa10murphy), 'F');
+    EXPECT_EQ(bio::alphabet::to_char('!'_aa10murphy), 'S');
 }
 
 TEST(literals, vector)
 {
-    bio::aa10murphy_vector v20;
+    bio::alphabet::aa10murphy_vector v20;
     v20.resize(5, 'D'_aa10murphy);
     EXPECT_EQ(v20, "BBBBB"_aa10murphy);
 
-    std::vector<bio::aa10murphy> w20{'A'_aa10murphy,
-                                     'D'_aa10murphy,
-                                     'J'_aa10murphy,
-                                     'O'_aa10murphy,
-                                     'U'_aa10murphy,
-                                     'X'_aa10murphy,
-                                     'R'_aa10murphy,
-                                     '!'_aa10murphy,
-                                     '*'_aa10murphy,
-                                     '*'_aa10murphy};
+    std::vector<bio::alphabet::aa10murphy> w20{'A'_aa10murphy,
+                                               'D'_aa10murphy,
+                                               'J'_aa10murphy,
+                                               'O'_aa10murphy,
+                                               'U'_aa10murphy,
+                                               'X'_aa10murphy,
+                                               'R'_aa10murphy,
+                                               '!'_aa10murphy,
+                                               '*'_aa10murphy,
+                                               '*'_aa10murphy};
     EXPECT_EQ(w20, "ABIKCSKSF*"_aa10murphy);
 }
 
@@ -146,6 +146,6 @@ TEST(aa10murphy, char_is_valid)
                 break;
         }
 
-        EXPECT_EQ(bio::aa10murphy::char_is_valid(c), expect);
+        EXPECT_EQ(bio::alphabet::aa10murphy::char_is_valid(c), expect);
     }
 }

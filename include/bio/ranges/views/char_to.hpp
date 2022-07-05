@@ -28,7 +28,7 @@ namespace bio::ranges::views
 /*!\brief               A view over an alphabet, given a range of characters.
  * \tparam urng_t       The type of the range being processed. See below for requirements. [template parameter is
  *                      omitted in pipe notation]
- * \tparam alphabet_t   The alphabet to convert to; must satisfy bio::alphabet.
+ * \tparam alphabet_t   The alphabet to convert to; must satisfy bio::alphabet::alphabet.
  * \param[in] urange    The range being processed. [parameter is omitted in pipe notation]
  * \returns             A range of converted elements. See below for the properties of the returned range.
  * \ingroup views
@@ -57,7 +57,7 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *lost*                                             |
  * | bio::ranges::const_iterable_range     |                                       | *preserved*                                        |
  * |                                  |                                       |                                                    |
- * | std::ranges::range_reference_t   | bio::alphabet_char_t<alphabet_t>   | `alphabet_t`                                       |
+ * | std::ranges::range_reference_t   | bio::alphabet::alphabet_char_t<alphabet_t>   | `alphabet_t`                                       |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
@@ -66,14 +66,14 @@ namespace bio::ranges::views
  * \include test/snippet/ranges/views/char_to.cpp
  * \hideinitializer
  */
-template <alphabet alphabet_type>
+template <alphabet::alphabet alphabet_type>
 inline auto const char_to = deep{std::views::transform(
   [](auto && in)
   {
-      static_assert(std::common_reference_with<decltype(in), alphabet_char_t<alphabet_type>>,
+      static_assert(std::common_reference_with<decltype(in), alphabet::alphabet_char_t<alphabet_type>>,
                     "The innermost value type must have a common reference to underlying char type of alphabet_type.");
       // call element-wise assign_char from the alphabet
-      return assign_char_to(in, alphabet_type{});
+      return alphabet::assign_char_to(in, alphabet_type{});
   })};
 
 //!\}

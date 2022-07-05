@@ -35,9 +35,10 @@ TEST(range_concept, forward_range)
 
     EXPECT_TRUE((std::ranges::forward_range<bio::ranges::concatenated_sequences<std::string>>));
     EXPECT_TRUE((std::ranges::forward_range<bio::ranges::concatenated_sequences<std::vector<char>>>));
-    EXPECT_TRUE((std::ranges::forward_range<bio::ranges::bitcompressed_vector<bio::dna4>>));
+    EXPECT_TRUE((std::ranges::forward_range<bio::ranges::bitcompressed_vector<bio::alphabet::dna4>>));
     EXPECT_TRUE(
-      (std::ranges::forward_range<bio::ranges::bitcompressed_vector<bio::qualified<bio::dna4, bio::phred42>>>));
+      (std::ranges::forward_range<
+        bio::ranges::bitcompressed_vector<bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>>>));
 }
 
 TEST(container, container)
@@ -95,7 +96,8 @@ TEST(container, reservible_container)
     EXPECT_TRUE((bio::ranges::detail::reservible_container<sdsl::int_vector<>>));
     EXPECT_TRUE((bio::ranges::detail::reservible_container<sdsl::int_vector<13>>));
     EXPECT_TRUE((bio::ranges::detail::reservible_container<sdsl::int_vector<64>>));
-    EXPECT_TRUE((bio::ranges::detail::reservible_container<bio::ranges::bitcompressed_vector<bio::dna4>>));
-    EXPECT_TRUE((bio::ranges::detail::reservible_container<
-                 bio::ranges::bitcompressed_vector<bio::qualified<bio::dna4, bio::phred42>>>));
+    EXPECT_TRUE((bio::ranges::detail::reservible_container<bio::ranges::bitcompressed_vector<bio::alphabet::dna4>>));
+    EXPECT_TRUE(
+      (bio::ranges::detail::reservible_container<
+        bio::ranges::bitcompressed_vector<bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>>>));
 }

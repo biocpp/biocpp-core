@@ -18,7 +18,8 @@
 template <typename T>
 using aminoacid_conversion = ::testing::Test;
 
-using aminoacid_types       = bio::meta::type_list<bio::aa10li, bio::aa10murphy, bio::aa20, bio::aa27>;
+using aminoacid_types =
+  bio::meta::type_list<bio::alphabet::aa10li, bio::alphabet::aa10murphy, bio::alphabet::aa20, bio::alphabet::aa27>;
 using aminoacid_gtest_types = bio::meta::transfer_template_args_onto_t<aminoacid_types, ::testing::Types>;
 
 TYPED_TEST_SUITE(aminoacid_conversion, aminoacid_gtest_types, );
@@ -37,7 +38,7 @@ TYPED_TEST(aminoacid_conversion, explicit_conversion)
         EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('K')), out_type{}.assign_char('K'));
         EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('P')), out_type{}.assign_char('P'));
 
-        if (std::is_same_v<TypeParam, bio::aa27>)
+        if (std::is_same_v<TypeParam, bio::alphabet::aa27>)
         {
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('D')), out_type{}.assign_char('D'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('E')), out_type{}.assign_char('E'));
@@ -60,7 +61,7 @@ TYPED_TEST(aminoacid_conversion, explicit_conversion)
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('*')), out_type{}.assign_char('*'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('!')), out_type{}.assign_char('!'));
         }
-        else if (std::is_same_v<TypeParam, bio::aa20>)
+        else if (std::is_same_v<TypeParam, bio::alphabet::aa20>)
         {
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('D')), out_type{}.assign_char('D'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('E')), out_type{}.assign_char('E'));
@@ -83,7 +84,7 @@ TYPED_TEST(aminoacid_conversion, explicit_conversion)
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('*')), out_type{}.assign_char('W'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('!')), out_type{}.assign_char('S'));
         }
-        else if (std::is_same_v<TypeParam, bio::aa10murphy>)
+        else if (std::is_same_v<TypeParam, bio::alphabet::aa10murphy>)
         {
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('D')), out_type{}.assign_char('B'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('E')), out_type{}.assign_char('B'));
@@ -105,7 +106,7 @@ TYPED_TEST(aminoacid_conversion, explicit_conversion)
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('*')), out_type{}.assign_char('F'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('!')), out_type{}.assign_char('S'));
         }
-        else if (std::is_same_v<TypeParam, bio::aa10li>)
+        else if (std::is_same_v<TypeParam, bio::alphabet::aa10li>)
         {
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('D')), out_type{}.assign_char('B'));
             EXPECT_EQ(static_cast<out_type>(TypeParam{}.assign_char('E')), out_type{}.assign_char('B'));

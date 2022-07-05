@@ -50,7 +50,7 @@ class combined_adaptor;
  *   * Storage of args, including perfect forwarding and moving-out.
  *   * `operator()` that takes a range and passes the range and stored args to the derived_type.
  *   * `operator|` that also takes a range and passes the range and stored args to the derived_type.
- *   * `operator|` that takes another adaptor and returns bio::detail::combined_adaptor
+ *   * `operator|` that takes another adaptor and returns bio::ranges::detail::combined_adaptor
  *
  * # Examples
  *
@@ -67,7 +67,7 @@ class combined_adaptor;
  *
  * ## Derived templates
  *
- * * `bio::detail::combined_adaptor` : Combine two adaptor closure objects into a new one.
+ * * `bio::ranges::detail::combined_adaptor` : Combine two adaptor closure objects into a new one.
  * * `bio::ranges::detail::adaptor_for_view_without_args` : Create an adaptor closure object for a view that doesn't require
  *   args.
  * * `bio::ranges::detail::adaptor_from_functor` : Create an adaptor closure object with possibly stored arguments that
@@ -148,7 +148,7 @@ public:
      *
      * If the LHS models std::ranges::input_range this functions delegates to operator()
      * otherwise it assumes the LHS is another range adaptor closure object and it
-     * returns a bio::detail::combined_adaptor that wraps that adaptor and this one.
+     * returns a bio::ranges::detail::combined_adaptor that wraps that adaptor and this one.
      */
     template <typename arg_t>
     constexpr friend auto operator|(arg_t && arg, derived_type const & me)
@@ -177,7 +177,7 @@ public:
      * \details
      *
      * This operator assumes that the RHS is another range adaptor closure object and it
-     * returns a bio::detail::combined_adaptor that wraps that adaptor and this one.
+     * returns a bio::ranges::detail::combined_adaptor that wraps that adaptor and this one.
      *
      * Note that this operator takes adaptor_base and not derived_type as parameter type
      * so that an implicit conversion is required for invoking this function.

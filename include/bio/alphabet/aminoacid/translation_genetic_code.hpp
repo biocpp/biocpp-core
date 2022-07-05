@@ -13,9 +13,9 @@
 
 #pragma once
 
-#include <bio/meta/platform.hpp>
+#include <bio/alphabet/biocpp.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 /*!\brief Genetic codes used for translation of nucleotides into amino acids.
  *
@@ -45,4 +45,4 @@ enum struct genetic_code : uint8_t
     //     PTEROBRANCHIA_MITOCHONDRIAL,
     //     GRACILIBACTERIA
 };
-} // namespace bio
+} // namespace bio::alphabet

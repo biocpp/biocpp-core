@@ -11,9 +11,9 @@ inline auto const deep_take1 = bio::views::deep{std::views::take(1)};
 
 int main()
 {
-    using bio::operator""_dna5;
+    using bio::alphabet::operator""_dna5;
 
-    std::vector<bio::dna5_vector> foo{"AAATTT"_dna5, "CCCGGG"_dna5};
+    std::vector<bio::alphabet::dna5_vector> foo{"AAATTT"_dna5, "CCCGGG"_dna5};
 
     auto t = foo | std::views::take(1);                      // == [ [A,A,A,T,T,T] ]
 

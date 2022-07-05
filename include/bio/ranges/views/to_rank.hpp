@@ -24,7 +24,7 @@ namespace bio::ranges::views
  * \{
  */
 
-/*!\brief               A view that calls bio::to_rank() on each element in the input range.
+/*!\brief               A view that calls bio::alphabet::to_rank() on each element in the input range.
  * \tparam urng_t       The type of the range being processed. See below for requirements. [template parameter is
  *                      omitted in pipe notation]
  * \param[in] urange    The range being processed. [parameter is omitted in pipe notation]
@@ -55,21 +55,22 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *lost*                                                        |
  * | bio::ranges::const_iterable_range     |                                       | *preserved*                                                   |
  * |                                  |                                       |                                                               |
- * | std::ranges::range_reference_t   | bio::alphabet                      | bio::alphabet_rank_t<std::ranges::range_value_t<urng_t>>   |
+ * | std::ranges::range_reference_t   | bio::alphabet::alphabet                      | bio::alphabet::alphabet_rank_t<std::ranges::range_value_t<urng_t>>   |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
  * ###Example
  * \include test/snippet/ranges/views/range_view_to_rank.cpp
- * We also convert to unsigned here, because the bio::alphabet_rank_t is often `uint8_t` which is
+ * We also convert to unsigned here, because the bio::alphabet::alphabet_rank_t is often `uint8_t` which is
  * often implemented as `unsigned char` and thus will not be printed as a number by default.
  * \hideinitializer
  */
 inline auto const to_rank = deep{std::views::transform(
   [](auto const in) noexcept
   {
-      static_assert(semialphabet<decltype(in)>, "The value type of bio::views::to_rank must model the bio::alphabet.");
-      return bio::to_rank(in);
+      static_assert(alphabet::semialphabet<decltype(in)>,
+                    "The value type of bio::views::to_rank must model the bio::alphabet::alphabet.");
+      return bio::alphabet::to_rank(in);
   })};
 
 //!\}

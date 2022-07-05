@@ -2,9 +2,9 @@
 
 int main()
 {
-    using bio::operator""_rna5;
-    
-    bio::rna5_vector foo{"ACGTTA"_rna5};
-    bio::rna5_vector bar = "ACGTTA"_rna5;
+    using bio::alphabet::operator""_rna5;
+
+    bio::alphabet::rna5_vector foo{"ACGTTA"_rna5};
+    bio::alphabet::rna5_vector bar = "ACGTTA"_rna5;
     auto bax = "ACGTTA"_rna5;
 }

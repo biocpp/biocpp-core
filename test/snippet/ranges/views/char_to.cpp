@@ -7,6 +7,6 @@
 int main()
 {
     std::string s{"ACTTTGATAN"};
-    auto v1 = s | bio::views::char_to<bio::dna4>; // == "ACTTTGATAA"_dna4
-    auto v2 = s | bio::views::char_to<bio::dna5>; // == "ACTTTGATAN"_dna5
+    auto v1 = s | bio::views::char_to<bio::alphabet::dna4>; // == "ACTTTGATAA"_dna4
+    auto v2 = s | bio::views::char_to<bio::alphabet::dna5>; // == "ACTTTGATAN"_dna5
 }

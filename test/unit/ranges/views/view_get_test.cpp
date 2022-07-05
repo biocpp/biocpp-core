@@ -20,35 +20,39 @@
 #include <bio/ranges/views/zip.hpp>
 #include <ranges>
 
-using bio::operator""_dna4;
+using bio::alphabet::operator""_dna4;
 
 TEST(view_get, basic)
 {
     // TODO remove const-ness from input vector once alphabet_proxy's complement doesnt cause ICE
-    std::vector<bio::dna4q> const qv{
-      {'A'_dna4, bio::phred42{0}},
-      {'C'_dna4, bio::phred42{1}},
-      {'G'_dna4, bio::phred42{2}},
-      {'T'_dna4, bio::phred42{3}}
+    std::vector<bio::alphabet::dna4q> const qv{
+      {'A'_dna4, bio::alphabet::phred42{0}},
+      {'C'_dna4, bio::alphabet::phred42{1}},
+      {'G'_dna4, bio::alphabet::phred42{2}},
+      {'T'_dna4, bio::alphabet::phred42{3}}
     };
-    bio::dna4_vector          cmp0{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
-    std::vector<bio::phred42> cmp1{bio::phred42{0}, bio::phred42{1}, bio::phred42{2}, bio::phred42{3}};
+    bio::alphabet::dna4_vector          cmp0{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
+    std::vector<bio::alphabet::phred42> cmp1{bio::alphabet::phred42{0},
+                                             bio::alphabet::phred42{1},
+                                             bio::alphabet::phred42{2},
+                                             bio::alphabet::phred42{3}};
 
     //functor
-    bio::dna4_vector          functor0 = bio::ranges::views::get<0>(qv) | bio::ranges::views::to<std::vector>();
-    std::vector<bio::phred42> functor1 = bio::ranges::views::get<1>(qv) | bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna4_vector functor0 = bio::ranges::views::get<0>(qv) | bio::ranges::views::to<std::vector>();
+    std::vector<bio::alphabet::phred42> functor1 =
+      bio::ranges::views::get<1>(qv) | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmp0, functor0);
     EXPECT_EQ(cmp1, functor1);
 
     // pipe notation
-    bio::dna4_vector          pipe0 = qv | bio::ranges::views::get<0> | bio::ranges::views::to<std::vector>();
-    std::vector<bio::phred42> pipe1 = qv | bio::ranges::views::get<1> | bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna4_vector          pipe0 = qv | bio::ranges::views::get<0> | bio::ranges::views::to<std::vector>();
+    std::vector<bio::alphabet::phred42> pipe1 = qv | bio::ranges::views::get<1> | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmp0, pipe0);
     EXPECT_EQ(cmp1, pipe1);
 
     // combinability
-    bio::dna4_vector cmp2{"TGCA"_dna4};
-    bio::dna4_vector comp =
+    bio::alphabet::dna4_vector cmp2{"TGCA"_dna4};
+    bio::alphabet::dna4_vector comp =
       qv | bio::ranges::views::get<0> | bio::ranges::views::complement | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmp2, comp);
 
@@ -57,75 +61,83 @@ TEST(view_get, basic)
     EXPECT_EQ(cmp3, to_char_test);
 
     // reference return check
-    functor1[0] = bio::phred42{4};
-    std::vector<bio::phred42> cmp4{bio::phred42{4}, bio::phred42{1}, bio::phred42{2}, bio::phred42{3}};
+    functor1[0] = bio::alphabet::phred42{4};
+    std::vector<bio::alphabet::phred42> cmp4{bio::alphabet::phred42{4},
+                                             bio::alphabet::phred42{1},
+                                             bio::alphabet::phred42{2},
+                                             bio::alphabet::phred42{3}};
     EXPECT_EQ(cmp4, functor1);
 }
 
 TEST(view_get, advanced)
 {
     // TODO remove const-ness from input vector once alphabet_proxy inherits it's alphabet
-    std::vector<bio::qualified<bio::masked<bio::dna4>, bio::phred42>> const t{
-      {  {'A'_dna4, bio::mask::MASKED}, bio::phred42{0}},
-      {{'C'_dna4, bio::mask::UNMASKED}, bio::phred42{1}},
-      {  {'G'_dna4, bio::mask::MASKED}, bio::phred42{2}},
-      {{'T'_dna4, bio::mask::UNMASKED}, bio::phred42{3}}
+    std::vector<bio::alphabet::qualified<bio::alphabet::masked<bio::alphabet::dna4>, bio::alphabet::phred42>> const t{
+      {  {'A'_dna4, bio::alphabet::mask::MASKED}, bio::alphabet::phred42{0}},
+      {{'C'_dna4, bio::alphabet::mask::UNMASKED}, bio::alphabet::phred42{1}},
+      {  {'G'_dna4, bio::alphabet::mask::MASKED}, bio::alphabet::phred42{2}},
+      {{'T'_dna4, bio::alphabet::mask::UNMASKED}, bio::alphabet::phred42{3}}
     };
 
     // functor notation
-    std::vector<bio::masked<bio::dna4>> cmp0{
-      {'A'_dna4,   bio::mask::MASKED},
-      {'C'_dna4, bio::mask::UNMASKED},
-      {'G'_dna4,   bio::mask::MASKED},
-      {'T'_dna4, bio::mask::UNMASKED}
+    std::vector<bio::alphabet::masked<bio::alphabet::dna4>> cmp0{
+      {'A'_dna4,   bio::alphabet::mask::MASKED},
+      {'C'_dna4, bio::alphabet::mask::UNMASKED},
+      {'G'_dna4,   bio::alphabet::mask::MASKED},
+      {'T'_dna4, bio::alphabet::mask::UNMASKED}
     };
-    std::vector<bio::masked<bio::dna4>> functor0 =
+    std::vector<bio::alphabet::masked<bio::alphabet::dna4>> functor0 =
       bio::ranges::views::get<0>(t) | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmp0, functor0);
 
-    std::vector<bio::phred42> cmp1{bio::phred42{0}, bio::phred42{1}, bio::phred42{2}, bio::phred42{3}};
-    std::vector<bio::phred42> functor1 = bio::ranges::views::get<1>(t) | bio::ranges::views::to<std::vector>();
+    std::vector<bio::alphabet::phred42> cmp1{bio::alphabet::phred42{0},
+                                             bio::alphabet::phred42{1},
+                                             bio::alphabet::phred42{2},
+                                             bio::alphabet::phred42{3}};
+    std::vector<bio::alphabet::phred42> functor1 =
+      bio::ranges::views::get<1>(t) | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmp1, functor1);
 
-    bio::dna4_vector cmp00{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
-    bio::dna4_vector functor00 =
+    bio::alphabet::dna4_vector cmp00{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
+    bio::alphabet::dna4_vector functor00 =
       bio::ranges::views::get<0>(bio::ranges::views::get<0>(t)) | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmp00, functor00);
 
     // pipe notation
-    std::vector<bio::masked<bio::dna4>> pipe0 = t | bio::ranges::views::get<0> | bio::ranges::views::to<std::vector>();
+    std::vector<bio::alphabet::masked<bio::alphabet::dna4>> pipe0 =
+      t | bio::ranges::views::get<0> | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmp0, pipe0);
 
-    std::vector<bio::phred42> pipe1 = t | bio::ranges::views::get<1> | bio::ranges::views::to<std::vector>();
+    std::vector<bio::alphabet::phred42> pipe1 = t | bio::ranges::views::get<1> | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmp1, pipe1);
 
-    bio::dna4_vector pipe00 =
+    bio::alphabet::dna4_vector pipe00 =
       t | bio::ranges::views::get<0> | bio::ranges::views::get<0> | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmp00, pipe00);
 
     // combinability
-    std::vector<bio::masked<bio::dna4>> cmprev{
-      {'T'_dna4, bio::mask::UNMASKED},
-      {'G'_dna4,   bio::mask::MASKED},
-      {'C'_dna4, bio::mask::UNMASKED},
-      {'A'_dna4,   bio::mask::MASKED}
+    std::vector<bio::alphabet::masked<bio::alphabet::dna4>> cmprev{
+      {'T'_dna4, bio::alphabet::mask::UNMASKED},
+      {'G'_dna4,   bio::alphabet::mask::MASKED},
+      {'C'_dna4, bio::alphabet::mask::UNMASKED},
+      {'A'_dna4,   bio::alphabet::mask::MASKED}
     };
-    std::vector<bio::masked<bio::dna4>> revtest =
+    std::vector<bio::alphabet::masked<bio::alphabet::dna4>> revtest =
       t | bio::ranges::views::get<0> | std::views::reverse | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmprev, revtest);
 
-    bio::dna4_vector cmprev2{'T'_dna4, 'G'_dna4, 'C'_dna4, 'A'_dna4};
-    bio::dna4_vector revtest2 = t | bio::ranges::views::get<0> | bio::ranges::views::get<0> | std::views::reverse |
-                                bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna4_vector cmprev2{'T'_dna4, 'G'_dna4, 'C'_dna4, 'A'_dna4};
+    bio::alphabet::dna4_vector revtest2 = t | bio::ranges::views::get<0> | bio::ranges::views::get<0> |
+                                          std::views::reverse | bio::ranges::views::to<std::vector>();
     EXPECT_EQ(cmprev2, revtest2);
 
     // reference check
-    functor0[0] = bio::masked<bio::dna4>{'T'_dna4, bio::mask::UNMASKED};
-    std::vector<bio::masked<bio::dna4>> cmpref{
-      {'T'_dna4, bio::mask::UNMASKED},
-      {'C'_dna4, bio::mask::UNMASKED},
-      {'G'_dna4,   bio::mask::MASKED},
-      {'T'_dna4, bio::mask::UNMASKED}
+    functor0[0] = bio::alphabet::masked<bio::alphabet::dna4>{'T'_dna4, bio::alphabet::mask::UNMASKED};
+    std::vector<bio::alphabet::masked<bio::alphabet::dna4>> cmpref{
+      {'T'_dna4, bio::alphabet::mask::UNMASKED},
+      {'C'_dna4, bio::alphabet::mask::UNMASKED},
+      {'G'_dna4,   bio::alphabet::mask::MASKED},
+      {'T'_dna4, bio::alphabet::mask::UNMASKED}
     };
     EXPECT_EQ(cmpref, functor0);
 }

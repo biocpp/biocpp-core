@@ -17,34 +17,34 @@
 #include <bio/alphabet/nucleotide/concept.hpp>
 #include <bio/alphabet/structure/concept.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 
-/*!\brief A bio::alphabet_tuple_base that joins a nucleotide alphabet with an RNA structure alphabet.
+/*!\brief A bio::alphabet::alphabet_tuple_base that joins a nucleotide alphabet with an RNA structure alphabet.
  * \ingroup structure
- * \implements bio::rna_structure_alphabet
- * \implements bio::nucleotide_alphabet
- * \implements bio::writable_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::rna_structure_alphabet
+ * \implements bio::alphabet::nucleotide_alphabet
+ * \implements bio::alphabet::writable_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
- * \tparam sequence_alphabet_t Type of the first letter; must model bio::writable_alphabet,
- * bio::nucleotide_alphabet and satisfy the requirements on arguments by bio::alphabet_tuple_base.
- * \tparam structure_alphabet_t Types of further letters; must model bio::writable_alphabet,
- * bio::rna_structure_alphabet and satisfy the requirements on arguments by bio::alphabet_tuple_base.
+ * \tparam sequence_alphabet_t Type of the first letter; must model bio::alphabet::writable_alphabet,
+ * bio::alphabet::nucleotide_alphabet and satisfy the requirements on arguments by bio::alphabet::alphabet_tuple_base.
+ * \tparam structure_alphabet_t Types of further letters; must model bio::alphabet::writable_alphabet,
+ * bio::alphabet::rna_structure_alphabet and satisfy the requirements on arguments by bio::alphabet::alphabet_tuple_base.
  *
  * This composite pairs a nucleotide alphabet with a structure alphabet. The rank values
  * correpsond to numeric values in the size of the composite, while the character values
  * are taken from the sequence alphabet and the structure annotation is taken from the structure
  * alphabet.
  *
- * As with all `bio::alphabet_tuple_base` s you may access the individual alphabet letters in
+ * As with all `bio::alphabet::alphabet_tuple_base` s you may access the individual alphabet letters in
  * regular c++ tuple notation, i.e. `get<0>(t)` and objects can be brace-initialized
  * with the individual members.
  *
  * \include test/snippet/alphabet/structure/structured_rna.cpp
  *
- * This bio::alphabet_tuple_base itself models both bio::nucleotide_alphabet and bio::rna_structure_alphabet.
+ * This bio::alphabet::alphabet_tuple_base itself models both bio::alphabet::nucleotide_alphabet and bio::alphabet::rna_structure_alphabet.
  */
 template <nucleotide_alphabet sequence_alphabet_t, rna_structure_alphabet structure_alphabet_t>
     //!\cond
@@ -101,7 +101,7 @@ public:
     //!\brief Assign from a nucleotide character. This modifies the internal sequence letter.
     constexpr structured_rna & assign_char(char_type const c) noexcept
     {
-        bio::assign_char_to(c, get<0>(*this));
+        bio::alphabet::assign_char_to(c, get<0>(*this));
         return *this;
     }
     //!\}
@@ -110,12 +110,12 @@ public:
     //!\{
 
     //!\brief Return a character. This reads the internal sequence letter.
-    constexpr char_type to_char() const noexcept { return bio::to_char(get<0>(*this)); }
+    constexpr char_type to_char() const noexcept { return bio::alphabet::to_char(get<0>(*this)); }
 
     /*!\brief Return a structured_rna where the sequence letter is converted to its complement.
      * \details
      * See \ref nucleotide for the actual values.
-     * Satisfies the bio::nucleotide_alphabet::complement() requirement via the bio::complement() wrapper.
+     * Satisfies the bio::alphabet::nucleotide_alphabet::complement() requirement via the bio::alphabet::complement() wrapper.
      * The structure letter is not modified.
      * ###Complexity
      * Constant.
@@ -157,7 +157,7 @@ public:
 
     /*!\brief Get an identifier for a pseudoknotted interaction.
      * \returns The pseudoknot id, if alph denotes an interaction, and no value otherwise.
-     * It is guaranteed to be smaller than bio::max_pseudoknot_depth.
+     * It is guaranteed to be smaller than bio::alphabet::max_pseudoknot_depth.
      */
     constexpr std::optional<uint8_t> pseudoknot_id() const noexcept { return get<1>(*this).pseudoknot_id(); };
     //!\}
@@ -169,4 +169,4 @@ template <typename sequence_alphabet_type, typename structure_alphabet_type>
 structured_rna(sequence_alphabet_type &&, structure_alphabet_type &&)
   -> structured_rna<std::decay_t<sequence_alphabet_type>, std::decay_t<structure_alphabet_type>>;
 
-} // namespace bio
+} // namespace bio::alphabet

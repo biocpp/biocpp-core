@@ -4,9 +4,9 @@
 
 int main()
 {
-    using bio::operator""_dna4;
+    using bio::alphabet::operator""_dna4;
 
-    bio::dna4_vector vec{"ACGGTC"_dna4};
+    bio::alphabet::dna4_vector vec{"ACGGTC"_dna4};
     // views can be composed iteratively
     auto vec_view3 = vec | std::views::reverse;
     auto vec_view4 = vec_view3 | bio::views::complement;

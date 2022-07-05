@@ -66,15 +66,15 @@ bool operator>=(dna2 const & lhs, dna2 const & rhs) noexcept
 }
 
 //! [writable_semialphabet_concept]
-static_assert(bio::semialphabet<dna2>);               // ok
-static_assert(bio::writable_semialphabet<dna2>);       // ok
+static_assert(bio::alphabet::semialphabet<dna2>);               // ok
+static_assert(bio::alphabet::writable_semialphabet<dna2>);       // ok
 //! [writable_semialphabet_concept]
 
 //! [free_functions]
 int main ()
 {
     dna2 chr{};
-    bio::assign_rank_to(1, chr);                      // chr is assigned rank 1
-    uint8_t rnk = bio::to_rank(chr);                  // query rank value  => 1
+    bio::alphabet::assign_rank_to(1, chr);                      // chr is assigned rank 1
+    uint8_t rnk = bio::alphabet::to_rank(chr);                  // query rank value  => 1
 }
 //! [free_functions]

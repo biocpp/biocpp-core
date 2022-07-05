@@ -18,7 +18,8 @@
 #include "../semi_alphabet_constexpr_test_template.hpp"
 #include "../semi_alphabet_test_template.hpp"
 
-using masked_types = ::testing::Types<bio::masked<bio::dna4>, bio::masked<bio::dna5>>;
+using masked_types =
+  ::testing::Types<bio::alphabet::masked<bio::alphabet::dna4>, bio::alphabet::masked<bio::alphabet::dna5>>;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(masked, alphabet, masked_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(masked, semi_alphabet_test, masked_types, );

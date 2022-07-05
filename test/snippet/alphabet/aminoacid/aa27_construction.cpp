@@ -3,9 +3,9 @@
 
 int main()
 {
-    using bio::operator""_aa27;
+    using bio::alphabet::operator""_aa27;
 
-    bio::aa27 my_letter{'A'_aa27};
+    bio::alphabet::aa27 my_letter{'A'_aa27};
 
     my_letter.assign_char('C');
 

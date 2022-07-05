@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides test utilities for bio::simd::simd_type types.
+ * \brief Provides test utilities for bio::alphabet::simd::simd_type types.
  * \author Marcel Ehrhardt <marcel.ehrhardt AT fu-berlin.de>
  */
 
@@ -38,7 +38,7 @@ auto generate_sequence(size_t const len = 500,
     if constexpr (std::unsigned_integral<alphabet_t>)
         max_val = std::numeric_limits<size_t>::max();
     else
-        max_val = alphabet_size<alphabet_t> - 1ull;
+        max_val = alphabet::alphabet_size<alphabet_t> - 1ull;
 
     std::uniform_int_distribution<size_t> dis_alpha(0ull, max_val);
     std::uniform_int_distribution<size_t> dis_length(len - variance, len + variance);
@@ -51,7 +51,7 @@ auto generate_sequence(size_t const len = 500,
         if constexpr (std::unsigned_integral<alphabet_t>)
             sequence.push_back(dis_alpha(gen));
         else
-            sequence.push_back(assign_rank_to(dis_alpha(gen), alphabet_t{}));
+            sequence.push_back(alphabet::assign_rank_to(dis_alpha(gen), alphabet_t{}));
     }
 
     return sequence;

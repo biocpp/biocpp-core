@@ -4,9 +4,9 @@
 
 int main()
 {
-    using bio::operator""_dna5;
+    using bio::alphabet::operator""_dna5;
 
-    bio::dna5_vector foo{"ACGTA"_dna5};
+    bio::alphabet::dna5_vector foo{"ACGTA"_dna5};
 
     // pipe notation
     auto v = foo | bio::views::complement;                        // == "TGCAT"

@@ -7,6 +7,6 @@
 int main()
 {
     std::vector<int> vec{0, 1, 3, 3, 3, 2, 0, 3, 0};
-    auto v1 = vec | bio::views::rank_to<bio::dna4>; // == "ACTTTGATA"_dna4
-    auto v2 = vec | bio::views::rank_to<bio::dna5>; // == "ACTTTGATA"_dna5
+    auto v1 = vec | bio::views::rank_to<bio::alphabet::dna4>; // == "ACTTTGATA"_dna4
+    auto v2 = vec | bio::views::rank_to<bio::alphabet::dna5>; // == "ACTTTGATA"_dna5
 }

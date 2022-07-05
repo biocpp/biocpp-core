@@ -54,44 +54,44 @@
  *
  * | Format                      | Quality Type          | Phred Score Range  | Rank Range   | ASCII Range  | Assert                    |
  * |:---------------------------:|:----------------------|:------------------:|:------------:|:------------:|:-------------------------:|
- * | Sanger, Illumina 1.8+ short | bio::phred42       | [0 .. 41]          | [0 .. 41]    | ['!' .. 'J'] | Phred score in [0 .. 61]  |
- * | Sanger, Illumina 1.8+ long  | bio::phred63       | [0 .. 62]          | [0 .. 62]    | ['!' .. '_'] | Phred score in [0 .. 62]  |
- * | Solexa, Illumina [1.0; 1.8[ | bio::phred68legacy | [-5 .. 62]         | [0 .. 67]    | [';' .. '~'] | Phred score in [-5 .. 62] |
+ * | Sanger, Illumina 1.8+ short | bio::alphabet::phred42       | [0 .. 41]          | [0 .. 41]    | ['!' .. 'J'] | Phred score in [0 .. 61]  |
+ * | Sanger, Illumina 1.8+ long  | bio::alphabet::phred63       | [0 .. 62]          | [0 .. 62]    | ['!' .. '_'] | Phred score in [0 .. 62]  |
+ * | Solexa, Illumina [1.0; 1.8[ | bio::alphabet::phred68legacy | [-5 .. 62]         | [0 .. 67]    | [';' .. '~'] | Phred score in [-5 .. 62] |
  *
  * The most distributed format is the *Sanger* or <I>Illumina 1.8+</I> format.
  * Despite typical Phred scores for Illumina machines range from 0 to maximal
  * 41, it is possible that processed reads reach higher scores. If you don't
  * intend to handle Phred scores larger than 41, we recommend to use
- * bio::phred42 due to its more space efficient implementation.
+ * bio::alphabet::phred42 due to its more space efficient implementation.
  * For other formats, like Solexa and Illumina 1.0 to 1.7 the type
- * bio::phred68legacy is provided. To cover also the Solexa format, the Phred
+ * bio::alphabet::phred68legacy is provided. To cover also the Solexa format, the Phred
  * score is stored as a <B>signed</B> integer starting at -5.
  * An overview of all the score formats and their encodings can be found here:
  * https://en.wikipedia.org/wiki/FASTQ_format#Encoding.
  *
  * ###Concept
  *
- * The quality submodule defines the bio::writable_quality_alphabet which encompasses
+ * The quality submodule defines the bio::alphabet::writable_quality_alphabet which encompasses
  * all the alphabets, defined in the submodule, and refines the
- * bio::writable_alphabet by providing Phred score assignment and conversion
+ * bio::alphabet::writable_alphabet by providing Phred score assignment and conversion
  * operations.
- * Additionally, this submodule defines the bio::quality_alphabet, which only requires
+ * Additionally, this submodule defines the bio::alphabet::quality_alphabet, which only requires
  * readablity and not assignability.
  *
  * ###Assignment and Conversion
  *
  * Quality alphabets can be converted to their char and rank representation via
- * `bio::to_char` and `bio::to_rank` respectively (like all other alphabets). Additionally
- * they can be converted to their Phred representation via `bio::to_phred`.
+ * `bio::alphabet::to_char` and `bio::alphabet::to_rank` respectively (like all other alphabets). Additionally
+ * they can be converted to their Phred representation via `bio::alphabet::to_phred`.
  *
- * Likewise, assignment happens via `bio::assign_char_to`, `bio::assign_rank_to` and
- * `bio::assign_phred_to`. Phred values outside the representable range, but inside the
+ * Likewise, assignment happens via `bio::alphabet::assign_char_to`, `bio::alphabet::assign_rank_to` and
+ * `bio::alphabet::assign_phred_to`. Phred values outside the representable range, but inside the
  * legal range, are converted to the closest Phred score, e.g. assigning 60 to a
- * `bio::phred42` will result in a Phred score of 41. Assigning Phred values
+ * `bio::alphabet::phred42` will result in a Phred score of 41. Assigning Phred values
  * outside the legal range results in undefined behaviour.
  *
  * All quality alphabets are explicitly convertible to each other via their
  * Phred representation. Values not present in one alphabet are mapped to the
- * closest value in the target alphabet (e.g. a `bio::phred63` letter with
- * value 60 will convert to a `bio::phred42` letter of score 41).
+ * closest value in the target alphabet (e.g. a `bio::alphabet::phred63` letter with
+ * value 60 will convert to a `bio::alphabet::phred42` letter of score 41).
  */

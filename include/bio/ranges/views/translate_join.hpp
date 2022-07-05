@@ -43,11 +43,11 @@ class view_translate_join : public std::ranges::view_base
 {
 private:
     //!\brief The data members of view_translate_join.
-    urng_t                              urange;
+    urng_t                                        urange;
     //!\brief The frames that should be used for translation.
-    translation_frames                  tf;
+    alphabet::translation_frames                  tf;
     //!\brief The selected frames corresponding to the frames required.
-    small_vector<translation_frames, 6> selected_frames{};
+    small_vector<alphabet::translation_frames, 6> selected_frames{};
 
     /*!\name Associated types iterator
      * \brief These associated types are needed in bio::ranges::detail::random_access_iterator.
@@ -91,9 +91,9 @@ public:
     static_assert(std::ranges::random_access_range<std::ranges::range_reference_t<urng_t>>,
                   "The inner range of the range parameter to views::translate_join must model "
                   "std::ranges::random_access_range.");
-    static_assert(nucleotide_alphabet<std::ranges::range_reference_t<std::ranges::range_reference_t<urng_t>>>,
+    static_assert(alphabet::nucleotide_alphabet<std::ranges::range_reference_t<std::ranges::range_reference_t<urng_t>>>,
                   "The range parameter to views::translate_join must be over a range over elements of "
-                  "bio::nucleotide_alphabet.");
+                  "bio::alphabet::nucleotide_alphabet.");
 
     /*!\name Constructors, destructor and assignment
      * \{
@@ -109,21 +109,22 @@ public:
      * \param[in] _urange The underlying range (of ranges).
      * \param[in] _tf The frames that should be used for translation.
      */
-    view_translate_join(urng_t _urange, translation_frames const _tf = translation_frames::SIX_FRAME) :
+    view_translate_join(urng_t                             _urange,
+                        alphabet::translation_frames const _tf = alphabet::translation_frames::SIX_FRAME) :
       urange{std::move(_urange)}, tf{_tf}
     {
-        if ((_tf & translation_frames::FWD_FRAME_0) == translation_frames::FWD_FRAME_0)
-            selected_frames.push_back(translation_frames::FWD_FRAME_0);
-        if ((_tf & translation_frames::FWD_FRAME_1) == translation_frames::FWD_FRAME_1)
-            selected_frames.push_back(translation_frames::FWD_FRAME_1);
-        if ((_tf & translation_frames::FWD_FRAME_2) == translation_frames::FWD_FRAME_2)
-            selected_frames.push_back(translation_frames::FWD_FRAME_2);
-        if ((_tf & translation_frames::REV_FRAME_0) == translation_frames::REV_FRAME_0)
-            selected_frames.push_back(translation_frames::REV_FRAME_0);
-        if ((_tf & translation_frames::REV_FRAME_1) == translation_frames::REV_FRAME_1)
-            selected_frames.push_back(translation_frames::REV_FRAME_1);
-        if ((_tf & translation_frames::REV_FRAME_2) == translation_frames::REV_FRAME_2)
-            selected_frames.push_back(translation_frames::REV_FRAME_2);
+        if ((_tf & alphabet::translation_frames::FWD_FRAME_0) == alphabet::translation_frames::FWD_FRAME_0)
+            selected_frames.push_back(alphabet::translation_frames::FWD_FRAME_0);
+        if ((_tf & alphabet::translation_frames::FWD_FRAME_1) == alphabet::translation_frames::FWD_FRAME_1)
+            selected_frames.push_back(alphabet::translation_frames::FWD_FRAME_1);
+        if ((_tf & alphabet::translation_frames::FWD_FRAME_2) == alphabet::translation_frames::FWD_FRAME_2)
+            selected_frames.push_back(alphabet::translation_frames::FWD_FRAME_2);
+        if ((_tf & alphabet::translation_frames::REV_FRAME_0) == alphabet::translation_frames::REV_FRAME_0)
+            selected_frames.push_back(alphabet::translation_frames::REV_FRAME_0);
+        if ((_tf & alphabet::translation_frames::REV_FRAME_1) == alphabet::translation_frames::REV_FRAME_1)
+            selected_frames.push_back(alphabet::translation_frames::REV_FRAME_1);
+        if ((_tf & alphabet::translation_frames::REV_FRAME_2) == alphabet::translation_frames::REV_FRAME_2)
+            selected_frames.push_back(alphabet::translation_frames::REV_FRAME_2);
     }
 
     /*!\brief Construct from another range.
@@ -135,7 +136,8 @@ public:
         requires((!std::same_as<std::remove_cvref_t<rng_t>, view_translate_join>)&&std::ranges::viewable_range<rng_t> &&
                    std::constructible_from<urng_t, std::ranges::ref_view<std::remove_reference_t<rng_t>>>)
     //!\endcond
-    view_translate_join(rng_t && _urange, translation_frames const _tf = translation_frames::SIX_FRAME) :
+    view_translate_join(rng_t &&                           _urange,
+                        alphabet::translation_frames const _tf = alphabet::translation_frames::SIX_FRAME) :
       view_translate_join{std::views::all(std::forward<rng_t>(_urange)), _tf}
     {}
     //!\}
@@ -238,7 +240,7 @@ public:
 
 //!\brief Class template argument deduction for view_translate_join.
 template <typename urng_t>
-view_translate_join(urng_t &&, translation_frames const = translation_frames{})
+view_translate_join(urng_t &&, alphabet::translation_frames const = alphabet::translation_frames{})
   -> view_translate_join<std::views::all_t<urng_t>>;
 
 // ============================================================================
@@ -249,7 +251,7 @@ view_translate_join(urng_t &&, translation_frames const = translation_frames{})
 struct translate_join_fn
 {
     //!\brief Store the argument and return a range adaptor closure object.
-    constexpr auto operator()(translation_frames const tf = translation_frames::SIX_FRAME) const
+    constexpr auto operator()(alphabet::translation_frames const tf = alphabet::translation_frames::SIX_FRAME) const
     {
         return detail::adaptor_from_functor{*this, tf};
     }
@@ -260,7 +262,8 @@ struct translate_join_fn
      * \returns          A range of translated sequence(s).
      */
     template <std::ranges::range urng_t>
-    constexpr auto operator()(urng_t && urange, translation_frames const tf = translation_frames::SIX_FRAME) const
+    constexpr auto operator()(urng_t &&                          urange,
+                              alphabet::translation_frames const tf = alphabet::translation_frames::SIX_FRAME) const
     {
         static_assert(range_dimension_v<urng_t> == 2,
                       "This adaptor only handles range-of-range (two dimensions) as input.");
@@ -279,9 +282,10 @@ struct translate_join_fn
         static_assert(std::ranges::random_access_range<std::ranges::range_reference_t<urng_t>>,
                       "The inner range of the range parameter to views::translate_join must model "
                       "std::ranges::random_access_range.");
-        static_assert(nucleotide_alphabet<std::ranges::range_reference_t<std::ranges::range_reference_t<urng_t>>>,
-                      "The range parameter to views::translate_join must be over a range over elements of "
-                      "bio::nucleotide_alphabet.");
+        static_assert(
+          alphabet::nucleotide_alphabet<std::ranges::range_reference_t<std::ranges::range_reference_t<urng_t>>>,
+          "The range parameter to views::translate_join must be over a range over elements of "
+          "bio::alphabet::nucleotide_alphabet.");
 
         return detail::view_translate_join{std::forward<urng_t>(urange), tf};
     }
@@ -310,7 +314,7 @@ namespace bio::ranges::views
 /*!\brief A view that translates nucleotide into aminoacid alphabet with 1, 2, 3 or 6 frames. Input and output range are always two-dimensional.
  * \tparam urng_t The type of the range being processed.
  * \param[in] urange The range being processed. Needs to be a range of ranges (two-dimensional).
- * \param[in] tf A value of bio::tanslation_frames that indicates the desired frames.
+ * \param[in] tf A value of bio::alphabet::tanslation_frames that indicates the desired frames.
  * \returns A range of ranges containing frames with aminoacid sequence. See below for the properties of the returned range.
  * \ingroup views
  *
@@ -318,7 +322,7 @@ namespace bio::ranges::views
  *
  * \header_file{bio/ranges/views/translate_join.hpp}
  *
- * This view can be used to translate nucleotide sequences into aminoacid sequences (see translation_frames for possible combination of frames).
+ * This view can be used to translate nucleotide sequences into aminoacid sequences (see alphabet::translation_frames for possible combination of frames).
  * This view only operates on two-dimensional input (range of ranges) and outputs a range of ranges no matter the number of input sequences or
  * the number of translation frames given. Therefore, it has the same capabilities as the standard view_translate but concatenates the different
  * frames of the different input sequences rather than having a separate range for each input sequence containing the translated frames. In the output,
@@ -330,7 +334,7 @@ namespace bio::ranges::views
  * In short, this views behaves the same as:
  * ```cpp
  * std::vector<std::vector<dna5>> vec {...};
- * auto v = vec | views::translate | views::join;
+ * auto v = vec | bio::views::translate | std::views::join;
  * Except that the performance is better and the returned range still models std::ranges::random_access_range and std::ranges::sized_range.
  * ```
  *
@@ -351,7 +355,7 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *lost*                                             |
  * | bio::ranges::const_iterable_range     | *required*                            | *preserved*                                        |
  * |                                  |                                       |                                                    |
- * | std::ranges::range_reference_t   | bio::nucleotide_alphabet            | std::ranges::view && std::ranges::random_access_range && std::ranges::sized_range |
+ * | std::ranges::range_reference_t   | bio::alphabet::nucleotide_alphabet            | std::ranges::view && std::ranges::random_access_range && std::ranges::sized_range |
  *
  * * `urng_t` is the type of the range modified by this view (input).
  * * `rrng_t` is the type of the range returned by this view.
@@ -359,7 +363,7 @@ namespace bio::ranges::views
  *
  * ### Example
  *
- * Operating on a range of bio::dna5:
+ * Operating on a range of bio::alphabet::dna5:
  * \snippet test/snippet/ranges/views/translate_join.cpp example
  * \hideinitializer
  */

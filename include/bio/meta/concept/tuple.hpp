@@ -25,7 +25,7 @@
 namespace bio::meta::detail
 {
 
-/*!\interface bio::detail::tuple_size <>
+/*!\interface bio::meta::detail::tuple_size <>
  * \ingroup utility_tuple
  * \brief Subconcept definition for bio::meta::tuple_like to test for std::tuple_size-interface.
  * \see bio::meta::tuple_like
@@ -40,7 +40,7 @@ concept tuple_size = requires(tuple_t v)
 };
 //!\endcond
 
-/*!\interface bio::detail::tuple_get <>
+/*!\interface bio::meta::detail::tuple_get <>
  * \ingroup utility_tuple
  * \brief Subconcept definition for bio::meta::tuple_like to test for std::get-interface.
  * \see bio::meta::tuple_like
@@ -78,7 +78,7 @@ concept tuple_get = requires(tuple_t & v, tuple_t const & v_c)
  * \tparam tuple_t The tuple to extract the element types from.
  *
  * \returns A bio::meta::type_list over the element types of the given tuple.
- * \see bio::detail::tuple_type_list_t
+ * \see bio::meta::detail::tuple_type_list_t
  */
 template <detail::tuple_size tuple_t>
 struct tuple_type_list
@@ -96,10 +96,10 @@ public:
     using type = decltype(invoke_to_type_list(std::make_index_sequence<std::tuple_size<tuple_t>::value>{}));
 };
 
-/*!\brief Helper type for bio::detail::tuple_type_list
+/*!\brief Helper type for bio::meta::detail::tuple_type_list
  * \ingroup utility_tuple
  *
- * \see bio::detail::tuple_type_list
+ * \see bio::meta::detail::tuple_type_list
  */
 template <detail::tuple_size tuple_t>
 using tuple_type_list_t = typename tuple_type_list<tuple_t>::type;

@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides bio::aminoacid_base.
+ * \brief Provides bio::alphabet::aminoacid_base.
  */
 
 #pragma once
@@ -18,10 +18,10 @@
 #include <bio/alphabet/detail/convert.hpp>
 #include <bio/alphabet/detail/to_lower.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 
-/*!\brief A CRTP-base that refines bio::alphabet_base and is used by the amino acids.
+/*!\brief A CRTP-base that refines bio::alphabet::alphabet_base and is used by the amino acids.
  * \ingroup aminoacid
  * \tparam derived_type The CRTP parameter type.
  * \tparam size         The size of the alphabet.
@@ -75,11 +75,11 @@ public:
                       detail::writable_constexpr_alphabet<other_aa_type>)
         {
             static_cast<derived_type &>(*this) =
-              detail::convert_through_char_representation<derived_type, other_aa_type>[bio::to_rank(other)];
+              detail::convert_through_char_representation<derived_type, other_aa_type>[bio::alphabet::to_rank(other)];
         }
         else
         {
-            bio::assign_char_to(bio::to_char(other), static_cast<derived_type &>(*this));
+            bio::alphabet::assign_char_to(bio::alphabet::to_char(other), static_cast<derived_type &>(*this));
         }
     }
     //!\}
@@ -88,7 +88,7 @@ public:
      *
      * \details
      *
-     * Models the bio::semialphabet::char_is_valid_for() requirement via the bio::char_is_valid_for()
+     * Models the bio::alphabet::semialphabet::char_is_valid_for() requirement via the bio::alphabet::char_is_valid_for()
      * wrapper.
      *
      * Behaviour specific to amino acids: True also for lower case letters that silently convert to their upper case.
@@ -125,4 +125,4 @@ private:
     ();
 };
 
-} // namespace bio
+} // namespace bio::alphabet

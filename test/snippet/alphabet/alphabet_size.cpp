@@ -4,6 +4,6 @@
 
 int main()
 {
-    auto r2 = bio::alphabet_size<char>;            // calls bio::custom::alphabet_size(char{}); r2 == 256
-    auto r3 = bio::alphabet_size<bio::dna5>;    // returns dna5::alphabet_size; r3 == 5
+    auto r2 = bio::alphabet::alphabet_size<char>;            // calls bio::alphabet::custom::alphabet_size(char{}); r2 == 256
+    auto r3 = bio::alphabet::alphabet_size<bio::alphabet::dna5>;    // returns dna5::alphabet_size; r3 == 5
 }

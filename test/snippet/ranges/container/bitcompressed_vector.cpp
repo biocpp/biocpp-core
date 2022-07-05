@@ -5,8 +5,8 @@
 
 int main()
 {
-    using bio::operator""_dna4;
+    using bio::alphabet::operator""_dna4;
 
-    std::vector<bio::dna4>                  v0{"ACGT"_dna4}; // data occupies 4 bytes in memory
-    bio::ranges::bitcompressed_vector<bio::dna4> v1{"ACGT"_dna4}; // data occupies 1 byte in memory
+    std::vector<bio::alphabet::dna4>                  v0{"ACGT"_dna4}; // data occupies 4 bytes in memory
+    bio::ranges::bitcompressed_vector<bio::alphabet::dna4> v1{"ACGT"_dna4}; // data occupies 1 byte in memory
 }

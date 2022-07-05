@@ -15,20 +15,20 @@
 #include "../semi_alphabet_constexpr_test_template.hpp"
 #include "../semi_alphabet_test_template.hpp"
 
-using bio::operator""_wuss51;
+using bio::alphabet::operator""_wuss51;
 
-INSTANTIATE_TYPED_TEST_SUITE_P(wuss51, alphabet, bio::wuss51, );
-INSTANTIATE_TYPED_TEST_SUITE_P(wuss51, semi_alphabet_test, bio::wuss51, );
-INSTANTIATE_TYPED_TEST_SUITE_P(wuss51, alphabet_constexpr, bio::wuss51, );
-INSTANTIATE_TYPED_TEST_SUITE_P(wuss51, semi_alphabet_constexpr, bio::wuss51, );
-INSTANTIATE_TYPED_TEST_SUITE_P(wuss15, alphabet, bio::wuss<15>, );
-INSTANTIATE_TYPED_TEST_SUITE_P(wuss15, semi_alphabet_test, bio::wuss<15>, );
-INSTANTIATE_TYPED_TEST_SUITE_P(wuss15, alphabet_constexpr, bio::wuss<15>, );
-INSTANTIATE_TYPED_TEST_SUITE_P(wuss15, semi_alphabet_constexpr, bio::wuss<15>, );
-INSTANTIATE_TYPED_TEST_SUITE_P(wuss67, alphabet, bio::wuss<67>, );
-INSTANTIATE_TYPED_TEST_SUITE_P(wuss67, semi_alphabet_test, bio::wuss<67>, );
-INSTANTIATE_TYPED_TEST_SUITE_P(wuss67, alphabet_constexpr, bio::wuss<67>, );
-INSTANTIATE_TYPED_TEST_SUITE_P(wuss67, semi_alphabet_constexpr, bio::wuss<67>, );
+INSTANTIATE_TYPED_TEST_SUITE_P(wuss51, alphabet, bio::alphabet::wuss51, );
+INSTANTIATE_TYPED_TEST_SUITE_P(wuss51, semi_alphabet_test, bio::alphabet::wuss51, );
+INSTANTIATE_TYPED_TEST_SUITE_P(wuss51, alphabet_constexpr, bio::alphabet::wuss51, );
+INSTANTIATE_TYPED_TEST_SUITE_P(wuss51, semi_alphabet_constexpr, bio::alphabet::wuss51, );
+INSTANTIATE_TYPED_TEST_SUITE_P(wuss15, alphabet, bio::alphabet::wuss<15>, );
+INSTANTIATE_TYPED_TEST_SUITE_P(wuss15, semi_alphabet_test, bio::alphabet::wuss<15>, );
+INSTANTIATE_TYPED_TEST_SUITE_P(wuss15, alphabet_constexpr, bio::alphabet::wuss<15>, );
+INSTANTIATE_TYPED_TEST_SUITE_P(wuss15, semi_alphabet_constexpr, bio::alphabet::wuss<15>, );
+INSTANTIATE_TYPED_TEST_SUITE_P(wuss67, alphabet, bio::alphabet::wuss<67>, );
+INSTANTIATE_TYPED_TEST_SUITE_P(wuss67, semi_alphabet_test, bio::alphabet::wuss<67>, );
+INSTANTIATE_TYPED_TEST_SUITE_P(wuss67, alphabet_constexpr, bio::alphabet::wuss<67>, );
+INSTANTIATE_TYPED_TEST_SUITE_P(wuss67, semi_alphabet_constexpr, bio::alphabet::wuss<67>, );
 
 // assign_char functions
 TEST(wuss, assign_char)
@@ -36,71 +36,71 @@ TEST(wuss, assign_char)
     std::vector<char> input{'.', '(', ')', ':', ',', '-', '_', '~', ';', '<', '>',
                             '[', ']', '{', '}', 'H', 'B', 'E', 'G', 'I', 'T', 'S'};
 
-    std::vector<bio::wuss51> cmp{'.'_wuss51, '('_wuss51, ')'_wuss51, ':'_wuss51, ','_wuss51, '-'_wuss51,
-                                 '_'_wuss51, '~'_wuss51, ';'_wuss51, '<'_wuss51, '>'_wuss51, '['_wuss51,
-                                 ']'_wuss51, '{'_wuss51, '}'_wuss51, 'H'_wuss51, 'B'_wuss51, 'E'_wuss51,
-                                 'G'_wuss51, 'I'_wuss51, 'T'_wuss51, 'S'_wuss51};
+    std::vector<bio::alphabet::wuss51> cmp{'.'_wuss51, '('_wuss51, ')'_wuss51, ':'_wuss51, ','_wuss51, '-'_wuss51,
+                                           '_'_wuss51, '~'_wuss51, ';'_wuss51, '<'_wuss51, '>'_wuss51, '['_wuss51,
+                                           ']'_wuss51, '{'_wuss51, '}'_wuss51, 'H'_wuss51, 'B'_wuss51, 'E'_wuss51,
+                                           'G'_wuss51, 'I'_wuss51, 'T'_wuss51, 'S'_wuss51};
 
     for (auto [ch, cm] : bio::ranges::views::zip(input, cmp))
-        EXPECT_EQ((bio::assign_char_to(ch, bio::wuss51{})), cm);
+        EXPECT_EQ((bio::alphabet::assign_char_to(ch, bio::alphabet::wuss51{})), cm);
 }
 
 // to_char functions
 TEST(wuss, to_char)
 {
-    EXPECT_EQ(bio::to_char('.'_wuss51), '.');
-    EXPECT_EQ(bio::to_char(':'_wuss51), ':');
-    EXPECT_EQ(bio::to_char(','_wuss51), ',');
-    EXPECT_EQ(bio::to_char('-'_wuss51), '-');
-    EXPECT_EQ(bio::to_char('_'_wuss51), '_');
-    EXPECT_EQ(bio::to_char('~'_wuss51), '~');
-    EXPECT_EQ(bio::to_char(';'_wuss51), ';');
-    EXPECT_EQ(bio::to_char('<'_wuss51), '<');
-    EXPECT_EQ(bio::to_char('>'_wuss51), '>');
-    EXPECT_EQ(bio::to_char('('_wuss51), '(');
-    EXPECT_EQ(bio::to_char(')'_wuss51), ')');
-    EXPECT_EQ(bio::to_char('['_wuss51), '[');
-    EXPECT_EQ(bio::to_char(']'_wuss51), ']');
-    EXPECT_EQ(bio::to_char('{'_wuss51), '{');
-    EXPECT_EQ(bio::to_char('}'_wuss51), '}');
+    EXPECT_EQ(bio::alphabet::to_char('.'_wuss51), '.');
+    EXPECT_EQ(bio::alphabet::to_char(':'_wuss51), ':');
+    EXPECT_EQ(bio::alphabet::to_char(','_wuss51), ',');
+    EXPECT_EQ(bio::alphabet::to_char('-'_wuss51), '-');
+    EXPECT_EQ(bio::alphabet::to_char('_'_wuss51), '_');
+    EXPECT_EQ(bio::alphabet::to_char('~'_wuss51), '~');
+    EXPECT_EQ(bio::alphabet::to_char(';'_wuss51), ';');
+    EXPECT_EQ(bio::alphabet::to_char('<'_wuss51), '<');
+    EXPECT_EQ(bio::alphabet::to_char('>'_wuss51), '>');
+    EXPECT_EQ(bio::alphabet::to_char('('_wuss51), '(');
+    EXPECT_EQ(bio::alphabet::to_char(')'_wuss51), ')');
+    EXPECT_EQ(bio::alphabet::to_char('['_wuss51), '[');
+    EXPECT_EQ(bio::alphabet::to_char(']'_wuss51), ']');
+    EXPECT_EQ(bio::alphabet::to_char('{'_wuss51), '{');
+    EXPECT_EQ(bio::alphabet::to_char('}'_wuss51), '}');
 }
 
 // concepts
 TEST(wuss, concept_check)
 {
-    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss51>);
-    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss51 &>);
-    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss51 const>);
-    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss51 const &>);
-    EXPECT_NE(bio::max_pseudoknot_depth<bio::wuss51>, 0);
+    EXPECT_TRUE(bio::alphabet::rna_structure_alphabet<bio::alphabet::wuss51>);
+    EXPECT_TRUE(bio::alphabet::rna_structure_alphabet<bio::alphabet::wuss51 &>);
+    EXPECT_TRUE(bio::alphabet::rna_structure_alphabet<bio::alphabet::wuss51 const>);
+    EXPECT_TRUE(bio::alphabet::rna_structure_alphabet<bio::alphabet::wuss51 const &>);
+    EXPECT_NE(bio::alphabet::max_pseudoknot_depth<bio::alphabet::wuss51>, 0);
 
-    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<>>); // same as wuss51
-    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<> &>);
-    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<> const>);
-    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<> const &>);
-    EXPECT_NE(bio::max_pseudoknot_depth<bio::wuss<>>, 0);
+    EXPECT_TRUE(bio::alphabet::rna_structure_alphabet<bio::alphabet::wuss<>>); // same as wuss51
+    EXPECT_TRUE(bio::alphabet::rna_structure_alphabet<bio::alphabet::wuss<> &>);
+    EXPECT_TRUE(bio::alphabet::rna_structure_alphabet<bio::alphabet::wuss<> const>);
+    EXPECT_TRUE(bio::alphabet::rna_structure_alphabet<bio::alphabet::wuss<> const &>);
+    EXPECT_NE(bio::alphabet::max_pseudoknot_depth<bio::alphabet::wuss<>>, 0);
 
-    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<67>>);
-    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<67> &>);
-    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<67> const>);
-    EXPECT_TRUE(bio::rna_structure_alphabet<bio::wuss<67> const &>);
-    EXPECT_NE(bio::max_pseudoknot_depth<bio::wuss<67>>, 0);
+    EXPECT_TRUE(bio::alphabet::rna_structure_alphabet<bio::alphabet::wuss<67>>);
+    EXPECT_TRUE(bio::alphabet::rna_structure_alphabet<bio::alphabet::wuss<67> &>);
+    EXPECT_TRUE(bio::alphabet::rna_structure_alphabet<bio::alphabet::wuss<67> const>);
+    EXPECT_TRUE(bio::alphabet::rna_structure_alphabet<bio::alphabet::wuss<67> const &>);
+    EXPECT_NE(bio::alphabet::max_pseudoknot_depth<bio::alphabet::wuss<67>>, 0);
 }
 
 TEST(wuss, literals)
 {
-    std::vector<bio::wuss51> vec1;
+    std::vector<bio::alphabet::wuss51> vec1;
     vec1.resize(5, '<'_wuss51);
     EXPECT_EQ(vec1, "<<<<<"_wuss51);
 
-    std::vector<bio::wuss51> vec2{'.'_wuss51, '<'_wuss51, '<'_wuss51, '>'_wuss51, '>'_wuss51, '.'_wuss51};
+    std::vector<bio::alphabet::wuss51> vec2{'.'_wuss51, '<'_wuss51, '<'_wuss51, '>'_wuss51, '>'_wuss51, '.'_wuss51};
     EXPECT_EQ(vec2, ".<<>>."_wuss51);
 }
 
 TEST(wuss, rna_structure_properties)
 {
-    EXPECT_EQ(bio::wuss51::max_pseudoknot_depth, 22);
-    std::vector<bio::wuss51> vec = ".:,-_~;<>()[]{}AaBbCcDd"_wuss51;
+    EXPECT_EQ(bio::alphabet::wuss51::max_pseudoknot_depth, 22);
+    std::vector<bio::alphabet::wuss51> vec = ".:,-_~;<>()[]{}AaBbCcDd"_wuss51;
     for (unsigned idx = 0; idx <= 6; ++idx)
     {
         EXPECT_TRUE(vec[idx].is_unpaired());

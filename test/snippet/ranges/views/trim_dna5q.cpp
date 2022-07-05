@@ -10,14 +10,14 @@
 
 int main()
 {
-    using bio::operator""_dna5;
-    using bio::operator""_phred42;
-    std::vector<bio::dna5q> vec{{'A'_dna5, 'I'_phred42},
+    using bio::alphabet::operator""_dna5;
+    using bio::alphabet::operator""_phred42;
+    std::vector<bio::alphabet::dna5q> vec{{'A'_dna5, 'I'_phred42},
                                    {'G'_dna5, 'I'_phred42},
                                    {'G'_dna5, '?'_phred42},
                                    {'A'_dna5, '5'_phred42},
                                    {'T'_dna5, '+'_phred42}};
-    std::vector<bio::dna5q> cmp{{'A'_dna5, 'I'_phred42},
+    std::vector<bio::alphabet::dna5q> cmp{{'A'_dna5, 'I'_phred42},
                                    {'G'_dna5, 'I'_phred42},
                                    {'G'_dna5, '?'_phred42},
                                    {'A'_dna5, '5'_phred42}};
@@ -27,7 +27,7 @@ int main()
     assert((v1 | bio::views::to<std::vector>()) == cmp);
 
     // trim by quality character; in this case the nucleotide part of the character is irrelevant
-    auto v2 = vec | bio::views::trim_quality(bio::dna5q{'C'_dna5, '5'_phred42});
+    auto v2 = vec | bio::views::trim_quality(bio::alphabet::dna5q{'C'_dna5, '5'_phred42});
     assert((v2 | bio::views::to<std::vector>()) == cmp);
 
     // combinability

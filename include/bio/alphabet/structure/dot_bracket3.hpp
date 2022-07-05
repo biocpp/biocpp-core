@@ -23,13 +23,13 @@
 // dot_bracket3
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief The three letter RNA structure alphabet of the characters ".()".
- * \implements bio::rna_structure_alphabet
- * \implements bio::writable_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::rna_structure_alphabet
+ * \implements bio::alphabet::writable_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -55,7 +55,7 @@ private:
     //!\brief The base class.
     using base_t = alphabet_base<dot_bracket3, 3>;
 
-    //!\brief Befriend bio::alphabet_base.
+    //!\brief Befriend bio::alphabet::alphabet_base.
     friend base_t;
 
 public:
@@ -135,13 +135,13 @@ protected:
 /*!\name Literals
  * \{
  */
-/*!\brief The bio::db3 string literal.
- * \relates bio::dot_bracket3
+/*!\brief The bio::alphabet::db3 string literal.
+ * \relates bio::alphabet::dot_bracket3
  * \param[in] str A pointer to the character string to assign.
  * \param[in] len The size of the character string to assign.
- * \returns std::vector<bio::dot_bracket3>
+ * \returns std::vector<bio::alphabet::dot_bracket3>
  *
- * You can use this string literal to easily assign to a vector of bio::dot_bracket3 characters:
+ * You can use this string literal to easily assign to a vector of bio::alphabet::dot_bracket3 characters:
  * \include test/snippet/alphabet/structure/dot_bracket3_literal.cpp
  */
 inline std::vector<dot_bracket3> operator""_db3(char const * str, std::size_t len)
@@ -155,12 +155,12 @@ inline std::vector<dot_bracket3> operator""_db3(char const * str, std::size_t le
     return vec;
 }
 
-/*!\brief The bio::db3 char literal.
- * \relates bio::dot_bracket3
+/*!\brief The bio::alphabet::db3 char literal.
+ * \relates bio::alphabet::dot_bracket3
  * \param[in] ch The character to represent as dot bracket.
- * \returns bio::dot_bracket3
+ * \returns bio::alphabet::dot_bracket3
  *
- * You can use this string literal to assign a bio::dot_bracket3 character:
+ * You can use this string literal to assign a bio::alphabet::dot_bracket3 character:
  * \include test/snippet/alphabet/structure/dot_bracket3_char_literal.cpp
  */
 constexpr dot_bracket3 operator""_db3(char const ch) noexcept
@@ -170,4 +170,4 @@ constexpr dot_bracket3 operator""_db3(char const ch) noexcept
 
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet

@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides implementation detail for bio::alphabet_variant and bio::alphabet_tuple_base.
+ * \brief Provides implementation detail for bio::alphabet::alphabet_variant and bio::alphabet::alphabet_tuple_base.
  */
 
 #pragma once
@@ -19,15 +19,15 @@
 #include <bio/meta/type_list/type_list.hpp>
 #include <bio/meta/type_traits/lazy.hpp>
 
-namespace bio::detail
+namespace bio::alphabet::detail
 {
 
 // ------------------------------------------------------------------
 // alphabet_tuple_like
 // ------------------------------------------------------------------
 
-/*!\interface bio::detail::alphabet_tuple_like <>
- * \brief bio::alphabet_tuple_base and its derivates model this concept.
+/*!\interface bio::alphabet::detail::alphabet_tuple_like <>
+ * \brief bio::alphabet::alphabet_tuple_base and its derivates model this concept.
  * \ingroup alphabet_composite
  *
  * \details
@@ -64,13 +64,13 @@ struct required_types
 };
 
 /*!\brief A bio::meta::type_list with types that the given type depends on.
- *        [specialisation for bio::alphabet_variant and derivates of bio::alphabet_tuple_base].
+ *        [specialisation for bio::alphabet::alphabet_variant and derivates of bio::alphabet::alphabet_tuple_base].
  * \implements bio::meta::transformation_trait
  * \ingroup alphabet_composite
  *
  * \details
  *
- * Exposes for bio::alphabet_tuple_base its components and for bio::alphabet_variant its alternatives.
+ * Exposes for bio::alphabet::alphabet_tuple_base its components and for bio::alphabet::alphabet_variant its alternatives.
  */
 template <typename t>
     //!\cond
@@ -83,7 +83,7 @@ struct required_types<t>
 };
 
 /*!\brief A bio::meta::type_list with types that the given type depends on. [Trait shortcut]
- * \relates bio::detail::required_types
+ * \relates bio::alphabet::detail::required_types
  */
 template <typename t>
 using required_types_t = typename required_types<t>::type;
@@ -94,7 +94,7 @@ using required_types_t = typename required_types<t>::type;
 
 //TODO: This can be replaced with metaprogramming magic once a few more functions land in list_traits.
 
-/*!\brief Like bio::detail::required_types, but recursive.
+/*!\brief Like bio::alphabet::detail::required_types, but recursive.
  * \implements bio::meta::transformation_trait
  * \ingroup alphabet_composite
  */
@@ -105,7 +105,7 @@ struct recursive_required_types
     using type = meta::type_list<>;
 };
 
-/*!\brief Like bio::detail::required_types, but recursive.
+/*!\brief Like bio::alphabet::detail::required_types, but recursive.
  * \implements bio::meta::transformation_trait
  * \ingroup alphabet_composite
  */
@@ -119,8 +119,8 @@ struct recursive_required_types<t>
     using type = typename t::biocpp_recursive_required_types;
 };
 
-/*!\brief Shortcut for bio::detail::recursive_required_types.
- * \relates bio::detail::recursive_required_types
+/*!\brief Shortcut for bio::alphabet::detail::recursive_required_types.
+ * \relates bio::alphabet::detail::recursive_required_types
  */
 template <typename t>
 using recursive_required_types_t = typename recursive_required_types<t>::type;
@@ -193,7 +193,7 @@ struct weakly_ordered_with_
 // Concept traits helper
 // ------------------------------------------------------------------
 
-/*!\brief Binary type trait that behaves like the bio::detail::weakly_equality_comparable_with concept.
+/*!\brief Binary type trait that behaves like the bio::meta::weakly_equality_comparable_with concept.
  * \ingroup alphabet_composite
  */
 template <typename lhs_t, typename rhs_t>
@@ -201,20 +201,20 @@ struct weakly_equality_comparable_with_trait :
   std::integral_constant<bool, meta::weakly_equality_comparable_with<lhs_t, rhs_t>>
 {};
 
-/*!\brief Binary type trait that behaves like the bio::detail::weakly_ordered_with concept.
+/*!\brief Binary type trait that behaves like the bio::meta::weakly_ordered_with concept.
  * \ingroup alphabet_composite
  */
 template <typename lhs_t, typename rhs_t>
 struct weakly_ordered_with_trait : std::integral_constant<bool, meta::weakly_ordered_with<lhs_t, rhs_t>>
 {};
 
-} // namespace bio::detail
+} // namespace bio::alphabet::detail
 
 // ------------------------------------------------------------------
 // Forwards
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
 
 // forward
@@ -232,4 +232,4 @@ template <typename derived_type, typename... component_types>
 //!\endcond
 class alphabet_tuple_base;
 
-} // namespace bio
+} // namespace bio::alphabet

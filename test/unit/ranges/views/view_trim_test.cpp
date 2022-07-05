@@ -17,24 +17,27 @@
 #include <bio/ranges/views/trim_quality.hpp>
 #include <ranges>
 
-using bio::operator""_dna5;
+using bio::alphabet::operator""_dna5;
 
 TEST(view_trim, standalone)
 {
-    std::vector<bio::phred42> vec{bio::phred42{40},
-                                  bio::phred42{40},
-                                  bio::phred42{30},
-                                  bio::phred42{20},
-                                  bio::phred42{10}};
-    std::vector<bio::phred42> cmp1{bio::phred42{40}, bio::phred42{40}, bio::phred42{30}, bio::phred42{20}};
-    std::vector<bio::phred42> cmp2{bio::phred42{40}, bio::phred42{40}};
+    std::vector<bio::alphabet::phred42> vec{bio::alphabet::phred42{40},
+                                            bio::alphabet::phred42{40},
+                                            bio::alphabet::phred42{30},
+                                            bio::alphabet::phred42{20},
+                                            bio::alphabet::phred42{10}};
+    std::vector<bio::alphabet::phred42> cmp1{bio::alphabet::phred42{40},
+                                             bio::alphabet::phred42{40},
+                                             bio::alphabet::phred42{30},
+                                             bio::alphabet::phred42{20}};
+    std::vector<bio::alphabet::phred42> cmp2{bio::alphabet::phred42{40}, bio::alphabet::phred42{40}};
 
     // trim by phred_value
     auto v1 = vec | bio::ranges::views::trim_quality(20u); // == ['I','I','?','5']
     EXPECT_EQ(v1 | bio::ranges::views::to<std::vector>(), cmp1);
 
     // trim by quality character
-    auto v2 = vec | bio::ranges::views::trim_quality(bio::phred42{40}); // == ['I','I']
+    auto v2 = vec | bio::ranges::views::trim_quality(bio::alphabet::phred42{40}); // == ['I','I']
     EXPECT_EQ(v2 | bio::ranges::views::to<std::vector>(), cmp2);
 
     // function syntax
@@ -49,22 +52,22 @@ TEST(view_trim, standalone)
 
 TEST(view_trim, qualified)
 {
-    std::vector<bio::dna5q> vec{
-      {'A'_dna5, bio::phred42{40}},
-      {'G'_dna5, bio::phred42{40}},
-      {'G'_dna5, bio::phred42{30}},
-      {'A'_dna5, bio::phred42{20}},
-      {'T'_dna5, bio::phred42{10}}
+    std::vector<bio::alphabet::dna5q> vec{
+      {'A'_dna5, bio::alphabet::phred42{40}},
+      {'G'_dna5, bio::alphabet::phred42{40}},
+      {'G'_dna5, bio::alphabet::phred42{30}},
+      {'A'_dna5, bio::alphabet::phred42{20}},
+      {'T'_dna5, bio::alphabet::phred42{10}}
     };
-    std::vector<bio::dna5q> cmp1{
-      {'A'_dna5, bio::phred42{40}},
-      {'G'_dna5, bio::phred42{40}},
-      {'G'_dna5, bio::phred42{30}},
-      {'A'_dna5, bio::phred42{20}}
+    std::vector<bio::alphabet::dna5q> cmp1{
+      {'A'_dna5, bio::alphabet::phred42{40}},
+      {'G'_dna5, bio::alphabet::phred42{40}},
+      {'G'_dna5, bio::alphabet::phred42{30}},
+      {'A'_dna5, bio::alphabet::phred42{20}}
     };
-    std::vector<bio::dna5q> cmp2{
-      {'A'_dna5, bio::phred42{40}},
-      {'G'_dna5, bio::phred42{40}}
+    std::vector<bio::alphabet::dna5q> cmp2{
+      {'A'_dna5, bio::alphabet::phred42{40}},
+      {'G'_dna5, bio::alphabet::phred42{40}}
     };
 
     // trim by phred_value
@@ -72,7 +75,7 @@ TEST(view_trim, qualified)
     EXPECT_EQ(v1 | bio::ranges::views::to<std::vector>(), cmp1);
 
     // trim by quality character
-    auto v2 = vec | bio::ranges::views::trim_quality(bio::dna5q{'C'_dna5, bio::phred42{40}});
+    auto v2 = vec | bio::ranges::views::trim_quality(bio::alphabet::dna5q{'C'_dna5, bio::alphabet::phred42{40}});
     EXPECT_EQ(v2 | bio::ranges::views::to<std::vector>(), cmp2);
 
     // function syntax
@@ -87,18 +90,18 @@ TEST(view_trim, qualified)
 
 TEST(view_trim, concepts)
 {
-    std::vector<bio::dna5q> vec{
-      {'A'_dna5, bio::phred42{40}},
-      {'G'_dna5, bio::phred42{40}},
-      {'G'_dna5, bio::phred42{30}},
-      {'A'_dna5, bio::phred42{20}},
-      {'T'_dna5, bio::phred42{10}}
+    std::vector<bio::alphabet::dna5q> vec{
+      {'A'_dna5, bio::alphabet::phred42{40}},
+      {'G'_dna5, bio::alphabet::phred42{40}},
+      {'G'_dna5, bio::alphabet::phred42{30}},
+      {'A'_dna5, bio::alphabet::phred42{20}},
+      {'T'_dna5, bio::alphabet::phred42{10}}
     };
     EXPECT_TRUE(std::ranges::input_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::random_access_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(vec)>);
-    EXPECT_TRUE((std::ranges::output_range<decltype(vec), bio::dna5q>));
+    EXPECT_TRUE((std::ranges::output_range<decltype(vec), bio::alphabet::dna5q>));
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
 
     auto v1 = vec | bio::ranges::views::trim_quality(20u);
@@ -106,6 +109,6 @@ TEST(view_trim, concepts)
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::random_access_range<decltype(v1)>);
     EXPECT_FALSE(std::ranges::common_range<decltype(v1)>);
-    EXPECT_TRUE((std::ranges::output_range<decltype(v1), bio::dna5q>));
+    EXPECT_TRUE((std::ranges::output_range<decltype(v1), bio::alphabet::dna5q>));
     EXPECT_TRUE(!std::ranges::sized_range<decltype(v1)>);
 }

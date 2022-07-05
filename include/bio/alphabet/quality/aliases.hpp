@@ -24,25 +24,25 @@
 #include <bio/alphabet/quality/phred42.hpp>
 #include <bio/alphabet/quality/qualified.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 
-//!\brief An alphabet that stores a bio::dna4 letter and an bio::phred42 letter at each position.
+//!\brief An alphabet that stores a bio::alphabet::dna4 letter and an bio::alphabet::phred42 letter at each position.
 using dna4q = qualified<dna4, phred42>;
 
-//!\brief An alphabet that stores a bio::dna5 letter and an bio::phred42 letter at each position.
+//!\brief An alphabet that stores a bio::alphabet::dna5 letter and an bio::alphabet::phred42 letter at each position.
 using dna5q = qualified<dna5, phred42>;
 
-//!\brief An alphabet that stores a bio::rna4 letter and an bio::phred42 letter at each position.
+//!\brief An alphabet that stores a bio::alphabet::rna4 letter and an bio::alphabet::phred42 letter at each position.
 using rna4q = qualified<rna4, phred42>;
 
-//!\brief An alphabet that stores a bio::rna5 letter and an bio::phred42 letter at each position.
+//!\brief An alphabet that stores a bio::alphabet::rna5 letter and an bio::alphabet::phred42 letter at each position.
 using rna5q = qualified<rna5, phred42>;
 
-//!\brief An alphabet that stores a bio::dna15 letter and an bio::qualified letter at each position.
+//!\brief An alphabet that stores a bio::alphabet::dna15 letter and an bio::alphabet::qualified letter at each position.
 using dna15q = qualified<dna15, phred42>;
 
-//!\brief An alphabet that stores a bio::rna15 letter and an bio::qualified letter at each position.
+//!\brief An alphabet that stores a bio::alphabet::rna15 letter and an bio::alphabet::qualified letter at each position.
 using rna15q = qualified<rna15, phred42>;
 
-} // namespace bio
+} // namespace bio::alphabet

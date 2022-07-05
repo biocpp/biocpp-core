@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Sara Hetzel <sara.hetzel AT fu-berlin.de>
- * \brief Provides bio::aa10murphy, container aliases and string literals.
+ * \brief Provides bio::alphabet::aa10murphy, container aliases and string literals.
  */
 
 #pragma once
@@ -19,14 +19,14 @@
 #include <bio/alphabet/aminoacid/concept.hpp>
 #include <bio/alphabet/detail/to_lower.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief The reduced Murphy amino acid alphabet.
  * \ingroup aminoacid
- * \implements bio::aminoacid_alphabet
- * \implements bio::writable_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::aminoacid_alphabet
+ * \implements bio::alphabet::writable_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -83,9 +83,9 @@ private:
     //!\brief The base class.
     using base_t = aminoacid_base<aa10murphy, 10>;
 
-    //!\brief Befriend bio::aminoacid_base.
+    //!\brief Befriend bio::alphabet::aminoacid_base.
     friend base_t;
-    //!\cond \brief Befriend bio::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -178,7 +178,7 @@ protected:
 // containers
 // ------------------------------------------------------------------
 
-//!\brief Alias for an std::vector of bio::aa10murphy.
+//!\brief Alias for an std::vector of bio::alphabet::aa10murphy.
 //!\relates aa10murphy
 using aa10murphy_vector = std::vector<aa10murphy>;
 
@@ -190,26 +190,26 @@ using aa10murphy_vector = std::vector<aa10murphy>;
  * \{
  */
 
-/*!\brief The bio::aa10murphy char literal.
+/*!\brief The bio::alphabet::aa10murphy char literal.
  * \param[in] c The character to assign.
- * \relates bio::aa10murphy
- * \returns bio::aa10murphy
+ * \relates bio::alphabet::aa10murphy
+ * \returns bio::alphabet::aa10murphy
  */
 constexpr aa10murphy operator""_aa10murphy(char const c) noexcept
 {
     return aa10murphy{}.assign_char(c);
 }
 
-/*!\brief The bio::aa10murphy  string literal.
+/*!\brief The bio::alphabet::aa10murphy  string literal.
  * \param[in] s A pointer to the character string to assign.
  * \param[in] n The size of the character string to assign.
- * \relates bio::aa10murphy
- * \returns bio::aa10murphy_vector
+ * \relates bio::alphabet::aa10murphy
+ * \returns bio::alphabet::aa10murphy_vector
  *
  * You can use this string literal to easily assign to aa10murphy_vector:
  *
  * \attention
- * All BioC++ literals are in the namespace bio!
+ * All BioC++ literals are in the namespace bio::alphabet!
  */
 
 inline aa10murphy_vector operator""_aa10murphy(char const * s, std::size_t n)
@@ -224,4 +224,4 @@ inline aa10murphy_vector operator""_aa10murphy(char const * s, std::size_t n)
 }
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet

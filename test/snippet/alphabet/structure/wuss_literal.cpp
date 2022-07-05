@@ -2,10 +2,10 @@
 
 int main()
 {
-    using bio::operator""_wuss51;
+    using bio::alphabet::operator""_wuss51;
 
     // Using the string literal to assign a vector of WUSS characters:
-    std::vector<bio::wuss<>> foo{".<..>."_wuss51};
-    std::vector<bio::wuss<>> bar = ".<..>."_wuss51;
+    std::vector<bio::alphabet::wuss<>> foo{".<..>."_wuss51};
+    std::vector<bio::alphabet::wuss<>> bar = ".<..>."_wuss51;
     auto bax = ".<..>."_wuss51;
 }

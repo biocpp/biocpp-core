@@ -5,8 +5,8 @@
 
 int main()
 {
-    bio::gap my_gap = bio::gap{};
-    bio::gap another_gap{};
+    bio::alphabet::gap my_gap = bio::alphabet::gap{};
+    bio::alphabet::gap another_gap{};
     another_gap.assign_char('A'); // this does not change anything
 
     fmt::print("{}", my_gap.to_char()); // outputs '-'

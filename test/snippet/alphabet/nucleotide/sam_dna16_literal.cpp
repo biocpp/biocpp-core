@@ -3,10 +3,10 @@
 
 int main()
 {
-    using bio::operator""_sam_dna16;
+    using bio::alphabet::operator""_sam_dna16;
 
-    bio::sam_dna16_vector foo{"ACgtTA"_sam_dna16};
-    bio::sam_dna16_vector bar = "ACG==A"_sam_dna16;
+    bio::alphabet::sam_dna16_vector foo{"ACgtTA"_sam_dna16};
+    bio::alphabet::sam_dna16_vector bar = "ACG==A"_sam_dna16;
     auto bax = "A=GTT!"_sam_dna16;
 
     fmt::print("{}\n{}\n{}\n", foo, bar, bax);

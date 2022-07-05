@@ -24,11 +24,11 @@ int main(int argc, char** argv)
        return 0;
     }
 
-    auto s_as_dna = s | bio::views::char_to<bio::dna5>;
+    auto s_as_dna = s | bio::views::char_to<bio::alphabet::dna5>;
     // Bonus:
     //auto s_as_dna = s | std::views::transform([] (char const c)
     //{
-    //    return bio::assign_char_strictly_to(c, bio::dna5{});
+    //    return bio::alphabet::assign_char_strictly_to(c, bio::alphabet::dna5{});
     //});
 
     fmt::print("Original: {}\n", s_as_dna);

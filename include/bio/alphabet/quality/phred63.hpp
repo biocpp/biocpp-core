@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Marie Hoffmann <marie.hoffmann AT fu-berlin.de>
- * \brief Provides bio::phred63 quality scores.
+ * \brief Provides bio::alphabet::phred63 quality scores.
  */
 
 #pragma once
@@ -19,12 +19,12 @@
 // phred63
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief Quality type for traditional Sanger and modern Illumina Phred scores (full range).
- * \implements bio::writable_quality_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::writable_quality_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -45,9 +45,9 @@ private:
     //!\brief The base class.
     using base_t = quality_base<phred63, 63>;
 
-    //!\brief Befriend bio::quality_base.
+    //!\brief Befriend bio::alphabet::quality_base.
     friend base_t;
-    //!\cond \brief Befriend bio::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -83,22 +83,22 @@ public:
 /*!\name Literals
  * \{
  */
-/*!\brief The bio::phred63 char literal.
- * \relates bio::phred63
- * \returns bio::phred63
+/*!\brief The bio::alphabet::phred63 char literal.
+ * \relates bio::alphabet::phred63
+ * \returns bio::alphabet::phred63
  */
 constexpr phred63 operator""_phred63(char const c) noexcept
 {
     return phred63{}.assign_char(c);
 }
 
-/*!\brief The bio::phred63 string literal.
+/*!\brief The bio::alphabet::phred63 string literal.
  * \param[in] s A pointer to the character sequence to assign from.
  * \param[in] n The length of the character sequence to assign from.
- * \relates bio::phred63
- * \returns bio::std::vector<bio::phred63>
+ * \relates bio::alphabet::phred63
+ * \returns bio::alphabet::std::vector<bio::alphabet::phred63>
  *
- * You can use this string literal to easily assign to std::vector<bio::phred63>:
+ * You can use this string literal to easily assign to std::vector<bio::alphabet::phred63>:
  *
  * \include test/snippet/alphabet/quality/phred63_literal.cpp
  */
@@ -114,4 +114,4 @@ inline std::vector<phred63> operator""_phred63(char const * s, std::size_t n)
 }
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet

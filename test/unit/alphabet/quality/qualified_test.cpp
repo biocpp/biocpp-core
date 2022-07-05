@@ -24,19 +24,19 @@
 #include "../semi_alphabet_test_template.hpp"
 
 template <typename alphabet_type, typename phred_type>
-class alphabet_tuple_base_test<bio::qualified<alphabet_type, phred_type>> : public ::testing::Test
+class alphabet_tuple_base_test<bio::alphabet::qualified<alphabet_type, phred_type>> : public ::testing::Test
 {
 public:
-    using T = bio::qualified<alphabet_type, phred_type>;
+    using T = bio::alphabet::qualified<alphabet_type, phred_type>;
 
-    using other_type =
-      std::conditional_t<std::is_same_v<alphabet_type, bio::dna4>,
-                         bio::rna4,
-                         std::conditional_t<std::is_same_v<alphabet_type, bio::aa27>,
-                                            bio::aa27,
-                                            std::conditional_t<std::is_same_v<alphabet_type, bio::gapped<bio::dna4>>,
-                                                               bio::gapped<bio::dna4>,
-                                                               alphabet_type>>>;
+    using other_type = std::conditional_t<
+      std::is_same_v<alphabet_type, bio::alphabet::dna4>,
+      bio::alphabet::rna4,
+      std::conditional_t<std::is_same_v<alphabet_type, bio::alphabet::aa27>,
+                         bio::alphabet::aa27,
+                         std::conditional_t<std::is_same_v<alphabet_type, bio::alphabet::gapped<bio::alphabet::dna4>>,
+                                            bio::alphabet::gapped<bio::alphabet::dna4>,
+                                            alphabet_type>>>;
 
     T      instance      = T{value_1(), value_2()};
     T      zero_instance = T{decltype(value_1()){}, decltype(value_2()){}};
@@ -62,11 +62,12 @@ public:
     }
 };
 
-using qualified_types = ::testing::Types<bio::qualified<bio::dna4, bio::phred42>,
-                                         bio::qualified<bio::dna4, bio::phred63>,
-                                         bio::qualified<bio::aa27, bio::phred42>,
-                                         bio::qualified<bio::gapped<bio::dna4>, bio::phred42>,
-                                         bio::dna4q>;
+using qualified_types =
+  ::testing::Types<bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>,
+                   bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred63>,
+                   bio::alphabet::qualified<bio::alphabet::aa27, bio::alphabet::phred42>,
+                   bio::alphabet::qualified<bio::alphabet::gapped<bio::alphabet::dna4>, bio::alphabet::phred42>,
+                   bio::alphabet::dna4q>;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(qualified, alphabet, qualified_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(qualified, semi_alphabet_test, qualified_types, );

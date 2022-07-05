@@ -191,10 +191,10 @@ struct is_class_template_declarable_with<query_t, args_t...> : public std::true_
 {};
 //!\endcond
 
-/*!\brief Helper variable template for bio::detail::is_class_template_declarable_with.
+/*!\brief Helper variable template for bio::meta::is_class_template_declarable_with.
  * \tparam query_t The type of the template class to test.
  * \tparam args_t  The template parameter pack to instantiate the template class with.
- * \relates bio::detail::is_class_template_declarable_with
+ * \relates bio::meta::is_class_template_declarable_with
  */
 template <template <typename...> typename query_t, typename... args_t>
 inline constexpr bool is_class_template_declarable_with_v =

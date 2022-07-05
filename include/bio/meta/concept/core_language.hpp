@@ -25,7 +25,7 @@ namespace bio::meta
  * \{
  */
 
-/*!\interface   bio::detail::weakly_equality_comparable_with <>
+/*!\interface   bio::meta::weakly_equality_comparable_with <>
  * \tparam t1   The first type to compare.
  * \tparam t2   The second type to compare.
  * \brief       Requires the two operands to be comparable with `==` and `!=` in both directions.
@@ -42,7 +42,7 @@ concept weakly_equality_comparable_with = requires(std::remove_reference_t<T> co
 };
 //!\endcond
 
-/*!\interface   bio::detail::weakly_ordered_with <>
+/*!\interface   bio::meta::weakly_ordered_with <>
  * \tparam t1   The first type to compare.
  * \tparam t2   The second type to compare.
  * \brief       Requires the two operands to be comparable with `<`, `<=`, `>` and `>=` in both directions.

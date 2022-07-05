@@ -19,21 +19,21 @@ namespace std
 {
 /*!\brief Struct for hashing a character.
  * \ingroup alphabet
- * \tparam alphabet_t The type of character to hash; must model bio::semialphabet.
+ * \tparam alphabet_t The type of character to hash; must model bio::alphabet::semialphabet.
  */
 template <typename alphabet_t>
     //!\cond
-    requires bio::semialphabet<alphabet_t>
+    requires bio::alphabet::semialphabet<alphabet_t>
 //!\endcond
 struct hash<alphabet_t>
 {
     /*!\brief Compute the hash for a character.
-     * \param[in] character The character to process; must model bio::semialphabet.
+     * \param[in] character The character to process; must model bio::alphabet::semialphabet.
      *
      * \returns The rank of the character.
-     * \sa bio::to_rank.
+     * \sa bio::alphabet::to_rank.
      */
-    size_t operator()(alphabet_t const character) const noexcept { return bio::to_rank(character); }
+    size_t operator()(alphabet_t const character) const noexcept { return bio::alphabet::to_rank(character); }
 };
 
 } // namespace std

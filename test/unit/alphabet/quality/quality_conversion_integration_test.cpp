@@ -20,7 +20,8 @@ template <typename T>
 using quality_conversion = ::testing::Test;
 
 // add all alphabets from the quality sub module here
-using quality_conversion_types = bio::meta::type_list<bio::phred42, bio::phred63, bio::phred68legacy>;
+using quality_conversion_types =
+  bio::meta::type_list<bio::alphabet::phred42, bio::alphabet::phred63, bio::alphabet::phred68legacy>;
 using quality_conversion_gtest_types =
   bio::meta::transfer_template_args_onto_t<quality_conversion_types, ::testing::Types>;
 

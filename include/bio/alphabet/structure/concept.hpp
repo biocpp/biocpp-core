@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Joerg Winkler <j.winkler AT fu-berlin.de>
- * \brief Provides bio::rna_structure_alphabet.
+ * \brief Provides bio::alphabet::rna_structure_alphabet.
  */
 
 #pragma once
@@ -24,20 +24,20 @@
 // is_pair_open()
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void is_pair_open(args_t...) = delete;
 
-//!\brief Functor definition for bio::is_pair_open.
+//!\brief Functor definition for bio::alphabet::is_pair_open.
 struct is_pair_open_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::is_pair_open(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, is_pair_open(v))                                     // ADL
-    BIOCPP_CPO_IMPL(0, v.is_pair_open())                                    // member
+    BIOCPP_CPO_IMPL(2, bio::alphabet::custom::alphabet<decltype(v)>::is_pair_open(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, is_pair_open(v))                                               // ADL
+    BIOCPP_CPO_IMPL(0, v.is_pair_open())                                              // member
 
 public:
     //!\brief Operator definition.
@@ -48,7 +48,7 @@ public:
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
         static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, chr)),
-                      "Only overloads that are marked noexcept are picked up by bio::is_pair_open().");
+                      "Only overloads that are marked noexcept are picked up by bio::alphabet::is_pair_open().");
         static_assert(std::same_as<bool, decltype(impl(meta::detail::priority_tag<2>{}, chr))>,
                       "The return type of your is_pair_open() implementation must be 'bool'.");
 
@@ -56,9 +56,9 @@ public:
     }
 };
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects (Structure)
@@ -76,7 +76,7 @@ namespace bio
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   1. A static member function `is_pair_open(your_type const a)` of the class `bio::custom::alphabet<your_type>`.
+ *   1. A static member function `is_pair_open(your_type const a)` of the class `bio::alphabet::custom::alphabet<your_type>`.
  *   2. A free function `is_pair_open(your_type const a)` in the namespace of your type (or as `friend`).
  *   3. A member function called `is_pair_open()`.
  *
@@ -97,26 +97,26 @@ namespace bio
 inline constexpr auto is_pair_open = detail::adl_only::is_pair_open_fn{};
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet
 
 // ============================================================================
 // is_pair_close()
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void is_pair_close(args_t...) = delete;
 
-//!\brief Functor definition for bio::is_pair_close.
+//!\brief Functor definition for bio::alphabet::is_pair_close.
 struct is_pair_close_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::is_pair_close(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, is_pair_close(v))                                     // ADL
-    BIOCPP_CPO_IMPL(0, v.is_pair_close())                                    // member
+    BIOCPP_CPO_IMPL(2, bio::alphabet::custom::alphabet<decltype(v)>::is_pair_close(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, is_pair_close(v))                                               // ADL
+    BIOCPP_CPO_IMPL(0, v.is_pair_close())                                              // member
 
 public:
     //!\brief Operator definition.
@@ -127,7 +127,7 @@ public:
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
         static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, chr)),
-                      "Only overloads that are marked noexcept are picked up by bio::is_pair_close().");
+                      "Only overloads that are marked noexcept are picked up by bio::alphabet::is_pair_close().");
         static_assert(std::same_as<bool, decltype(impl(meta::detail::priority_tag<2>{}, chr))>,
                       "The return type of your is_pair_close() implementation must be 'bool'.");
 
@@ -135,9 +135,9 @@ public:
     }
 };
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects (Structure)
@@ -155,7 +155,7 @@ namespace bio
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   1. A static member function `is_pair_close(your_type const a)` of the class `bio::custom::alphabet<your_type>`.
+ *   1. A static member function `is_pair_close(your_type const a)` of the class `bio::alphabet::custom::alphabet<your_type>`.
  *   2. A free function `is_pair_close(your_type const a)` in the namespace of your type (or as `friend`).
  *   3. A member function called `is_pair_close()`.
  *
@@ -176,26 +176,26 @@ namespace bio
 inline constexpr auto is_pair_close = detail::adl_only::is_pair_close_fn{};
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet
 
 // ============================================================================
 // is_unpaired()
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void is_unpaired(args_t...) = delete;
 
-//!\brief Functor definition for bio::is_unpaired.
+//!\brief Functor definition for bio::alphabet::is_unpaired.
 struct is_unpaired_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::is_unpaired(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, is_unpaired(v))                                     // ADL
-    BIOCPP_CPO_IMPL(0, v.is_unpaired())                                    // member
+    BIOCPP_CPO_IMPL(2, bio::alphabet::custom::alphabet<decltype(v)>::is_unpaired(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, is_unpaired(v))                                               // ADL
+    BIOCPP_CPO_IMPL(0, v.is_unpaired())                                              // member
 
 public:
     //!\brief Operator definition.
@@ -206,7 +206,7 @@ public:
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
         static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, chr)),
-                      "Only overloads that are marked noexcept are picked up by bio::is_unpaired().");
+                      "Only overloads that are marked noexcept are picked up by bio::alphabet::is_unpaired().");
         static_assert(std::same_as<bool, decltype(impl(meta::detail::priority_tag<2>{}, chr))>,
                       "The return type of your is_unpaired() implementation must be 'bool'.");
 
@@ -214,9 +214,9 @@ public:
     }
 };
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects (Structure)
@@ -234,7 +234,7 @@ namespace bio
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   1. A static member function `is_unpaired(your_type const a)` of the class `bio::custom::alphabet<your_type>`.
+ *   1. A static member function `is_unpaired(your_type const a)` of the class `bio::alphabet::custom::alphabet<your_type>`.
  *   2. A free function `is_unpaired(your_type const a)` in the namespace of your type (or as `friend`).
  *   3. A member function called `is_unpaired()`.
  *
@@ -255,20 +255,20 @@ namespace bio
 inline constexpr auto is_unpaired = detail::adl_only::is_unpaired_fn{};
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet
 
 // ============================================================================
 // max_pseudoknot_depth
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void max_pseudoknot_depth(args_t...) = delete;
 
-/*!\brief Functor definition for bio::max_pseudoknot_depth.
+/*!\brief Functor definition for bio::alphabet::max_pseudoknot_depth.
  * \tparam alph_t   The type being queried.
  * \tparam s_alph_t `alph_t` with cvref removed and possibly wrapped in std::type_identity; never user-provide this!
  * \ingroup structure
@@ -282,9 +282,10 @@ template <typename alph_t,
 struct max_pseudoknot_depth_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2,
-                    (meta::deferred_type_t<bio::custom::alphabet<alph_t>, decltype(v)>::max_pseudoknot_depth)) // custom
-    BIOCPP_CPO_IMPL(1, (max_pseudoknot_depth(v)))                                                              // ADL
+    BIOCPP_CPO_IMPL(
+      2,
+      (meta::deferred_type_t<bio::alphabet::custom::alphabet<alph_t>, decltype(v)>::max_pseudoknot_depth)) // custom
+    BIOCPP_CPO_IMPL(1, (max_pseudoknot_depth(v)))                                                          // ADL
     BIOCPP_CPO_IMPL(0,
                     (meta::deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::max_pseudoknot_depth)) // member
 
@@ -297,11 +298,11 @@ public:
     constexpr auto operator()() const noexcept
     {
         static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, s_alph_t{})),
-                      "Only overloads that are marked noexcept are picked up by bio::max_pseudoknot_depth.");
+                      "Only overloads that are marked noexcept are picked up by bio::alphabet::max_pseudoknot_depth.");
         static_assert(std::constructible_from<size_t, decltype(impl(meta::detail::priority_tag<2>{}, s_alph_t{}))>,
                       "The return type of your max_pseudoknot_depth implementation must be convertible to size_t.");
         static_assert(BIOCPP_IS_CONSTEXPR(impl(meta::detail::priority_tag<2>{}, s_alph_t{})),
-                      "Only overloads that are marked constexpr are picked up by bio::max_pseudoknot_depth.");
+                      "Only overloads that are marked constexpr are picked up by bio::alphabet::max_pseudoknot_depth.");
 
         return impl(meta::detail::priority_tag<2>{}, s_alph_t{});
     }
@@ -314,9 +315,9 @@ template <typename alph_t>
 inline constexpr auto max_pseudoknot_depth_obj = max_pseudoknot_depth_fn<alph_t>{};
 //!\endcond
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects (Structure)
@@ -340,7 +341,7 @@ namespace bio
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   1. A static member variable `max_pseudoknot_depth` of the class `bio::custom::alphabet<your_type>`.
+ *   1. A static member variable `max_pseudoknot_depth` of the class `bio::alphabet::custom::alphabet<your_type>`.
  *   2. A free function `max_pseudoknot_depth(your_type const)` in the namespace of your type (or as `friend`).
  *   3. A static member variable `max_pseudoknot_depth` of the class `your_type`.
  *
@@ -369,26 +370,26 @@ template <typename alph_t>
 //!\endcond
 inline constexpr auto max_pseudoknot_depth = detail::adl_only::max_pseudoknot_depth_obj<alph_t>();
 
-} // namespace bio
+} // namespace bio::alphabet
 
 // ============================================================================
 // pseudoknot_id()
 // ============================================================================
 
-namespace bio::detail::adl_only
+namespace bio::alphabet::detail::adl_only
 {
 
 //!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
 template <typename... args_t>
 void pseudoknot_id(args_t...) = delete;
 
-//!\brief Functor definition for bio::pseudoknot_id.
+//!\brief Functor definition for bio::alphabet::pseudoknot_id.
 struct pseudoknot_id_fn
 {
 public:
-    BIOCPP_CPO_IMPL(2, bio::custom::alphabet<decltype(v)>::pseudoknot_id(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, pseudoknot_id(v))                                     // ADL
-    BIOCPP_CPO_IMPL(0, v.pseudoknot_id())                                    // member
+    BIOCPP_CPO_IMPL(2, bio::alphabet::custom::alphabet<decltype(v)>::pseudoknot_id(v)) // explicit customisation
+    BIOCPP_CPO_IMPL(1, pseudoknot_id(v))                                               // ADL
+    BIOCPP_CPO_IMPL(0, v.pseudoknot_id())                                              // member
 
 public:
     //!\brief Operator definition.
@@ -399,7 +400,7 @@ public:
     constexpr auto operator()(rna_structure_t const chr) const noexcept
     {
         static_assert(noexcept(impl(meta::detail::priority_tag<2>{}, chr)),
-                      "Only overloads that are marked noexcept are picked up by bio::pseudoknot_id().");
+                      "Only overloads that are marked noexcept are picked up by bio::alphabet::pseudoknot_id().");
         static_assert(
           std::constructible_from<std::optional<size_t>, decltype(impl(meta::detail::priority_tag<2>{}, chr))>,
           "The return type of your pseudoknot_id() implementation must be convertible to std::optional<size_t>.");
@@ -408,9 +409,9 @@ public:
     }
 };
 
-} // namespace bio::detail::adl_only
+} // namespace bio::alphabet::detail::adl_only
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Function objects (Structure)
@@ -422,7 +423,7 @@ namespace bio
  * \param  chr       The RNA structure character whose property is checked.
  * \returns An std::optional containing the pseudoknot identifier if `alph` represents an interaction.
  * The returned value is std::nullopt for unpaired sites. For non-nested interactions the identifier is always 0.
- * It is guaranteed to be smaller than bio::max_pseudoknot_depth.
+ * It is guaranteed to be smaller than bio::alphabet::max_pseudoknot_depth.
  * \ingroup structure
  * \details
  *
@@ -430,7 +431,7 @@ namespace bio
  *
  * It acts as a wrapper and looks for three possible implementations (in this order):
  *
- *   1. A static member function `pseudoknot_id(your_type const a)` of the class `bio::custom::alphabet<your_type>`.
+ *   1. A static member function `pseudoknot_id(your_type const a)` of the class `bio::alphabet::custom::alphabet<your_type>`.
  *   2. A free function `pseudoknot_id(your_type const a)` in the namespace of your type (or as `friend`).
  *   3. A member function of `your_type` called `pseudoknot_id()`.
  *
@@ -451,17 +452,17 @@ namespace bio
 inline constexpr auto pseudoknot_id = detail::adl_only::pseudoknot_id_fn{};
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet
 
 // ============================================================================
 // rna_structure_alphabet concept
 // ============================================================================
 
-namespace bio
+namespace bio::alphabet
 {
-/*!\interface bio::rna_structure_alphabet <>
+/*!\interface bio::alphabet::rna_structure_alphabet <>
  * \brief A concept that indicates whether an alphabet represents RNA structure.
- * \extends bio::alphabet
+ * \extends bio::alphabet::alphabet
  * \ingroup structure
  *
  * \details
@@ -472,12 +473,12 @@ namespace bio
  *
  * ### Requirements
  *
- *   1. `t` shall model bio::alphabet
- *   2. bio::is_pair_open needs to be defined for objects of type `t`
- *   3. bio::is_pair_close needs to be defined for objects of type `t`
- *   4. bio::is_unpaired needs to be defined for objects of type `t`
- *   5. bio::max_pseudoknot_depth needs to be defined for `t` and be greater than zero
- *   6. bio::pseudoknot_id needs to be defined for objects of type `t`
+ *   1. `t` shall model bio::alphabet::alphabet
+ *   2. bio::alphabet::is_pair_open needs to be defined for objects of type `t`
+ *   3. bio::alphabet::is_pair_close needs to be defined for objects of type `t`
+ *   4. bio::alphabet::is_unpaired needs to be defined for objects of type `t`
+ *   5. bio::alphabet::max_pseudoknot_depth needs to be defined for `t` and be greater than zero
+ *   6. bio::alphabet::pseudoknot_id needs to be defined for objects of type `t`
  *
  * See the documentation pages for the respective requirements.
  *
@@ -491,17 +492,17 @@ namespace bio
  */
 //!\cond
 template <typename t>
-concept rna_structure_alphabet = bio::alphabet<t> && requires(t val)
+concept rna_structure_alphabet = bio::alphabet::alphabet<t> && requires(t val)
 {
-    {bio::is_pair_open(val)};
-    {bio::is_pair_close(val)};
-    {bio::is_unpaired(val)};
-    {bio::pseudoknot_id(val)};
+    {bio::alphabet::is_pair_open(val)};
+    {bio::alphabet::is_pair_close(val)};
+    {bio::alphabet::is_unpaired(val)};
+    {bio::alphabet::pseudoknot_id(val)};
 
     // this is delegated to a static class variable, which must not be 0
-    requires bio::max_pseudoknot_depth<t> >
+    requires bio::alphabet::max_pseudoknot_depth<t> >
     0;
 };
 //!\endcond
 
-} // namespace bio
+} // namespace bio::alphabet

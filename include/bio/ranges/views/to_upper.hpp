@@ -25,7 +25,7 @@ namespace bio::ranges::views
  * \{
  */
 
-/*!\brief               A view that calls bio::to_upper() on each element in the input range.
+/*!\brief               A view that converts each element to upper case.
  * \tparam urng_t       The type of the range being processed. See below for requirements. [template parameter is
  *                      omitted in pipe notation]
  * \param[in] urange    The range being processed. [parameter is omitted in pipe notation]
@@ -56,7 +56,7 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                  | *lost*                                                             |
  * | bio::ranges::const_iterable_range     |                                  | *preserved*                                                        |
  * |                                  |                                  |                                                                    |
- * | std::ranges::range_reference_t   | bio::meta::builtin_character        | bio::remove_reference_t<std::ranges::range_reference_t<urngt_>> |
+ * | std::ranges::range_reference_t   | bio::meta::builtin_character        | bio::alphabet::remove_reference_t<std::ranges::range_reference_t<urngt_>> |
   *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
@@ -64,7 +64,7 @@ namespace bio::ranges::views
  * \include test/snippet/ranges/views/to_upper.cpp
  * \hideinitializer
  */
-inline auto const to_upper = deep{std::views::transform(&bio::detail::to_upper)};
+inline auto const to_upper = deep{std::views::transform(&bio::alphabet::detail::to_upper)};
 
 //!\}
 

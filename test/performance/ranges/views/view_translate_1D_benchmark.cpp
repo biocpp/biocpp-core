@@ -34,19 +34,19 @@ template <typename rng_t>
 void sequential_read_impl(benchmark::State & state, rng_t && rng)
 {
     for (auto _ : state)
-        for (bio::aa27 c : rng)
+        for (bio::alphabet::aa27 c : rng)
             benchmark::DoNotOptimize(c.to_rank());
 }
 
 template <typename tag_t>
 void sequential_read(benchmark::State & state)
 {
-    std::vector<bio::dna4> dna_sequence{bio::test::generate_sequence<bio::dna4>(1000, 0, 0)};
+    std::vector<bio::alphabet::dna4> dna_sequence{bio::test::generate_sequence<bio::alphabet::dna4>(1000, 0, 0)};
 
     if constexpr (std::is_same_v<tag_t, baseline_tag>)
     {
-        bio::aa27_vector translated_aa_sequence = dna_sequence | bio::ranges::views::translate_single
-                                                                  | bio::ranges::views::to<bio::aa27_vector>();
+        bio::alphabet::aa27_vector translated_aa_sequence = dna_sequence | bio::ranges::views::translate_single
+                                                                  | bio::ranges::views::to<bio::alphabet::aa27_vector>();
         sequential_read_impl(state, translated_aa_sequence);
     }
     else if constexpr (std::is_same_v<tag_t, translate_tag>)
@@ -74,7 +74,7 @@ void random_access_impl(benchmark::State & state, rng_t && rng, std::vector<size
 template <typename tag_t>
 void random_access(benchmark::State & state)
 {
-    std::vector<bio::dna4> dna_sequence{bio::test::generate_sequence<bio::dna4>(10000, 0, 0)};
+    std::vector<bio::alphabet::dna4> dna_sequence{bio::test::generate_sequence<bio::alphabet::dna4>(10000, 0, 0)};
 
     std::vector<size_t> access_positions{};
     access_positions.resize(200);
@@ -86,8 +86,8 @@ void random_access(benchmark::State & state)
 
     if constexpr (std::is_same_v<tag_t, baseline_tag>)
     {
-        bio::aa27_vector translated_aa_sequence = dna_sequence | bio::ranges::views::translate_single
-                                                                  | bio::ranges::views::to<bio::aa27_vector>();
+        bio::alphabet::aa27_vector translated_aa_sequence = dna_sequence | bio::ranges::views::translate_single
+                                                                  | bio::ranges::views::to<bio::alphabet::aa27_vector>();
         random_access_impl(state, translated_aa_sequence, access_positions);
     }
     else
@@ -105,13 +105,13 @@ BENCHMARK_TEMPLATE(random_access, translate_tag);
 // ============================================================================
 
 template <typename adaptor_t>
-void copy_impl(benchmark::State & state, std::vector<bio::dna4> const & dna_sequence, adaptor_t & adaptor)
+void copy_impl(benchmark::State & state, std::vector<bio::alphabet::dna4> const & dna_sequence, adaptor_t & adaptor)
 {
     for (auto _ : state)
     {
-        bio::aa27_vector translated_aa_sequence{};
+        bio::alphabet::aa27_vector translated_aa_sequence{};
         benchmark::DoNotOptimize(translated_aa_sequence = dna_sequence | adaptor
-                                                                       | bio::ranges::views::to<bio::aa27_vector>());
+                                                                       | bio::ranges::views::to<bio::alphabet::aa27_vector>());
     }
 }
 
@@ -130,7 +130,7 @@ void copy_impl_seqan2(benchmark::State & state, seqan::DnaString const & dna_seq
 template <typename tag_t>
 void copy(benchmark::State & state)
 {
-    std::vector<bio::dna4> seqan3_dna_sequence{bio::test::generate_sequence<bio::dna4>(1000, 0, 0)};
+    std::vector<bio::alphabet::dna4> seqan3_dna_sequence{bio::test::generate_sequence<bio::alphabet::dna4>(1000, 0, 0)};
 
 #ifdef BIOCPP_HAS_SEQAN2
     seqan::DnaString seqan2_dna_sequence{bio::test::generate_sequence_seqan2<seqan::Dna>(1000, 0, 0)};

@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Sara Hetzel <sara.hetzel AT fu-berlin.de>
- * \brief Provides bio::aa27, container aliases and string literals.
+ * \brief Provides bio::alphabet::aa27, container aliases and string literals.
  */
 
 #pragma once
@@ -19,13 +19,13 @@
 #include <bio/alphabet/aminoacid/concept.hpp>
 #include <bio/alphabet/detail/to_lower.hpp>
 
-namespace bio
+namespace bio::alphabet
 {
 /*!\brief The twenty-seven letter amino acid alphabet.
  * \ingroup aminoacid
- * \implements bio::aminoacid_alphabet
- * \implements bio::writable_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::aminoacid_alphabet
+ * \implements bio::alphabet::writable_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -36,7 +36,7 @@ namespace bio
  *
  * Like most alphabets, this alphabet cannot be initialised directly from its character representation.
  * Instead initialise/assign from the character literal or use the
- * function bio::aa27::assign_char().
+ * function bio::alphabet::aa27::assign_char().
  *
  * \include test/snippet/alphabet/aminoacid/aa27_construction.cpp
  */
@@ -47,9 +47,9 @@ private:
     //!\brief The base class.
     using base_t = aminoacid_base<aa27, 27>;
 
-    //!\brief Befriend bio::nucleotide_base.
+    //!\brief Befriend bio::alphabet::nucleotide_base.
     friend base_t;
-    //!\cond \brief Befriend bio::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -94,35 +94,35 @@ protected:
     ();
 };
 
-} // namespace bio
+} // namespace bio::alphabet
 
 // ------------------------------------------------------------------
 // containers
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
-//!\brief Alias for an std::vector of bio::aa27.
+//!\brief Alias for an std::vector of bio::alphabet::aa27.
 //!\relates aa27
 using aa27_vector = std::vector<aa27>;
 
-} // namespace bio
+} // namespace bio::alphabet
 
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\name Literals
  * \{
  */
 
-/*!\brief The bio::aa27 char literal.
+/*!\brief The bio::alphabet::aa27 char literal.
  * \param[in] c The character to assign.
- * \relates bio::aa27
- * \returns bio::aa27
+ * \relates bio::alphabet::aa27
+ * \returns bio::alphabet::aa27
  *
  * \include test/snippet/alphabet/aminoacid/aa27_char_literal.cpp
  *
@@ -132,18 +132,18 @@ constexpr aa27 operator""_aa27(char const c) noexcept
     return aa27{}.assign_char(c);
 }
 
-/*!\brief The bio::aa27 string literal.
+/*!\brief The bio::alphabet::aa27 string literal.
  * \param[in] s A pointer to the character string to assign.
  * \param[in] n The size of the character string to assign.
- * \relates bio::aa27
- * \returns bio::aa27_vector
+ * \relates bio::alphabet::aa27
+ * \returns bio::alphabet::aa27_vector
  *
  * You can use this string literal to easily assign to aa27_vector:
  *
  * \include test/snippet/alphabet/aminoacid/aa27_literal.cpp
  *
  * \attention
- * All BioC++ literals are in the namespace bio!
+ * All BioC++ literals are in the namespace bio::alphabet!
  */
 
 inline aa27_vector operator""_aa27(char const * s, std::size_t n)
@@ -158,4 +158,4 @@ inline aa27_vector operator""_aa27(char const * s, std::size_t n)
 }
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet

@@ -25,10 +25,10 @@
  * ### Introduction
  *
  * The gap symbol (`-`) is used in alignments to represent an interruption in an alignment, usually the result of an
- * insertion or deletion. The bio::gap alphabet represents this (single) gap symbol and satisfies the
- * bio::alphabet.
+ * insertion or deletion. The bio::alphabet::gap alphabet represents this (single) gap symbol and satisfies the
+ * bio::alphabet::alphabet.
  *
- * The main purpose of bio::gap is to be combined with other alphabets. This can easily be achieved by using the
- * bio::gapped<> template which transforms any other alphabet to be a composite of that alphabet + the gap
+ * The main purpose of bio::alphabet::gap is to be combined with other alphabets. This can easily be achieved by using the
+ * bio::alphabet::gapped<> template which transforms any other alphabet to be a composite of that alphabet + the gap
  * character.
  */

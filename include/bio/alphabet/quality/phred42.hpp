@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Marie Hoffmann <marie.hoffmann AT fu-berlin.de>
- * \brief Provides bio::phred42 quality scores.
+ * \brief Provides bio::alphabet::phred42 quality scores.
  */
 
 #pragma once
@@ -19,12 +19,12 @@
 // phred42
 // ------------------------------------------------------------------
 
-namespace bio
+namespace bio::alphabet
 {
 
 /*!\brief Quality type for traditional Sanger and modern Illumina Phred scores (typical range).
- * \implements bio::writable_quality_alphabet
- * \if DEV \implements bio::detail::writable_constexpr_alphabet \endif
+ * \implements bio::alphabet::writable_quality_alphabet
+ * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \implements std::regular
@@ -37,7 +37,7 @@ namespace bio
  * [0..41] mapped to the consecutive ASCII range ['!' .. 'J']. It therefore can
  * represent the Illumina 1.8+ standard and the original Sanger score. If you
  * intend to use phred scores exceeding 41, use the larger score type, namely
- * bio::phred63, otherwise on construction exceeding scores are mapped to 41.
+ * bio::alphabet::phred63, otherwise on construction exceeding scores are mapped to 41.
  *
  * \include test/snippet/alphabet/quality/phred42.cpp
  */
@@ -47,9 +47,9 @@ private:
     //!\brief The base class.
     using base_t = quality_base<phred42, 42>;
 
-    //!\brief Befriend bio::quality_base.
+    //!\brief Befriend bio::alphabet::quality_base.
     friend base_t;
-    //!\cond \brief Befriend bio::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet::alphabet_base.
     friend base_t::base_t;
     //!\endcond
 
@@ -85,22 +85,22 @@ public:
 /*!\name Literals
  * \{
  */
-/*!\brief The bio::phred42 char literal.
- * \relates bio::phred42
- * \returns bio::phred42
+/*!\brief The bio::alphabet::phred42 char literal.
+ * \relates bio::alphabet::phred42
+ * \returns bio::alphabet::phred42
  */
 constexpr phred42 operator""_phred42(char const c) noexcept
 {
     return phred42{}.assign_char(c);
 }
 
-/*!\brief The bio::phred42 string literal.
+/*!\brief The bio::alphabet::phred42 string literal.
  * \param[in] s A pointer to the character sequence to assign from.
  * \param[in] n The length of the character sequence to assign from.
- * \relates bio::phred42
- * \returns bio::std::vector<bio::phred42>
+ * \relates bio::alphabet::phred42
+ * \returns bio::alphabet::std::vector<bio::alphabet::phred42>
  *
- * You can use this string literal to easily assign to std::vector<bio::phred42>:
+ * You can use this string literal to easily assign to std::vector<bio::alphabet::phred42>:
  *
  * \include test/snippet/alphabet/quality/phred42_literal.cpp
  */
@@ -116,4 +116,4 @@ inline std::vector<phred42> operator""_phred42(char const * s, std::size_t n)
 }
 //!\}
 
-} // namespace bio
+} // namespace bio::alphabet

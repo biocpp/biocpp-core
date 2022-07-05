@@ -2,10 +2,10 @@
 
 int main()
 {
-    using bio::operator""_db3;
+    using bio::alphabet::operator""_db3;
 
     // Using the char literal to assign a single dot bracket:
-    bio::dot_bracket3 my_letter{'('_db3};
-    
+    bio::alphabet::dot_bracket3 my_letter{'('_db3};
+
     my_letter.assign_char(')');             // <- assigns the char explicitly
 }

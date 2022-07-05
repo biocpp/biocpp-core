@@ -9,7 +9,7 @@
 #include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/views/all.hpp>       // optional: use views to convert the input string to a dna5 sequence
 
-using bio::operator""_dna5;
+using bio::alphabet::operator""_dna5;
 
 int main (int argc, char * argv[])
 {
@@ -27,19 +27,19 @@ int main (int argc, char * argv[])
     }
 
     // Option1: Convert the input to a dna5 sequence by copy-conversion
-    std::vector<bio::dna5> sequence;
+    std::vector<bio::alphabet::dna5> sequence;
     sequence.resize(input.size());
     for (size_t i = 0; i < input.size(); ++i)
-        bio::assign_char_to(input[i], sequence[i]);
+        bio::alphabet::assign_char_to(input[i], sequence[i]);
 
     // Option1: use views for the conversion. Views will be introduced in the next chapter.
-    //auto sequence = input | bio::views::char_to<bio::dna5>;
+    //auto sequence = input | bio::views::char_to<bio::alphabet::dna5>;
 
     // Initialise an array with count values for dna5 symbols.
-    std::array<size_t, bio::dna5::alphabet_size> count{}; // default initialised with zeroes
+    std::array<size_t, bio::alphabet::dna5::alphabet_size> count{}; // default initialised with zeroes
 
     // Increase the symbol count according to the sequence.
-    for (bio::dna5 symbol : sequence)
+    for (bio::alphabet::dna5 symbol : sequence)
         ++count[symbol.to_rank()];
 
     // Calculate the GC content: (#G + #C) / (#A + #T + #G + #C).

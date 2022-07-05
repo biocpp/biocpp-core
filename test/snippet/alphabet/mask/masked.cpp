@@ -4,10 +4,10 @@
 
 int main()
 {
-    using bio::operator""_dna4;
+    using bio::alphabet::operator""_dna4;
 
-    bio::masked<bio::dna4> dna4_masked{};
-    bio::masked<bio::dna4> dna4_another_masked{'A'_dna4, bio::mask::UNMASKED};
+    bio::alphabet::masked<bio::alphabet::dna4> dna4_masked{};
+    bio::alphabet::masked<bio::alphabet::dna4> dna4_another_masked{'A'_dna4, bio::alphabet::mask::UNMASKED};
     // create a dna4 masked alphabet with an unmasked A
 
     dna4_masked.assign_char('a'); // assigns a masked 'A'_dna4

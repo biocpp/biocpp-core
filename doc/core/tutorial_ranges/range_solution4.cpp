@@ -6,7 +6,7 @@
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/ranges/container/bitcompressed_vector.hpp>      // include bitcompressed vector
 
-using bio::operator""_dna4;
+using bio::alphabet::operator""_dna4;
 
 int main(int argc, char ** argv)
 {
@@ -28,13 +28,13 @@ int main(int argc, char ** argv)
 
     if (use_bitvector)
     {
-        bio::r::bitcompressed_vector<bio::dna4> vector;
+        bio::ranges::bitcompressed_vector<bio::alphabet::dna4> vector;
         vector.resize(size, 'A'_dna4);
-        fmt::print("Allocated bio::bitcompressed_vector<bio::dna4> of size {}\n", vector.size());
+        fmt::print("Allocated bio::ranges::bitcompressed_vector<bio::alphabet::dna4> of size {}\n", vector.size());
     }
     else
     {
-        std::vector<bio::dna4> vector{size};
-        fmt::print("Allocated std::vector<bio::dna4> of size {}\n", vector.size());
+        std::vector<bio::alphabet::dna4> vector{size};
+        fmt::print("Allocated std::vector<bio::alphabet::dna4> of size {}\n", vector.size());
     }
 }

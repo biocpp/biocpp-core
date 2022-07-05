@@ -23,10 +23,12 @@
 #include "../semi_alphabet_constexpr_test_template.hpp"
 #include "../semi_alphabet_test_template.hpp"
 
-using bio::operator""_dna4;
+using bio::alphabet::operator""_dna4;
 
-using gapped_types = ::testing::
-  Types<bio::gapped<bio::dna4>, bio::gapped<bio::dna15>, bio::gapped<bio::qualified<bio::dna4, bio::phred42>>>;
+using gapped_types =
+  ::testing::Types<bio::alphabet::gapped<bio::alphabet::dna4>,
+                   bio::alphabet::gapped<bio::alphabet::dna15>,
+                   bio::alphabet::gapped<bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>>>;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(gapped, alphabet, gapped_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(gapped, semi_alphabet_test, gapped_types, );
@@ -41,12 +43,12 @@ TYPED_TEST_SUITE(gapped_test, gapped_types, );
 TYPED_TEST(gapped_test, concept_check)
 {
     //TODO(bio)
-    //    EXPECT_TRUE((bio::aligned_sequence<std::vector<TypeParam>>));
+    //    EXPECT_TRUE((bio::alphabet::aligned_sequence<std::vector<TypeParam>>));
 }
 
 TEST(gapped_test, initialise_from_component_alphabet)
 {
-    using alphabet_t = bio::gapped<bio::dna4>;
+    using alphabet_t = bio::alphabet::gapped<bio::alphabet::dna4>;
 
     constexpr alphabet_t letter0{'A'_dna4};
     constexpr alphabet_t letter1 = 'C'_dna4;
@@ -58,8 +60,8 @@ TEST(gapped_test, initialise_from_component_alphabet)
     alphabet_t letter6 = {'G'_dna4};
     alphabet_t letter7 = static_cast<alphabet_t>('T'_dna4);
 
-    constexpr alphabet_t letter8{bio::gap{}}; // letter3 = 'T'_dna4; does not work
-    alphabet_t           letter9{bio::gap{}};
+    constexpr alphabet_t letter8{bio::alphabet::gap{}}; // letter3 = 'T'_dna4; does not work
+    alphabet_t           letter9{bio::alphabet::gap{}};
 
     EXPECT_EQ(letter0.to_rank(), 0);
     EXPECT_EQ(letter1.to_rank(), 1);
@@ -75,10 +77,10 @@ TEST(gapped_test, initialise_from_component_alphabet)
 
 TEST(gapped_test, assign_from_component_alphabet)
 {
-    using alphabet_t = bio::gapped<bio::dna4>;
+    using alphabet_t = bio::alphabet::gapped<bio::alphabet::dna4>;
     alphabet_t letter{};
 
-    letter = bio::gap{};
+    letter = bio::alphabet::gap{};
     EXPECT_EQ(letter.to_rank(), 4);
 
     letter = 'A'_dna4;

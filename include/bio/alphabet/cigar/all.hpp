@@ -25,12 +25,12 @@
   *
   * CIGAR strings are combinations of count values and CIGAR operations, representing an alignment as a sequence of
   * edit operations. This submodule has two different
-  * alphabets. One is the bio::cigar_op alphabet, which is a base bio::alphabet implementation. This
-  * contains all valid symbols contained in CIGAR strings. The other alphabet is the bio::cigar alphabet, which
-  * is an alphabet tuple. It combines the bio::cigar_op alphabet with a count value,
-  * such that one can represent an entire CIGAR string with a std::vector of bio::cigar values.
+  * alphabets. One is the bio::alphabet::cigar_op alphabet, which is a base bio::alphabet::alphabet implementation. This
+  * contains all valid symbols contained in CIGAR strings. The other alphabet is the bio::alphabet::cigar alphabet, which
+  * is an alphabet tuple. It combines the bio::alphabet::cigar_op alphabet with a count value,
+  * such that one can represent an entire CIGAR string with a std::vector of bio::alphabet::cigar values.
   *
-  * The following table outlines the valid characters in the bio::cigar_op alphabet.
+  * The following table outlines the valid characters in the bio::alphabet::cigar_op alphabet.
   *
   * | Letter | Description                                                                                     |
   * |--------|-------------------------------------------------------------------------------------------------|

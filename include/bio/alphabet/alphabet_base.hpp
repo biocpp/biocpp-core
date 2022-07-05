@@ -8,19 +8,19 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides bio::alphabet_base.
+ * \brief Provides bio::alphabet::alphabet_base.
  */
 
 #pragma once
 
 #include <cassert>
-
-#include <bio/alphabet/concept.hpp>
-#include <bio/meta/detail/int_types.hpp>
 #include <concepts>
 #include <type_traits>
 
-namespace bio
+#include <bio/alphabet/concept.hpp>
+#include <bio/meta/detail/int_types.hpp>
+
+namespace bio::alphabet
 {
 
 /*!\brief A CRTP-base that makes defining a custom alphabet easier.
@@ -28,12 +28,12 @@ namespace bio
  * \tparam derived_type The CRTP parameter type.
  * \tparam size         The size of the alphabet.
  * \tparam char_t       The character type of the alphabet (set this to `void` when defining just a
- *                      bio::semialphabet).
+ *                      bio::alphabet::semialphabet).
  *
  * \details
  *
  * You can use this class to define your own alphabet, but types are not required to be based on it to model
- * bio::alphabet, it is purely a way to avoid code duplication.
+ * bio::alphabet::alphabet, it is purely a way to avoid code duplication.
  *
  * The base class represents the alphabet value as the rank and automatically deduces the rank type from the size and
  * defines all required member functions. The derived type needs to define only the following two tables as static
@@ -84,7 +84,7 @@ public:
      *
      * \details
      *
-     * Provides an implementation for bio::to_char, required to model bio::alphabet.
+     * Provides an implementation for bio::alphabet::to_char, required to model bio::alphabet::alphabet.
      *
      * ###Complexity
      *
@@ -106,7 +106,7 @@ public:
      *
      * \details
      *
-     * Provides an implementation for bio::to_rank, required to model bio::semialphabet.
+     * Provides an implementation for bio::alphabet::to_rank, required to model bio::alphabet::semialphabet.
      *
      * ###Complexity
      *
@@ -127,7 +127,7 @@ public:
      *
      * \details
      *
-     * Provides an implementation for bio::assign_char_to, required to model bio::alphabet.
+     * Provides an implementation for bio::alphabet::assign_char_to, required to model bio::alphabet::alphabet.
      *
      * ###Complexity
      *
@@ -152,7 +152,7 @@ public:
      *
      * \details
      *
-     * Provides an implementation for bio::assign_rank_to, required to model bio::semialphabet.
+     * Provides an implementation for bio::alphabet::assign_rank_to, required to model bio::alphabet::semialphabet.
      *
      * ###Complexity
      *
@@ -179,37 +179,37 @@ public:
     //!\brief Checks whether the letters `lhs` and `rhs` are equal.
     friend constexpr bool operator==(derived_type const lhs, derived_type const rhs) noexcept
     {
-        return bio::to_rank(lhs) == bio::to_rank(rhs);
+        return bio::alphabet::to_rank(lhs) == bio::alphabet::to_rank(rhs);
     }
 
     //!\brief Checks whether the letters `lhs` and `rhs` are unequal.
     friend constexpr bool operator!=(derived_type const lhs, derived_type const rhs) noexcept
     {
-        return bio::to_rank(lhs) != bio::to_rank(rhs);
+        return bio::alphabet::to_rank(lhs) != bio::alphabet::to_rank(rhs);
     }
 
     //!\brief Checks whether the letter `lhs` is smaller than `rhs`.
     friend constexpr bool operator<(derived_type const lhs, derived_type const rhs) noexcept
     {
-        return bio::to_rank(lhs) < bio::to_rank(rhs);
+        return bio::alphabet::to_rank(lhs) < bio::alphabet::to_rank(rhs);
     }
 
     //!\brief Checks whether the letter `lhs` is greater than `rhs`.
     friend constexpr bool operator>(derived_type const lhs, derived_type const rhs) noexcept
     {
-        return bio::to_rank(lhs) > bio::to_rank(rhs);
+        return bio::alphabet::to_rank(lhs) > bio::alphabet::to_rank(rhs);
     }
 
     //!\brief Checks whether the letter `lhs` is smaller than or equal to `rhs`.
     friend constexpr bool operator<=(derived_type const lhs, derived_type const rhs) noexcept
     {
-        return bio::to_rank(lhs) <= bio::to_rank(rhs);
+        return bio::alphabet::to_rank(lhs) <= bio::alphabet::to_rank(rhs);
     }
 
     //!\brief Checks whether the letter `lhs` is bigger than or equal to `rhs`.
     friend constexpr bool operator>=(derived_type const lhs, derived_type const rhs) noexcept
     {
-        return bio::to_rank(lhs) >= bio::to_rank(rhs);
+        return bio::alphabet::to_rank(lhs) >= bio::alphabet::to_rank(rhs);
     }
     //!\}
 
@@ -218,7 +218,7 @@ private:
     rank_type rank{};
 };
 
-/*!\brief Specialisation of bio::alphabet_base for alphabets of size 1.
+/*!\brief Specialisation of bio::alphabet::alphabet_base for alphabets of size 1.
  * \ingroup alphabet
  * \tparam derived_type The CRTP parameter type.
  * \tparam char_t The character type (always set to `char` for alphabets of size 1 and to `void` for semi alphabets of
@@ -236,9 +236,9 @@ protected:
     /*!\name Member types
      * \{
      */
-    //!\copybrief bio::alphabet_base::char_type
+    //!\copybrief bio::alphabet::alphabet_base::char_type
     using char_type = std::conditional_t<std::same_as<char_t, void>, char, char_t>;
-    //!\copybrief bio::alphabet_base::rank_type
+    //!\copybrief bio::alphabet::alphabet_base::rank_type
     using rank_type = uint8_t;
     //!\}
 
@@ -257,7 +257,7 @@ public:
     /*!\name Read functions
      * \{
      */
-    //!\copybrief bio::alphabet_base::to_char
+    //!\copybrief bio::alphabet::alphabet_base::to_char
     constexpr char_type to_char() const noexcept
       //!\cond
       requires(!std::same_as<char_t, void>)
@@ -266,14 +266,14 @@ public:
         return derived_type::char_value;
     }
 
-    //!\copybrief bio::alphabet_base::to_rank
+    //!\copybrief bio::alphabet::alphabet_base::to_rank
     constexpr rank_type to_rank() const noexcept { return 0; }
     //!\}
 
     /*!\name Write functions
      * \{
      */
-    //!\copybrief bio::alphabet_base::assign_char
+    //!\copybrief bio::alphabet::alphabet_base::assign_char
     constexpr derived_type & assign_char(char_type const) noexcept
       //!\cond
       requires(!std::same_as<char_t, void>)
@@ -282,7 +282,7 @@ public:
         return static_cast<derived_type &>(*this);
     }
 
-    //!\copybrief bio::alphabet_base::assign_rank
+    //!\copybrief bio::alphabet::alphabet_base::assign_rank
     constexpr derived_type & assign_rank(rank_type const) noexcept { return static_cast<derived_type &>(*this); }
     //!\}
 
@@ -317,4 +317,4 @@ private:
 #endif
 };
 
-} // namespace bio
+} // namespace bio::alphabet

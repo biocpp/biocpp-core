@@ -17,7 +17,7 @@
 
 #include <gtest/gtest.h>
 
-using bio::operator""_dna4;
+using bio::alphabet::operator""_dna4;
 
 TEST(view_interleave, basic)
 {

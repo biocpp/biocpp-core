@@ -4,13 +4,13 @@
 
 int main()
 {
-    using bio::operator""_cigar_op;
+    using bio::alphabet::operator""_cigar_op;
 
-    bio::cigar letter{10, 'I'_cigar_op};
+    bio::alphabet::cigar letter{10, 'I'_cigar_op};
 
     letter = 'D'_cigar_op;  // yields 10D
     letter = 20; // yields 20D
 
-    if (letter == bio::cigar{20, 'D'_cigar_op})
+    if (letter == bio::alphabet::cigar{20, 'D'_cigar_op})
         fmt::print("{}", "yeah\n");
 }

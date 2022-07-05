@@ -3,10 +3,10 @@
 
 int main()
 {
-    using bio::operator""_wuss51;
+    using bio::alphabet::operator""_wuss51;
 
     auto pk_opt = '.'_wuss51.pseudoknot_id();                    // std::optional -> false
-    pk_opt = bio::pseudoknot_id('{'_wuss51);                     // std::optional -> true: 3
+    pk_opt = bio::alphabet::pseudoknot_id('{'_wuss51);                     // std::optional -> true: 3
 
     if (pk_opt)
         fmt::print("{}", *pk_opt);                               // 3

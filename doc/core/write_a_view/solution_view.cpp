@@ -6,7 +6,7 @@
 #include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/ranges/detail/inherited_iterator_base.hpp>
 
-using bio::operator""_dna5;
+using bio::alphabet::operator""_dna5;
 
 /* The iterator template */
 template <std::ranges::forward_range urng_t>            // CRTP derivation ↓
@@ -14,7 +14,7 @@ class my_iterator : public bio::ranges::detail::inherited_iterator_base<my_itera
                                                                 std::ranges::iterator_t<urng_t>>
 {
 private:
-    static_assert(bio::nucleotide_alphabet<std::ranges::range_reference_t<urng_t>>,
+    static_assert(bio::alphabet::nucleotide_alphabet<std::ranges::range_reference_t<urng_t>>,
                   "You can only iterate over ranges of nucleotides!");
 
     // the immediate base type is the CRTP-layer
@@ -46,14 +46,14 @@ public:
     // only overload the operators that you actually wish to change:
     reference operator*() const noexcept
     {
-        return bio::complement(base_t::operator*());
+        return bio::alphabet::complement(base_t::operator*());
     }
 
     // Since the reference type changed we might as well need to override the subscript-operator.
     reference operator[](difference_type const n) const noexcept
         requires std::random_access_iterator<std::ranges::iterator_t<urng_t>>
     {
-        return bio::complement(base_t::operator[](n));
+        return bio::alphabet::complement(base_t::operator[](n));
     }
 
     // We delete arrow operator because of the temporary. An alternative could be to return the temporary
@@ -62,7 +62,7 @@ public:
 };
 
 // The inherited_iterator_base creates the necessary code so we also model RandomAccess now!
-static_assert(std::random_access_iterator<my_iterator<std::vector<bio::dna5>>>);
+static_assert(std::random_access_iterator<my_iterator<std::vector<bio::alphabet::dna5>>>);
 //![iterator]
 
 //![view_header]
@@ -173,16 +173,16 @@ inline constexpr my_view_fn my{};
 //![main_it]
 int main()
 {
-    std::vector<bio::dna5> vec{"GATTACA"_dna5};
+    std::vector<bio::alphabet::dna5> vec{"GATTACA"_dna5};
 
     /* try the iterator */
-    using my_it_concrete = my_iterator<std::vector<bio::dna5>>;
+    using my_it_concrete = my_iterator<std::vector<bio::alphabet::dna5>>;
 
     my_it_concrete it{vec.begin()};
 
     // now you can use operator[] on the iterator
     for (size_t i = 0; i < 7; ++i)
-        std::cout << bio::to_char(it[i]) << ' ';
+        std::cout << bio::alphabet::to_char(it[i]) << ' ';
 //![main_it]
 
 //![main_range]

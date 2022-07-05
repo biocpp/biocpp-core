@@ -15,21 +15,53 @@
 
 #include <bio/meta/platform.hpp> // TODO: change to meta/biocpp.hpp
 
+/*!\namespace bio::ranges
+ * \brief The ranges module's namespace.
+ * \ingroup range
+ */
 namespace bio::ranges
 {}
+
+#ifndef BIOCPP_NO_NAMESPACE_ALIASES
+namespace bio
+{
+namespace r = ranges;
+} // namespace bio
+#endif
+
+/*!
+ * \namespace bio::ranges::views
+ * \brief The BioC++ namespace for views.
+ * \ingroup views
+ *
+ * Since views often have name clashes with regular functions and ranges they are implemented in the sub
+ * namespace `view`.
+ *
+ * See the \link views views submodule \endlink of the range module for more details.
+ *
+ * The namespace is aliased into `bio::` so you can write `bio::views::foo` instead of
+ * `bio::ranges::views::foo`.
+ */
 
 namespace bio::ranges::views
 {}
 
 #ifndef BIOCPP_NO_NAMESPACE_ALIASES
-namespace bio::ranges
-{
-namespace v = views;
-}
-
 namespace bio
 {
-namespace r     = ranges;
 namespace views = ranges::views;
 } // namespace bio
 #endif
+
+/*!\if DEV
+ * \namespace bio::ranges::detail
+ * \brief The internal BioC++ namespace.
+ * \ingroup alphabet
+ * \details
+ * The contents of this namespace are not visible to consumers of the library and the documentation is
+ * only generated for developers.
+ * \sa https://github.com/biocpp/biocpp-core/wiki/Documentation
+ * \endif
+ */
+namespace bio::ranges::detail
+{}
