@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Marcel Ehrhardt <marcel.ehrhardt AT fu-berlin.de>
- * \brief Provides bio::transformation_trait_or.
+ * \brief Provides bio::meta::transformation_trait_or.
  */
 
 #pragma once

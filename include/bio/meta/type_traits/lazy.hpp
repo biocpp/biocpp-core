@@ -42,7 +42,7 @@ struct lazy
 // instantiate
 // ----------------------------------------------------------------------------
 
-/*!\brief A transformation trait that instantiates bio::lazy types. Base template is the identity transformation.
+/*!\brief A transformation trait that instantiates bio::meta::lazy types. Base template is the identity transformation.
  * \tparam t The type to operate on.
  * \implements bio::meta::transformation_trait
  */
@@ -50,7 +50,7 @@ template <typename t>
 struct instantiate : std::type_identity<t>
 {};
 
-/*!\brief A transformation trait that instantiates bio::lazy types.
+/*!\brief A transformation trait that instantiates bio::meta::lazy types.
  * \tparam template_t The uninstantiated template.
  * \tparam spec_t     The arguments to template_t.
  * \implements bio::meta::transformation_trait
@@ -62,7 +62,7 @@ struct instantiate<lazy<template_t, spec_t...>>
     using type = template_t<spec_t...>;
 };
 
-/*!\brief A transformation trait that instantiates bio::lazy types. Transformation trait shortcut.
+/*!\brief A transformation trait that instantiates bio::meta::lazy types. Transformation trait shortcut.
  * \tparam t The type to operate on.
  * \relates bio::meta::detail::instantiate
  */
@@ -76,7 +76,7 @@ using instantiate_t = typename instantiate<t>::type;
 // instantiate_if
 // ----------------------------------------------------------------------------
 
-/*!\brief A transformation trait that instantiates bio::lazy types given a boolean condition.
+/*!\brief A transformation trait that instantiates bio::meta::lazy types given a boolean condition.
  *        Base template is std::false_type.
  * \tparam t The type to operate on.
  * \implements bio::meta::transformation_trait
@@ -85,7 +85,7 @@ template <typename t, bool condition>
 struct instantiate_if : std::false_type
 {};
 
-/*!\brief A transformation trait that instantiates bio::lazy types given a boolean condition.
+/*!\brief A transformation trait that instantiates bio::meta::lazy types given a boolean condition.
  *        If condition is true and parameter is not lazy, the type identity.
  * \tparam t The type to operate on.
  * \implements bio::meta::transformation_trait
@@ -94,7 +94,7 @@ template <typename t>
 struct instantiate_if<t, true> : std::type_identity<t>
 {};
 
-/*!\brief A transformation trait that instantiates bio::lazy types given a boolean condition.
+/*!\brief A transformation trait that instantiates bio::meta::lazy types given a boolean condition.
  *        If condition is true and parameter is lazy, the instantiated type.
  * \tparam template_t The uninstantiated template.
  * \tparam spec_t     The arguments to template_t.
@@ -107,7 +107,7 @@ struct instantiate_if<lazy<template_t, spec_t...>, true>
     using type = template_t<spec_t...>;
 };
 
-/*!\brief A transformation trait that instantiates bio::lazy types, conditionally. Transformation trait shortcut.
+/*!\brief A transformation trait that instantiates bio::meta::lazy types, conditionally. Transformation trait shortcut.
  * \tparam t The type to operate on.
  * \relates bio::meta::detail::instantiate_if
  */
@@ -117,7 +117,7 @@ template <typename t, bool condition>
 //!\endcond
 using instantiate_if_t = typename instantiate_if<t, condition>::type;
 
-/*!\brief A transformation trait that instantiates bio::lazy types, conditionally. Type trait shortcut.
+/*!\brief A transformation trait that instantiates bio::meta::lazy types, conditionally. Type trait shortcut.
  * \tparam t The type to operate on.
  * \relates bio::meta::detail::instantiate_if
  */
@@ -131,7 +131,7 @@ inline constexpr auto instantiate_if_v = instantiate_if_t<t, condition>::value;
 // lazy_conditional
 // ----------------------------------------------------------------------------
 
-/*!\brief Behaves like std::conditional, but instantiates types wrapped in bio::lazy.
+/*!\brief Behaves like std::conditional, but instantiates types wrapped in bio::meta::lazy.
  * \tparam decision   Whether to resolve to the first type or the second.
  * \tparam on_true_t  The return type in case `decision` is true.
  * \tparam on_false_t The return type in case `decision` is false.
@@ -147,7 +147,7 @@ template <bool decision, typename on_true_t, typename on_false_t>
 struct lazy_conditional : instantiate<std::conditional_t<decision, on_true_t, on_false_t>>
 {};
 
-/*!\brief Behaves like std::conditional_t, but instantiates types wrapped in bio::lazy. Transformation trait shortcut.
+/*!\brief Behaves like std::conditional_t, but instantiates types wrapped in bio::meta::lazy. Transformation trait shortcut.
  * \tparam decision   Whether to resolve to the first type or the second.
  * \tparam on_true_t  The return type in case `decision` is true.
  * \tparam on_false_t The return type in case `decision` is false.

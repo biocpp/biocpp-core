@@ -19,13 +19,13 @@
 #include <bio/meta/type_list/type_list.hpp>
 
 // ----------------------------------------------------------------------------
-// bio::pack_traits::detail
+// bio::meta::detail::pack_traits::detail
 // ----------------------------------------------------------------------------
 
 namespace bio::meta::detail::pack_traits::detail
 {
 
-/*!\brief Implementation for bio::pack_traits::find.
+/*!\brief Implementation for bio::meta::detail::pack_traits::find.
  * \tparam query_t  The type you are searching for.
  * \tparam pack_t   The type pack.
  * \returns The position of the first occurrence of `query_t` in `pack_t` or `-1` if it is not contained.
@@ -38,7 +38,7 @@ constexpr ptrdiff_t find()
     return ((std::is_same_v<query_t, pack_t> ? false : ++i) && ...) ? -1 : i;
 }
 
-/*!\brief Implementation for bio::pack_traits::find_if.
+/*!\brief Implementation for bio::meta::detail::pack_traits::find_if.
  * \tparam pred_t   The predicate that is being evaluated.
  * \tparam pack_t   The type pack.
  * \returns The position of the first type `t` in `pack_t` for whom ``pred_t<t>::%value`` is true.
@@ -51,7 +51,7 @@ constexpr ptrdiff_t find_if()
     return ((pred_t<pack_t>::value ? false : ++i) && ...) ? -1 : i;
 }
 
-/*!\brief Implementation for bio::pack_traits::at.
+/*!\brief Implementation for bio::meta::detail::pack_traits::at.
  * \tparam idx      The index.
  * \tparam head_t   Currently viewed pack_t element.
  * \tparam tail_t   Rest of the type pack.
@@ -72,7 +72,7 @@ auto at()
         return at<sizeof...(tail_t) + 1 + idx, head_t, tail_t...>();
 }
 
-/*!\brief Implementation for bio::pack_traits::front.
+/*!\brief Implementation for bio::meta::detail::pack_traits::front.
  * \tparam head_t   Currently viewed pack_t element.
  * \tparam tail_t   Rest of the type pack.
  * \ingroup meta_type_pack
@@ -80,7 +80,7 @@ auto at()
 template <typename head_t, typename... tail_t>
 std::type_identity<head_t> front();
 
-/*!\brief Implementation for bio::pack_traits::drop_front.
+/*!\brief Implementation for bio::meta::detail::pack_traits::drop_front.
  * \tparam head_t   Currently viewed pack_t element.
  * \tparam tail_t   Rest of the type pack.
  * \ingroup meta_type_pack
@@ -88,7 +88,7 @@ std::type_identity<head_t> front();
 template <typename head_t, typename... tail_t>
 type_list<tail_t...> drop_front();
 
-/*!\brief Implementation for bio::pack_traits::split_after.
+/*!\brief Implementation for bio::meta::detail::pack_traits::split_after.
  * \tparam idx     The index to split the type pack at.
  * \tparam pack1_t The type pack before the split index.
  * \tparam head_t  The next type that is moved before split index.
@@ -106,7 +106,7 @@ auto split_after(type_list<pack1_t...>)
         return split_after<idx - 1, pack2_t...>(type_list<pack1_t..., head_t>{});
 }
 
-/*!\brief Implementation for bio::pack_traits::replace_at.
+/*!\brief Implementation for bio::meta::detail::pack_traits::replace_at.
  * \tparam replace_t The type replacing the old one.
  * \tparam idx The index of the type to replace.
  * \tparam pack_t The type pack to be modified.
@@ -119,7 +119,7 @@ auto replace_at(std::index_sequence<i...>) -> type_list<std::conditional_t<i == 
 } // namespace bio::meta::detail::pack_traits::detail
 
 // ----------------------------------------------------------------------------
-// bio::pack_traits
+// bio::meta::detail::pack_traits
 // ----------------------------------------------------------------------------
 
 namespace bio::meta::detail::pack_traits
@@ -280,7 +280,7 @@ using front = typename decltype(detail::front<pack_t...>())::type;
  * * Number of template instantiations: O(n) (possibly O(1))
  * * Other operations: O(1)
  *
- * Notably faster than `bio::pack_traits::at<size<pack...> - 1, pack...>` (no recursive template
+ * Notably faster than `bio::meta::detail::pack_traits::at<size<pack...> - 1, pack...>` (no recursive template
  * instantiations).
  *
  * \include test/snippet/meta/type_list/pack_traits_back.cpp

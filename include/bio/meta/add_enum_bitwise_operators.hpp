@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Provides bio::add_enum_bitwise_operators.
+ * \brief Provides bio::meta::add_enum_bitwise_operators.
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  */
 
@@ -19,11 +19,11 @@
 
 namespace bio
 {
-/*!\interface bio::enum_bitwise_operators
- * \brief You can expect these functions on all types that overload bio::add_enum_bitwise_operators.
+/*!\interface bio::meta::enum_bitwise_operators
+ * \brief You can expect these functions on all types that overload bio::meta::add_enum_bitwise_operators.
  */
-/*!\name Requirements for bio::enum_bitwise_operators
- * \relates bio::enum_bitwise_operators
+/*!\name Requirements for bio::meta::enum_bitwise_operators
+ * \relates bio::meta::enum_bitwise_operators
  * \brief You can expect these member functions.
  * \{
  * \fn operator&(t lhs, t rhs)
@@ -94,7 +94,7 @@ constexpr bool add_enum_bitwise_operators = false;
 
 /*!\name Binary operators for scoped enums
  * \brief Perform binary operations like on ints or weak enums. These overloads are available if
- * bio::add_enum_bitwise_operators is defined for your type.
+ * bio::meta::add_enum_bitwise_operators is defined for your type.
  * \ingroup meta
  *
  * \details

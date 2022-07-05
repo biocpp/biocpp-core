@@ -35,7 +35,7 @@ using min_viable_uint_t = std::conditional_t<value <= 255ull,        uint8_t,
 // clang-format on
 
 //!\brief Given a value, cast the value as the smallest unsigned integer that can hold it.
-//!\sa bio::min_viable_uint_t
+//!\sa bio::meta::min_viable_uint_t
 template <uint64_t value>
 inline constexpr auto min_viable_uint_v = static_cast<min_viable_uint_t<value>>(value);
 

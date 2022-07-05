@@ -137,7 +137,7 @@ namespace bio::meta
  *
  * \details
  *
- * Types that meet this concept are for example std::tuple, std::pair, std::array, bio::meta::pod_tuple, bio::record.
+ * Types that meet this concept are for example std::tuple, std::pair, std::array, bio::meta::pod_tuple, bio::meta::record.
  * The std::totally_ordered will only be required if all types contained in the tuple-like
  * data structure are themselves strict totally ordered.
  */
@@ -195,7 +195,7 @@ concept tuple_like = detail::tuple_size<std::remove_reference_t<t>> && requires(
 };
 //!\endcond
 
-/*!\interface bio::pair_like
+/*!\interface bio::meta::pair_like
  * \extends bio::meta::tuple_like
  * \ingroup utility_tuple
  * \brief Whether a type behaves like a tuple with exactly two elements.

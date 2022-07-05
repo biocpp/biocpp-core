@@ -42,7 +42,7 @@
  * \brief The Meta module's namespace.
  */
 
-/*!\namespace bio::custom
+/*!\namespace bio::meta::custom
  * \brief A namespace for third party and standard library specialisations of BioC++ customisation points.
  * \see \ref biocpp_customisation
  */

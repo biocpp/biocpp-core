@@ -35,7 +35,7 @@ struct function_traits;
  *
  * \details
  *
- * bio::function_traits is the type trait class that provides a uniform interface to the properties of
+ * bio::meta::function_traits is the type trait class that provides a uniform interface to the properties of
  * a std::function type, a lambda type, a function type or a function pointer type.
  * This makes it possible to access the return type and the argument types of the stored target function.
  * The function types must be complete, i.e. all argument types and the return type must be known, otherwise
