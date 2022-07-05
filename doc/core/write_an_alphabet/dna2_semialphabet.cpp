@@ -30,40 +30,10 @@ struct dna2
         return *this;
     }
 
-    // Equality and inequality operators ...
-    // Comparison operators ...
+    // Comparison operators
+    friend auto operator<=>(dna2 const & lhs, dna2 const & rhs) noexcept = default;
 };
 //! [semialphabet]
-
-bool operator==(dna2 const & lhs, dna2 const & rhs) noexcept
-{
-    return lhs.rank == rhs.rank;
-}
-
-bool operator!=(dna2 const & lhs, dna2 const & rhs) noexcept
-{
-    return !(lhs == rhs);
-}
-
-bool operator<(dna2 const & lhs, dna2 const & rhs) noexcept
-{
-    return lhs.rank < rhs.rank;
-}
-
-bool operator<=(dna2 const & lhs, dna2 const & rhs) noexcept
-{
-    return lhs.rank <= rhs.rank;
-}
-
-bool operator>(dna2 const & lhs, dna2 const & rhs) noexcept
-{
-    return lhs.rank > rhs.rank;
-}
-
-bool operator>=(dna2 const & lhs, dna2 const & rhs) noexcept
-{
-    return lhs.rank >= rhs.rank;
-}
 
 //! [writable_semialphabet_concept]
 static_assert(bio::alphabet::semialphabet<dna2>);               // ok

@@ -459,31 +459,7 @@ public:
 
     //!\copydoc operator==(derived_type_t const lhs, indirect_component_type const rhs)
     template <typename derived_type_t, typename indirect_component_type>
-    friend constexpr auto operator!=(derived_type_t const lhs, indirect_component_type const rhs) noexcept
-      -> std::enable_if_t<
-        detail::tuple_eq_guard<derived_type_t, derived_type, indirect_component_type, component_types...>,
-        bool>
-    {
-        using component_predicate = detail::weakly_equality_comparable_with_<indirect_component_type>;
-        constexpr auto component_position =
-          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type = meta::list_traits::at<component_position, component_list>;
-        return get<component_type>(lhs) != rhs;
-    }
-
-    //!\copydoc operator==(derived_type_t const lhs, indirect_component_type const rhs)
-    template <typename derived_type_t, typename indirect_component_type>
-    friend constexpr auto operator!=(indirect_component_type const lhs, derived_type_t const rhs) noexcept
-      -> std::enable_if_t<
-        detail::tuple_eq_guard<derived_type_t, derived_type, indirect_component_type, component_types...>,
-        bool>
-    {
-        return rhs != lhs;
-    }
-
-    //!\copydoc operator==(derived_type_t const lhs, indirect_component_type const rhs)
-    template <typename derived_type_t, typename indirect_component_type>
-    friend constexpr auto operator<(derived_type_t const lhs, indirect_component_type const rhs) noexcept
+    friend constexpr auto operator<=>(derived_type_t const lhs, indirect_component_type const rhs) noexcept
       -> std::enable_if_t<
         detail::tuple_order_guard<derived_type_t, derived_type, indirect_component_type, component_types...>,
         bool>
@@ -492,22 +468,12 @@ public:
         constexpr auto component_position =
           meta::list_traits::find_if<component_predicate::template invoke, component_list>;
         using component_type = meta::list_traits::at<component_position, component_list>;
-        return get<component_type>(lhs) < rhs;
+        return get<component_type>(lhs) <=> rhs;
     }
 
     //!\copydoc operator==(derived_type_t const lhs, indirect_component_type const rhs)
     template <typename derived_type_t, typename indirect_component_type>
-    friend constexpr auto operator<(indirect_component_type const lhs, derived_type_t const rhs) noexcept
-      -> std::enable_if_t<
-        detail::tuple_order_guard<derived_type_t, derived_type, indirect_component_type, component_types...>,
-        bool>
-    {
-        return rhs > lhs;
-    }
-
-    //!\copydoc operator==(derived_type_t const lhs, indirect_component_type const rhs)
-    template <typename derived_type_t, typename indirect_component_type>
-    friend constexpr auto operator<=(derived_type_t const lhs, indirect_component_type const rhs) noexcept
+    friend constexpr auto operator<=>(indirect_component_type const lhs, derived_type_t const rhs) noexcept
       -> std::enable_if_t<
         detail::tuple_order_guard<derived_type_t, derived_type, indirect_component_type, component_types...>,
         bool>
@@ -516,65 +482,7 @@ public:
         constexpr auto component_position =
           meta::list_traits::find_if<component_predicate::template invoke, component_list>;
         using component_type = meta::list_traits::at<component_position, component_list>;
-        return get<component_type>(lhs) <= rhs;
-    }
-
-    //!\copydoc operator==(derived_type_t const lhs, indirect_component_type const rhs)
-    template <typename derived_type_t, typename indirect_component_type>
-    friend constexpr auto operator<=(indirect_component_type const lhs, derived_type_t const rhs) noexcept
-      -> std::enable_if_t<
-        detail::tuple_order_guard<derived_type_t, derived_type, indirect_component_type, component_types...>,
-        bool>
-    {
-        return rhs >= lhs;
-    }
-
-    //!\copydoc operator==(derived_type_t const lhs, indirect_component_type const rhs)
-    template <typename derived_type_t, typename indirect_component_type>
-    friend constexpr auto operator>(derived_type_t const lhs, indirect_component_type const rhs) noexcept
-      -> std::enable_if_t<
-        detail::tuple_order_guard<derived_type_t, derived_type, indirect_component_type, component_types...>,
-        bool>
-    {
-        using component_predicate = detail::weakly_ordered_with_<indirect_component_type>;
-        constexpr auto component_position =
-          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type = meta::list_traits::at<component_position, component_list>;
-        return get<component_type>(lhs) > rhs;
-    }
-
-    //!\copydoc operator==(derived_type_t const lhs, indirect_component_type const rhs)
-    template <typename derived_type_t, typename indirect_component_type>
-    friend constexpr auto operator>(indirect_component_type const lhs, derived_type_t const rhs) noexcept
-      -> std::enable_if_t<
-        detail::tuple_order_guard<derived_type_t, derived_type, indirect_component_type, component_types...>,
-        bool>
-    {
-        return rhs < lhs;
-    }
-
-    //!\copydoc operator==(derived_type_t const lhs, indirect_component_type const rhs)
-    template <typename derived_type_t, typename indirect_component_type>
-    friend constexpr auto operator>=(derived_type_t const lhs, indirect_component_type const rhs) noexcept
-      -> std::enable_if_t<
-        detail::tuple_order_guard<derived_type_t, derived_type, indirect_component_type, component_types...>,
-        bool>
-    {
-        using component_predicate = detail::weakly_ordered_with_<indirect_component_type>;
-        constexpr auto component_position =
-          meta::list_traits::find_if<component_predicate::template invoke, component_list>;
-        using component_type = meta::list_traits::at<component_position, component_list>;
-        return get<component_type>(lhs) >= rhs;
-    }
-
-    //!\copydoc operator==(derived_type_t const lhs, indirect_component_type const rhs)
-    template <typename derived_type_t, typename indirect_component_type>
-    friend constexpr auto operator>=(indirect_component_type const lhs, derived_type_t const rhs) noexcept
-      -> std::enable_if_t<
-        detail::tuple_order_guard<derived_type_t, derived_type, indirect_component_type, component_types...>,
-        bool>
-    {
-        return rhs <= lhs;
+        return lhs <=> get<component_type>(rhs);
     }
     //!\}
 
@@ -726,65 +634,15 @@ public:
     {
         return rhs == lhs;
     }
-
     //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
-    friend constexpr bool operator!=(derived_type const lhs, component_proxy const rhs) noexcept
+    friend constexpr auto operator<=>(derived_type const lhs, component_proxy const rhs) noexcept
     {
-        return get<index>(lhs) != static_cast<alphabet_type>(rhs);
+        return get<index>(lhs) <=> static_cast<alphabet_type>(rhs);
     }
-
     //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
-    friend constexpr bool operator!=(component_proxy<alphabet_type, index> const lhs, derived_type const rhs) noexcept
+    friend constexpr auto operator<=>(component_proxy<alphabet_type, index> const lhs, derived_type const rhs) noexcept
     {
-        return rhs != lhs;
-    }
-
-    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
-    friend constexpr bool operator<(derived_type const lhs, component_proxy const rhs) noexcept
-    {
-        return get<index>(lhs) < static_cast<alphabet_type>(rhs);
-    }
-
-    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
-    friend constexpr bool operator<(component_proxy<alphabet_type, index> const lhs, derived_type const rhs) noexcept
-    {
-        return rhs > lhs;
-    }
-
-    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
-    friend constexpr bool operator<=(derived_type const lhs, component_proxy const rhs) noexcept
-    {
-        return get<index>(lhs) <= static_cast<alphabet_type>(rhs);
-    }
-
-    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
-    friend constexpr bool operator<=(component_proxy<alphabet_type, index> const lhs, derived_type const rhs) noexcept
-    {
-        return rhs >= lhs;
-    }
-
-    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
-    friend constexpr bool operator>(derived_type const lhs, component_proxy const rhs) noexcept
-    {
-        return get<index>(lhs) > static_cast<alphabet_type>(rhs);
-    }
-
-    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
-    friend constexpr bool operator>(component_proxy<alphabet_type, index> const lhs, derived_type const rhs) noexcept
-    {
-        return rhs < lhs;
-    }
-
-    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
-    friend constexpr bool operator>=(derived_type const lhs, component_proxy const rhs) noexcept
-    {
-        return get<index>(lhs) >= static_cast<alphabet_type>(rhs);
-    }
-
-    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
-    friend constexpr bool operator>=(component_proxy<alphabet_type, index> const lhs, derived_type const rhs) noexcept
-    {
-        return rhs <= lhs;
+        return static_cast<alphabet_type>(rhs) <=> get<index>(lhs);
     }
     //!\}
 };

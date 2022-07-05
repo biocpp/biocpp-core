@@ -12,39 +12,8 @@ struct dna2
 {
     uint8_t rank{};
 
-    // Equality and inequality operators
-
-    friend bool operator==(dna2 const & lhs, dna2 const & rhs) noexcept
-    {
-        return lhs.rank == rhs.rank;
-    }
-
-    friend bool operator!=(dna2 const & lhs, dna2 const & rhs) noexcept
-    {
-        return !(lhs == rhs);
-    }
-
     // Comparison operators
-
-    friend bool operator<(dna2 const & lhs, dna2 const & rhs) noexcept
-    {
-        return lhs.rank < rhs.rank;
-    }
-
-    friend bool operator<=(dna2 const & lhs, dna2 const & rhs) noexcept
-    {
-        return lhs.rank <= rhs.rank;
-    }
-
-    friend bool operator>(dna2 const & lhs, dna2 const & rhs) noexcept
-    {
-        return lhs.rank > rhs.rank;
-    }
-
-    friend bool operator>=(dna2 const & lhs, dna2 const & rhs) noexcept
-    {
-        return lhs.rank >= rhs.rank;
-    }
+    friend auto operator<=>(dna2 const & lhs, dna2 const & rhs) noexcept = default;
 };
 
 static_assert(std::equality_comparable<dna2>);            // ok

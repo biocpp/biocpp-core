@@ -56,39 +56,8 @@ struct dna2
         return (ch == dna2{}.assign_char(ch).to_char());
     }
 
-    // Equality and inequality operators
-
-    friend bool operator==(dna2 const & lhs, dna2 const & rhs) noexcept
-    {
-        return lhs.rank == rhs.rank;
-    }
-
-    friend bool operator!=(dna2 const & lhs, dna2 const & rhs) noexcept
-    {
-        return !(lhs == rhs);
-    }
-
     // Comparison operators
-
-    friend bool operator<(dna2 const & lhs, dna2 const & rhs) noexcept
-    {
-        return lhs.rank < rhs.rank;
-    }
-
-    friend bool operator<=(dna2 const & lhs, dna2 const & rhs) noexcept
-    {
-        return lhs.rank <= rhs.rank;
-    }
-
-    friend bool operator>(dna2 const & lhs, dna2 const & rhs) noexcept
-    {
-        return lhs.rank > rhs.rank;
-    }
-
-    friend bool operator>=(dna2 const & lhs, dna2 const & rhs) noexcept
-    {
-        return lhs.rank >= rhs.rank;
-    }
+    friend auto operator<=>(dna2 const & lhs, dna2 const & rhs) noexcept = default;
 };
 //! [writable_alphabet]
 

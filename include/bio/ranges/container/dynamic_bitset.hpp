@@ -1526,37 +1526,9 @@ public:
 
     //!\brief Performs element-wise comparison.
     template <size_t cap>
-    friend constexpr bool operator!=(dynamic_bitset const & lhs, dynamic_bitset<cap> const & rhs) noexcept
+    friend constexpr auto operator<=>(dynamic_bitset const & lhs, dynamic_bitset<cap> const & rhs) noexcept
     {
-        return !(lhs == rhs);
-    }
-
-    //!\brief Performs element-wise comparison.
-    template <size_t cap>
-    friend constexpr bool operator<(dynamic_bitset const & lhs, dynamic_bitset<cap> const & rhs) noexcept
-    {
-        return lhs.data.bits < rhs.raw_data()->bits;
-    }
-
-    //!\brief Performs element-wise comparison.
-    template <size_t cap>
-    friend constexpr bool operator>(dynamic_bitset const & lhs, dynamic_bitset<cap> const & rhs) noexcept
-    {
-        return lhs.data.bits > rhs.raw_data()->bits;
-    }
-
-    //!\brief Performs element-wise comparison.
-    template <size_t cap>
-    friend constexpr bool operator<=(dynamic_bitset const & lhs, dynamic_bitset<cap> const & rhs) noexcept
-    {
-        return !(lhs > rhs);
-    }
-
-    //!\brief Performs element-wise comparison.
-    template <size_t cap>
-    friend constexpr bool operator>=(dynamic_bitset const & lhs, dynamic_bitset<cap> const & rhs) noexcept
-    {
-        return !(lhs < rhs);
+        return lhs.data.bits <=> rhs.raw_data()->bits;
     }
     //!\}
 

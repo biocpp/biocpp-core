@@ -62,39 +62,12 @@ struct pod_tuple<type0, types...>
      */
 
     //!\brief Checks whether `*this` is equal to `rhs`.
-    constexpr bool operator==(pod_tuple const & rhs) const noexcept
-    {
-        return std::tie(_head, _tail) == std::tie(rhs._head, rhs._tail);
-    }
+    constexpr friend bool operator==(pod_tuple const & lhs, pod_tuple const & rhs) noexcept = default;
 
-    //!\brief Checks whether `*this` is not equal to `rhs`.
-    constexpr bool operator!=(pod_tuple const & rhs) const noexcept
+    //!\brief Checks whether `*this` is equal to `rhs`.
+    constexpr friend auto operator<=>(pod_tuple const & lhs, pod_tuple const & rhs) noexcept
     {
-        return std::tie(_head, _tail) != std::tie(rhs._head, rhs._tail);
-    }
-
-    //!\brief Checks whether `*this` is less than `rhs`.
-    constexpr bool operator<(pod_tuple const & rhs) const noexcept
-    {
-        return std::tie(_head, _tail) < std::tie(rhs._head, rhs._tail);
-    }
-
-    //!\brief Checks whether `*this` is greater than `rhs`.
-    constexpr bool operator>(pod_tuple const & rhs) const noexcept
-    {
-        return std::tie(_head, _tail) > std::tie(rhs._head, rhs._tail);
-    }
-
-    //!\brief Checks whether `*this` is less than or equal to `rhs`.
-    constexpr bool operator<=(pod_tuple const & rhs) const noexcept
-    {
-        return std::tie(_head, _tail) <= std::tie(rhs._head, rhs._tail);
-    }
-
-    //!\brief Checks whether `*this` is greater than or equal to `rhs`.
-    constexpr bool operator>=(pod_tuple const & rhs) const noexcept
-    {
-        return std::tie(_head, _tail) >= std::tie(rhs._head, rhs._tail);
+        return std::tie(lhs._head, lhs._tail) <=> std::tie(rhs._head, rhs._tail);
     }
     //!\}
 };
@@ -115,24 +88,11 @@ struct pod_tuple<type0>
      * \brief Lexicographically compares the values in the tuple.
      * \{
      */
+    //!\brief Checks whether `*this` is equal to `rhs`.
+    constexpr friend bool operator==(pod_tuple const & lhs, pod_tuple const & rhs) noexcept = default;
 
     //!\brief Checks whether `*this` is equal to `rhs`.
-    constexpr bool operator==(pod_tuple const & rhs) const noexcept { return _head == rhs._head; }
-
-    //!\brief Checks whether `*this` is not equal to `rhs`.
-    constexpr bool operator!=(pod_tuple const & rhs) const noexcept { return _head != rhs._head; }
-
-    //!\brief Checks whether `*this` is less than `rhs`.
-    constexpr bool operator<(pod_tuple const & rhs) const noexcept { return _head < rhs._head; }
-
-    //!\brief Checks whether `*this` is greater than `rhs`.
-    constexpr bool operator>(pod_tuple const & rhs) const noexcept { return _head > rhs._head; }
-
-    //!\brief Checks whether `*this` is less than or equal to `rhs`.
-    constexpr bool operator<=(pod_tuple const & rhs) const noexcept { return _head <= rhs._head; }
-
-    //!\brief Checks whether `*this` is greater than or equal to `rhs`.
-    constexpr bool operator>=(pod_tuple const & rhs) const noexcept { return _head >= rhs._head; }
+    constexpr friend auto operator<=>(pod_tuple const & lhs, pod_tuple const & rhs) noexcept = default;
     //!\}
 };
 

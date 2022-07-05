@@ -177,39 +177,15 @@ public:
     //!\{
 
     //!\brief Checks whether the letters `lhs` and `rhs` are equal.
-    friend constexpr bool operator==(derived_type const lhs, derived_type const rhs) noexcept
+    friend constexpr bool operator==(derived_type const lhs, derived_type const rhs)
     {
-        return bio::alphabet::to_rank(lhs) == bio::alphabet::to_rank(rhs);
+        return lhs.to_rank() == rhs.to_rank();
     }
 
-    //!\brief Checks whether the letters `lhs` and `rhs` are unequal.
-    friend constexpr bool operator!=(derived_type const lhs, derived_type const rhs) noexcept
+    //!\brief Checks order of `lhs` and `rhs`.
+    friend constexpr auto operator<=>(derived_type const lhs, derived_type const rhs)
     {
-        return bio::alphabet::to_rank(lhs) != bio::alphabet::to_rank(rhs);
-    }
-
-    //!\brief Checks whether the letter `lhs` is smaller than `rhs`.
-    friend constexpr bool operator<(derived_type const lhs, derived_type const rhs) noexcept
-    {
-        return bio::alphabet::to_rank(lhs) < bio::alphabet::to_rank(rhs);
-    }
-
-    //!\brief Checks whether the letter `lhs` is greater than `rhs`.
-    friend constexpr bool operator>(derived_type const lhs, derived_type const rhs) noexcept
-    {
-        return bio::alphabet::to_rank(lhs) > bio::alphabet::to_rank(rhs);
-    }
-
-    //!\brief Checks whether the letter `lhs` is smaller than or equal to `rhs`.
-    friend constexpr bool operator<=(derived_type const lhs, derived_type const rhs) noexcept
-    {
-        return bio::alphabet::to_rank(lhs) <= bio::alphabet::to_rank(rhs);
-    }
-
-    //!\brief Checks whether the letter `lhs` is bigger than or equal to `rhs`.
-    friend constexpr bool operator>=(derived_type const lhs, derived_type const rhs) noexcept
-    {
-        return bio::alphabet::to_rank(lhs) >= bio::alphabet::to_rank(rhs);
+        return lhs.to_rank() <=> rhs.to_rank();
     }
     //!\}
 
@@ -310,11 +286,6 @@ public:
     //!\brief Letters are always equal.
     friend constexpr bool operator>=(derived_type const, derived_type const) noexcept { return true; }
     //!\}
-
-private:
-#if BIOCPP_WORKAROUND_GCC_87113
-    bool _bug_workaround{};
-#endif
 };
 
 } // namespace bio::alphabet

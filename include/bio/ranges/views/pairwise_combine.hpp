@@ -488,81 +488,25 @@ public:
      *        std::totally_ordered respectively.
      * \{
      */
-    //NOTE: The comparison operators should be implemented as friends, but due to a bug in gcc friend function
-    // cannot yet be constrained. To avoid unexpected errors with the comparison all operators are implemented as
-    // direct members and not as friends.
-
     //!\brief Checks whether `*this` is equal to `rhs`.
-    template <typename other_range_type>
-        //!\cond
-        requires(std::equality_comparable_with<underlying_iterator_type, std::ranges::iterator_t<other_range_type>> &&
-                   std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
-    //!\endcond
-    constexpr bool operator==(basic_iterator<other_range_type> const & rhs) const
-      noexcept(noexcept(std::declval<underlying_iterator_type &>() == std::declval<underlying_iterator_type &>()))
+    constexpr friend bool operator==(basic_iterator const lhs, basic_iterator const rhs) noexcept(
+      noexcept(std::declval<underlying_iterator_type &>() == std::declval<underlying_iterator_type &>()))
     {
-        return std::tie(first_it, second_it) == std::tie(rhs.first_it, rhs.second_it);
+        return std::tie(lhs.first_it, lhs.second_it) == std::tie(rhs.first_it, rhs.second_it);
     }
 
     //!\brief Checks whether `*this` is not equal to `rhs`.
-    template <typename other_range_type>
-        //!\cond
-        requires(std::equality_comparable_with<underlying_iterator_type, std::ranges::iterator_t<other_range_type>> &&
-                   std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
-    //!\endcond
-    constexpr bool operator!=(basic_iterator<other_range_type> const & rhs) const
-      noexcept(noexcept(std::declval<underlying_iterator_type &>() != std::declval<underlying_iterator_type &>()))
+    constexpr friend bool operator!=(basic_iterator const lhs, basic_iterator const rhs) noexcept(
+      noexcept(std::declval<underlying_iterator_type &>() != std::declval<underlying_iterator_type &>()))
     {
-        return !(*this == rhs);
+        return !(lhs == rhs);
     }
 
-    //!\brief Checks whether `*this` is less than `rhs`.
-    template <typename other_range_type>
-        //!\cond
-        requires(std::totally_ordered_with<underlying_iterator_type, std::ranges::iterator_t<other_range_type>> &&
-                   std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
-    //!\endcond
-    constexpr bool operator<(basic_iterator<other_range_type> const & rhs) const
-      noexcept(noexcept(std::declval<underlying_iterator_type &>() < std::declval<underlying_iterator_type &>()))
+    //!\brief Determines order of `*this` and `rhs`.
+    constexpr friend auto operator<=>(basic_iterator const lhs, basic_iterator const rhs) noexcept(
+      noexcept(std::declval<underlying_iterator_type &>() < std::declval<underlying_iterator_type &>()))
     {
-        return std::tie(first_it, second_it) < std::tie(rhs.first_it, rhs.second_it);
-    }
-
-    //!\brief Checks whether `*this` is greater than `rhs`.
-    template <typename other_range_type>
-        //!\cond
-        requires(std::totally_ordered_with<underlying_iterator_type, std::ranges::iterator_t<other_range_type>> &&
-                   std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
-    //!\endcond
-    constexpr bool operator>(basic_iterator<other_range_type> const & rhs) const
-      noexcept(noexcept(std::declval<underlying_iterator_type &>() > std::declval<underlying_iterator_type &>()))
-
-    {
-        return std::tie(first_it, second_it) > std::tie(rhs.first_it, rhs.second_it);
-    }
-
-    //!\brief Checks whether `*this` is less than or equal to `rhs`.
-    template <typename other_range_type>
-        //!\cond
-        requires(std::totally_ordered_with<underlying_iterator_type, std::ranges::iterator_t<other_range_type>> &&
-                   std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
-    //!\endcond
-    constexpr bool operator<=(basic_iterator<other_range_type> const & rhs) const
-      noexcept(noexcept(std::declval<underlying_iterator_type &>() <= std::declval<underlying_iterator_type &>()))
-    {
-        return std::tie(first_it, second_it) <= std::tie(rhs.first_it, rhs.second_it);
-    }
-
-    //!\brief Checks whether `*this` is greater than or equal to `rhs`.
-    template <typename other_range_type>
-        //!\cond
-        requires(std::totally_ordered_with<underlying_iterator_type, std::ranges::iterator_t<other_range_type>> &&
-                   std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
-    //!\endcond
-    constexpr bool operator>=(basic_iterator<other_range_type> const & rhs) const
-      noexcept(noexcept(std::declval<underlying_iterator_type &>() >= std::declval<underlying_iterator_type &>()))
-    {
-        return std::tie(first_it, second_it) >= std::tie(rhs.first_it, rhs.second_it);
+        return std::tie(lhs.first_it, lhs.second_it) <=> std::tie(rhs.first_it, rhs.second_it);
     }
     //!\}
 

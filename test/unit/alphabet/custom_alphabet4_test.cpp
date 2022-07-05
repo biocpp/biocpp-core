@@ -20,12 +20,7 @@ struct non_writeable_alphabet
 
     static constexpr bool alphabet_size{1};
 
-    friend bool operator<(non_writeable_alphabet, non_writeable_alphabet);
-    friend bool operator<=(non_writeable_alphabet, non_writeable_alphabet);
-    friend bool operator>(non_writeable_alphabet, non_writeable_alphabet);
-    friend bool operator>=(non_writeable_alphabet, non_writeable_alphabet);
-    friend bool operator==(non_writeable_alphabet, non_writeable_alphabet);
-    friend bool operator!=(non_writeable_alphabet, non_writeable_alphabet);
+    friend auto operator<=>(non_writeable_alphabet, non_writeable_alphabet) = default;
 };
 
 // see issue https://github.com/seqan/seqan3/issues/1518
