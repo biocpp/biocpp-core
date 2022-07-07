@@ -26,7 +26,11 @@
  * \ingroup type_traits
  * \returns true or false.
  */
-#define BIOCPP_IS_CONSTEXPR(...) std::integral_constant<bool, __builtin_constant_p((__VA_ARGS__, 0))>::value
+#ifdef __clang__
+#    define BIOCPP_IS_CONSTEXPR(...) true
+#else
+#    define BIOCPP_IS_CONSTEXPR(...) std::integral_constant<bool, __builtin_constant_p((__VA_ARGS__, 0))>::value
+#endif
 
 namespace bio::meta
 {
@@ -87,6 +91,21 @@ struct is_constexpr_default_constructible<t> : std::integral_constant<bool, BIOC
  */
 template <typename t>
 inline constexpr bool is_constexpr_default_constructible_v = is_constexpr_default_constructible<t>::value;
+
+// ----------------------------------------------------------------------------
+// default_initialisable_wrap_t
+// ----------------------------------------------------------------------------
+
+/*!\brief Return t as t if it is noexcept- and constexpr-default-constructible; else wrap it in std::type_identity.
+ * \tparam t The type to operate on.
+ * \relates bio::meta::is_constexpr_default_constructible
+ */
+template <typename t>
+using default_initialisable_wrap_t =
+  std::conditional_t<std::is_nothrow_default_constructible_v<std::remove_cvref_t<t>> &&
+                       is_constexpr_default_constructible_v<std::remove_cvref_t<t>>,
+                     std::remove_cvref_t<t>,
+                     std::type_identity<std::remove_cvref_t<t>>>;
 
 // ----------------------------------------------------------------------------
 // deferred_type

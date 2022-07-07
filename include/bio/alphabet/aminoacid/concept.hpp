@@ -39,45 +39,7 @@ struct aminoacid_empty_base
 // enable_aminoacid
 // ============================================================================
 
-namespace bio::alphabet::detail::adl_only
-{
-
-//!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename... args_t>
-void enable_aminoacid(args_t...) = delete;
-
-//!\brief Customisation point dispatcher for bio::alphabet::enable_aminoacid.
-struct enable_aminoacid_dispatcher
-{
-public:
-    // explicit customisation
-    BIOCPP_CPO_IMPL(
-      2,
-      std::bool_constant<bio::alphabet::custom::alphabet<meta::strip_type_identity_t<t>>::enable_aminoacid>::value)
-    // ADL
-    BIOCPP_CPO_IMPL(1, std::bool_constant<enable_aminoacid(t{})>::value)
-    // default: derived from base class or not (valid for any type)
-    BIOCPP_CPO_IMPL(0, (std::is_base_of_v<bio::alphabet::aminoacid_empty_base, meta::strip_type_identity_t<t>>))
-
-    //!\brief Main dispatching function.
-    template <typename alph_t>
-    static constexpr bool dispatch() noexcept
-    {
-        if constexpr (std::is_nothrow_default_constructible_v<alph_t> &&
-                      meta::is_constexpr_default_constructible_v<alph_t>)
-        {
-            return impl(meta::detail::priority_tag<2>{}, alph_t{});
-        }
-        else
-        {
-            return impl(meta::detail::priority_tag<2>{}, std::type_identity<alph_t>{});
-        }
-    }
-};
-
-} // namespace bio::alphabet::detail::adl_only
-
-namespace bio::alphabet
+namespace bio::alphabet::cpo
 {
 
 /*!\brief A trait that indicates whether a type shall model bio::alphabet::aminoacid_alphabet.
@@ -87,44 +49,30 @@ namespace bio::alphabet
  *
  * This is an auxiliary trait that is checked by bio::alphabet::aminoacid_alphabet to verify that a type is an amino acid.
  * This trait should never be read from, instead use bio::alphabet::aminoacid_alphabet.
- * However, user-defined alphabets that want to model bio::alphabet::aminoacid_alphabet need to make sure that it evaluates
- * to `true` for their type.
- *
- * ### Specialisation
- *
- * Do not specialise this trait directly. It acts as a wrapper and looks for two possible implementations
- * (in this order):
- *
- *   1. A `static` member variable `enable_aminoacid` of the class `bio::alphabet::custom::alphabet<t>`.
- *   2. A free function `constexpr bool enable_aminoacid(t) noexcept` in the namespace of your type (or as `friend`).
- *
- * If none of these is found, the default value is defined as:
- *
- *   * `true` if the type inherits from bio::alphabet::aminoacid_empty_base (or bio::alphabet::aminoacid_base),
- *   * `false` otherwise.
- *
- * Implementations of 1. and 2. are required to be marked `constexpr` and the value / return value must be convertible
- * to `bool`.
- * Implementations of 2. are required to be marked `noexcept`. The value passed to functions implementing 2.
- * shall be ignored, it is only used for finding the function via argument-dependent lookup.
- * In case that your type is not bio::meta::is_constexpr_default_constructible_v and you wish to provide an implementation
- * for 2., instead overload for `std::type_identity<t>`.
- *
- * To make a type model bio::alphabet::aminoacid_alphabet, it is recommended that you derive from bio::alphabet::aminoacid_base.
- * If that is not possible, choose option 2., and only implement option 1. as a last resort.
- *
- * ### Example
- *
- * \include test/snippet/alphabet/aminoacid/enable_aminoacid.cpp
+ * However, user-defined alphabets that want to model bio::alphabet::aminoacid_alphabet need to specialise it.
  *
  * ### Customisation point
  *
  * This is a customisation point (see \ref biocpp_customisation). To change the default behaviour for your own alphabet,
- * follow the above instructions.
+ * do one of the following:
+ *
+ *   1. Inherit from bio::alphabet::aminoacid_empty_base; or
+ *   2. Specialise this trait for your type.
+ *
+ * Note, that the concept check removes cvref-qualification from the type before evaluating this
+ * trait, so you only need to specialise it for `t` and not for `t &` et cetera.
+ *
+ * ### Example
+ *
+ * \include test/snippet/alphabet/aminoacid/enable_aminoacid.cpp
  */
 template <typename t>
-inline constexpr bool enable_aminoacid =
-  detail::adl_only::enable_aminoacid_dispatcher::dispatch<std::remove_cvref_t<t>>();
+inline constexpr bool enable_aminoacid = std::derived_from<t, aminoacid_empty_base>;
+
+} // namespace bio::alphabet::cpo
+
+namespace bio::alphabet
+{
 
 // ============================================================================
 // concept
@@ -145,7 +93,7 @@ inline constexpr bool enable_aminoacid =
  */
 //!\cond
 template <typename type>
-concept aminoacid_alphabet = alphabet<type> && enable_aminoacid<type>;
+concept aminoacid_alphabet = alphabet<type> && cpo::enable_aminoacid<std::remove_cvref_t<type>>;
 //!\endcond
 
 } // namespace bio::alphabet

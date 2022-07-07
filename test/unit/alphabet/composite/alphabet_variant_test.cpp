@@ -270,13 +270,13 @@ TEST(alphabet_variant_test, alphabet_size)
     using alphabet2_t = bio::alphabet::alphabet_variant<bio::alphabet::gap, bio::alphabet::dna5, bio::alphabet::dna4>;
     using alphabet3_t = bio::alphabet::alphabet_variant<char, bio::alphabet::gap>;
 
-    EXPECT_TRUE((std::is_same_v<decltype(alphabet1_t::alphabet_size), const uint8_t>));
-    EXPECT_TRUE((std::is_same_v<decltype(alphabet2_t::alphabet_size), const uint8_t>));
-    EXPECT_TRUE((std::is_same_v<decltype(alphabet3_t::alphabet_size), const uint16_t>));
+    EXPECT_TRUE((std::is_same_v<decltype(alphabet1_t::alphabet_size), const size_t>));
+    EXPECT_TRUE((std::is_same_v<decltype(alphabet2_t::alphabet_size), const size_t>));
+    EXPECT_TRUE((std::is_same_v<decltype(alphabet3_t::alphabet_size), const size_t>));
 
-    EXPECT_EQ(alphabet1_t::alphabet_size, 10);
-    EXPECT_EQ(alphabet2_t::alphabet_size, 10);
-    EXPECT_EQ(alphabet3_t::alphabet_size, 257);
+    EXPECT_EQ(alphabet1_t::alphabet_size, 10ull);
+    EXPECT_EQ(alphabet2_t::alphabet_size, 10ull);
+    EXPECT_EQ(alphabet3_t::alphabet_size, 257ull);
 }
 
 TEST(alphabet_variant_test, convert_by_index)

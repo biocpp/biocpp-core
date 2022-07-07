@@ -5,7 +5,7 @@
 int main()
 {
     char c = '!';
-    bio::alphabet::assign_rank_to(66, c);     // calls bio::alphabet::custom::assign_rank_to(66, c); == 'B'
+    bio::alphabet::assign_rank_to(66, c);     // calls bio::alphabet::cpo::tag_invoke(bio::alphabet::cpo::assign_rank_to, 66, c); == 'B'
 
     bio::alphabet::dna5 d{};
     bio::alphabet::assign_rank_to(2, d);     // calls .assign_rank(2) member; == 'G'_dna5

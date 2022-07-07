@@ -29,65 +29,64 @@
 #include <bio/alphabet/concept.hpp>
 #include <bio/meta/detail/int_types.hpp>
 
-namespace bio::alphabet::detail
-{
-//!\brief Whether a type is `char`, `char16_t`, `char32_t` or `wchar_t` (type trait).
-//!\ingroup adaptation
-//!\hideinitializer
-template <typename type>
-constexpr bool is_char_adaptation_v = std::same_as<type, char> || std::same_as<type, char16_t> ||
-                                      std::same_as<type, char32_t> || std::same_as<type, wchar_t>;
-} // namespace bio::alphabet::detail
-
-namespace bio::alphabet::custom
+namespace bio::alphabet::cpo
 {
 
-/*!\brief Alphabet specific customisations for builtin char types.
- * \tparam char_type One of `char`, `char16_t`, `char32_t` or `wchar_t`.
- * \ingroup adaptation
+//!\brief The number of values the char type can take (e.g. 256 for `char`).
+template <bio::meta::nonint_character char_type>
+consteval auto tag_invoke(size, char_type const) noexcept
+{
+    return meta::detail::min_viable_uint_v<meta::detail::size_in_values_v<char_type>>;
+}
+
+/*!\brief Convert char to rank by casting to an unsigned integral type of same size.
+ * \param[in] tag The tag for tag_invoke().
+ * \param[in] chr The alphabet letter that you wish to convert to rank.
+ * \returns The letter's value in the alphabet's rank type (usually a `uint*_t`).
  */
-template <typename char_type>
-    //!\cond
-    requires detail::is_char_adaptation_v<char_type>
-//!\endcond
-struct alphabet<char_type>
+template <bio::meta::nonint_character char_type>
+constexpr auto tag_invoke(to_rank BIOCPP_DOXYGEN_ONLY(tag), char_type const chr) noexcept
 {
-    //!\brief The number of values the char type can take (e.g. 256 for `char`).
-    static constexpr auto alphabet_size = meta::detail::min_viable_uint_t<meta::detail::size_in_values_v<char_type>>{
-      meta::detail::size_in_values_v<char_type>};
+    return static_cast<meta::detail::min_viable_uint_t<alphabet_size<char_type> - 1>>(chr);
+}
 
-    /*!\brief Converting char to char is no-op (it will just return the value you pass in).
-     * \param[in] chr The alphabet letter that you wish to convert to char (no-op).
-     * \returns `chr`.
-     */
-    static constexpr char_type to_char(char_type const chr) noexcept { return chr; }
+/*!\brief Assigning a rank to a char is the same as assigning it a numeric value.
+ * \param[in] tag The tag for tag_invoke().
+ * \param[in] rank The `rank` value you wish to assign.
+ * \param[in,out] chr The alphabet letter that you wish to assign to.
+ * \returns A reference to the alphabet letter you passed in.
+ */
+template <bio::meta::nonint_character char_type>
+constexpr char_type & tag_invoke(assign_rank_to                                     BIOCPP_DOXYGEN_ONLY(tag),
+                                 decltype(tag_invoke(to_rank{}, char_type{})) const rank,
+                                 char_type &                                        chr) noexcept
+{
+    return chr = rank;
+}
 
-    /*!\brief Convert char to rank by casting to an unsigned integral type of same size.
-     * \param[in] chr The alphabet letter that you wish to convert to rank.
-     * \returns The letter's value in the alphabet's rank type (usually a `uint*_t`).
-     */
-    static constexpr auto to_rank(char_type const chr) noexcept
-    {
-        return static_cast<meta::detail::min_viable_uint_t<alphabet_size - 1>>(chr);
-    }
+/*!\brief Converting char to char is no-op (it will just return the value you pass in).
+ * \param[in] tag The tag for tag_invoke().
+ * \param[in] chr The alphabet letter that you wish to convert to char (no-op).
+ * \returns `chr`.
+ */
+template <bio::meta::nonint_character char_type>
+constexpr char_type tag_invoke(to_char BIOCPP_DOXYGEN_ONLY(tag), char_type const chr) noexcept
+{
+    return chr;
+}
 
-    /*!\brief Assign a char to the char type (same as calling `=`).
-     * \param[in] chr2 The `char` value you wish to assign.
-     * \param[in,out] chr The alphabet letter that you wish to assign to.
-     * \returns A reference to the alphabet letter you passed in.
-     */
-    static constexpr char_type & assign_char_to(char_type const chr2, char_type & chr) noexcept { return chr = chr2; }
+/*!\brief Assign a char to the char type (same as calling `=`).
+ * \param[in] tag The tag for tag_invoke().
+ * \param[in] chr2 The `char` value you wish to assign.
+ * \param[in,out] chr The alphabet letter that you wish to assign to.
+ * \returns A reference to the alphabet letter you passed in.
+ */
+template <bio::meta::nonint_character char_type>
+constexpr char_type & tag_invoke(assign_char_to  BIOCPP_DOXYGEN_ONLY(tag),
+                                 char_type const chr2,
+                                 char_type &     chr) noexcept
+{
+    return chr = chr2;
+}
 
-    /*!\brief Assigning a rank to a char is the same as assigning it a numeric value.
-     * \param[in] rank The `rank` value you wish to assign.
-     * \param[in,out] chr The alphabet letter that you wish to assign to.
-     * \returns A reference to the alphabet letter you passed in.
-     */
-    static constexpr char_type & assign_rank_to(decltype(alphabet::to_rank(char_type{})) const rank,
-                                                char_type &                                    chr) noexcept
-    {
-        return chr = rank;
-    }
-};
-
-} // namespace bio::alphabet::custom
+} // namespace bio::alphabet::cpo

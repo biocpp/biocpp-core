@@ -8,6 +8,8 @@
 
 #include <gtest/gtest.h>
 
+#include <bio/alphabet/adaptation/char.hpp>
+#include <bio/alphabet/gap/gap.hpp>
 #include <bio/alphabet/nucleotide/concept.hpp>
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/ranges/views/complement.hpp>
@@ -39,4 +41,16 @@ TEST(bitcompressed_vector_test, issue1743_view_combinability)
 
     EXPECT_EQ(v.size(), complement.size());
     EXPECT_RANGE_EQ(complement, (bio::alphabet::dna4_vector{'T'_dna4, 'G'_dna4, 'C'_dna4, 'A'_dna4}));
+}
+
+TEST(bitcompressed_vector_test, char_compatibility)
+{
+    bio::ranges::bitcompressed_vector<char> v;
+    EXPECT_TRUE(bio::alphabet::writable_alphabet<decltype(v[0])>);
+}
+
+TEST(bitcompressed_vector_test, gap_compatibility)
+{
+    bio::ranges::bitcompressed_vector<bio::alphabet::gap> v;
+    EXPECT_TRUE(bio::alphabet::writable_alphabet<decltype(v[0])>);
 }

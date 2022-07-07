@@ -21,71 +21,67 @@ namespace my_namespace
 class my_alph
 {
 public:
-    bool rank;
+    uint8_t rank;
 
     my_alph()                                      = delete;
     constexpr my_alph(my_alph const &)             = default;
     constexpr my_alph & operator=(my_alph const &) = default;
 
-    constexpr my_alph(bool rank) : rank{rank} {}
+    constexpr my_alph(uint8_t rank) : rank{rank} {}
 
     constexpr friend auto operator<=>(my_alph lhs, my_alph rhs) = default;
+
+    consteval friend size_t tag_invoke(bio::alphabet::cpo::size, std::type_identity<my_alph>) noexcept { return 2; }
+
+    constexpr friend uint8_t tag_invoke(bio::alphabet::cpo::to_rank, my_alph const a) noexcept { return a.rank; }
+
+    constexpr friend my_alph & tag_invoke(bio::alphabet::cpo::assign_rank_to, uint8_t const r, my_alph & a) noexcept
+    {
+        a.rank = r;
+        return a;
+    }
+
+    constexpr friend char tag_invoke(bio::alphabet::cpo::to_char, my_alph const a) noexcept
+    {
+        if (a.rank)
+            return '1';
+        else
+            return '0';
+    }
+
+    constexpr friend my_alph & tag_invoke(bio::alphabet::cpo::assign_char_to, char const c, my_alph & a) noexcept
+    {
+        switch (c)
+        {
+            case '0':
+            case 'F':
+            case 'f':
+                a.rank = 0;
+                return a;
+            default:
+                a.rank = 1;
+                return a;
+        }
+    }
+
+    constexpr friend bool tag_invoke(bio::alphabet::cpo::char_is_valid_for,
+                                     char const c,
+                                     std::type_identity<my_alph>) noexcept
+    {
+        switch (c)
+        {
+            case '0':
+            case 'F':
+            case 'f':
+            case '1':
+            case 'T':
+            case 't':
+                return true;
+            default:
+                return false;
+        }
+    }
 };
-
-constexpr size_t alphabet_size(std::type_identity<my_alph> const &) noexcept
-{
-    return 2;
-}
-
-constexpr bool to_rank(my_alph const a) noexcept
-{
-    return a.rank;
-}
-
-constexpr my_alph & assign_rank_to(bool const r, my_alph & a) noexcept
-{
-    a.rank = r;
-    return a;
-}
-
-constexpr char to_char(my_alph const a) noexcept
-{
-    if (a.rank)
-        return '1';
-    else
-        return '0';
-}
-
-constexpr my_alph & assign_char_to(char const c, my_alph & a) noexcept
-{
-    switch (c)
-    {
-        case '0':
-        case 'F':
-        case 'f':
-            a.rank = 0;
-            return a;
-        default:
-            a.rank = 1;
-            return a;
-    }
-}
-
-constexpr bool char_is_valid_for(char const c, std::type_identity<my_alph> const &) noexcept
-{
-    switch (c)
-    {
-        case '0':
-        case 'F':
-        case 'f':
-        case '1':
-        case 'T':
-        case 't':
-            return true;
-        default:
-            return false;
-    }
-}
 
 } // namespace my_namespace
 

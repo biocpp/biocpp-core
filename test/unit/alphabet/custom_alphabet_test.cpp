@@ -29,17 +29,17 @@ enum class my_alph
     TWO
 };
 
-constexpr size_t alphabet_size(my_alph const &) noexcept
+consteval size_t tag_invoke(bio::alphabet::cpo::size, my_alph const &) noexcept
 {
     return 3;
 }
 
-constexpr size_t to_rank(my_alph const a) noexcept
+constexpr size_t tag_invoke(bio::alphabet::cpo::to_rank, my_alph const a) noexcept
 {
     return static_cast<size_t>(a);
 }
 
-constexpr my_alph & assign_rank_to(size_t const r, my_alph & a) noexcept
+constexpr my_alph & tag_invoke(bio::alphabet::cpo::assign_rank_to, size_t const r, my_alph & a) noexcept
 {
     switch (r)
     {
@@ -55,7 +55,7 @@ constexpr my_alph & assign_rank_to(size_t const r, my_alph & a) noexcept
     }
 }
 
-constexpr char to_char(my_alph const a) noexcept
+constexpr char tag_invoke(bio::alphabet::cpo::to_char, my_alph const a) noexcept
 {
     switch (a)
     {
@@ -68,7 +68,7 @@ constexpr char to_char(my_alph const a) noexcept
     }
 }
 
-constexpr my_alph & assign_char_to(char const c, my_alph & a) noexcept
+constexpr my_alph & tag_invoke(bio::alphabet::cpo::assign_char_to, char const c, my_alph & a) noexcept
 {
     switch (c)
     {

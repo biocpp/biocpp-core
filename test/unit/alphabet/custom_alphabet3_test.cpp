@@ -34,64 +34,70 @@ enum class third_party_type
 
 // ------------------------------------------------------------------------------------
 
-// this is in your code (no namespace):
-template <>
-struct bio::alphabet::custom::alphabet<third_party_ns::third_party_type>
+// in this case, overloads for tag_invoke are defined within bio::*::cpo
+namespace bio::alphabet::cpo
 {
-    static constexpr size_t alphabet_size = 3;
 
-    static constexpr size_t to_rank(third_party_ns::third_party_type const a) noexcept
-    {
-        return static_cast<size_t>(a);
-    }
+consteval size_t tag_invoke(size, third_party_ns::third_party_type) noexcept
+{
+    return 3;
+}
 
-    static constexpr third_party_ns::third_party_type & assign_rank_to(size_t const                       r,
-                                                                       third_party_ns::third_party_type & a) noexcept
-    {
-        switch (r)
-        {
-            case 0:
-                a = third_party_ns::third_party_type::ZERO;
-                return a;
-            case 1:
-                a = third_party_ns::third_party_type::ONE;
-                return a;
-            default:
-                a = third_party_ns::third_party_type::TWO;
-                return a;
-        }
-    }
+constexpr size_t tag_invoke(to_rank, third_party_ns::third_party_type const a) noexcept
+{
+    return static_cast<size_t>(a);
+}
 
-    static constexpr char to_char(third_party_ns::third_party_type const a) noexcept
+constexpr third_party_ns::third_party_type & tag_invoke(assign_rank_to,
+                                                        size_t const                       r,
+                                                        third_party_ns::third_party_type & a) noexcept
+{
+    switch (r)
     {
-        switch (a)
-        {
-            case third_party_ns::third_party_type::ZERO:
-                return '0';
-            case third_party_ns::third_party_type::ONE:
-                return '1';
-            default:
-                return '2';
-        }
+        case 0:
+            a = third_party_ns::third_party_type::ZERO;
+            return a;
+        case 1:
+            a = third_party_ns::third_party_type::ONE;
+            return a;
+        default:
+            a = third_party_ns::third_party_type::TWO;
+            return a;
     }
+}
 
-    static constexpr third_party_ns::third_party_type & assign_char_to(char const                         c,
-                                                                       third_party_ns::third_party_type & a) noexcept
+constexpr char tag_invoke(to_char, third_party_ns::third_party_type const a) noexcept
+{
+    switch (a)
     {
-        switch (c)
-        {
-            case '0':
-                a = third_party_ns::third_party_type::ZERO;
-                return a;
-            case '1':
-                a = third_party_ns::third_party_type::ONE;
-                return a;
-            default:
-                a = third_party_ns::third_party_type::TWO;
-                return a;
-        }
+        case third_party_ns::third_party_type::ZERO:
+            return '0';
+        case third_party_ns::third_party_type::ONE:
+            return '1';
+        default:
+            return '2';
     }
-};
+}
+
+constexpr third_party_ns::third_party_type & tag_invoke(assign_char_to,
+                                                        char const                         c,
+                                                        third_party_ns::third_party_type & a) noexcept
+{
+    switch (c)
+    {
+        case '0':
+            a = third_party_ns::third_party_type::ZERO;
+            return a;
+        case '1':
+            a = third_party_ns::third_party_type::ONE;
+            return a;
+        default:
+            a = third_party_ns::third_party_type::TWO;
+            return a;
+    }
+}
+
+} // namespace bio::alphabet::cpo
 
 static_assert(bio::alphabet::alphabet<third_party_ns::third_party_type>);
 //![third_party_type]

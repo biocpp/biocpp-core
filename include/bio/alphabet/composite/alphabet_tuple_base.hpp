@@ -575,11 +575,11 @@ private:
  */
 template <typename derived_type, typename... component_types>
     //!\cond
-    requires(detail::writable_constexpr_semialphabet<component_types> &&...)
-&&(std::regular<component_types> &&...)
-  //!\endcond
-  template <typename alphabet_type, size_t index>
-  class alphabet_tuple_base<derived_type, component_types...>::component_proxy :
+    requires((detail::writable_constexpr_semialphabet<component_types> && ...) &&
+             (std::regular<component_types> && ...))
+//!\endcond
+template <typename alphabet_type, size_t index>
+class alphabet_tuple_base<derived_type, component_types...>::component_proxy :
   public alphabet_proxy<component_proxy<alphabet_type, index>, alphabet_type>
 {
 private:
@@ -599,8 +599,8 @@ public:
     using base_t::operator=;
 
     /*!\name Constructors, destructor and assignment
-        * \{
-        */
+     * \{
+     */
     //!\brief Deleted, because using this proxy without parent would be undefined behaviour.
     component_proxy()                                              = delete;
     constexpr component_proxy(component_proxy const &)             = default; //!< Defaulted.
@@ -616,14 +616,14 @@ public:
     //!\}
 
     /*!\name Comparison operators (proxy type against parent)
-        * \brief Comparison against the bio::alphabet::alphabet_tuple_base that this proxy originates from (necessary
-        *        to prevent recursive template instantiation in the tuple).
-        * \{
-        */
+     * \brief Comparison against the bio::alphabet::alphabet_tuple_base that this proxy originates from (necessary
+     *        to prevent recursive template instantiation in the tuple).
+     * \{
+     */
     /*!\brief Comparison against the alphabet tuple by casting self and tuple to the emulated type.
-        * \param lhs Left-hand-side of comparison.
-        * \param rhs Right-hand-side of comparison.
-        */
+     * \param lhs Left-hand-side of comparison.
+     * \param rhs Right-hand-side of comparison.
+     */
     friend constexpr bool operator==(derived_type const lhs, component_proxy const rhs) noexcept
     {
         return get<index>(lhs) == static_cast<alphabet_type>(rhs);
