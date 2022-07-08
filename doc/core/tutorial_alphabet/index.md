@@ -152,24 +152,16 @@ expressed as sequences over an amino acid alphabet. The bio::alphabet::aa27 alph
 of the 20 canonical amino acids as well as the two proteinogenic amino acids, a termination symbol and
 some wildcard characters. For details read the \ref aminoacid page.
 
-## Structure and quality alphabets
+## Quality alphabets
 
-The alphabets for structure and quality are sequence *annotations* since they describe additional
+The alphabets for quality are sequence *annotations* since they describe additional
 properties of the respective sequence.
-We distinguish between three types:
-1. **Quality alphabet for nucleotides**. The values are produced by sequencing machines and represent the probability
-   that a nucleobase was recorded incorrectly. The characters are most commonly found in FASTQ files.
-   See \ref quality for details.
-2. **RNA structure alphabets**. They describe RNA nucleobases as unpaired or up-/downstream paired and can be found
-   in annotated RNA sequence and alignment files (e.g. Stockholm format). Currently we provide the
-   [Dot Bracket](\ref bio::alphabet::dot_bracket3) and [WUSS](\ref bio::alphabet::wuss) formats.
-3. **Protein structure alphabet**. The [DSSP](\ref bio::alphabet::dssp9) format represents secondary structure elements like
-   alpha helices and turns.
+The values are produced by sequencing machines and represent the probability
+that a nucleobase was recorded incorrectly. The characters are most commonly found in FASTQ files. See \ref quality for details.
 
 You can build an [Alphabet Tuple Composite](\ref bio::alphabet::alphabet_tuple_base) with a nucleotide and quality
-alphabet, or nucleotide / amino acid and structure alphabet that stores both information together.
-For the use cases just described we offer pre-defined composites (bio::alphabet::qualified, bio::alphabet::structured_rna,
-bio::alphabet::structured_aa). See our API documentation for a detailed description of each.
+alphabet that stores both information together.
+For the use cases just described we offer a pre-defined composite (bio::alphabet::qualified). See our API documentation for a detailed description of each.
 
 ## Gap alphabet
 
