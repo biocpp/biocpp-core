@@ -13,13 +13,14 @@
 
 #pragma once
 
+#include <concepts>
+
 #include <bio/alphabet/alphabet_base.hpp>
 #include <bio/alphabet/nucleotide/concept.hpp>
 #include <bio/alphabet/quality/concept.hpp>
 #include <bio/meta/concept/core_language.hpp>
 #include <bio/meta/type_traits/basic.hpp>
 #include <bio/meta/type_traits/template_inspection.hpp>
-#include <concepts>
 
 namespace bio::alphabet
 {
@@ -296,6 +297,64 @@ public:
         return (rhs != lhs);
     }
     //!\}
+
+private:
+    /* IMPLEMENTATION NOTE:
+     *
+     * We do not need to redefine tag_invoke per-se, only in the following situations:
+     *
+     * If we inherit from another alphabet class type (NOT e.g. char):
+     *  - friends are already defined on the alphabet_type
+     *  - this type implicitly converts to that, so we are fine
+     *  - HOWEVER, the assignment function return alphabet_type and not our derived_type,
+     *    so we need to add overloads for that:
+     */
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr derived_type & tag_invoke(cpo::assign_rank_to,
+                                               alphabet_rank_t<alphabet_type> const r,
+                                               derived_type &                       a) noexcept
+      requires(std::is_class_v<alphabet_type> && (requires { {a.assign_rank(r)}; }))
+    {
+        return a.assign_rank(r);
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr derived_type & tag_invoke(cpo::assign_char_to, char_type const c, derived_type & a) noexcept
+      requires(std::is_class_v<alphabet_type> && (requires { {a.assign_char(c)}; }))
+    {
+        return a.assign_char(c);
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr derived_type & tag_invoke(cpo::assign_phred_to, phred_type const p, derived_type & a) noexcept
+      requires(std::is_class_v<alphabet_type> && (requires { {a.assign_phred(p)}; }))
+    {
+        return a.assign_phred(p);
+    }
+
+    /* IMPLEMENTATION NOTE:
+     *
+     * The underlying alphabet_type may be (nothrow+constexpr) default-constructible
+     * but the derived type may not be (e.g. bitcompressed_vector_reference_t<dna4>).
+     *
+     * Since we do regular inheritance and not CRTP, we lack the std::type_identity
+     * overloads and need to add them:
+     */
+    //!\brief tag_invoke() wrapper around member.
+    friend consteval auto tag_invoke(cpo::size, std::type_identity<derived_type>) noexcept
+      requires(std::is_class_v<alphabet_type> && !meta::is_constexpr_default_constructible_v<derived_type>)
+    {
+        return alphabet_size;
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr bool tag_invoke(cpo::char_is_valid_for,
+                                     char_type const c,
+                                     std::type_identity<derived_type>) noexcept
+      requires(std::is_class_v<alphabet_type> && !meta::is_constexpr_default_constructible_v<derived_type>)
+    {
+        return char_is_valid(c);
+    }
 };
 
 } // namespace bio::alphabet

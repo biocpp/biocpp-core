@@ -13,8 +13,16 @@ bug-fixes (not all bug-fixes will be listed).
 * The feature set is stripped to contain the important "core" aspects: Alphabets and Ranges, as well as metaprogramming support utilities.
 * It has no dependencies.
 
+## Some notable changes for users coming from SeqAn3
+
+* 🧹 Huge code cleanup, many bug-fixes and removal of most of the code :)
+* 📦 Separate namespaces for each module.
+* 🏷 Much simpler customisation points by using `tag_invoke()`.
+* 🖨 Replaced the `debug_stream` with {fmt}.
+* 🛸 Lots of Modern C++ goodness: use of the spaceship operator, `consteval`, …
+
 ## API stability
 
 * This release is not yet API-stable.
-* This release is not backwards compatible with any BioC++ version.
+* This release is not backwards compatible with any BioC++ or SeqAn version.
 

@@ -34,11 +34,11 @@ namespace bio::alphabet
  * \include test/snippet/alphabet/gap/gap.cpp
  */
 
-class gap : public alphabet_base<gap, 1, char>
+class gap : public alphabet_base<gap, 1ull, char>
 {
 private:
     //!\brief The base class.
-    using base_t = alphabet_base<gap, 1, char>;
+    using base_t = alphabet_base<gap, 1ull, char>;
 
     //!\brief Befriend bio::alphabet::alphabet_base.
     friend base_t;

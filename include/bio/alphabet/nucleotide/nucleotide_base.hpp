@@ -154,6 +154,9 @@ private:
         return ret;
     }
     ();
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr derived_type tag_invoke(cpo::complement, derived_type const a) noexcept { return a.complement(); }
 };
 
 } // namespace bio::alphabet

@@ -19,86 +19,26 @@
 #include <bio/alphabet/exception.hpp>
 #include <bio/meta/concept/cereal.hpp>
 #include <bio/meta/concept/core_language.hpp>
-#include <bio/meta/detail/customisation_point.hpp>
+#include <bio/meta/detail/priority_tag.hpp>
 #include <bio/meta/detail/type_inspection.hpp>
 #include <bio/meta/type_traits/basic.hpp>
-
-// ============================================================================
-// forwards
-// ============================================================================
-
-namespace bio::alphabet::custom
-{
-
-/*!\brief A type that can be specialised to provide customisation point implementations so that third party types
- *        model alphabet concepts.
- * \tparam t The type you wish to specialise for.
- * \ingroup alphabet
- *
- * \details
- *
- * For examples of when and how you can make use of this type, please see \link biocpp_customisation the page on
- * customisation \endlink and the \link howto_write_an_alphabet_custom section on third party types \endlink in
- * the Alphabet HowTo.
- *
- * Please note that by default the `t const`, `t &` and `t const &` specialisations of this class inherit the
- * specialisation for `t` so you usually only need to provide a specialisation for `t`.
- *
- * \note Only use this, if you cannot provide respective functions in your namespace.
- */
-template <typename t>
-struct alphabet
-{};
-
-//!\cond
-template <typename t>
-struct alphabet<t const> : alphabet<t>
-{};
-
-template <typename t>
-struct alphabet<t &> : alphabet<t>
-{};
-
-template <typename t>
-struct alphabet<t const &> : alphabet<t>
-{};
-//!\endcond
-
-} // namespace bio::alphabet::custom
 
 // ============================================================================
 // to_rank()
 // ============================================================================
 
-namespace bio::alphabet::detail::adl_only
+namespace bio::alphabet::cpo
 {
 
-//!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename... args_t>
-void to_rank(args_t...) = delete;
+/*!\name Customisation tag types
+ * \{
+ */
 
-//!\brief Functor definition for bio::alphabet::to_rank.
-struct to_rank_fn
-{
-public:
-    BIOCPP_CPO_IMPL(2, bio::alphabet::custom::alphabet<decltype(v)>::to_rank(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, to_rank(v))                                               // ADL
-    BIOCPP_CPO_IMPL(0, v.to_rank())                                              // member
-
-public:
-    //!\brief Operator definition.
-    template <typename alph_t>
-        //!\cond
-        requires(requires(alph_t const a) {
-            {impl(meta::detail::priority_tag<2>{}, a)};
-            requires noexcept(impl(meta::detail::priority_tag<2>{}, a));
-            requires std::integral<decltype(impl(meta::detail::priority_tag<2>{}, a))>;
-        })
-    //!\endcond
-    constexpr auto operator()(alph_t const a) const noexcept { return impl(meta::detail::priority_tag<2>{}, a); }
-};
-
-} // namespace bio::alphabet::detail::adl_only
+//!\brief Customisation tag for bio::alphabet::to_rank.
+struct to_rank
+{};
+//!\}
+} // namespace bio::alphabet::cpo
 
 namespace bio::alphabet
 {
@@ -108,7 +48,7 @@ namespace bio::alphabet
  */
 
 /*!\brief Return the rank representation of a (semi-)alphabet object.
- * \tparam your_type Type of the argument.
+ * \tparam alph_type Type of the argument.
  * \param  alph      The (semi-)alphabet object.
  * \returns The rank representation; an integral type.
  * \ingroup alphabet
@@ -116,30 +56,41 @@ namespace bio::alphabet
  *
  * This is a function object. Invoke it with the parameter(s) specified above.
  *
- * It acts as a wrapper and looks for three possible implementations (in this order):
- *
- *   1. A static member function `to_rank(your_type const a)` of the class `bio::alphabet::custom::alphabet<your_type>`.
- *   2. A free function `to_rank(your_type const a)` in the namespace of your type (or as `friend`).
- *   3. A member function called `to_rank()`.
- *
- * Functions are only considered for one of the above cases if they are marked `noexcept` (`constexpr` is not required,
- * but recommended) and if the returned type models std::integral.
- *
- * Every (semi-)alphabet type must provide one of the above.
+ * It is defined for all (semi-)alphabets in BioC++.
  *
  * ### Example
  *
  * \include test/snippet/alphabet/to_rank.cpp
  *
- * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see bio::alphabet::alphabet.
- *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
- * simply provide one of the three functions specified above.
+ * This is a customisation point (see \ref biocpp_customisation).
+ *
+ * It acts as a wrapper and looks for an implementation with the following signature:
+ *
+ * ```c++
+ * tag_invoke(bio::alphabet::to_rank_cpo, alph_type const alph)
+ * ```
+ *
+ * Functions are found via only ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
+ * but recommended) and if the returned type models std::integral.
+ *
+ * To specify the behaviour for your own alphabet type,
+ * simply provide the above function as a `friend` or free function.
+ * \hideinitializer
  */
-inline constexpr auto to_rank = detail::adl_only::to_rank_fn{};
+inline constexpr auto to_rank = []<typename alph_t>(alph_t const a) noexcept
+  //!\cond
+  requires(requires {
+      {
+          tag_invoke(cpo::to_rank{}, a)
+          } -> std::integral;
+      requires noexcept(tag_invoke(cpo::to_rank{}, a));
+  })
+//!\endcond
+{
+    return tag_invoke(cpo::to_rank{}, a);
+};
 //!\}
 
 //!\brief The `rank_type` of the semi-alphabet; defined as the return type of bio::alphabet::to_rank.
@@ -156,41 +107,20 @@ using alphabet_rank_t = decltype(bio::alphabet::to_rank(std::declval<semi_alphab
 // assign_rank_to()
 // ============================================================================
 
-namespace bio::alphabet::detail::adl_only
+namespace bio::alphabet::cpo
 {
 
-//!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename... args_t>
-void assign_rank_to(args_t...) = delete;
+/*!\name Customisation tag types
+ * \{
+ */
 
-//!\brief Functor definition for bio::alphabet::assign_rank_to.
-//!\ingroup alphabet
-struct assign_rank_to_fn
-{
-public:
-    BIOCPP_CPO_IMPL(2,
-                    (bio::alphabet::custom::alphabet<decltype(v)>::assign_rank_to(args...,
-                                                                                  v))) // explicit customisation
-    BIOCPP_CPO_IMPL(1, (assign_rank_to(args..., v)))                                   // ADL
-    BIOCPP_CPO_IMPL(0, (v.assign_rank(args...)))                                       // member
+//!\brief Customisation tag for bio::alphabet::assign_rank_to.
+struct assign_rank_to
+{};
 
-public:
-    //!\brief Operator definition.
-    template <typename alph_t>
-        //!\cond
-        requires(requires(bio::alphabet::alphabet_rank_t<alph_t> const r, alph_t & a) {
-            {impl(meta::detail::priority_tag<2>{}, a, r)};
-            requires noexcept(impl(meta::detail::priority_tag<2>{}, a, r));
-            requires std::same_as<alph_t &, decltype(impl(meta::detail::priority_tag<2>{}, a, r))>;
-        })
-    //!\endcond
-    constexpr alph_t operator()(bio::alphabet::alphabet_rank_t<alph_t> const r, alph_t && a) const noexcept
-    {
-        return impl(meta::detail::priority_tag<2>{}, a, r);
-    }
-};
+//!\}
 
-} // namespace bio::alphabet::detail::adl_only
+} // namespace bio::alphabet::cpo
 
 namespace bio::alphabet
 {
@@ -200,8 +130,8 @@ namespace bio::alphabet
  */
 
 /*!\brief Assign a rank to an alphabet object.
- * \tparam your_type Type of the target object.
- * \param chr  The rank being assigned; must be of the bio::alphabet::alphabet_rank_t of the target object.
+ * \tparam alph_type Type of the target object.
+ * \param rank  The rank being assigned; must be of the bio::alphabet::alphabet_rank_t of the target object.
  * \param alph The target object.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
  * \ingroup alphabet
@@ -210,33 +140,44 @@ namespace bio::alphabet
  *
  * This is a function object. Invoke it with the parameter(s) specified above.
  *
- * It acts as a wrapper and looks for three possible implementations (in this order):
- *
- *   1. A static member function `assign_rank_to(rank_type const chr, your_type & a)` of the class
- *      `bio::alphabet::custom::alphabet<your_type>`.
- *   2. A free function `assign_rank_to(rank_type const chr, your_type & a)` in the namespace of your
- *      type (or as `friend`).
- *   3. A member function called `assign_rank(rank_type const chr)` (not `assign_rank_to`).
- *
- * Functions are only considered for one of the above cases if they are marked `noexcept` (`constexpr` is not required,
- * but recommended) and if the returned type is `your_type &`.
- *
- * Every (semi-)alphabet type must provide one of the above. *Note* that temporaries of `your_type` are handled
- * by this function object and **do not** require an additional overload.
+ * It is defined for all (semi-)alphabets in BioC++.
  *
  * ### Example
  *
  * \include test/snippet/alphabet/assign_rank_to.cpp
  *
- * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see bio::alphabet::alphabet.
- *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
- * simply provide one of the three functions specified above.
+ * This is a customisation point (see \ref biocpp_customisation).
+ * It acts as a wrapper and looks for an implementation with the following signature:
+ *
+ * ```c++
+ * alph_type & tag_invoke(bio::alphabet::assign_rank_to_cpo, rank_type const rank, alph_type & alph)
+ * ```
+ *
+ * Functions are found via only ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
+ * but recommended) and if the returned type is exactly `alph_type &`.
+ *
+ * To specify the behaviour for your own alphabet type,
+ * simply provide the above function as a `friend` or free function.
+ *
+ * *Note* that temporaries of `alph_type` are handled
+ * by this function object and **do not** require an additional overload.
+ * \hideinitializer
  */
-inline constexpr auto assign_rank_to = detail::adl_only::assign_rank_to_fn{};
+inline constexpr auto assign_rank_to = []<typename alph_t>(bio::alphabet::alphabet_rank_t<alph_t> const r,
+                                                           alph_t && a) noexcept -> alph_t
+  //!\cond
+  requires(requires {
+      {
+          tag_invoke(cpo::assign_rank_to{}, r, a)
+          } -> std::same_as<alph_t &>;
+      requires noexcept(tag_invoke(cpo::assign_rank_to{}, r, a));
+  })
+//!\endcond
+{
+    return tag_invoke(cpo::assign_rank_to{}, r, a);
+};
 //!\}
 } // namespace bio::alphabet
 
@@ -244,80 +185,69 @@ inline constexpr auto assign_rank_to = detail::adl_only::assign_rank_to_fn{};
 // to_char()
 // ============================================================================
 
-namespace bio::alphabet::detail::adl_only
+namespace bio::alphabet::cpo
 {
+/*!\name Customisation tag types
+ * \{
+ */
 
-//!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename... args_t>
-void to_char(args_t...) = delete;
+//!\brief Customisation tag for bio::alphabet::to_char.
+struct to_char
+{};
+//!\}
 
-//!\brief Functor definition for bio::alphabet::to_char.
-struct to_char_fn
-{
-public:
-    BIOCPP_CPO_IMPL(2, bio::alphabet::custom::alphabet<decltype(v)>::to_char(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, to_char(v))                                               // ADL
-    BIOCPP_CPO_IMPL(0, v.to_char())                                              // member
-
-public:
-    //!\brief Operator definition.
-    template <typename alph_t>
-        //!\cond
-        requires(requires(alph_t const a) {
-            {impl(meta::detail::priority_tag<2>{}, a)};
-            requires noexcept(impl(meta::detail::priority_tag<2>{}, a));
-            requires meta::builtin_character<decltype(impl(meta::detail::priority_tag<2>{}, a))>;
-        })
-    //!\endcond
-    constexpr decltype(auto) operator()(alph_t const a) const noexcept
-    {
-        return impl(meta::detail::priority_tag<2>{}, a);
-    }
-};
-
-} // namespace bio::alphabet::detail::adl_only
+} // namespace bio::alphabet::cpo
 
 namespace bio::alphabet
 {
-
 /*!\name Function objects
  * \{
  */
 
 /*!\brief Return the char representation of an alphabet object.
- * \tparam your_type Type of the argument.
+ * \tparam alph_type Type of the argument.
  * \param  alph      The alphabet object.
- * \returns The char representation; usually `char`.
+ * \returns The char representation.
  * \ingroup alphabet
- *
  * \details
  *
  * This is a function object. Invoke it with the parameter(s) specified above.
  *
- * It acts as a wrapper and looks for three possible implementations (in this order):
- *
- *   2. A static member function `to_char(your_type const a)` of the class `bio::alphabet::custom::alphabet<your_type>`.
- *   1. A free function `to_char(your_type const a)` in the namespace of your type (or as `friend`).
- *   3. A member function called `to_char()`.
- *
- * Functions are only considered for one of the above cases if they are marked `noexcept` (`constexpr` is not required,
- * but recommended) and if the returned type models bio::meta::builtin_character.
- *
- * Every alphabet type must provide one of the above.
+ * It is defined for all alphabets in BioC++.
  *
  * ### Example
  *
  * \include test/snippet/alphabet/to_char.cpp
  *
- * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see bio::alphabet::alphabet.
- *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
- * simply provide one of the three functions specified above.
+ * This is a customisation point (see \ref biocpp_customisation).
+ *
+ * It acts as a wrapper and looks for an implementation with the following signature:
+ *
+ * ```c++
+ * constexpr char_type tag_invoke(bio::alphabet::cpo::to_char, alph_type const alph) noexcept
+ * ```
+ *
+ * Functions are found via only ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
+ * but recommended) and if the returned type models bio::meta::builtin_character.
+ *
+ * To specify the behaviour for your own alphabet type,
+ * simply provide the above function as a `friend` or free function.
+ * \hideinitializer
  */
-inline constexpr auto to_char = detail::adl_only::to_char_fn{};
+inline constexpr auto to_char = []<typename alph_t>(alph_t const a) noexcept
+  //!\cond
+  requires(requires {
+      {
+          tag_invoke(cpo::to_char{}, a)
+          } -> std::integral;
+      requires noexcept(tag_invoke(cpo::to_char{}, a));
+  })
+//!\endcond
+{
+    return tag_invoke(cpo::to_char{}, a);
+};
 //!\}
 
 //!\brief The `char_type` of the alphabet; defined as the return type of bio::alphabet::to_char.
@@ -334,41 +264,20 @@ using alphabet_char_t = decltype(bio::alphabet::to_char(std::declval<alphabet_ty
 // assign_char_to()
 // ============================================================================
 
-namespace bio::alphabet::detail::adl_only
+namespace bio::alphabet::cpo
 {
 
-//!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename... args_t>
-void assign_char_to(args_t...) = delete;
+/*!\name Customisation tag types
+ * \{
+ */
 
-//!\brief Functor definition for bio::alphabet::assign_char_to.
-//!\ingroup alphabet
-struct assign_char_to_fn
-{
-public:
-    BIOCPP_CPO_IMPL(2,
-                    (bio::alphabet::custom::alphabet<decltype(v)>::assign_char_to(args...,
-                                                                                  v))) // explicit customisation
-    BIOCPP_CPO_IMPL(1, (assign_char_to(args..., v)))                                   // ADL
-    BIOCPP_CPO_IMPL(0, (v.assign_char(args...)))                                       // member
+//!\brief Customisation tag for bio::alphabet::assign_char_to.
+struct assign_char_to
+{};
 
-public:
-    //!\brief Operator definition.
-    template <typename alph_t>
-        //!\cond
-        requires(requires(bio::alphabet::alphabet_char_t<alph_t> const r, alph_t & a) {
-            {impl(meta::detail::priority_tag<2>{}, a, r)};
-            requires noexcept(impl(meta::detail::priority_tag<2>{}, a, r));
-            requires std::same_as<alph_t &, decltype(impl(meta::detail::priority_tag<2>{}, a, r))>;
-        })
-    //!\endcond
-    constexpr alph_t operator()(bio::alphabet::alphabet_char_t<alph_t> const r, alph_t && a) const noexcept
-    {
-        return impl(meta::detail::priority_tag<2>{}, a, r);
-    }
-};
+//!\}
 
-} // namespace bio::alphabet::detail::adl_only
+} // namespace bio::alphabet::cpo
 
 namespace bio::alphabet
 {
@@ -377,10 +286,10 @@ namespace bio::alphabet
  * \{
  */
 
-/*!\brief Assign a character to an alphabet object.
- * \tparam your_type Type of the target object.
- * \param chr  The character being assigned; must be of the bio::alphabet::alphabet_char_t of the target object.
- * \param alph The target object; its type must model bio::alphabet::alphabet.
+/*!\brief Assign a char to an alphabet object.
+ * \tparam alph_type Type of the target object.
+ * \param chr  The char being assigned; must be of the bio::alphabet::alphabet_char_t of the target object.
+ * \param alph The target object.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
  * \ingroup alphabet
  *
@@ -388,33 +297,44 @@ namespace bio::alphabet
  *
  * This is a function object. Invoke it with the parameter(s) specified above.
  *
- * It acts as a wrapper and looks for three possible implementations (in this order):
- *
- *   1. A static member function `assign_char_to(char_type const chr, your_type & a)`
- *      of the class `bio::alphabet::custom::alphabet<your_type>`.
- *   2. A free function `assign_char_to(char_type const chr, your_type & a)` in the namespace of your
- *      type (or as `friend`).
- *   3. A member function called `assign_char(char_type const chr)` (not `assign_char_to`).
- *
- * Functions are only considered for one of the above cases if they are marked `noexcept` (`constexpr` is not required,
- * but recommended) and if the returned type is `your_type &`.
- *
- * Every alphabet type must provide one of the above. *Note* that temporaries of `your_type` are handled
- * by this function object and **do not** require an additional overload.
+ * It is defined for all (semi-)alphabets in BioC++.
  *
  * ### Example
  *
  * \include test/snippet/alphabet/assign_char_to.cpp
  *
- * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see bio::alphabet::alphabet.
- *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
- * simply provide one of the three functions specified above.
+ * This is a customisation point (see \ref biocpp_customisation).
+ * It acts as a wrapper and looks for an implementation with the following signature:
+ *
+ * ```c++
+ * constexpr alph_type & tag_invoke(bio::alphabet::assign_char_to_cpo, char_type const char, alph_type & alph) noexcept
+ * ```
+ *
+ * Functions are found via ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
+ * but recommended) and if the returned type is exactly `alph_type &`.
+ *
+ * To specify the behaviour for your own alphabet type,
+ * simply provide the above function as a `friend` or free function.
+ *
+ * *Note* that temporaries of `alph_type` are handled
+ * by this function object and **do not** require an additional overload.
+ * \hideinitializer
  */
-inline constexpr auto assign_char_to = detail::adl_only::assign_char_to_fn{};
+inline constexpr auto assign_char_to = []<typename alph_t>(bio::alphabet::alphabet_char_t<alph_t> const c,
+                                                           alph_t && a) noexcept -> alph_t
+  //!\cond
+  requires(requires {
+      {
+          tag_invoke(cpo::assign_char_to{}, c, a)
+          } -> std::same_as<alph_t &>;
+      requires noexcept(tag_invoke(cpo::assign_char_to{}, c, a));
+  })
+//!\endcond
+{
+    return tag_invoke(cpo::assign_char_to{}, c, a);
+};
 //!\}
 } // namespace bio::alphabet
 
@@ -422,52 +342,58 @@ inline constexpr auto assign_char_to = detail::adl_only::assign_char_to_fn{};
 // char_is_valid_for()
 // ============================================================================
 
-namespace bio::alphabet::detail::adl_only
+namespace bio::alphabet::cpo
 {
 
-//!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename... args_t>
-void char_is_valid_for(args_t...) = delete;
-
-/*!\brief Functor definition for bio::alphabet::char_is_valid_for.
- * \tparam alph_t   The alphabet type being queried.
- * \ingroup alphabet
+/*!\name Customisation tag types
+ * \{
  */
+
+//!\brief Customisation tag for bio::alphabet::assign_char_to.
+struct char_is_valid_for
+{};
+
+} // namespace bio::alphabet::cpo
+
+namespace bio::alphabet::detail
+{
+
+//!\brief Functor definition for bio::alphabet::char_is_valid_for
 template <typename alph_t>
 struct char_is_valid_for_fn
 {
-public:
-    //!\brief `alph_t` with cvref removed and possibly wrapped in std::type_identity.
-    using s_alph_t = std::conditional_t<std::is_nothrow_default_constructible_v<std::remove_cvref_t<alph_t>>,
-                                        std::remove_cvref_t<alph_t>,
-                                        std::type_identity<alph_t>>;
-
-    BIOCPP_CPO_IMPL(
-      3,
-      (meta::deferred_type_t<bio::alphabet::custom::alphabet<alph_t>, decltype(v)>::char_is_valid(v))) // expl. cst.
-    BIOCPP_CPO_IMPL(2, (char_is_valid_for(v, s_alph_t{})))                                             // ADL
-    BIOCPP_CPO_IMPL(1, (meta::deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::char_is_valid(v))) // member
-    BIOCPP_CPO_IMPL(0, (bio::alphabet::to_char(bio::alphabet::assign_char_to(v, s_alph_t{})) == v))         // fallback
-
-public:
-    //!\brief Operator definition.
-    template <typename dummy = int> // need to make this a template to enforce deferred instantiation
-                                    //!\cond
-        requires(requires(alphabet_char_t<alph_t> const a) {
-            {impl(meta::detail::priority_tag<3>{}, a, dummy{})};
-            requires noexcept(impl(meta::detail::priority_tag<3>{}, a, dummy{}));
-            {
-                impl(meta::detail::priority_tag<3>{}, a, dummy{})
-                } -> std::convertible_to<bool>;
-        })
-    //!\endcond
-    constexpr bool operator()(alphabet_char_t<alph_t> const a) const noexcept
+    //!\brief Default implementation that checks bijectivity.
+    template <typename alph2_t>
+    static constexpr bool impl(alphabet_char_t<alph2_t> const chr, meta::detail::priority_tag<0>) noexcept requires
+      std::is_nothrow_default_constructible_v<alph2_t>
     {
-        return impl(meta::detail::priority_tag<3>{}, a);
+        return to_char(assign_char_to(chr, alph2_t{})) == chr;
+    }
+
+    //!\brief A user-defined implementation picked up via tag_invoke().
+    template <typename alph2_t, typename wrap_t = meta::default_initialisable_wrap_t<alph2_t>>
+        requires(requires(alphabet_char_t<alph2_t> const c) {
+            {
+                tag_invoke(std::declval<cpo::char_is_valid_for>(), c, wrap_t{})
+                } -> std::same_as<bool>;
+            requires noexcept(tag_invoke(std::declval<cpo::char_is_valid_for>(), c, wrap_t{}));
+        })
+    static constexpr bool impl(alphabet_char_t<alph2_t> const chr, meta::detail::priority_tag<1>) noexcept
+    {
+        return tag_invoke(cpo::char_is_valid_for{}, chr, wrap_t{});
+    }
+
+    //!\brief Operator definition.
+    constexpr auto operator()(alphabet_char_t<alph_t> const chr) const noexcept
+      -> decltype(impl<std::remove_cvref_t<alph_t>>(chr, meta::detail::priority_tag<1>{}))
+    {
+        return impl<std::remove_cvref_t<alph_t>>(chr, meta::detail::priority_tag<1>{});
     }
 };
 
-} // namespace bio::alphabet::detail::adl_only
+//!\}
+
+} // namespace bio::alphabet::detail
 
 namespace bio::alphabet
 {
@@ -478,8 +404,8 @@ namespace bio::alphabet
 
 /*!\brief Returns whether a character is in the valid set of a bio::alphabet::alphabet (usually implies a bijective mapping
  *        to an alphabet value).
- * \tparam your_type The alphabet type being queried.
- * \param  chr       The character being checked; must be convertible to `bio::alphabet::alphabet_char_t<your_type>`.
+ * \tparam alph_type The alphabet type being queried.
+ * \param  chr       The character being checked; must be convertible to `bio::alphabet::alphabet_char_t<alph_type>`.
  * \param  alph      The target object; its type must model bio::alphabet::alphabet.
  * \returns `true` or `false`.
  * \ingroup alphabet
@@ -488,49 +414,76 @@ namespace bio::alphabet
  *
  * This is a function object. Invoke it with the parameter(s) specified above.
  *
- * It acts as a wrapper and looks for three possible implementations (in this order):
- *
- *   1. A static member function `char_is_valid(char_type const chr)` of the class `bio::alphabet::custom::alphabet<your_type>`.
- *   2. A free function `char_is_valid_for(char_type const chr, your_type const &)` in the namespace of your
- *      type (or as `friend`).
- *   3. A `static` member function called `char_is_valid(char_type)` (not `char_is_valid_for`).
- *
- * Functions are only considered for one of the above cases if they are marked `noexcept` (`constexpr` is not required,
- * but recommended) and if the returned type is convertible to `bool`. For 2. the value of the second argument
- * to the function shall be ignored, it is only used to select the function via
- * [argument-dependent lookup](https://en.cppreference.com/w/cpp/language/adl).
- *
- * An alphabet type *may* provide one of the above. If none is provided, this function will declare every character
- * `c` as valid for whom it holds that `bio::alphabet::to_char(bio::alphabet::assign_char_to(c, alph_t{})) == c`, i.e. converting
- * back and forth results in the same value.
- *
- * *Note* that if the alphabet type with cvref removed is not std::is_nothrow_default_constructible, this function
- * object will instead look for `char_is_valid_for(char_type const chr, std::type_identity<your_type> const &)`
- * in case 2. In that case the "fallback" above also does not work and you are required to provide
- * such an implementation.
+ * It is defined for all (semi-)alphabets in BioC++.
  *
  * ### Example
  *
  * \include test/snippet/alphabet/char_is_valid_for.cpp
  *
+ * ### Default Behaviour
+ *
+ *  In contrast to the other alphabet related customisation points, it is **optional** to provide an implementation
+ * of this one for most¹ alphabets, because a default implementation exists.
+ *
+ * The default behaviour is that all characters that are "preserved" when assigning to an object are valid,
+ * i.e. `to_char(assign_char_to(chr, alph_t{})) == chr`.
+ *
+ * This means that e.g. assigning 'A' to bio::alphabet::dna4 would be valid, but 'a' would not be, because
+ * bio::alphabet::to_char() always produces upper-case for bio::alphabet::dna4. For this reason, many
+ * alphabets have a specialised validity-check that also accepts defines lower-case letters as valid.
+ *
+ * ¹ All alphabets where the type is std::is_nothrow_default_constructible.
+ *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
- * simply provide one of the three functions specified above.
+ * This is a customisation point (see \ref biocpp_customisation).
+ * It acts as a wrapper and looks for an implementation with the following signature:
+ *
+ * ```c++
+ * constexpr bool tag_invoke(bio::alphabet::cpo::char_is_valid_for, char_type const char, alph_type) noexcept
+ * ```
+ *
+ * If no implementation is found, it behaves as specified above.
+ *
+ * Implementations are found via ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
+ * but recommended) and if the returned type is exactly `bool`.
+ *
+ * To specify the behaviour for your own alphabet type, simply provide the above function as a `friend` or
+ * free function.
+ *
+ * *Note* that the value of the alph_type argument is irrelevant, only the type is needed.
+ *
+ * *Note* that if the alphabet type with cvref removed is not std::is_nothrow_default_constructible, this function
+ * object will instead look for:
+ *
+ * ```c++
+ * constexpr bool tag_invoke(bio::alphabet::cpo::char_is_valid_for, char_type const char, std::type_identity<alph_type>) noexcept
+ * ```
+ *
+ * i.e. the type will be wrapped in std::type_identity so it can still be passed as a tag.
+ * In that case the *default behaviour* defined above **does not work**, and you are required to provide
+ * such an implementation.
+ * \hideinitializer
  */
 template <typename alph_t>
     //!\cond
-    requires(requires { {to_char(std::declval<alph_t>())}; }) // to_char() is required by some defs
+    requires(requires(alphabet_char_t<alph_t> a) {
+        {
+            detail::char_is_valid_for_fn<alph_t>{}(a)
+            } -> std::same_as<bool>;
+    })
 //!\endcond
-inline constexpr auto char_is_valid_for = detail::adl_only::char_is_valid_for_fn<alph_t>{};
+inline constexpr auto char_is_valid_for = detail::char_is_valid_for_fn<alph_t>{};
+
 //!\}
+
 } // namespace bio::alphabet
 
 // ============================================================================
 // assign_char_strictly_to()
 // ============================================================================
 
-namespace bio::alphabet::detail::adl_only
+namespace bio::alphabet::detail
 {
 
 //!\brief Functor definition for bio::alphabet::assign_char_strictly_to.
@@ -575,7 +528,7 @@ struct assign_char_strictly_to_fn
     }
 };
 
-} // namespace bio::alphabet::detail::adl_only
+} // namespace bio::alphabet::detail
 
 namespace bio::alphabet
 {
@@ -585,7 +538,7 @@ namespace bio::alphabet
  */
 
 /*!\brief Assign a character to an alphabet object, throw if the character is not valid.
- * \tparam your_type Type of the target object.
+ * \tparam alph_type Type of the target object.
  * \param chr  The character being assigned; must be of the bio::alphabet::alphabet_char_t of the target object.
  * \param alph The target object; its type must model bio::alphabet::alphabet.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
@@ -603,8 +556,9 @@ namespace bio::alphabet
  *
  * \include test/snippet/alphabet/assign_char_strictly_to.cpp
  *
+ * \hideinitializer
  */
-inline constexpr auto assign_char_strictly_to = detail::adl_only::assign_char_strictly_to_fn{};
+inline constexpr auto assign_char_strictly_to = detail::assign_char_strictly_to_fn{};
 //!\}
 } // namespace bio::alphabet
 
@@ -612,111 +566,70 @@ inline constexpr auto assign_char_strictly_to = detail::adl_only::assign_char_st
 // alphabet_size
 // ============================================================================
 
-namespace bio::alphabet::detail::adl_only
+namespace bio::alphabet::cpo
 {
 
-//!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename... args_t>
-void alphabet_size(args_t...) = delete;
+//!\brief CPO tag definition for bio::alphabet::alphabet_size.
+struct size
+{};
 
-/*!\brief Functor definition used indirectly by for bio::alphabet::alphabet_size.
- * \tparam alph_t   The type being queried.
- * \ingroup alphabet
- */
-template <typename alph_t>
-struct alphabet_size_fn
-{
-public:
-    //!\brief `alph_t` with cvref removed and possibly wrapped in std::type_identity.
-    using s_alph_t = std::conditional_t<std::is_nothrow_default_constructible_v<std::remove_cvref_t<alph_t>> &&
-                                          meta::is_constexpr_default_constructible_v<std::remove_cvref_t<alph_t>>,
-                                        std::remove_cvref_t<alph_t>,
-                                        std::type_identity<alph_t>>;
-
-    BIOCPP_CPO_IMPL(
-      2,
-      (meta::deferred_type_t<bio::alphabet::custom::alphabet<alph_t>, decltype(v)>::alphabet_size))      // expl. cst.
-    BIOCPP_CPO_IMPL(1, (alphabet_size(v)))                                                               // ADL
-    BIOCPP_CPO_IMPL(0, (meta::deferred_type_t<std::remove_cvref_t<alph_t>, decltype(v)>::alphabet_size)) // member
-
-public:
-    //!\brief Operator definition.
-    template <typename dummy = int> // need to make this a template to enforce deferred instantiation
-                                    //!\cond
-        requires(requires {
-            {impl(meta::detail::priority_tag<2>{}, s_alph_t{}, dummy{})};
-            requires noexcept(impl(meta::detail::priority_tag<2>{}, s_alph_t{}, dummy{}));
-            requires std::integral<
-              std::remove_cvref_t<decltype(impl(meta::detail::priority_tag<2>{}, s_alph_t{}, dummy{}))>>;
-        })
-    //!\endcond
-    constexpr auto operator()() const noexcept
-    {
-        // The following cannot be added to the list of constraints, because it is not properly deferred
-        // for incomplete types which leads to breakage.
-        static_assert(BIOCPP_IS_CONSTEXPR(impl(meta::detail::priority_tag<2>{}, s_alph_t{})),
-                      "Only overloads that are marked constexpr are picked up by bio::alphabet::alphabet_size.");
-        return impl(meta::detail::priority_tag<2>{}, s_alph_t{});
-    }
-};
-
-//!\cond
-// required to prevent https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89953
-template <typename alph_t>
-    requires(requires { {alphabet_size_fn<alph_t>{}}; })
-inline constexpr auto alphabet_size_obj = alphabet_size_fn<alph_t>{};
-//!\endcond
-
-} // namespace bio::alphabet::detail::adl_only
+} // namespace bio::alphabet::cpo
 
 namespace bio::alphabet
 {
 
 /*!\brief A type trait that holds the size of a (semi-)alphabet.
- * \tparam your_type The (semi-)alphabet type being queried.
+ * \tparam alph_type The (semi-)alphabet type being queried.
  * \ingroup alphabet
  *
  * \details
  *
- * This type trait is implemented as a global variable template.
+ * This is a function object. Invoke it with the parameter(s) specified above.
  *
- * It is only defined for types that provide one of the following (checked in this order):
- *
- *   1. A `static constexpr` data member of `bio::alphabet::custom::alphabet<your_type>` called `alphabet_size`.
- *   2. A free function `alphabet_size(your_type const &)` in the namespace of your type (or as `friend`) that
- *      returns the size.
- *   3. A `static constexpr` data member of `your_type` called `alphabet_size`.
- *
- * Functions are only considered for one of the above cases if they are marked `noexcept` **and** `constexpr` and
- * if the returned type models std::integral. For 2. the value of the argument to the function shall be
- * ignored, the argument is only used to select the function via
- * [argument-dependent lookup](https://en.cppreference.com/w/cpp/language/adl).
- *
- * Every (semi-)alphabet type must provide one of the above.
- *
- * *Note* that if the (semi-)alphabet type with cvref removed is not std::is_nothrow_default_constructible or not
- * bio::meta::is_constexpr_default_constructible, this object will instead look for
- * `alphabet_size(std::type_identity<your_type> const &)` with the same semantics (in case 2.).
+ * It is defined for all (semi-)alphabets in BioC++.
  *
  * ### Example
  *
  * \include test/snippet/alphabet/alphabet_size.cpp
  *
- * For an example of a full alphabet definition with free function implementations (solution 1. above),
- * see bio::alphabet::alphabet.
- *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
- * simply provide one of the three functions specified above.
+ * This is a customisation point (see \ref biocpp_customisation). *
+ * It acts as a wrapper and looks for an implementation with the following signature:
+ *
+ * ```c++
+ * consteval size_t tag_invoke(bio::alphabet::cpo::size, alph_type) noexcept
+ * ```
+ *
+ * If no implementation is found, it behaves as specified above.
+ *
+ * Implementations are found via ADL and considered only if they are marked `noexcept`, if they return
+ * a std::integral type and if they can be evaluated at compile-time (`consteval` is recommended,
+ * but`constexpr` is possible, too).
+ *
+ * To specify the behaviour for your own alphabet type, simply provide the above function as a `friend` or
+ * free function.
+
+ * *Note* that if the alphabet type with cvref removed is not std::is_nothrow_default_constructible
+ * **at compile-time**, this function object will instead look for:
+ *
+ * ```c++
+ * consteval size_t tag_invoke(bio::alphabet::cpo::size, std::type_identity<alph_type>) noexcept
+ * ```
+ *
+ * i.e. the type will be wrapped in std::type_identity so it can still be passed as a tag.
+ * \hideinitializer
  */
-template <typename alph_t>
+template <typename alph_t, typename wrap_t = meta::default_initialisable_wrap_t<alph_t>>
     //!\cond
-    requires(
-      requires { {detail::adl_only::alphabet_size_fn<alph_t>{}}; } &&
-      requires { {detail::adl_only::alphabet_size_obj<alph_t>()}; }) // ICE workarounds
+    requires(requires {
+        {
+            tag_invoke(cpo::size{}, wrap_t{})
+            } -> std::integral;
+        requires BIOCPP_IS_CONSTEXPR(tag_invoke(cpo::size{}, wrap_t{}));
+    })
 //!\endcond
-inline constexpr auto alphabet_size = detail::adl_only::alphabet_size_obj<alph_t>();
+inline constexpr auto alphabet_size = tag_invoke(cpo::size{}, wrap_t{});
 
 // ============================================================================
 // semialphabet

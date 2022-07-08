@@ -5,7 +5,7 @@
 int main()
 {
     bool b = bio::alphabet::char_is_valid_for<char>('A');
-    // calls bio::alphabet::custom::char_is_valid_for<char>('A'); always true
+    // calls bio::alphabet::cpo::tag_invoke(bio::alphabet::cpo::char_is_valid_for, 'A', char{}); always true
 
     bool c = bio::alphabet::char_is_valid_for<bio::alphabet::dna5>('A');
     // calls dna5::char_is_valid('A') member; == true

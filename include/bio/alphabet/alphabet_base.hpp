@@ -171,7 +171,7 @@ public:
     //!\}
 
     //!\brief The size of the alphabet, i.e. the number of different values it can take.
-    static constexpr meta::detail::min_viable_uint_t<size> alphabet_size = size;
+    static constexpr size_t alphabet_size = size;
 
     //!\name Comparison operators
     //!\{
@@ -192,6 +192,62 @@ public:
 private:
     //!\brief The value of the alphabet letter is stored as the rank.
     rank_type rank{};
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr auto tag_invoke(cpo::to_rank, derived_type const a) noexcept { return a.to_rank(); }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr derived_type & tag_invoke(cpo::assign_rank_to, rank_type const r, derived_type & a) noexcept
+      requires(requires { {a.assign_rank(r)}; })
+    {
+        return a.assign_rank(r);
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr auto tag_invoke(cpo::to_char, derived_type const a) noexcept requires(requires { {a.to_char()}; })
+    {
+        return a.to_char();
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr derived_type & tag_invoke(cpo::assign_char_to, char_type const c, derived_type & a) noexcept
+      requires(requires { {a.assign_char(c)}; })
+    {
+        return a.assign_char(c);
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr bool tag_invoke(cpo::char_is_valid_for, char_type const c, derived_type) noexcept
+      requires(requires { {derived_type::char_is_valid(c)}; })
+    {
+        return derived_type::char_is_valid(c);
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr bool tag_invoke(cpo::char_is_valid_for,
+                                     char_type const c,
+                                     std::type_identity<derived_type>) noexcept
+      //!\cond REQ
+      requires(requires { {derived_type::char_is_valid(c)}; } &&
+               !meta::is_constexpr_default_constructible_v<derived_type>)
+    //!\endcond
+    {
+        return derived_type::char_is_valid(c);
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend consteval auto tag_invoke(cpo::size, derived_type) noexcept requires
+      meta::is_constexpr_default_constructible_v<derived_type>
+    {
+        return size;
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend consteval auto tag_invoke(cpo::size, std::type_identity<derived_type>) noexcept
+      requires(!meta::is_constexpr_default_constructible_v<derived_type>)
+    {
+        return size;
+    }
 };
 
 /*!\brief Specialisation of bio::alphabet::alphabet_base for alphabets of size 1.
@@ -263,7 +319,7 @@ public:
     //!\}
 
     //!\brief The size of the alphabet, i.e. the number of different values it can take.
-    static constexpr uint8_t alphabet_size = 1;
+    static constexpr size_t alphabet_size = 1;
 
     //!\name Comparison operators
     //!\{
@@ -286,6 +342,58 @@ public:
     //!\brief Letters are always equal.
     friend constexpr bool operator>=(derived_type const, derived_type const) noexcept { return true; }
     //!\}
+private:
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr rank_type tag_invoke(cpo::to_rank, derived_type) noexcept { return 0; }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr derived_type & tag_invoke(cpo::assign_rank_to, rank_type const, derived_type & a) noexcept
+    {
+        return a;
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr auto tag_invoke(cpo::to_char, derived_type const a) noexcept requires(requires { {a.to_char()}; })
+    {
+        return a.to_char();
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr derived_type & tag_invoke(cpo::assign_char_to, char_type const c, derived_type & a) noexcept
+      requires(requires { {a.assign_char(c)}; })
+    {
+        return a;
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr bool tag_invoke(cpo::char_is_valid_for, char_type const c, derived_type) noexcept
+      requires(requires { {derived_type::char_is_valid(c)}; } && std::is_nothrow_default_constructible_v<derived_type>)
+    {
+        return derived_type::char_is_valid(c);
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr bool tag_invoke(cpo::char_is_valid_for,
+                                     char_type const c,
+                                     std::type_identity<derived_type>) noexcept
+      requires(requires { {derived_type::char_is_valid(c)}; } && !std::is_nothrow_default_constructible_v<derived_type>)
+    {
+        return derived_type::char_is_valid(c);
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend consteval auto tag_invoke(cpo::size, derived_type) noexcept requires
+      meta::is_constexpr_default_constructible_v<derived_type>
+    {
+        return alphabet_size;
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend consteval auto tag_invoke(cpo::size, std::type_identity<derived_type>) noexcept
+      requires(!meta::is_constexpr_default_constructible_v<derived_type>)
+    {
+        return alphabet_size;
+    }
 };
 
 } // namespace bio::alphabet

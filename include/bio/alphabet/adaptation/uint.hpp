@@ -35,66 +35,72 @@ namespace bio::alphabet::detail
 //!\ingroup adaptation
 //!\hideinitializer
 template <typename type>
-constexpr bool is_uint_adaptation_v =
-  std::same_as<type, uint8_t> || std::same_as<type, uint16_t> || std::same_as<type, uint32_t>;
+concept uint_adaptation = std::same_as<type, uint8_t> || std::same_as<type, uint16_t> || std::same_as<type, uint32_t>;
 } // namespace bio::alphabet::detail
 
-namespace bio::alphabet::custom
+namespace bio::alphabet::cpo
 {
 
-/*!\brief Alphabet specific customisations for unsigned integral types.
- * \tparam uint_type Any of `uint8_t`, `uint16_t` and `uint32_t`.
- * \ingroup adaptation
+//!\brief The number of values the char type can take (e.g. 256 for `char`).
+template <alphabet::detail::uint_adaptation uint_type>
+consteval auto tag_invoke(size BIOCPP_DOXYGEN_ONLY(tag), uint_type const) noexcept
+{
+    return meta::detail::min_viable_uint_v<meta::detail::size_in_values_v<uint_type>>;
+}
+
+/*!\brief Converting uint to char casts to a character type of same size.
+ * \param[in] tag The tag for tag_invoke().
+ * \param[in] intgr The alphabet letter that you wish to convert to char.
+ * \returns The letter's value in the alphabet's rank type (usually `uint`).
  */
-template <typename uint_type>
-    //!\cond
-    requires bio::alphabet::detail::is_uint_adaptation_v<uint_type>
-//!\endcond
-struct alphabet<uint_type>
+template <alphabet::detail::uint_adaptation uint_type>
+constexpr auto tag_invoke(to_char BIOCPP_DOXYGEN_ONLY(tag), uint_type const intgr) noexcept
 {
-    //!\brief Return the number of values the uint type can take (e.g. 256 for `uint8_t`).
-    static constexpr auto alphabet_size = meta::detail::min_viable_uint_t<meta::detail::size_in_values_v<uint_type>>{
-      meta::detail::size_in_values_v<uint_type>};
+    if constexpr (std::same_as<uint_type, uint8_t>)
+        return static_cast<char>(intgr);
+    else if constexpr (std::same_as<uint_type, uint16_t>)
+        return static_cast<char16_t>(intgr);
+    else
+        return static_cast<char32_t>(intgr);
+}
 
-    /*!\brief Converting uint to char casts to a character type of same size.
-     * \param[in] intgr The alphabet letter that you wish to convert to char.
-     * \returns The letter's value in the alphabet's rank type (usually `uint`).
-     */
-    static constexpr auto to_char(uint_type const intgr) noexcept
-    {
-        if constexpr (std::same_as<uint_type, uint8_t>)
-            return static_cast<char>(intgr);
-        else if constexpr (std::same_as<uint_type, uint16_t>)
-            return static_cast<char16_t>(intgr);
-        else
-            return static_cast<char32_t>(intgr);
-    }
+/*!\brief Assign from a character type via implicit or explicit cast.
+ * \param[in] tag The tag for tag_invoke().
+ * \param[in] chr The `char` value you wish to assign.
+ * \param[in,out] intgr The alphabet letter that you wish to assign to.
+ * \returns A reference to the alphabet letter you passed in.
+ */
+template <alphabet::detail::uint_adaptation uint_type>
+constexpr uint_type & tag_invoke(assign_char_to                                     BIOCPP_DOXYGEN_ONLY(tag),
+                                 decltype(tag_invoke(to_char{}, uint_type{})) const chr,
+                                 uint_type &                                        intgr) noexcept
+{
+    return intgr = chr;
+}
 
-    /*!\brief Converting uint to rank is a no-op (it will just return the value you pass in).
-     * \param[in] intgr The alphabet letter that you wish to convert to rank.
-     * \returns `intgr`.
-     */
-    static constexpr uint_type to_rank(uint_type const intgr) noexcept { return intgr; }
+/*!\brief Assign a rank to to the uint (same as calling `=`).
+ * \param[in] tag The tag for tag_invoke().
+ * \param[in] intgr2 The `rank` value you wish to assign.
+ * \param[in,out] intgr The alphabet letter that you wish to assign to.
+ * \returns A reference to the modified alphabet letter you passed in.
+ */
+template <alphabet::detail::uint_adaptation uint_type>
+static constexpr uint_type & tag_invoke(assign_rank_to  BIOCPP_DOXYGEN_ONLY(tag),
+                                        uint_type const intgr2,
+                                        uint_type &     intgr) noexcept
+{
+    return intgr = intgr2;
+}
 
-    /*!\brief Assign from a character type via implicit or explicit cast.
-     * \param[in] chr The `char` value you wish to assign.
-     * \param[in,out] intgr The alphabet letter that you wish to assign to.
-     * \returns A reference to the alphabet letter you passed in.
-     */
-    static constexpr uint_type & assign_char_to(decltype(to_char(uint_type{})) const chr, uint_type & intgr) noexcept
-    {
-        return intgr = chr;
-    }
+/*!\brief Converting uint to rank is a no-op (it will just return the value you pass in).
+ * \param[in] tag The tag for tag_invoke().
+ * \param[in] intgr The alphabet letter that you wish to convert to rank.
+ * \returns `intgr`.
+ */
+template <alphabet::detail::uint_adaptation uint_type>
+constexpr auto tag_invoke(to_rank BIOCPP_DOXYGEN_ONLY(tag), uint_type const intgr) noexcept
+{
+    return intgr;
+}
 
-    /*!\brief Assign a rank to to the uint (same as calling `=`).
-     * \param[in] intgr2 The `rank` value you wish to assign.
-     * \param[in,out] intgr The alphabet letter that you wish to assign to.
-     * \returns A reference to the alphabet letter you passed in.
-     */
-    static constexpr uint_type & assign_rank_to(uint_type const intgr2, uint_type & intgr) noexcept
-    {
-        return intgr = intgr2;
-    }
-};
-
-} // namespace bio::alphabet::custom
+} // namespace bio::alphabet::cpo

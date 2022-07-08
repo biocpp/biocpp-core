@@ -51,34 +51,34 @@ namespace my_namespace
 class my_alph
 {
 public:
-    bool rank{};
+    uint8_t rank{};
 
     constexpr my_alph() noexcept                   = default;
     constexpr my_alph(my_alph const &)             = default;
     constexpr my_alph & operator=(my_alph const &) = default;
 
-    constexpr my_alph(bool rank) : rank{rank} {}
+    constexpr my_alph(uint8_t rank) : rank{rank} {}
 
     constexpr friend auto operator<=>(my_alph, my_alph) = default;
 };
 
-constexpr size_t alphabet_size(my_alph const &) noexcept
+consteval size_t tag_invoke(bio::alphabet::cpo::size, my_alph const &) noexcept
 {
     return 2;
 }
 
-constexpr bool to_rank(my_alph const a) noexcept
+constexpr uint8_t tag_invoke(bio::alphabet::cpo::to_rank, my_alph const a) noexcept
 {
     return a.rank;
 }
 
-constexpr my_alph & assign_rank_to(bool const r, my_alph & a) noexcept
+constexpr my_alph & tag_invoke(bio::alphabet::cpo::assign_rank_to, uint8_t const r, my_alph & a) noexcept
 {
     a.rank = r;
     return a;
 }
 
-constexpr char to_char(my_alph const a) noexcept
+constexpr char tag_invoke(bio::alphabet::cpo::to_char, my_alph const a) noexcept
 {
     if (a.rank)
         return '1';
@@ -86,7 +86,7 @@ constexpr char to_char(my_alph const a) noexcept
         return '0';
 }
 
-constexpr my_alph & assign_char_to(char const c, my_alph & a) noexcept
+constexpr my_alph & tag_invoke(bio::alphabet::cpo::assign_char_to, char const c, my_alph & a) noexcept
 {
     switch (c)
     {

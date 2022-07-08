@@ -119,6 +119,17 @@ concept builtin_character = std::integral<t> &&
    std::same_as<t, char16_t> || std::same_as<t, char32_t> || std::same_as<t, wchar_t>);
 //!\endcond
 
+/*!\interface   bio::meta::nonint_character <>
+ * \extends     std::integral
+ * \brief       This concept encompasses exactly the types `char`, `wchar_t`,
+ *              `char16_t` and `char32_t`.
+ */
+//!\cond
+template <typename type>
+concept nonint_character = std::same_as<type, char> || std::same_as<type, char16_t> || std::same_as<type, char32_t> ||
+  std::same_as<type, wchar_t>;
+//!\endcond
+
 /*!\interface   bio::meta::trivially_destructible <>
  * \extends     std::destructible
  * \brief       A type that satisfies std::is_trivially_destructible_v<t>.

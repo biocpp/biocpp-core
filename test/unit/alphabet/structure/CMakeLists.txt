@@ -1,5 +1,0 @@
-biocpp_test(dot_bracket3_test.cpp)
-biocpp_test(dssp9_test.cpp)
-biocpp_test(structured_aa_test.cpp)
-biocpp_test(structured_rna_test.cpp)
-biocpp_test(wuss_test.cpp)

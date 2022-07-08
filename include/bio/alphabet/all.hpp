@@ -181,5 +181,4 @@
 #include <bio/alphabet/mask/all.hpp>
 #include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/alphabet/quality/all.hpp>
-#include <bio/alphabet/structure/all.hpp>
 // #include <bio/alphabet/fmt.hpp>

@@ -118,7 +118,8 @@ protected:
         {
             if (i < derived_type::offset_phred) // map too-small to smallest possible
                 ret[static_cast<rank_type>(i)] = 0;
-            else if (i >= derived_type::offset_phred + alphabet_size) // map too-large to highest possible
+            else if (i >= derived_type::offset_phred +
+                            static_cast<int64_t>(alphabet_size)) // map too-large to highest possible
                 ret[static_cast<rank_type>(i)] = alphabet_size - 1;
             else // map valid range to identity
                 ret[static_cast<rank_type>(i)] = i - derived_type::offset_phred;
@@ -136,7 +137,8 @@ protected:
         {
             if (i < derived_type::offset_char) // map too-small to smallest possible
                 ret[static_cast<rank_type>(i)] = 0;
-            else if (i >= derived_type::offset_char + alphabet_size) // map too-large to highest possible
+            else if (i >= derived_type::offset_char +
+                            static_cast<int64_t>(alphabet_size)) // map too-large to highest possible
                 ret[static_cast<rank_type>(i)] = alphabet_size - 1;
             else // map valid range to identity
                 ret[static_cast<rank_type>(i)] = i - derived_type::offset_char;
@@ -169,6 +171,15 @@ protected:
         return ret;
     }
     ();
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr phred_type tag_invoke(cpo::to_phred, derived_type const alph) noexcept { return alph.to_phred(); }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr derived_type & tag_invoke(cpo::assign_phred_to, phred_type const p, derived_type & alph) noexcept
+    {
+        return alph.assign_phred(p);
+    }
 };
 
 } // namespace bio::alphabet

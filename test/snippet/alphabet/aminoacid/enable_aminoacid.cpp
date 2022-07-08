@@ -9,9 +9,7 @@ struct your_aa : bio::alphabet::aminoacid_empty_base
     //...
 };
 
-}
-
-static_assert(bio::alphabet::enable_aminoacid<your_namespace::your_aa> == true);
+} // namespace your_namespace
 
 /***** OR *****/
 
@@ -24,11 +22,8 @@ struct your_aa
     //...
 };
 
-constexpr bool enable_aminoacid(your_aa) noexcept
-{
-    return true;
-}
+} // namespace your_namespace2
 
-}
+template <>
+inline constexpr bool bio::alphabet::cpo::enable_aminoacid<your_namespace2::your_aa> = true;
 
-static_assert(bio::alphabet::enable_aminoacid<your_namespace2::your_aa> == true);

@@ -21,41 +21,20 @@
 // complement()
 // ============================================================================
 
-namespace bio::alphabet::detail::adl_only
+namespace bio::alphabet::cpo
 {
 
-//!\brief Poison-pill overload to prevent non-ADL forms of unqualified lookup.
-template <typename... args_t>
-void complement(args_t...) = delete;
+/*!\name Customisation tag types
+ * \{
+ */
 
-//!\brief Functor definition for bio::alphabet::complement.
-struct complement_fn
-{
-public:
-    BIOCPP_CPO_IMPL(2, bio::alphabet::custom::alphabet<decltype(v)>::complement(v)) // explicit customisation
-    BIOCPP_CPO_IMPL(1, complement(v))                                               // ADL
-    BIOCPP_CPO_IMPL(0, v.complement())                                              // member
+//!\brief Customisation tag for bio::alphabet::assign_char_to.
+struct complement
+{};
 
-public:
-    //!\brief Operator definition.
-    template <typename nucleotide_t>
-        //!\cond
-        requires(requires(nucleotide_t const nucl) {
-            {impl(meta::detail::priority_tag<2>{}, nucl)};
-            requires noexcept(impl(meta::detail::priority_tag<2>{}, nucl));
-            // requires std::common_with<decltype(impl(meta::detail::priority_tag<2>{}, nucl)), nucleotide_t>; // triggers an ICE
-            requires alphabet<decltype(impl(meta::detail::priority_tag<2>{}, nucl))>;
-            {impl(meta::detail::priority_tag<2>{},
-                  impl(meta::detail::priority_tag<2>{}, nucl))}; // you can take the complement again
-        })
-    //!\endcond
-    constexpr auto operator()(nucleotide_t const nucl) const noexcept
-    {
-        return impl(meta::detail::priority_tag<2>{}, nucl);
-    }
-};
+//!\}
 
-} // namespace bio::alphabet::detail::adl_only
+} // namespace bio::alphabet::cpo
 
 namespace bio::alphabet
 {
@@ -65,24 +44,15 @@ namespace bio::alphabet
  */
 
 /*!\brief Return the complement of a nucleotide object.
- * \tparam your_type Type of the argument.
- * \param  nucl      The nucleotide object for which you want to receive the complement.
- * \returns The complement character of `nucl`, e.g. 'C' for 'G'.
+ * \tparam alph_type Type of the argument.
+ * \param  alph      The nucleotide object for which you want to receive the complement.
+ * \returns The complement character of `alph`, e.g. 'C' for 'G'.
  * \ingroup nucleotide
  * \details
  *
  * This is a function object. Invoke it with the parameter(s) specified above.
  *
- * It acts as a wrapper and looks for three possible implementations (in this order):
- *
- *   1. A static member function `complement(your_type const a)` of the class `bio::alphabet::custom::alphabet<your_type>`.
- *   2. A free function `complement(your_type const a)` in the namespace of your type (or as `friend`).
- *   3. A member function called `complement()`.
- *
- * Functions are only considered for one of the above cases if they are marked `noexcept` (`constexpr` is not required,
- * but recommended) and if the returned type is `your_type`.
- *
- * Every nucleotide alphabet type must provide one of the above.
+ * It is defined for all nucleotide alphabets in BioC++.
  *
  * ### Example
  *
@@ -90,10 +60,37 @@ namespace bio::alphabet
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation). To specify the behaviour for your own alphabet type,
- * simply provide one of the three functions specified above.
+ * This is a customisation point (see \ref biocpp_customisation).
+ * It acts as a wrapper and looks for an implementation with the following signature:
+ *
+ * ```c++
+ * constexpr alph_type tag_invoke(bio::alphabet::cpo::complement, alph_type const alph) noexcept
+ * {}
+ * ```
+ *
+ * Functions are found via ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
+ * but recommended). The returned type must be (implicitly) convertible to `alph_type` (usually it
+ * should be the same type).
+ *
+ * To specify the behaviour for your own alphabet type,
+ * simply provide the above function as a `friend` or free function.
+ *
+ * \hideinitializer
  */
-inline constexpr auto complement = detail::adl_only::complement_fn{};
+inline constexpr auto complement = []<typename alph_t>(alph_t const a)
+  //!\cond
+  requires(requires {
+      {tag_invoke(cpo::complement{}, a)};
+      // NOTE we are using the trait here and not the concept, because the concept
+      // also checks explicit convertibility but we don't want/ to substitute into
+      // explicit constructors/conversion operators to prevent loops
+      requires std::is_convertible_v<alph_t, decltype(tag_invoke(cpo::complement{}, a))>;
+      requires noexcept(tag_invoke(cpo::complement{}, a));
+  })
+//!\endcond
+{
+    return tag_invoke(cpo::complement{}, a);
+};
 //!\}
 
 // ============================================================================

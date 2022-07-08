@@ -6,6 +6,8 @@ This HowTo documents how to write a custom alphabet that can be used with the al
 
 \tutorial_head{Moderate, 45 min, \ref core_concepts\, \ref core_alphabets, \ref alphabet}
 
+TODO(bio) this needs to be updated; equality, inequality, order should all go in one step; needs tag_invoke
+
 # Motivation
 
 In the [alphabet tutorial](\ref core_alphabets) you have learned that alphabets are a core component in BioC++

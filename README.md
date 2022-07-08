@@ -28,9 +28,9 @@ The six protein frames of 'GATTACATATA' are:
 [DYI, ITY, LHI, YM*, ICN, YVI]
  */
 
-fmt::print("The second amino acid in the third frame is: {}\n", translated[2][1]);
+fmt::print("The third frame's second amino acid is: {}\n", translated[2][1]);
 /*
-The second amino acid in the third frame is: H
+The third frame's second amino acid is: H
  */
 ```
 
