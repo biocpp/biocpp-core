@@ -9,7 +9,7 @@ bug-fixes (not all bug-fixes will be listed).
 
 ## Features
 
-* This release is a fork of BioC++-3.0.2.
+* This release is a fork of SeqAn-3.0.2.
 * The feature set is stripped to contain the important "core" aspects: Alphabets and Ranges, as well as metaprogramming support utilities.
 * It has no dependencies.
 

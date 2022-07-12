@@ -145,7 +145,7 @@ public:
      */
     constexpr auto begin() noexcept
     {
-        if constexpr (std::ranges::random_access_range<urng_t> && std::ranges::sized_range<urng_t>)
+        if constexpr (std::ranges::random_access_range<urng_t> && (std::ranges::sized_range<urng_t> || exactly))
             return std::ranges::begin(urange);
         else
             return iterator{std::ranges::begin(urange), 0, target_size, this};
@@ -154,7 +154,7 @@ public:
     //!\copydoc begin()
     constexpr auto begin() const noexcept requires const_iterable_range<urng_t>
     {
-        if constexpr (std::ranges::random_access_range<urng_t> && std::ranges::sized_range<urng_t>)
+        if constexpr (std::ranges::random_access_range<urng_t> && (std::ranges::sized_range<urng_t> || exactly))
             return std::ranges::cbegin(urange);
         else
             return const_iterator{std::ranges::cbegin(urange), 0, target_size};
@@ -175,7 +175,7 @@ public:
      */
     constexpr auto end() noexcept
     {
-        if constexpr (std::ranges::random_access_range<urng_t> && std::ranges::sized_range<urng_t>)
+        if constexpr (std::ranges::random_access_range<urng_t> && (std::ranges::sized_range<urng_t> || exactly))
             return std::ranges::begin(urange) + target_size;
         else
             return std::ranges::end(urange);
@@ -184,7 +184,7 @@ public:
     //!\copydoc end()
     constexpr auto end() const noexcept requires const_iterable_range<urng_t>
     {
-        if constexpr (std::ranges::random_access_range<urng_t> && std::ranges::sized_range<urng_t>)
+        if constexpr (std::ranges::random_access_range<urng_t> && (std::ranges::sized_range<urng_t> || exactly))
             return std::ranges::cbegin(urange) + target_size;
         else
             return std::ranges::cend(urange);

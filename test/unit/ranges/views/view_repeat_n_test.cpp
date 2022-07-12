@@ -52,8 +52,10 @@ TEST(general, concept)
     EXPECT_FALSE((std::ranges::contiguous_range<decltype(v)>));
     EXPECT_TRUE((std::ranges::view<decltype(v)>));
     EXPECT_TRUE((std::ranges::sized_range<decltype(v)>));
-    EXPECT_FALSE((std::ranges::common_range<decltype(v)>));
+    EXPECT_TRUE((std::ranges::common_range<decltype(v)>));
     EXPECT_TRUE((std::ranges::output_range<decltype(v), char>));
+
+    EXPECT_TRUE((std::sized_sentinel_for<std::ranges::sentinel_t<decltype(v)>, std::ranges::iterator_t<decltype(v)>>));
 }
 
 TEST(view, factory)

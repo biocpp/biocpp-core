@@ -15,9 +15,6 @@
 #include <bio/ranges/container/all.hpp>
 
 template <typename t>
-using sdsl_int_vec = sdsl::int_vector<sizeof(t) * 8>;
-
-template <typename t>
 using small_vec = bio::ranges::small_vector<t, 10'000>;
 
 // ============================================================================
@@ -78,10 +75,16 @@ BENCHMARK_TEMPLATE(push_back, std::list, bio::alphabet::dna15);
 BENCHMARK_TEMPLATE(push_back, std::list, bio::alphabet::aa27);
 BENCHMARK_TEMPLATE(push_back, std::list, bio::alphabet::alphabet_variant<char, bio::alphabet::dna4>);
 
+#if __has_include(<sdsl/int_vector.hpp>)
+#include <sdsl/int_vector.hpp>
+template <typename t>
+using sdsl_int_vec = sdsl::int_vector<sizeof(t) * 8>;
+
 BENCHMARK_TEMPLATE(push_back, sdsl_int_vec, uint8_t);
 BENCHMARK_TEMPLATE(push_back, sdsl_int_vec, uint16_t);
 BENCHMARK_TEMPLATE(push_back, sdsl_int_vec, uint32_t);
 BENCHMARK_TEMPLATE(push_back, sdsl_int_vec, uint64_t);
+#endif
 
 BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, char);
 BENCHMARK_TEMPLATE(push_back, bio::ranges::bitcompressed_vector, bio::alphabet::gap);

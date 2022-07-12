@@ -337,44 +337,6 @@ public:
         os << str.str();
         return os;
     }
-
-    /*!\brief Formatted input for the bio::ranges::small_string.
-     * \param[in,out] is  The std::basic_istream to read from.
-     * \param[out]    str The bio::ranges::small_string to write to.
-     * \returns `is`.
-     *
-     * \details
-     *
-     * Reads at most bio::ranges::small_string::max_size characters from the stream.
-     * If a stream error occurred or no characters could be extracted the std::ios_base::failbit is set.
-     * This may throw an exception.
-     */
-    friend std::istream & operator>>(std::istream & is, small_string & str)
-    {
-        // Check if stream is ok and skip leading whitespaces.
-        std::istream::sentry s(is);
-        if (s)
-        {
-            str.erase(); // clear the string
-            std::streamsize num_char =
-              (is.width() > 0) ? std::min<std::streamsize>(is.width(), str.max_size()) : str.max_size();
-            assert(num_char > 0);
-            for (std::streamsize n = num_char; n > 0 && !std::isspace(static_cast<char>(is.peek()), is.getloc()); --n)
-            {
-                char c = is.get();
-                if (is.eof())
-                    break;
-                str.push_back(c);
-            }
-
-            if (str.size() == 0) // nothing extracted so we set the fail bit.
-                is.setstate(std::ios_base::failbit);
-
-            is.width(0); // cancel the effects of std::setw, if any.
-        }
-
-        return is;
-    }
     //!\}
 };
 

@@ -347,31 +347,3 @@ TEST(small_string, output)
     os << em;
     EXPECT_EQ(os.str(), "hello"s);
 }
-
-TEST(small_string, input)
-{
-    { // Until whitespace
-        bio::ranges::small_string<50> em{"test"};
-        std::istringstream            is{"hello test"};
-        is >> em;
-        EXPECT_EQ(em.str(), "hello"s);
-    }
-
-    { // Exceed capacity
-        bio::ranges::small_string<5> em{"test"};
-        std::istringstream           is{"hellotest"};
-        is >> em;
-        EXPECT_EQ(em.str(), "hello"s);
-
-        std::string remaining{};
-        is >> remaining;
-        EXPECT_EQ(remaining, "test"s);
-    }
-
-    { // eof before capacity reached
-        bio::ranges::small_string<50> em{""};
-        std::istringstream            is{"hellotest"};
-        is >> em;
-        EXPECT_EQ(em.str(), "hellotest"s);
-    }
-}

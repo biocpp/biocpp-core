@@ -15,8 +15,6 @@
 #include <string>
 #include <vector>
 
-#include <sdsl/int_vector.hpp>
-
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/alphabet/quality/phred42.hpp>
 #include <bio/alphabet/quality/qualified.hpp>
@@ -92,10 +90,6 @@ TEST(container, reservible_container)
     EXPECT_TRUE((bio::ranges::detail::reservible_container<bio::ranges::concatenated_sequences<std::string>>));
     EXPECT_TRUE((bio::ranges::detail::reservible_container<bio::ranges::concatenated_sequences<std::vector<char>>>));
 
-    EXPECT_TRUE((bio::ranges::detail::reservible_container<sdsl::bit_vector>));
-    EXPECT_TRUE((bio::ranges::detail::reservible_container<sdsl::int_vector<>>));
-    EXPECT_TRUE((bio::ranges::detail::reservible_container<sdsl::int_vector<13>>));
-    EXPECT_TRUE((bio::ranges::detail::reservible_container<sdsl::int_vector<64>>));
     EXPECT_TRUE((bio::ranges::detail::reservible_container<bio::ranges::bitcompressed_vector<bio::alphabet::dna4>>));
     EXPECT_TRUE(
       (bio::ranges::detail::reservible_container<
