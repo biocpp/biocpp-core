@@ -29,6 +29,7 @@ namespace bio::alphabet::cpo
  */
 
 //!\brief Customisation tag for bio::alphabet::assign_char_to.
+//!\ingroup quality
 struct to_phred
 {};
 
@@ -112,6 +113,7 @@ namespace bio::alphabet::cpo
  */
 
 //!\brief Customisation tag for bio::alphabet::assign_char_to.
+//!\ingroup quality
 struct assign_phred_to
 {};
 

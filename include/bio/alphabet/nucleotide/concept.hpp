@@ -28,7 +28,8 @@ namespace bio::alphabet::cpo
  * \{
  */
 
-//!\brief Customisation tag for bio::alphabet::assign_char_to.
+//!\brief Customisation tag for bio::alphabet::complement.
+//!\ingroup nucleotide
 struct complement
 {};
 
@@ -82,7 +83,7 @@ inline constexpr auto complement = []<typename alph_t>(alph_t const a)
   requires(requires {
       {tag_invoke(cpo::complement{}, a)};
       // NOTE we are using the trait here and not the concept, because the concept
-      // also checks explicit convertibility but we don't want/ to substitute into
+      // also checks explicit convertibility but we don't want to substitute into
       // explicit constructors/conversion operators to prevent loops
       requires std::is_convertible_v<alph_t, decltype(tag_invoke(cpo::complement{}, a))>;
       requires noexcept(tag_invoke(cpo::complement{}, a));

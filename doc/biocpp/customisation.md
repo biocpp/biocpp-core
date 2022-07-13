@@ -21,38 +21,33 @@ BioC++ library. We call these "customisation points" (also known as "extension p
 
 # Customisation points
 
-\warning TODO this section is subject to change TODO
+An example is the bio::alphabet::alphabet concept. One part of this concept's requirements are from
+bio::alphabet::semialphabet which requires `to_rank()` to available on an object of the type. `to_rank()`
+is a "customisation point".
 
-One such customisation point is bio::alphabet::to_rank. Instead of the bio::alphabet::semialphabet concept looking directly for
-member functions or free functions in your namespace, it always checks for a valid definition of bio::alphabet::to_rank which
-in turn resolves to different possible implementations.
+Instead of the bio::alphabet::semialphabet concept looking directly for `.to_rank()` member functions, it checks for
+a valid definition of bio::alphabet::to_rank which in turn calls `tag_invoke()` with certain parameters.
+This mechanism is widely employed in Modern C++ and may be standardised in the future
+([P1895](https://wg21.link/P1895)).
+There are (hidden) implementations of `tag_invoke()` that typically redirect to the respective member functions.
 
-To customise one of our customisation points, follow the instructions in its API documentation. Typically, you have the
-choice between the following options:
+To customise one of our customisation points, follow the instructions in its API documentation. Typically, you just
+have to add a `tag_invoke()` function for your type. This can happen as a friend or as a free function in your
+type's namespace. The lookup happens via [argument dependent lookup](https://en.cppreference.com/w/cpp/language/adl).
+The first argument of `tag_invoke()` is the "tag" used to select the implementation. In BioC++, these are named
+exactly like the function that you otherwise call, except that they are in a `cpo` subnamespace.
+E.g. bio::alphabet::to_rank looks for `tag_invoke(bio::alphabet::cpo::to_rank, YOUR_TYPE)`.
 
-  1. Provide functionality as members.
-  2. Provide friends or free functions inside the namespace of your type (will be picked up via
-     [argument dependent lookup](https://en.cppreference.com/w/cpp/language/adl)).
-  3. Specialise the respective template in `bio::alphabet::custom::` for that type and provide the needed functionality as
-     static members of that specialisation (this is an "upload space" for specialisations).
+If you need to specialise the behaviour for a third party type, and you cannot open that types namespace (or it doesn't have
+one), you can also add your overload of `tag_invoke()` to our customisation namespace, e.g. `bio::alphabet::cpo`.
+Only do this, if there is no other solution.
 
-The priority is bottom to top (i.e. solutions to 3. will be preferred over 1. and 2.), but we strongly recommend to
-use 1. and 2., because they are much easier to implement. Only use 3. if you adapt a third party's type and you cannot
-add to that type's definition and/or namespace.
+In some cases, e.g. bio::alphabet::cpo::enable_aminoacid, we also provide variable templates that you can specialise
+directly.
 
 \warning
-**Never** add anything (types, functions, variables...) to namespace `bio::` and never explicitly specialise one
-of our templates (except those in bio::alphabet::custom) or overload one of our functions.
+**Never** add anything (types, functions, variables...) to any of our namespaces (except those named `cpo`)
+and never explicitly specialise one of our templates (except those in `cpo` namespaces) or overload one of our functions.
 
 The \link core_custom_alphabet HowTo on creating your own alphabet \endlink provides many examples of how to
 satisfy the requirements of customisation point objects.
-
-More technical background on this topic can be found here:
-
-  1. [Original blog article](http://ericniebler.com/2014/10/21/customization-point-design-in-c11-and-beyond/) with
-     background and the first "Niebloid" design.
-  2. [A more recent article](https://quuxplusone.github.io/blog/2018/03/19/customization-points-for-functions/) that
-     also introduces the notion of "upload" namespaces.
-
-There is also a proposed [language extension](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1292r0.html)
-to handle customisation points in a future version of C++.
