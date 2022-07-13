@@ -229,18 +229,6 @@ else ()
 endif ()
 
 # ----------------------------------------------------------------------------
-# Require Ranges and SDSL
-# ----------------------------------------------------------------------------
-
-check_include_file_cxx (sdsl/version.hpp _BIOCPP_HAVE_SDSL)
-
-if (_BIOCPP_HAVE_SDSL)
-    biocpp_config_print ("Required dependency:        SDSL found.")
-else ()
-    biocpp_config_error ("The SDSL library is required, but wasn't found. Get it from https://github.com/xxsds/sdsl-lite")
-endif ()
-
-# ----------------------------------------------------------------------------
 # Cereal dependency is optional, but may set as required
 # ----------------------------------------------------------------------------
 

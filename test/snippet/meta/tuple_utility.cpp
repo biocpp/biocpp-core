@@ -1,3 +1,4 @@
+#include <string>
 #include <bio/meta/tuple_utility.hpp>
 
 int main()

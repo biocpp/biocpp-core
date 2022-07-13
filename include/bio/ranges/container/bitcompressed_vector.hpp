@@ -13,19 +13,19 @@
 
 #pragma once
 
+#include <climits>
+#include <concepts>
+#include <iterator>
+#include <ranges>
 #include <type_traits>
-
-#include <sdsl/int_vector.hpp>
 
 #include <bio/alphabet/detail/alphabet_proxy.hpp>
 #include <bio/meta/concept/cereal.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
 #include <bio/ranges/views/convert.hpp>
+#include <bio/ranges/views/repeat_n.hpp>
 #include <bio/ranges/views/to_char.hpp>
 #include <bio/ranges/views/to_rank.hpp>
-#include <concepts>
-#include <iterator>
-#include <ranges>
 
 namespace bio::ranges
 {
@@ -67,14 +67,54 @@ class bitcompressed_vector
 private:
     //!\brief The number of bits needed to represent a single letter of the alphabet_type.
     static constexpr size_t bits_per_letter = std::bit_width(alphabet::alphabet_size<alphabet_type>);
-
     static_assert(bits_per_letter <= 64, "alphabet must be representable in at most 64bit.");
 
+    //!\brief The element type of the underyling storage vector.
+    using word_type                            = uint64_t;
+    //!\brief Size in bits of the word_type.
+    static constexpr size_t   word_size        = sizeof(word_type) * CHAR_BIT;
+    //!\brief The number of letters that fit into a word.
+    static constexpr size_t   letters_per_word = word_size / bits_per_letter;
+    //!\brief A bitmask that has only the last #bits_per_letter bits set.
+    static constexpr uint64_t mask             = (1ull << bits_per_letter) - 1ull;
+
     //!\brief Type of the underlying SDSL vector.
-    using data_type = sdsl::int_vector<bits_per_letter>;
+    using data_type = std::vector<uint64_t>;
+
+    //!\brief The size!
+    size_t size_ = 0;
 
     //!\brief The data storage.
     data_type data;
+
+    //!\brief Decode a rank from compressed storage.
+    static uint64_t get_rank(data_type const & vec, size_t const i) noexcept
+    {
+        assert(i / letters_per_word < vec.size());
+        uint64_t const word   = vec[i / letters_per_word];
+        size_t const   offset = (i % letters_per_word) * bits_per_letter;
+        return (word >> offset) & mask;
+    }
+
+    //!\brief Store a rank to compressed storage.
+    static void set_rank(data_type & vec, size_t const i, uint64_t const rank) noexcept
+    {
+        assert(i / letters_per_word < vec.size());
+        uint64_t &   word   = vec[i / letters_per_word];
+        size_t const offset = (i % letters_per_word) * bits_per_letter;
+        word &= ~(mask << offset);
+        word |= rank << offset;
+    }
+
+    //!\brief Zeros out the bits behind the last element in the last word.
+    void clear_unused_bits_in_last_word()
+    {
+        if (data.empty() || (size() % letters_per_word == 0))
+            return;
+
+        size_t const offset = (size() % letters_per_word) * bits_per_letter;
+        data.back() &= ((1ull << offset) - 1ull);
+    }
 
     //!\brief Proxy data type returned by bio::ranges::bitcompressed_vector as reference to element unless the alphabet_type
     //!       is uint8_t, uint16_t, uint32_t or uint64_t (in which case a regular & is returned).
@@ -86,32 +126,42 @@ private:
         //!\brief Befriend the base type so it can call our #on_update().
         friend base_t;
 
-        //!\brief The proxy of the underlying data type.
-        std::ranges::range_reference_t<data_type> internal_proxy;
+        //!\brief Pointer to the host's storage container.
+        data_type * data_ptr;
+        //!\brief (Uncompressed) index of the current element.
+        size_t      index;
 
-        //!\brief Update the sdsl-proxy.
-        constexpr void on_update() noexcept { internal_proxy = static_cast<base_t &>(*this).to_rank(); }
+        //!\brief Update the compressed representation.
+        constexpr void on_update() const noexcept
+        {
+            set_rank(*data_ptr, index, static_cast<base_t const &>(*this).to_rank());
+        }
 
     public:
-        // Import from base:
-        using base_t::operator=;
-
         /*!\name Constructors, destructor and assignment
          * \{
          */
         //!\brief Deleted, because using this proxy without a parent would be undefined behaviour.
-        reference_proxy_type()                                                            = delete;
-        constexpr reference_proxy_type(reference_proxy_type const &) noexcept             = default; //!< Defaulted.
-        constexpr reference_proxy_type(reference_proxy_type &&) noexcept                  = default; //!< Defaulted.
-        constexpr reference_proxy_type & operator=(reference_proxy_type const &) noexcept = default; //!< Defaulted.
-        constexpr reference_proxy_type & operator=(reference_proxy_type &&) noexcept      = default; //!< Defaulted.
-        ~reference_proxy_type() noexcept                                                  = default; //!< Defaulted.
+        reference_proxy_type()                                                = delete;
+        constexpr reference_proxy_type(reference_proxy_type const &) noexcept = default; //!< Defaulted.
+        constexpr reference_proxy_type(reference_proxy_type &&) noexcept      = default; //!< Defaulted.
+        ~reference_proxy_type() noexcept                                      = default; //!< Defaulted.
 
-        //!\brief Initialise from internal proxy type.
-        reference_proxy_type(std::ranges::range_reference_t<data_type> const & internal) noexcept :
-          internal_proxy{internal}
+        // Import from base:
+        using base_t::operator=;
+
+        //!\brief Assignment does not change this, instead it updates the storage.
+        constexpr reference_proxy_type & operator=(reference_proxy_type const & rhs)
         {
-            static_cast<base_t &>(*this).assign_rank(internal);
+            static_cast<base_t &>(*this).assign_rank(rhs.to_rank());
+            return *this;
+        }
+
+        //!\brief The main constructor to create this object.
+        reference_proxy_type(data_type * const data_ptr_, size_t const index_) noexcept :
+          data_ptr{data_ptr_}, index{index_}
+        {
+            static_cast<base_t &>(*this).assign_rank(get_rank(*data_ptr, index));
         }
         //!\}
     };
@@ -192,7 +242,7 @@ public:
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
-    bitcompressed_vector(size_type const count, value_type const value) : data(count, alphabet::to_rank(value)) {}
+    bitcompressed_vector(size_type const count, value_type const value) { insert(cend(), count, value); }
 
     /*!\brief Construct from pair of iterators.
      * \tparam begin_iterator_type Must model std::forward_iterator and
@@ -432,14 +482,14 @@ public:
     reference operator[](size_type const i) noexcept
     {
         assert(i < size());
-        return data[i];
+        return {&data, i};
     }
 
     //!\copydoc operator[]()
     const_reference operator[](size_type const i) const noexcept
     {
         assert(i < size());
-        return alphabet::assign_rank_to(data[i], const_reference{});
+        return alphabet::assign_rank_to(get_rank(data, i), alphabet_type{});
     }
 
     /*!\brief Return the first element. Calling front on an empty container is undefined.
@@ -495,7 +545,7 @@ public:
     }
 
     /*!\brief Provides direct, unsafe access to underlying data structures.
-     * \returns A reference to an SDSL bitvector.
+     * \returns A reference to a std::vector
      *
      * \details
      *
@@ -534,7 +584,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type size() const noexcept { return data.size(); }
+    size_type size() const noexcept { return size_; }
 
     /*!\brief Returns the maximum number of elements the container is able to hold due to system or library
      * implementation limitations, i.e. std::distance(begin(), end()) for the largest container.
@@ -550,7 +600,11 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type max_size() const noexcept { return data.max_size(); }
+    size_type max_size() const noexcept
+    {
+        // this protects against underflow in the multiplication
+        return std::max<size_type>(data.max_size(), data.max_size() * letters_per_word);
+    }
 
     /*!\brief Returns the number of elements that the container has currently allocated space for.
      * \returns The capacity of the currently allocated storage.
@@ -567,7 +621,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type capacity() const noexcept { return data.capacity(); }
+    size_type capacity() const noexcept { return data.capacity() * letters_per_word; }
 
     /*!\brief Increase the capacity to a value that's greater or equal to new_cap.
      * \param            new_cap The new capacity.
@@ -587,7 +641,10 @@ public:
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
-    void reserve(size_type const new_cap) { data.reserve(new_cap); }
+    void reserve(size_type const new_cap)
+    {
+        data.reserve(new_cap / letters_per_word + (new_cap % letters_per_word != 0));
+    }
 
     /*!\brief Requests the removal of unused capacity.
      *
@@ -620,25 +677,28 @@ public:
      *
      * No-throw guarantee.
      */
-    void clear() noexcept { data.clear(); }
+    void clear() noexcept
+    {
+        data.clear();
+        size_ = 0;
+    }
 
     /*!\brief Inserts value before position in the container.
      * \param   pos Iterator before which the content will be inserted. `pos` may be the end() iterator.
      * \param value Element value to insert.
      * \returns     Iterator pointing to the inserted value.
      *
-     * Causes reallocation if the new size() is greater than the old capacity(). If the new size() is greater
-     * than capacity(), all iterators and references are invalidated. Otherwise, only the iterators and
-     * references before the insertion point remain valid. The past-the-end iterator is also invalidated.
+     * \details
+     *
+     * This function always reallocates, so all iterators and references are invalidated.
      *
      * ### Complexity
      *
-     * Worst-case linear in size().
+     * Linear in the new size().
      *
      * ### Exceptions
      *
-     * Basic exception guarantee, i.e. guaranteed not to leak, but container may contain invalid data after exception is
-     * thrown.
+     * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
     iterator insert(const_iterator pos, value_type const value) { return insert(pos, 1, value); }
 
@@ -648,26 +708,20 @@ public:
      * \param value Element value to insert.
      * \returns     Iterator pointing to the first element inserted, or `pos` if `count==0`.
      *
-     * Causes reallocation if the new size() is greater than the old capacity(). If the new size() is greater
-     * than capacity(), all iterators and references are invalidated. Otherwise, only the iterators and
-     * references before the insertion point remain valid. The past-the-end iterator is also invalidated.
+     * This function always reallocates, so all iterators and references are invalidated.
      *
      * ### Complexity
      *
-     * Worst-case linear in concat_size(). This is a drawback over e.g. `std::vector<std::vector<alphabet>>`.
+     * Linear in the new size().
      *
      * ### Exceptions
      *
-     * Basic exception guarantee, i.e. guaranteed not to leak, but container may contain invalid data after exception is
-     * thrown.
+     * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
     iterator insert(const_iterator pos, size_type const count, value_type const value)
     {
-        auto const pos_as_num = std::distance(cbegin(), pos); // we want to insert BEFORE this position
-
-        data.insert(data.begin() + pos_as_num, count, alphabet::to_rank(value));
-
-        return begin() + pos_as_num;
+        auto v = views::repeat_n(value, count);
+        return insert(pos, v.begin(), v.end());
     }
 
     /*!\brief Inserts elements from range `[begin_it, end_it)` before position in the container.
@@ -679,20 +733,17 @@ public:
      * \param[in]           end_it End of range to construct/assign from.
      * \returns                    Iterator pointing to the first element inserted, or `pos` if `begin_it==end_it`.
      *
-     * The behaviour is undefined if begin_it and end_it are iterators into `*this`.
+     * The behaviour is well-defined, even if begin_it and end_it are iterators into `*this`.
      *
-     * Causes reallocation if the new size() is greater than the old capacity(). If the new size() is greater
-     * than capacity(), all iterators and references are invalidated. Otherwise, only the iterators and
-     * references before the insertion point remain valid. The past-the-end iterator is also invalidated.
+     * This function always reallocates, so all iterators and references are invalidated.
      *
      * ### Complexity
      *
-     * Worst-case linear in size().
+     * Linear in the new size().
      *
      * ### Exceptions
      *
-     * Basic exception guarantee, i.e. guaranteed not to leak, but container may contain invalid data after exception is
-     * thrown.
+     * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
     template <std::forward_iterator begin_iterator_type, typename end_iterator_type>
     iterator insert(const_iterator pos, begin_iterator_type begin_it, end_iterator_type end_it)
@@ -701,12 +752,18 @@ public:
                  std::common_reference_with<std::iter_value_t<begin_iterator_type>, value_type>)
     //!\endcond
     {
-        auto const pos_as_num = std::distance(cbegin(), pos);
+        //TODO UPDATE DOCUMENTATION TO REFLECT THIS
+        //TODO this is not ideal, always linear
+        size_t const         pos_as_num     = std::distance(cbegin(), pos);
+        size_t const         size_of_insert = std::distance(begin_it, end_it);
+        bitcompressed_vector tmp;
+        tmp.resize(size() + size_of_insert);
+        //TODO use constrained algorithms here once alphabet_proxy is out-iterator-compatible
+        std::copy(cbegin(), pos, tmp.begin());
+        std::copy(begin_it, end_it, tmp.begin() + pos_as_num);
+        std::copy(cbegin() + pos_as_num, cend(), tmp.begin() + pos_as_num + size_of_insert);
 
-        auto v = std::ranges::subrange<begin_iterator_type, end_iterator_type>{begin_it, end_it} |
-                 views::convert<value_type> | views::to_rank;
-        data.insert(data.begin() + pos_as_num, std::ranges::begin(v), std::ranges::end(v));
-
+        std::swap(*this, tmp);
         return begin() + pos_as_num;
     }
 
@@ -715,18 +772,15 @@ public:
      * \param ilist Initializer list with values to insert.
      * \returns     Iterator pointing to the first element inserted, or `pos` if `ilist` is empty.
      *
-     * Causes reallocation if the new size() is greater than the old capacity(). If the new size() is greater
-     * than capacity(), all iterators and references are invalidated. Otherwise, only the iterators and
-     * references before the insertion point remain valid. The past-the-end iterator is also invalidated.
+     * This function always reallocates, so all iterators and references are invalidated.
      *
      * ### Complexity
      *
-     * Worst-case linear in concat_size(). This is a drawback over e.g. `std::vector<std::vector<alphabet>>`.
+     * Linear in the new size().
      *
      * ### Exceptions
      *
-     * Basic exception guarantee, i.e. guaranteed not to leak, but container may contain invalid data after exception is
-     * thrown.
+     * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
     iterator insert(const_iterator pos, std::initializer_list<value_type> const & ilist)
     {
@@ -736,33 +790,39 @@ public:
     /*!\brief Removes specified elements from the container.
      * \param begin_it Begin of range to erase.
      * \param   end_it Behind the end of range to erase.
-     * \returns        Iterator following the last element removed. If the iterator `pos` refers to the last element,
-     *                 the end() iterator is returned.
+     * \returns        Iterator following the last element removed. If the iterator `begin_it` refers to the last
+     *                 element or begin_it == end_it, the end() iterator is returned.
      *
-     * Invalidates iterators and references at or after the point of the erase, including the end() iterator.
+     * \details
      *
-     * The iterator first does not need to be dereferenceable if first==end_it: erasing an empty range is a no-op.
+     * The iterator begin_it does not need to be dereferenceable if begin_it==end_it: erasing an empty range is a no-op.
+     *
+     * This function always reallocates, so all iterators and references are invalidated.
      *
      * ### Complexity
      *
-     * Linear in size().
+     * Linear in the new size().
      *
      * ### Exceptions
      *
-     * Basic exception guarantee, i.e. guaranteed not to leak, but container may contain invalid data after exception is
-     * thrown.
+     * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
     iterator erase(const_iterator begin_it, const_iterator end_it)
     {
-        if (begin_it >= end_it) // [[unlikely]]
-            return begin() + std::distance(cbegin(), end_it);
+        if (begin_it == end_it)
+            return end();
 
-        auto const begin_it_pos = std::distance(cbegin(), begin_it);
-        auto const end_it_pos   = std::distance(cbegin(), end_it);
+        //TODO this is not ideal, always linear
+        size_t const         begin_pos_of_removal = std::distance(cbegin(), begin_it);
+        size_t const         size_of_removal      = std::distance(begin_it, end_it);
+        bitcompressed_vector tmp;
+        tmp.resize(size() - size_of_removal);
+        //TODO use constrained algorithms here once alphabet_proxy is out-iterator-compatible
+        std::copy(cbegin(), begin_it, tmp.begin());
+        std::copy(end_it, cend(), tmp.begin() + begin_pos_of_removal);
 
-        data.erase(data.cbegin() + begin_it_pos, data.cbegin() + end_it_pos);
-
-        return begin() + begin_it_pos;
+        std::swap(*this, tmp);
+        return begin() + begin_pos_of_removal + size_of_removal;
     }
 
     /*!\brief Removes specified elements from the container.
@@ -770,19 +830,15 @@ public:
      * \returns     Iterator following the last element removed. If the iterator `pos` refers to the last element,
      *              the end() iterator is returned.
      *
-     * Invalidates iterators and references at or after the point of the erase, including the end() iterator.
-     *
-     * The iterator `pos` must be valid and dereferenceable. Thus the end() iterator (which is valid, but is not
-     * dereferencable) cannot be used as a value for pos.
+     * This function always reallocates, so all iterators and references are invalidated.
      *
      * ### Complexity
      *
-     * Linear in size().
+     * Linear in the new size().
      *
      * ### Exceptions
      *
-     * Basic exception guarantee, i.e. guaranteed not to leak, but container may contain invalid data after exception is
-     * thrown.
+     * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
     iterator erase(const_iterator pos) { return erase(pos, pos + 1); }
 
@@ -801,7 +857,14 @@ public:
      * Basic exception guarantee, i.e. guaranteed not to leak, but container may contain invalid data after exception is
      * thrown.
      */
-    void push_back(value_type const value) { data.push_back(alphabet::to_rank(value)); }
+    void push_back(value_type const value)
+    {
+        if (data.size() * letters_per_word == size_) // the last word is "full"
+            data.emplace_back();
+
+        set_rank(data, size(), alphabet::to_rank(value));
+        ++size_;
+    }
 
     /*!\brief Removes the last element of the container.
      *
@@ -822,7 +885,10 @@ public:
     void pop_back()
     {
         assert(size() > 0);
-        data.pop_back();
+        if ((size_--) % letters_per_word == 1) // the last word contains only one letter
+            data.pop_back();
+        else
+            clear_unused_bits_in_last_word();
     }
 
     /*!\brief Resizes the container to contain count elements.
@@ -854,7 +920,9 @@ public:
     void resize(size_type const count)
     {
         assert(count < max_size());
-        data.resize(count);
+        data.resize(count / letters_per_word + (count % letters_per_word != 0));
+        size_ = count;
+        clear_unused_bits_in_last_word();
     }
 
     /*!\copybrief resize()
@@ -864,7 +932,10 @@ public:
     void resize(size_type const count, value_type const value)
     {
         assert(count < max_size());
-        data.resize(count, alphabet::to_rank(value));
+        size_t old_size = size_;
+        resize(count);
+        for (size_t i = old_size; i < size(); ++i)
+            set_rank(data, i, alphabet::to_rank(value));
     }
 
     /*!\brief Swap contents with another instance.
@@ -878,10 +949,10 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr void swap(bitcompressed_vector & rhs) noexcept { std::swap(data, rhs.data); }
+    constexpr void swap(bitcompressed_vector & rhs) noexcept { std::swap(*this, rhs); }
 
     //!\copydoc swap()
-    constexpr void swap(bitcompressed_vector && rhs) noexcept { std::swap(data, rhs.data); }
+    constexpr void swap(bitcompressed_vector && rhs) noexcept { std::swap(*this, rhs); }
 
     /*!\brief Swap contents with another instance.
      * \param lhs The first instance.
@@ -917,6 +988,7 @@ public:
     template <cereal_archive archive_t>
     void CEREAL_SERIALIZE_FUNCTION_NAME(archive_t & archive)
     {
+        archive(size_);
         archive(data);
     }
     //!\endcond

@@ -25,6 +25,9 @@ TYPED_TEST_SUITE_P(container_over_dna4_test);
 TYPED_TEST_P(container_over_dna4_test, concepts)
 {
     EXPECT_TRUE(bio::ranges::detail::reservible_container<TypeParam>);
+    EXPECT_TRUE(std::ranges::forward_range<TypeParam>);
+    //TODO
+    //EXPECT_TRUE((std::ranges::output_range<TypeParam, bio::alphabet::dna4>));
 }
 
 TYPED_TEST_P(container_over_dna4_test, construction)
@@ -44,6 +47,8 @@ TYPED_TEST_P(container_over_dna4_test, construction)
     // from another TypeParam's sub-range
     TypeParam t6{t3.begin() + 1, t3.begin() + 3};
     EXPECT_EQ(t5, t6);
+    TypeParam t6b{t3.cbegin() + 1, t3.cbegin() + 3};
+    EXPECT_EQ(t5, t6b);
 
     // direct from another container
     TypeParam t7{"ACCGT"_dna4};
@@ -152,6 +157,26 @@ TYPED_TEST_P(container_over_dna4_test, element_access)
 
     t1.back() = 'G'_dna4;
     EXPECT_RANGE_EQ(t1, "CCCGG"_dna4);
+
+    t1.front() = t1.back();
+    EXPECT_RANGE_EQ(t1, "GCCGG"_dna4);
+
+    t1.front() = t2.front();
+    EXPECT_RANGE_EQ(t1, "ACCGG"_dna4);
+
+    t1.begin()[2] = 'A'_dna4;
+    EXPECT_RANGE_EQ(t1, "ACAGG"_dna4);
+
+    t1.begin()[1] = *t1.begin();
+    EXPECT_RANGE_EQ(t1, "AAAGG"_dna4);
+
+    t1.begin()[1] = t2.begin()[4];
+    EXPECT_RANGE_EQ(t1, "ATAGG"_dna4);
+
+    // TODO: this needs to work for proper output range support
+    //     auto const ref = *t1.begin();
+    //     ref = 'T'_dna4;
+    //     EXPECT_RANGE_EQ(t1, "TTAGG"_dna4);
 }
 
 TYPED_TEST_P(container_over_dna4_test, capacity)
