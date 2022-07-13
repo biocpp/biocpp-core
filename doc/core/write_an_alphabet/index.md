@@ -163,7 +163,7 @@ to model the functionality.
 
 This example is similar to the previous one, but assuming that you cannot add anything to the namespace of
 the type that you wish to adapt.
-In that case, you need to specialise the bio::alphabet::custom::alphabet class template and provide the required functionality
+In that case, you need to specialise the bio::alphabet::cpo::alphabet class template and provide the required functionality
 as static members.
 
 \snippet test/unit/alphabet/custom_alphabet3_test.cpp third_party_type

@@ -35,6 +35,7 @@ namespace bio::alphabet::cpo
  */
 
 //!\brief Customisation tag for bio::alphabet::to_rank.
+//!\ingroup alphabet
 struct to_rank
 {};
 //!\}
@@ -68,11 +69,11 @@ namespace bio::alphabet
  *
  * It acts as a wrapper and looks for an implementation with the following signature:
  *
- * ```c++
- * tag_invoke(bio::alphabet::to_rank_cpo, alph_type const alph)
+ * ```cpp
+ * constexpr rank_type tag_invoke(bio::alphabet::cpo::to_rank, alph_type const alph) noexcept
  * ```
  *
- * Functions are found via only ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
+ * Implementations are found via ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
  * but recommended) and if the returned type models std::integral.
  *
  * To specify the behaviour for your own alphabet type,
@@ -114,7 +115,8 @@ namespace bio::alphabet::cpo
  * \{
  */
 
-//!\brief Customisation tag for bio::alphabet::assign_rank_to.
+//!\brief Customisation tag for bio::alphabet::assign_rank_to.#
+//!\ingroup alphabet
 struct assign_rank_to
 {};
 
@@ -151,11 +153,11 @@ namespace bio::alphabet
  * This is a customisation point (see \ref biocpp_customisation).
  * It acts as a wrapper and looks for an implementation with the following signature:
  *
- * ```c++
- * alph_type & tag_invoke(bio::alphabet::assign_rank_to_cpo, rank_type const rank, alph_type & alph)
+ * ```cpp
+ * cosntexpr alph_type & tag_invoke(bio::alphabet::assign_rank_to_cpo, rank_type const rank, alph_type & alph) noexcept
  * ```
  *
- * Functions are found via only ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
+ * Implementations are found via ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
  * but recommended) and if the returned type is exactly `alph_type &`.
  *
  * To specify the behaviour for your own alphabet type,
@@ -192,6 +194,7 @@ namespace bio::alphabet::cpo
  */
 
 //!\brief Customisation tag for bio::alphabet::to_char.
+//!\ingroup alphabet
 struct to_char
 {};
 //!\}
@@ -225,11 +228,11 @@ namespace bio::alphabet
  *
  * It acts as a wrapper and looks for an implementation with the following signature:
  *
- * ```c++
+ * ```cpp
  * constexpr char_type tag_invoke(bio::alphabet::cpo::to_char, alph_type const alph) noexcept
  * ```
  *
- * Functions are found via only ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
+ * Implementations are found via ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
  * but recommended) and if the returned type models bio::meta::builtin_character.
  *
  * To specify the behaviour for your own alphabet type,
@@ -272,6 +275,7 @@ namespace bio::alphabet::cpo
  */
 
 //!\brief Customisation tag for bio::alphabet::assign_char_to.
+//!\ingroup alphabet
 struct assign_char_to
 {};
 
@@ -308,7 +312,7 @@ namespace bio::alphabet
  * This is a customisation point (see \ref biocpp_customisation).
  * It acts as a wrapper and looks for an implementation with the following signature:
  *
- * ```c++
+ * ```cpp
  * constexpr alph_type & tag_invoke(bio::alphabet::assign_char_to_cpo, char_type const char, alph_type & alph) noexcept
  * ```
  *
@@ -350,6 +354,7 @@ namespace bio::alphabet::cpo
  */
 
 //!\brief Customisation tag for bio::alphabet::assign_char_to.
+//!\ingroup alphabet
 struct char_is_valid_for
 {};
 
@@ -439,7 +444,7 @@ namespace bio::alphabet
  * This is a customisation point (see \ref biocpp_customisation).
  * It acts as a wrapper and looks for an implementation with the following signature:
  *
- * ```c++
+ * ```cpp
  * constexpr bool tag_invoke(bio::alphabet::cpo::char_is_valid_for, char_type const char, alph_type) noexcept
  * ```
  *
@@ -456,7 +461,7 @@ namespace bio::alphabet
  * *Note* that if the alphabet type with cvref removed is not std::is_nothrow_default_constructible, this function
  * object will instead look for:
  *
- * ```c++
+ * ```cpp
  * constexpr bool tag_invoke(bio::alphabet::cpo::char_is_valid_for, char_type const char, std::type_identity<alph_type>) noexcept
  * ```
  *
@@ -570,6 +575,7 @@ namespace bio::alphabet::cpo
 {
 
 //!\brief CPO tag definition for bio::alphabet::alphabet_size.
+//!\ingroup alphabet
 struct size
 {};
 
@@ -597,7 +603,7 @@ namespace bio::alphabet
  * This is a customisation point (see \ref biocpp_customisation). *
  * It acts as a wrapper and looks for an implementation with the following signature:
  *
- * ```c++
+ * ```cpp
  * consteval size_t tag_invoke(bio::alphabet::cpo::size, alph_type) noexcept
  * ```
  *
@@ -613,7 +619,7 @@ namespace bio::alphabet
  * *Note* that if the alphabet type with cvref removed is not std::is_nothrow_default_constructible
  * **at compile-time**, this function object will instead look for:
  *
- * ```c++
+ * ```cpp
  * consteval size_t tag_invoke(bio::alphabet::cpo::size, std::type_identity<alph_type>) noexcept
  * ```
  *

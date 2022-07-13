@@ -24,13 +24,13 @@
 namespace bio::alphabet
 {}
 
-/*!\namespace bio::alphabet::custom
+/*!\namespace bio::alphabet::cpo
  * \brief A namespace for third party and standard library specialisations of BioC++ customisation points.
  * \ingroup alphabet
  * \see \ref biocpp_customisation
  */
 
-namespace bio::alphabet::custom
+namespace bio::alphabet::cpo
 {}
 
 /*!\if DEV
