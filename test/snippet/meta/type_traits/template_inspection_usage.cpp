@@ -1,3 +1,4 @@
+#include <tuple>
 #include <bio/meta/type_traits/template_inspection.hpp>
 #include <bio/meta/type_list/type_list.hpp>
 
