@@ -1,6 +1,3 @@
-[submodule "sdsl-lite"]
-	path = submodules/sdsl-lite
-	url = https://github.com/xxsds/sdsl-lite
 [submodule "cereal"]
 	path = submodules/cereal
 	url = https://github.com/USCiLab/cereal

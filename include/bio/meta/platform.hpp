@@ -36,17 +36,9 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 //  Dependencies
 // ============================================================================
 
-// BioC++ [required]
+// Self [required]
 #if !__has_include(<bio/version.hpp>)
 #    error BioC++ include directory not set correctly. Forgot to add -I ${INSTALLDIR}/include to your CXXFLAGS?
-#endif
-
-// SDSL [required]
-#if __has_include(<sdsl/version.hpp>)
-#    include <sdsl/version.hpp>
-static_assert(sdsl::sdsl_version_major == 3, "Only version 3 of the SDSL is supported by BioC++.");
-#else
-#    error The sdsl library was not included correctly. Forgot to add -I ${INSTALLDIR}/include to your CXXFLAGS?
 #endif
 
 // Cereal [optional]
