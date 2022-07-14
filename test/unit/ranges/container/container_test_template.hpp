@@ -26,8 +26,7 @@ TYPED_TEST_P(container_over_dna4_test, concepts)
 {
     EXPECT_TRUE(bio::ranges::detail::reservible_container<TypeParam>);
     EXPECT_TRUE(std::ranges::forward_range<TypeParam>);
-    //TODO
-    //EXPECT_TRUE((std::ranges::output_range<TypeParam, bio::alphabet::dna4>));
+    EXPECT_TRUE((std::ranges::output_range<TypeParam, bio::alphabet::dna4>));
 }
 
 TYPED_TEST_P(container_over_dna4_test, construction)
@@ -172,11 +171,6 @@ TYPED_TEST_P(container_over_dna4_test, element_access)
 
     t1.begin()[1] = t2.begin()[4];
     EXPECT_RANGE_EQ(t1, "ATAGG"_dna4);
-
-    // TODO: this needs to work for proper output range support
-    //     auto const ref = *t1.begin();
-    //     ref = 'T'_dna4;
-    //     EXPECT_RANGE_EQ(t1, "TTAGG"_dna4);
 }
 
 TYPED_TEST_P(container_over_dna4_test, capacity)

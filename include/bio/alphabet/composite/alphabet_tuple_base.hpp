@@ -359,7 +359,7 @@ public:
 
         bio::alphabet::assign_rank_to(l.to_component_rank<index>(), val);
 
-        return component_proxy<t, index>{val, l};
+        return component_proxy<t, index>{l};
     }
 
     /*!\copybrief get
@@ -591,9 +591,6 @@ private:
     //!\brief Store a pointer to the parent object so we can update it.
     alphabet_tuple_base * parent;
 
-    //!\brief The implementation updates the rank in the parent object.
-    constexpr void on_update() noexcept { parent->assign_component_rank<index>(this->to_rank()); }
-
 public:
     //Import from base type:
     using base_t::operator=;
@@ -602,18 +599,43 @@ public:
      * \{
      */
     //!\brief Deleted, because using this proxy without parent would be undefined behaviour.
-    component_proxy()                                              = delete;
-    constexpr component_proxy(component_proxy const &)             = default; //!< Defaulted.
-    constexpr component_proxy(component_proxy &&)                  = default; //!< Defaulted.
-    constexpr component_proxy & operator=(component_proxy const &) = default; //!< Defaulted.
-    constexpr component_proxy & operator=(component_proxy &&)      = default; //!< Defaulted.
-    ~component_proxy()                                             = default; //!< Defaulted.
+    component_proxy()                                  = delete;
+    constexpr component_proxy(component_proxy const &) = default; //!< Defaulted.
+    constexpr component_proxy(component_proxy &&)      = default; //!< Defaulted.
+    ~component_proxy()                                 = default; //!< Defaulted.
 
-    //!\brief Construct from an alphabet letter and reference to the parent object.
-    constexpr component_proxy(alphabet_type const l, alphabet_tuple_base & p) : base_t{l}, parent{&p} {}
+    //!\brief Construct from a reference to the parent object.
+    constexpr component_proxy(alphabet_tuple_base & p) : parent{&p} {}
 
-    // Does not inherit the base's constructor for alphabet_type so as not to cause ambiguity
+    //!\brief Assignment does not change `this`, instead it updates the referenced value.
+    constexpr component_proxy & operator=(component_proxy const & rhs) { return assign_rank(rhs.to_rank()); }
+
+    //!\brief Assignment does not change `this`, instead it updates the referenced value (also works on `const` objects).
+    constexpr component_proxy const & operator=(component_proxy const & rhs) const
+    {
+        return assign_rank(rhs.to_rank());
+    }
     //!\}
+
+    //!\brief Retrieve the compressed representation.
+    constexpr alphabet::alphabet_rank_t<alphabet_type> to_rank() const noexcept
+    {
+        return parent->to_component_rank<index>();
+    }
+
+    //!\brief Update the compressed representation.
+    constexpr component_proxy & assign_rank(alphabet::alphabet_rank_t<alphabet_type> const r) noexcept
+    {
+        parent->assign_component_rank<index>(r);
+        return *this;
+    }
+
+    //!\brief Update the compressed representation (also works on `const` objects).
+    constexpr component_proxy const & assign_rank(alphabet::alphabet_rank_t<alphabet_type> const r) const noexcept
+    {
+        parent->assign_component_rank<index>(r);
+        return *this;
+    }
 
     /*!\name Comparison operators (proxy type against parent)
      * \brief Comparison against the bio::alphabet::alphabet_tuple_base that this proxy originates from (necessary
