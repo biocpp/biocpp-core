@@ -401,11 +401,3 @@ TEST(small_vector, resize)
     constexpr bool res = resize_test();
     EXPECT_TRUE(res);
 }
-
-// TEST(small_vector, serialisation)
-// {
-//     bio::ranges::small_vector hello{
-//       std::array{'h', 'e', 'l', 'l', 'o'}
-//     };
-//     bio::test::do_serialisation(hello);
-// }

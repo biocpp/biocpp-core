@@ -326,12 +326,6 @@ TYPED_TEST_P(container_over_dna4_test, resize)
     EXPECT_EQ(t0, (TypeParam{'A'_dna4, 'A'_dna4}));
 }
 
-// TYPED_TEST_P(container_over_dna4_test, serialisation)
-// {
-//     TypeParam t1{'A'_dna4, 'C'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
-//     bio::test::do_serialisation(t1);
-// }
-
 REGISTER_TYPED_TEST_SUITE_P(container_over_dna4_test,
                             concepts,
                             construction,

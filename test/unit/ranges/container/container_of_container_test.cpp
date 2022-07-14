@@ -320,9 +320,3 @@ TYPED_TEST(container_of_container, swap)
     EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "ACGT"_dna4, "GAGGA"_dna4}));
     EXPECT_EQ(t1, TypeParam{});
 }
-
-// TYPED_TEST(container_of_container, serialisation)
-// {
-//     TypeParam t1{"ACGT"_dna4, "ACGT"_dna4, "GAGGA"_dna4};
-//     bio::test::do_serialisation(t1);
-// }

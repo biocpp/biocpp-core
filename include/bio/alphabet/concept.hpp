@@ -825,7 +825,7 @@ concept writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires(
 // ============================================================================
 
 #if __has_include(<cereal/details/traits.hpp>)
-#include <cereal/details/traits.hpp>
+#    include <cereal/details/traits.hpp>
 #endif
 
 namespace bio::alphabet::detail
@@ -887,10 +887,9 @@ alphabet_rank_t<alphabet_t> save_minimal(archive_t const &, alphabet_t const & l
  * \attention These functions are never called directly, see the \ref alphabet module on how to use serialisation.
  */
 template <typename archive_t, typename wrapped_alphabet_t>
-void load_minimal(
-  archive_t const &,
-  wrapped_alphabet_t &&                                                            l,
-  alphabet_rank_t<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>> const & r) requires
+void load_minimal(archive_t const &,
+                  wrapped_alphabet_t &&                                                       l,
+                  alphabet_rank_t<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>> const & r) requires
   semialphabet<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>>
 {
     assign_rank_to(r, static_cast<detail::strip_cereal_wrapper_t<wrapped_alphabet_t> &>(l));

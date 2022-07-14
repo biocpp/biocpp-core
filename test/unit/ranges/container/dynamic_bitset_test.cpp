@@ -764,29 +764,6 @@ TEST(dynamic_bitset, to_ullong)
     }
 }
 
-// TODO(bio): add fmt test
-// TEST(dynamic_bitset, debug_stream)
-// {
-//     std::ostringstream o;
-//     bio::alphabet::debug_stream_type my_stream{o};
-//
-//     bio::ranges::dynamic_bitset t1{0b1100'1110'1010'1111};
-//
-//     my_stream << t1;
-//     o.flush();
-//     EXPECT_EQ(o.str(), "1100'1110'1010'1111");
-//
-//     bio::ranges::dynamic_bitset const t2{0b1011'1010'1111'0000};
-//
-//     my_stream << t2;
-//     o.flush();
-//     EXPECT_EQ(o.str(), "1100'1110'1010'11111011'1010'1111'0000");
-//
-//     my_stream << bio::ranges::dynamic_bitset{0b0101'1110'0101'1001}; // The leftmost 0 will be stripped
-//     o.flush();
-//     EXPECT_EQ(o.str(), "1100'1110'1010'11111011'1010'1111'00001011'1100'1011'001");
-// }
-
 TEST(dynamic_bitset, std_hash)
 {
     bio::ranges::dynamic_bitset                t1{"0011000"};
@@ -796,9 +773,3 @@ TEST(dynamic_bitset, std_hash)
     EXPECT_EQ(hasher(t1), 24ULL);
     EXPECT_EQ(hasher(t2), 12ULL);
 }
-
-// TEST(dynamic_bitset, serialisation)
-// {
-//     bio::ranges::dynamic_bitset t1{0b100101};
-//     bio::test::do_serialisation(t1);
-// }

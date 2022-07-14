@@ -1656,9 +1656,9 @@ struct fmt::formatter<bio::ranges::dynamic_bitset<bit_capacity>> : fmt::formatte
     constexpr auto format(bio::ranges::dynamic_bitset<bit_capacity> const s, auto & ctx) const
     {
         std::string str{"0b"};
-        str.reserve(s.size()); // TODO fix me
-        auto v = s | std::views::reverse | std::views::transform([](bool const bit) { return bit ? '1' : '0'; }) |
-                 bio::ranges::views::interleave(4, std::string_view{"'"});
+        str.reserve(2 + s.size() + s.size() / 4); // TODO fix me
+        auto v = s | std::views::transform([](bool const bit) { return bit ? '1' : '0'; }) |
+                 bio::ranges::views::interleave(4, std::string_view{"'"}) | std::views::reverse;
         std::ranges::copy(v, std::back_inserter(str));
         return fmt::formatter<std::string>::format(str, ctx);
     }

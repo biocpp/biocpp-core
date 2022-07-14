@@ -17,6 +17,9 @@
 
 #if __has_include(<fmt/format.h>)
 
+#    include <bio/alphabet/composite/detail.hpp>
+#    include <bio/ranges/views/to_char.hpp>
+
 #    include <fmt/format.h>
 #    include <fmt/ranges.h>
 
@@ -31,7 +34,21 @@ struct fmt::formatter<alph_t> :
     }
 };
 
-#    include <bio/ranges/views/to_char.hpp>
+/* *** Tuple overload ***
+ *
+ * We need to remove our alphabet_tuples from the default overload first, because
+ * there is no concept refinement (onyl enable_if).
+ */
+
+template <bio::alphabet::detail::alphabet_tuple_like alph_t>
+struct fmt::is_tuple_like<alph_t> : std::false_type
+{};
+
+/* *** Ranges overload ***
+ *
+ * We need to remove our ranges from the default overload first, because
+ * there is no concept refinement (onyl enable_if).
+ */
 
 //TODO: get rid of the following once formatting ranges as strings works in FMT via {:s}
 

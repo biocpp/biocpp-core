@@ -16,9 +16,9 @@
 #include <array>
 #include <type_traits>
 
-#if BIOCPP_WITH_CEREAL
+#if __has_include(<cereal/types/array.hpp>)
 #    include <cereal/types/array.hpp>
-#endif // BIOCPP_WITH_CEREAL
+#endif
 
 #include <bio/meta/detail/int_types.hpp>
 #include <bio/meta/type_traits/template_inspection.hpp>
