@@ -41,23 +41,6 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 #    error BioC++ include directory not set correctly. Forgot to add -I ${INSTALLDIR}/include to your CXXFLAGS?
 #endif
 
-// Cereal [optional]
-/*!\def BIOCPP_WITH_CEREAL
- * \brief Whether CEREAL support is available or not.
- * \ingroup meta
- */
-#ifndef BIOCPP_WITH_CEREAL
-#    if __has_include(<cereal/cereal.hpp>)
-#        define BIOCPP_WITH_CEREAL 1
-#    else
-#        define BIOCPP_WITH_CEREAL 0
-#    endif
-#elif BIOCPP_WITH_CEREAL != 0
-#    if !__has_include(<cereal/cereal.hpp>)
-#        error Cereal was marked as required, but not found!
-#    endif
-#endif
-
 // ============================================================================
 //  Documentation
 // ============================================================================

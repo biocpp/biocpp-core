@@ -9,7 +9,6 @@
 #include <gtest/gtest.h>
 
 #include <bio/ranges/container/dynamic_bitset.hpp>
-#include <bio/test/cereal.hpp>
 
 // Standard construction.
 TEST(dynamic_bitset, standard_construction)
@@ -798,8 +797,8 @@ TEST(dynamic_bitset, std_hash)
     EXPECT_EQ(hasher(t2), 12ULL);
 }
 
-TEST(dynamic_bitset, serialisation)
-{
-    bio::ranges::dynamic_bitset t1{0b100101};
-    bio::test::do_serialisation(t1);
-}
+// TEST(dynamic_bitset, serialisation)
+// {
+//     bio::ranges::dynamic_bitset t1{0b100101};
+//     bio::test::do_serialisation(t1);
+// }

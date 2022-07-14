@@ -125,24 +125,6 @@ else ()
 endif ()
 
 # ----------------------------------------------------------------------------
-# Detect if we are a clone of repository and if yes auto-add submodules
-# ----------------------------------------------------------------------------
-
-if (BIOCPP_CLONE_DIR)
-    biocpp_config_print ("Detected as running from a repository checkout…")
-endif ()
-
-if (BIOCPP_SUBMODULES_DIR)
-    file (GLOB submodules ${BIOCPP_SUBMODULES_DIR}/submodules/*/include)
-    foreach (submodule ${submodules})
-        if (IS_DIRECTORY ${submodule})
-            biocpp_config_print ("  …adding submodule include:  ${submodule}")
-            set (BIOCPP_DEPENDENCY_INCLUDE_DIRS ${submodule} ${BIOCPP_DEPENDENCY_INCLUDE_DIRS})
-        endif ()
-    endforeach ()
-endif ()
-
-# ----------------------------------------------------------------------------
 # Options for CheckCXXSourceCompiles
 # ----------------------------------------------------------------------------
 

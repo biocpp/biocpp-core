@@ -20,7 +20,6 @@
 #include <type_traits>
 
 #include <bio/alphabet/detail/alphabet_proxy.hpp>
-#include <bio/meta/concept/cereal.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
 #include <bio/ranges/views/convert.hpp>
 #include <bio/ranges/views/repeat_n.hpp>
@@ -996,12 +995,12 @@ public:
 
     /*!\cond DEV
      * \brief Serialisation support function.
-     * \tparam archive_t Type of `archive`; must satisfy bio::cereal_archive.
+     * \tparam archive_t Type of `archive`; must satisfy bio::typename.
      * \param archive The archive being serialised from/to.
      *
      * \attention These functions are never called directly, see \ref howto_use_cereal for more details.
      */
-    template <cereal_archive archive_t>
+    template <typename archive_t>
     void serialize(archive_t & archive)
     {
         archive(size_);

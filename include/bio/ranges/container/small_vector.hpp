@@ -20,7 +20,6 @@
 #    include <cereal/types/array.hpp>
 #endif // BIOCPP_WITH_CEREAL
 
-#include <bio/meta/concept/cereal.hpp>
 #include <bio/meta/detail/int_types.hpp>
 #include <bio/meta/type_traits/template_inspection.hpp>
 #include <bio/ranges/views/repeat_n.hpp>
@@ -878,12 +877,12 @@ public:
 public:
     //!\cond DEV
     /*!\brief Serialisation support function.
-     * \tparam archive_t Type of `archive`; must satisfy bio::cereal_archive.
+     * \tparam archive_t Type of `archive`; must satisfy bio::typename.
      * \param archive The archive being serialised from/to.
      *
      * \attention These functions are never called directly, see \ref howto_use_cereal for more details.
      */
-    template <cereal_archive archive_t>
+    template <typename archive_t>
     void serialize(archive_t & archive)
     {
         archive(data_);

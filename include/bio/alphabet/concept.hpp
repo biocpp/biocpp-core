@@ -17,7 +17,6 @@
 
 #include <bio/alphabet/biocpp.hpp>
 #include <bio/alphabet/exception.hpp>
-#include <bio/meta/concept/cereal.hpp>
 #include <bio/meta/concept/core_language.hpp>
 #include <bio/meta/detail/priority_tag.hpp>
 #include <bio/meta/detail/type_inspection.hpp>
@@ -820,9 +819,34 @@ concept writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires(
 };
 //!\endcond
 
+} // namespace bio::alphabet
 // ============================================================================
 //  serialisation
 // ============================================================================
+
+#if __has_include(<cereal/details/traits.hpp>)
+#include <cereal/details/traits.hpp>
+#endif
+
+namespace bio::alphabet::detail
+{
+
+/*!\brief Removes type-mangling that Cereal does with certain types on loading.
+ * \details Helpful when defining templatised save/load/serialize functions.
+ * \ingroup meta
+ */
+#if __has_include(<cereal/details/traits.hpp>)
+template <typename type>
+using strip_cereal_wrapper_t = typename cereal::traits::strip_minimal<std::decay_t<type>>::type;
+#else
+template <typename type>
+using strip_cereal_wrapper_t = type;
+#endif
+
+} // namespace bio::alphabet::detail
+
+namespace bio::alphabet
+{
 
 /*!\cond DEV
  * \name Generic serialisation functions for all bio::alphabet::semialphabet
@@ -843,7 +867,7 @@ concept writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires(
  *
  * \attention These functions are never called directly, see the \ref alphabet module on how to use serialisation.
  */
-template <cereal_output_archive archive_t, semialphabet alphabet_t>
+template <typename archive_t, semialphabet alphabet_t>
 alphabet_rank_t<alphabet_t> save_minimal(archive_t const &, alphabet_t const & l)
 {
     return to_rank(l);
@@ -862,14 +886,14 @@ alphabet_rank_t<alphabet_t> save_minimal(archive_t const &, alphabet_t const & l
  *
  * \attention These functions are never called directly, see the \ref alphabet module on how to use serialisation.
  */
-template <cereal_input_archive archive_t, typename wrapped_alphabet_t>
+template <typename archive_t, typename wrapped_alphabet_t>
 void load_minimal(
   archive_t const &,
   wrapped_alphabet_t &&                                                            l,
-  alphabet_rank_t<bio::detail::strip_cereal_wrapper_t<wrapped_alphabet_t>> const & r) requires
-  semialphabet<bio::detail::strip_cereal_wrapper_t<wrapped_alphabet_t>>
+  alphabet_rank_t<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>> const & r) requires
+  semialphabet<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>>
 {
-    assign_rank_to(r, static_cast<bio::detail::strip_cereal_wrapper_t<wrapped_alphabet_t> &>(l));
+    assign_rank_to(r, static_cast<detail::strip_cereal_wrapper_t<wrapped_alphabet_t> &>(l));
 }
 /*!\}
  * \endcond
