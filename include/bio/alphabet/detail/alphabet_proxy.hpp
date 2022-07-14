@@ -47,8 +47,13 @@ namespace bio::alphabet
  *
  * ### Implementation notes
  *
- * The derived type needs to provide an `.on_update()` member function that performs the changes in the underlying
- * data structure.
+ * The derived type needs to provide a `.to_rank()` member and an `.assign_rank()`
+ * member with the actual implementations. Additionally, there needs to be a
+ * `const` qualified overload for `.assign_rank()`.
+ *
+ * Most derived_types will also want to specify the default assignment operator
+ * to implement "assign-through" and to also provide a `const`-qualified overload
+ * of the same.
  *
  * See bio::ranges::bitcompressed_vector or bio::alphabet::alphabet_tuple_base for examples of how this class is used.
  */
@@ -56,25 +61,9 @@ template <typename derived_type, writable_semialphabet alphabet_type>
     //!\cond
     requires std::regular<alphabet_type>
 //!\endcond
-class alphabet_proxy :
-  public std::conditional_t<std::is_class_v<alphabet_type>,
-                            alphabet_type,
-                            alphabet_base<derived_type,
-                                          alphabet_size<alphabet_type>,
-                                          meta::valid_template_spec_or_t<void, alphabet_char_t, alphabet_type>>>
+class alphabet_proxy
 {
 private:
-    //!\brief Type of the base class.
-    using base_t =
-      std::conditional_t<std::is_class_v<alphabet_type>,
-                         alphabet_type,              // inherit from emulated type if possible
-                         alphabet_base<derived_type, // else: alphabet_base
-                                       alphabet_size<alphabet_type>,
-                                       meta::valid_template_spec_or_t<void, alphabet_char_t, alphabet_type>>>;
-
-    //!\brief Befriend the base type.
-    friend base_t;
-
     //!\brief The type of the alphabet character.
     using char_type = meta::valid_template_spec_or_t<char, alphabet_char_t, alphabet_type>;
 
@@ -92,40 +81,24 @@ private:
     constexpr alphabet_proxy & operator=(alphabet_proxy &&)      = default; //!< Defaulted.
     ~alphabet_proxy()                                            = default; //!< Defaulted.
 
-    //!\brief Construction from the emulated type.
-    constexpr alphabet_proxy(alphabet_type const a) noexcept
-      //!\cond
-      requires std::is_class_v<alphabet_type>
-      //!\endcond
-      : base_t{a}
-    {}
-
-    //!\brief Construction from the emulated type.
-    constexpr alphabet_proxy(alphabet_type const a) noexcept
-      //!\cond
-      requires(!std::is_class_v<alphabet_type>)
-      //!\endcond
-      :
-      base_t{}
-    {
-        base_t::assign_rank(bio::alphabet::to_rank(a));
-    }
-
     //!\brief Assigment from the emulated type. This function triggers the specialisation in the derived_type.
     constexpr derived_type & operator=(alphabet_type const & c) noexcept
     {
-        if constexpr (std::is_class_v<alphabet_type>)
-            bio::alphabet::assign_rank_to(bio::alphabet::to_rank(c), static_cast<alphabet_type &>(*this));
-        else
-            base_t::assign_rank(bio::alphabet::to_rank(c));
-
-        static_cast<derived_type &>(*this).on_update(); // <- this invokes the actual proxy behaviour!
+        static_cast<derived_type &>(*this).assign_rank(bio::alphabet::to_rank(c)); // <- this invokes the actual proxy
         return static_cast<derived_type &>(*this);
+    }
+
+    //!\overload
+    constexpr derived_type const & operator=(alphabet_type const & c) const noexcept
+    {
+        static_cast<derived_type const &>(*this).assign_rank(
+          bio::alphabet::to_rank(c)); // <- this invokes the actual proxy
+        return static_cast<derived_type const &>(*this);
     }
 
     //!\brief Assignment from any type that the emulated type is assignable from.
     template <typename indirect_assignable_type>
-    constexpr derived_type & operator=(indirect_assignable_type const & c) noexcept
+    constexpr derived_type & operator=(indirect_assignable_type const & c) const noexcept
       //!\cond
       requires meta::weakly_assignable_from<alphabet_type, indirect_assignable_type>
     //!\endcond
@@ -148,15 +121,7 @@ public:
      *        the assignment operator which invokes derived behaviour.
      * \{
      */
-    //!\brief Assigns a rank.
-    constexpr derived_type & assign_rank(alphabet_rank_t<alphabet_type> const r) noexcept
-    {
-        alphabet_type tmp{};
-        assign_rank_to(r, tmp);
-        return operator=(tmp);
-    }
-
-    //!\brief Assigns a character.
+    //!\copydoc bio::alphabet::alphabet_base::assign_char
     constexpr derived_type & assign_char(char_type const c) noexcept
       //!\cond
       requires writable_alphabet<alphabet_type>
@@ -167,8 +132,30 @@ public:
         return operator=(tmp);
     }
 
-    //!\brief Assigns a phred.
+    //!\copydoc bio::alphabet::alphabet_base::assign_char
+    constexpr derived_type const & assign_char(char_type const c) const noexcept
+      //!\cond
+      requires writable_alphabet<alphabet_type>
+    //!\endcond
+    {
+        alphabet_type tmp{};
+        assign_char_to(c, tmp);
+        return operator=(tmp);
+    }
+
+    //!\copydoc bio::alphabet::quality_base::assign_phred
     constexpr derived_type & assign_phred(phred_type const c) noexcept
+      //!\cond
+      requires writable_quality_alphabet<alphabet_type>
+    //!\endcond
+    {
+        alphabet_type tmp{};
+        assign_phred_to(c, tmp);
+        return operator=(tmp);
+    }
+
+    //!\copydoc bio::alphabet::quality_base::assign_phred
+    constexpr derived_type const & assign_phred(phred_type const c) const noexcept
       //!\cond
       requires writable_quality_alphabet<alphabet_type>
     //!\endcond
@@ -186,10 +173,7 @@ public:
     //!\brief Implicit conversion to the emulated type.
     constexpr operator alphabet_type() const noexcept
     {
-        if constexpr (std::is_class_v<alphabet_type>)
-            return *this;
-        else
-            return assign_rank_to(base_t::to_rank(), alphabet_type{});
+        return alphabet::assign_rank_to(static_cast<derived_type const &>(*this).to_rank(), alphabet_type{});
 
         /* Instead of static_cast'ing to the alphabet_type which also considers the constructors of the alphabet_type,
          * we explicitly invoke this operator in various places.
@@ -209,14 +193,11 @@ public:
     //!\brief Implicit conversion to types that the emulated type is convertible to.
     template <typename other_t>
         //!\cond
-        requires(!std::is_class_v<alphabet_type> && std::convertible_to<alphabet_type, other_t>)
+        requires(std::convertible_to<alphabet_type, other_t>)
     //!\endcond
     constexpr operator other_t() const noexcept { return operator alphabet_type(); }
 
-    //!\brief Returns the rank.
-    constexpr auto to_rank() const noexcept { return bio::alphabet::to_rank(operator alphabet_type()); }
-
-    //!\brief Returns the character.
+    //!\copydoc bio::alphabet::alphabet_base::to_char
     constexpr auto to_char() const noexcept
       //!\cond
       requires alphabet<alphabet_type>
@@ -225,7 +206,7 @@ public:
         return bio::alphabet::to_char(operator alphabet_type());
     }
 
-    //!\brief Returns the phred score.
+    //!\copydoc bio::alphabet::quality_base::to_phred
     constexpr auto to_phred() const noexcept
       //!\cond
       requires quality_alphabet<alphabet_type>
@@ -234,7 +215,7 @@ public:
         return bio::alphabet::to_phred(operator alphabet_type());
     }
 
-    //!\brief Returns the complement.
+    //!\copydoc bio::alphabet::nucleotide_base::complement
     constexpr alphabet_type complement() const noexcept
       //!\cond
       requires nucleotide_alphabet<alphabet_type>
@@ -253,11 +234,41 @@ public:
     }
     //!\}
 
+    //!\brief Checks order of `lhs` and `rhs`.
+    friend constexpr void swap(derived_type const & lhs, derived_type const & rhs)
+    {
+        alphabet_type lhs_value = lhs.operator alphabet_type();
+        alphabet_type rhs_value = rhs.operator alphabet_type();
+        lhs                     = rhs_value;
+        rhs                     = lhs_value;
+    }
+
+    //!\brief Checks order of `lhs` and `rhs`.
+    friend constexpr void swap(derived_type & lhs, derived_type & rhs)
+    {
+        alphabet_type lhs_value = lhs.operator alphabet_type();
+        alphabet_type rhs_value = rhs.operator alphabet_type();
+        lhs                     = rhs_value;
+        rhs                     = lhs_value;
+    }
+
     /*!\name Comparison operators
      * \brief These are only required if the emulated type allows comparison with types it is not convertible to,
      *        e.g. bio::alphabet::alphabet_variant.
      * \{
      */
+    //!\brief Checks whether the letters `lhs` and `rhs` are equal.
+    friend constexpr bool operator==(derived_type const lhs, derived_type const rhs)
+    {
+        return lhs.to_rank() == rhs.to_rank();
+    }
+
+    //!\brief Checks order of `lhs` and `rhs`.
+    friend constexpr auto operator<=>(derived_type const lhs, derived_type const rhs)
+    {
+        return lhs.to_rank() <=> rhs.to_rank();
+    }
+
 private:
     //!\brief work around a gcc bug that disables short-circuiting of operator&& in an enable_if_t of a friend function
     template <typename t>
@@ -299,61 +310,106 @@ public:
     //!\}
 
 private:
-    /* IMPLEMENTATION NOTE:
-     *
-     * We do not need to redefine tag_invoke per-se, only in the following situations:
-     *
-     * If we inherit from another alphabet class type (NOT e.g. char):
-     *  - friends are already defined on the alphabet_type
-     *  - this type implicitly converts to that, so we are fine
-     *  - HOWEVER, the assignment function return alphabet_type and not our derived_type,
-     *    so we need to add overloads for that:
-     */
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr derived_type & tag_invoke(cpo::assign_rank_to,
-                                               alphabet_rank_t<alphabet_type> const r,
-                                               derived_type &                       a) noexcept
-      requires(std::is_class_v<alphabet_type> && (requires { {a.assign_rank(r)}; }))
+    friend constexpr auto tag_invoke(cpo::to_rank, derived_type const a) noexcept { return a.to_rank(); }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr derived_type & tag_invoke(cpo::assign_rank_to, auto const r, derived_type & a) noexcept
+      requires(requires { {a.assign_rank(r)}; })
     {
         return a.assign_rank(r);
     }
 
     //!\brief tag_invoke() wrapper around member.
+    friend constexpr derived_type const & tag_invoke(cpo::assign_rank_to, auto const r, derived_type const & a) noexcept
+      requires(requires { {a.assign_rank(r)}; })
+    {
+        return a.assign_rank(r);
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr auto tag_invoke(cpo::to_char, derived_type const a) noexcept requires(requires { {a.to_char()}; })
+    {
+        return a.to_char();
+    }
+
+    //!\brief tag_invoke() wrapper around member.
     friend constexpr derived_type & tag_invoke(cpo::assign_char_to, char_type const c, derived_type & a) noexcept
-      requires(std::is_class_v<alphabet_type> && (requires { {a.assign_char(c)}; }))
+      requires(requires { {a.assign_char(c)}; })
     {
         return a.assign_char(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr derived_type & tag_invoke(cpo::assign_phred_to, phred_type const p, derived_type & a) noexcept
-      requires(std::is_class_v<alphabet_type> && (requires { {a.assign_phred(p)}; }))
+    friend constexpr derived_type const & tag_invoke(cpo::assign_char_to,
+                                                     char_type const      c,
+                                                     derived_type const & a) noexcept
+      requires(requires { {a.assign_char(c)}; })
     {
-        return a.assign_phred(p);
+        return a.assign_char(c);
     }
 
-    /* IMPLEMENTATION NOTE:
-     *
-     * The underlying alphabet_type may be (nothrow+constexpr) default-constructible
-     * but the derived type may not be (e.g. bitcompressed_vector_reference_t<dna4>).
-     *
-     * Since we do regular inheritance and not CRTP, we lack the std::type_identity
-     * overloads and need to add them:
-     */
     //!\brief tag_invoke() wrapper around member.
-    friend consteval auto tag_invoke(cpo::size, std::type_identity<derived_type>) noexcept
-      requires(std::is_class_v<alphabet_type> && !meta::is_constexpr_default_constructible_v<derived_type>)
+    friend constexpr bool tag_invoke(cpo::char_is_valid_for, char_type const c, derived_type) noexcept
+      requires(requires { {derived_type::char_is_valid(c)}; })
     {
-        return alphabet_size;
+        return derived_type::char_is_valid(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr bool tag_invoke(cpo::char_is_valid_for,
                                      char_type const c,
                                      std::type_identity<derived_type>) noexcept
-      requires(std::is_class_v<alphabet_type> && !meta::is_constexpr_default_constructible_v<derived_type>)
+      //!\cond REQ
+      requires(requires { {derived_type::char_is_valid(c)}; } &&
+               !meta::is_constexpr_default_constructible_v<derived_type>)
+    //!\endcond
     {
-        return char_is_valid(c);
+        return derived_type::char_is_valid(c);
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend consteval auto tag_invoke(cpo::size, derived_type) noexcept requires
+      meta::is_constexpr_default_constructible_v<derived_type>
+    {
+        return alphabet_size;
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend consteval auto tag_invoke(cpo::size, std::type_identity<derived_type>) noexcept
+      requires(!meta::is_constexpr_default_constructible_v<derived_type>)
+    {
+        return alphabet_size;
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr auto tag_invoke(cpo::complement, derived_type const a) noexcept
+      requires(requires { {a.complement()}; })
+    {
+        return a.complement();
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr phred_type tag_invoke(cpo::to_phred, derived_type const a) noexcept
+      requires(requires { {a.to_phred()}; })
+    {
+        return a.to_phred();
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr derived_type & tag_invoke(cpo::assign_phred_to, phred_type const p, derived_type & a) noexcept
+      requires(requires { {a.assign_phred(p)}; })
+    {
+        return a.assign_phred(p);
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    friend constexpr derived_type const & tag_invoke(cpo::assign_phred_to,
+                                                     phred_type const     p,
+                                                     derived_type const & a) noexcept
+      requires(requires { {a.assign_phred(p)}; })
+    {
+        return a.assign_phred(p);
     }
 };
 

@@ -54,3 +54,28 @@ TEST(bitcompressed_vector_test, gap_compatibility)
     bio::ranges::bitcompressed_vector<bio::alphabet::gap> v;
     EXPECT_TRUE(bio::alphabet::writable_alphabet<decltype(v[0])>);
 }
+
+TEST(bitcompressed_vector_test, const_assignability)
+{
+    bio::ranges::bitcompressed_vector<bio::alphabet::dna4> v{"ACGT"_dna4};
+    auto const                                             ref = *v.begin();
+    ref                                                        = 'T'_dna4;
+    EXPECT_RANGE_EQ(v, "TCGT"_dna4);
+}
+
+#include "../../alphabet/alphabet_proxy_test_template.hpp"
+
+using bio::alphabet::operator""_dna4;
+using ref_t = std::ranges::range_reference_t<bio::ranges::bitcompressed_vector<bio::alphabet::dna4>>;
+
+template <>
+struct proxy_fixture<ref_t> : public ::testing::Test
+{
+    bio::ranges::bitcompressed_vector<bio::alphabet::dna4> data{"AAC"_dna4};
+
+    ref_t default_init{data[0]};
+    ref_t t0{data[1]};
+    ref_t t1{data[2]};
+};
+
+INSTANTIATE_TYPED_TEST_SUITE_P(proxy_test, proxy_fixture, ::testing::Types<ref_t>, );

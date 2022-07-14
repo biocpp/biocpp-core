@@ -18,6 +18,7 @@
 #include <bio/alphabet/quality/qualified.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
+#include "../alphabet_proxy_test_template.hpp"
 #include "../alphabet_test_template.hpp"
 #include "../composite/alphabet_tuple_base_test_template.hpp"
 #include "../semi_alphabet_constexpr_test_template.hpp"
@@ -74,3 +75,23 @@ INSTANTIATE_TYPED_TEST_SUITE_P(qualified, semi_alphabet_test, qualified_types, )
 INSTANTIATE_TYPED_TEST_SUITE_P(qualified, alphabet_constexpr, qualified_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(qualified, semi_alphabet_constexpr, qualified_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(qualified, alphabet_tuple_base_test, qualified_types, );
+
+using bio::alphabet::operator""_dna4;
+using bio::alphabet::operator""_phred42;
+
+using tup   = bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>;
+using ref_t = decltype(get<0>(std::declval<tup &>()));
+
+template <>
+struct proxy_fixture<ref_t> : public ::testing::Test
+{
+    tup data_def{'A'_dna4, '!'_phred42};
+    tup data_t0{'A'_dna4, '!'_phred42};
+    tup data_t1{'C'_dna4, '!'_phred42};
+
+    ref_t default_init{get<0>(data_def)};
+    ref_t t0{get<0>(data_t0)};
+    ref_t t1{get<0>(data_t1)};
+};
+
+INSTANTIATE_TYPED_TEST_SUITE_P(proxy_test, proxy_fixture, ::testing::Types<ref_t>, );

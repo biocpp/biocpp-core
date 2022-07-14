@@ -123,19 +123,11 @@ private:
     private:
         //!\brief The base type.
         using base_t = alphabet::alphabet_proxy<reference_proxy_type, alphabet_type>;
-        //!\brief Befriend the base type so it can call our #on_update().
-        friend base_t;
 
         //!\brief Pointer to the host's storage container.
         data_type * data_ptr;
         //!\brief (Uncompressed) index of the current element.
         size_t      index;
-
-        //!\brief Update the compressed representation.
-        constexpr void on_update() const noexcept
-        {
-            set_rank(*data_ptr, index, static_cast<base_t const &>(*this).to_rank());
-        }
 
     public:
         /*!\name Constructors, destructor and assignment
@@ -150,20 +142,44 @@ private:
         // Import from base:
         using base_t::operator=;
 
-        //!\brief Assignment does not change this, instead it updates the storage.
+        //!\brief Assignment does not change `this`, instead it updates the referenced value.
         constexpr reference_proxy_type & operator=(reference_proxy_type const & rhs)
         {
-            static_cast<base_t &>(*this).assign_rank(rhs.to_rank());
-            return *this;
+            return assign_rank(rhs.to_rank());
+        }
+
+        //!\brief Assignment does not change `this`, instead it updates the referenced value (also works on `const` objects).
+        constexpr reference_proxy_type const & operator=(reference_proxy_type const & rhs) const
+        {
+            return assign_rank(rhs.to_rank());
         }
 
         //!\brief The main constructor to create this object.
         reference_proxy_type(data_type * const data_ptr_, size_t const index_) noexcept :
           data_ptr{data_ptr_}, index{index_}
-        {
-            static_cast<base_t &>(*this).assign_rank(get_rank(*data_ptr, index));
-        }
+        {}
         //!\}
+
+        //!\brief Retrieve the compressed representation.
+        constexpr alphabet::alphabet_rank_t<alphabet_type> to_rank() const noexcept
+        {
+            return get_rank(*data_ptr, index);
+        }
+
+        //!\brief Update the compressed representation.
+        constexpr reference_proxy_type & assign_rank(alphabet::alphabet_rank_t<alphabet_type> const r) noexcept
+        {
+            set_rank(*data_ptr, index, r);
+            return *this;
+        }
+
+        //!\brief Update the compressed representation (also works on `const` objects).
+        constexpr reference_proxy_type const & assign_rank(
+          alphabet::alphabet_rank_t<alphabet_type> const r) const noexcept
+        {
+            set_rank(*data_ptr, index, r);
+            return *this;
+        }
     };
 
     static_assert(alphabet::writable_alphabet<reference_proxy_type>);
