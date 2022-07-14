@@ -844,7 +844,7 @@ concept writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires(
  * \attention These functions are never called directly, see the \ref alphabet module on how to use serialisation.
  */
 template <cereal_output_archive archive_t, semialphabet alphabet_t>
-alphabet_rank_t<alphabet_t> CEREAL_SAVE_MINIMAL_FUNCTION_NAME(archive_t const &, alphabet_t const & l)
+alphabet_rank_t<alphabet_t> save_minimal(archive_t const &, alphabet_t const & l)
 {
     return to_rank(l);
 }
@@ -863,7 +863,7 @@ alphabet_rank_t<alphabet_t> CEREAL_SAVE_MINIMAL_FUNCTION_NAME(archive_t const &,
  * \attention These functions are never called directly, see the \ref alphabet module on how to use serialisation.
  */
 template <cereal_input_archive archive_t, typename wrapped_alphabet_t>
-void CEREAL_LOAD_MINIMAL_FUNCTION_NAME(
+void load_minimal(
   archive_t const &,
   wrapped_alphabet_t &&                                                            l,
   alphabet_rank_t<bio::detail::strip_cereal_wrapper_t<wrapped_alphabet_t>> const & r) requires

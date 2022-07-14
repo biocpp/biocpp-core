@@ -1597,7 +1597,7 @@ public:
      * These functions are never called directly, see \ref howto_use_cereal for more details.
      */
     template <cereal_archive archive_t>
-    void CEREAL_SERIALIZE_FUNCTION_NAME(archive_t & archive)
+    void serialize(archive_t & archive)
     {
         uint64_t size = data.size;
         archive(size);

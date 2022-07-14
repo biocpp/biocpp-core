@@ -58,29 +58,6 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 #    endif
 #endif
 
-#if !BIOCPP_WITH_CEREAL
-/*!\cond DEV
-     * \name Cereal function macros
-     * \ingroup meta
-     * \brief These can be changed by apps so we used the macros instead of the values internally.
-     * \{
-     */
-
-//! \brief Macro for Cereal's serialize function.
-#    define CEREAL_SERIALIZE_FUNCTION_NAME    serialize
-//! \brief Macro for Cereal's load function.
-#    define CEREAL_LOAD_FUNCTION_NAME         load
-//! \brief Macro for Cereal's save function.
-#    define CEREAL_SAVE_FUNCTION_NAME         save
-//! \brief Macro for Cereal's load_minimal function.
-#    define CEREAL_LOAD_MINIMAL_FUNCTION_NAME load_minimal
-//! \brief Macro for Cereal's save_minimal function.
-#    define CEREAL_SAVE_MINIMAL_FUNCTION_NAME save_minimal
-/*!\}
-     * \endcond
-     */
-#endif
-
 // ============================================================================
 //  Documentation
 // ============================================================================
