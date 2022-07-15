@@ -15,7 +15,6 @@
 
 #include <bit>
 
-#include <bio/meta/concept/cereal.hpp>
 #include <bio/meta/detail/int_types.hpp>
 #include <bio/ranges/views/interleave.hpp>
 #include <bio/ranges/views/repeat_n.hpp>
@@ -1588,7 +1587,7 @@ public:
 
     //!\cond DEV
     /*!\brief Serialisation support function.
-     * \tparam archive_t Type of `archive`; must satisfy bio::cereal_archive.
+     * \tparam archive_t Type of `archive`; must satisfy bio::typename.
      * \param[in] archive The archive being serialised from/to.
      *
      * \details
@@ -1596,8 +1595,8 @@ public:
      * \attention
      * These functions are never called directly, see \ref howto_use_cereal for more details.
      */
-    template <cereal_archive archive_t>
-    void CEREAL_SERIALIZE_FUNCTION_NAME(archive_t & archive)
+    template <typename archive_t>
+    void serialize(archive_t & archive)
     {
         uint64_t size = data.size;
         archive(size);
@@ -1657,9 +1656,9 @@ struct fmt::formatter<bio::ranges::dynamic_bitset<bit_capacity>> : fmt::formatte
     constexpr auto format(bio::ranges::dynamic_bitset<bit_capacity> const s, auto & ctx) const
     {
         std::string str{"0b"};
-        str.reserve(s.size()); // TODO fix me
-        auto v = s | std::views::reverse | std::views::transform([](bool const bit) { return bit ? '1' : '0'; }) |
-                 bio::ranges::views::interleave(4, std::string_view{"'"});
+        str.reserve(2 + s.size() + s.size() / 4); // TODO fix me
+        auto v = s | std::views::transform([](bool const bit) { return bit ? '1' : '0'; }) |
+                 bio::ranges::views::interleave(4, std::string_view{"'"}) | std::views::reverse;
         std::ranges::copy(v, std::back_inserter(str));
         return fmt::formatter<std::string>::format(str, ctx);
     }

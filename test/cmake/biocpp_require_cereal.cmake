@@ -5,16 +5,22 @@
 # shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/master/LICENSE.md
 # -----------------------------------------------------------------------------------------------------
 
-macro (biocpp_require_fmt)
+macro (biocpp_require_cereal)
     enable_testing ()
 
     include (FetchContent)
     FetchContent_Declare(
-        fmtlib
-        GIT_REPOSITORY https://github.com/fmtlib/fmt
-        # master TODO switch to release
-        GIT_TAG 48b7e3dafb27ece02cd6addc8bd1041c79d59c2c
+        cereal-lib
+        GIT_REPOSITORY https://github.com/USCiLab/cereal/
+        # release v1.3.2
+        GIT_TAG ebef1e929807629befafbb2918ea1a08c7194554
     )
 
-    FetchContent_MakeAvailable(fmtlib)
+    set(BUILD_SANDBOX OFF)
+    set(BUILD_DOC OFF)
+    set(BUILD_TESTS OFF)
+    set(SKIP_PERFORMANCE_COMPARISON ON)
+    set(CEREAL_INSTALL OFF)
+
+    FetchContent_MakeAvailable(cereal-lib)
 endmacro ()

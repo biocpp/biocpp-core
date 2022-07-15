@@ -25,3 +25,37 @@ INSTANTIATE_TYPED_TEST_SUITE_P(masked, alphabet, masked_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(masked, semi_alphabet_test, masked_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(masked, alphabet_constexpr, masked_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(masked, semi_alphabet_constexpr, masked_types, );
+
+using m_t = bio::alphabet::masked<bio::alphabet::dna4>;
+
+TEST(masked_specific, size)
+{
+    EXPECT_EQ(bio::alphabet::alphabet_size<m_t>, 8ull);
+}
+
+// TEST(masked_specific, to_char)
+// {
+//     m_t alph;
+//     // TODO WTF
+// //     std::string compare = "ACGTacgt";
+//     std::string compare = "ACGTggtt";
+//
+//     for (size_t i = 0; i < 8; ++i)
+//     {
+//         alph.assign_rank(i);
+//         EXPECT_EQ(alph.to_char(), compare[i]);
+//     }
+// }
+//
+// TEST(masked_specific, assign_char)
+// {
+//     m_t alph;
+//     // TODO WTF
+// //     std::string compare = "ACGTacgt";
+//
+//     for (size_t i = 0; i < 8; ++i)
+//     {
+//         alph.assign_char(compare[i]);
+//         EXPECT_EQ(alph.to_rank(), i);
+//     }
+// }

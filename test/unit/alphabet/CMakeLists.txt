@@ -1,5 +1,4 @@
 add_subdirectories()
-biocpp_test(alphabet_cereal_test.cpp)
 biocpp_test(alphabet_hash_test.cpp)
 biocpp_test(custom_alphabet_test.cpp)
 biocpp_test(custom_alphabet2_test.cpp)

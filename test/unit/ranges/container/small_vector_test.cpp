@@ -13,7 +13,6 @@
 
 #include <bio/ranges/container/concept.hpp>
 #include <bio/ranges/container/small_vector.hpp>
-#include <bio/test/cereal.hpp>
 #include <ranges>
 
 #include "container_test_template.hpp"
@@ -401,12 +400,4 @@ TEST(small_vector, resize)
 {
     constexpr bool res = resize_test();
     EXPECT_TRUE(res);
-}
-
-TEST(small_vector, serialisation)
-{
-    bio::ranges::small_vector hello{
-      std::array{'h', 'e', 'l', 'l', 'o'}
-    };
-    bio::test::do_serialisation(hello);
 }

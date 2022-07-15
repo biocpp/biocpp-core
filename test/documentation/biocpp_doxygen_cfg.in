@@ -46,12 +46,7 @@ HTML_EXTRA_STYLESHEET  = ${BIOCPP_DOXYGEN_SOURCE_DIR}/test/documentation/biocpp.
 HTML_FOOTER            = ${BIOCPP_DOXYGEN_SOURCE_DIR}/test/documentation/biocpp_footer.html
 INPUT_ENCODING         = UTF-8
 
-PREDEFINED             = "CEREAL_SERIALIZE_FUNCTION_NAME=serialize" \
-                         "CEREAL_LOAD_FUNCTION_NAME=load" \
-                         "CEREAL_SAVE_FUNCTION_NAME=save" \
-                         "CEREAL_LOAD_MINIMAL_FUNCTION_NAME=load_minimal" \
-                         "CEREAL_SAVE_MINIMAL_FUNCTION_NAME=save_minimal" \
-                         "BIOCPP_DOXYGEN_ONLY(x)= x" \
+PREDEFINED             = "BIOCPP_DOXYGEN_ONLY(x)= x" \
                          "${BIOCPP_DOXYGEN_PREDEFINED_NDEBUG}"
 
 EXPAND_AS_DEFINED      = BIOCPP_CPO_IMPL

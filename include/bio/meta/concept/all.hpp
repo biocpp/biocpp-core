@@ -13,7 +13,6 @@
 
 #pragma once
 
-#include <bio/meta/concept/cereal.hpp>
 #include <bio/meta/concept/core_language.hpp>
 #include <bio/meta/concept/tuple.hpp>
 

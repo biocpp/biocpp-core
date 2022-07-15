@@ -11,7 +11,6 @@
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/ranges/container/bitcompressed_vector.hpp>
 #include <bio/ranges/container/small_vector.hpp>
-#include <bio/test/cereal.hpp>
 #include <bio/test/expect_range_eq.hpp>
 
 using bio::alphabet::operator""_dna4;
@@ -327,12 +326,6 @@ TYPED_TEST_P(container_over_dna4_test, resize)
     EXPECT_EQ(t0, (TypeParam{'A'_dna4, 'A'_dna4}));
 }
 
-TYPED_TEST_P(container_over_dna4_test, serialisation)
-{
-    TypeParam t1{'A'_dna4, 'C'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
-    bio::test::do_serialisation(t1);
-}
-
 REGISTER_TYPED_TEST_SUITE_P(container_over_dna4_test,
                             concepts,
                             construction,
@@ -345,5 +338,4 @@ REGISTER_TYPED_TEST_SUITE_P(container_over_dna4_test,
                             insert,
                             erase,
                             push_pop,
-                            resize,
-                            serialisation);
+                            resize);

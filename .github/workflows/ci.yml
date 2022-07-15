@@ -32,12 +32,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: "Unit gcc10"
+          - name: "Unit gcc10 Debug"
             cxx: "g++-10"
             cc: "gcc-10"
             os: "ubuntu-22.04"
             build: unit
-            build_type: Release
+            build_type: Debug
 
           - name: "Unit gcc11"
             cxx: "g++-11"
@@ -46,11 +46,18 @@ jobs:
             build: unit
             build_type: Release
 
-          - name: "Unit gcc12"
+          - name: "Unit gcc12 Debug"
             cxx: "g++-12"
             cc: "gcc-12"
             os: "ubuntu-22.04"
             build: unit
+            build_type: Debug
+
+          - name: "Integration gcc12"
+            cxx: "g++-12"
+            cc: "gcc-12"
+            os: "ubuntu-22.04"
+            build: integration
             build_type: Release
 
           - name: "Documentation"

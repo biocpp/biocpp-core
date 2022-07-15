@@ -12,7 +12,8 @@
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/alphabet/quality/phred42.hpp>
 #include <bio/alphabet/quality/qualified.hpp>
-#include <bio/test/cereal.hpp>
+
+#include "../cereal.hpp"
 
 template <typename t>
 using alphabet_cereal = ::testing::Test;
@@ -28,11 +29,11 @@ TYPED_TEST(alphabet_cereal, serialisation)
     TypeParam letter;
 
     bio::alphabet::assign_rank_to(1 % bio::alphabet::alphabet_size<TypeParam>, letter);
-    bio::test::do_serialisation(letter);
+    do_serialisation(letter);
 
     std::vector<TypeParam> vec;
     vec.resize(10);
     for (unsigned i = 0; i < 10; ++i)
         bio::alphabet::assign_rank_to(i % bio::alphabet::alphabet_size<TypeParam>, vec[i]);
-    bio::test::do_serialisation(vec);
+    do_serialisation(vec);
 }

@@ -11,7 +11,6 @@
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/ranges/container/bitcompressed_vector.hpp>
 #include <bio/ranges/container/concatenated_sequences.hpp>
-#include <bio/test/cereal.hpp>
 #include <bio/test/expect_range_eq.hpp>
 
 using bio::alphabet::operator""_dna4;
@@ -320,10 +319,4 @@ TYPED_TEST(container_of_container, swap)
     t0.swap(t1);
     EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "ACGT"_dna4, "GAGGA"_dna4}));
     EXPECT_EQ(t1, TypeParam{});
-}
-
-TYPED_TEST(container_of_container, serialisation)
-{
-    TypeParam t1{"ACGT"_dna4, "ACGT"_dna4, "GAGGA"_dna4};
-    bio::test::do_serialisation(t1);
 }
