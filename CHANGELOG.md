@@ -5,7 +5,7 @@
 This changelog contains a top-level entry for each release with sections on new features, API changes and notable
 bug-fixes (not all bug-fixes will be listed).
 
-# 0.1.0
+# 0.5.0
 
 ## Features
 
@@ -15,11 +15,14 @@ bug-fixes (not all bug-fixes will be listed).
 
 ## Some notable changes for users coming from SeqAn3
 
-* 🧹 Huge code cleanup, many bug-fixes and removal of most of the code :)
+* 🧹 Huge code cleanup and countless bug-fixes.
+* ✂ Removal of all dependencies… and… most of the code :)
 * 📦 Separate namespaces for each module.
 * 🏷 Much simpler customisation points by using `tag_invoke()`.
 * 🖨 Replaced the `debug_stream` with {fmt}.
-* 🛸 Lots of Modern C++ goodness: use of the spaceship operator, `consteval`, …
+* 🛸 More Modern C++ goodness: use of the spaceship operator, `consteval`, …
+* 📉 Compile-time down.
+* 📈 Performance up (for a few things).
 
 ## API stability
 
