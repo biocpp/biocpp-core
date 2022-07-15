@@ -58,7 +58,7 @@ jobs:
             cc: "gcc-12"
             os: "ubuntu-22.04"
             build: integration
-            build_type: Release
+            build_type: Debug
 
           - name: "Documentation"
             cxx: "doxygen"

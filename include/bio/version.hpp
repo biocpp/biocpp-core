@@ -20,7 +20,7 @@
 //!\brief The major version as MACRO.
 #define BIOCPP_VERSION_MAJOR 0
 //!\brief The minor version as MACRO.
-#define BIOCPP_VERSION_MINOR 1
+#define BIOCPP_VERSION_MINOR 5
 //!\brief The patch version as MACRO.
 #define BIOCPP_VERSION_PATCH 0
 
