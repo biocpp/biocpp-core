@@ -20,12 +20,12 @@ if (CMAKE_VERSION VERSION_LESS 3.12)
 else ()
     project (
         biocpp_core LANGUAGES CXX VERSION "${PACKAGE_VERSION}"
-        DESCRIPTION "SeqAn3 -- the modern C++ library for sequence analysis" # since cmake 3.9
-        HOMEPAGE_URL "https://github.com/biocpp/biocpp-core" # since cmake 3.12
+        DESCRIPTION "The core library of the BioC++ project."
+        HOMEPAGE_URL "https://github.com/biocpp/biocpp-core"
     )
 endif ()
 
-find_package (SeqAn3 3.0 REQUIRED HINTS ${BIOCPP_MODULE_PATH})
+find_package (BioCpp REQUIRED HINTS ${BIOCPP_MODULE_PATH})
 
 option(INSTALL_BIOCPP "Enable installation of BioC++ (Projects embedding biocpp may want to turn this OFF.)" ON)
 

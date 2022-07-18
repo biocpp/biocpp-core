@@ -61,7 +61,7 @@ int main ()
     assert(size1 == 4u);
 
 //! [compare]
-    // Equality and comparison of seqan::dna4 symbols.
+    // Equality and comparison of bio::alphabet::dna4 symbols.
     bool eq  = (cyt == 'C'_dna4); // true
     bool neq = (thy != 'C'_dna4); // true
     bool geq = (cyt >= 'C'_dna4); // true

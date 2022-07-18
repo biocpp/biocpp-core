@@ -158,7 +158,7 @@ elseif (BIOCPP_NO_CEREAL)
 endif ()
 
 # These two are "opt-in", because detected by CMake
-# If you want to force-require these, just do find_package (zlib REQUIRED) before find_package (seqan3)
+# If you want to force-require these, just do find_package (zlib REQUIRED) before find_package (biocpp)
 option (BIOCPP_NO_ZLIB  "Don't use ZLIB, even if present." OFF)
 option (BIOCPP_NO_BZIP2 "Don't use BZip2, even if present." OFF)
 
