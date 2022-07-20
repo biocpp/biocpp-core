@@ -118,7 +118,7 @@ namespace bio::ranges::views
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
- * ###Example
+ * ### Example
  *
  * Operating on a range of bio::alphabet::phred42:
  * \include test/snippet/ranges/views/trim_phred42.cpp

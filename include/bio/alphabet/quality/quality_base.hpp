@@ -98,7 +98,7 @@ public:
      *
      * Satisfies the bio::alphabet::writable_quality_alphabet::assign_phred() requirement via the bio::alphabet::assign_rank() wrapper.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      */

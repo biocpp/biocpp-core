@@ -93,11 +93,11 @@ public:
      *
      * Behaviour specific to amino acids: True also for lower case letters that silently convert to their upper case.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Guaranteed not to throw.
      */

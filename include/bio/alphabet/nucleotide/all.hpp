@@ -71,7 +71,7 @@
  *      bio::ranges::bitcompressed_vector)
  *   6. if you are working with bisulfite data use bio::alphabet::dna3bs
  *
- * ###Printing and conversion to char
+ * ### Printing and conversion to char
  *
  * As with all alphabets in BioC++, none of the nucleotide alphabets can be directly converted to char or printed
  * with iostreams.
@@ -80,7 +80,7 @@
  * `T` and `U` are represented by the same rank and you cannot differentiate between them. The only difference between
  * e.g. bio::alphabet::dna4 and bio::alphabet::rna4 is the output when calling to_char().
  *
- * ###Assignment and conversions between nucleotide types
+ * ### Assignment and conversions between nucleotide types
  *
  *   * Nucleotide types defined here are **implicitly** convertible to each other if they have the same size
  *     (e.g. bio::alphabet::dna4 ↔ bio::alphabet::rna4).
@@ -100,19 +100,19 @@
  * `char` values that are none of the IUPAC symbols, e.g. 'P', are always converted to the equivalent of assigning 'N',
  * i.e. they result in 'A' for bio::alphabet::dna4 and bio::alphabet::rna4, and in 'N' for the other alphabets.
  *
- * ###Literals
+ * ### Literals
  *
  * To avoid writing ``dna4{}.assign_char('C')`` every time, you may instead use the literal ``'C'_dna4``.
  * All nucleotide types defined here have character literals and also string literals which return a vector of the
  * respective type.
  *
- * ###Concept
+ * ### Concept
  *
  * The nucleotide submodule defines bio::alphabet::nucleotide_alphabet which encompasses all the alphabets defined in the
  * submodule and refines bio::alphabet::alphabet. The only additional requirement is that their values can be
  * complemented, see below.
  *
- * ###Complement
+ * ### Complement
  *
  * | Letter   | Description            | Complement |
  * |:--------:|------------------------|:----------:|

@@ -60,7 +60,7 @@ namespace bio::ranges::views
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
- * ###Example
+ * ### Example
  * \include test/snippet/ranges/views/rank_to.cpp
  * \hideinitializer
  */
