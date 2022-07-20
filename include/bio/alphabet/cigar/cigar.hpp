@@ -118,21 +118,27 @@ public:
     /*!\name Write functions
      * \{
      */
-    //!\brief Assign from the string representation.
-    cigar & assign_string(ranges::small_string<11> const s) noexcept
+    /*!\brief Assign from the string representation.
+     * \param s The string to assign from.
+     * \throws std::runtime_error If the string does not begin with an integer.
+     * \throws bio::alphabet::invalid_char_assignment If the string does not end on a valid character
+     *         for bio::alphabet::cigar_op.
+     */
+    cigar & assign_string(std::string_view const s)
     {
         uint32_t num{};
-        auto [ptr, errc] = std::from_chars(s.data(), s.data() + 10, num);
+        auto [ptr, errc] = std::from_chars(s.data(), s.data() + s.size() - 1, num);
 
-        if ((errc != std::errc{}) || (!char_is_valid_for<cigar_op>(*ptr)) || (*(ptr + 1) != 0))
+        if ((errc != std::errc{}) || (ptr != s.data() + s.size() - 1))
         {
-            get<0>(*this) = 0;
-            assign_char_to('P', get<1>(*this));
+            throw std::runtime_error{std::string{"Illegal string assignment to CIGAR: "} + static_cast<std::string>(s)};
         }
         else
         {
             get<0>(*this) = num;
-            assign_char_to(*ptr, get<1>(*this));
+            cigar_op tmp;
+            assign_char_strictly_to(*ptr, tmp);
+            get<1>(*this) = tmp;
         }
 
         return *this;

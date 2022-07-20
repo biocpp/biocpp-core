@@ -292,6 +292,20 @@ public:
      */
     std::string str() const { return std::string{this->cbegin(), this->cend()}; }
 
+    /*!\brief Returns the content represented as std::string_view.
+     *
+     * \returns `std::string_view` The stored string.
+     *
+     * ### Exceptions
+     *
+     * Strong exception guarantee. No data is modified.
+     *
+     * ### Complexity
+     *
+     * Constant.
+     */
+    std::string_view view() const { return std::string_view{data_.data(), this->size()}; }
+
     /*!\brief Returns the content represented as 0-terminated c-style string.
      *
      * \returns `char const *` The stored string.
@@ -306,7 +320,7 @@ public:
      */
     constexpr char const * c_str() const noexcept { return data_.data(); }
 
-    /*!\brief Implicit conversion to std::string which delegates to bio::ranges::small_string::str().
+    /*!\brief Implicit conversion to std::string_view (same as calling bio::ranges::small_string::view() ).
      *
      * ### Exceptions
      *
@@ -314,9 +328,9 @@ public:
      *
      * ### Complexity
      *
-     * Linear in the size of the string.
+     * Constant.
      */
-    operator std::string() const { return str(); }
+    operator std::string_view() const { return view(); }
     //!\}
 
     /*!\name Input/output

@@ -106,10 +106,17 @@ TEST(small_string, string)
     EXPECT_EQ(em.str(), "hello"s); // explicit
 }
 
-TEST(small_string, implicit_conversion)
+TEST(small_string, view_conversion)
 {
     bio::ranges::small_string em{"hello"};
-    std::string               str = em;
+    std::string_view          str = em;
+    EXPECT_EQ(str, "hello"s); // explicit
+}
+
+TEST(small_string, string_conversion)
+{
+    bio::ranges::small_string em{"hello"};
+    std::string               str = static_cast<std::string>(em);
     EXPECT_EQ(str, "hello"s); // explicit
 }
 
