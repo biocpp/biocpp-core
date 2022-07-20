@@ -1,8 +1,9 @@
 # -----------------------------------------------------------------------------------------------------
+# Copyright (c) 2022 deCODE Genetics
 # Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 # Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 # This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
-# shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/master/LICENSE.md
+# shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 # -----------------------------------------------------------------------------------------------------
 #
 # This CMake module will try to find BioC++ and its dependencies.  You can use
@@ -16,18 +17,6 @@
 # BioC++ has the following platform requirements:
 #
 #   C++20
-#
-# BioC++ has the following optional dependencies:
-#
-#   Cereal    -- Serialisation library
-#
-# If you don't wish for these to be detected (and used), you may define BIOCPP_NO_ZLIB,
-# BIOCPP_NO_BZIP2, BIOCPP_NO_CEREAL and BIOCPP_NO_LEMON respectively.
-#
-# If you wish to require the presence of ZLIB or BZip2, just check for the module before
-# finding BioC++, e.g. "find_package (ZLIB REQUIRED)".
-# If you wish to require the presence of CEREAL, you may define BIOCPP_CEREAL.
-# If you wish to require the presence of LEMON, you may define BIOCPP_LEMON.
 #
 # Once the search has been performed, the following variables will be set.
 #
@@ -45,8 +34,7 @@
 #
 # Additionally, the following [IMPORTED][IMPORTED] targets are defined:
 #
-#   biocpp::core          -- interface target where
-#                                  target_link_libraries(target biocpp::core)
+#   biocpp::core          -- interface target where target_link_libraries(target biocpp::core)
 #                              automatically sets
 #                                  target_include_directories(target $BIOCPP_INCLUDE_DIRS),
 #                                  target_link_libraries(target $BIOCPP_LIBRARIES),
@@ -113,11 +101,6 @@ endmacro ()
 # Find BioC++ include path
 # ----------------------------------------------------------------------------
 
-# Note that biocpp-config.cmake can be standalone and thus BIOCPP_CLONE_DIR might be empty.
-# * `BIOCPP_CLONE_DIR` was already found in biocpp-config-version.cmake
-# * `BIOCPP_INCLUDE_DIR` was already found in biocpp-config-version.cmake
-find_path (BIOCPP_SUBMODULES_DIR NAMES submodules/sdsl-lite HINTS "${BIOCPP_CLONE_DIR}" "${BIOCPP_INCLUDE_DIR}/bio")
-
 if (BIOCPP_INCLUDE_DIR)
     biocpp_config_print ("BioC++ include dir found:   ${BIOCPP_INCLUDE_DIR}")
 else ()
@@ -133,34 +116,6 @@ set (CMAKE_REQUIRED_QUIET       1)
 # use global variables in Check* calls
 set (CMAKE_REQUIRED_INCLUDES    ${CMAKE_INCLUDE_PATH} ${BIOCPP_INCLUDE_DIR} ${BIOCPP_DEPENDENCY_INCLUDE_DIRS})
 set (CMAKE_REQUIRED_FLAGS       ${CMAKE_CXX_FLAGS})
-
-# ----------------------------------------------------------------------------
-# Force-deactivate optional dependencies
-# ----------------------------------------------------------------------------
-
-# Cereal is auto-detected by default, i.e. used if found, not used if not found.
-# You can optionally set a hard requirement so a build fails without cereal,
-# or you can force-disable cereal even if present on the system.
-option (BIOCPP_CEREAL    "Require cereal and fail if not present." OFF)
-option (BIOCPP_NO_CEREAL "Don't use cereal, even if present." OFF)
-
-if (BIOCPP_CEREAL AND BIOCPP_NO_CEREAL)
-    # this is always a user error, therefore we always error-out, even if BioC++ is not required
-    message (FATAL_ERROR "You may not specify BIOCPP_CEREAL and BIOCPP_NO_CEREAL at the same time.\n\
-                          You can specify neither (use auto-detection), or specify either to force on/off.")
-    return ()
-endif ()
-
-if (BIOCPP_CEREAL)
-    set (BIOCPP_DEFINITIONS ${BIOCPP_DEFINITIONS} "-DBIOCPP_WITH_CEREAL=1")
-elseif (BIOCPP_NO_CEREAL)
-    set (BIOCPP_DEFINITIONS ${BIOCPP_DEFINITIONS} "-DBIOCPP_WITH_CEREAL=0")
-endif ()
-
-# These two are "opt-in", because detected by CMake
-# If you want to force-require these, just do find_package (zlib REQUIRED) before find_package (biocpp)
-option (BIOCPP_NO_ZLIB  "Don't use ZLIB, even if present." OFF)
-option (BIOCPP_NO_BZIP2 "Don't use BZip2, even if present." OFF)
 
 # ----------------------------------------------------------------------------
 # Require C++20
@@ -208,28 +163,6 @@ if (Threads_FOUND)
     endif ()
 else ()
     biocpp_config_print ("Thread support:             not found.")
-endif ()
-
-# ----------------------------------------------------------------------------
-# Cereal dependency is optional, but may set as required
-# ----------------------------------------------------------------------------
-
-if (NOT BIOCPP_NO_CEREAL)
-    check_include_file_cxx (cereal/cereal.hpp _BIOCPP_HAVE_CEREAL)
-
-    if (_BIOCPP_HAVE_CEREAL)
-        if (BIOCPP_CEREAL)
-            biocpp_config_print ("Required dependency:        Cereal found.")
-        else ()
-            biocpp_config_print ("Optional dependency:        Cereal found.")
-        endif ()
-    else ()
-        if (BIOCPP_CEREAL)
-            biocpp_config_error ("The (optional) cereal library was marked as required, but wasn't found.")
-        else ()
-            biocpp_config_print ("Optional dependency:        Cereal not found.")
-        endif ()
-    endif ()
 endif ()
 
 # ----------------------------------------------------------------------------
@@ -326,8 +259,6 @@ if (BIOCPP_FIND_DEBUG)
   message ("  BIOCPP_INCLUDE_DIR          ${BIOCPP_INCLUDE_DIR}")
   message ("")
   message ("  ${CMAKE_FIND_PACKAGE_NAME}_FOUND                ${${CMAKE_FIND_PACKAGE_NAME}_FOUND}")
-  message ("  BIOCPP_HAS_ZLIB             ${ZLIB_FOUND}")
-  message ("  BIOCPP_HAS_BZIP2            ${BZIP2_FOUND}")
   message ("")
   message ("  BIOCPP_INCLUDE_DIRS         ${BIOCPP_INCLUDE_DIRS}")
   message ("  BIOCPP_LIBRARIES            ${BIOCPP_LIBRARIES}")
