@@ -18,8 +18,7 @@
 #include <bio/ranges/container/small_string.hpp>
 #include <bio/ranges/container/small_vector.hpp>
 
-using bio::alphabet::operator""_dna4;
-using bio::alphabet::operator""_dna4;
+using namespace bio::alphabet::literals;
 
 template <typename t>
 using ranges_1d_generic = ::testing::Test;

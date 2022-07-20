@@ -112,9 +112,17 @@ protected:
 //!\relates sam_dna16
 using sam_dna16_vector = std::vector<sam_dna16>;
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -152,9 +160,16 @@ inline sam_dna16_vector operator""_sam_dna16(char const * s, size_t n)
 }
 //!\}
 
+} // namespace literals
+
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // complement deferred definition
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
 
 constexpr std::array<sam_dna16, sam_dna16::alphabet_size> sam_dna16::complement_table{
   'N'_sam_dna16, // complement of '='_sam_dna16
@@ -175,4 +190,4 @@ constexpr std::array<sam_dna16, sam_dna16::alphabet_size> sam_dna16::complement_
   'N'_sam_dna16  // complement of 'N'_sam_dna16
 };
 
-} // namespace bio::alphabet
+}

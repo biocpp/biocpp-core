@@ -124,9 +124,17 @@ protected:
 //!\relates dna15
 using dna15_vector = std::vector<dna15>;
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -162,9 +170,16 @@ inline dna15_vector operator""_dna15(char const * s, std::size_t n)
 }
 //!\}
 
+} // namespace literals
+
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // dna15 (deferred definition)
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
 
 constexpr std::array<dna15, dna15::alphabet_size> dna15::complement_table{
   'T'_dna15, // complement of 'A'_dna15

@@ -3,7 +3,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_dna3bs;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::dna3bs_vector foo{"ACGTTA"_dna3bs}; // ATGTTA
     bio::alphabet::dna3bs_vector bar = "ATGTTA"_dna3bs;

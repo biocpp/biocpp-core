@@ -4,7 +4,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_phred42;
+    using namespace bio::alphabet::literals;
 
     // directly assign to a std::vector<phred42> using a string literal
     std::vector<bio::alphabet::phred42> qual_vec = "###!"_phred42;

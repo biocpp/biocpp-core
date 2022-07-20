@@ -125,14 +125,10 @@ protected:
     ();
 };
 
-} // namespace bio::alphabet
-
 // ------------------------------------------------------------------
 // containers
 // ------------------------------------------------------------------
 
-namespace bio::alphabet
-{
 //!\brief Alias for an std::vector of bio::alphabet::aa20.
 //!\relates aa20
 using aa20_vector = std::vector<aa20>;
@@ -144,6 +140,9 @@ using aa20_vector = std::vector<aa20>;
 // ------------------------------------------------------------------
 
 namespace bio::alphabet
+{
+
+inline namespace literals
 {
 
 /*!\name Literals
@@ -188,5 +187,7 @@ inline aa20_vector operator""_aa20(char const * s, std::size_t n)
     return r;
 }
 //!\}
+
+} // namespace literals
 
 } // namespace bio::alphabet

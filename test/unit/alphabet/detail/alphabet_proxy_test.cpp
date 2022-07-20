@@ -58,7 +58,7 @@ public:
     }
 };
 
-using bio::alphabet::operator""_dna4;
+using namespace bio::alphabet::literals;
 
 template <>
 struct proxy_fixture<alphabet_proxy_example> : public ::testing::Test

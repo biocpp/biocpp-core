@@ -6,7 +6,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_dna4;
+    using namespace bio::alphabet::literals;
 
     bio::ranges::concatenated_sequences<bio::alphabet::dna4_vector> concat1{"ACGT"_dna4, "GAGGA"_dna4};
     fmt::print("{}\n", concat1[0]); // "ACGT"

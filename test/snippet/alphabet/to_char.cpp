@@ -2,7 +2,7 @@
 #include <bio/alphabet/adaptation/char.hpp>
 #include <bio/alphabet/nucleotide/dna5.hpp>
 
-using bio::alphabet::operator""_dna5;
+using namespace bio::alphabet::literals;
 
 int main()
 {

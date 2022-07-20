@@ -103,9 +103,17 @@ protected:
 //!\relates rna15
 using rna15_vector = std::vector<rna15>;
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -141,9 +149,16 @@ inline rna15_vector operator""_rna15(char const * s, std::size_t n)
 }
 //!\}
 
+} // namespace literals
+
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // rna15 (deferred definition)
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
 
 constexpr std::array<rna15, rna15::alphabet_size> rna15::complement_table{
   'U'_rna15, // complement of 'A'_rna15

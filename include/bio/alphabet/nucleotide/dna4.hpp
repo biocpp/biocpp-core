@@ -142,9 +142,17 @@ protected:
 //!\relates dna4
 using dna4_vector = std::vector<dna4>;
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -179,5 +187,7 @@ inline dna4_vector operator""_dna4(char const * s, std::size_t n)
     return r;
 }
 //!\}
+
+} // namespace literals
 
 } // namespace bio::alphabet

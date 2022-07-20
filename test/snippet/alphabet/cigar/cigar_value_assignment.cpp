@@ -4,7 +4,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_cigar_op;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::cigar letter{10, 'I'_cigar_op};
 

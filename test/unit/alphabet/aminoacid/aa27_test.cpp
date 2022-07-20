@@ -15,7 +15,7 @@
 #include <bio/alphabet/aminoacid/aa27.hpp>
 #include <bio/ranges/views/zip.hpp>
 
-using bio::alphabet::operator""_aa27;
+using namespace bio::alphabet::literals;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(aa27, alphabet, bio::alphabet::aa27, );
 INSTANTIATE_TYPED_TEST_SUITE_P(aa27, semi_alphabet_test, bio::alphabet::aa27, );
@@ -57,6 +57,8 @@ TEST(aa27, to_char)
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+using namespace bio::alphabet::literals;
 
 TEST(literals, char_literal)
 {

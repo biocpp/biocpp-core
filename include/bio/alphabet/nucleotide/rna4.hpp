@@ -105,9 +105,17 @@ protected:
 //!\relates rna4
 using rna4_vector = std::vector<rna4>;
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -142,5 +150,7 @@ inline rna4_vector operator""_rna4(char const * s, std::size_t n)
     return r;
 }
 //!\}
+
+} // namespace literals
 
 } // namespace bio::alphabet

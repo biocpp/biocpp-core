@@ -13,8 +13,7 @@
 #include <bio/alphabet/quality/phred42.hpp>
 #include <bio/alphabet/quality/qualified.hpp>
 
-using bio::alphabet::operator""_dna4;
-using bio::alphabet::operator""_phred42;
+using namespace bio::alphabet::literals;
 
 TEST(alph_fmt, dna4)
 {

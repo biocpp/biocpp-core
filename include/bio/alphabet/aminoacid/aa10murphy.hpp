@@ -182,9 +182,17 @@ protected:
 //!\relates aa10murphy
 using aa10murphy_vector = std::vector<aa10murphy>;
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -223,5 +231,7 @@ inline aa10murphy_vector operator""_aa10murphy(char const * s, std::size_t n)
     return r;
 }
 //!\}
+
+} // namespace literals
 
 } // namespace bio::alphabet

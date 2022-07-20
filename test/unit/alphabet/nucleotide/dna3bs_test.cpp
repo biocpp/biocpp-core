@@ -18,7 +18,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(dna3bs, semi_alphabet_test, bio::alphabet::dna3bs
 INSTANTIATE_TYPED_TEST_SUITE_P(dna3bs, alphabet_constexpr, bio::alphabet::dna3bs, );
 INSTANTIATE_TYPED_TEST_SUITE_P(dna3bs, semi_alphabet_constexpr, bio::alphabet::dna3bs, );
 
-using bio::alphabet::operator""_dna3bs;
+using namespace bio::alphabet::literals;
 
 TEST(dna3bs, concept_check)
 {

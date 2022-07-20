@@ -9,8 +9,8 @@
 
 int main()
 {
-    using bio::alphabet::operator""_dna4;
-    using bio::alphabet::operator""_phred42;
+    using namespace bio::alphabet::literals;
+    using namespace bio::alphabet::literals;
 
     // Create a vector of dna4 quality composite alphabet.
     std::vector<bio::alphabet::dna4q> qv{{'A'_dna4, '0'_phred42},

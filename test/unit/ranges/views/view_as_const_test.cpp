@@ -20,7 +20,7 @@
 #include <bio/test/expect_range_eq.hpp>
 #include <ranges>
 
-using bio::alphabet::operator""_dna5;
+using namespace bio::alphabet::literals;
 
 TEST(view_as_const, basic)
 {

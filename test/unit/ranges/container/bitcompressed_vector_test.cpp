@@ -21,7 +21,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(bitcompressed,
                                container_over_dna4_test,
                                bio::ranges::bitcompressed_vector<bio::alphabet::dna4>, );
 
-using bio::alphabet::operator""_dna4;
+using namespace bio::alphabet::literals;
 
 TEST(bitcompressed_vector_test, issue1743_complement_on_proxy)
 { // https://github.com/seqan/seqan3/issues/1743
@@ -65,7 +65,7 @@ TEST(bitcompressed_vector_test, const_assignability)
 
 #include "../../alphabet/alphabet_proxy_test_template.hpp"
 
-using bio::alphabet::operator""_dna4;
+using namespace bio::alphabet::literals;
 using ref_t = std::ranges::range_reference_t<bio::ranges::bitcompressed_vector<bio::alphabet::dna4>>;
 
 template <>

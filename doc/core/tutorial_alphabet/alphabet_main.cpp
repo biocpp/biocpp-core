@@ -6,7 +6,7 @@
 //! [create]
 #include <bio/alphabet/all.hpp> // for working with alphabets directly
 
-using bio::alphabet::operator""_dna4;
+using namespace bio::alphabet::literals;
 
 int main ()
 {
@@ -80,7 +80,7 @@ int main ()
     // Assign a gap symbol to a gapped RNA alphabet.
     bio::alphabet::gapped<bio::alphabet::rna5> sym = bio::alphabet::gap{};                         // => -
 
-    using bio::alphabet::operator""_rna5;
+    using namespace bio::alphabet::literals;
     // Each bio::alphabet::rna5 symbol is still valid.
     sym = 'U'_rna5;                                   // => U
 
@@ -90,7 +90,7 @@ int main ()
     assert(size2 == 6u);
 
 //! [containers]
-    using bio::alphabet::operator""_dna5;
+    using namespace bio::alphabet::literals;
 
     // Examples of different container types with SeqAn's alphabets.
     std::vector<bio::alphabet::dna5> dna_sequence{"GATTANAG"_dna5};

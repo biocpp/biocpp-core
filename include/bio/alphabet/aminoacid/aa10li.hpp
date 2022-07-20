@@ -183,9 +183,17 @@ protected:
 //!\relates aa10li
 using aa10li_vector = std::vector<aa10li>;
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -224,5 +232,7 @@ inline aa10li_vector operator""_aa10li(char const * const s, size_t const n)
     return r;
 }
 //!\}
+
+} // namespace literals
 
 } // namespace bio::alphabet

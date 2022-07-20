@@ -141,9 +141,17 @@ protected:
 //!\relates dna3bs
 using dna3bs_vector = std::vector<dna3bs>;
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -179,9 +187,16 @@ inline dna3bs_vector operator""_dna3bs(char const * s, std::size_t n)
 }
 //!\}
 
+} // namespace literals
+
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // dna3bs (deferred definition)
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
 
 constexpr std::array<dna3bs, dna3bs::alphabet_size> dna3bs::complement_table{
   'T'_dna3bs, // complement of 'A'_dna3bs
@@ -189,4 +204,4 @@ constexpr std::array<dna3bs, dna3bs::alphabet_size> dna3bs::complement_table{
   'A'_dna3bs  // complement of 'T'_dna3bs
 };
 
-} // namespace bio::alphabet
+}

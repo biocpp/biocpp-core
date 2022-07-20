@@ -12,8 +12,7 @@
 #include <bio/ranges/views/convert.hpp>
 #include <bio/ranges/views/to.hpp>
 
-using bio::alphabet::operator""_aa10murphy;
-using bio::alphabet::operator""_aa10li;
+using namespace bio::alphabet::literals;
 
 // Print is a template and gets instantiated two times because the behaviour is different for both types
 template <typename rng_t>

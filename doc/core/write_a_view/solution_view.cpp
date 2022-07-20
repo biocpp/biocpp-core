@@ -6,7 +6,7 @@
 #include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/ranges/detail/inherited_iterator_base.hpp>
 
-using bio::alphabet::operator""_dna5;
+using namespace bio::alphabet::literals;
 
 /* The iterator template */
 template <std::ranges::forward_range urng_t>            // CRTP derivation ↓

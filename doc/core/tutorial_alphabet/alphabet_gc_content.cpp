@@ -9,7 +9,7 @@
 #include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/views/all.hpp>       // optional: use views to convert the input string to a dna5 sequence
 
-using bio::alphabet::operator""_dna5;
+using namespace bio::alphabet::literals;
 
 int main (int argc, char * argv[])
 {

@@ -6,7 +6,7 @@
 #include <bio/ranges/views/char_to.hpp>
 #include <bio/ranges/views/translate_join.hpp>
 
-using bio::alphabet::operator""_dna4;
+using namespace bio::alphabet::literals;
 
 int main()
 {

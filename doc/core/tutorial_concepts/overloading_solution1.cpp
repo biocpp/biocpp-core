@@ -7,8 +7,7 @@ void print(t const v)
     std::cout << "I am an alphabet and my value as char is: " << bio::alphabet::to_char(v) << '\n';
 }
 
-using bio::alphabet::operator""_dna5;
-using bio::alphabet::operator""_aa27;
+using namespace bio::alphabet::literals;
 
 int main()
 {

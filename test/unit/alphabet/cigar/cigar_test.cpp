@@ -18,7 +18,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(cigar, semi_alphabet_constexpr, bio::alphabet::ci
 
 TEST(cigar, brace_init)
 {
-    using bio::alphabet::operator""_cigar_op;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::cigar c1{uint32_t{223}, 'M'_cigar_op};
     EXPECT_EQ(c1.to_string(), bio::ranges::small_string<11>{"223M"});

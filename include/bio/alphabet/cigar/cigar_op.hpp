@@ -94,9 +94,17 @@ protected:
     ();
 };
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -111,4 +119,6 @@ inline cigar_op operator""_cigar_op(char const c) noexcept
     return cigar_op{}.assign_char(c);
 }
 //!\}
+} // namespace literals
+
 } // namespace bio::alphabet

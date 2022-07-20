@@ -12,7 +12,7 @@ inline auto const deep_reverse = bio::views::deep{std::views::reverse};
 
 int main()
 {
-    using bio::alphabet::operator""_dna5;
+    using namespace bio::alphabet::literals;
 
     std::vector<bio::alphabet::dna5_vector> foo{"AAATTT"_dna5, "CCCGGG"_dna5};
 

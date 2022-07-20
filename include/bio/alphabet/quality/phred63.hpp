@@ -80,6 +80,18 @@ public:
     //!\}
 };
 
+} // namespace bio::alphabet
+
+// ------------------------------------------------------------------
+// literals
+// ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
+
 /*!\name Literals
  * \{
  */
@@ -114,4 +126,5 @@ inline std::vector<phred63> operator""_phred63(char const * s, std::size_t n)
 }
 //!\}
 
+} // namespace literals
 } // namespace bio::alphabet

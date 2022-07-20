@@ -15,7 +15,7 @@
 #include <bio/alphabet/aminoacid/aa10murphy.hpp>
 #include <bio/ranges/views/zip.hpp>
 
-using bio::alphabet::operator""_aa10murphy;
+using namespace bio::alphabet::literals;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(aa10murphy, alphabet, bio::alphabet::aa10murphy, );
 INSTANTIATE_TYPED_TEST_SUITE_P(aa10murphy, semi_alphabet_test, bio::alphabet::aa10murphy, );
@@ -61,6 +61,8 @@ TEST(aa10murphy, to_char)
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+using namespace bio::alphabet::literals;
 
 TEST(literals, char_literal)
 {

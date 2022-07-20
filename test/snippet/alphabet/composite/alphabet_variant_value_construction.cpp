@@ -4,7 +4,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_dna4;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::gap> letter1{'C'_dna4}; // or
     bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::gap> letter2 = bio::alphabet::gap{};

@@ -112,7 +112,7 @@ protected:
     }
     ();
 
-    //!\copydoc bio::alphabet::dna4::complement_table
+    //!\brief The complement table.
     static const std::array<dna5, alphabet_size> complement_table;
 };
 
@@ -123,10 +123,17 @@ protected:
 //!\brief Alias for an std::vector of bio::alphabet::dna5.
 //!\relates dna5
 using dna5_vector = std::vector<dna5>;
+} // namespace bio::alphabet
 
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -162,9 +169,16 @@ inline dna5_vector operator""_dna5(char const * s, std::size_t n)
 }
 //!\}
 
+} // namespace literals
+
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // dna5 (deferred definition)
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
 
 constexpr std::array<dna5, dna5::alphabet_size> dna5::complement_table{
   'T'_dna5, // complement of 'A'_dna5

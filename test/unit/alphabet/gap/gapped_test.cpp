@@ -23,7 +23,7 @@
 #include "../semi_alphabet_constexpr_test_template.hpp"
 #include "../semi_alphabet_test_template.hpp"
 
-using bio::alphabet::operator""_dna4;
+using namespace bio::alphabet::literals;
 
 using gapped_types =
   ::testing::Types<bio::alphabet::gapped<bio::alphabet::dna4>,

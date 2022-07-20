@@ -3,7 +3,7 @@
 #include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/alphabet/fmt.hpp>
 
-using bio::alphabet::operator""_dna5;
+using namespace bio::alphabet::literals;
 
 //![start]
 auto my_reverse_complement = std::views::reverse | std::views::transform(bio::alphabet::complement);

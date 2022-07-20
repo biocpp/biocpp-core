@@ -4,7 +4,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_dna4;
+    using namespace bio::alphabet::literals;
 
     bio::ranges::concatenated_sequences<bio::alphabet::dna4_vector> foobar;
     foobar.insert(foobar.end(), "ACGT"_dna4);

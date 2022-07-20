@@ -25,7 +25,7 @@ inline auto const deep_take    = deep{std::views::take};
 inline auto const deep_take2   = deep{std::views::take(2)};
 } // namespace bio::ranges::views
 
-using bio::alphabet::operator""_dna5;
+using namespace bio::alphabet::literals;
 
 // ------------------------------------------------------------------
 // no parameters

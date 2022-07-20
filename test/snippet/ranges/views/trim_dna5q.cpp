@@ -10,8 +10,8 @@
 
 int main()
 {
-    using bio::alphabet::operator""_dna5;
-    using bio::alphabet::operator""_phred42;
+    using namespace bio::alphabet::literals;
+    using namespace bio::alphabet::literals;
     std::vector<bio::alphabet::dna5q> vec{{'A'_dna5, 'I'_phred42},
                                    {'G'_dna5, 'I'_phred42},
                                    {'G'_dna5, '?'_phred42},

@@ -12,8 +12,7 @@
 #include <bio/alphabet/aminoacid/aa10murphy.hpp>
 #include <bio/alphabet/composite/semialphabet_any.hpp>
 
-using bio::alphabet::operator""_aa10li;
-using bio::alphabet::operator""_aa10murphy;
+using namespace bio::alphabet::literals;
 
 TEST(semialphabet_any_test, initialise_from_alphabet)
 {

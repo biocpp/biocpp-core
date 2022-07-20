@@ -14,7 +14,7 @@
 #include "../semi_alphabet_test_template.hpp"
 #include "nucleotide_test_template.hpp"
 
-using bio::alphabet::operator""_dna4;
+using namespace bio::alphabet::literals;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(dna4, alphabet, bio::alphabet::dna4, );
 INSTANTIATE_TYPED_TEST_SUITE_P(dna4, semi_alphabet_test, bio::alphabet::dna4, );

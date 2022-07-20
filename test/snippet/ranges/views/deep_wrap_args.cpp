@@ -11,7 +11,7 @@ inline auto const deep_take1 = bio::views::deep{std::views::take(1)};
 
 int main()
 {
-    using bio::alphabet::operator""_dna5;
+    using namespace bio::alphabet::literals;
 
     std::vector<bio::alphabet::dna5_vector> foo{"AAATTT"_dna5, "CCCGGG"_dna5};
 
