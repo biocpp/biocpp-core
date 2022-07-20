@@ -100,7 +100,7 @@ protected:
     }
     ();
 
-    //!\copydoc bio::alphabet::dna4::complement_table
+    //!\brief The complement table.
     static const std::array<sam_dna16, alphabet_size> complement_table;
 };
 

@@ -80,6 +80,11 @@ public:
     }
     //!\}
 
+    /*!\brief Convert to complement. Faster implementation than the default-generated.
+     * \private
+     */
+    constexpr dna4 complement() const noexcept { return dna4{}.assign_rank(to_rank() ^ 0b11); }
+
 protected:
     //!\privatesection
 
@@ -127,9 +132,6 @@ protected:
         return ret;
     }
     ();
-
-    //!\brief The complement table.
-    static const std::array<dna4, alphabet_size> complement_table;
 };
 
 // ------------------------------------------------------------------
@@ -177,16 +179,5 @@ inline dna4_vector operator""_dna4(char const * s, std::size_t n)
     return r;
 }
 //!\}
-
-// ------------------------------------------------------------------
-// dna4 (deferred definition)
-// ------------------------------------------------------------------
-
-constexpr std::array<dna4, dna4::alphabet_size> dna4::complement_table{
-  'T'_dna4, // complement of 'A'_dna4
-  'G'_dna4, // complement of 'C'_dna4
-  'C'_dna4, // complement of 'G'_dna4
-  'A'_dna4  // complement of 'T'_dna4
-};
 
 } // namespace bio::alphabet

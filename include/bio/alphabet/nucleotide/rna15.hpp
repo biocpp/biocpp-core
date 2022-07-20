@@ -91,7 +91,7 @@ protected:
     //!\copydoc bio::alphabet::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank = dna15::char_to_rank;
 
-    //!\copydoc bio::alphabet::dna4::complement_table
+    //!\brief The complement table.
     static const std::array<rna15, alphabet_size> complement_table;
 };
 

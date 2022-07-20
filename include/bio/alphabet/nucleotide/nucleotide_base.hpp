@@ -104,7 +104,10 @@ public:
      *
      * Guaranteed not to throw.
      */
-    constexpr derived_type complement() const noexcept { return derived_type::complement_table[to_rank()]; }
+    constexpr derived_type complement() const noexcept requires(requires(derived_type d) { d.complement_table; })
+    {
+        return derived_type::complement_table[to_rank()];
+    }
     //!\}
 
     /*!\brief Validate whether a character value has a one-to-one mapping to an alphabet value.
