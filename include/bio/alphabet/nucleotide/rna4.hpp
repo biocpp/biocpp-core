@@ -125,7 +125,7 @@ inline namespace literals
  * \relates bio::alphabet::rna4
  * \returns bio::alphabet::rna4
  */
-constexpr rna4 operator""_rna4(char const c) noexcept
+consteval rna4 operator""_rna4(char const c) noexcept
 {
     return rna4{}.assign_char(c);
 }

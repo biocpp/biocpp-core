@@ -161,7 +161,7 @@ inline namespace literals
  * \relates bio::alphabet::dna3bs
  * \returns bio::alphabet::dna3bs
  */
-constexpr dna3bs operator""_dna3bs(char const c) noexcept
+consteval dna3bs operator""_dna3bs(char const c) noexcept
 {
     return dna3bs{}.assign_char(c);
 }

@@ -133,7 +133,7 @@ inline namespace literals
  * \returns bio::alphabet::sam_dna16
  * \param[in] c The character to assign from.
  */
-constexpr sam_dna16 operator""_sam_dna16(char const c) noexcept
+consteval sam_dna16 operator""_sam_dna16(char const c) noexcept
 {
     return sam_dna16{}.assign_char(c);
 }

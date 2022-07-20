@@ -162,7 +162,7 @@ inline namespace literals
  * \relates bio::alphabet::dna4
  * \returns bio::alphabet::dna4
  */
-constexpr dna4 operator""_dna4(char const c) noexcept
+consteval dna4 operator""_dna4(char const c) noexcept
 {
     return dna4{}.assign_char(c);
 }

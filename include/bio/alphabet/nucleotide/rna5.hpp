@@ -120,7 +120,7 @@ inline namespace literals
  * \relates bio::alphabet::rna5
  * \returns bio::alphabet::rna5
  */
-constexpr rna5 operator""_rna5(char const c) noexcept
+consteval rna5 operator""_rna5(char const c) noexcept
 {
     return rna5{}.assign_char(c);
 }

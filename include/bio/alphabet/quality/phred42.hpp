@@ -101,7 +101,7 @@ inline namespace literals
  * \relates bio::alphabet::phred42
  * \returns bio::alphabet::phred42
  */
-constexpr phred42 operator""_phred42(char const c) noexcept
+consteval phred42 operator""_phred42(char const c) noexcept
 {
     return phred42{}.assign_char(c);
 }

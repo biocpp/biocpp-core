@@ -99,7 +99,7 @@ inline namespace literals
  * \relates bio::alphabet::phred68legacy
  * \returns bio::alphabet::phred68legacy
  */
-constexpr phred68legacy operator""_phred68legacy(char const c) noexcept
+consteval phred68legacy operator""_phred68legacy(char const c) noexcept
 {
     return phred68legacy{}.assign_char(c);
 }

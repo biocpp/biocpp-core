@@ -144,7 +144,7 @@ inline namespace literals
  * \relates bio::alphabet::dna15
  * \returns bio::alphabet::dna15
  */
-constexpr dna15 operator""_dna15(char const c) noexcept
+consteval dna15 operator""_dna15(char const c) noexcept
 {
     return dna15{}.assign_char(c);
 }

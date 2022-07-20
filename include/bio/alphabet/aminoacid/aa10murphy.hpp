@@ -203,7 +203,7 @@ inline namespace literals
  * \relates bio::alphabet::aa10murphy
  * \returns bio::alphabet::aa10murphy
  */
-constexpr aa10murphy operator""_aa10murphy(char const c) noexcept
+consteval aa10murphy operator""_aa10murphy(char const c) noexcept
 {
     return aa10murphy{}.assign_char(c);
 }

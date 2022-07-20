@@ -126,7 +126,7 @@ inline namespace literals
  * \include test/snippet/alphabet/aminoacid/aa27_char_literal.cpp
  *
  */
-constexpr aa27 operator""_aa27(char const c) noexcept
+consteval aa27 operator""_aa27(char const c) noexcept
 {
     return aa27{}.assign_char(c);
 }

@@ -157,7 +157,7 @@ inline namespace literals
  * \include test/snippet/alphabet/aminoacid/aa20_char_literal.cpp
  *
  */
-constexpr aa20 operator""_aa20(char const c) noexcept
+consteval aa20 operator""_aa20(char const c) noexcept
 {
     return aa20{}.assign_char(c);
 }

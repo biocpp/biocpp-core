@@ -204,7 +204,7 @@ inline namespace literals
  * \relates bio::alphabet::aa10li
  * \returns bio::alphabet::aa10li
  */
-constexpr aa10li operator""_aa10li(char const c) noexcept
+consteval aa10li operator""_aa10li(char const c) noexcept
 {
     return aa10li{}.assign_char(c);
 }

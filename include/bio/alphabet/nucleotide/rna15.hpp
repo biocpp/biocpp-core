@@ -123,7 +123,7 @@ inline namespace literals
  * \relates bio::alphabet::rna15
  * \returns bio::alphabet::rna15
  */
-constexpr rna15 operator""_rna15(char const c) noexcept
+consteval rna15 operator""_rna15(char const c) noexcept
 {
     return rna15{}.assign_char(c);
 }
