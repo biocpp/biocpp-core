@@ -191,7 +191,7 @@ public:
 
 private:
     //!\brief The value of the alphabet letter is stored as the rank.
-    rank_type rank{};
+    rank_type rank;
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr auto tag_invoke(cpo::to_rank, derived_type const a) noexcept { return a.to_rank(); }

@@ -36,7 +36,7 @@ TYPED_TEST_P(semi_alphabet_test, type_properties)
 {
     // It is highly recommended that non-reference types that model this concept, also model:
     EXPECT_TRUE((std::regular<TypeParam>));
-    EXPECT_TRUE((bio::meta::trivially_copyable<TypeParam>));
+    EXPECT_TRUE((bio::meta::trivial<TypeParam>));
     EXPECT_TRUE((bio::meta::standard_layout<TypeParam>));
 }
 

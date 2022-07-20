@@ -50,7 +50,7 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr gap() noexcept : base_t{} {}            //!< Defaulted.
+    constexpr gap() noexcept               = default; //!< Defaulted.
     constexpr gap(gap const &)             = default; //!< Defaulted.
     constexpr gap(gap &&)                  = default; //!< Defaulted.
     constexpr gap & operator=(gap const &) = default; //!< Defaulted.
