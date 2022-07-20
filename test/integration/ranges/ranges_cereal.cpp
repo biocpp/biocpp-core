@@ -17,6 +17,7 @@
 #include <bio/ranges/container/dynamic_bitset.hpp>
 #include <bio/ranges/container/small_string.hpp>
 #include <bio/ranges/container/small_vector.hpp>
+#include <bio/ranges/views/to.hpp>
 
 #include "../cereal.hpp"
 
@@ -83,37 +84,37 @@ using ranges_2d_generic = ::testing::Test;
 
 using ranges_2d_types =
   ::testing::Types<std::vector<std::vector<bio::alphabet::dna4>>,
-                   std::vector<std::vector<bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>>>,
                    std::vector<bio::ranges::bitcompressed_vector<bio::alphabet::dna4>>,
                    std::vector<bio::ranges::small_vector<bio::alphabet::dna4, 100>>,
                    bio::ranges::concatenated_sequences<std::vector<bio::alphabet::dna4>>,
-                   bio::ranges::concatenated_sequences<
-                     std::vector<bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>>>,
                    bio::ranges::concatenated_sequences<bio::ranges::bitcompressed_vector<bio::alphabet::dna4>>>;
 
 TYPED_TEST_SUITE(ranges_2d_generic, ranges_2d_types, );
 
+template <typename t>
+struct tmp_type
+{
+    using type = std::ranges::range_value_t<t>;
+};
+
+template <typename t>
+struct tmp_type<bio::ranges::concatenated_sequences<t>>
+{
+    using type = t;
+};
+
 TYPED_TEST(ranges_2d_generic, short)
 {
-    using val_t = std::ranges::range_value_t<TypeParam>;
+    auto val1 = "ACGT"_dna4 | bio::views::to<typename tmp_type<TypeParam>::type>();
+    auto val2 = "GAGGA"_dna4 | bio::views::to<typename tmp_type<TypeParam>::type>();
 
-    // qualified only gets long test
-    if constexpr (!std::same_as<val_t,
-                                std::vector<bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>>>)
-    {
-        TypeParam t1;
-
-        t1.push_back((val_t) "ACGT"_dna4);
-        t1.push_back((val_t) "ACGT"_dna4);
-        t1.push_back((val_t) "GAGGA"_dna4);
-
-        do_serialisation(t1);
-    }
+    TypeParam t1{val1, val1, val2};
+    do_serialisation(t1);
 }
 
 TYPED_TEST(ranges_2d_generic, longer)
 {
-    std::ranges::range_value_t<TypeParam> range;
+    typename tmp_type<TypeParam>::type range;
     range.resize(4);
     range[0] = 'A'_dna4;
     range[1] = 'C'_dna4;
