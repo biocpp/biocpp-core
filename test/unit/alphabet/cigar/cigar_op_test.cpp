@@ -21,8 +21,6 @@ INSTANTIATE_TYPED_TEST_SUITE_P(cigar_op, semi_alphabet_test, bio::alphabet::ciga
 INSTANTIATE_TYPED_TEST_SUITE_P(cigar_op, alphabet_constexpr, bio::alphabet::cigar_op, );
 INSTANTIATE_TYPED_TEST_SUITE_P(cigar_op, semi_alphabet_constexpr, bio::alphabet::cigar_op, );
 
-using namespace bio::alphabet::literals;
-
 TEST(cigar_op, to_char_assign_char)
 {
     for (char chr : std::string{"MDISHNPX="})

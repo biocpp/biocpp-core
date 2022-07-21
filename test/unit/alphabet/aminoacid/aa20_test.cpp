@@ -58,8 +58,6 @@ TEST(aa20, to_char)
 // literals
 // ------------------------------------------------------------------
 
-using namespace bio::alphabet::literals;
-
 TEST(literals, char_literal)
 {
     EXPECT_EQ(bio::alphabet::to_char('A'_aa20), 'A');

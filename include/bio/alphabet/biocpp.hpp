@@ -38,8 +38,11 @@ namespace bio::alphabet::cpo
  * \ingroup alphabet
  */
 
-namespace bio::alphabet::cpo
+namespace bio::alphabet
+{
+inline namespace literals
 {}
+} // namespace bio::alphabet
 
 /*!\if DEV
  * \namespace bio::alphabet::detail

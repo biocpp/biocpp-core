@@ -204,4 +204,4 @@ constexpr std::array<dna3bs, dna3bs::alphabet_size> dna3bs::complement_table{
   'A'_dna3bs  // complement of 'T'_dna3bs
 };
 
-}
+} // namespace bio::alphabet
