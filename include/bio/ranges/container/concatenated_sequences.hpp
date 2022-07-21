@@ -13,74 +13,24 @@
 
 #pragma once
 
+#include <iterator>
+#include <ranges>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 #include <bio/ranges/container/concept.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
-#include <bio/ranges/views/as_const.hpp>
 #include <bio/ranges/views/repeat_n.hpp>
 #include <bio/ranges/views/slice.hpp>
-#include <iterator>
-#include <ranges>
-
-#if BIOCPP_WITH_CEREAL
-#    include <cereal/types/vector.hpp>
-#endif
-
-namespace bio::ranges::detail
-{
-
-/*!\brief The reference type of bio::ranges::concatenated_sequences.
- * \tparam value_type The value_type of the bio::ranges::concatenated_sequences.
- * \tparam is_const_ref Reference type or const reference type.
- *
- * \details
- *
- * A light-weight type that inherits from the returned type of the bio::views::slice adaptor (std::span, std::ranges::subrange, ...),
- * but additionally provides implicit convertibility to the `value_type`. This is needed so that `value_type` and
- * `reference` type of bio::ranges::concatenated_sequences satisfy std::common_reference_with.
- *
- * The const version of this type additionally ensures deep constness to maintain container-like behaviour.
- */
-template <typename value_type, bool const_>
-struct concatenated_sequences_reference_proxy :
-  public std::conditional_t<const_,
-                            decltype(std::declval<value_type const &>() | views::as_const | views::slice(0, 1)),
-                            decltype(std::declval<value_type &>() | views::slice(0, 1))>
-{
-    //!\brief The base type.
-    using base_t =
-      std::conditional_t<const_,
-                         decltype(std::declval<value_type const &>() | views::as_const | views::slice(0, 1)),
-                         decltype(std::declval<value_type &>() | views::slice(0, 1))>;
-
-    //!\brief Inherit the base type's constructors.
-    using base_t::base_t;
-
-    //!\brief Construct from base type.
-    concatenated_sequences_reference_proxy(base_t && rhs) : base_t{std::move(rhs)} {}
-
-    //!\brief Implicitly convert to the `value_type` of bio::ranges::concatenated_sequences.
-    operator value_type() const
-    {
-        value_type ret;
-        ret.resize(std::ranges::size(*this));
-        std::ranges::copy(*this, std::ranges::begin(ret));
-        return ret;
-    }
-};
-
-} // namespace bio::ranges::detail
 
 namespace bio::ranges
 {
 
 /*!\brief Container that stores sequences concatenated internally.
- * \tparam inner_type The type of sequences that will be stored. Must satisfy bio::ranges::detail::reservible_container.
- * \tparam data_delimiters_type A container that stores the begin/end positions in the inner_type. Must be
- * bio::ranges::detail::reservible_container and have inner_type's size_type as value_type.
- * \implements bio::cerealisable
+ * \tparam underlying_container_type Type of the underlying container. Must satisfy bio::reservible_container.
+ * \tparam data_delimiters_type A container that stores the begin/end positions in the underlying_container_type. Must
+ * satifsy bio::reservible_container and have underlying_container_type's size_type as value_type.
  * \implements bio::ranges::detail::reservible_container
  * \ingroup container
  *
@@ -89,13 +39,17 @@ namespace bio::ranges
  * the `StringSet<TString, Owner<ConcatDirect>>` from SeqAn2.
  *
  * It saves all of the member sequences inside one concatenated sequence internally. If you access an element,
- * you instead get a view on the internal string as a proxy. This has the following
+ * you instead get a view on the internal sequence. This has the following
  * advantages:
  *
  * * Better cache locality when parsing the sequences linearly (and often also on random access).
  * * Constant time access to the concatenation of the sequences via concat().
  * * This access is also writable so that certain transformations can be done globally, instead of element-wise.
  * * Also direct access to the delimiters via raw_data() [this is used by some algorithms].
+ *
+ * Note that the "value type" of `bio::concatenated_sequences<T>` is **not** `T`. It is a view –– typically
+ * a std::span or a std::string_view. This view becomes invalid when the container is destroyed or any
+ * operation is performed on the container that invalidates its iterators, e.g. #push_back().
  *
  * The disadvantages are:
  *
@@ -104,55 +58,56 @@ namespace bio::ranges
  * * Modifying elements is limited to operations on elements of that element, i.e. you can change a character,
  * but you can't assign a new member sequence to an existing position.
  *
- * ###Example
+ * ### Example
  *
  * \include test/snippet/ranges/container/concatenated_sequences.cpp
  *
- * ###Exceptions
+ * ### Exceptions
  *
  * Whenever a strong exception guarantee is given for this class, it presumes that
- * `std::is_nothrow_move_constructible<typename inner_type::value_type>` otherwise only basic exception safety can
- * be assumed.
+ * `std::is_nothrow_move_constructible<typename underlying_container_type::value_type>` otherwise only basic exception
+ * safety can be assumed.
  *
- * ###Thread safety
+ * ### Thread safety
  *
  * This container provides no thread-safety beyond the promise given also by the STL that all
  * calls to `const` member function are safe from multiple threads (as long as no thread calls
  * a non-`const` member function at the same time).
  *
  */
-template <typename inner_type, typename data_delimiters_type = std::vector<typename inner_type::size_type>>
+template <typename underlying_container_type,
+          typename data_delimiters_type = std::vector<typename underlying_container_type::size_type>>
     //!\cond
-    requires(
-      detail::reservible_container<std::remove_reference_t<inner_type>> &&
-          detail::reservible_container<std::remove_reference_t<data_delimiters_type>> &&
-          std::is_same_v<std::ranges::range_size_t<inner_type>, std::ranges::range_value_t<data_delimiters_type>>)
+    requires(detail::reservible_container<std::remove_reference_t<underlying_container_type>> &&
+                 detail::reservible_container<std::remove_reference_t<data_delimiters_type>> &&
+                 std::is_same_v<std::ranges::range_size_t<underlying_container_type>,
+                                std::ranges::range_value_t<data_delimiters_type>>)
 //!\endcond
 class concatenated_sequences
 {
 protected:
     //!\privatesection
     //!\brief Where the concatenation is stored.
-    std::decay_t<inner_type> data_values;
+    std::decay_t<underlying_container_type> data_values;
     //!\brief Where the delimiters are stored; begins with 0, has size of size() + 1.
-    data_delimiters_type     data_delimiters{0};
+    data_delimiters_type                    data_delimiters{0};
 
 public:
     //!\publicsection
     /*!\name Member types
      * \{
      */
-    //!\brief == inner_type.
+    //!\brief A views::slice that represents "one element", typically a std::span.
     //!\hideinitializer
-    using value_type = std::decay_t<inner_type>;
+    using value_type = decltype(std::declval<std::decay_t<underlying_container_type> &>() | views::slice(0, 1));
 
     //!\brief A proxy of type views::slice that represents the range on the concatenated vector.
     //!\hideinitializer
-    using reference = detail::concatenated_sequences_reference_proxy<value_type, false>;
+    using reference = value_type;
 
     //!\brief An immutable proxy of type views::slice that represents the range on the concatenated vector.
     //!\hideinitializer
-    using const_reference = detail::concatenated_sequences_reference_proxy<value_type, true>;
+    using const_reference = decltype(std::as_const(data_values) | views::slice(0, 1));
 
     //!\brief The iterator type of this container (a random access iterator).
     //!\hideinitializer
@@ -240,11 +195,11 @@ public:
      *         \ref range_value_t_is_compatible_with_value_type.
      * \param rng_of_rng The sequences to construct/assign from.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Linear in the cumulative size of `rng_of_rng`.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
@@ -269,11 +224,11 @@ public:
      * \param count Number of elements.
      * \param value The initial value to be assigned.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * In \f$O(count*value)\f$.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
@@ -297,11 +252,11 @@ public:
      * \param begin_it begin of range to construct/assign from.
      * \param end_it end of range to construct/assign from.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Linear in the cumulative size of the ranges between `begin_it` and `end_it`.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
@@ -319,11 +274,11 @@ public:
      * \tparam value_type_t The type of range to be inserted; must satisfy \ref is_compatible_with_value_type.
      * \param ilist an `std::initializer_list` of `value_type_t`.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Linear in the cumulative size of the ranges in `ilist`.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
@@ -340,11 +295,11 @@ public:
      * \tparam value_type_t The type of range to be inserted; must satisfy \ref is_compatible_with_value_type.
      * \param ilist an `std::initializer_list` of `value_type_t`.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Linear in the cumulative size of the elements in `ilist`.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
@@ -363,11 +318,11 @@ public:
      *         \ref range_value_t_is_compatible_with_value_type.
      * \param rng_of_rng The sequences to construct/assign from.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Linear in the cumulative size of `rng_of_rng`.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
@@ -386,11 +341,11 @@ public:
      * \param count Number of elements.
      * \param value The initial value to be assigned.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * In \f$O(count*value)\f$.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
@@ -411,11 +366,11 @@ public:
      * \param begin_it begin of range to construct/assign from.
      * \param end_it end of range to construct/assign from.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Linear in the cumulative size of the ranges between `begin_it` and `end_it`.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
@@ -434,11 +389,11 @@ public:
      * \tparam rng_type The type of range to be inserted; must satisfy \ref is_compatible_with_value_type.
      * \param ilist an `std::initializer_list` of `rng_type`.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Linear in the cumulative size of the elements in `ilist`.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
@@ -461,11 +416,11 @@ public:
      *
      * If the container is empty, the returned iterator will be equal to end().
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * No-throw guarantee.
      */
@@ -482,11 +437,11 @@ public:
      *
      * This element acts as a placeholder; attempting to dereference it results in undefined behaviour.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * No-throw guarantee.
      */
@@ -507,11 +462,11 @@ public:
      * \throws std::out_of_range If you access an element behind the last.
      * \returns A std::ranges::view on the underlying concatenated sequences that acts as a proxy for the element.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (never modifies data)..
      */
@@ -538,11 +493,11 @@ public:
      *
      * Accessing an element behind the last causes undefined behaviour. In debug mode an assertion checks the size of
      * the container.
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (never modifies data)..
      */
@@ -556,18 +511,18 @@ public:
     const_reference operator[](size_type const i) const
     {
         assert(i < size());
-        return data_values | views::as_const | views::slice(data_delimiters[i], data_delimiters[i + 1]);
+        return data_values | views::slice(data_delimiters[i], data_delimiters[i + 1]);
     }
 
     /*!\brief Return the first element as a view. Calling front on an empty container is undefined.
      * \returns A std::ranges::view on the underlying concatenated sequences that acts as a proxy for the element.
      *
      * Calling front on an empty container is undefined. In debug mode an assertion checks the size of the container.
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (never modifies data).
      */
@@ -588,11 +543,11 @@ public:
      * \returns A std::ranges::view on the underlying concatenated sequences that acts as a proxy for the element.
      *
      * Calling back on an empty container is undefined. In debug mode an assertion checks the size of the container.
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (never modifies data)..
      */
@@ -615,21 +570,18 @@ public:
      * This is a safe way of accessing the internal concatenated representation, i.e. you cannot do operations
      * that would invalidate this container (like insert or resize), but you can write to the individual positions.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (never modifies data).
      */
     reference concat() { return data_values | views::slice(static_cast<size_type>(0), concat_size()); }
 
     //!\copydoc concat()
-    const_reference concat() const
-    {
-        return data_values | views::as_const | views::slice(static_cast<size_type>(0), concat_size());
-    }
+    const_reference concat() const { return data_values | views::slice(static_cast<size_type>(0), concat_size()); }
 
     /*!\brief Provides direct, unsafe access to underlying data structures.
      * \returns An std::pair of the concatenated sequences and the delimiter string.
@@ -646,7 +598,7 @@ public:
     //!\copydoc raw_data()
     std::pair<decltype(data_values) const &, decltype(data_delimiters) const &> raw_data() const
     {
-        return {std::as_const(data_values), std::as_const(data_delimiters)};
+        return {data_values, data_delimiters};
     }
     //!\}
 
@@ -656,11 +608,11 @@ public:
     /*!\brief Checks whether the container is empty.
      * \returns `true` if the container is empty, `false` otherwise.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * No-throw guarantee.
      */
@@ -669,11 +621,11 @@ public:
     /*!\brief Returns the number of elements in the container, i.e. std::distance(begin(), end()).
      * \returns The number of elements in the container.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * No-throw guarantee.
      */
@@ -685,11 +637,11 @@ public:
      *
      * This value typically reflects the theoretical limit on the size of the container. At runtime, the size
      * of the container may be limited to a value smaller than max_size() by the amount of RAM available.
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * No-throw guarantee.
      */
@@ -702,11 +654,11 @@ public:
      *
      * This does not operate on underlying concat container, see concat_capacity().
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * No-throw guarantee.
      */
@@ -726,11 +678,11 @@ public:
      *
      * This does not operate on underlying concat container, see concat_reserve().
      *
-     * ###Complexity
+     * ### Complexity
      *
      * At most linear in the size() of the container.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
@@ -747,11 +699,11 @@ public:
      *
      * This effects both underlying data structures.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * At most linear in the size() of the container.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
@@ -768,11 +720,11 @@ public:
     /*!\brief Returns the cumulative size of all elements in the container.
      * \returns The cumulative size of elements in the container.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * No-throw guarantee.
      */
@@ -781,11 +733,11 @@ public:
     /*!\brief Returns the concatenated size the container has currently allocated space for.
      * \returns The capacity of the currently allocated storage.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * No-throw guarantee.
      */
@@ -801,11 +753,11 @@ public:
      * nothing. If new_cap is greater than concat_capacity(), all iterators, including the past-the-end iterator, and
      * all references to the elements are invalidated. Otherwise, no iterators or references are invalidated.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * At most linear in the concat_size() of the container.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
@@ -817,11 +769,11 @@ public:
      */
     /*!\brief Removes all elements from the container.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * No-throw guarantee.
      */
@@ -843,16 +795,16 @@ public:
      * than capacity(), all iterators and references are invalidated. Otherwise, only the iterators and
      * references before the insertion point remain valid. The past-the-end iterator is also invalidated.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Worst-case linear in concat_size(). This is a drawback over e.g. `std::vector<std::vector<alphabet>>`.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Basic exception guarantee, i.e. guaranteed not to leak, but container my contain invalid data after exceptions is
      * thrown.
      *
-     * ###Example
+     * ### Example
      *
      * \include test/snippet/ranges/container/concatenated_sequences_insert.cpp
      */
@@ -877,16 +829,16 @@ public:
      * than capacity(), all iterators and references are invalidated. Otherwise, only the iterators and
      * references before the insertion point remain valid. The past-the-end iterator is also invalidated.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Worst-case linear in concat_size(). This is a drawback over e.g. `std::vector<std::vector<alphabet>>`.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Basic exception guarantee, i.e. guaranteed not to leak, but container my contain invalid data after exceptions is
      * thrown.
      *
-     * ###Example
+     * ### Example
      *
      * \include test/snippet/ranges/container/concatenated_sequences_insert2.cpp
      */
@@ -961,11 +913,11 @@ public:
      * than capacity(), all iterators and references are invalidated. Otherwise, only the iterators and
      * references before the insertion point remain valid. The past-the-end iterator is also invalidated.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Worst-case linear in concat_size(). This is a drawback over e.g. `std::vector<std::vector<alphabet>>`.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Basic exception guarantee, i.e. guaranteed not to leak, but container my contain invalid data after exceptions is
      * thrown.
@@ -1032,11 +984,11 @@ public:
      * than capacity(), all iterators and references are invalidated. Otherwise, only the iterators and
      * references before the insertion point remain valid. The past-the-end iterator is also invalidated.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Worst-case linear in concat_size(). This is a drawback over e.g. `std::vector<std::vector<alphabet>>`.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Basic exception guarantee, i.e. guaranteed not to leak, but container my contain invalid data after exceptions is
      * thrown.
@@ -1059,11 +1011,11 @@ public:
      *
      * The iterator first does not need to be dereferenceable if first==last: erasing an empty range is a no-op.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Linear in concat_size().
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Basic exception guarantee, i.e. guaranteed not to leak, but container my contain invalid data after exceptions is
      * thrown.
@@ -1103,11 +1055,11 @@ public:
      * The iterator pos must be valid and dereferenceable. Thus the end() iterator (which is valid, but is not
      * dereferencable) cannot be used as a value for pos.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Linear in concat_size().
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Basic exception guarantee, i.e. guaranteed not to leak, but container my contain invalid data after exceptions is
      * thrown.
@@ -1118,14 +1070,17 @@ public:
      * \tparam rng_type The type of range to be inserted; must satisfy \ref is_compatible_with_value_type.
      * \param value The value to append.
      *
-     * If the new size() is greater than capacity() then all iterators and references (including the past-the-end
-     * iterator) are invalidated. Otherwise only the past-the-end iterator is invalidated.
+     * This conceptionally adds another element to the container with the specified content,
+     * i.e. the "outer container" grows by 1.
      *
-     * ###Complexity
+     * If the new concat_size() is greater than concat_capacity(), all iterators and references (including the
+     * past-the-end iterator) are invalidated. Otherwise, only the past-the-end iterator is invalidated.
+     *
+     * ### Complexity
      *
      * Amortised linear in the size of value. Wort-case linear in concat_size().
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Basic exception guarantee, i.e. guaranteed not to leak, but container my contain invalid data after exceptions is
      * thrown.
@@ -1140,17 +1095,91 @@ public:
         data_delimiters.push_back(data_delimiters.back() + std::ranges::size(value));
     }
 
+    /*!\brief Appends an empty element to the end of the container.
+     *
+     * This conceptionally adds an empty element to the container,
+     * i.e. the "outer container" grows by 1 and the new back() will be empty.
+     *
+     * No iterators are invalidated.
+     *
+     * ### Complexity
+     *
+     * Amortised constant. Wort-case linear in size().
+     *
+     * ### Exceptions
+     *
+     * Basic exception guarantee, i.e. guaranteed not to leak. However, the container may contain invalid data after
+     * an exception is thrown.
+     *
+     */
+    void push_back() { data_delimiters.push_back(data_delimiters.back()); }
+
+    /*!\brief Appends the given element-of-element value to the end of the underlying container.
+     * \param value The value to append.
+     *
+     * This conceptionally performs a `push_back()` on the `back()` of this container,
+     * i.e. that last inner container grows by 1.
+     *
+     * If the new concat_size() is greater than concat_capacity(), all iterators and references (including the
+     * past-the-end iterator) are invalidated. Otherwise, only the past-the-end iterator is invalidated.
+     *
+     * ### Complexity
+     *
+     * Amortised constant. Wort-case linear in concat_size().
+     *
+     * ### Exceptions
+     *
+     * Basic exception guarantee, i.e. guaranteed not to leak. However, the container may contain invalid data after
+     * an exception is thrown.
+     *
+     */
+    void push_back_inner(std::ranges::range_value_t<underlying_container_type> const value)
+    {
+        data_values.push_back(value);
+        ++data_delimiters.back();
+    }
+
+    /*!\brief Appends the given elements to the end of the underlying container (increases size of last element by n).
+     * \tparam rng_type The type of range to be inserted; must satisfy \ref is_compatible_with_value_type.
+     * \param value The value to append.
+     *
+     * This conceptionally performs an `insert()` on the `back()` of this container,
+     * i.e. the last inner container grows by value.size().
+     *
+     * If the new concat_size() is greater than concat_capacity(), all iterators and references (including the
+     * past-the-end iterator) are invalidated. Otherwise, only the past-the-end iterator is invalidated.
+     *
+     * ### Complexity
+     *
+     * Amortised linear in the size of value. Wort-case linear in concat_size().
+     *
+     * ### Exceptions
+     *
+     * Basic exception guarantee, i.e. guaranteed not to leak. However, the container may contain invalid data after
+     * an exception is thrown.
+     *
+     */
+    template <std::ranges::forward_range rng_type>
+    void append_inner(rng_type && value)
+      //!\cond
+      requires is_compatible_with_value_type<rng_type>
+    //!\endcond
+    {
+        data_values.insert(data_values.end(), std::ranges::begin(value), std::ranges::end(value));
+        data_delimiters.back() += std::ranges::size(value);
+    }
+
     /*!\brief Removes the last element of the container.
      *
      * Calling pop_back on an empty container is undefined. In debug mode an assertion will be thrown.
      *
      * No iterators or references except for back() and end() are invalidated.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * No exception is thrown in release mode.
      *
@@ -1179,11 +1208,11 @@ public:
      * Capacity is never reduced when resizing to smaller size because that would invalidate all iterators, rather
      * than only the ones that would be invalidated by the equivalent sequence of pop_back() calls.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * At most linear in the size() of the container.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Only new size: Strong exception guarantee (no data is modified in case an exception is thrown). [only new size]
      *
@@ -1220,11 +1249,11 @@ public:
     /*!\brief Swap contents with another instance.
      * \param rhs The other instance to swap with.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * No-throw guarantee.
      */

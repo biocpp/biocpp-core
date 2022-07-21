@@ -13,9 +13,7 @@
 #include <bio/alphabet/nucleotide/dna15.hpp>
 #include <bio/alphabet/nucleotide/dna4.hpp>
 
-using bio::alphabet::operator""_aa27;
-using bio::alphabet::operator""_dna4;
-using bio::alphabet::operator""_dna15;
+using namespace bio::alphabet::literals;
 
 TEST(translate_triplets, dna4)
 {

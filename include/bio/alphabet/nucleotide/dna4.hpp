@@ -80,6 +80,11 @@ public:
     }
     //!\}
 
+    /*!\brief Convert to complement. Faster implementation than the default-generated.
+     * \private
+     */
+    constexpr dna4 complement() const noexcept { return dna4{}.assign_rank(to_rank() ^ 0b11); }
+
 protected:
     //!\privatesection
 
@@ -127,9 +132,6 @@ protected:
         return ret;
     }
     ();
-
-    //!\brief The complement table.
-    static const std::array<dna4, alphabet_size> complement_table;
 };
 
 // ------------------------------------------------------------------
@@ -140,9 +142,17 @@ protected:
 //!\relates dna4
 using dna4_vector = std::vector<dna4>;
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -152,7 +162,7 @@ using dna4_vector = std::vector<dna4>;
  * \relates bio::alphabet::dna4
  * \returns bio::alphabet::dna4
  */
-constexpr dna4 operator""_dna4(char const c) noexcept
+consteval dna4 operator""_dna4(char const c) noexcept
 {
     return dna4{}.assign_char(c);
 }
@@ -178,15 +188,6 @@ inline dna4_vector operator""_dna4(char const * s, std::size_t n)
 }
 //!\}
 
-// ------------------------------------------------------------------
-// dna4 (deferred definition)
-// ------------------------------------------------------------------
-
-constexpr std::array<dna4, dna4::alphabet_size> dna4::complement_table{
-  'T'_dna4, // complement of 'A'_dna4
-  'G'_dna4, // complement of 'C'_dna4
-  'C'_dna4, // complement of 'G'_dna4
-  'A'_dna4  // complement of 'T'_dna4
-};
+} // namespace literals
 
 } // namespace bio::alphabet

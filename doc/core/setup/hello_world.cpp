@@ -1,7 +1,7 @@
 #include <bio/alphabet/aminoacid/all.hpp>
 #include <bio/alphabet/fmt.hpp>
 
-using bio::alphabet::operator""_aa27;
+using namespace bio::alphabet::literals;
 
 int main()
 {

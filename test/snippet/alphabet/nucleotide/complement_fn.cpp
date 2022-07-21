@@ -1,7 +1,7 @@
 #include <bio/alphabet/nucleotide/concept.hpp>
 #include <bio/alphabet/nucleotide/rna5.hpp>
 
-using bio::alphabet::operator""_rna5;
+using namespace bio::alphabet::literals;
 
 int main()
 {

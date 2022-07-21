@@ -2,7 +2,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_rna15;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::rna15_vector foo{"ACGTTA"_rna15};
     bio::alphabet::rna15_vector bar = "ACGTTA"_rna15;

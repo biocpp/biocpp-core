@@ -4,8 +4,8 @@
 
 int main()
 {
-    using bio::alphabet::operator""_dna5;
-    using bio::alphabet::operator""_rna5;
+    using namespace bio::alphabet::literals;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::alphabet_variant<bio::alphabet::dna5, bio::alphabet::gap> letter{};          // implicitly 'A'_dna5
     bio::alphabet::alphabet_variant<bio::alphabet::dna5, bio::alphabet::gap> letter2{'C'_dna5}; // constructed from alternative (== 'C'_dna5)

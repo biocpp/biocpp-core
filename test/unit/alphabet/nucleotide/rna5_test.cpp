@@ -14,7 +14,7 @@
 #include "../semi_alphabet_test_template.hpp"
 #include "nucleotide_test_template.hpp"
 
-using bio::alphabet::operator""_rna5;
+using namespace bio::alphabet::literals;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(rna5, alphabet, bio::alphabet::rna5, );
 INSTANTIATE_TYPED_TEST_SUITE_P(rna5, semi_alphabet_test, bio::alphabet::rna5, );

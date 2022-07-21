@@ -16,7 +16,7 @@
 #include "../semi_alphabet_test_template.hpp"
 #include "phred_test_template.hpp"
 
-using bio::alphabet::operator""_phred63;
+using namespace bio::alphabet::literals;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(phred63, alphabet, bio::alphabet::phred63, );
 INSTANTIATE_TYPED_TEST_SUITE_P(phred63, semi_alphabet_test, bio::alphabet::phred63, );

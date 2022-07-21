@@ -4,7 +4,7 @@
 #include <vector>
 #include <bio/alphabet/nucleotide/all.hpp>
 
-using bio::alphabet::operator""_dna5;
+using namespace bio::alphabet::literals;
 
 template <std::ranges::forward_range urng_t> // the underlying range type
 struct my_iterator : std::ranges::iterator_t<urng_t>

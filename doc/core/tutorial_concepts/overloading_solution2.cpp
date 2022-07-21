@@ -14,8 +14,7 @@ void print(t const v)
               << " and my complement is: " << bio::alphabet::to_char(bio::alphabet::complement(v)) << '\n';
 }
 
-using bio::alphabet::operator""_dna5;
-using bio::alphabet::operator""_aa27;
+using namespace bio::alphabet::literals;
 
 int main()
 {

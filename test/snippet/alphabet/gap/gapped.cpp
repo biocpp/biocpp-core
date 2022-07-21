@@ -3,7 +3,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_dna4;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::gapped<bio::alphabet::dna4> gapped_letter{};
     bio::alphabet::gapped<bio::alphabet::dna4> converted_letter{'C'_dna4};

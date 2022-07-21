@@ -15,10 +15,7 @@
 #include "../semi_alphabet_test_template.hpp"
 #include "alphabet_tuple_base_test_template.hpp"
 
-using bio::alphabet::operator""_dna4;
-using bio::alphabet::operator""_dna5;
-using bio::alphabet::operator""_rna4;
-using bio::alphabet::operator""_rna5;
+using namespace bio::alphabet::literals;
 
 template <typename type1, typename type2>
 struct test_composite : public bio::alphabet::alphabet_tuple_base<test_composite<type1, type2>, type1, type2>

@@ -17,7 +17,7 @@
 #include <bio/ranges/views/trim_quality.hpp>
 #include <ranges>
 
-using bio::alphabet::operator""_dna5;
+using namespace bio::alphabet::literals;
 
 TEST(view_trim, standalone)
 {

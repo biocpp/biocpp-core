@@ -21,7 +21,7 @@
   *
   * \details
   *
-  * ###Introduction
+  * ### Introduction
   *
   * CIGAR strings are combinations of count values and CIGAR operations, representing an alignment as a sequence of
   * edit operations. This submodule has two different

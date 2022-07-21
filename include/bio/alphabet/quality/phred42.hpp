@@ -82,6 +82,18 @@ public:
     //!\}
 };
 
+} // namespace bio::alphabet
+
+// ------------------------------------------------------------------
+// literals
+// ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
+
 /*!\name Literals
  * \{
  */
@@ -89,7 +101,7 @@ public:
  * \relates bio::alphabet::phred42
  * \returns bio::alphabet::phred42
  */
-constexpr phred42 operator""_phred42(char const c) noexcept
+consteval phred42 operator""_phred42(char const c) noexcept
 {
     return phred42{}.assign_char(c);
 }
@@ -115,5 +127,7 @@ inline std::vector<phred42> operator""_phred42(char const * s, std::size_t n)
     return r;
 }
 //!\}
+
+} // namespace literals
 
 } // namespace bio::alphabet

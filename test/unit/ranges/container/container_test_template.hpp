@@ -13,7 +13,7 @@
 #include <bio/ranges/container/small_vector.hpp>
 #include <bio/test/expect_range_eq.hpp>
 
-using bio::alphabet::operator""_dna4;
+using namespace bio::alphabet::literals;
 
 template <typename T>
 class container_over_dna4_test : public ::testing::Test

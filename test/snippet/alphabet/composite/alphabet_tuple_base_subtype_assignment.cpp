@@ -4,8 +4,8 @@
 
 int main()
 {
-    using bio::alphabet::operator""_dna4;
-    using bio::alphabet::operator""_rna4;
+    using namespace bio::alphabet::literals;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42> letter1{'T'_dna4, bio::alphabet::phred42{1}};
 

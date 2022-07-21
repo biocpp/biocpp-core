@@ -138,7 +138,7 @@ private:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr alphabet_tuple_base() noexcept : base_t{} {}                            //!< Defaulted.
+    constexpr alphabet_tuple_base() noexcept                               = default; //!< Defaulted.
     constexpr alphabet_tuple_base(alphabet_tuple_base const &)             = default; //!< Defaulted.
     constexpr alphabet_tuple_base(alphabet_tuple_base &&)                  = default; //!< Defaulted.
     constexpr alphabet_tuple_base & operator=(alphabet_tuple_base const &) = default; //!< Defaulted.

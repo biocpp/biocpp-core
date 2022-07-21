@@ -91,7 +91,7 @@ protected:
     //!\copydoc bio::alphabet::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank = dna15::char_to_rank;
 
-    //!\copydoc bio::alphabet::dna4::complement_table
+    //!\brief The complement table.
     static const std::array<rna15, alphabet_size> complement_table;
 };
 
@@ -103,9 +103,17 @@ protected:
 //!\relates rna15
 using rna15_vector = std::vector<rna15>;
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -115,7 +123,7 @@ using rna15_vector = std::vector<rna15>;
  * \relates bio::alphabet::rna15
  * \returns bio::alphabet::rna15
  */
-constexpr rna15 operator""_rna15(char const c) noexcept
+consteval rna15 operator""_rna15(char const c) noexcept
 {
     return rna15{}.assign_char(c);
 }
@@ -141,9 +149,16 @@ inline rna15_vector operator""_rna15(char const * s, std::size_t n)
 }
 //!\}
 
+} // namespace literals
+
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // rna15 (deferred definition)
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
 
 constexpr std::array<rna15, rna15::alphabet_size> rna15::complement_table{
   'U'_rna15, // complement of 'A'_rna15

@@ -13,7 +13,7 @@
 #include <bio/ranges/container/concatenated_sequences.hpp>
 #include <bio/test/expect_range_eq.hpp>
 
-using bio::alphabet::operator""_dna4;
+using namespace bio::alphabet::literals;
 
 template <typename T>
 class container_of_container : public ::testing::Test
@@ -29,7 +29,6 @@ TYPED_TEST_SUITE(container_of_container, container_of_container_types, );
 TYPED_TEST(container_of_container, concepts)
 {
     EXPECT_TRUE(bio::ranges::detail::container<TypeParam>);
-    EXPECT_TRUE(bio::ranges::detail::container<std::ranges::range_value_t<TypeParam>>);
 }
 
 TYPED_TEST(container_of_container, construction)
@@ -319,4 +318,125 @@ TYPED_TEST(container_of_container, swap)
     t0.swap(t1);
     EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "ACGT"_dna4, "GAGGA"_dna4}));
     EXPECT_EQ(t1, TypeParam{});
+}
+
+template <typename T>
+class concatenated_sequences : public ::testing::Test
+{};
+
+using concatenated_sequences_types =
+  ::testing::Types<bio::ranges::concatenated_sequences<std::vector<bio::alphabet::dna4>>,
+                   bio::ranges::concatenated_sequences<bio::ranges::bitcompressed_vector<bio::alphabet::dna4>>>;
+
+TYPED_TEST_SUITE(concatenated_sequences, concatenated_sequences_types, );
+
+TYPED_TEST(concatenated_sequences, push_back_inner)
+{
+    TypeParam t0{};
+
+    t0.push_back("ACGT"_dna4);
+    t0.push_back("GAGGA"_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "GAGGA"_dna4}));
+
+    t0.push_back_inner('C'_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "GAGGAC"_dna4}));
+    t0.push_back_inner('G'_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "GAGGACG"_dna4}));
+    t0.push_back_inner('T'_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "GAGGACGT"_dna4}));
+
+    t0.push_back("ACGT"_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "GAGGACGT"_dna4, "ACGT"_dna4}));
+    t0.push_back_inner('C'_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "GAGGACGT"_dna4, "ACGTC"_dna4}));
+    t0.push_back_inner('G'_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "GAGGACGT"_dna4, "ACGTCG"_dna4}));
+    t0.push_back_inner('T'_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "GAGGACGT"_dna4, "ACGTCGT"_dna4}));
+}
+
+TYPED_TEST(concatenated_sequences, push_back_empty)
+{
+    TypeParam t0{};
+
+    t0.push_back("ACGT"_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4}));
+
+    t0.push_back();
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, ""_dna4}));
+    t0.push_back_inner('C'_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "C"_dna4}));
+    t0.push_back_inner('G'_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "CG"_dna4}));
+    t0.push_back_inner('T'_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "CGT"_dna4}));
+
+    t0.push_back();
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "CGT"_dna4, ""_dna4}));
+    t0.push_back_inner('C'_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "CGT"_dna4, "C"_dna4}));
+    t0.push_back_inner('G'_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "CGT"_dna4, "CG"_dna4}));
+    t0.push_back_inner('T'_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "CGT"_dna4, "CGT"_dna4}));
+}
+
+TYPED_TEST(concatenated_sequences, append_inner)
+{
+    TypeParam t0{};
+
+    t0.push_back("ACGT"_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4}));
+
+    t0.push_back();
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, ""_dna4}));
+    t0.append_inner("C"_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "C"_dna4}));
+    t0.append_inner("GT"_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "CGT"_dna4}));
+
+    t0.push_back();
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "CGT"_dna4, ""_dna4}));
+    t0.append_inner("C"_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "CGT"_dna4, "C"_dna4}));
+    t0.append_inner("GT"_dna4);
+    EXPECT_EQ(t0, (TypeParam{"ACGT"_dna4, "CGT"_dna4, "CGT"_dna4}));
+}
+
+TEST(concatenated_sequences_, associated_types)
+{
+    {
+        using t = bio::ranges::concatenated_sequences<std::vector<int>>;
+
+        EXPECT_TRUE((std::same_as<std::ranges::range_value_t<t>, std::span<int>>));
+        EXPECT_TRUE((std::same_as<std::ranges::range_reference_t<t>, std::span<int>>));
+
+        EXPECT_TRUE((std::same_as<std::ranges::range_value_t<t const>, std::span<int>>));
+        EXPECT_TRUE((std::same_as<std::ranges::range_reference_t<t const>, std::span<int const>>));
+    }
+
+    {
+        using t = bio::ranges::concatenated_sequences<std::string>;
+
+        EXPECT_TRUE((std::same_as<std::ranges::range_value_t<t>, std::span<char>>));
+        EXPECT_TRUE((std::same_as<std::ranges::range_reference_t<t>, std::span<char>>));
+
+        EXPECT_TRUE((std::same_as<std::ranges::range_value_t<t const>, std::span<char>>));
+        EXPECT_TRUE((std::same_as<std::ranges::range_reference_t<t const>, std::string_view>));
+    }
+
+    {
+        using t     = bio::ranges::concatenated_sequences<bio::ranges::bitcompressed_vector<bio::alphabet::dna4>>;
+        using it_t  = std::ranges::iterator_t<bio::ranges::bitcompressed_vector<bio::alphabet::dna4>>;
+        using sen_t = std::ranges::sentinel_t<bio::ranges::bitcompressed_vector<bio::alphabet::dna4>>;
+
+        using c_it_t  = std::ranges::iterator_t<bio::ranges::bitcompressed_vector<bio::alphabet::dna4> const>;
+        using c_sen_t = std::ranges::sentinel_t<bio::ranges::bitcompressed_vector<bio::alphabet::dna4> const>;
+
+        EXPECT_TRUE((std::same_as<std::ranges::range_value_t<t>, std::ranges::subrange<it_t, sen_t>>));
+        EXPECT_TRUE((std::same_as<std::ranges::range_reference_t<t>, std::ranges::subrange<it_t, sen_t>>));
+
+        EXPECT_TRUE((std::same_as<std::ranges::range_value_t<t const>, std::ranges::subrange<it_t, sen_t>>));
+        EXPECT_TRUE((std::same_as<std::ranges::range_reference_t<t const>, std::ranges::subrange<c_it_t, c_sen_t>>));
+    }
 }

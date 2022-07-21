@@ -16,7 +16,7 @@
 #include <bio/ranges/views/to_rank.hpp>
 #include <ranges>
 
-using bio::alphabet::operator""_dna5;
+using namespace bio::alphabet::literals;
 
 TEST(view_to_rank, basic)
 {

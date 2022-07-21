@@ -21,11 +21,7 @@
 #include "../semi_alphabet_constexpr_test_template.hpp"
 #include "../semi_alphabet_test_template.hpp"
 
-using bio::alphabet::operator""_aa27;
-using bio::alphabet::operator""_dna4;
-using bio::alphabet::operator""_phred42;
-using bio::alphabet::operator""_phred63;
-using bio::alphabet::operator""_rna4;
+using namespace bio::alphabet::literals;
 
 // tests various combinations of alphabet_variant and alphabet_tuple
 using qualified_dna_phred42 = bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>;

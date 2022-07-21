@@ -50,7 +50,7 @@
  * This sub-module provides multiple quality alphabets that can be used in
  * combination with regular containers and ranges.
  *
- * ###Encoding Schemes
+ * ### Encoding Schemes
  *
  * | Format                      | Quality Type          | Phred Score Range  | Rank Range   | ASCII Range  | Assert                    |
  * |:---------------------------:|:----------------------|:------------------:|:------------:|:------------:|:-------------------------:|
@@ -69,7 +69,7 @@
  * An overview of all the score formats and their encodings can be found here:
  * https://en.wikipedia.org/wiki/FASTQ_format#Encoding.
  *
- * ###Concept
+ * ### Concept
  *
  * The quality submodule defines the bio::alphabet::writable_quality_alphabet which encompasses
  * all the alphabets, defined in the submodule, and refines the
@@ -78,7 +78,7 @@
  * Additionally, this submodule defines the bio::alphabet::quality_alphabet, which only requires
  * readablity and not assignability.
  *
- * ###Assignment and Conversion
+ * ### Assignment and Conversion
  *
  * Quality alphabets can be converted to their char and rank representation via
  * `bio::alphabet::to_char` and `bio::alphabet::to_rank` respectively (like all other alphabets). Additionally

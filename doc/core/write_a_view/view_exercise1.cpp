@@ -3,7 +3,7 @@
 #include <ranges>
 #include <bio/alphabet/nucleotide/all.hpp>
 
-using bio::alphabet::operator""_dna5;
+using namespace bio::alphabet::literals;
 
 //![start]
 auto const my_convert_to_char_view = std::views::transform([] (auto const alph)

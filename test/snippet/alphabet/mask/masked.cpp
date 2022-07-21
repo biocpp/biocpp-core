@@ -4,7 +4,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_dna4;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::masked<bio::alphabet::dna4> dna4_masked{};
     bio::alphabet::masked<bio::alphabet::dna4> dna4_another_masked{'A'_dna4, bio::alphabet::mask::UNMASKED};

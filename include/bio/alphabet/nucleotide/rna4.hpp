@@ -79,6 +79,14 @@ public:
     }
     //!\}
 
+    /*!\brief Convert to complement. Faster implementation than the default-generated.
+     * \private
+     */
+    constexpr rna4 complement() const noexcept
+    {
+        return rna4{}.assign_rank(to_rank() ^ 0b11);
+    }
+
 protected:
     //!\privatesection
 
@@ -87,9 +95,6 @@ protected:
 
     //!\copydoc bio::alphabet::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank = dna4::char_to_rank;
-
-    //!\copydoc bio::alphabet::dna4::complement_table
-    static const std::array<rna4, alphabet_size> complement_table;
 };
 
 // ------------------------------------------------------------------
@@ -100,9 +105,17 @@ protected:
 //!\relates rna4
 using rna4_vector = std::vector<rna4>;
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -112,7 +125,7 @@ using rna4_vector = std::vector<rna4>;
  * \relates bio::alphabet::rna4
  * \returns bio::alphabet::rna4
  */
-constexpr rna4 operator""_rna4(char const c) noexcept
+consteval rna4 operator""_rna4(char const c) noexcept
 {
     return rna4{}.assign_char(c);
 }
@@ -138,15 +151,6 @@ inline rna4_vector operator""_rna4(char const * s, std::size_t n)
 }
 //!\}
 
-// ------------------------------------------------------------------
-// rna4 (deferred definition)
-// ------------------------------------------------------------------
-
-constexpr std::array<rna4, rna4::alphabet_size> rna4::complement_table{
-  'U'_rna4, // complement of 'A'_rna4
-  'G'_rna4, // complement of 'C'_rna4
-  'C'_rna4, // complement of 'G'_rna4
-  'A'_rna4  // complement of 'U'_rna4
-};
+} // namespace literals
 
 } // namespace bio::alphabet

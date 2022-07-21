@@ -80,6 +80,18 @@ public:
     //!\}
 };
 
+} // namespace bio::alphabet
+
+// ------------------------------------------------------------------
+// literals
+// ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
+
 /*!\name Literals
  * \{
  */
@@ -87,7 +99,7 @@ public:
  * \relates bio::alphabet::phred68legacy
  * \returns bio::alphabet::phred68legacy
  */
-constexpr phred68legacy operator""_phred68legacy(char const c) noexcept
+consteval phred68legacy operator""_phred68legacy(char const c) noexcept
 {
     return phred68legacy{}.assign_char(c);
 }
@@ -113,5 +125,7 @@ inline std::vector<phred68legacy> operator""_phred68legacy(char const * s, std::
     return r;
 }
 //!\}
+
+} // namespace literals
 
 } // namespace bio::alphabet

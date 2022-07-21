@@ -33,6 +33,17 @@ namespace bio::alphabet
 namespace bio::alphabet::cpo
 {}
 
+/*!\namespace bio::alphabet::literals
+ * \brief An inline namespace for alphabet literals. It exists to safely allow `using namespace`.
+ * \ingroup alphabet
+ */
+
+namespace bio::alphabet
+{
+inline namespace literals
+{}
+} // namespace bio::alphabet
+
 /*!\if DEV
  * \namespace bio::alphabet::detail
  * \brief The internal BioC++ namespace.

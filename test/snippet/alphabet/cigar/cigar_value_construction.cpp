@@ -4,7 +4,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_cigar_op;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::cigar letter1{0};
     // creates 0M, as the cigar_op field is not provided.

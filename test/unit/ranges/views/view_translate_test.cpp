@@ -24,7 +24,7 @@
 #include <bio/test/expect_range_eq.hpp>
 #include <ranges>
 
-using bio::alphabet::operator""_aa27;
+using namespace bio::alphabet::literals;
 
 template <typename T>
 class nucleotide : public ::testing::Test

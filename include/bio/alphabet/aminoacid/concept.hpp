@@ -87,7 +87,7 @@ namespace bio::alphabet
  * function for nucleotide alphabets), we distinguish an amino acid alphabet by
  * the bio::alphabet::is_aminoacid type trait.
  *
- * ###Concepts and doxygen
+ * ### Concepts and doxygen
  * The requirements for this concept are given as related functions and type traits.
  * Types that satisfy this concept are shown as "implementing this interface".
  */

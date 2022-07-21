@@ -125,14 +125,10 @@ protected:
     ();
 };
 
-} // namespace bio::alphabet
-
 // ------------------------------------------------------------------
 // containers
 // ------------------------------------------------------------------
 
-namespace bio::alphabet
-{
 //!\brief Alias for an std::vector of bio::alphabet::aa20.
 //!\relates aa20
 using aa20_vector = std::vector<aa20>;
@@ -144,6 +140,9 @@ using aa20_vector = std::vector<aa20>;
 // ------------------------------------------------------------------
 
 namespace bio::alphabet
+{
+
+inline namespace literals
 {
 
 /*!\name Literals
@@ -158,7 +157,7 @@ namespace bio::alphabet
  * \include test/snippet/alphabet/aminoacid/aa20_char_literal.cpp
  *
  */
-constexpr aa20 operator""_aa20(char const c) noexcept
+consteval aa20 operator""_aa20(char const c) noexcept
 {
     return aa20{}.assign_char(c);
 }
@@ -188,5 +187,7 @@ inline aa20_vector operator""_aa20(char const * s, std::size_t n)
     return r;
 }
 //!\}
+
+} // namespace literals
 
 } // namespace bio::alphabet

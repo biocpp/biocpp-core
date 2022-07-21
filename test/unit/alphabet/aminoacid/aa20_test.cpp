@@ -15,7 +15,7 @@
 #include <bio/alphabet/aminoacid/aa20.hpp>
 #include <bio/ranges/views/zip.hpp>
 
-using bio::alphabet::operator""_aa20;
+using namespace bio::alphabet::literals;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(aa20, alphabet, bio::alphabet::aa20, );
 INSTANTIATE_TYPED_TEST_SUITE_P(aa20, semi_alphabet_test, bio::alphabet::aa20, );

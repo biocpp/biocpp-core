@@ -16,8 +16,7 @@
 #include <bio/ranges/views/to.hpp>
 #include <ranges>
 
-using bio::alphabet::operator""_dna4;
-using bio::alphabet::operator""_dna5;
+using namespace bio::alphabet::literals;
 
 TEST(view_convert, basic)
 {

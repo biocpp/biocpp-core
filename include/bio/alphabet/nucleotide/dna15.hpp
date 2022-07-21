@@ -112,7 +112,7 @@ protected:
     }
     ();
 
-    //!\copydoc bio::alphabet::dna4::complement_table
+    //!\brief The complement table.
     static const std::array<dna15, alphabet_size> complement_table;
 };
 
@@ -124,9 +124,17 @@ protected:
 //!\relates dna15
 using dna15_vector = std::vector<dna15>;
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -136,7 +144,7 @@ using dna15_vector = std::vector<dna15>;
  * \relates bio::alphabet::dna15
  * \returns bio::alphabet::dna15
  */
-constexpr dna15 operator""_dna15(char const c) noexcept
+consteval dna15 operator""_dna15(char const c) noexcept
 {
     return dna15{}.assign_char(c);
 }
@@ -162,9 +170,16 @@ inline dna15_vector operator""_dna15(char const * s, std::size_t n)
 }
 //!\}
 
+} // namespace literals
+
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // dna15 (deferred definition)
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
 
 constexpr std::array<dna15, dna15::alphabet_size> dna15::complement_table{
   'T'_dna15, // complement of 'A'_dna15

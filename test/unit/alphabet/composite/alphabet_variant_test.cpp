@@ -24,10 +24,7 @@
 #include "../semi_alphabet_constexpr_test_template.hpp"
 #include "../semi_alphabet_test_template.hpp"
 
-using bio::alphabet::operator""_dna4;
-using bio::alphabet::operator""_dna5;
-using bio::alphabet::operator""_rna4;
-using bio::alphabet::operator""_rna5;
+using namespace bio::alphabet::literals;
 
 using alphabet_variant_types =
   ::testing::Types<bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::gap>,

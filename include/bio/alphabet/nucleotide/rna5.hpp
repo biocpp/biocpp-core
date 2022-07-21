@@ -88,7 +88,7 @@ protected:
     //!\copydoc bio::alphabet::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank = dna5::char_to_rank;
 
-    //!\copydoc bio::alphabet::dna4::complement_table
+    //!\brief The complement table.
     static const std::array<rna5, alphabet_size> complement_table;
 };
 
@@ -100,9 +100,17 @@ protected:
 //!\relates rna5
 using rna5_vector = std::vector<rna5>;
 
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // literals
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
+
+inline namespace literals
+{
 
 /*!\name Literals
  * \{
@@ -112,7 +120,7 @@ using rna5_vector = std::vector<rna5>;
  * \relates bio::alphabet::rna5
  * \returns bio::alphabet::rna5
  */
-constexpr rna5 operator""_rna5(char const c) noexcept
+consteval rna5 operator""_rna5(char const c) noexcept
 {
     return rna5{}.assign_char(c);
 }
@@ -138,9 +146,16 @@ inline rna5_vector operator""_rna5(char const * s, std::size_t n)
 }
 //!\}
 
+} // namespace literals
+
+} // namespace bio::alphabet
+
 // ------------------------------------------------------------------
 // rna5 (deferred definition)
 // ------------------------------------------------------------------
+
+namespace bio::alphabet
+{
 
 constexpr std::array<rna5, rna5::alphabet_size> rna5::complement_table{
   'U'_rna5, // complement of 'A'_rna5

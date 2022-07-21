@@ -24,8 +24,7 @@
 
 #include "../iterator_test_template.hpp"
 
-using bio::alphabet::operator""_aa27;
-using bio::alphabet::operator""_dna4;
+using namespace bio::alphabet::literals;
 
 using iterator_type =
   decltype(bio::ranges::views::translate_join(std::declval<std::vector<bio::alphabet::dna4_vector> &>()).begin());

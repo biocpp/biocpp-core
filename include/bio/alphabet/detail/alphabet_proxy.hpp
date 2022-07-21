@@ -103,7 +103,7 @@ private:
       requires meta::weakly_assignable_from<alphabet_type, indirect_assignable_type>
     //!\endcond
     {
-        alphabet_type a{};
+        alphabet_type a;
         a = c;
         return operator=(a);
     }
@@ -127,7 +127,7 @@ public:
       requires writable_alphabet<alphabet_type>
     //!\endcond
     {
-        alphabet_type tmp{};
+        alphabet_type tmp;
         assign_char_to(c, tmp);
         return operator=(tmp);
     }
@@ -138,7 +138,7 @@ public:
       requires writable_alphabet<alphabet_type>
     //!\endcond
     {
-        alphabet_type tmp{};
+        alphabet_type tmp;
         assign_char_to(c, tmp);
         return operator=(tmp);
     }
@@ -149,7 +149,7 @@ public:
       requires writable_quality_alphabet<alphabet_type>
     //!\endcond
     {
-        alphabet_type tmp{};
+        alphabet_type tmp;
         assign_phred_to(c, tmp);
         return operator=(tmp);
     }
@@ -160,7 +160,7 @@ public:
       requires writable_quality_alphabet<alphabet_type>
     //!\endcond
     {
-        alphabet_type tmp{};
+        alphabet_type tmp;
         assign_phred_to(c, tmp);
         return operator=(tmp);
     }

@@ -4,7 +4,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_dna5;
+    using namespace bio::alphabet::literals;
 
     // possible:
     bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::gap> letter1{'C'_dna5};

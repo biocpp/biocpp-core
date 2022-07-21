@@ -5,7 +5,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_dna5;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::dna5_vector vec{"ACGTACGTACGTA"_dna5};
 

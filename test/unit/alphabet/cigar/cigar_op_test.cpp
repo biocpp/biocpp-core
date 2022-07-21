@@ -14,14 +14,12 @@
 #include "../semi_alphabet_constexpr_test_template.hpp"
 #include "../semi_alphabet_test_template.hpp"
 
-using bio::alphabet::operator""_cigar_op;
+using namespace bio::alphabet::literals;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(cigar_op, alphabet, bio::alphabet::cigar_op, );
 INSTANTIATE_TYPED_TEST_SUITE_P(cigar_op, semi_alphabet_test, bio::alphabet::cigar_op, );
 INSTANTIATE_TYPED_TEST_SUITE_P(cigar_op, alphabet_constexpr, bio::alphabet::cigar_op, );
 INSTANTIATE_TYPED_TEST_SUITE_P(cigar_op, semi_alphabet_constexpr, bio::alphabet::cigar_op, );
-
-using bio::alphabet::operator""_cigar_op;
 
 TEST(cigar_op, to_char_assign_char)
 {

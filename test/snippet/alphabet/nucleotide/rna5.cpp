@@ -2,7 +2,7 @@
 #include <bio/alphabet/fmt.hpp>
 int main()
 {
-    using bio::alphabet::operator""_rna5;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::rna5 my_letter{'A'_rna5};
 

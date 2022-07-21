@@ -76,8 +76,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(qualified, alphabet_constexpr, qualified_types, )
 INSTANTIATE_TYPED_TEST_SUITE_P(qualified, semi_alphabet_constexpr, qualified_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(qualified, alphabet_tuple_base_test, qualified_types, );
 
-using bio::alphabet::operator""_dna4;
-using bio::alphabet::operator""_phred42;
+using namespace bio::alphabet::literals;
 
 using tup   = bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>;
 using ref_t = decltype(get<0>(std::declval<tup &>()));

@@ -3,7 +3,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_rna4;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::rna4 my_letter{'A'_rna4};
 

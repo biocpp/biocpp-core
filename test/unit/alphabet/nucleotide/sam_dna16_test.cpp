@@ -13,7 +13,7 @@
 #include "../semi_alphabet_constexpr_test_template.hpp"
 #include "../semi_alphabet_test_template.hpp"
 
-using bio::alphabet::operator""_sam_dna16;
+using namespace bio::alphabet::literals;
 
 // ------------------------------------------------------------------
 // sam_dna16 alphabet

@@ -2,7 +2,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_aa20;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::aa20 acid1{'A'_aa20};
 

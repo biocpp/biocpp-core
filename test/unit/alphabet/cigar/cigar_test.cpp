@@ -18,7 +18,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(cigar, semi_alphabet_constexpr, bio::alphabet::ci
 
 TEST(cigar, brace_init)
 {
-    using bio::alphabet::operator""_cigar_op;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::cigar c1{uint32_t{223}, 'M'_cigar_op};
     EXPECT_EQ(c1.to_string(), bio::ranges::small_string<11>{"223M"});
@@ -39,4 +39,22 @@ TEST(cigar, assign_string)
     c1.assign_string("223M");
     EXPECT_EQ(uint32_t{223}, bio::alphabet::to_rank(get<0>(c1)));
     EXPECT_EQ('M', get<1>(c1).to_char());
+}
+
+TEST(cigar, assign_string_fail1)
+{
+    bio::alphabet::cigar c1{};
+    EXPECT_THROW(c1.assign_string("223"), std::runtime_error);
+}
+
+TEST(cigar, assign_string_fail2)
+{
+    bio::alphabet::cigar c1{};
+    EXPECT_THROW(c1.assign_string("!223M"), std::runtime_error);
+}
+
+TEST(cigar, assign_string_fail3)
+{
+    bio::alphabet::cigar c1{};
+    EXPECT_THROW(c1.assign_string("223L"), bio::alphabet::invalid_char_assignment);
 }

@@ -8,7 +8,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_dna4;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::dna4_vector vec = "ACTTTGATA"_dna4;
     auto v = vec | bio::views::to_char;

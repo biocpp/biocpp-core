@@ -96,15 +96,18 @@ public:
      *
      * Provides an implementation for bio::alphabet::complement, required to model bio::alphabet::nucleotide_alphabet.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Guaranteed not to throw.
      */
-    constexpr derived_type complement() const noexcept { return derived_type::complement_table[to_rank()]; }
+    constexpr derived_type complement() const noexcept requires(requires(derived_type d) { d.complement_table; })
+    {
+        return derived_type::complement_table[to_rank()];
+    }
     //!\}
 
     /*!\brief Validate whether a character value has a one-to-one mapping to an alphabet value.
@@ -118,11 +121,11 @@ public:
      * **and** true also for U/T respectively, e.g. 'U' is a valid character for bio::alphabet::dna4, because its informational
      * content is identical to 'T'.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Guaranteed not to throw.
      */

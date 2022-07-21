@@ -86,11 +86,11 @@ public:
      *
      * Provides an implementation for bio::alphabet::to_char, required to model bio::alphabet::alphabet.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Guaranteed not to throw.
      */
@@ -108,11 +108,11 @@ public:
      *
      * Provides an implementation for bio::alphabet::to_rank, required to model bio::alphabet::semialphabet.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Guaranteed not to throw.
      */
@@ -129,11 +129,11 @@ public:
      *
      * Provides an implementation for bio::alphabet::assign_char_to, required to model bio::alphabet::alphabet.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Guaranteed not to throw.
      */
@@ -154,11 +154,11 @@ public:
      *
      * Provides an implementation for bio::alphabet::assign_rank_to, required to model bio::alphabet::semialphabet.
      *
-     * ###Complexity
+     * ### Complexity
      *
      * Constant.
      *
-     * ###Exceptions
+     * ### Exceptions
      *
      * Guaranteed not to throw.
      */
@@ -191,7 +191,7 @@ public:
 
 private:
     //!\brief The value of the alphabet letter is stored as the rank.
-    rank_type rank{};
+    rank_type rank;
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr auto tag_invoke(cpo::to_rank, derived_type const a) noexcept { return a.to_rank(); }

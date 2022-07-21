@@ -18,7 +18,7 @@
 
 TEST(view_rank_to, basic)
 {
-    using bio::alphabet::operator""_dna5;
+    using namespace bio::alphabet::literals;
 
     std::vector<unsigned>      vec{0, 1, 4, 4, 4, 2, 0, 4, 0};
     bio::alphabet::dna5_vector cmp{"ACTTTGATA"_dna5};

@@ -3,7 +3,7 @@
 
 int main()
 {
-    using bio::alphabet::operator""_aa27;
+    using namespace bio::alphabet::literals;
 
     bio::alphabet::aa27 my_letter{'A'_aa27};
 

@@ -170,8 +170,7 @@ Write a small program, similar to the one above with the following "skeleton":
 ```cpp
 // which includes?
 
-using bio::alphabet::operator""_dna5;
-using bio::alphabet::operator""_aa27;
+using namespace bio::alphabet::literals;
 
 // Add one or more `void print` function template(s) here //
 

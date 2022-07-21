@@ -18,8 +18,7 @@
 #include <bio/ranges/container/small_string.hpp>
 #include <bio/ranges/container/small_vector.hpp>
 
-using bio::alphabet::operator""_dna4;
-using bio::alphabet::operator""_dna4;
+using namespace bio::alphabet::literals;
 
 template <typename t>
 using ranges_1d_generic = ::testing::Test;
@@ -86,13 +85,26 @@ using ranges_2d_types =
 
 TYPED_TEST_SUITE(ranges_2d_generic, ranges_2d_types, );
 
+template <typename t>
+struct tmp_type
+{
+    using type = std::ranges::range_value_t<t>;
+};
+
+template <typename t>
+struct tmp_type<bio::ranges::concatenated_sequences<t>>
+{
+    using type = t;
+};
+
 TYPED_TEST(ranges_2d_generic, short)
 {
-    using val_t = std::ranges::range_value_t<TypeParam>;
+    auto      val1 = "ACGT"_dna4 | bio::views::to<typename tmp_type<TypeParam>::type>();
+    auto      val2 = "GAGGA"_dna4 | bio::views::to<typename tmp_type<TypeParam>::type>();
     TypeParam t1;
-    t1.push_back((val_t) "ACGT"_dna4);
-    t1.push_back((val_t) "ACGT"_dna4);
-    t1.push_back((val_t) "GAGGA"_dna4);
+    t1.push_back(val1);
+    t1.push_back(val1);
+    t1.push_back(val2);
     std::string buf = fmt::format("{}", t1);
     EXPECT_EQ(buf, "[ACGT, ACGT, GAGGA]");
 }

@@ -3,8 +3,7 @@
 #include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/views/convert.hpp>
 
-using bio::alphabet::operator""_aa10li;
-using bio::alphabet::operator""_aa27;
+using namespace bio::alphabet::literals;
 
 int main()
 {

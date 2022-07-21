@@ -6,7 +6,7 @@
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/ranges/container/bitcompressed_vector.hpp>      // include bitcompressed vector
 
-using bio::alphabet::operator""_dna4;
+using namespace bio::alphabet::literals;
 
 int main(int argc, char ** argv)
 {
