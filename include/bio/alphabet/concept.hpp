@@ -64,9 +64,10 @@ namespace bio::alphabet
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation).
+ * This is a customisation point (see \ref biocpp_customisation). **If you don't want to create your own alphabet,
+ * everything below is irrelevant to you!**
  *
- * It acts as a wrapper and looks for an implementation with the following signature:
+ * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```cpp
  * constexpr rank_type tag_invoke(bio::alphabet::cpo::to_rank, alph_type const alph) noexcept
@@ -149,8 +150,10 @@ namespace bio::alphabet
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation).
- * It acts as a wrapper and looks for an implementation with the following signature:
+ * This is a customisation point (see \ref biocpp_customisation). **If you don't want to create your own alphabet,
+ * everything below is irrelevant to you!**
+ *
+ * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```cpp
  * cosntexpr alph_type & tag_invoke(bio::alphabet::assign_rank_to_cpo, rank_type const rank, alph_type & alph) noexcept
@@ -223,9 +226,10 @@ namespace bio::alphabet
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation).
+ * This is a customisation point (see \ref biocpp_customisation). **If you don't want to create your own alphabet,
+ * everything below is irrelevant to you!**
  *
- * It acts as a wrapper and looks for an implementation with the following signature:
+ * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```cpp
  * constexpr char_type tag_invoke(bio::alphabet::cpo::to_char, alph_type const alph) noexcept
@@ -308,8 +312,10 @@ namespace bio::alphabet
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation).
- * It acts as a wrapper and looks for an implementation with the following signature:
+ * This is a customisation point (see \ref biocpp_customisation). **If you don't want to create your own alphabet,
+ * everything below is irrelevant to you!**
+ *
+ * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```cpp
  * constexpr alph_type & tag_invoke(bio::alphabet::assign_char_to_cpo, char_type const char, alph_type & alph) noexcept
@@ -440,8 +446,10 @@ namespace bio::alphabet
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation).
- * It acts as a wrapper and looks for an implementation with the following signature:
+ * This is a customisation point (see \ref biocpp_customisation). **If you don't want to create your own alphabet,
+ * everything below is irrelevant to you!**
+ *
+ * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```cpp
  * constexpr bool tag_invoke(bio::alphabet::cpo::char_is_valid_for, char_type const char, alph_type) noexcept
@@ -589,7 +597,7 @@ namespace bio::alphabet
  *
  * \details
  *
- * This is a function object. Invoke it with the parameter(s) specified above.
+ * This is variable template. Instantiate it with an alphabet type.
  *
  * It is defined for all (semi-)alphabets in BioC++.
  *
@@ -599,14 +607,14 @@ namespace bio::alphabet
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation). *
- * It acts as a wrapper and looks for an implementation with the following signature:
+ * This is a customisation point (see \ref biocpp_customisation). **If you don't want to create your own alphabet,
+ * everything below is irrelevant to you!**
+ *
+ * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```cpp
  * consteval size_t tag_invoke(bio::alphabet::cpo::size, alph_type) noexcept
  * ```
- *
- * If no implementation is found, it behaves as specified above.
  *
  * Implementations are found via ADL and considered only if they are marked `noexcept`, if they return
  * a std::integral type and if they can be evaluated at compile-time (`consteval` is recommended,
