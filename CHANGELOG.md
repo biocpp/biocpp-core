@@ -5,6 +5,17 @@
 This changelog contains a top-level entry for each release with sections on new features, API changes and notable
 bug-fixes (not all bug-fixes will be listed).
 
+# 0.6.0
+
+## Features
+
+## Bug-fixes
+
+## API
+
+* This release is not yet API-stable.
+* This release is *mostly* backwards compatible with 0.5.0.
+
 # 0.5.0
 
 ## Features
