@@ -228,13 +228,3 @@ In some parts of the documentation concepts are called "interfaces", please don'
 And the "verbose syntax" introduced above is not visible at all in the automatically generated documentation.
 That's why it's important to read the detailed documentation section where all requirements are documented.
 
-TODO(bio) the following needs to be updated
-
-Have a look at the documentation of bio::alphabet::argument_parser::add_positional_option().
-It has two template parameters, one seems unconstrained (`typename` in the signature) and one is constrained
-(`validator` in the signature).
-But in fact both are constrained as the detailed documentation reveals.
-
-Now, follow the link to bio::alphabet::validator. We will check in the next section whether you understand the
-documentation for the concept.
-

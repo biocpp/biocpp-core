@@ -14,67 +14,69 @@ struct dna2
 {
     uint8_t rank{};
 
-    // semialphabet
+    /* Comparison operators */
+    constexpr friend auto operator<=>(dna2 const & lhs, dna2 const & rhs) noexcept = default;
 
-    static constexpr size_t alphabet_size = 2;
-
-    uint8_t to_rank() const noexcept
+    /* Semialphabet */
+    consteval friend size_t tag_invoke(bio::alphabet::cpo::size,
+                                       dna2) noexcept
     {
-        return rank;
+        return 2;
     }
 
-    dna2 & assign_rank(uint8_t const rk) noexcept
+    constexpr friend uint8_t tag_invoke(bio::alphabet::cpo::to_rank,
+                                        dna2 const & d) noexcept
     {
-        assert(rk < alphabet_size);
-        rank = rk;
-        return *this;
+        return d.rank;
     }
 
-    // alphabet
+    constexpr friend dna2 & tag_invoke(bio::alphabet::cpo::assign_rank_to,
+                                       uint8_t rk,
+                                       dna2 & d) noexcept
+    {
+        assert(rk < 2);
+        d.rank = rk;
+        return d;
+    }
 
-    char to_char() const noexcept
+    /* Alphabet */
+    constexpr friend char tag_invoke(bio::alphabet::cpo::to_char,
+                                     dna2 const & d) noexcept
     {
         // map 0 => 'S' and 1 => 'W'
-        char const rank_to_char[2] {'S', 'W'};
-        return rank_to_char[rank];
+        return d.rank == 0 ? 'S' : 'W';
     }
 
-    dna2 & assign_char(char const ch) noexcept
+    constexpr friend dna2 & tag_invoke(bio::alphabet::cpo::assign_char_to,
+                                       char ch,
+                                       dna2 & d) noexcept
     {
         switch (ch)
         {
-            case 'W': case 'w': rank = 1; break;         // allow assignment from uppercase and lowercase
-            default:  rank = 0;                          // unknown characters are mapped to 0 (=> 'S')
+            case 'W': case 'w':
+                d.rank = 1; // allow assignment from uppercase and lowercase
+                break;
+            default:
+                d.rank = 0; // unknown characters are mapped to 0 (=> 'S')
         }
-        return *this;
+        return d;
     }
 
-    // Optional: Can be omitted.
-
-    static bool char_is_valid(char const ch) noexcept
+    // Optional: make lower-case letters valid
+    constexpr friend bool tag_invoke(bio::alphabet::cpo::char_is_valid_for,
+                                     char ch,
+                                     dna2) noexcept
     {
-        return (ch == dna2{}.assign_char(ch).to_char());
+        switch (ch)
+        {
+            case 'W': case 'w': case 'S': case 's': return true;
+            default:  return false;
+        }
     }
-
-    // Comparison operators
-    friend auto operator<=>(dna2 const & lhs, dna2 const & rhs) noexcept = default;
 };
 //! [writable_alphabet]
 
 //! [writable_alphabet_concept]
-//TODO(bio) fix this
-// static_assert(bio::alphabet::alphabet<dna2>);                   // ok
-// static_assert(bio::alphabet::writable_alphabet<dna2>);           // ok
+static_assert(bio::alphabet::alphabet<dna2>);               // ok
+static_assert(bio::alphabet::writable_alphabet<dna2>);      // ok
 //! [writable_alphabet_concept]
-
-//! [dummy_requirement]
-template <bio::alphabet::alphabet check_this_type>
-void foo()
-{}
-
-int main()
-{
-//TODO(bio) fix this
-//     foo<dna2>();
-}
-//! [dummy_requirement]

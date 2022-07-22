@@ -8,44 +8,49 @@
 //! [semialphabet]
 #include <cassert>
 
-#include <bio/alphabet/concept.hpp>                   // alphabet concept checks
+#include <bio/alphabet/concept.hpp>                             // alphabet concept checks
 
 struct dna2
 {
     uint8_t rank{};
 
-    // semialphabet
+    /* Comparison operators */
+    constexpr friend auto operator<=>(dna2 const & lhs, dna2 const & rhs) noexcept = default;
 
-    static constexpr size_t alphabet_size = 2;
-
-    uint8_t to_rank() const noexcept
+    /* Semialphabet */
+    consteval friend size_t tag_invoke(bio::alphabet::cpo::size,
+                                       dna2) noexcept
     {
-        return rank;
+        return 2;
     }
 
-    dna2 & assign_rank(uint8_t const rk) noexcept
+    constexpr friend uint8_t tag_invoke(bio::alphabet::cpo::to_rank,
+                                        dna2 const & d) noexcept
     {
-        assert(rk < alphabet_size);
-        rank = rk;
-        return *this;
+        return d.rank;
     }
 
-    // Comparison operators
-    friend auto operator<=>(dna2 const & lhs, dna2 const & rhs) noexcept = default;
+    constexpr friend dna2 & tag_invoke(bio::alphabet::cpo::assign_rank_to,
+                                       uint8_t rk,
+                                       dna2 & d) noexcept
+    {
+        assert(rk < 2);
+        d.rank = rk;
+        return d;
+    }
 };
 //! [semialphabet]
 
 //! [writable_semialphabet_concept]
-//TODO(bio) fix this
-// static_assert(bio::alphabet::semialphabet<dna2>);               // ok
-// static_assert(bio::alphabet::writable_semialphabet<dna2>);       // ok
+static_assert(bio::alphabet::semialphabet<dna2>);               // ok
+static_assert(bio::alphabet::writable_semialphabet<dna2>);      // ok
 //! [writable_semialphabet_concept]
 
 //! [free_functions]
 int main ()
 {
     dna2 chr{};
-//     bio::alphabet::assign_rank_to(1, chr);                      // chr is assigned rank 1
-//     uint8_t rnk = bio::alphabet::to_rank(chr);                  // query rank value  => 1
+    bio::alphabet::assign_rank_to(1, chr);                      // chr is assigned rank 1
+    uint8_t rnk = bio::alphabet::to_rank(chr);                  // query rank value  => 1
 }
 //! [free_functions]
