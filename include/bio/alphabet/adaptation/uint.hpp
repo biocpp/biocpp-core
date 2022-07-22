@@ -11,7 +11,7 @@
  * \brief Provides alphabet adaptations for standard uint types.
  * \details
  * This file provides function and type trait overloads so that the following types
- * fulfil the bio::alphabet::alphabet:
+ * fulfil the bio::alphabet::semialphabet:
  *   * `uint8_t`
  *   * `uint16_t`
  *   * `uint32_t`
@@ -20,8 +20,8 @@
  * for conversions between other alphabets and between other alphabets and characters.
  *
  * \attention
- * Note that `uint64_t` is absent from the list, because there is no corresponding
- * character type.
+ * Note that `uint64_t` is absent from the list, because there is no type that
+ * can hold its alphabet size.
  */
 
 #pragma once
@@ -41,44 +41,12 @@ concept uint_adaptation = std::same_as<type, uint8_t> || std::same_as<type, uint
 namespace bio::alphabet::cpo
 {
 
-//!\brief The number of values the char type can take (e.g. 256 for `char`).
+//!\brief The number of values the uint type can take (e.g. 256 for `uint8_t`).
 //!\ingroup adaptation
 template <alphabet::detail::uint_adaptation uint_type>
 consteval auto tag_invoke(size BIOCPP_DOXYGEN_ONLY(tag), uint_type const) noexcept
 {
     return meta::detail::min_viable_uint_v<meta::detail::size_in_values_v<uint_type>>;
-}
-
-/*!\brief Converting uint to char casts to a character type of same size.
- * \ingroup adaptation
- * \param[in] tag The tag for tag_invoke().
- * \param[in] intgr The alphabet letter that you wish to convert to char.
- * \returns The letter's value in the alphabet's rank type (usually `uint`).
- */
-template <alphabet::detail::uint_adaptation uint_type>
-constexpr auto tag_invoke(to_char BIOCPP_DOXYGEN_ONLY(tag), uint_type const intgr) noexcept
-{
-    if constexpr (std::same_as<uint_type, uint8_t>)
-        return static_cast<char>(intgr);
-    else if constexpr (std::same_as<uint_type, uint16_t>)
-        return static_cast<char16_t>(intgr);
-    else
-        return static_cast<char32_t>(intgr);
-}
-
-/*!\brief Assign from a character type via implicit or explicit cast.
- * \ingroup adaptation
- * \param[in] tag The tag for tag_invoke().
- * \param[in] chr The `char` value you wish to assign.
- * \param[in,out] intgr The alphabet letter that you wish to assign to.
- * \returns A reference to the alphabet letter you passed in.
- */
-template <alphabet::detail::uint_adaptation uint_type>
-constexpr uint_type & tag_invoke(assign_char_to                                     BIOCPP_DOXYGEN_ONLY(tag),
-                                 decltype(tag_invoke(to_char{}, uint_type{})) const chr,
-                                 uint_type &                                        intgr) noexcept
-{
-    return intgr = chr;
 }
 
 /*!\brief Assign a rank to to the uint (same as calling `=`).
