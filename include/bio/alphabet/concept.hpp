@@ -502,7 +502,7 @@ namespace bio::alphabet::detail
 //!\ingroup alphabet
 struct assign_char_strictly_to_fn
 {
-    //!\brief Operator overload for lvalues.
+    //!\brief Implementation.
     template <typename alph_t>
         //!\cond
         requires(requires(alph_t a, bio::alphabet::char_t<alph_t> r) {
@@ -514,29 +514,12 @@ struct assign_char_strictly_to_fn
                 } -> std::same_as<bool>;
         })
     //!\endcond
-    decltype(auto) operator()(bio::alphabet::char_t<alph_t> const r, alph_t & a) const
+    auto operator()(bio::alphabet::char_t<alph_t> const r, alph_t && a) const -> alph_t
     {
         if (!bio::alphabet::char_is_valid_for<alph_t>(r))
             throw bio::alphabet::invalid_char_assignment{meta::detail::type_name_as_string<alph_t>, r};
 
         return bio::alphabet::assign_char_to(r, a);
-    }
-
-    //!\brief Operator overload for rvalues.
-    template <typename alph_t>
-        //!\cond
-        requires(requires(alph_t a, bio::alphabet::char_t<alph_t> r) {
-            {
-                bio::alphabet::assign_char_to(r, a)
-                } -> std::convertible_to<alph_t>;
-            {
-                bio::alphabet::char_is_valid_for<alph_t>(r)
-                } -> std::same_as<bool>;
-        })
-    //!\endcond
-    auto operator()(bio::alphabet::char_t<alph_t> const r, alph_t && a) const
-    {
-        return operator()(r, a); // call above function but return by value
     }
 };
 
