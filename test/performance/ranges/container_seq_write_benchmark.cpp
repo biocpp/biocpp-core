@@ -37,7 +37,7 @@ void sequential_write(benchmark::State & state)
 
     state.counters["sizeof"] = sizeof(alphabet_t);
     if constexpr (bio::alphabet::alphabet<alphabet_t>)
-        state.counters["alph_size"] = bio::alphabet::alphabet_size<alphabet_t>;
+        state.counters["alph_size"] = bio::alphabet::size<alphabet_t>;
 }
 
 BENCHMARK_TEMPLATE(sequential_write, std::vector, char);

@@ -99,7 +99,7 @@ template <typename semi_alphabet_type>
     //!\cond
     requires(requires { {bio::alphabet::to_rank(std::declval<semi_alphabet_type>())}; })
 //!\endcond
-using alphabet_rank_t = decltype(bio::alphabet::to_rank(std::declval<semi_alphabet_type>()));
+using rank_t = decltype(bio::alphabet::to_rank(std::declval<semi_alphabet_type>()));
 
 } // namespace bio::alphabet
 
@@ -132,7 +132,7 @@ namespace bio::alphabet
 
 /*!\brief Assign a rank to an alphabet object.
  * \tparam alph_type Type of the target object.
- * \param rank  The rank being assigned; must be of the bio::alphabet::alphabet_rank_t of the target object.
+ * \param rank  The rank being assigned; must be of the bio::alphabet::rank_t of the target object.
  * \param alph The target object.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
  * \ingroup alphabet
@@ -166,8 +166,8 @@ namespace bio::alphabet
  * by this function object and **do not** require an additional overload.
  * \hideinitializer
  */
-inline constexpr auto assign_rank_to = []<typename alph_t>(bio::alphabet::alphabet_rank_t<alph_t> const r,
-                                                           alph_t && a) noexcept -> alph_t
+inline constexpr auto assign_rank_to = []<typename alph_t>(bio::alphabet::rank_t<alph_t> const r,
+                                                           alph_t &&                           a) noexcept -> alph_t
   //!\cond
   requires(requires {
       {
@@ -258,7 +258,7 @@ template <typename alphabet_type>
     //!\cond
     requires(requires(alphabet_type const a) { {bio::alphabet::to_char(a)}; })
 //!\endcond
-using alphabet_char_t = decltype(bio::alphabet::to_char(std::declval<alphabet_type const>()));
+using char_t = decltype(bio::alphabet::to_char(std::declval<alphabet_type const>()));
 
 } // namespace bio::alphabet
 
@@ -291,7 +291,7 @@ namespace bio::alphabet
 
 /*!\brief Assign a char to an alphabet object.
  * \tparam alph_type Type of the target object.
- * \param chr  The char being assigned; must be of the bio::alphabet::alphabet_char_t of the target object.
+ * \param chr  The char being assigned; must be of the bio::alphabet::char_t of the target object.
  * \param alph The target object.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
  * \ingroup alphabet
@@ -325,8 +325,8 @@ namespace bio::alphabet
  * by this function object and **do not** require an additional overload.
  * \hideinitializer
  */
-inline constexpr auto assign_char_to = []<typename alph_t>(bio::alphabet::alphabet_char_t<alph_t> const c,
-                                                           alph_t && a) noexcept -> alph_t
+inline constexpr auto assign_char_to = []<typename alph_t>(bio::alphabet::char_t<alph_t> const c,
+                                                           alph_t &&                           a) noexcept -> alph_t
   //!\cond
   requires(requires {
       {
@@ -368,7 +368,7 @@ struct char_is_valid_for_fn
 {
     //!\brief Default implementation that checks bijectivity.
     template <typename alph2_t>
-    static constexpr bool impl(alphabet_char_t<alph2_t> const chr, meta::detail::priority_tag<0>) noexcept requires
+    static constexpr bool impl(char_t<alph2_t> const chr, meta::detail::priority_tag<0>) noexcept requires
       std::is_nothrow_default_constructible_v<alph2_t>
     {
         return to_char(assign_char_to(chr, alph2_t{})) == chr;
@@ -376,19 +376,19 @@ struct char_is_valid_for_fn
 
     //!\brief A user-defined implementation picked up via tag_invoke().
     template <typename alph2_t, typename wrap_t = meta::default_initialisable_wrap_t<alph2_t>>
-        requires(requires(alphabet_char_t<alph2_t> const c) {
+        requires(requires(char_t<alph2_t> const c) {
             {
                 tag_invoke(std::declval<cpo::char_is_valid_for>(), c, wrap_t{})
                 } -> std::same_as<bool>;
             requires noexcept(tag_invoke(std::declval<cpo::char_is_valid_for>(), c, wrap_t{}));
         })
-    static constexpr bool impl(alphabet_char_t<alph2_t> const chr, meta::detail::priority_tag<1>) noexcept
+    static constexpr bool impl(char_t<alph2_t> const chr, meta::detail::priority_tag<1>) noexcept
     {
         return tag_invoke(cpo::char_is_valid_for{}, chr, wrap_t{});
     }
 
     //!\brief Operator definition.
-    constexpr auto operator()(alphabet_char_t<alph_t> const chr) const noexcept
+    constexpr auto operator()(char_t<alph_t> const chr) const noexcept
       -> decltype(impl<std::remove_cvref_t<alph_t>>(chr, meta::detail::priority_tag<1>{}))
     {
         return impl<std::remove_cvref_t<alph_t>>(chr, meta::detail::priority_tag<1>{});
@@ -409,7 +409,7 @@ namespace bio::alphabet
 /*!\brief Returns whether a character is in the valid set of a bio::alphabet::alphabet (usually implies a bijective mapping
  *        to an alphabet value).
  * \tparam alph_type The alphabet type being queried.
- * \param  chr       The character being checked; must be convertible to `bio::alphabet::alphabet_char_t<alph_type>`.
+ * \param  chr       The character being checked; must be convertible to `bio::alphabet::char_t<alph_type>`.
  * \param  alph      The target object; its type must model bio::alphabet::alphabet.
  * \returns `true` or `false`.
  * \ingroup alphabet
@@ -471,7 +471,7 @@ namespace bio::alphabet
  */
 template <typename alph_t>
     //!\cond
-    requires(requires(alphabet_char_t<alph_t> a) {
+    requires(requires(char_t<alph_t> a) {
         {
             detail::char_is_valid_for_fn<alph_t>{}(a)
             } -> std::same_as<bool>;
@@ -497,7 +497,7 @@ struct assign_char_strictly_to_fn
     //!\brief Operator overload for lvalues.
     template <typename alph_t>
         //!\cond
-        requires(requires(alph_t a, bio::alphabet::alphabet_char_t<alph_t> r) {
+        requires(requires(alph_t a, bio::alphabet::char_t<alph_t> r) {
             {
                 bio::alphabet::assign_char_to(r, a)
                 } -> std::convertible_to<alph_t>;
@@ -506,7 +506,7 @@ struct assign_char_strictly_to_fn
                 } -> std::same_as<bool>;
         })
     //!\endcond
-    decltype(auto) operator()(bio::alphabet::alphabet_char_t<alph_t> const r, alph_t & a) const
+    decltype(auto) operator()(bio::alphabet::char_t<alph_t> const r, alph_t & a) const
     {
         if (!bio::alphabet::char_is_valid_for<alph_t>(r))
             throw bio::alphabet::invalid_char_assignment{meta::detail::type_name_as_string<alph_t>, r};
@@ -517,7 +517,7 @@ struct assign_char_strictly_to_fn
     //!\brief Operator overload for rvalues.
     template <typename alph_t>
         //!\cond
-        requires(requires(alph_t a, bio::alphabet::alphabet_char_t<alph_t> r) {
+        requires(requires(alph_t a, bio::alphabet::char_t<alph_t> r) {
             {
                 bio::alphabet::assign_char_to(r, a)
                 } -> std::convertible_to<alph_t>;
@@ -526,7 +526,7 @@ struct assign_char_strictly_to_fn
                 } -> std::same_as<bool>;
         })
     //!\endcond
-    auto operator()(bio::alphabet::alphabet_char_t<alph_t> const r, alph_t && a) const
+    auto operator()(bio::alphabet::char_t<alph_t> const r, alph_t && a) const
     {
         return operator()(r, a); // call above function but return by value
     }
@@ -543,7 +543,7 @@ namespace bio::alphabet
 
 /*!\brief Assign a character to an alphabet object, throw if the character is not valid.
  * \tparam alph_type Type of the target object.
- * \param chr  The character being assigned; must be of the bio::alphabet::alphabet_char_t of the target object.
+ * \param chr  The character being assigned; must be of the bio::alphabet::char_t of the target object.
  * \param alph The target object; its type must model bio::alphabet::alphabet.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
  * \throws bio::alphabet::invalid_char_assignment If `bio::alphabet::char_is_valid_for<decltype(alph)>(chr) == false`.
@@ -567,13 +567,13 @@ inline constexpr auto assign_char_strictly_to = detail::assign_char_strictly_to_
 } // namespace bio::alphabet
 
 // ============================================================================
-// alphabet_size
+// size
 // ============================================================================
 
 namespace bio::alphabet::cpo
 {
 
-//!\brief CPO tag definition for bio::alphabet::alphabet_size.
+//!\brief CPO tag definition for bio::alphabet::size.
 //!\ingroup alphabet
 struct size
 {};
@@ -634,7 +634,7 @@ template <typename alph_t, typename wrap_t = meta::default_initialisable_wrap_t<
         requires BIOCPP_IS_CONSTEXPR(tag_invoke(cpo::size{}, wrap_t{}));
     })
 //!\endcond
-inline constexpr auto alphabet_size = tag_invoke(cpo::size{}, wrap_t{});
+inline constexpr auto size = tag_invoke(cpo::size{}, wrap_t{});
 
 // ============================================================================
 // semialphabet
@@ -656,7 +656,7 @@ inline constexpr auto alphabet_size = tag_invoke(cpo::size{}, wrap_t{});
  *     * `t` shall model std::copy_constructible and be std::is_nothrow_copy_constructible
  *     * move construction shall not be more efficient than copy construction; this implies no dynamic memory
  *       (de-)allocation [this is a semantic requirement that cannot be checked]
- *   3. bio::alphabet::alphabet_size needs to be defined for `t`
+ *   3. bio::alphabet::size needs to be defined for `t`
  *   4. bio::alphabet::to_rank needs to be defined for objects of type `t`
  *
  * See the documentation pages for the respective requirements.
@@ -666,10 +666,10 @@ inline constexpr auto alphabet_size = tag_invoke(cpo::size{}, wrap_t{});
  * It is highly recommended that non-reference types that model this concept, also model:
  *
  *   * std::regular
- *   * std::is_trivially_copyable
+ *   * bio::meta::trivial
  *   * bio::meta::standard_layout
  *
- * All alphabets available in BioC++ (with very few exceptions) do so.
+ * Almost all alphabets available in BioC++ do so.
  *
  * ### Related types
  *
@@ -684,7 +684,7 @@ template <typename t>
 concept semialphabet = std::totally_ordered<t> && std::copy_constructible<t> &&
   std::is_nothrow_copy_constructible_v<t> && requires(t v)
 {
-    {bio::alphabet::alphabet_size<t>};
+    {bio::alphabet::size<t>};
     {bio::alphabet::to_rank(v)};
 };
 //!\endcond
@@ -727,7 +727,7 @@ concept semialphabet = std::totally_ordered<t> && std::copy_constructible<t> &&
  */
 //!\cond
 template <typename t>
-concept writable_semialphabet = semialphabet<t> && requires(t v, alphabet_rank_t<t> r)
+concept writable_semialphabet = semialphabet<t> && requires(t v, rank_t<t> r)
 {
     {bio::alphabet::assign_rank_to(r, v)};
 };
@@ -811,7 +811,7 @@ concept alphabet = semialphabet<t> && requires(t v)
  */
 //!\cond
 template <typename t>
-concept writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires(t v, alphabet_char_t<t> c)
+concept writable_alphabet = alphabet<t> && writable_semialphabet<t> && requires(t v, char_t<t> c)
 {
     {bio::alphabet::assign_char_to(c, v)};
 
@@ -868,7 +868,7 @@ namespace bio::alphabet
  * \attention These functions are never called directly, see the \ref alphabet module on how to use serialisation.
  */
 template <typename archive_t, semialphabet alphabet_t>
-alphabet_rank_t<alphabet_t> save_minimal(archive_t const &, alphabet_t const & l)
+rank_t<alphabet_t> save_minimal(archive_t const &, alphabet_t const & l)
 {
     return to_rank(l);
 }
@@ -888,8 +888,8 @@ alphabet_rank_t<alphabet_t> save_minimal(archive_t const &, alphabet_t const & l
  */
 template <typename archive_t, typename wrapped_alphabet_t>
 void load_minimal(archive_t const &,
-                  wrapped_alphabet_t &&                                                       l,
-                  alphabet_rank_t<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>> const & r) requires
+                  wrapped_alphabet_t &&                                              l,
+                  rank_t<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>> const & r) requires
   semialphabet<detail::strip_cereal_wrapper_t<wrapped_alphabet_t>>
 {
     assign_rank_to(r, static_cast<detail::strip_cereal_wrapper_t<wrapped_alphabet_t> &>(l));
@@ -941,7 +941,7 @@ template <typename t>
 concept writable_constexpr_semialphabet = constexpr_semialphabet<t> && writable_semialphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
-    requires BIOCPP_IS_CONSTEXPR(bio::alphabet::assign_rank_to(alphabet_rank_t<t>{}, std::remove_reference_t<t>{}));
+    requires BIOCPP_IS_CONSTEXPR(bio::alphabet::assign_rank_to(rank_t<t>{}, std::remove_reference_t<t>{}));
 };
 //!\endcond
 
@@ -988,8 +988,8 @@ concept writable_constexpr_alphabet =
   constexpr_alphabet<t> && writable_constexpr_semialphabet<t> && writable_alphabet<t> && requires
 {
     // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
-    requires BIOCPP_IS_CONSTEXPR(bio::alphabet::assign_char_to(alphabet_char_t<t>{}, std::remove_reference_t<t>{}));
-    requires BIOCPP_IS_CONSTEXPR(bio::alphabet::char_is_valid_for<t>(alphabet_char_t<t>{}));
+    requires BIOCPP_IS_CONSTEXPR(bio::alphabet::assign_char_to(char_t<t>{}, std::remove_reference_t<t>{}));
+    requires BIOCPP_IS_CONSTEXPR(bio::alphabet::char_is_valid_for<t>(char_t<t>{}));
 };
 //!\endcond
 

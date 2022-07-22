@@ -33,9 +33,9 @@ TYPED_TEST_P(nucleotide, complement)
     EXPECT_EQ(bio::alphabet::complement(TypeParam{}.assign_char('G')), TypeParam{}.assign_char('C'));
     EXPECT_EQ(bio::alphabet::complement(TypeParam{}.assign_char('T')), TypeParam{}.assign_char('A'));
 
-    using vsize_t = std::decay_t<decltype(bio::alphabet::alphabet_size<TypeParam>)>;
+    using vsize_t = std::decay_t<decltype(bio::alphabet::size<TypeParam>)>;
 
-    for (vsize_t i = 0u; i < bio::alphabet::alphabet_size<TypeParam>; ++i)
+    for (vsize_t i = 0u; i < bio::alphabet::size<TypeParam>; ++i)
     {
         TypeParam c = bio::alphabet::assign_rank_to(i, TypeParam{});
 

@@ -57,7 +57,7 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *lost*                                             |
  * | bio::ranges::const_iterable_range     |                                       | *preserved*                                        |
  * |                                  |                                       |                                                    |
- * | std::ranges::range_reference_t   | bio::alphabet::alphabet_char_t<alphabet_t>   | `alphabet_t`                                       |
+ * | std::ranges::range_reference_t   | bio::alphabet::char_t<alphabet_t>   | `alphabet_t`                                       |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
@@ -70,7 +70,7 @@ template <alphabet::alphabet alphabet_type>
 inline auto const char_to = deep{std::views::transform(
   [](auto && in)
   {
-      static_assert(std::common_reference_with<decltype(in), alphabet::alphabet_char_t<alphabet_type>>,
+      static_assert(std::common_reference_with<decltype(in), alphabet::char_t<alphabet_type>>,
                     "The innermost value type must have a common reference to underlying char type of alphabet_type.");
       // call element-wise assign_char from the alphabet
       return alphabet::assign_char_to(in, alphabet_type{});

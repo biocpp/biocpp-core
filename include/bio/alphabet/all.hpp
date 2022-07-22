@@ -46,7 +46,7 @@
  * ### alphabet size
  *
  * All alphabets in BioC++ have a fixed size. It
- * can be queried via the bio::alphabet::alphabet_size type trait and *optionally* also the `alphabet_size` static
+ * can be queried via the bio::alphabet::size type trait and *optionally* also the `alphabet_size` static
  * member of the alphabet (see below for "members VS free/global functions").
  *
  * In some areas we provide alphabets types with different sizes for the same purpose, e.g. bio::alphabet::dna4
@@ -80,13 +80,13 @@
  *     * bio::alphabet::to_rank() to produce the numerical representation;
  *     * bio::alphabet::assign_rank_to() to assign from the numerical representation;
  *     * the numerical representation is an unsigned integral type like `size_t`; the exact type can be retrieved via
- *       the bio::alphabet::alphabet_rank_t.
+ *       the bio::alphabet::rank_t.
  *   2. a **character based interface** with
  *     * bio::alphabet::to_char() to produce the visual representation;
  *     * bio::alphabet::assign_char_to() to assign from the visual representation;
  *     * bio::alphabet::char_is_valid_for() that checks whether a character value has a one-to-one mapping to an alphabet value;
  *     * the visual representation is a character type (almost always `char`, but could be `char16_t` or `char32_t`,
- *       as well); the exact type can be retrieved via bio::alphabet::alphabet_char_t.
+ *       as well); the exact type can be retrieved via bio::alphabet::char_t.
  *
  * To prevent the aforementioned ambiguity, you can neither assign from rank or char representation via `operator=`,
  * nor can you cast the alphabet to either of it's representation forms, **you need to explicitly use the
@@ -127,12 +127,12 @@
  *
  * |                                | [semialphabet](\ref bio::alphabet::semialphabet) | [writable_semialphabet](\ref bio::alphabet::writable_semialphabet) | [alphabet](\ref bio::alphabet::alphabet) | [writable_alphabet](\ref bio::alphabet::writable_alphabet) | Aux |
  * |-------------------------------:|:------------------------------------:|:------------------------------------------------------:|:----------------------------:|:----------------------------------------------:|:---:|
- * | bio::alphabet::alphabet_size             | ✅                                    | ✅                                                      | ✅                            | ✅                                               |     |
+ * | bio::alphabet::size             | ✅                                    | ✅                                                      | ✅                            | ✅                                               |     |
  * | bio::alphabet::to_rank()                 | ✅                                    | ✅                                                      | ✅                            | ✅                                               |     |
- * | bio::alphabet::alphabet_rank_t           | ✅                                    | ✅                                                      | ✅                            | ✅                                               |  🔗  |
+ * | bio::alphabet::rank_t           | ✅                                    | ✅                                                      | ✅                            | ✅                                               |  🔗  |
  * | bio::alphabet::assign_rank_to()          |                                      | ✅                                                      |                              | ✅                                               |     |
  * | bio::alphabet::to_char()                 |                                      |                                                        | ✅                            | ✅                                               |     |
- * | bio::alphabet::alphabet_char_t           |                                      |                                                        | ✅                            | ✅                                               |  🔗  |
+ * | bio::alphabet::char_t           |                                      |                                                        | ✅                            | ✅                                               |  🔗  |
  * | bio::alphabet::assign_char_to()          |                                      |                                                        |                              | ✅                                               |     |
  * | bio::alphabet::char_is_valid_for()       |                                      |                                                        |                              | ✅                                               |     |
  * | bio::alphabet::assign_char_strictly_to() |                                      |                                                        |                              | ✅                                               |  🔗  |
@@ -146,7 +146,7 @@
  *
  * The alphabet concept (as most concepts in BioC++) looks for free/global functions, i.e. you need to be able
  * to call `bio::alphabet::to_rank(my_letter)`, however *most* alphabets also provide a member function, i.e.
- * `my_letter.to_rank()`. The same is true for the type trait bio::alphabet::alphabet_size vs the static data member
+ * `my_letter.to_rank()`. The same is true for the type trait bio::alphabet::size vs the static data member
  * `alphabet_size`.
  *
  * Members are provided for convenience and if you are an application developer who works with a single concrete

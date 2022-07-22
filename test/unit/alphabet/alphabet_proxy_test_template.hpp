@@ -67,14 +67,14 @@ TYPED_TEST_P(proxy_fixture, type_properties)
 
 TYPED_TEST_P(proxy_fixture, alphabet_size)
 {
-    EXPECT_GT(bio::alphabet::alphabet_size<TypeParam>, 0u);
+    EXPECT_GT(bio::alphabet::size<TypeParam>, 0u);
 }
 
 TYPED_TEST_P(proxy_fixture, assign_rank_to)
 {
     EXPECT_EQ((bio::alphabet::assign_rank_to(0, this->t0)), this->default_init);
 
-    for (size_t i = 0u; i < bio::alphabet::alphabet_size<TypeParam> && i < maximum_iterations_; ++i)
+    for (size_t i = 0u; i < bio::alphabet::size<TypeParam> && i < maximum_iterations_; ++i)
         bio::alphabet::assign_rank_to(i, this->t0);
 
     EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::assign_rank_to(0, this->t0)), TypeParam &>));
@@ -85,18 +85,17 @@ TYPED_TEST_P(proxy_fixture, to_rank)
 {
     EXPECT_EQ(bio::alphabet::to_rank(this->default_init), 0u);
 
-    for (size_t i = 0; i < bio::alphabet::alphabet_size<TypeParam> && i < maximum_iterations_; ++i)
+    for (size_t i = 0; i < bio::alphabet::size<TypeParam> && i < maximum_iterations_; ++i)
         EXPECT_EQ((bio::alphabet::to_rank(bio::alphabet::assign_rank_to(i, this->t0))), i);
 
-    EXPECT_TRUE(
-      (std::is_same_v<decltype(bio::alphabet::to_rank(this->t0)), bio::alphabet::alphabet_rank_t<TypeParam>>));
+    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_rank(this->t0)), bio::alphabet::rank_t<TypeParam>>));
 }
 
 TYPED_TEST_P(proxy_fixture, copy_constructor)
 {
     // the module operation ensures that the result is within the valid rank range;
     // it will be in the most cases 1 except for alphabets like bio::alphabet::gap where it will be 0
-    constexpr bio::alphabet::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet::alphabet_size<TypeParam>;
+    constexpr bio::alphabet::rank_t<TypeParam> rank = 1 % bio::alphabet::size<TypeParam>;
     bio::alphabet::assign_rank_to(rank, this->t1);
     TypeParam t2{this->t1};
     TypeParam t3(this->t1);
@@ -106,7 +105,7 @@ TYPED_TEST_P(proxy_fixture, copy_constructor)
 
 TYPED_TEST_P(proxy_fixture, move_constructor)
 {
-    constexpr bio::alphabet::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet::alphabet_size<TypeParam>;
+    constexpr bio::alphabet::rank_t<TypeParam> rank = 1 % bio::alphabet::size<TypeParam>;
     bio::alphabet::assign_rank_to(rank, this->t0);
     bio::alphabet::assign_rank_to(rank, this->t1);
 
@@ -118,7 +117,7 @@ TYPED_TEST_P(proxy_fixture, move_constructor)
 
 TYPED_TEST_P(proxy_fixture, copy_assignment)
 {
-    constexpr bio::alphabet::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet::alphabet_size<TypeParam>;
+    constexpr bio::alphabet::rank_t<TypeParam> rank = 1 % bio::alphabet::size<TypeParam>;
     bio::alphabet::assign_rank_to(rank, this->t1);
     TypeParam t2{this->default_init};
     EXPECT_NE(this->t1, t2);
@@ -129,7 +128,7 @@ TYPED_TEST_P(proxy_fixture, copy_assignment)
 
 TYPED_TEST_P(proxy_fixture, move_assignment)
 {
-    constexpr bio::alphabet::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet::alphabet_size<TypeParam>;
+    constexpr bio::alphabet::rank_t<TypeParam> rank = 1 % bio::alphabet::size<TypeParam>;
     bio::alphabet::assign_rank_to(rank, this->t1);
     TypeParam t2{this->default_init};
     EXPECT_NE(this->t1, t2);
@@ -140,7 +139,7 @@ TYPED_TEST_P(proxy_fixture, move_assignment)
 
 TYPED_TEST_P(proxy_fixture, swap_)
 {
-    constexpr bio::alphabet::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet::alphabet_size<TypeParam>;
+    constexpr bio::alphabet::rank_t<TypeParam> rank = 1 % bio::alphabet::size<TypeParam>;
     bio::alphabet::assign_rank_to(rank, this->t1);
     EXPECT_EQ(this->t0.to_rank(), 0ull);
     EXPECT_EQ(this->t1.to_rank(), 1ull);
@@ -154,7 +153,7 @@ TYPED_TEST_P(proxy_fixture, swap_)
 TYPED_TEST_P(proxy_fixture, comparison_operators)
 {
     bio::alphabet::assign_rank_to(0, this->t0);
-    bio::alphabet::assign_rank_to(1 % bio::alphabet::alphabet_size<TypeParam>, this->t1);
+    bio::alphabet::assign_rank_to(1 % bio::alphabet::size<TypeParam>, this->t1);
 
     EXPECT_EQ(this->t0, this->t0);
     EXPECT_LE(this->t0, this->t1);
@@ -163,7 +162,7 @@ TYPED_TEST_P(proxy_fixture, comparison_operators)
     EXPECT_GE(this->t1, this->t1);
     EXPECT_GE(this->t1, this->t0);
 
-    if constexpr (bio::alphabet::alphabet_size<TypeParam> == 1)
+    if constexpr (bio::alphabet::size<TypeParam> == 1)
     {
         EXPECT_EQ(this->t0, this->t1);
     }
@@ -177,7 +176,7 @@ TYPED_TEST_P(proxy_fixture, comparison_operators)
 
 TYPED_TEST_P(proxy_fixture, assign_char_to)
 {
-    using char_t = bio::alphabet::alphabet_char_t<TypeParam>;
+    using char_t = bio::alphabet::char_t<TypeParam>;
     if constexpr (std::integral<char_t>)
     {
         char_t i = std::numeric_limits<char_t>::min();
@@ -194,7 +193,7 @@ TYPED_TEST_P(proxy_fixture, assign_char_to)
 TYPED_TEST_P(proxy_fixture, char_is_valid_for) // only test negative example for most; more inside specialised tests
 {
     // includes most of our alphabets, but not the adaptations!
-    if constexpr (bio::alphabet::alphabet_size<TypeParam> < 255)
+    if constexpr (bio::alphabet::size<TypeParam> < 255)
     {
         EXPECT_FALSE((bio::alphabet::char_is_valid_for<TypeParam>(0))); // for none of our alphabets char{0} is valid
     }
@@ -202,7 +201,7 @@ TYPED_TEST_P(proxy_fixture, char_is_valid_for) // only test negative example for
 
 TYPED_TEST_P(proxy_fixture, assign_char_strictly_to)
 {
-    using char_t = bio::alphabet::alphabet_char_t<TypeParam>;
+    using char_t = bio::alphabet::char_t<TypeParam>;
     if constexpr (std::integral<char_t>)
     {
         char_t i = std::numeric_limits<char_t>::min();
@@ -221,8 +220,7 @@ TYPED_TEST_P(proxy_fixture, assign_char_strictly_to)
 
 TYPED_TEST_P(proxy_fixture, to_char)
 {
-    EXPECT_TRUE(
-      (std::is_same_v<decltype(bio::alphabet::to_char(this->t0)), bio::alphabet::alphabet_char_t<TypeParam>>));
+    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_char(this->t0)), bio::alphabet::char_t<TypeParam>>));
 
     // more elaborate tests are done in specific alphabets
 }

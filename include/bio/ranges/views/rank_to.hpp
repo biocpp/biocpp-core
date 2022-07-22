@@ -56,7 +56,7 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *lost*                                             |
  * | bio::ranges::const_iterable_range     |                                       | *preserved*                                        |
  * |                                  |                                       |                                                    |
- * | std::ranges::range_reference_t   | bio::alphabet::alphabet_rank_t<alphabet_t>   | `alphabet_t`                                       |
+ * | std::ranges::range_reference_t   | bio::alphabet::rank_t<alphabet_t>   | `alphabet_t`                                       |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
@@ -68,9 +68,8 @@ template <typename alphabet_type>
     //!\cond
     requires alphabet::writable_semialphabet<alphabet_type>
 //!\endcond
-inline auto const rank_to =
-  deep{std::views::transform([](alphabet::alphabet_rank_t<alphabet_type> const in) -> alphabet_type
-                             { return alphabet::assign_rank_to(in, alphabet_type{}); })};
+inline auto const rank_to = deep{std::views::transform([](alphabet::rank_t<alphabet_type> const in) -> alphabet_type
+                                                       { return alphabet::assign_rank_to(in, alphabet_type{}); })};
 
 //!\}
 

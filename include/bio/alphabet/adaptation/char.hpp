@@ -49,7 +49,7 @@ consteval auto tag_invoke(size, char_type const) noexcept
 template <bio::meta::nonint_character char_type>
 constexpr auto tag_invoke(to_rank BIOCPP_DOXYGEN_ONLY(tag), char_type const chr) noexcept
 {
-    return static_cast<meta::detail::min_viable_uint_t<alphabet_size<char_type> - 1>>(chr);
+    return static_cast<meta::detail::min_viable_uint_t<alphabet::size<char_type> - 1>>(chr);
 }
 
 /*!\brief Assigning a rank to a char is the same as assigning it a numeric value.

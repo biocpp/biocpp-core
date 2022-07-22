@@ -26,7 +26,7 @@ int main ()
 
 //! [rank]
     // Get the rank type of the alphabet (here uint8_t).
-    using rank_type = bio::alphabet::alphabet_rank_t<bio::alphabet::dna4>;
+    using rank_type = bio::alphabet::rank_t<bio::alphabet::dna4>;
 
     // Retrieve the numerical representation (rank) of the objects.
     rank_type rank_a = ade.to_rank();   // => 0
@@ -37,7 +37,7 @@ int main ()
 
 //! [char]
     // Get the character type of the alphabet (here char).
-    using char_type = bio::alphabet::alphabet_char_t<bio::alphabet::dna4>;
+    using char_type = bio::alphabet::char_t<bio::alphabet::dna4>;
 
     // Retrieve the character representation.
     char_type char_a = ade.to_char();   // => 'A'

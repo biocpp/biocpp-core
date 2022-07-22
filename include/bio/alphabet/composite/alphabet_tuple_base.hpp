@@ -111,13 +111,13 @@ template <typename derived_type, typename... component_types>
 //!\endcond
 class alphabet_tuple_base :
   public alphabet_base<derived_type,
-                       (1 * ... * alphabet_size<component_types>),
+                       (1 * ... * size<component_types>),
                        void> // no char type, because this is only semi_alphabet
 {
 private:
     //!\brief The base type of this class.
     using base_t = alphabet_base<derived_type,
-                                 (1 * ... * alphabet_size<component_types>),
+                                 (1 * ... * size<component_types>),
                                  void>; // no char type, because this is only semi_alphabet
 
     //!\brief A bio::meta::type_list The types of each component in the composite
@@ -498,7 +498,7 @@ private:
         else
         {
             return (to_rank() / cummulative_alph_sizes[index]) %
-                   bio::alphabet::alphabet_size<meta::detail::pack_traits::at<index, component_types...>>;
+                   bio::alphabet::size<meta::detail::pack_traits::at<index, component_types...>>;
         }
     }
 
@@ -520,7 +520,7 @@ private:
         using reverse_list_t = decltype(meta::list_traits::detail::reverse(component_list{}));
         bio::meta::detail::for_each<reverse_list_t>([&](auto alphabet_type_identity) constexpr {
             using alphabet_t = typename decltype(alphabet_type_identity)::type;
-            ret[count]       = static_cast<rank_type>(bio::alphabet::alphabet_size<alphabet_t> * ret[count - 1]);
+            ret[count]       = static_cast<rank_type>(bio::alphabet::size<alphabet_t> * ret[count - 1]);
             ++count;
         });
 
@@ -556,7 +556,7 @@ private:
 
         if constexpr (alphabet_size < 1024)
         {
-            std::array<size_t, alphabet_size> alph_sizes{bio::alphabet::alphabet_size<component_types>...};
+            std::array<size_t, alphabet_size> alph_sizes{bio::alphabet::size<component_types>...};
 
             for (size_t i = 0; i < meta::list_traits::size<component_list>; ++i)
                 for (size_t j = 0; j < static_cast<size_t>(alphabet_size); ++j)
@@ -618,20 +618,17 @@ public:
     //!\}
 
     //!\brief Retrieve the compressed representation.
-    constexpr alphabet::alphabet_rank_t<alphabet_type> to_rank() const noexcept
-    {
-        return parent->to_component_rank<index>();
-    }
+    constexpr alphabet::rank_t<alphabet_type> to_rank() const noexcept { return parent->to_component_rank<index>(); }
 
     //!\brief Update the compressed representation.
-    constexpr component_proxy & assign_rank(alphabet::alphabet_rank_t<alphabet_type> const r) noexcept
+    constexpr component_proxy & assign_rank(alphabet::rank_t<alphabet_type> const r) noexcept
     {
         parent->assign_component_rank<index>(r);
         return *this;
     }
 
     //!\brief Update the compressed representation (also works on `const` objects).
-    constexpr component_proxy const & assign_rank(alphabet::alphabet_rank_t<alphabet_type> const r) const noexcept
+    constexpr component_proxy const & assign_rank(alphabet::rank_t<alphabet_type> const r) const noexcept
     {
         parent->assign_component_rank<index>(r);
         return *this;

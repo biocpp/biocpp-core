@@ -256,9 +256,9 @@ TEST(alphabet_variant_test, rank_type)
     using alphabet2_t = bio::alphabet::alphabet_variant<bio::alphabet::gap, bio::alphabet::dna5, bio::alphabet::dna4>;
     using alphabet3_t = bio::alphabet::alphabet_variant<char, bio::alphabet::gap>;
 
-    EXPECT_TRUE((std::is_same_v<bio::alphabet::alphabet_rank_t<alphabet1_t>, uint8_t>));
-    EXPECT_TRUE((std::is_same_v<bio::alphabet::alphabet_rank_t<alphabet2_t>, uint8_t>));
-    EXPECT_TRUE((std::is_same_v<bio::alphabet::alphabet_rank_t<alphabet3_t>, uint16_t>));
+    EXPECT_TRUE((std::is_same_v<bio::alphabet::rank_t<alphabet1_t>, uint8_t>));
+    EXPECT_TRUE((std::is_same_v<bio::alphabet::rank_t<alphabet2_t>, uint8_t>));
+    EXPECT_TRUE((std::is_same_v<bio::alphabet::rank_t<alphabet3_t>, uint16_t>));
 }
 
 TEST(alphabet_variant_test, alphabet_size)
@@ -340,7 +340,7 @@ TYPED_TEST(alphabet_variant_test, char_is_valid_for)
 {
     using gapped_alphabet_t       = TypeParam;
     using gapped_alphabet_bases_t = typename gapped_alphabet_t::biocpp_required_types;
-    using char_t                  = bio::alphabet::alphabet_char_t<gapped_alphabet_t>;
+    using char_t                  = bio::alphabet::char_t<gapped_alphabet_t>;
 
     char_t   i             = std::numeric_limits<char_t>::min();
     char_t   end           = std::numeric_limits<char_t>::max();

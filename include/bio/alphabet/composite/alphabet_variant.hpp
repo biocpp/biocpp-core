@@ -117,16 +117,15 @@ template <typename... alternative_types>
 //!\endcond
 class alphabet_variant :
   public alphabet_base<alphabet_variant<alternative_types...>,
-                       (static_cast<size_t>(alphabet_size<alternative_types>) + ...),
+                       (static_cast<size_t>(size<alternative_types>) + ...),
                        char>
 {
 private:
     //!\brief The base type.
-    using base_t = alphabet_base<alphabet_variant<alternative_types...>,
-                                 (static_cast<size_t>(alphabet_size<alternative_types>) + ...),
-                                 char>;
+    using base_t =
+      alphabet_base<alphabet_variant<alternative_types...>, (static_cast<size_t>(size<alternative_types>) + ...), char>;
 
-    static_assert((std::is_same_v<alphabet_char_t<alternative_types>, char> && ...),
+    static_assert((std::is_same_v<char_t<alternative_types>, char> && ...),
                   "The alphabet_variant is currently only tested for alphabets with char_type char. "
                   "Contact us on GitHub if you have a different use case: https://github.com/biocpp/biocpp-core .");
 
@@ -491,7 +490,7 @@ protected:
     {
         constexpr size_t N = sizeof...(alternative_types) + 1;
 
-        std::array<rank_type, N> partial_sum{0, bio::alphabet::alphabet_size<alternative_types>...};
+        std::array<rank_type, N> partial_sum{0, bio::alphabet::size<alternative_types>...};
         for (size_t i = 1u; i < N; ++i)
             partial_sum[i] += partial_sum[i - 1];
 
@@ -520,7 +519,7 @@ protected:
                                                           auto & value) constexpr
         {
             using alternative_t = std::decay_t<decltype(alternative)>;
-            for (size_t i = 0u; i < bio::alphabet::alphabet_size<alternative_t>; ++i, ++value)
+            for (size_t i = 0u; i < bio::alphabet::size<alternative_t>; ++i, ++value)
                 value_to_char[value] = assign_rank_to_char(alternative, i);
         };
 

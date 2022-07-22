@@ -35,36 +35,34 @@ TYPED_TEST(uint_adaptation, type_properties)
     EXPECT_TRUE((std::is_trivial_v<TypeParam>));
 }
 
-TYPED_TEST(uint_adaptation, alphabet_rank_t)
+TYPED_TEST(uint_adaptation, rank_t)
 {
-    EXPECT_TRUE((std::is_same_v<bio::alphabet::alphabet_rank_t<TypeParam>, TypeParam>));
-    EXPECT_TRUE((std::is_same_v<bio::alphabet::alphabet_rank_t<TypeParam &>, TypeParam>));
-    EXPECT_TRUE((std::is_same_v<bio::alphabet::alphabet_rank_t<TypeParam &&>, TypeParam>));
+    EXPECT_TRUE((std::is_same_v<bio::alphabet::rank_t<TypeParam>, TypeParam>));
+    EXPECT_TRUE((std::is_same_v<bio::alphabet::rank_t<TypeParam &>, TypeParam>));
+    EXPECT_TRUE((std::is_same_v<bio::alphabet::rank_t<TypeParam &&>, TypeParam>));
 }
 
 TYPED_TEST(uint_adaptation, to_rank)
 {
     TypeParam l{65};
-    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_rank(l)), bio::alphabet::alphabet_rank_t<TypeParam>>));
-    EXPECT_TRUE(
-      (std::is_same_v<decltype(bio::alphabet::to_rank(TypeParam{65})), bio::alphabet::alphabet_rank_t<TypeParam>>));
+    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_rank(l)), bio::alphabet::rank_t<TypeParam>>));
+    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_rank(TypeParam{65})), bio::alphabet::rank_t<TypeParam>>));
     EXPECT_EQ(bio::alphabet::to_rank(TypeParam{65}), l);
 }
 
 TYPED_TEST(uint_adaptation, assign_rank)
 {
     TypeParam l{65};
+    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::assign_rank_to(65, l)), bio::alphabet::rank_t<TypeParam> &>));
     EXPECT_TRUE(
-      (std::is_same_v<decltype(bio::alphabet::assign_rank_to(65, l)), bio::alphabet::alphabet_rank_t<TypeParam> &>));
-    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::assign_rank_to(65, TypeParam{65})),
-                                bio::alphabet::alphabet_rank_t<TypeParam>>));
+      (std::is_same_v<decltype(bio::alphabet::assign_rank_to(65, TypeParam{65})), bio::alphabet::rank_t<TypeParam>>));
     EXPECT_EQ((bio::alphabet::assign_rank_to(65, TypeParam{65})), l);
     EXPECT_EQ((bio::alphabet::assign_rank_to(67, l)), TypeParam{67});
 }
 
 TYPED_TEST(uint_adaptation, alphabet_size)
 {
-    EXPECT_EQ(bio::alphabet::alphabet_size<TypeParam>,
+    EXPECT_EQ(bio::alphabet::size<TypeParam>,
               static_cast<uint64_t>(std::numeric_limits<TypeParam>::max()) + 1 -
                 std::numeric_limits<TypeParam>::lowest());
 }

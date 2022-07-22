@@ -30,7 +30,7 @@ using m_t = bio::alphabet::masked<bio::alphabet::dna4>;
 
 TEST(masked_specific, size)
 {
-    EXPECT_EQ(bio::alphabet::alphabet_size<m_t>, 8ull);
+    EXPECT_EQ(bio::alphabet::size<m_t>, 8ull);
 }
 
 TEST(masked_specific, to_char)

@@ -71,7 +71,7 @@ public:
     using quality_alphabet_type  = quality_alphabet_t;
 
     //!\brief Equals the char_type of sequence_alphabet_type.
-    using char_type  = alphabet_char_t<sequence_alphabet_type>;
+    using char_type  = char_t<sequence_alphabet_type>;
     //!\brief Equals the phred_type of the quality_alphabet_type.
     using phred_type = alphabet_phred_t<quality_alphabet_type>;
 
@@ -160,8 +160,7 @@ protected:
 
         for (size_t i = 0; i < alphabet_size; ++i)
         {
-            size_t seq_rank =
-              (i / base_type::cummulative_alph_sizes[0]) % bio::alphabet::alphabet_size<quality_alphabet_type>;
+            size_t seq_rank = (i / base_type::cummulative_alph_sizes[0]) % bio::alphabet::size<quality_alphabet_type>;
 
             ret[i] = bio::alphabet::to_char(bio::alphabet::assign_rank_to(seq_rank, sequence_alphabet_type{}));
         }
@@ -177,8 +176,7 @@ protected:
 
         for (size_t i = 0; i < alphabet_size; ++i)
         {
-            size_t qual_rank =
-              (i / base_type::cummulative_alph_sizes[1]) % bio::alphabet::alphabet_size<quality_alphabet_type>;
+            size_t qual_rank = (i / base_type::cummulative_alph_sizes[1]) % bio::alphabet::size<quality_alphabet_type>;
 
             ret[i] = bio::alphabet::to_phred(bio::alphabet::assign_rank_to(qual_rank, quality_alphabet_type{}));
         }

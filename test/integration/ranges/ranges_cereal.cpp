@@ -60,7 +60,7 @@ TYPED_TEST(ranges_1d_generic, short)
 TYPED_TEST(ranges_1d_generic, longer)
 {
     TypeParam        range;
-    constexpr size_t size = bio::alphabet::alphabet_size<std::ranges::range_value_t<TypeParam>>;
+    constexpr size_t size = bio::alphabet::size<std::ranges::range_value_t<TypeParam>>;
     range.resize(1000);
     for (unsigned i = 0; i < 1000; ++i)
         bio::alphabet::assign_rank_to(i % size, range[i]);

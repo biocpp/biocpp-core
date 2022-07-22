@@ -65,7 +65,7 @@ class alphabet_proxy
 {
 private:
     //!\brief The type of the alphabet character.
-    using char_type = meta::valid_template_spec_or_t<char, alphabet_char_t, alphabet_type>;
+    using char_type = meta::valid_template_spec_or_t<char, char_t, alphabet_type>;
 
     //!\brief The type of the phred score.
     using phred_type = meta::valid_template_spec_or_t<int8_t, alphabet_phred_t, alphabet_type>;
@@ -114,7 +114,7 @@ private:
 
 public:
     //!\brief The alphabet size.
-    static constexpr auto alphabet_size = bio::alphabet::alphabet_size<alphabet_type>;
+    static constexpr auto alphabet_size = bio::alphabet::size<alphabet_type>;
 
     /*!\name Write functions
      * \brief All of these call the emulated type's write functions and then delegate to

@@ -30,10 +30,10 @@ void fill_rank_array(std::array<rank_t, 256> & ranks, size_t const alphabet_size
 template <bio::alphabet::semialphabet alphabet_t>
 void assign_rank(benchmark::State & state)
 {
-    using rank_t = bio::alphabet::alphabet_rank_t<alphabet_t>;
+    using rank_t = bio::alphabet::rank_t<alphabet_t>;
 
     std::array<rank_t, 256> ranks{};
-    fill_rank_array<rank_t>(ranks, bio::alphabet::alphabet_size<alphabet_t>);
+    fill_rank_array<rank_t>(ranks, bio::alphabet::size<alphabet_t>);
 
     alphabet_t a{};
     for (auto _ : state)
