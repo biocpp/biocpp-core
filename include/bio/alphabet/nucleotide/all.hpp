@@ -15,6 +15,7 @@
 
 #include <bio/alphabet/nucleotide/concept.hpp>
 #include <bio/alphabet/nucleotide/dna15.hpp>
+#include <bio/alphabet/nucleotide/dna16sam.hpp>
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/alphabet/nucleotide/rna15.hpp>
@@ -56,7 +57,8 @@
  * Keep in mind, that while we think of "the nucleotide alphabet" as consisting of four bases, there are indeed
  * more characters defined with different levels of ambiguity. Depending on your application it will make sense
  * to preserve this ambiguity or to discard it to save space and/or optimise computations.
- * BioC++ offers six distinct nucleotide alphabet types to accommodate for this.
+ * BioC++ offers six distinct nucleotide alphabet types to accommodate for this. There is a seventh alphabet
+ * bio::alphabet::dna16sam which implements the alphabet used in SAM/BAM/CRAM.
  *
  * The specialised RNA alphabets are provided for convenience, however the DNA alphabets can handle being assigned a
  * `'U'` character, as well. See below for the details.

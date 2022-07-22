@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Svenja Mehringer <svenja.mehringer AT fu-berlin.de>
- * \brief Provides bio::alphabet::sam_dna16.
+ * \brief Provides bio::alphabet::dna16sam.
  */
 
 #pragma once
@@ -28,12 +28,12 @@ namespace bio::alphabet
  *
  * \details
  *
- * The bio::alphabet::sam_dna16 alphabet is the nucleotide alphabet used inside the SAM, BAM and CRAM formats.
+ * The bio::alphabet::dna16sam alphabet is the nucleotide alphabet used inside the SAM, BAM and CRAM formats.
  * It has all the letters of the bio::alphabet::dna15 alphabet and the extra alphabet character '=' which denotes a
  * nucleotide character identical to the reference.
  * Without the context of this reference sequence, no assumptions can be made about the actual value of '=' letter.
  *
- * Note that you can assign 'U' as a character to sam_dna16 and it will silently
+ * Note that you can assign 'U' as a character to dna16sam and it will silently
  * be converted to 'T'.
  * Lower case letters are accepted when assigning from char (just like bio::alphabet::dna15) and unknown characters are
  * silently converted to 'N'.
@@ -41,13 +41,15 @@ namespace bio::alphabet
  * The complement is the same as for bio::alphabet::dna15, with the addition that the complement of '=' is unknown and
  * therefore set to 'N'.
  *
- * \include test/snippet/alphabet/nucleotide/sam_dna16.cpp
+ * The binary representation of an object of this type corresponds to the binary representation in BAM/CRAM.
+ *
+ * \include test/snippet/alphabet/nucleotide/dna16sam.cpp
  */
-class sam_dna16 : public nucleotide_base<sam_dna16, 16>
+class dna16sam : public nucleotide_base<dna16sam, 16>
 {
 private:
     //!\brief The base class.
-    using base_t = nucleotide_base<sam_dna16, 16>;
+    using base_t = nucleotide_base<dna16sam, 16>;
 
     //!\brief Befriend bio::alphabet::nucleotide_base.
     friend base_t;
@@ -59,12 +61,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr sam_dna16() noexcept                              = default; //!< Defaulted.
-    constexpr sam_dna16(sam_dna16 const &) noexcept             = default; //!< Defaulted.
-    constexpr sam_dna16(sam_dna16 &&) noexcept                  = default; //!< Defaulted.
-    constexpr sam_dna16 & operator=(sam_dna16 const &) noexcept = default; //!< Defaulted.
-    constexpr sam_dna16 & operator=(sam_dna16 &&) noexcept      = default; //!< Defaulted.
-    ~sam_dna16() noexcept                                       = default; //!< Defaulted.
+    constexpr dna16sam() noexcept                             = default; //!< Defaulted.
+    constexpr dna16sam(dna16sam const &) noexcept             = default; //!< Defaulted.
+    constexpr dna16sam(dna16sam &&) noexcept                  = default; //!< Defaulted.
+    constexpr dna16sam & operator=(dna16sam const &) noexcept = default; //!< Defaulted.
+    constexpr dna16sam & operator=(dna16sam &&) noexcept      = default; //!< Defaulted.
+    ~dna16sam() noexcept                                      = default; //!< Defaulted.
 
     using base_t::base_t;
     //!\}
@@ -101,16 +103,16 @@ protected:
     ();
 
     //!\brief The complement table.
-    static const std::array<sam_dna16, alphabet_size> complement_table;
+    static const std::array<dna16sam, alphabet_size> complement_table;
 };
 
 // ------------------------------------------------------------------
 // containers
 // ------------------------------------------------------------------
 
-//!\brief Alias for an std::vector of bio::alphabet::sam_dna16.
-//!\relates sam_dna16
-using sam_dna16_vector = std::vector<sam_dna16>;
+//!\brief Alias for an std::vector of bio::alphabet::dna16sam.
+//!\relates dna16sam
+using dna16sam_vector = std::vector<dna16sam>;
 
 } // namespace bio::alphabet
 
@@ -128,29 +130,29 @@ inline namespace literals
  * \{
  */
 
-/*!\brief The bio::alphabet::sam_dna16 char literal.
- * \relates bio::alphabet::sam_dna16
- * \returns bio::alphabet::sam_dna16
+/*!\brief The bio::alphabet::dna16sam char literal.
+ * \relates bio::alphabet::dna16sam
+ * \returns bio::alphabet::dna16sam
  * \param[in] c The character to assign from.
  */
-consteval sam_dna16 operator""_sam_dna16(char const c) noexcept
+consteval dna16sam operator""_dna16sam(char const c) noexcept
 {
-    return sam_dna16{}.assign_char(c);
+    return dna16sam{}.assign_char(c);
 }
 
-/*!\brief The bio::alphabet::sam_dna16 string literal.
- * \relates bio::alphabet::sam_dna16
- * \returns bio::alphabet::sam_dna16_vector
+/*!\brief The bio::alphabet::dna16sam string literal.
+ * \relates bio::alphabet::dna16sam
+ * \returns bio::alphabet::dna16sam_vector
  * \param[in] s The string literal to assign from.
  * \param[in] n The length of the string literal s.
  *
- * You can use this string literal to easily assign to bio::alphabet::sam_dna16_vector:
+ * You can use this string literal to easily assign to bio::alphabet::dna16sam_vector:
  *
- * \include test/snippet/alphabet/nucleotide/sam_dna16_literal.cpp
+ * \include test/snippet/alphabet/nucleotide/dna16sam_literal.cpp
  */
-inline sam_dna16_vector operator""_sam_dna16(char const * s, size_t n)
+inline dna16sam_vector operator""_dna16sam(char const * s, size_t n)
 {
-    sam_dna16_vector r;
+    dna16sam_vector r;
     r.resize(n);
 
     for (size_t i = 0; i < n; ++i)
@@ -171,23 +173,23 @@ inline sam_dna16_vector operator""_sam_dna16(char const * s, size_t n)
 namespace bio::alphabet
 {
 
-constexpr std::array<sam_dna16, sam_dna16::alphabet_size> sam_dna16::complement_table{
-  'N'_sam_dna16, // complement of '='_sam_dna16
-  'T'_sam_dna16, // complement of 'A'_sam_dna16
-  'G'_sam_dna16, // complement of 'C'_sam_dna16
-  'K'_sam_dna16, // complement of 'M'_sam_dna16
-  'C'_sam_dna16, // complement of 'G'_sam_dna16
-  'Y'_sam_dna16, // complement of 'R'_sam_dna16
-  'S'_sam_dna16, // complement of 'S'_sam_dna16
-  'B'_sam_dna16, // complement of 'V'_sam_dna16
-  'A'_sam_dna16, // complement of 'T'_sam_dna16
-  'W'_sam_dna16, // complement of 'W'_sam_dna16
-  'R'_sam_dna16, // complement of 'Y'_sam_dna16
-  'D'_sam_dna16, // complement of 'H'_sam_dna16
-  'M'_sam_dna16, // complement of 'K'_sam_dna16
-  'H'_sam_dna16, // complement of 'D'_sam_dna16
-  'V'_sam_dna16, // complement of 'B'_sam_dna16
-  'N'_sam_dna16  // complement of 'N'_sam_dna16
+constexpr std::array<dna16sam, dna16sam::alphabet_size> dna16sam::complement_table{
+  'N'_dna16sam, // complement of '='_dna16sam
+  'T'_dna16sam, // complement of 'A'_dna16sam
+  'G'_dna16sam, // complement of 'C'_dna16sam
+  'K'_dna16sam, // complement of 'M'_dna16sam
+  'C'_dna16sam, // complement of 'G'_dna16sam
+  'Y'_dna16sam, // complement of 'R'_dna16sam
+  'S'_dna16sam, // complement of 'S'_dna16sam
+  'B'_dna16sam, // complement of 'V'_dna16sam
+  'A'_dna16sam, // complement of 'T'_dna16sam
+  'W'_dna16sam, // complement of 'W'_dna16sam
+  'R'_dna16sam, // complement of 'Y'_dna16sam
+  'D'_dna16sam, // complement of 'H'_dna16sam
+  'M'_dna16sam, // complement of 'K'_dna16sam
+  'H'_dna16sam, // complement of 'D'_dna16sam
+  'V'_dna16sam, // complement of 'B'_dna16sam
+  'N'_dna16sam  // complement of 'N'_dna16sam
 };
 
 }
