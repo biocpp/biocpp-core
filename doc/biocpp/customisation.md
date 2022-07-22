@@ -22,11 +22,11 @@ BioC++ library. We call these "customisation points" (also known as "extension p
 # Customisation points
 
 An example is the bio::alphabet::alphabet concept. One part of this concept's requirements are from
-bio::alphabet::semialphabet which requires `to_rank()` to available on an object of the type. `to_rank()`
+bio::alphabet::semialphabet which requires `to_rank()` to be available on an object of the type. `to_rank()`
 is a "customisation point".
 
 Instead of the bio::alphabet::semialphabet concept looking directly for `.to_rank()` member functions, it checks for
-a valid definition of bio::alphabet::to_rank which in turn calls `tag_invoke()` with certain parameters.
+a valid definition of bio::alphabet::to_rank which in turn calls `tag_invoke()`.
 This mechanism is widely employed in Modern C++ and may be standardised in the future
 ([P1895](https://wg21.link/P1895)).
 There are (hidden) implementations of `tag_invoke()` that typically redirect to the respective member functions.
@@ -38,7 +38,7 @@ The first argument of `tag_invoke()` is the "tag" used to select the implementat
 exactly like the function that you otherwise call, except that they are in a `cpo` subnamespace.
 E.g. bio::alphabet::to_rank looks for `tag_invoke(bio::alphabet::cpo::to_rank, YOUR_TYPE)`.
 
-If you need to specialise the behaviour for a third party type, and you cannot open that types namespace (or it doesn't have
+If you need to specialise the behaviour for a third party type, and you cannot open that type's namespace (or it doesn't have
 one), you can also add your overload of `tag_invoke()` to our customisation namespace, e.g. `bio::alphabet::cpo`.
 Only do this, if there is no other solution.
 
@@ -51,3 +51,5 @@ and never explicitly specialise one of our templates (except those in `cpo` name
 
 The \link core_custom_alphabet HowTo on creating your own alphabet \endlink provides many examples of how to
 satisfy the requirements of customisation point objects.
+
+Since the customisation point objects are functors, *you can take their address* and use them in higher order functions.

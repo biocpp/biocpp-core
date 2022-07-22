@@ -1,12 +1,11 @@
 # Copyright {#core_copyright}
 
-| Summary                   |                                                                                        |
-|---------------------------|----------------------------------------------------------------------------------------|
+| Summary                   |                                                                                                         |
+|---------------------------|---------------------------------------------------------------------------------------------------------|
 | Copyright holders         | deCODE Genetics, Knut Reinert, [FU-Berlin](https://fu-berlin.de), [MPI MolGen](https://molgen.mpg.de/)  |
-| Library source code       | ![](doc/about/copyright/bsdl_badge.svg)                                                |
-| Documentation             | ![](doc/about/copyright/ccby_badge.svg)                                                |
-| Snippets and examples     | ![](doc/about/copyright/cc0_badge.svg)                                                 |
-| Dependencies              | ![](doc/about/copyright/copyfree_badge.svg)                                            |
+| Library source code       | 3-clause BSD license                                                                                    |
+| Documentation             | CC-BY-3.0 (Creative Commons Attribution 3.0 Unported)                                                   |
+| Snippets and examples     | CC0-1.0 (Creative Commons Public Domain Dedication)                                                     |
 
 # Source code license
 
