@@ -42,7 +42,7 @@ TYPED_TEST_P(semi_alphabet_test, type_properties)
 
 TYPED_TEST_P(semi_alphabet_test, alphabet_size)
 {
-    EXPECT_GT(bio::alphabet::alphabet_size<TypeParam>, 0u);
+    EXPECT_GT(bio::alphabet::size<TypeParam>, 0u);
 }
 
 TYPED_TEST_P(semi_alphabet_test, default_value_constructor)
@@ -56,7 +56,7 @@ TYPED_TEST_P(semi_alphabet_test, assign_rank_to)
     EXPECT_EQ((bio::alphabet::assign_rank_to(0, TypeParam{})), TypeParam{});
 
     TypeParam t0;
-    for (size_t i = 0u; i < bio::alphabet::alphabet_size<TypeParam> && i < maximum_iterations; ++i)
+    for (size_t i = 0u; i < bio::alphabet::size<TypeParam> && i < maximum_iterations; ++i)
         bio::alphabet::assign_rank_to(i, t0);
 
     EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::assign_rank_to(0, t0)), TypeParam &>));
@@ -69,18 +69,18 @@ TYPED_TEST_P(semi_alphabet_test, to_rank)
     EXPECT_EQ(bio::alphabet::to_rank(TypeParam{}), 0u);
 
     TypeParam t0;
-    for (size_t i = 0; i < bio::alphabet::alphabet_size<TypeParam> && i < maximum_iterations; ++i)
+    for (size_t i = 0; i < bio::alphabet::size<TypeParam> && i < maximum_iterations; ++i)
         EXPECT_EQ((bio::alphabet::to_rank(bio::alphabet::assign_rank_to(i, t0))), i);
 
-    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_rank(t0)), bio::alphabet::alphabet_rank_t<TypeParam>>));
+    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_rank(t0)), bio::alphabet::rank_t<TypeParam>>));
 }
 
 TYPED_TEST_P(semi_alphabet_test, copy_constructor)
 {
     // the module operation ensures that the result is within the valid rank range;
     // it will be in the most cases 1 except for alphabets like bio::alphabet::gap where it will be 0
-    constexpr bio::alphabet::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet::alphabet_size<TypeParam>;
-    TypeParam                                           t1;
+    constexpr bio::alphabet::rank_t<TypeParam> rank = 1 % bio::alphabet::size<TypeParam>;
+    TypeParam                                  t1;
     bio::alphabet::assign_rank_to(rank, t1);
     TypeParam t2{t1};
     TypeParam t3(t1);
@@ -90,8 +90,8 @@ TYPED_TEST_P(semi_alphabet_test, copy_constructor)
 
 TYPED_TEST_P(semi_alphabet_test, move_constructor)
 {
-    constexpr bio::alphabet::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet::alphabet_size<TypeParam>;
-    TypeParam                                           t0;
+    constexpr bio::alphabet::rank_t<TypeParam> rank = 1 % bio::alphabet::size<TypeParam>;
+    TypeParam                                  t0;
     bio::alphabet::assign_rank_to(rank, t0);
     TypeParam t1{t0};
 
@@ -103,8 +103,8 @@ TYPED_TEST_P(semi_alphabet_test, move_constructor)
 
 TYPED_TEST_P(semi_alphabet_test, copy_assignment)
 {
-    constexpr bio::alphabet::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet::alphabet_size<TypeParam>;
-    TypeParam                                           t1;
+    constexpr bio::alphabet::rank_t<TypeParam> rank = 1 % bio::alphabet::size<TypeParam>;
+    TypeParam                                  t1;
     bio::alphabet::assign_rank_to(rank, t1);
     TypeParam t2;
     t2 = t1;
@@ -113,8 +113,8 @@ TYPED_TEST_P(semi_alphabet_test, copy_assignment)
 
 TYPED_TEST_P(semi_alphabet_test, move_assignment)
 {
-    constexpr bio::alphabet::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet::alphabet_size<TypeParam>;
-    TypeParam                                           t0;
+    constexpr bio::alphabet::rank_t<TypeParam> rank = 1 % bio::alphabet::size<TypeParam>;
+    TypeParam                                  t0;
     bio::alphabet::assign_rank_to(rank, t0);
     TypeParam t1{t0};
     TypeParam t2;
@@ -127,8 +127,8 @@ TYPED_TEST_P(semi_alphabet_test, move_assignment)
 
 TYPED_TEST_P(semi_alphabet_test, swap)
 {
-    constexpr bio::alphabet::alphabet_rank_t<TypeParam> rank = 1 % bio::alphabet::alphabet_size<TypeParam>;
-    TypeParam                                           t0;
+    constexpr bio::alphabet::rank_t<TypeParam> rank = 1 % bio::alphabet::size<TypeParam>;
+    TypeParam                                  t0;
     bio::alphabet::assign_rank_to(rank, t0);
     TypeParam t1{t0};
     TypeParam t2{};
@@ -145,7 +145,7 @@ TYPED_TEST_P(semi_alphabet_test, comparison_operators)
     TypeParam t1{};
 
     bio::alphabet::assign_rank_to(0, t0);
-    bio::alphabet::assign_rank_to(1 % bio::alphabet::alphabet_size<TypeParam>, t1);
+    bio::alphabet::assign_rank_to(1 % bio::alphabet::size<TypeParam>, t1);
 
     EXPECT_EQ(t0, t0);
     EXPECT_LE(t0, t1);
@@ -154,7 +154,7 @@ TYPED_TEST_P(semi_alphabet_test, comparison_operators)
     EXPECT_GE(t1, t1);
     EXPECT_GE(t1, t0);
 
-    if constexpr (bio::alphabet::alphabet_size<TypeParam> == 1)
+    if constexpr (bio::alphabet::size<TypeParam> == 1)
     {
         EXPECT_EQ(t0, t1);
     }

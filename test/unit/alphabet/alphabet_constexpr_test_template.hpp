@@ -37,8 +37,8 @@ TYPED_TEST_P(alphabet_constexpr, assign_char)
 
 TYPED_TEST_P(alphabet_constexpr, to_char)
 {
-    constexpr TypeParam                                                  t0{TypeParam{}};
-    [[maybe_unused]] constexpr bio::alphabet::alphabet_char_t<TypeParam> c = bio::alphabet::to_char(t0);
+    constexpr TypeParam                                         t0{TypeParam{}};
+    [[maybe_unused]] constexpr bio::alphabet::char_t<TypeParam> c = bio::alphabet::to_char(t0);
 }
 
 REGISTER_TYPED_TEST_SUITE_P(alphabet_constexpr, concept_check, assign_char, to_char);

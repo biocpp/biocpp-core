@@ -1,11 +1,11 @@
-#include <bio/alphabet/nucleotide/sam_dna16.hpp>
+#include <bio/alphabet/nucleotide/dna16sam.hpp>
 #include <bio/alphabet/fmt.hpp>
 
 int main()
 {
     using namespace bio::alphabet::literals;
 
-    bio::alphabet::sam_dna16 my_letter{'A'_sam_dna16};
+    bio::alphabet::dna16sam my_letter{'A'_dna16sam};
 
     my_letter.assign_char('=');
 

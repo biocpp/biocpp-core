@@ -30,7 +30,7 @@ TYPED_TEST(alphabet_hashing, hash)
         std::hash<TypeParam> h{};
         if constexpr (std::same_as<TypeParam, char>)
         {
-            for (size_t i = 0; i < bio::alphabet::alphabet_size<TypeParam> / 2; ++i)
+            for (size_t i = 0; i < bio::alphabet::size<TypeParam> / 2; ++i)
             {
                 bio::alphabet::assign_rank_to(i, t0);
                 ASSERT_EQ(h(t0), i);
@@ -38,7 +38,7 @@ TYPED_TEST(alphabet_hashing, hash)
         }
         else
         {
-            for (size_t i = 0; i < bio::alphabet::alphabet_size<TypeParam>; ++i)
+            for (size_t i = 0; i < bio::alphabet::size<TypeParam>; ++i)
             {
                 bio::alphabet::assign_rank_to(i, t0);
                 ASSERT_EQ(h(t0), i);
@@ -59,7 +59,7 @@ TYPED_TEST(alphabet_hashing, hash)
         std::hash<TypeParam const> h{};
         if constexpr (std::same_as<TypeParam, char>)
         {
-            for (size_t i = 0; i < bio::alphabet::alphabet_size<TypeParam> / 2; ++i)
+            for (size_t i = 0; i < bio::alphabet::size<TypeParam> / 2; ++i)
             {
                 TypeParam const t0 = bio::alphabet::assign_rank_to(i, TypeParam{});
                 ASSERT_EQ(h(t0), i);
@@ -67,7 +67,7 @@ TYPED_TEST(alphabet_hashing, hash)
         }
         else
         {
-            for (size_t i = 0; i < bio::alphabet::alphabet_size<TypeParam>; ++i)
+            for (size_t i = 0; i < bio::alphabet::size<TypeParam>; ++i)
             {
                 TypeParam const t0 = bio::alphabet::assign_rank_to(i, TypeParam{});
                 ASSERT_EQ(h(t0), i);

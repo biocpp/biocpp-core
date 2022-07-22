@@ -85,7 +85,7 @@ public:
 
 } // namespace my_namespace
 
-static_assert(bio::alphabet::alphabet_size<my_namespace::my_alph> == 2);
+static_assert(bio::alphabet::size<my_namespace::my_alph> == 2);
 static_assert(bio::alphabet::char_is_valid_for<my_namespace::my_alph>('T'));
 static_assert(!bio::alphabet::char_is_valid_for<my_namespace::my_alph>('!'));
 static_assert(bio::alphabet::semialphabet<my_namespace::my_alph>);

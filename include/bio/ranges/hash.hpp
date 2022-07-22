@@ -48,7 +48,7 @@ struct hash<urng_t>
         hash<alphabet_t> h{};
         for (alphabet_t character : range)
         {
-            result *= bio::alphabet::alphabet_size<alphabet_t>;
+            result *= bio::alphabet::size<alphabet_t>;
             result += h(character);
         }
         return result;

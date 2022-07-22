@@ -65,7 +65,7 @@ class bitcompressed_vector
 {
 private:
     //!\brief The number of bits needed to represent a single letter of the alphabet_type.
-    static constexpr size_t bits_per_letter = std::bit_width(alphabet::alphabet_size<alphabet_type>);
+    static constexpr size_t bits_per_letter = std::bit_width(alphabet::size<alphabet_type>);
     static_assert(bits_per_letter <= 64, "alphabet must be representable in at most 64bit.");
 
     //!\brief The element type of the underyling storage vector.
@@ -160,21 +160,17 @@ private:
         //!\}
 
         //!\brief Retrieve the compressed representation.
-        constexpr alphabet::alphabet_rank_t<alphabet_type> to_rank() const noexcept
-        {
-            return get_rank(*data_ptr, index);
-        }
+        constexpr alphabet::rank_t<alphabet_type> to_rank() const noexcept { return get_rank(*data_ptr, index); }
 
         //!\brief Update the compressed representation.
-        constexpr reference_proxy_type & assign_rank(alphabet::alphabet_rank_t<alphabet_type> const r) noexcept
+        constexpr reference_proxy_type & assign_rank(alphabet::rank_t<alphabet_type> const r) noexcept
         {
             set_rank(*data_ptr, index, r);
             return *this;
         }
 
         //!\brief Update the compressed representation (also works on `const` objects).
-        constexpr reference_proxy_type const & assign_rank(
-          alphabet::alphabet_rank_t<alphabet_type> const r) const noexcept
+        constexpr reference_proxy_type const & assign_rank(alphabet::rank_t<alphabet_type> const r) const noexcept
         {
             set_rank(*data_ptr, index, r);
             return *this;

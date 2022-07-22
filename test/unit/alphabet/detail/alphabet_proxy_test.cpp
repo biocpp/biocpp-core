@@ -136,7 +136,7 @@ constexpr my_alph & tag_invoke(bio::alphabet::cpo::assign_char_to, char const c,
 
 } // namespace my_namespace
 
-static_assert(bio::alphabet::alphabet_size<my_namespace::my_alph> == 2);
+static_assert(bio::alphabet::size<my_namespace::my_alph> == 2);
 static_assert(bio::alphabet::semialphabet<my_namespace::my_alph>);
 static_assert(bio::alphabet::alphabet<my_namespace::my_alph>);
 

@@ -36,29 +36,27 @@ TYPED_TEST(char_adaptation, type_properties)
     EXPECT_TRUE((std::is_trivial_v<TypeParam>));
 }
 
-TYPED_TEST(char_adaptation, alphabet_char_t)
+TYPED_TEST(char_adaptation, char_t)
 {
-    EXPECT_TRUE((std::is_same_v<bio::alphabet::alphabet_char_t<TypeParam>, TypeParam>));
-    EXPECT_TRUE((std::is_same_v<bio::alphabet::alphabet_char_t<TypeParam &>, TypeParam>));
-    EXPECT_TRUE((std::is_same_v<bio::alphabet::alphabet_char_t<TypeParam &&>, TypeParam>));
+    EXPECT_TRUE((std::is_same_v<bio::alphabet::char_t<TypeParam>, TypeParam>));
+    EXPECT_TRUE((std::is_same_v<bio::alphabet::char_t<TypeParam &>, TypeParam>));
+    EXPECT_TRUE((std::is_same_v<bio::alphabet::char_t<TypeParam &&>, TypeParam>));
 }
 
 TYPED_TEST(char_adaptation, to_char)
 {
     TypeParam l{'A'};
-    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_char(l)), bio::alphabet::alphabet_char_t<TypeParam>>));
-    EXPECT_TRUE(
-      (std::is_same_v<decltype(bio::alphabet::to_char(TypeParam{'A'})), bio::alphabet::alphabet_char_t<TypeParam>>));
+    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_char(l)), bio::alphabet::char_t<TypeParam>>));
+    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_char(TypeParam{'A'})), bio::alphabet::char_t<TypeParam>>));
     EXPECT_EQ(bio::alphabet::to_char(TypeParam{'A'}), l);
 }
 
 TYPED_TEST(char_adaptation, assign_char_to)
 {
     TypeParam l{'A'};
+    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::assign_char_to('A', l)), bio::alphabet::char_t<TypeParam> &>));
     EXPECT_TRUE(
-      (std::is_same_v<decltype(bio::alphabet::assign_char_to('A', l)), bio::alphabet::alphabet_char_t<TypeParam> &>));
-    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::assign_char_to('A', TypeParam{'A'})),
-                                bio::alphabet::alphabet_char_t<TypeParam>>));
+      (std::is_same_v<decltype(bio::alphabet::assign_char_to('A', TypeParam{'A'})), bio::alphabet::char_t<TypeParam>>));
     EXPECT_EQ((bio::alphabet::assign_char_to('A', TypeParam{'C'})), l);
     EXPECT_EQ((bio::alphabet::assign_char_to('C', l)), TypeParam{'C'});
 }
@@ -66,27 +64,26 @@ TYPED_TEST(char_adaptation, assign_char_to)
 TYPED_TEST(char_adaptation, assign_char_strictly_to)
 {
     TypeParam l{'A'};
-    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::assign_char_strictly_to('A', l)),
-                                bio::alphabet::alphabet_char_t<TypeParam> &>));
+    EXPECT_TRUE(
+      (std::is_same_v<decltype(bio::alphabet::assign_char_strictly_to('A', l)), bio::alphabet::char_t<TypeParam> &>));
     EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::assign_char_strictly_to('A', TypeParam{'A'})),
-                                bio::alphabet::alphabet_char_t<TypeParam>>));
+                                bio::alphabet::char_t<TypeParam>>));
     EXPECT_EQ((bio::alphabet::assign_char_strictly_to('A', TypeParam{'C'})), l);
     EXPECT_EQ((bio::alphabet::assign_char_strictly_to('C', l)), TypeParam{'C'});
 }
 
-TYPED_TEST(char_adaptation, alphabet_rank_t)
+TYPED_TEST(char_adaptation, rank_t)
 {
-    EXPECT_TRUE((std::is_integral_v<bio::alphabet::alphabet_rank_t<TypeParam>>));
-    EXPECT_TRUE((std::is_unsigned_v<bio::alphabet::alphabet_rank_t<TypeParam>>));
-    EXPECT_GE(sizeof(bio::alphabet::alphabet_rank_t<TypeParam>), sizeof(TypeParam));
+    EXPECT_TRUE((std::is_integral_v<bio::alphabet::rank_t<TypeParam>>));
+    EXPECT_TRUE((std::is_unsigned_v<bio::alphabet::rank_t<TypeParam>>));
+    EXPECT_GE(sizeof(bio::alphabet::rank_t<TypeParam>), sizeof(TypeParam));
 }
 
 TYPED_TEST(char_adaptation, to_rank)
 {
     TypeParam l{'A'};
-    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_rank(l)), bio::alphabet::alphabet_rank_t<TypeParam>>));
-    EXPECT_TRUE(
-      (std::is_same_v<decltype(bio::alphabet::to_rank(TypeParam{'A'})), bio::alphabet::alphabet_rank_t<TypeParam>>));
+    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_rank(l)), bio::alphabet::rank_t<TypeParam>>));
+    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_rank(TypeParam{'A'})), bio::alphabet::rank_t<TypeParam>>));
 
     unsigned char cmp{'A'};
     EXPECT_EQ(bio::alphabet::to_rank(TypeParam{65}), cmp);
@@ -95,17 +92,16 @@ TYPED_TEST(char_adaptation, to_rank)
 TYPED_TEST(char_adaptation, assign_rank_to)
 {
     TypeParam l{'A'};
+    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::assign_rank_to(65, l)), bio::alphabet::char_t<TypeParam> &>));
     EXPECT_TRUE(
-      (std::is_same_v<decltype(bio::alphabet::assign_rank_to(65, l)), bio::alphabet::alphabet_char_t<TypeParam> &>));
-    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::assign_rank_to(65, TypeParam{'A'})),
-                                bio::alphabet::alphabet_char_t<TypeParam>>));
+      (std::is_same_v<decltype(bio::alphabet::assign_rank_to(65, TypeParam{'A'})), bio::alphabet::char_t<TypeParam>>));
     EXPECT_EQ((bio::alphabet::assign_rank_to(65, TypeParam{'C'})), l);
     EXPECT_EQ((bio::alphabet::assign_rank_to(67, l)), TypeParam{'C'});
 }
 
 TYPED_TEST(char_adaptation, alphabet_size)
 {
-    EXPECT_EQ(bio::alphabet::alphabet_size<TypeParam>,
+    EXPECT_EQ(bio::alphabet::size<TypeParam>,
               static_cast<size_t>(std::numeric_limits<TypeParam>::max()) + 1 -
                 std::numeric_limits<TypeParam>::lowest());
 }

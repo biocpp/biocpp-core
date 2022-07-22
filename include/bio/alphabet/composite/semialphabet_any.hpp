@@ -42,12 +42,12 @@ namespace bio::alphabet
  * ### Example
  * \include test/snippet/alphabet/composite/semialphabet_any.cpp
  */
-template <size_t size>
-class semialphabet_any : public alphabet_base<semialphabet_any<size>, size, void>
+template <size_t size_>
+class semialphabet_any : public alphabet_base<semialphabet_any<size_>, size_, void>
 {
 private:
     //!\brief Type of the base class.
-    using base_t = alphabet_base<semialphabet_any<size>, size, void>;
+    using base_t = alphabet_base<semialphabet_any<size_>, size_, void>;
 
     //!\brief Befriend the base class.
     friend base_t;
@@ -69,7 +69,7 @@ public:
     //!\brief Construct semialphabet_any from alphabet of the same size
     template <semialphabet other_alph_t>
         //!\cond
-        requires(alphabet_size<other_alph_t> == size)
+        requires(size<other_alph_t> == size_)
     //!\endcond
     explicit semialphabet_any(other_alph_t const other) { assign_rank(bio::alphabet::to_rank(other)); }
     //!\}
@@ -77,11 +77,11 @@ public:
     //!\brief Enable conversion of semialphabet_any into other (semi-)alphabet of the same size
     template <semialphabet other_alph_t>
         //!\cond
-        requires((alphabet_size<other_alph_t> == size) && std::regular<other_alph_t>)
+        requires((size<other_alph_t> == size_) && std::regular<other_alph_t>)
     //!\endcond
     explicit operator other_alph_t() const
     {
-        other_alph_t other{};
+        other_alph_t other;
         assign_rank_to(to_rank(), other);
         return other;
     }

@@ -81,32 +81,30 @@ TEST(alph_fmt, qualified_range)
     EXPECT_EQ(buffer, "ACGT");
 }
 
-// Mask is broken, but this is unrelated
-// TEST(alph_fmt, masked)
-// {
-//     std::string buffer;
-//     bio::alphabet::masked<bio::alphabet::dna4> letter;
-//
-//     letter.assign_char('A');
-//     buffer = fmt::format("{}", letter);
-//     EXPECT_EQ(buffer, "A");
-//
-//     letter.assign_char('a');
-//     buffer = fmt::format("{}", letter);
-//     EXPECT_EQ(buffer, "a");
-//
-// }
-//
-// TEST(alph_fmt, masked_range)
-// {
-//     std::string buffer;
-//     std::vector<bio::alphabet::masked<bio::alphabet::dna4>> letters;
-//     letters.resize(4);
-//     letters[0].assign_char('A');
-//     letters[1].assign_char('c');
-//     letters[2].assign_char('G');
-//     letters[3].assign_char('t');
-//
-//     buffer = fmt::format("{}", letters);
-//     EXPECT_EQ(buffer, "AcGt");
-// }
+TEST(alph_fmt, masked)
+{
+    std::string                                buffer;
+    bio::alphabet::masked<bio::alphabet::dna4> letter;
+
+    letter.assign_char('A');
+    buffer = fmt::format("{}", letter);
+    EXPECT_EQ(buffer, "A");
+
+    letter.assign_char('a');
+    buffer = fmt::format("{}", letter);
+    EXPECT_EQ(buffer, "a");
+}
+
+TEST(alph_fmt, masked_range)
+{
+    std::string                                             buffer;
+    std::vector<bio::alphabet::masked<bio::alphabet::dna4>> letters;
+    letters.resize(4);
+    letters[0].assign_char('A');
+    letters[1].assign_char('c');
+    letters[2].assign_char('G');
+    letters[3].assign_char('t');
+
+    buffer = fmt::format("{}", letters);
+    EXPECT_EQ(buffer, "AcGt");
+}

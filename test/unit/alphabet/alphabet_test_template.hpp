@@ -35,7 +35,7 @@ TYPED_TEST_P(alphabet, concept_check)
 
 TYPED_TEST_P(alphabet, assign_char_to)
 {
-    using char_t = bio::alphabet::alphabet_char_t<TypeParam>;
+    using char_t = bio::alphabet::char_t<TypeParam>;
     if constexpr (std::integral<char_t>)
     {
         char_t i = std::numeric_limits<char_t>::min();
@@ -52,8 +52,7 @@ TYPED_TEST_P(alphabet, assign_char_to)
 
 TYPED_TEST_P(alphabet, char_is_valid_for) // only test negative example for most; more inside specialised tests
 {
-    if constexpr (bio::alphabet::alphabet_size<TypeParam> <
-                  255) // includes most of our alphabets, but not the adaptations!
+    if constexpr (bio::alphabet::size<TypeParam> < 255) // includes most of our alphabets, but not the adaptations!
     {
         EXPECT_FALSE((bio::alphabet::char_is_valid_for<TypeParam>(0))); // for none of our alphabets char{0} is valid
     }
@@ -61,7 +60,7 @@ TYPED_TEST_P(alphabet, char_is_valid_for) // only test negative example for most
 
 TYPED_TEST_P(alphabet, assign_char_strictly_to)
 {
-    using char_t = bio::alphabet::alphabet_char_t<TypeParam>;
+    using char_t = bio::alphabet::char_t<TypeParam>;
     if constexpr (std::integral<char_t>)
     {
         char_t i = std::numeric_limits<char_t>::min();
@@ -81,7 +80,7 @@ TYPED_TEST_P(alphabet, assign_char_strictly_to)
 TYPED_TEST_P(alphabet, to_char)
 {
     TypeParam t0;
-    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_char(t0)), bio::alphabet::alphabet_char_t<TypeParam>>));
+    EXPECT_TRUE((std::is_same_v<decltype(bio::alphabet::to_char(t0)), bio::alphabet::char_t<TypeParam>>));
 
     // more elaborate tests are done in specific alphabets
 }

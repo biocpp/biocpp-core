@@ -23,7 +23,7 @@
 template <bio::alphabet::alphabet alphabet_t>
 void assign_char(benchmark::State & state)
 {
-    using char_t = bio::alphabet::alphabet_char_t<alphabet_t>;
+    using char_t = bio::alphabet::char_t<alphabet_t>;
 
     std::array<char_t, 256> chars{};
     std::iota(chars.begin(), chars.end(), 0);

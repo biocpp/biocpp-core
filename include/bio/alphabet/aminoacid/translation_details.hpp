@@ -31,22 +31,19 @@ template <typename nucl_type,
 struct translation_table
 {
     //!\brief Holds the generic translation table.
-    static constexpr std::array<std::array<std::array<aa27, alphabet_size<nucl_type>>, alphabet_size<nucl_type>>,
-                                alphabet_size<nucl_type>>
-      VALUE = []() constexpr
+    static constexpr std::array<std::array<std::array<aa27, size<nucl_type>>, size<nucl_type>>, size<nucl_type>> VALUE =
+      []() constexpr
     {
-        std::array<std::array<std::array<aa27, alphabet_size<nucl_type>>, alphabet_size<nucl_type>>,
-                   alphabet_size<nucl_type>>
-          table{};
+        std::array<std::array<std::array<aa27, size<nucl_type>>, size<nucl_type>>, size<nucl_type>> table{};
 
-        using size_t = std::remove_const_t<decltype(alphabet_size<nucl_type>)>;
-        for (size_t i = 0; i < alphabet_size<nucl_type>; ++i)
+        using size_t = std::remove_const_t<decltype(size<nucl_type>)>;
+        for (size_t i = 0; i < size<nucl_type>; ++i)
         {
             dna15 n1(assign_rank_to(i, nucl_type{}));
-            for (size_t j = 0; j < alphabet_size<nucl_type>; ++j)
+            for (size_t j = 0; j < size<nucl_type>; ++j)
             {
                 dna15 n2(assign_rank_to(j, nucl_type{}));
-                for (size_t k = 0; k < alphabet_size<nucl_type>; ++k)
+                for (size_t k = 0; k < size<nucl_type>; ++k)
                 {
                     dna15 n3(assign_rank_to(k, nucl_type{}));
                     table[i][j][k] =

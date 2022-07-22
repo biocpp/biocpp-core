@@ -41,7 +41,7 @@ std::array<alphabet_t, 256> create_alphabet_array(size_t const alphabet_size)
 template <bio::alphabet::semialphabet alphabet_t>
 void to_rank(benchmark::State & state)
 {
-    std::array<alphabet_t, 256> alphs = create_alphabet_array<alphabet_t, false>(bio::alphabet::alphabet_size<alphabet_t>);
+    std::array<alphabet_t, 256> alphs = create_alphabet_array<alphabet_t, false>(bio::alphabet::size<alphabet_t>);
 
     for (auto _ : state)
         for (alphabet_t a : alphs)

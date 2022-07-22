@@ -32,7 +32,7 @@ std::array<alphabet_t, 256> create_alphabet_array()
         }
         else
         {
-            using char_t = bio::alphabet::alphabet_char_t<alphabet_t>;
+            using char_t = bio::alphabet::char_t<alphabet_t>;
             bio::alphabet::assign_char_to(char_t(c), a);
         }
     };

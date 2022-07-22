@@ -61,8 +61,10 @@ namespace bio::alphabet
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation).
- * It acts as a wrapper and looks for an implementation with the following signature:
+ * This is a customisation point (see \ref biocpp_customisation). **If you don't want to create your own alphabet,
+ * everything below is irrelevant to you!**
+ *
+ * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```c++
  * constexpr alph_type tag_invoke(bio::alphabet::cpo::complement, alph_type const alph) noexcept

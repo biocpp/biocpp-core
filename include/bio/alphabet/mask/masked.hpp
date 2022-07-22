@@ -52,7 +52,7 @@ public:
     using sequence_alphabet_type = sequence_alphabet_t;
 
     //!\brief Equals the char_type of sequence_alphabet_type.
-    using char_type = alphabet_char_t<sequence_alphabet_type>;
+    using char_type = char_t<sequence_alphabet_type>;
 
     using base_t::alphabet_size;
     using typename base_t::rank_type;
@@ -98,12 +98,10 @@ protected:
     {
         std::array<char_type, alphabet_size> ret{};
 
-        for (size_t i = 0; i < alphabet_size; ++i)
+        for (size_t i = 0; i < alphabet_size / 2; ++i)
         {
-            ret[i] = (i < alphabet_size / 2)
-                       ? bio::alphabet::to_char(bio::alphabet::assign_rank_to(i, sequence_alphabet_type{}))
-                       : detail::to_lower(
-                           bio::alphabet::to_char(bio::alphabet::assign_rank_to(i / 2, sequence_alphabet_type{})));
+            ret[i]                     = alphabet::to_char(assign_rank_to(i, sequence_alphabet_type{}));
+            ret[i + alphabet_size / 2] = detail::to_lower(ret[i]);
         }
 
         return ret;
@@ -114,13 +112,14 @@ protected:
     {
         std::array<rank_type, meta::detail::size_in_values_v<char_type>> ret{};
 
-        for (size_t i = 0; i < 256; ++i)
+        for (size_t i = 0; i < meta::detail::size_in_values_v<char_type>; ++i)
         {
             char_type c = static_cast<char_type>(i);
 
-            ret[i] = detail::is_lower(c)
-                       ? bio::alphabet::to_rank(bio::alphabet::assign_char_to(c, sequence_alphabet_type{})) * 2
-                       : bio::alphabet::to_rank(bio::alphabet::assign_char_to(c, sequence_alphabet_type{}));
+            ret[i] =
+              detail::is_lower(c)
+                ? alphabet::to_rank(assign_char_to(detail::to_upper(c), sequence_alphabet_type{})) + alphabet_size / 2
+                : alphabet::to_rank(assign_char_to(c, sequence_alphabet_type{}));
         }
 
         return ret;

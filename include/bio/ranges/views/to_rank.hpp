@@ -55,13 +55,13 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *lost*                                                        |
  * | bio::ranges::const_iterable_range     |                                       | *preserved*                                                   |
  * |                                  |                                       |                                                               |
- * | std::ranges::range_reference_t   | bio::alphabet::alphabet                      | bio::alphabet::alphabet_rank_t<std::ranges::range_value_t<urng_t>>   |
+ * | std::ranges::range_reference_t   | bio::alphabet::alphabet                      | bio::alphabet::rank_t<std::ranges::range_value_t<urng_t>>   |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
  * ### Example
  * \include test/snippet/ranges/views/range_view_to_rank.cpp
- * We also convert to unsigned here, because the bio::alphabet::alphabet_rank_t is often `uint8_t` which is
+ * We also convert to unsigned here, because the bio::alphabet::rank_t is often `uint8_t` which is
  * often implemented as `unsigned char` and thus will not be printed as a number by default.
  * \hideinitializer
  */

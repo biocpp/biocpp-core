@@ -60,8 +60,10 @@ namespace bio::alphabet
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation).
- * It acts as a wrapper and looks for an implementation with the following signature:
+ * This is a customisation point (see \ref biocpp_customisation). **If you don't want to create your own alphabet,
+ * everything below is irrelevant to you!**
+ *
+ * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```c++
  * constexpr phred_type tag_invoke(bio::alphabet::cpo::to_phred, alph_type const alph) noexcept
@@ -141,8 +143,10 @@ namespace bio::alphabet
  *
  * ### Customisation point
  *
- * This is a customisation point (see \ref biocpp_customisation).
- * It acts as a wrapper and looks for an implementation with the following signature:
+ * This is a customisation point (see \ref biocpp_customisation). **If you don't want to create your own alphabet,
+ * everything below is irrelevant to you!**
+ *
+ * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```c++
  * constexpr alph_type & tag_invoke(bio::alphabet::assign_phred_to, phred_type const phr, alph_type & alph) noexcept
@@ -192,7 +196,6 @@ namespace bio::alphabet
  * In addition to the requirements for bio::alphabet::alphabet, the
  * quality_alphabet introduces a requirement for conversion functions from and to
  * a Phred score.
- * ### Concepts and doxygen
  *
  * ### Requirements
  *
@@ -223,6 +226,7 @@ concept quality_alphabet = alphabet<t> && requires(t qual)
 
 /*!\interface bio::alphabet::writable_quality_alphabet <>
  * \extends bio::alphabet::alphabet
+ * \extends bio::alphabet::quality_alphabet
  * \brief A concept that indicates whether a writable alphabet represents quality scores.
  * \ingroup quality
  *

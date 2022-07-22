@@ -102,10 +102,10 @@ Implement the four comparison operators and verify that your type models std::to
 
 Let's move on to the more interesting concepts. bio::alphabet::semialphabet constitutes the *rank interface*
 that we introduced in the [alphabet tutorial](\ref core_alphabets). Have a look at the API reference again.
-Beyond the conceptional requirements, it also requires that bio::alphabet::alphabet_size and bio::alphabet::to_rank can be
+Beyond the conceptional requirements, it also requires that bio::alphabet::size and bio::alphabet::to_rank can be
 called on your alphabet.
 
-There are different ways to satisfy bio::alphabet::alphabet_size and bio::alphabet::to_rank, have a look at the respective API
+There are different ways to satisfy bio::alphabet::size and bio::alphabet::to_rank, have a look at the respective API
 reference and also the [documentation on customisation points](\ref biocpp_customisation).
 
 In this case we choose to implement the functionality as member functions:
@@ -173,7 +173,7 @@ as static members.
 This is an example of a custom alphabet that is not default-constructible and that has a non-default overload for
 bio::alphabet::char_is_valid_for.
 
-Please note that for the overloads of bio::alphabet::alphabet_size and bio::alphabet::char_is_valid_for our alphabet type has to
+Please note that for the overloads of bio::alphabet::size and bio::alphabet::char_is_valid_for our alphabet type has to
 be wrapped into `std::type_identity<>` to be recognised by the customisation point objects, because our type does
 not model std::is_nothrow_default_constructible after we have deleted the default constructor.
 
