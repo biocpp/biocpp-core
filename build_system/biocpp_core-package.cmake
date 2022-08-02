@@ -16,9 +16,9 @@ set (CPACK_PACKAGE_VENDOR "biocpp")
 # A description of the project, used in places such as the introduction screen of CPack-generated Windows installers.
 # set (CPACK_PACKAGE_DESCRIPTION_FILE "") # TODO
 set (CPACK_PACKAGE_CHECKSUM "SHA256")
-set (CPACK_PACKAGE_ICON "${BIOCPP_CLONE_DIR}/test/documentation/biocpp_logo.png")
-set (CPACK_RESOURCE_FILE_LICENSE "${BIOCPP_CLONE_DIR}/LICENSE.md")
-set (CPACK_RESOURCE_FILE_README "${BIOCPP_CLONE_DIR}/README.md")
+set (CPACK_PACKAGE_ICON "${BIOCPP_CORE_CLONE_DIR}/test/documentation/biocpp_logo.png")
+set (CPACK_RESOURCE_FILE_LICENSE "${BIOCPP_CORE_CLONE_DIR}/LICENSE.md")
+set (CPACK_RESOURCE_FILE_README "${BIOCPP_CORE_CLONE_DIR}/README.md")
 
 # Source Package
 set (CPACK_SOURCE_GENERATOR "TXZ")

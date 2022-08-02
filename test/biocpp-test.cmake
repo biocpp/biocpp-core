@@ -12,7 +12,7 @@
 cmake_minimum_required (VERSION 3.7)
 
 # require BioC++ package
-find_package (BioCpp REQUIRED
+find_package (biocpp_core REQUIRED
               HINTS ${CMAKE_CURRENT_LIST_DIR}/../build_system)
 
 include (CheckCXXSourceCompiles)

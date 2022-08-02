@@ -18,24 +18,25 @@
  */
 
 //!\brief The major version as MACRO.
-#define BIOCPP_VERSION_MAJOR 0
+#define BIOCPP_CORE_VERSION_MAJOR 0
 //!\brief The minor version as MACRO.
-#define BIOCPP_VERSION_MINOR 6
+#define BIOCPP_CORE_VERSION_MINOR 6
 //!\brief The patch version as MACRO.
-#define BIOCPP_VERSION_PATCH 0
+#define BIOCPP_CORE_VERSION_PATCH 0
 
 //!\brief The full version as MACRO (number).
-#define BIOCPP_VERSION (BIOCPP_VERSION_MAJOR * 10000 + BIOCPP_VERSION_MINOR * 100 + BIOCPP_VERSION_PATCH)
+#define BIOCPP_CORE_VERSION                                                                                            \
+    (BIOCPP_CORE_VERSION_MAJOR * 10000 + BIOCPP_CORE_VERSION_MINOR * 100 + BIOCPP_CORE_VERSION_PATCH)
 
 namespace bio
 {
 
 //!\brief The major version.
-inline constexpr uint8_t biocpp_core_version_major = BIOCPP_VERSION_MAJOR;
+inline constexpr size_t biocpp_core_version_major = BIOCPP_CORE_VERSION_MAJOR;
 //!\brief The minor version.
-inline constexpr uint8_t biocpp_core_version_minor = BIOCPP_VERSION_MINOR;
+inline constexpr size_t biocpp_core_version_minor = BIOCPP_CORE_VERSION_MINOR;
 //!\brief The patch version.
-inline constexpr uint8_t biocpp_core_version_patch = BIOCPP_VERSION_PATCH;
+inline constexpr size_t biocpp_core_version_patch = BIOCPP_CORE_VERSION_PATCH;
 
 //!\brief The full version as `std::string`.
 inline std::string const biocpp_core_version = std::to_string(biocpp_core_version_major) + "." +

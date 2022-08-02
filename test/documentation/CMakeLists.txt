@@ -2,16 +2,16 @@
 cmake_minimum_required(VERSION 3.7)
 
 # Name of project
-project(biocpp_documentation NONE)
+project(biocpp_core_documentation NONE)
 
 ### Find BioC++
-include (../../build_system/biocpp-config-version.cmake)
+include (../../build_system/biocpp_core-config-version.cmake)
 set (BIOCPP_VERSION "${PACKAGE_VERSION}")
 
-if (NOT EXISTS "${BIOCPP_INCLUDE_DIR}/bio/version.hpp")
-    message (FATAL_ERROR "Could not find BioC++. Not building documentation.")
+if (NOT EXISTS "${BIOCPP_CORE_INCLUDE_DIR}/bio/version.hpp")
+    message (FATAL_ERROR "Could not find BioC++ Core. Not building documentation.")
 endif ()
-message (STATUS "Found: ${BIOCPP_INCLUDE_DIR} (${BIOCPP_VERSION})")
+message (STATUS "Found: ${BIOCPP_CORE_INCLUDE_DIR} (${BIOCPP_VERSION})")
 
 set (BIOCPP_DOXYGEN_INPUT_DIR "${CMAKE_SOURCE_DIR}")
 
