@@ -15,21 +15,21 @@ include (GNUInstallDirs)
 # install documentation files in /share/doc
 install (
     FILES
-    "${BIOCPP_CLONE_DIR}/CHANGELOG.md"
-    "${BIOCPP_CLONE_DIR}/CODE_OF_CONDUCT.md"
-    "${BIOCPP_CLONE_DIR}/CONTRIBUTING.md"
-    "${BIOCPP_CLONE_DIR}/LICENSE.md"
-    "${BIOCPP_CLONE_DIR}/README.md"
+    "${BIOCPP_CORE_CLONE_DIR}/CHANGELOG.md"
+    "${BIOCPP_CORE_CLONE_DIR}/CODE_OF_CONDUCT.md"
+    "${BIOCPP_CORE_CLONE_DIR}/CONTRIBUTING.md"
+    "${BIOCPP_CORE_CLONE_DIR}/LICENSE.md"
+    "${BIOCPP_CORE_CLONE_DIR}/README.md"
     TYPE DOC
 )
 
 # install cmake files in /share/cmake
 install (
     FILES
-    "${BIOCPP_CLONE_DIR}/build_system/biocpp-config.cmake"
-    "${BIOCPP_CLONE_DIR}/build_system/biocpp-config-version.cmake"
+    "${BIOCPP_CORE_CLONE_DIR}/build_system/biocpp-config.cmake"
+    "${BIOCPP_CORE_CLONE_DIR}/build_system/biocpp-config-version.cmake"
     DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/biocpp"
 )
 
 # install biocpp header files in /include/bio
-install (DIRECTORY "${BIOCPP_INCLUDE_DIR}/bio" TYPE INCLUDE)
+install (DIRECTORY "${BIOCPP_CORE_INCLUDE_DIR}/bio" TYPE INCLUDE)

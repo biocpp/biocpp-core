@@ -6,47 +6,13 @@
 # shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 # -----------------------------------------------------------------------------------------------------
 #
-# This CMake module will try to find BioC++ and its dependencies.  You can use
-# it the same way you would use any other CMake module.
+# This CMake module provides component-wise access to BioC++ libraries:
 #
-#   find_package (BioCpp [REQUIRED] ...)
-#
-# Since this makes a difference for CMAKE, pay attention to the case
-# ("BioCpp", "BIOCPP" and "biocpp" are all valid, but other names not).
-#
-# BioC++ has the following platform requirements:
-#
-#   C++20
-#
-# Once the search has been performed, the following variables will be set.
-#
-#   BIOCPP_FOUND            -- Indicate whether BioC++ was found and requirements met.
-#
-#   BIOCPP_VERSION          -- The version as string, e.g. "3.0.0"
-#   BIOCPP_VERSION_MAJOR    -- e.g. 3
-#   BIOCPP_VERSION_MINOR    -- e.g. 0
-#   BIOCPP_VERSION_PATCH    -- e.g. 0
-#
-#   BIOCPP_INCLUDE_DIRS     -- to be passed to include_directories ()
-#   BIOCPP_LIBRARIES        -- to be passed to target_link_libraries ()
-#   BIOCPP_DEFINITIONS      -- to be passed to add_definitions ()
-#   BIOCPP_CXX_FLAGS        -- to be added to CMAKE_CXX_FLAGS
-#
-# Additionally, the following [IMPORTED][IMPORTED] targets are defined:
-#
-#   biocpp::core          -- interface target where target_link_libraries(target biocpp::core)
-#                              automatically sets
-#                                  target_include_directories(target $BIOCPP_INCLUDE_DIRS),
-#                                  target_link_libraries(target $BIOCPP_LIBRARIES),
-#                                  target_compile_definitions(target $BIOCPP_DEFINITIONS) and
-#                                  target_compile_options(target $BIOCPP_CXX_FLAGS)
-#                              for a target.
-#
-#   [IMPORTED]: https://cmake.org/cmake/help/v3.10/prop_tgt/IMPORTED.html#prop_tgt:IMPORTED
+#   find_package (biocpp COMPONENT core io [...])
 #
 # ============================================================================
 
-cmake_minimum_required (VERSION 3.4...3.12)
+cmake_minimum_required (VERSION 3.12)
 
 # ----------------------------------------------------------------------------
 # Set initial variables
@@ -65,208 +31,66 @@ set (ColourBold "${Esc}[1m")
 set (ColourReset "${Esc}[m")
 
 if (NOT ${CMAKE_FIND_PACKAGE_NAME}_FIND_QUIETLY)
-    message (STATUS "${ColourBold}Finding BioC++ and checking requirements:${ColourReset}")
+    message (STATUS "${ColourBold}The BioC++ libraries:${ColourReset}")
+    if (NOT "core" IN_LIST ${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS)
+        message (STATUS "  The Core library was not requested but is assumed implicitly.")
+        list(PREPEND ${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS "core")
+    endif ()
+    message (STATUS "  Requested libraries: ${${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS}")
+    message (STATUS "  Finding…")
 endif ()
 
-# ----------------------------------------------------------------------------
-# Includes
-# ----------------------------------------------------------------------------
-
-include (CheckIncludeFileCXX)
-include (CheckCXXSourceCompiles)
-include (FindPackageHandleStandardArgs)
+list(REMOVE_DUPLICATES ${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS)
 
 # ----------------------------------------------------------------------------
-# Pretty printing and error handling
+# Core library
 # ----------------------------------------------------------------------------
 
-macro (biocpp_config_print text)
+if (EXISTS "${CMAKE_CURRENT_LIST_DIR}/${CMAKE_FIND_PACKAGE_NAME}_core-config-version.cmake" AND
+    EXISTS "${CMAKE_CURRENT_LIST_DIR}/${CMAKE_FIND_PACKAGE_NAME}_core-config.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/${CMAKE_FIND_PACKAGE_NAME}_core-config-version.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/${CMAKE_FIND_PACKAGE_NAME}_core-config.cmake")
     if (NOT ${CMAKE_FIND_PACKAGE_NAME}_FIND_QUIETLY)
-        message (STATUS "  ${text}")
+        message (STATUS "${ColourBold}Core library loaded.${ColourReset}")
     endif ()
-endmacro ()
+else ()
+    set(${CMAKE_FIND_PACKAGE_NAME}_FOUND False)
+    set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE "Core library not found.")
+    return()
+endif ()
 
-macro (biocpp_config_error text)
-    if (${CMAKE_FIND_PACKAGE_NAME}_FIND_REQUIRED)
-        message (FATAL_ERROR ${text})
+list(REMOVE_ITEM ${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS "core")
+
+# ----------------------------------------------------------------------------
+# I/O library
+# ----------------------------------------------------------------------------
+
+set (_comp "io")
+if (_comp IN_LIST ${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS)
+    set (COMP_PATH "")
+    set (SIBLING_DIR "${CMAKE_CURRENT_LIST_DIR}/../../${CMAKE_FIND_PACKAGE_NAME}-${_comp}/build_system/")
+    if (EXISTS "${CMAKE_CURRENT_LIST_DIR}/${CMAKE_FIND_PACKAGE_NAME}_${_comp}-config.cmake")
+        set (COMP_PATH "${CMAKE_CURRENT_LIST_DIR}/")
+    elseif (EXISTS "${SIBLING_DIR}/${CMAKE_FIND_PACKAGE_NAME}_${_comp}-config.cmake")
+        set (COMP_PATH "${SIBLING_DIR}")
+    endif ()
+
+    if (COMP_PATH STREQUAL "")
+        set(${CMAKE_FIND_PACKAGE_NAME}_FOUND False)
+        set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE "ERROR: library '${_comp}' requested, but not found.")
+        return()
     else ()
-        if (NOT ${CMAKE_FIND_PACKAGE_NAME}_FIND_QUIETLY)
-            message (WARNING ${text})
-        endif ()
-        return ()
+        include("${COMP_PATH}/${CMAKE_FIND_PACKAGE_NAME}_${_comp}-config.cmake")
     endif ()
-endmacro ()
-
-# ----------------------------------------------------------------------------
-# Find BioC++ include path
-# ----------------------------------------------------------------------------
-
-if (BIOCPP_INCLUDE_DIR)
-    biocpp_config_print ("BioC++ include dir found:   ${BIOCPP_INCLUDE_DIR}")
-else ()
-    biocpp_config_error ("BioC++ include directory could not be found (BIOCPP_INCLUDE_DIR: '${BIOCPP_INCLUDE_DIR}')")
+    list(REMOVE_ITEM ${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS ${_comp})
 endif ()
 
 # ----------------------------------------------------------------------------
-# Options for CheckCXXSourceCompiles
+# Catch rest
 # ----------------------------------------------------------------------------
 
-# deactivate messages in check_*
-set (CMAKE_REQUIRED_QUIET       1)
-# use global variables in Check* calls
-set (CMAKE_REQUIRED_INCLUDES    ${CMAKE_INCLUDE_PATH} ${BIOCPP_INCLUDE_DIR} ${BIOCPP_DEPENDENCY_INCLUDE_DIRS})
-set (CMAKE_REQUIRED_FLAGS       ${CMAKE_CXX_FLAGS})
-
-# ----------------------------------------------------------------------------
-# Require C++20
-# ----------------------------------------------------------------------------
-
-set (CMAKE_REQUIRED_FLAGS_SAVE ${CMAKE_REQUIRED_FLAGS})
-
-set (CXXSTD_TEST_SOURCE
-    "#if !defined (__cplusplus) || (__cplusplus < 201709L)
-    #error NOCXX20
-    #endif
-    int main() {}")
-
-check_cxx_source_compiles ("${CXXSTD_TEST_SOURCE}" CXX20_BUILTIN)
-
-if (CXX20_BUILTIN)
-    biocpp_config_print ("C++ Standard-20 support:    builtin")
-else ()
-    set (CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS_SAVE} -std=c++20")
-
-    check_cxx_source_compiles ("${CXXSTD_TEST_SOURCE}" CXX20_FLAG)
-
-    if (CXX20_FLAG)
-        biocpp_config_print ("C++ Standard-20 support:    via -std=c++20")
-    else ()
-        biocpp_config_print ("BioC++ requires C++20, but your compiler does not support it.")
-    endif ()
-
-    set (BIOCPP_CXX_FLAGS "${BIOCPP_CXX_FLAGS} -std=c++20")
-endif ()
-
-# ----------------------------------------------------------------------------
-# thread support (pthread, windows threads)
-# ----------------------------------------------------------------------------
-
-set (THREADS_PREFER_PTHREAD_FLAG TRUE)
-find_package (Threads QUIET)
-
-if (Threads_FOUND)
-    set (BIOCPP_LIBRARIES ${BIOCPP_LIBRARIES} Threads::Threads)
-    if ("${CMAKE_THREAD_LIBS_INIT}" STREQUAL "")
-        biocpp_config_print ("Thread support:             builtin.")
-    else ()
-        biocpp_config_print ("Thread support:             via ${CMAKE_THREAD_LIBS_INIT}")
-    endif ()
-else ()
-    biocpp_config_print ("Thread support:             not found.")
-endif ()
-
-# ----------------------------------------------------------------------------
-# System dependencies
-# ----------------------------------------------------------------------------
-
-# librt
-if ((${CMAKE_SYSTEM_NAME} STREQUAL "Linux") OR
-    (${CMAKE_SYSTEM_NAME} STREQUAL "kFreeBSD") OR
-    (${CMAKE_SYSTEM_NAME} STREQUAL "GNU"))
-    set (BIOCPP_LIBRARIES ${BIOCPP_LIBRARIES} rt)
-endif ()
-
-# libexecinfo -- implicit
-check_include_file_cxx (execinfo.h _BIOCPP_HAVE_EXECINFO)
-mark_as_advanced (_BIOCPP_HAVE_EXECINFO)
-if (_BIOCPP_HAVE_EXECINFO)
-    biocpp_config_print ("Optional dependency:        libexecinfo found.")
-    if ((${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD") OR (${CMAKE_SYSTEM_NAME} STREQUAL "OpenBSD"))
-        set (BIOCPP_LIBRARIES ${BIOCPP_LIBRARIES} execinfo elf)
-    endif ()
-else ()
-    biocpp_config_print ("Optional dependency:        libexecinfo not found.")
-endif ()
-
-# ----------------------------------------------------------------------------
-# Perform compilability test of platform.hpp (tests some requirements)
-# ----------------------------------------------------------------------------
-
-set (CXXSTD_TEST_SOURCE
-     "#include <bio/meta/platform.hpp>
-     int main() {}")
-
-# using try_compile instead of check_cxx_source_compiles to capture output in case of failure
-file (WRITE "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/src.cxx" "${CXXSTD_TEST_SOURCE}\n")
-
-try_compile (BIOCPP_PLATFORM_TEST
-             ${CMAKE_BINARY_DIR}
-             ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/src.cxx
-             CMAKE_FLAGS         "-DCOMPILE_DEFINITIONS:STRING=${CMAKE_CXX_FLAGS} ${BIOCPP_CXX_FLAGS}"
-                                 "-DINCLUDE_DIRECTORIES:STRING=${CMAKE_INCLUDE_PATH};${BIOCPP_INCLUDE_DIR};${BIOCPP_DEPENDENCY_INCLUDE_DIRS}"
-             COMPILE_DEFINITIONS ${BIOCPP_DEFINITIONS}
-             LINK_LIBRARIES      ${BIOCPP_LIBRARIES}
-             OUTPUT_VARIABLE     BIOCPP_PLATFORM_TEST_OUTPUT)
-
-if (BIOCPP_PLATFORM_TEST)
-    biocpp_config_print ("BioC++ platform.hpp build:  passed.")
-else ()
-    biocpp_config_error ("BioC++ platform.hpp build:  failed!\n\
-                        ${BIOCPP_PLATFORM_TEST_OUTPUT}")
-endif ()
-
-# ----------------------------------------------------------------------------
-# Export targets
-# ----------------------------------------------------------------------------
-
-separate_arguments (BIOCPP_CXX_FLAGS_LIST UNIX_COMMAND "${BIOCPP_CXX_FLAGS}")
-
-add_library (biocpp_core INTERFACE)
-target_compile_definitions (biocpp_core INTERFACE ${BIOCPP_DEFINITIONS})
-target_compile_options (biocpp_core INTERFACE ${BIOCPP_CXX_FLAGS_LIST})
-target_link_libraries (biocpp_core INTERFACE "${BIOCPP_LIBRARIES}")
-# include bio/include/ as -I, because BioC++ should never produce warnings.
-target_include_directories (biocpp_core INTERFACE "${BIOCPP_INCLUDE_DIR}")
-# include everything except bio/include/ as -isystem, i.e.
-# a system header which suppresses warnings of external libraries.
-target_include_directories (biocpp_core SYSTEM INTERFACE "${BIOCPP_DEPENDENCY_INCLUDE_DIRS}")
-add_library (biocpp::core ALIAS biocpp_core)
-
-# propagate BIOCPP_INCLUDE_DIR into BIOCPP_INCLUDE_DIRS
-set (BIOCPP_INCLUDE_DIRS ${BIOCPP_INCLUDE_DIR} ${BIOCPP_DEPENDENCY_INCLUDE_DIRS})
-
-# ----------------------------------------------------------------------------
-# Finish find_package call
-# ----------------------------------------------------------------------------
-
-find_package_handle_standard_args (${CMAKE_FIND_PACKAGE_NAME} REQUIRED_VARS BIOCPP_INCLUDE_DIR)
-
-# Set BIOCPP_* variables with the content of ${CMAKE_FIND_PACKAGE_NAME}_(FOUND|...|VERSION)
-# This needs to be done, because `find_package(BioC++)` might be called in any case-sensitive way and we want to
-# guarantee that BIOCPP_* are always set.
-foreach (package_var FOUND DIR ROOT CONFIG VERSION VERSION_MAJOR VERSION_MINOR VERSION_PATCH VERSION_TWEAK VERSION_COUNT)
-    set (BIOCPP_${package_var} "${${CMAKE_FIND_PACKAGE_NAME}_${package_var}}")
-endforeach ()
-
-set (CMAKE_REQUIRED_QUIET ${CMAKE_REQUIRED_QUIET_SAVE})
-
-if (BIOCPP_FIND_DEBUG)
-  message ("Result for ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt")
-  message ("")
-  message ("  CMAKE_BUILD_TYPE            ${CMAKE_BUILD_TYPE}")
-  message ("  CMAKE_SOURCE_DIR            ${CMAKE_SOURCE_DIR}")
-  message ("  CMAKE_INCLUDE_PATH          ${CMAKE_INCLUDE_PATH}")
-  message ("  BIOCPP_INCLUDE_DIR          ${BIOCPP_INCLUDE_DIR}")
-  message ("")
-  message ("  ${CMAKE_FIND_PACKAGE_NAME}_FOUND                ${${CMAKE_FIND_PACKAGE_NAME}_FOUND}")
-  message ("")
-  message ("  BIOCPP_INCLUDE_DIRS         ${BIOCPP_INCLUDE_DIRS}")
-  message ("  BIOCPP_LIBRARIES            ${BIOCPP_LIBRARIES}")
-  message ("  BIOCPP_DEFINITIONS          ${BIOCPP_DEFINITIONS}")
-  message ("  BIOCPP_CXX_FLAGS            ${BIOCPP_CXX_FLAGS}")
-  message ("")
-  message ("  BIOCPP_VERSION              ${BIOCPP_VERSION}")
-  message ("  BIOCPP_VERSION_MAJOR        ${BIOCPP_VERSION_MAJOR}")
-  message ("  BIOCPP_VERSION_MINORG       ${BIOCPP_VERSION_MINOR}")
-  message ("  BIOCPP_VERSION_PATCH        ${BIOCPP_VERSION_PATCH}")
+if (${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS)
+    set(${CMAKE_FIND_PACKAGE_NAME}_FOUND False)
+    set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE "ERROR: the following requested library(s) are unknown: ${${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS} ")
+    return()
 endif ()
