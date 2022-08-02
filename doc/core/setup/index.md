@@ -75,7 +75,9 @@ To compile it we first create a `CMakeLists.txt` file in the `source` directory:
 cmake_minimum_required (VERSION 3.4)
 project (biocpp_core_tutorial CXX)
 
-find_package (biocpp_core REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../biocpp-core/build_system")
+find_package (biocpp COMPONENTS core REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../biocpp-core/build_system")
+# OR:
+#find_package (biocpp_core REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../biocpp-core/build_system")
 
 add_executable (hello_world hello_world.cpp)
 
@@ -128,7 +130,7 @@ For example, after adding `another_program.cpp` your `CMakeLists.txt` may look l
 cmake_minimum_required (VERSION 3.4)
 project (biocpp-core_tutorial CXX)
 
-find_package (biocpp_core REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../biocpp-core/build_system")
+find_package (biocpp COMPONENTS core REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../biocpp-core/build_system")
 
 add_executable (hello_world hello_world.cpp)
 add_executable (another_program another_program.cpp)
