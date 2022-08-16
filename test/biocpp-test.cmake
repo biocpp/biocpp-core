@@ -1,4 +1,5 @@
 # -----------------------------------------------------------------------------------------------------
+# Copyright (c) 2020-2022, deCODE Genetics
 # Copyright (c) 2006-2020, Knut Reinert & Freie Universität Berlin
 # Copyright (c) 2016-2020, Knut Reinert & MPI für molekulare Genetik
 # This file may be used, modified and/or redistributed under the terms of the 3-clause BSD-License
@@ -11,9 +12,9 @@
 
 cmake_minimum_required (VERSION 3.7)
 
-# require BioC++ package
-find_package (biocpp_core REQUIRED
-              HINTS ${CMAKE_CURRENT_LIST_DIR}/../build_system)
+if (NOT BIOCPP_CORE_FOUND)
+    find_package (biocpp_core REQUIRED HINTS ${CMAKE_CURRENT_LIST_DIR}/../build_system)
+endif ()
 
 include (CheckCXXSourceCompiles)
 include (FindPackageHandleStandardArgs)
