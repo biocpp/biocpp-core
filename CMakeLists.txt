@@ -30,6 +30,6 @@ find_package (biocpp_core REQUIRED HINTS ${BIOCPP_MODULE_PATH})
 option(INSTALL_BIOCPP "Enable installation of BioC++ (Projects embedding biocpp may want to turn this OFF.)" ON)
 
 if (INSTALL_BIOCPP)
-    include (biocpp-install)
-    include (biocpp-package)
+    include (biocpp_core-install)
+    include (biocpp_core-package)
 endif ()
