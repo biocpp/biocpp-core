@@ -3,7 +3,7 @@
 #include <bio/alphabet/nucleotide/dna15.hpp>
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/ranges/views/convert.hpp>
-#include <bio/ranges/views/to.hpp>
+#include <bio/ranges/to.hpp>
 #include <ranges>
 
 int main()
@@ -15,7 +15,7 @@ int main()
     auto v = vec | bio::views::convert<bool>; // == [1, 1, 0, 1, 0, 0, 1, 1, 1];
 
     // function notation and immediate conversion to vector again
-    auto v2 = bio::views::convert<bool>(vec) | bio::views::to<std::vector<bool>>();
+    auto v2 = bio::views::convert<bool>(vec) | bio::ranges::to<std::vector<bool>>();
 
     // combinability
     auto v3 = vec | bio::views::convert<bool> | std::views::reverse; // == [1, 1, 1, 0, 0, 1, 0, 1, 1];

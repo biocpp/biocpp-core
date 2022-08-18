@@ -17,7 +17,7 @@
 #include <bio/ranges/container/dynamic_bitset.hpp>
 #include <bio/ranges/container/small_string.hpp>
 #include <bio/ranges/container/small_vector.hpp>
-#include <bio/ranges/views/to.hpp>
+#include <bio/ranges/to.hpp>
 
 #include "../cereal.hpp"
 
@@ -105,8 +105,8 @@ struct tmp_type<bio::ranges::concatenated_sequences<t>>
 
 TYPED_TEST(ranges_2d_generic, short)
 {
-    auto val1 = "ACGT"_dna4 | bio::views::to<typename tmp_type<TypeParam>::type>();
-    auto val2 = "GAGGA"_dna4 | bio::views::to<typename tmp_type<TypeParam>::type>();
+    auto val1 = "ACGT"_dna4 | bio::ranges::to<typename tmp_type<TypeParam>::type>();
+    auto val2 = "GAGGA"_dna4 | bio::ranges::to<typename tmp_type<TypeParam>::type>();
 
     TypeParam t1{val1, val1, val2};
     do_serialisation(t1);

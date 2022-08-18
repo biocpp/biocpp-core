@@ -13,9 +13,9 @@
 #include <algorithm>
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/ranges/concept.hpp>
+#include <bio/ranges/to.hpp>
 #include <bio/ranges/views/as_const.hpp>
 #include <bio/ranges/views/complement.hpp>
-#include <bio/ranges/views/to.hpp>
 #include <bio/ranges/views/to_lower.hpp>
 #include <bio/test/expect_range_eq.hpp>
 #include <ranges>
@@ -37,7 +37,7 @@ TEST(view_as_const, basic)
     // combinability
     bio::alphabet::dna5_vector vec2{"ACGTA"_dna5};
     bio::alphabet::dna5_vector v3 =
-      vec2 | bio::ranges::views::complement | bio::ranges::views::as_const | bio::ranges::views::to<std::vector>();
+      vec2 | bio::ranges::views::complement | bio::ranges::views::as_const | bio::ranges::to<std::vector>();
     EXPECT_EQ("TGCAT"_dna5, v3);
 }
 

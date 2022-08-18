@@ -12,7 +12,7 @@
 
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/ranges/concept.hpp>
-#include <bio/ranges/views/to.hpp>
+#include <bio/ranges/to.hpp>
 #include <bio/ranges/views/to_char.hpp>
 #include <bio/ranges/views/to_upper.hpp>
 #include <ranges>
@@ -25,11 +25,11 @@ TEST(view_to_upper, basic)
     std::string cmp{"IAMADNASTRING"};
 
     // pipe notation string
-    std::string s(input_string | bio::ranges::views::to_upper | bio::ranges::views::to<std::string>());
+    std::string s(input_string | bio::ranges::views::to_upper | bio::ranges::to<std::string>());
     EXPECT_EQ(cmp, s);
 
     // custom conversion operator
-    std::string s2(bio::ranges::views::to_upper(input_string) | bio::ranges::views::to<std::string>());
+    std::string s2(bio::ranges::views::to_upper(input_string) | bio::ranges::to<std::string>());
     EXPECT_EQ(cmp, s2);
 }
 
@@ -42,13 +42,12 @@ TEST(view_to_upper, combinability)
     std::string                      cmp2{"AGGCGT"};
 
     // output combinability
-    std::string s(input_string | bio::ranges::views::to_upper | std::views::reverse |
-                  bio::ranges::views::to<std::string>());
+    std::string s(input_string | bio::ranges::views::to_upper | std::views::reverse | bio::ranges::to<std::string>());
     EXPECT_EQ(cmp, s);
 
     // input combinability
     std::string s2(dna_vec | bio::ranges::views::to_char | bio::ranges::views::to_upper |
-                   bio::ranges::views::to<std::string>());
+                   bio::ranges::to<std::string>());
     EXPECT_EQ(cmp2, s2);
 }
 
@@ -57,8 +56,7 @@ TEST(view_to_upper, deep)
     std::vector<std::string> input_vec{"IAmADnaString", "IAmAProteinString"};
     std::vector<std::string> cmp{"IAMADNASTRING", "IAMAPROTEINSTRING"};
 
-    std::vector<std::string> s(input_vec | bio::ranges::views::to_upper |
-                               bio::ranges::views::to<std::vector<std::string>>());
+    std::vector<std::string> s(input_vec | bio::ranges::views::to_upper | bio::ranges::to<std::vector<std::string>>());
     EXPECT_EQ(cmp, s);
 }
 

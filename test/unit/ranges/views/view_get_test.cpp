@@ -13,9 +13,9 @@
 #include <bio/alphabet/mask/masked.hpp>
 #include <bio/alphabet/quality/aliases.hpp>
 #include <bio/ranges/concept.hpp>
+#include <bio/ranges/to.hpp>
 #include <bio/ranges/views/complement.hpp>
 #include <bio/ranges/views/get.hpp>
-#include <bio/ranges/views/to.hpp>
 #include <bio/ranges/views/to_char.hpp>
 #include <bio/ranges/views/zip.hpp>
 #include <ranges>
@@ -38,26 +38,25 @@ TEST(view_get, basic)
                                              bio::alphabet::phred42{3}};
 
     //functor
-    bio::alphabet::dna4_vector functor0 = bio::ranges::views::get<0>(qv) | bio::ranges::views::to<std::vector>();
-    std::vector<bio::alphabet::phred42> functor1 =
-      bio::ranges::views::get<1>(qv) | bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna4_vector          functor0 = bio::ranges::views::get<0>(qv) | bio::ranges::to<std::vector>();
+    std::vector<bio::alphabet::phred42> functor1 = bio::ranges::views::get<1>(qv) | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp0, functor0);
     EXPECT_EQ(cmp1, functor1);
 
     // pipe notation
-    bio::alphabet::dna4_vector          pipe0 = qv | bio::ranges::views::get<0> | bio::ranges::views::to<std::vector>();
-    std::vector<bio::alphabet::phred42> pipe1 = qv | bio::ranges::views::get<1> | bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna4_vector          pipe0 = qv | bio::ranges::views::get<0> | bio::ranges::to<std::vector>();
+    std::vector<bio::alphabet::phred42> pipe1 = qv | bio::ranges::views::get<1> | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp0, pipe0);
     EXPECT_EQ(cmp1, pipe1);
 
     // combinability
     bio::alphabet::dna4_vector cmp2{"TGCA"_dna4};
     bio::alphabet::dna4_vector comp =
-      qv | bio::ranges::views::get<0> | bio::ranges::views::complement | bio::ranges::views::to<std::vector>();
+      qv | bio::ranges::views::get<0> | bio::ranges::views::complement | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp2, comp);
 
     std::string cmp3{"TGCA"};
-    std::string to_char_test = comp | bio::ranges::views::to_char | bio::ranges::views::to<std::string>();
+    std::string to_char_test = comp | bio::ranges::views::to_char | bio::ranges::to<std::string>();
     EXPECT_EQ(cmp3, to_char_test);
 
     // reference return check
@@ -87,32 +86,31 @@ TEST(view_get, advanced)
       {'T'_dna4, bio::alphabet::mask::UNMASKED}
     };
     std::vector<bio::alphabet::masked<bio::alphabet::dna4>> functor0 =
-      bio::ranges::views::get<0>(t) | bio::ranges::views::to<std::vector>();
+      bio::ranges::views::get<0>(t) | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp0, functor0);
 
     std::vector<bio::alphabet::phred42> cmp1{bio::alphabet::phred42{0},
                                              bio::alphabet::phred42{1},
                                              bio::alphabet::phred42{2},
                                              bio::alphabet::phred42{3}};
-    std::vector<bio::alphabet::phred42> functor1 =
-      bio::ranges::views::get<1>(t) | bio::ranges::views::to<std::vector>();
+    std::vector<bio::alphabet::phred42> functor1 = bio::ranges::views::get<1>(t) | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp1, functor1);
 
     bio::alphabet::dna4_vector cmp00{'A'_dna4, 'C'_dna4, 'G'_dna4, 'T'_dna4};
     bio::alphabet::dna4_vector functor00 =
-      bio::ranges::views::get<0>(bio::ranges::views::get<0>(t)) | bio::ranges::views::to<std::vector>();
+      bio::ranges::views::get<0>(bio::ranges::views::get<0>(t)) | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp00, functor00);
 
     // pipe notation
     std::vector<bio::alphabet::masked<bio::alphabet::dna4>> pipe0 =
-      t | bio::ranges::views::get<0> | bio::ranges::views::to<std::vector>();
+      t | bio::ranges::views::get<0> | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp0, pipe0);
 
-    std::vector<bio::alphabet::phred42> pipe1 = t | bio::ranges::views::get<1> | bio::ranges::views::to<std::vector>();
+    std::vector<bio::alphabet::phred42> pipe1 = t | bio::ranges::views::get<1> | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp1, pipe1);
 
     bio::alphabet::dna4_vector pipe00 =
-      t | bio::ranges::views::get<0> | bio::ranges::views::get<0> | bio::ranges::views::to<std::vector>();
+      t | bio::ranges::views::get<0> | bio::ranges::views::get<0> | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp00, pipe00);
 
     // combinability
@@ -123,12 +121,12 @@ TEST(view_get, advanced)
       {'A'_dna4,   bio::alphabet::mask::MASKED}
     };
     std::vector<bio::alphabet::masked<bio::alphabet::dna4>> revtest =
-      t | bio::ranges::views::get<0> | std::views::reverse | bio::ranges::views::to<std::vector>();
+      t | bio::ranges::views::get<0> | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmprev, revtest);
 
     bio::alphabet::dna4_vector cmprev2{'T'_dna4, 'G'_dna4, 'C'_dna4, 'A'_dna4};
     bio::alphabet::dna4_vector revtest2 = t | bio::ranges::views::get<0> | bio::ranges::views::get<0> |
-                                          std::views::reverse | bio::ranges::views::to<std::vector>();
+                                          std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmprev2, revtest2);
 
     // reference check
@@ -159,8 +157,8 @@ TEST(view_get, tuple_pair)
 
     // functor notation
     std::vector<int> cmp{0, 1, 2, 3};
-    std::vector<int> pair_func  = bio::ranges::views::get<0>(pair_test) | bio::ranges::views::to<std::vector>();
-    std::vector<int> tuple_func = bio::ranges::views::get<0>(tuple_test) | bio::ranges::views::to<std::vector>();
+    std::vector<int> pair_func  = bio::ranges::views::get<0>(pair_test) | bio::ranges::to<std::vector>();
+    std::vector<int> tuple_func = bio::ranges::views::get<0>(tuple_test) | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp, pair_func);
     EXPECT_EQ(cmp, tuple_func);
 
@@ -173,8 +171,8 @@ TEST(view_get, tuple_pair)
 
     // pipe notation
     cmp[0]                      = 0;
-    std::vector<int> pair_pipe  = pair_test | bio::ranges::views::get<0> | bio::ranges::views::to<std::vector>();
-    std::vector<int> tuple_pipe = tuple_test | bio::ranges::views::get<0> | bio::ranges::views::to<std::vector>();
+    std::vector<int> pair_pipe  = pair_test | bio::ranges::views::get<0> | bio::ranges::to<std::vector>();
+    std::vector<int> tuple_pipe = tuple_test | bio::ranges::views::get<0> | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp, pair_pipe);
     EXPECT_EQ(cmp, tuple_pipe);
 }

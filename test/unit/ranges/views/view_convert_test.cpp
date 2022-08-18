@@ -12,8 +12,8 @@
 
 #include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/ranges/concept.hpp>
+#include <bio/ranges/to.hpp>
 #include <bio/ranges/views/convert.hpp>
-#include <bio/ranges/views/to.hpp>
 #include <ranges>
 
 using namespace bio::alphabet::literals;
@@ -24,17 +24,17 @@ TEST(view_convert, basic)
     std::vector<bool> cmp{1, 1, 0, 1, 0, 0, 1, 1, 1};
 
     // pipe notation
-    std::vector<bool> v = vec | bio::ranges::views::convert<bool> | bio::ranges::views::to<std::vector>();
+    std::vector<bool> v = vec | bio::ranges::views::convert<bool> | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp, v);
 
     // function notation
-    std::vector<bool> v2(bio::ranges::views::convert<bool>(vec) | bio::ranges::views::to<std::vector>());
+    std::vector<bool> v2(bio::ranges::views::convert<bool>(vec) | bio::ranges::to<std::vector>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
     std::vector<bool> cmp2{1, 1, 1, 0, 0, 1, 0, 1, 1};
     std::vector<bool> v3 =
-      vec | bio::ranges::views::convert<bool> | std::views::reverse | bio::ranges::views::to<std::vector>();
+      vec | bio::ranges::views::convert<bool> | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp2, v3);
 }
 
@@ -45,18 +45,18 @@ TEST(view_convert, explicit_conversion)
 
     // pipe notation
     bio::alphabet::dna4_vector v =
-      vec | bio::ranges::views::convert<bio::alphabet::dna4> | bio::ranges::views::to<std::vector>();
+      vec | bio::ranges::views::convert<bio::alphabet::dna4> | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp, v);
 
     // function notation
     bio::alphabet::dna4_vector v2(bio::ranges::views::convert<bio::alphabet::dna4>(vec) |
-                                  bio::ranges::views::to<std::vector>());
+                                  bio::ranges::to<std::vector>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
     bio::alphabet::dna4_vector cmp2{"AGGATAGCA"_dna4};
-    bio::alphabet::dna4_vector v3 = vec | bio::ranges::views::convert<bio::alphabet::dna4> | std::views::reverse |
-                                    bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna4_vector v3 =
+      vec | bio::ranges::views::convert<bio::alphabet::dna4> | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp2, v3);
 }
 

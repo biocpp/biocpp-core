@@ -17,10 +17,10 @@
 #include <algorithm>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/container/concept.hpp>
+#include <bio/ranges/to.hpp>
 #include <bio/ranges/views/single_pass_input.hpp>
 #include <bio/ranges/views/take.hpp>
 #include <bio/ranges/views/take_exactly.hpp>
-#include <bio/ranges/views/to.hpp>
 #include <bio/test/expect_range_eq.hpp>
 #include <concepts>
 #include <ranges>
@@ -34,20 +34,20 @@ void do_test(adaptor_t const & adaptor, std::string const & vec)
 {
     // pipe notation
     auto v = vec | adaptor(3);
-    EXPECT_EQ("foo", v | bio::ranges::views::to<std::string>());
+    EXPECT_EQ("foo", v | bio::ranges::to<std::string>());
 
     // iterators (code coverage)
     EXPECT_EQ(v.begin(), v.begin());
     EXPECT_NE(v.begin(), v.end());
 
     // function notation
-    std::string v2{adaptor(vec, 3) | bio::ranges::views::to<std::string>()};
+    std::string v2{adaptor(vec, 3) | bio::ranges::to<std::string>()};
     EXPECT_EQ("foo", v2);
 
     // combinability
     auto v3 = vec | adaptor(3) | adaptor(2);
-    EXPECT_EQ("fo", v3 | bio::ranges::views::to<std::string>());
-    std::string v3b = vec | std::views::reverse | adaptor(3) | bio::ranges::views::to<std::string>();
+    EXPECT_EQ("fo", v3 | bio::ranges::to<std::string>());
+    std::string v3b = vec | std::views::reverse | adaptor(3) | bio::ranges::to<std::string>();
     EXPECT_EQ("rab", v3b);
 
     // comparability against self
@@ -140,7 +140,7 @@ TEST(view_take_exactly, underlying_is_shorter)
 
     std::string v;
     EXPECT_NO_THROW((v = vec | bio::ranges::views::single_pass_input | bio::ranges::views::take_exactly(4) |
-                         bio::ranges::views::to<std::string>())); // full parsing on conversion
+                         bio::ranges::to<std::string>())); // full parsing on conversion
     EXPECT_EQ("foo", v);
 
     auto v2 = vec | bio::ranges::views::single_pass_input | bio::ranges::views::take_exactly(4);
@@ -193,6 +193,6 @@ TEST(view_take_exactly_or_throw, underlying_is_shorter)
 
     std::string v;
     EXPECT_THROW((v = vec | bio::ranges::views::single_pass_input | bio::ranges::views::take_exactly_or_throw(4) |
-                      bio::ranges::views::to<std::string>()),
+                      bio::ranges::to<std::string>()),
                  std::runtime_error); // full parsing on conversion, throw on conversion
 }

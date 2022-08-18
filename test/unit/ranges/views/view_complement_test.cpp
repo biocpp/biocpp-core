@@ -13,8 +13,8 @@
 #include <algorithm>
 #include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/ranges/concept.hpp>
+#include <bio/ranges/to.hpp>
 #include <bio/ranges/views/complement.hpp>
-#include <bio/ranges/views/to.hpp>
 #include <bio/test/expect_range_eq.hpp>
 #include <ranges>
 
@@ -25,31 +25,31 @@ TEST(view_complement, basic)
     bio::alphabet::dna5_vector foo{"ACGTA"_dna5};
 
     // pipe notation
-    bio::alphabet::dna5_vector v = foo | bio::ranges::views::complement | bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna5_vector v = foo | bio::ranges::views::complement | bio::ranges::to<std::vector>();
     EXPECT_EQ(v, "TGCAT"_dna5);
 
     // function notation
-    bio::alphabet::dna5_vector v2(bio::ranges::views::complement(foo) | bio::ranges::views::to<std::vector>());
+    bio::alphabet::dna5_vector v2(bio::ranges::views::complement(foo) | bio::ranges::to<std::vector>());
     EXPECT_EQ(v2, "TGCAT"_dna5);
 
     // combinability
     bio::alphabet::dna5_vector v3 =
-      foo | bio::ranges::views::complement | std::views::reverse | bio::ranges::views::to<std::vector>();
+      foo | bio::ranges::views::complement | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(v3, "TACGT"_dna5);
 
     bio::alphabet::dna5_vector const bar{"ACGTA"_dna5};
 
     // const pipe notation
-    bio::alphabet::dna5_vector v4 = bar | bio::ranges::views::complement | bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna5_vector v4 = bar | bio::ranges::views::complement | bio::ranges::to<std::vector>();
     EXPECT_EQ(v4, "TGCAT"_dna5);
 
     // const function notation
-    bio::alphabet::dna5_vector v5(bio::ranges::views::complement(bar) | bio::ranges::views::to<std::vector>());
+    bio::alphabet::dna5_vector v5(bio::ranges::views::complement(bar) | bio::ranges::to<std::vector>());
     EXPECT_EQ(v5, "TGCAT"_dna5);
 
     // const combinability
     bio::alphabet::dna5_vector v6 =
-      bar | bio::ranges::views::complement | std::views::reverse | bio::ranges::views::to<std::vector>();
+      bar | bio::ranges::views::complement | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(v6, "TACGT"_dna5);
 }
 

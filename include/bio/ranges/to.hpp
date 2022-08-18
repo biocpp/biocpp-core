@@ -6,6 +6,11 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
+/*!\file
+ * \brief An implementation of C++23's std::ranges::to.
+ * \author Simon Gene Gottlieb <simon.gottlieb AT fu-berlin.de>
+ */
+
 #pragma once
 
 #include <algorithm>
@@ -92,18 +97,18 @@ struct to_template_template_fn
 
 } //namespace bio::ranges::detail
 
-namespace bio::ranges::views
+namespace bio::ranges
 {
 
 /*!\brief Converts a range to a container.
- * \ingroup views
+ * \ingroup range
  * \details
  * To convert a range to a container different call syntax can be used.
  * Either the "pipe syntax" or the "function call" syntax.
  * Both syntaxes support the explicit specification of the target container or
  * a specification with an deduced value type.
  *
- * \include snippet/ranges/views/to.cpp
+ * \include snippet/ranges/to.cpp
  */
 template <typename container_t, typename... args_t>
 constexpr auto to(args_t &&... args)
@@ -134,4 +139,4 @@ constexpr auto to(rng_t && rng, args_t &&... args)
                                         std::forward<args_t>(args)...}(std::forward<rng_t>(rng));
 }
 
-} // namespace bio::ranges::views
+} // namespace bio::ranges
