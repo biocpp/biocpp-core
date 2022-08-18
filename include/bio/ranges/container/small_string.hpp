@@ -88,15 +88,6 @@ public:
         assign(_lit);
     }
 
-    /*!\brief Construction from char.
-     * \param c The character to construct the small_string for.
-     *
-     * ### Exceptions
-     *
-     * No-throw guarantee.
-     */
-    explicit constexpr small_string(char const c) noexcept : small_string{} { assign(1, c); }
-
     /*!\brief Assign from literal.
      * \param _lit The literal to assign the string from.
      *
@@ -369,7 +360,10 @@ small_string(std::array<char, N> const &) -> small_string<N>;
 
 //!\brief Deduces small_string from char.
 //!\relates small_string
-small_string(char const)->small_string<1>;
+template <std::same_as<char>... t>
+    requires(sizeof...(t) > 0)
+small_string(t const... chars)
+->small_string<sizeof...(chars)>;
 //!\}
 
 } // namespace bio::ranges

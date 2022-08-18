@@ -38,6 +38,17 @@
  * \ingroup meta
  */
 
+/*!\namespace bio::meta::literals
+ * \brief An inline namespace for meta literals. It exists to safely allow `using namespace`.
+ * \ingroup meta
+ */
+
+namespace bio::meta
+{
+inline namespace literals
+{}
+} // namespace bio::meta
+
 /*!\if DEV
  * \namespace bio::meta::detail
  * \ingroup meta
