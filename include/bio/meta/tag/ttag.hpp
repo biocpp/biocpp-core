@@ -7,16 +7,32 @@
 // -----------------------------------------------------------------------------------------------------
 
 /*!\file
- * \brief Meta-header for the \link meta_tag folder\endlink.
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
+ * \brief Provides bio::meta::ttag.
  */
 
 #pragma once
 
-#include <bio/meta/tag/ttag.hpp>
-#include <bio/meta/tag/vtag.hpp>
+#include <bio/meta/type_list/type_list.hpp>
 
-/*!\defgroup meta_tag Tag
- * \ingroup meta
- * \brief Provides tagging utilities (often used in tag-dispatching).
+namespace bio::meta
+{
+
+/*!\brief A type-tag template.
+ * \tparam type The first type to store.
+ * \tparam more_types More types to store (optional).
+ * \ingroup meta_tag
+ * \see bio::meta::type_list
+ *
+ * \details
+ *
+ * Using this template, you can easily turn a type into a compile-time constant (value).
+ *
+ * ### Example
+ *
+ * \snippet test/snippet/meta/tag/ttag.cpp ttag
  */
+template <typename type, typename... more_types>
+inline constinit type_list<type, more_types...> ttag{};
+
+} // namespace bio::meta

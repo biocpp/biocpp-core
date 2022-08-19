@@ -6,17 +6,19 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-/*!\file
- * \brief Meta-header for the \link meta_tag folder\endlink.
- * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- */
+#include <list>
+#include <type_traits>
+#include <vector>
 
-#pragma once
+#include <gtest/gtest.h>
 
 #include <bio/meta/tag/ttag.hpp>
-#include <bio/meta/tag/vtag.hpp>
 
-/*!\defgroup meta_tag Tag
- * \ingroup meta
- * \brief Provides tagging utilities (often used in tag-dispatching).
- */
+TEST(ttag, simple)
+{
+    auto v = bio::meta::ttag<int>;
+    EXPECT_TRUE((std::same_as<decltype(v), bio::meta::type_list<int>>));
+
+    auto v2 = bio::meta::ttag<int, float>;
+    EXPECT_TRUE((std::same_as<decltype(v2), bio::meta::type_list<int, float>>));
+}
