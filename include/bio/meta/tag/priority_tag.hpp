@@ -8,14 +8,14 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief provides bio::meta::detail::priority_tag.
+ * \brief provides bio::meta::priority_tag.
  */
 
 #pragma once
 
 #include <bio/meta/platform.hpp>
 
-namespace bio::meta::detail
+namespace bio::meta
 {
 
 // ============================================================================
@@ -23,6 +23,7 @@ namespace bio::meta::detail
 // ============================================================================
 
 //!\brief A tag that allows controlled overload resolution via implicit base conversion rules.
+//!\ingroup meta_tag
 template <size_t I>
 struct priority_tag
   //!\cond
@@ -31,9 +32,10 @@ struct priority_tag
 //!\endcond
 {};
 
-//!\brief Recursion anchor for bio::meta::detail::priority_tag.
+//!\brief Recursion anchor for bio::meta::priority_tag.
+//!\ingroup meta_tag
 template <>
 struct priority_tag<0>
 {};
 
-} // namespace bio::meta::detail
+} // namespace bio::meta

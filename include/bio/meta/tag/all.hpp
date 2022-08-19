@@ -13,6 +13,7 @@
 
 #pragma once
 
+#include <bio/meta/tag/priority_tag.hpp>
 #include <bio/meta/tag/ttag.hpp>
 #include <bio/meta/tag/vtag.hpp>
 

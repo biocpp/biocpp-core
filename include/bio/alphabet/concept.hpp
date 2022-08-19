@@ -18,8 +18,8 @@
 #include <bio/alphabet/biocpp.hpp>
 #include <bio/alphabet/exception.hpp>
 #include <bio/meta/concept/core_language.hpp>
-#include <bio/meta/detail/priority_tag.hpp>
 #include <bio/meta/detail/type_inspection.hpp>
+#include <bio/meta/tag/priority_tag.hpp>
 #include <bio/meta/type_traits/basic.hpp>
 
 // ============================================================================
@@ -374,8 +374,8 @@ struct char_is_valid_for_fn
 {
     //!\brief Default implementation that checks bijectivity.
     template <typename alph2_t>
-    static constexpr bool impl(char_t<alph2_t> const chr, meta::detail::priority_tag<0>) noexcept requires
-      std::is_nothrow_default_constructible_v<alph2_t>
+    static constexpr bool impl(char_t<alph2_t> const chr,
+                               meta::priority_tag<0>) noexcept requires std::is_nothrow_default_constructible_v<alph2_t>
     {
         return to_char(assign_char_to(chr, alph2_t{})) == chr;
     }
@@ -388,16 +388,16 @@ struct char_is_valid_for_fn
                 } -> std::same_as<bool>;
             requires noexcept(tag_invoke(std::declval<cpo::char_is_valid_for>(), c, wrap_t{}));
         })
-    static constexpr bool impl(char_t<alph2_t> const chr, meta::detail::priority_tag<1>) noexcept
+    static constexpr bool impl(char_t<alph2_t> const chr, meta::priority_tag<1>) noexcept
     {
         return tag_invoke(cpo::char_is_valid_for{}, chr, wrap_t{});
     }
 
     //!\brief Operator definition.
     constexpr auto operator()(char_t<alph_t> const chr) const noexcept
-      -> decltype(impl<std::remove_cvref_t<alph_t>>(chr, meta::detail::priority_tag<1>{}))
+      -> decltype(impl<std::remove_cvref_t<alph_t>>(chr, meta::priority_tag<1>{}))
     {
-        return impl<std::remove_cvref_t<alph_t>>(chr, meta::detail::priority_tag<1>{});
+        return impl<std::remove_cvref_t<alph_t>>(chr, meta::priority_tag<1>{});
     }
 };
 
