@@ -9,6 +9,8 @@ bug-fixes (not all bug-fixes will be listed).
 
 ## Features
 
+* Added bio::meta::vtag, bio::meta::ttag and bio::meta::priority_tag.
+
 ## Bug-fixes
 
 ## API
