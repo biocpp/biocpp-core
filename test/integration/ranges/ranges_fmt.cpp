@@ -99,8 +99,8 @@ struct tmp_type<bio::ranges::concatenated_sequences<t>>
 
 TYPED_TEST(ranges_2d_generic, short)
 {
-    auto      val1 = "ACGT"_dna4 | bio::views::to<typename tmp_type<TypeParam>::type>();
-    auto      val2 = "GAGGA"_dna4 | bio::views::to<typename tmp_type<TypeParam>::type>();
+    auto      val1 = "ACGT"_dna4 | bio::ranges::to<typename tmp_type<TypeParam>::type>();
+    auto      val2 = "GAGGA"_dna4 | bio::ranges::to<typename tmp_type<TypeParam>::type>();
     TypeParam t1;
     t1.push_back(val1);
     t1.push_back(val1);

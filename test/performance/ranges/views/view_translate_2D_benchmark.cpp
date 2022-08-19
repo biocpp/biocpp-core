@@ -11,7 +11,7 @@
 #include <benchmark/benchmark.h>
 
 #include <bio/alphabet/nucleotide/dna4.hpp>
-#include <bio/ranges/views/to.hpp>
+#include <bio/ranges/to.hpp>
 #include <bio/ranges/views/translate.hpp>
 #include <bio/ranges/views/translate_join.hpp>
 #include <bio/test/performance/sequence_generator.hpp>
@@ -53,7 +53,7 @@ void sequential_read(benchmark::State & state)
     {
         std::vector<bio::alphabet::aa27_vector> translated_aa_sequences = dna_sequence_collection
                                                                  | bio::ranges::views::translate_join
-                                                                 | bio::ranges::views::to<std::vector<bio::alphabet::aa27_vector>>();
+                                                                 | bio::ranges::to<std::vector<bio::alphabet::aa27_vector>>();
         sequential_read_impl(state, translated_aa_sequences);
     }
     else if constexpr (std::is_same_v<tag_t, translate_tag>)
@@ -105,7 +105,7 @@ void random_access(benchmark::State & state)
     {
         std::vector<bio::alphabet::aa27_vector> translated_aa_sequences = dna_sequence_collection
                                                                  | bio::ranges::views::translate_join
-                                                                 | bio::ranges::views::to<std::vector<bio::alphabet::aa27_vector>>();
+                                                                 | bio::ranges::to<std::vector<bio::alphabet::aa27_vector>>();
         random_access_impl(state, translated_aa_sequences, access_positions);
     }
     else

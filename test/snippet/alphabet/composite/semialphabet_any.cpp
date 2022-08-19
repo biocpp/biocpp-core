@@ -10,7 +10,7 @@
 #include <bio/alphabet/composite/semialphabet_any.hpp>
 #include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/views/convert.hpp>
-#include <bio/ranges/views/to.hpp>
+#include <bio/ranges/to.hpp>
 
 using namespace bio::alphabet::literals;
 
@@ -42,14 +42,14 @@ void algorithm(std::vector<bio::alphabet::semialphabet_any<10> > & r, bool is_mu
 void algo_pre(bio::alphabet::aa10li_vector const & v)
 {
     std::vector<bio::alphabet::semialphabet_any<10> > tmp = v | bio::views::convert<bio::alphabet::semialphabet_any<10>>
-                                                       | bio::views::to<std::vector>();
+                                                       | bio::ranges::to<std::vector>();
     algorithm(tmp, false);
 }
 
 void algo_pre(bio::alphabet::aa10murphy_vector const & v)
 {
     std::vector<bio::alphabet::semialphabet_any<10> > tmp = v | bio::views::convert<bio::alphabet::semialphabet_any<10>>
-                                                       | bio::views::to<std::vector>();
+                                                       | bio::ranges::to<std::vector>();
     algorithm(tmp, true);
 }
 

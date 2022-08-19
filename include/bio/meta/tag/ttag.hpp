@@ -8,32 +8,31 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief provides bio::meta::detail::priority_tag.
+ * \brief Provides bio::meta::ttag.
  */
 
 #pragma once
 
-#include <bio/meta/platform.hpp>
+#include <bio/meta/type_list/type_list.hpp>
 
-namespace bio::meta::detail
+namespace bio::meta
 {
 
-// ============================================================================
-// priority_tag
-// ============================================================================
+/*!\brief A type-tag template.
+ * \tparam type The first type to store.
+ * \tparam more_types More types to store (optional).
+ * \ingroup meta_tag
+ * \see bio::meta::type_list
+ *
+ * \details
+ *
+ * Using this template, you can easily turn a type into a compile-time constant (value).
+ *
+ * ### Example
+ *
+ * \snippet test/snippet/meta/tag/ttag.cpp ttag
+ */
+template <typename type, typename... more_types>
+inline constinit type_list<type, more_types...> ttag{};
 
-//!\brief A tag that allows controlled overload resolution via implicit base conversion rules.
-template <size_t I>
-struct priority_tag
-  //!\cond
-  // Doxygen fail
-  : priority_tag<I - 1>
-//!\endcond
-{};
-
-//!\brief Recursion anchor for bio::meta::detail::priority_tag.
-template <>
-struct priority_tag<0>
-{};
-
-} // namespace bio::meta::detail
+} // namespace bio::meta

@@ -12,7 +12,7 @@
 
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/ranges/concept.hpp>
-#include <bio/ranges/views/to.hpp>
+#include <bio/ranges/to.hpp>
 #include <bio/ranges/views/to_char.hpp>
 #include <ranges>
 
@@ -24,16 +24,16 @@ TEST(view_to_char, basic)
     std::string                cmp{"ACTTTGATA"};
 
     // pipe notation
-    std::string v = vec | bio::ranges::views::to_char | bio::ranges::views::to<std::string>();
+    std::string v = vec | bio::ranges::views::to_char | bio::ranges::to<std::string>();
     EXPECT_EQ(cmp, v);
 
     // function notation
-    std::string v2(bio::ranges::views::to_char(vec) | bio::ranges::views::to<std::string>());
+    std::string v2(bio::ranges::views::to_char(vec) | bio::ranges::to<std::string>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
     std::string cmp2{"ATAGTTTCA"};
-    std::string v3 = vec | bio::ranges::views::to_char | std::views::reverse | bio::ranges::views::to<std::string>();
+    std::string v3 = vec | bio::ranges::views::to_char | std::views::reverse | bio::ranges::to<std::string>();
     EXPECT_EQ(cmp2, v3);
 }
 

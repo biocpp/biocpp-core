@@ -16,9 +16,9 @@
 #include <bit>
 
 #include <bio/meta/detail/int_types.hpp>
+#include <bio/ranges/to.hpp>
 #include <bio/ranges/views/interleave.hpp>
 #include <bio/ranges/views/repeat_n.hpp>
-#include <bio/ranges/views/to.hpp>
 
 namespace bio::ranges::detail
 {

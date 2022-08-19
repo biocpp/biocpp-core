@@ -16,9 +16,9 @@
 #include <bio/alphabet/aminoacid/aa27.hpp>
 #include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/ranges/concept.hpp>
+#include <bio/ranges/to.hpp>
 #include <bio/ranges/views/char_to.hpp>
 #include <bio/ranges/views/complement.hpp>
-#include <bio/ranges/views/to.hpp>
 #include <bio/ranges/views/translate_join.hpp>
 #include <bio/test/expect_range_eq.hpp>
 
@@ -80,8 +80,8 @@ TYPED_TEST(nucleotide, view_translate)
     std::string const                   in2{"TCGAGAGCTTTAGC"};
     std::vector<std::vector<TypeParam>> vec;
     vec.resize(2);
-    vec[0] = in1 | bio::ranges::views::char_to<TypeParam> | bio::ranges::views::to<std::vector>();
-    vec[1] = in2 | bio::ranges::views::char_to<TypeParam> | bio::ranges::views::to<std::vector>();
+    vec[0] = in1 | bio::ranges::views::char_to<TypeParam> | bio::ranges::to<std::vector>();
+    vec[1] = in2 | bio::ranges::views::char_to<TypeParam> | bio::ranges::to<std::vector>();
 
     std::vector<std::vector<bio::alphabet::aa27>> cmp1{{"TYVR"_aa27}, {"SRAL"_aa27}};
     std::vector<std::vector<bio::alphabet::aa27>> cmp2{{"TYVR"_aa27}, {"YVRT"_aa27}, {"SRAL"_aa27}, {"AKAL"_aa27}};
@@ -195,8 +195,8 @@ TYPED_TEST(nucleotide, view_translate_concepts)
     std::string const                   in2{"TCGAGAGCTTTAGC"};
     std::vector<std::vector<TypeParam>> vec;
     vec.resize(2);
-    vec[0] = in1 | bio::ranges::views::char_to<TypeParam> | bio::ranges::views::to<std::vector>();
-    vec[1] = in2 | bio::ranges::views::char_to<TypeParam> | bio::ranges::views::to<std::vector>();
+    vec[0] = in1 | bio::ranges::views::char_to<TypeParam> | bio::ranges::to<std::vector>();
+    vec[1] = in2 | bio::ranges::views::char_to<TypeParam> | bio::ranges::to<std::vector>();
 
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::random_access_range<decltype(vec)>);

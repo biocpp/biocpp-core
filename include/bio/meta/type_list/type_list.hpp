@@ -36,3 +36,20 @@ struct type_list
 };
 
 } // namespace bio::meta
+
+// ----------------------------------------------------------------------------
+// is_type_list trait
+// ----------------------------------------------------------------------------
+
+namespace bio::meta::detail
+{
+
+//!\brief Check whether a type is a specialisation of seqan3::type_list.
+template <typename t>
+inline constexpr bool is_type_list = false;
+
+//!\brief Check whether a type is a specialisation of seqan3::type_list.
+template <typename... ts>
+inline constexpr bool is_type_list<type_list<ts...>> = true;
+
+} // namespace bio::meta::detail

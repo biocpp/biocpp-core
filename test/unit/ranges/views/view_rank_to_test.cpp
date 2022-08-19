@@ -12,8 +12,8 @@
 
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/ranges/concept.hpp>
+#include <bio/ranges/to.hpp>
 #include <bio/ranges/views/rank_to.hpp>
-#include <bio/ranges/views/to.hpp>
 #include <ranges>
 
 TEST(view_rank_to, basic)
@@ -25,18 +25,18 @@ TEST(view_rank_to, basic)
 
     // pipe notation
     bio::alphabet::dna5_vector v =
-      vec | bio::ranges::views::rank_to<bio::alphabet::dna5> | bio::ranges::views::to<std::vector>();
+      vec | bio::ranges::views::rank_to<bio::alphabet::dna5> | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp, v);
 
     // function notation
     bio::alphabet::dna5_vector v2(bio::ranges::views::rank_to<bio::alphabet::dna5>(vec) |
-                                  bio::ranges::views::to<std::vector>());
+                                  bio::ranges::to<std::vector>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
     bio::alphabet::dna5_vector cmp2{"ATAGTTTCA"_dna5};
-    bio::alphabet::dna5_vector v3 = vec | bio::ranges::views::rank_to<bio::alphabet::dna5> | std::views::reverse |
-                                    bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna5_vector v3 =
+      vec | bio::ranges::views::rank_to<bio::alphabet::dna5> | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp2, v3);
 }
 

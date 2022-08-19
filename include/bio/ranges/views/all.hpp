@@ -13,6 +13,7 @@
 
 #pragma once
 
+#include <bio/ranges/to.hpp>
 #include <bio/ranges/views/char_to.hpp>
 #include <bio/ranges/views/complement.hpp>
 #include <bio/ranges/views/convert.hpp>
@@ -25,7 +26,6 @@
 #include <bio/ranges/views/rank_to.hpp>
 #include <bio/ranges/views/single_pass_input.hpp>
 #include <bio/ranges/views/take_exactly.hpp>
-#include <bio/ranges/views/to.hpp>
 #include <bio/ranges/views/to_char.hpp>
 #include <bio/ranges/views/to_rank.hpp>
 #include <bio/ranges/views/translate.hpp>

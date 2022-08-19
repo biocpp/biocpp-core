@@ -13,8 +13,8 @@
 #include <algorithm>
 #include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/ranges/concept.hpp>
+#include <bio/ranges/to.hpp>
 #include <bio/ranges/views/deep.hpp>
-#include <bio/ranges/views/to.hpp>
 #include <bio/test/expect_range_eq.hpp>
 #include <ranges>
 
@@ -37,20 +37,20 @@ TEST(view_deep_reverse, basic)
 
     // pipe notation, temporary
     bio::alphabet::dna5_vector v0 =
-      foo | bio::ranges::views::deep{std::views::reverse} | bio::ranges::views::to<std::vector>();
+      foo | bio::ranges::views::deep{std::views::reverse} | bio::ranges::to<std::vector>();
     EXPECT_EQ(v0, "ATGCA"_dna5);
 
     // pipe notation
-    bio::alphabet::dna5_vector v = foo | bio::ranges::views::deep_reverse | bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna5_vector v = foo | bio::ranges::views::deep_reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(v, "ATGCA"_dna5);
 
     // function notation
-    bio::alphabet::dna5_vector v2(bio::ranges::views::deep_reverse(foo) | bio::ranges::views::to<std::vector>());
+    bio::alphabet::dna5_vector v2(bio::ranges::views::deep_reverse(foo) | bio::ranges::to<std::vector>());
     EXPECT_EQ(v2, "ATGCA"_dna5);
 
     // combinability
     bio::alphabet::dna5_vector v3 =
-      foo | bio::ranges::views::deep_reverse | std::views::reverse | bio::ranges::views::to<std::vector>();
+      foo | bio::ranges::views::deep_reverse | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(v3, "ACGTA"_dna5);
 }
 
@@ -112,20 +112,20 @@ TEST(view_deep_take, basic)
 
     // pipe notation, temporary
     bio::alphabet::dna5_vector v0 =
-      foo | bio::ranges::views::deep{std::views::take}(2) | bio::ranges::views::to<std::vector>();
+      foo | bio::ranges::views::deep{std::views::take}(2) | bio::ranges::to<std::vector>();
     EXPECT_EQ(v0, "AC"_dna5);
 
     // pipe notation
-    bio::alphabet::dna5_vector v = foo | bio::ranges::views::deep_take(2) | bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna5_vector v = foo | bio::ranges::views::deep_take(2) | bio::ranges::to<std::vector>();
     EXPECT_EQ(v, "AC"_dna5);
 
     // function notation
-    bio::alphabet::dna5_vector v2(bio::ranges::views::deep_take(foo, 2) | bio::ranges::views::to<std::vector>());
+    bio::alphabet::dna5_vector v2(bio::ranges::views::deep_take(foo, 2) | bio::ranges::to<std::vector>());
     EXPECT_EQ(v2, "AC"_dna5);
 
     // combinability
     bio::alphabet::dna5_vector v3 =
-      foo | bio::ranges::views::deep_take(2) | std::views::reverse | bio::ranges::views::to<std::vector>();
+      foo | bio::ranges::views::deep_take(2) | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(v3, "CA"_dna5);
 }
 
@@ -159,20 +159,20 @@ TEST(view_deep_take2, basic)
 
     // pipe notation, temporary
     bio::alphabet::dna5_vector v0 =
-      foo | bio::ranges::views::deep{std::views::take(2)} | bio::ranges::views::to<std::vector>();
+      foo | bio::ranges::views::deep{std::views::take(2)} | bio::ranges::to<std::vector>();
     EXPECT_EQ(v0, "AC"_dna5);
 
     // pipe notation
-    bio::alphabet::dna5_vector v = foo | bio::ranges::views::deep_take2 | bio::ranges::views::to<std::vector>();
+    bio::alphabet::dna5_vector v = foo | bio::ranges::views::deep_take2 | bio::ranges::to<std::vector>();
     EXPECT_EQ(v, "AC"_dna5);
 
     // function notation
-    bio::alphabet::dna5_vector v2(bio::ranges::views::deep_take2(foo) | bio::ranges::views::to<std::vector>());
+    bio::alphabet::dna5_vector v2(bio::ranges::views::deep_take2(foo) | bio::ranges::to<std::vector>());
     EXPECT_EQ(v2, "AC"_dna5);
 
     // combinability
     bio::alphabet::dna5_vector v3 =
-      foo | bio::ranges::views::deep_take2 | std::views::reverse | bio::ranges::views::to<std::vector>();
+      foo | bio::ranges::views::deep_take2 | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(v3, "CA"_dna5);
 }
 
