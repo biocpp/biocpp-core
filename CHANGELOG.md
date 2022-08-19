@@ -10,6 +10,7 @@ bug-fixes (not all bug-fixes will be listed).
 ## Features
 
 * Added bio::meta::vtag, bio::meta::ttag and bio::meta::priority_tag.
+* Added bio::views::char_strictly_to and bio::views::validate_char_for.
 
 ## Bug-fixes
 
