@@ -208,13 +208,6 @@ public:
     {
         return alignment == alignment2;
     }
-
-    //!\brief Returns false if the memory-alignment mismatches.
-    template <class value_type2, size_t alignment2>
-    constexpr bool operator!=(aligned_allocator<value_type2, alignment2> const &) noexcept
-    {
-        return alignment != alignment2;
-    }
     //!\}
 };
 

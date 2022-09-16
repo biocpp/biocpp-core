@@ -495,13 +495,6 @@ public:
         return std::tie(lhs.first_it, lhs.second_it) == std::tie(rhs.first_it, rhs.second_it);
     }
 
-    //!\brief Checks whether `*this` is not equal to `rhs`.
-    constexpr friend bool operator!=(basic_iterator const lhs, basic_iterator const rhs) noexcept(
-      noexcept(std::declval<underlying_iterator_type &>() != std::declval<underlying_iterator_type &>()))
-    {
-        return !(lhs == rhs);
-    }
-
     //!\brief Determines order of `*this` and `rhs`.
     constexpr friend auto operator<=>(basic_iterator const lhs, basic_iterator const rhs) noexcept(
       noexcept(std::declval<underlying_iterator_type &>() < std::declval<underlying_iterator_type &>()))

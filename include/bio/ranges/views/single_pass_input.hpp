@@ -255,12 +255,6 @@ public:
 
     //!\copydoc operator==
     friend constexpr bool operator==(sentinel_type const & s, basic_iterator const & rhs) noexcept { return rhs == s; }
-
-    //!\brief Compares for inequality with sentinel.
-    constexpr bool operator!=(sentinel_type const & rhs) const noexcept { return !(*this == rhs); }
-
-    //!\copydoc operator!=
-    friend constexpr bool operator!=(sentinel_type const & s, basic_iterator const & rhs) noexcept { return rhs != s; }
     //!\}
 
 protected:

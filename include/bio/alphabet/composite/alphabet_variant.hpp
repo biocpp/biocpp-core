@@ -392,17 +392,6 @@ public:
         return lhs.template holds_alternative<alternative_t>() &&
                (lhs.template convert_unsafely_to<alternative_t>() == rhs);
     }
-
-    //!\copydoc operator==(alphabet_variant_t const lhs, indirect_alternative_type const rhs)
-    template <std::same_as<alphabet_variant> alphabet_variant_t, typename indirect_alternative_type>
-        //!\cond
-        requires((detail::variant_general_guard<indirect_alternative_type, alternative_types...>)&&(
-          meta::weakly_equality_comparable_with<indirect_alternative_type, alternative_types> || ...))
-    //!\endcond
-    friend constexpr auto operator!=(alphabet_variant_t const lhs, indirect_alternative_type const rhs) noexcept
-    {
-        return !(lhs == rhs);
-    }
     //!\}
 
     /*!\brief Validate whether a character is valid in the combined alphabet.

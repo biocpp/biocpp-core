@@ -120,7 +120,6 @@ struct input_range
             return x;
         }
         bool operator==(iterator const &) const { return host->current == host->sentinel; }
-        bool operator!=(iterator const & sentinel) const { return !(*this == sentinel); }
     };
 
     iterator begin() { return {this}; }
