@@ -11,7 +11,7 @@
 #include <variant>
 
 #include <bio/alphabet/adaptation/char.hpp>
-#include <bio/alphabet/composite/alphabet_variant.hpp>
+#include <bio/alphabet/composite/variant.hpp>
 #include <bio/alphabet/gap/gap.hpp>
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/alphabet/nucleotide/dna5.hpp>
@@ -26,26 +26,26 @@
 
 using namespace bio::alphabet::literals;
 
-using alphabet_variant_types =
-  ::testing::Types<bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::gap>,
-                   bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>,
-                   bio::alphabet::alphabet_variant<char, bio::alphabet::gap>>;
+using variant_types =
+  ::testing::Types<bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::gap>,
+                   bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>,
+                   bio::alphabet::variant<char, bio::alphabet::gap>>;
 
-INSTANTIATE_TYPED_TEST_SUITE_P(alphabet_variant, alphabet, alphabet_variant_types, );
-INSTANTIATE_TYPED_TEST_SUITE_P(alphabet_variant, semi_alphabet_test, alphabet_variant_types, );
-INSTANTIATE_TYPED_TEST_SUITE_P(alphabet_variant, alphabet_constexpr, alphabet_variant_types, );
-INSTANTIATE_TYPED_TEST_SUITE_P(alphabet_variant, semi_alphabet_constexpr, alphabet_variant_types, );
+INSTANTIATE_TYPED_TEST_SUITE_P(variant, alphabet, variant_types, );
+INSTANTIATE_TYPED_TEST_SUITE_P(variant, semi_alphabet_test, variant_types, );
+INSTANTIATE_TYPED_TEST_SUITE_P(variant, alphabet_constexpr, variant_types, );
+INSTANTIATE_TYPED_TEST_SUITE_P(variant, semi_alphabet_constexpr, variant_types, );
 
 template <typename T>
-using alphabet_variant_test = ::testing::Test;
+using variant_test = ::testing::Test;
 
-TYPED_TEST_SUITE(alphabet_variant_test, alphabet_variant_types, );
+TYPED_TEST_SUITE(variant_test, variant_types, );
 
-TEST(alphabet_variant_test, initialise_from_component_alphabet)
+TEST(variant_test, initialise_from_component_alphabet)
 {
     bio::alphabet::dna5 l('A'_rna5);
 
-    using alphabet_t = bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
+    using alphabet_t = bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
     using variant_t  = std::variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
 
     constexpr variant_t  variant0{'A'_dna4};
@@ -90,9 +90,9 @@ TEST(alphabet_variant_test, initialise_from_component_alphabet)
     EXPECT_EQ(letter9.to_rank(), 9);
 }
 
-TEST(alphabet_variant_test, initialise_from_component_alphabet_subtype)
+TEST(variant_test, initialise_from_component_alphabet_subtype)
 {
-    using alphabet_t = bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
+    using alphabet_t = bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
     using variant_t  = std::variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
 
     variant_t  variant0{'A'_rna4};
@@ -133,9 +133,9 @@ TEST(alphabet_variant_test, initialise_from_component_alphabet_subtype)
     EXPECT_EQ(letter8.to_rank(), 8);
 }
 
-TEST(alphabet_variant_test, assign_from_component_alphabet)
+TEST(variant_test, assign_from_component_alphabet)
 {
-    using alphabet_t = bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
+    using alphabet_t = bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
     using variant_t  = std::variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
     alphabet_t letter{};
     variant_t  variant{};
@@ -178,9 +178,9 @@ TEST(alphabet_variant_test, assign_from_component_alphabet)
     EXPECT_EQ(letter.to_rank(), 9);
 }
 
-TEST(alphabet_variant_test, assign_from_component_alphabet_subtype)
+TEST(variant_test, assign_from_component_alphabet_subtype)
 {
-    using alphabet_t = bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
+    using alphabet_t = bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
     using variant_t  = std::variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
     alphabet_t letter{};
     variant_t  variant{};
@@ -220,9 +220,9 @@ TEST(alphabet_variant_test, assign_from_component_alphabet_subtype)
     EXPECT_EQ(letter.to_rank(), 8);
 }
 
-TEST(alphabet_variant_test, compare_to_component_alphabet)
+TEST(variant_test, compare_to_component_alphabet)
 {
-    using alphabet_t = bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::dna5>;
+    using alphabet_t = bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::dna5>;
 
     constexpr alphabet_t letter0{'G'_dna4};
 
@@ -235,9 +235,9 @@ TEST(alphabet_variant_test, compare_to_component_alphabet)
     EXPECT_NE('A'_dna5, letter0);
 }
 
-TEST(alphabet_variant_test, compare_to_component_alphabet_subtype)
+TEST(variant_test, compare_to_component_alphabet_subtype)
 {
-    using alphabet_t = bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::dna5>;
+    using alphabet_t = bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::dna5>;
 
     constexpr alphabet_t letter0{'G'_dna4};
 
@@ -250,22 +250,22 @@ TEST(alphabet_variant_test, compare_to_component_alphabet_subtype)
     EXPECT_NE('A'_rna5, letter0);
 }
 
-TEST(alphabet_variant_test, rank_type)
+TEST(variant_test, rank_type)
 {
-    using alphabet1_t = bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
-    using alphabet2_t = bio::alphabet::alphabet_variant<bio::alphabet::gap, bio::alphabet::dna5, bio::alphabet::dna4>;
-    using alphabet3_t = bio::alphabet::alphabet_variant<char, bio::alphabet::gap>;
+    using alphabet1_t = bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
+    using alphabet2_t = bio::alphabet::variant<bio::alphabet::gap, bio::alphabet::dna5, bio::alphabet::dna4>;
+    using alphabet3_t = bio::alphabet::variant<char, bio::alphabet::gap>;
 
     EXPECT_TRUE((std::is_same_v<bio::alphabet::rank_t<alphabet1_t>, uint8_t>));
     EXPECT_TRUE((std::is_same_v<bio::alphabet::rank_t<alphabet2_t>, uint8_t>));
     EXPECT_TRUE((std::is_same_v<bio::alphabet::rank_t<alphabet3_t>, uint16_t>));
 }
 
-TEST(alphabet_variant_test, alphabet_size)
+TEST(variant_test, alphabet_size)
 {
-    using alphabet1_t = bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
-    using alphabet2_t = bio::alphabet::alphabet_variant<bio::alphabet::gap, bio::alphabet::dna5, bio::alphabet::dna4>;
-    using alphabet3_t = bio::alphabet::alphabet_variant<char, bio::alphabet::gap>;
+    using alphabet1_t = bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap>;
+    using alphabet2_t = bio::alphabet::variant<bio::alphabet::gap, bio::alphabet::dna5, bio::alphabet::dna4>;
+    using alphabet3_t = bio::alphabet::variant<char, bio::alphabet::gap>;
 
     EXPECT_TRUE((std::is_same_v<decltype(alphabet1_t::alphabet_size), const size_t>));
     EXPECT_TRUE((std::is_same_v<decltype(alphabet2_t::alphabet_size), const size_t>));
@@ -276,9 +276,9 @@ TEST(alphabet_variant_test, alphabet_size)
     EXPECT_EQ(alphabet3_t::alphabet_size, 257ull);
 }
 
-TEST(alphabet_variant_test, convert_by_index)
+TEST(variant_test, convert_by_index)
 {
-    bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap> u;
+    bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap> u;
     u = 'C'_dna5;
 
     EXPECT_FALSE(u.holds_alternative<0>());
@@ -298,9 +298,9 @@ TEST(alphabet_variant_test, convert_by_index)
     EXPECT_EQ(g, bio::alphabet::gap{});
 }
 
-TEST(alphabet_variant_test, convert_by_type)
+TEST(variant_test, convert_by_type)
 {
-    bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap> u;
+    bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::gap> u;
     u = 'C'_dna5;
 
     EXPECT_FALSE(u.holds_alternative<bio::alphabet::dna4>());
@@ -319,10 +319,10 @@ TEST(alphabet_variant_test, convert_by_type)
     EXPECT_EQ(g, bio::alphabet::gap{});
 }
 
-TEST(alphabet_variant_test, two_different_variants)
+TEST(variant_test, two_different_variants)
 {
-    bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::gap> l{bio::alphabet::gap{}};
-    bio::alphabet::alphabet_variant<bio::alphabet::dna5, bio::alphabet::gap> r{bio::alphabet::gap{}};
+    bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::gap> l{bio::alphabet::gap{}};
+    bio::alphabet::variant<bio::alphabet::dna5, bio::alphabet::gap> r{bio::alphabet::gap{}};
 
     EXPECT_EQ(l, r);
 
@@ -332,11 +332,11 @@ TEST(alphabet_variant_test, two_different_variants)
 
     EXPECT_NE(l, r);
 
-    bio::alphabet::alphabet_variant<bio::alphabet::rna4, bio::alphabet::gap> r2{'A'_rna4};
+    bio::alphabet::variant<bio::alphabet::rna4, bio::alphabet::gap> r2{'A'_rna4};
     EXPECT_EQ(l, r2); // this works because rna4 and dna4 are implicitly convertible to each other
 }
 
-TYPED_TEST(alphabet_variant_test, char_is_valid_for)
+TYPED_TEST(variant_test, char_is_valid_for)
 {
     using gapped_alphabet_t       = TypeParam;
     using gapped_alphabet_bases_t = typename gapped_alphabet_t::biocpp_required_types;

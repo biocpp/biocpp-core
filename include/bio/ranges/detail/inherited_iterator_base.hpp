@@ -123,16 +123,6 @@ public:
         return *this_to_base() == *rhs.this_to_base();
     }
 
-    //!\brief Checks whether `*this` is not equal to `rhs`.
-    constexpr bool operator!=(derived_t const & rhs) const
-      noexcept(noexcept(std::declval<base_t &>() == std::declval<base_t &>()))
-      //!\cond
-      requires std::equality_comparable<base_t>
-    //!\endcond
-    {
-        return !(*this == rhs);
-    }
-
     //!\brief Checks whether `*this` is less than `rhs`.
     constexpr bool operator<(derived_t const & rhs) const
       noexcept(noexcept(std::declval<base_t &>() < std::declval<base_t &>()))

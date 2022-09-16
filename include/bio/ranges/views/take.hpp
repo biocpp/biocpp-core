@@ -397,30 +397,6 @@ public:
     {
         return rhs == lhs;
     }
-
-    //!\brief Checks whether `*this` is not equal to `rhs`.
-    constexpr bool operator!=(sentinel_type const & rhs) const
-      noexcept(noexcept(std::declval<basic_iterator &>() == rhs))
-    {
-        return !(*this == rhs);
-    }
-
-    //!\copydoc operator!=()
-    constexpr bool operator!=(basic_iterator const & rhs) const
-      noexcept(noexcept(std::declval<basic_iterator &>() == rhs))
-      //!\cond
-      requires std::forward_iterator<base_base_t>
-    //!\endcond
-    {
-        return !(*this == rhs);
-    }
-
-    //!\brief Checks whether `lhs` is not equal to `rhs`.
-    constexpr friend bool operator!=(sentinel_type const &  lhs,
-                                     basic_iterator const & rhs) noexcept(noexcept(rhs != lhs))
-    {
-        return rhs != lhs;
-    }
     //!\}
 
     /*!\name Reference/Dereference operators

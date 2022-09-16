@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides implementation detail for bio::alphabet::alphabet_variant and bio::alphabet::alphabet_tuple_base.
+ * \brief Provides implementation detail for bio::alphabet::variant and bio::alphabet::tuple_base.
  */
 
 #pragma once
@@ -27,7 +27,7 @@ namespace bio::alphabet::detail
 // ------------------------------------------------------------------
 
 /*!\interface bio::alphabet::detail::alphabet_tuple_like <>
- * \brief bio::alphabet::alphabet_tuple_base and its derivates model this concept.
+ * \brief bio::alphabet::tuple_base and its derivates model this concept.
  * \ingroup alphabet_composite
  *
  * \details
@@ -64,13 +64,13 @@ struct required_types
 };
 
 /*!\brief A bio::meta::type_list with types that the given type depends on.
- *        [specialisation for bio::alphabet::alphabet_variant and derivates of bio::alphabet::alphabet_tuple_base].
+ *        [specialisation for bio::alphabet::variant and derivates of bio::alphabet::tuple_base].
  * \implements bio::meta::transformation_trait
  * \ingroup alphabet_composite
  *
  * \details
  *
- * Exposes for bio::alphabet::alphabet_tuple_base its components and for bio::alphabet::alphabet_variant its alternatives.
+ * Exposes for bio::alphabet::tuple_base its components and for bio::alphabet::variant its alternatives.
  */
 template <typename t>
     //!\cond
@@ -150,7 +150,7 @@ struct implicitly_convertible_from
 {
     //!\brief The returned type when invoked.
     template <typename type>
-    using invoke = std::integral_constant<bool, meta::implicitly_convertible_to<T, type>>;
+    using invoke = std::integral_constant<bool, std::is_convertible_v<T, type>>;
 };
 
 /*!\brief 'Callable' helper class that is invokable by meta::invoke.
@@ -223,13 +223,13 @@ template <typename... alternative_types>
     requires((detail::writable_constexpr_alphabet<alternative_types> && ...) &&
              (std::regular<alternative_types> && ...) && (sizeof...(alternative_types) >= 2))
 //!\endcond
-class alphabet_variant;
+class variant;
 
 template <typename derived_type, typename... component_types>
     //!\cond
     requires((detail::writable_constexpr_semialphabet<component_types> && ...) &&
              (std::regular<component_types> && ...))
 //!\endcond
-class alphabet_tuple_base;
+class tuple_base;
 
 } // namespace bio::alphabet

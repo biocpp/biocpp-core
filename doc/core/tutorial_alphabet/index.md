@@ -159,14 +159,14 @@ properties of the respective sequence.
 The values are produced by sequencing machines and represent the probability
 that a nucleobase was recorded incorrectly. The characters are most commonly found in FASTQ files. See \ref quality for details.
 
-You can build an [Alphabet Tuple Composite](\ref bio::alphabet::alphabet_tuple_base) with a nucleotide and quality
+You can build an [Alphabet Tuple Composite](\ref bio::alphabet::tuple_base) with a nucleotide and quality
 alphabet that stores both information together.
 For the use cases just described we offer a pre-defined composite (bio::alphabet::qualified). See our API documentation for a detailed description of each.
 
 ## Gap alphabet
 
 The bio::alphabet::gap alphabet is the smallest alphabet in BioC++, consisting only of the gap character.
-It is most often used in an [Alphabet Variant](\ref bio::alphabet::alphabet_variant) with a nucleotide or amino acid alphabet
+It is most often used in an [Alphabet Variant](\ref bio::alphabet::variant) with a nucleotide or amino acid alphabet
 to represent gapped sequences, e.g. in alignments. To create a gapped alphabet simply use bio::alphabet::gapped<> with
 the alphabet type you want to refine.
 

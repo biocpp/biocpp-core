@@ -63,27 +63,6 @@ concept weakly_ordered_with = requires(std::remove_reference_t<t1> const & v1, s
 };
 //!\endcond
 
-//TODO replace all occurrences of this with std::cosntructible_from
-/*!\interface   bio::meta::implicitly_convertible_to <>
- * \brief       Resolves to `std::ranges::implicitly_convertible_to<type1, type2>()`.
- */
-//!\cond
-template <typename t, typename u>
-concept implicitly_convertible_to = std::is_convertible_v<t, u>;
-//!\endcond
-
-//TODO replace all occurrences of this with std::convertible_to
-/*!\interface   bio::meta::explicitly_convertible_to <>
- * \brief       Resolves to `std::ranges::explicitly_convertible_to<type1, type2>()`.
- */
-//!\cond
-template <typename t, typename u>
-concept explicitly_convertible_to = requires(t vt)
-{
-    {static_cast<u>(vt)};
-};
-//!\endcond
-
 /*!\interface   bio::meta::arithmetic <>
  * \brief       A type that satisfies std::is_arithmetic_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_arithmetic

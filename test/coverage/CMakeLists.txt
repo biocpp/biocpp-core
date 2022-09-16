@@ -39,10 +39,10 @@ set (BIOCPP_GCOVR_ARGUMENTS "")
 list (APPEND BIOCPP_GCOVR_ARGUMENTS "--root;${CMAKE_CURRENT_LIST_DIR}")
 # The build directory.
 list (APPEND BIOCPP_GCOVR_ARGUMENTS "${PROJECT_BINARY_DIR}")
-# Include all files whose path match '${BIOCPP_CLONE_DIR}/include/biocpp/.*'.
-list (APPEND BIOCPP_GCOVR_ARGUMENTS "--filter;\'${BIOCPP_CLONE_DIR}/include/bio/.*\'")
-# Include all files whose path match '${BIOCPP_CLONE_DIR}/test/include/biocpp/test/.*'.
-list (APPEND BIOCPP_GCOVR_ARGUMENTS "--filter;\'${BIOCPP_CLONE_DIR}/test/include/bio/test/.*\'")
+# Include all files whose path match '${BIOCPP_CORE_CLONE_DIR}/include/biocpp/.*'.
+list (APPEND BIOCPP_GCOVR_ARGUMENTS "--filter;\'${BIOCPP_CORE_CLONE_DIR}/include/bio/.*\'")
+# Include all files whose path match '${BIOCPP_CORE_CLONE_DIR}/test/include/biocpp/test/.*'.
+list (APPEND BIOCPP_GCOVR_ARGUMENTS "--filter;\'${BIOCPP_CORE_CLONE_DIR}/test/include/bio/test/.*\'")
 # Remove line coverage for all lines that match '^\s*$', i.e. empty lines.
 list (APPEND BIOCPP_GCOVR_ARGUMENTS "--exclude-lines-by-pattern;\\\'^\\\\s*$$\\\'")
 # Remove line coverage for all lines that match "^\s*[\{\}]\s*\;*\s*(//.*)?$", i.e. lines with a single '{' or '}' which

@@ -50,7 +50,7 @@ BENCHMARK_TEMPLATE(sequential_write, std::vector, bio::alphabet::dna4);
 BENCHMARK_TEMPLATE(sequential_write, std::vector, bio::alphabet::gapped<bio::alphabet::dna4>);
 BENCHMARK_TEMPLATE(sequential_write, std::vector, bio::alphabet::dna15);
 BENCHMARK_TEMPLATE(sequential_write, std::vector, bio::alphabet::aa27);
-BENCHMARK_TEMPLATE(sequential_write, std::vector, bio::alphabet::alphabet_variant<char, bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(sequential_write, std::vector, bio::alphabet::variant<char, bio::alphabet::dna4>);
 
 BENCHMARK_TEMPLATE(sequential_write, std::deque, char);
 BENCHMARK_TEMPLATE(sequential_write, std::deque, uint8_t);
@@ -62,7 +62,7 @@ BENCHMARK_TEMPLATE(sequential_write, std::deque, bio::alphabet::dna4);
 BENCHMARK_TEMPLATE(sequential_write, std::deque, bio::alphabet::gapped<bio::alphabet::dna4>);
 BENCHMARK_TEMPLATE(sequential_write, std::deque, bio::alphabet::dna15);
 BENCHMARK_TEMPLATE(sequential_write, std::deque, bio::alphabet::aa27);
-BENCHMARK_TEMPLATE(sequential_write, std::deque, bio::alphabet::alphabet_variant<char, bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(sequential_write, std::deque, bio::alphabet::variant<char, bio::alphabet::dna4>);
 
 BENCHMARK_TEMPLATE(sequential_write, std::list, char);
 BENCHMARK_TEMPLATE(sequential_write, std::list, uint8_t);
@@ -74,7 +74,7 @@ BENCHMARK_TEMPLATE(sequential_write, std::list, bio::alphabet::dna4);
 BENCHMARK_TEMPLATE(sequential_write, std::list, bio::alphabet::gapped<bio::alphabet::dna4>);
 BENCHMARK_TEMPLATE(sequential_write, std::list, bio::alphabet::dna15);
 BENCHMARK_TEMPLATE(sequential_write, std::list, bio::alphabet::aa27);
-BENCHMARK_TEMPLATE(sequential_write, std::list, bio::alphabet::alphabet_variant<char, bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(sequential_write, std::list, bio::alphabet::variant<char, bio::alphabet::dna4>);
 
 #if __has_include(<sdsl/int_vector.hpp>)
 #include <sdsl/int_vector.hpp>
@@ -90,12 +90,10 @@ BENCHMARK_TEMPLATE(sequential_write, sdsl_int_vec, uint64_t);
 BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, char);
 BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::gap);
 BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::dna4);
-//TODO(bio): works on gcc10, fails on gc11
-// BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::gapped<bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::gapped<bio::alphabet::dna4>);
 BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::dna15);
 BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::aa27);
-//TODO(bio): works on gcc10, fails on gc11
-// BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::alphabet_variant<char, bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::variant<char, bio::alphabet::dna4>);
 
 BENCHMARK_TEMPLATE(sequential_write, small_vec, char);
 BENCHMARK_TEMPLATE(sequential_write, small_vec, bio::alphabet::gap);
@@ -103,7 +101,7 @@ BENCHMARK_TEMPLATE(sequential_write, small_vec, bio::alphabet::dna4);
 BENCHMARK_TEMPLATE(sequential_write, small_vec, bio::alphabet::gapped<bio::alphabet::dna4>);
 BENCHMARK_TEMPLATE(sequential_write, small_vec, bio::alphabet::dna15);
 BENCHMARK_TEMPLATE(sequential_write, small_vec, bio::alphabet::aa27);
-BENCHMARK_TEMPLATE(sequential_write, small_vec, bio::alphabet::alphabet_variant<char, bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(sequential_write, small_vec, bio::alphabet::variant<char, bio::alphabet::dna4>);
 
 // ============================================================================
 //  run

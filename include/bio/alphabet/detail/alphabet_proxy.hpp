@@ -55,7 +55,7 @@ namespace bio::alphabet
  * to implement "assign-through" and to also provide a `const`-qualified overload
  * of the same.
  *
- * See bio::ranges::bitcompressed_vector or bio::alphabet::alphabet_tuple_base for examples of how this class is used.
+ * See bio::ranges::bitcompressed_vector or bio::alphabet::tuple_base for examples of how this class is used.
  */
 template <typename derived_type, writable_semialphabet alphabet_type>
     //!\cond
@@ -254,7 +254,7 @@ public:
 
     /*!\name Comparison operators
      * \brief These are only required if the emulated type allows comparison with types it is not convertible to,
-     *        e.g. bio::alphabet::alphabet_variant.
+     *        e.g. bio::alphabet::variant.
      * \{
      */
     //!\brief Checks whether the letters `lhs` and `rhs` are equal.
@@ -290,22 +290,6 @@ public:
       -> std::enable_if_t<is_alphabet_comparable_with<t>, bool>
     {
         return (rhs == lhs);
-    }
-
-    //!\brief Allow (in-)equality comparison with types that the emulated type is comparable with.
-    template <typename t>
-    friend constexpr auto operator!=(derived_type const lhs, t const rhs) noexcept
-      -> std::enable_if_t<is_alphabet_comparable_with<t>, bool>
-    {
-        return !(lhs == rhs);
-    }
-
-    //!\brief Allow (in-)equality comparison with types that the emulated type is comparable with.
-    template <typename t>
-    friend constexpr auto operator!=(t const lhs, derived_type const rhs) noexcept
-      -> std::enable_if_t<is_alphabet_comparable_with<t>, bool>
-    {
-        return (rhs != lhs);
     }
     //!\}
 

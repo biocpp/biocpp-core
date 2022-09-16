@@ -14,14 +14,18 @@ bug-fixes (not all bug-fixes will be listed).
 
 ## Bug-fixes
 
+
+### Misc changes
+
+* `bio::ranges::views::to()` has been renamed to `bio::ranges::to()` to be in line with C++23.
+* Cleaned up most of the concept mess in composite alphabets; all tests pass again.
+
+
 ## API
 
 * This release is not yet API-stable.
 * This release is *mostly* backwards compatible with 0.5.0.
 
-### Misc changes
-
-* `bio::ranges::views::to()` has been renamed to `bio::ranges::to()` to be in line with C++23.
 
 # 0.5.0
 

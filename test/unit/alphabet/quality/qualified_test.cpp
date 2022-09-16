@@ -20,12 +20,12 @@
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_proxy_test_template.hpp"
 #include "../alphabet_test_template.hpp"
-#include "../composite/alphabet_tuple_base_test_template.hpp"
+#include "../composite/tuple_base_test_template.hpp"
 #include "../semi_alphabet_constexpr_test_template.hpp"
 #include "../semi_alphabet_test_template.hpp"
 
 template <typename alphabet_type, typename phred_type>
-class alphabet_tuple_base_test<bio::alphabet::qualified<alphabet_type, phred_type>> : public ::testing::Test
+class tuple_base_test<bio::alphabet::qualified<alphabet_type, phred_type>> : public ::testing::Test
 {
 public:
     using T = bio::alphabet::qualified<alphabet_type, phred_type>;
@@ -74,7 +74,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(qualified, alphabet, qualified_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(qualified, semi_alphabet_test, qualified_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(qualified, alphabet_constexpr, qualified_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(qualified, semi_alphabet_constexpr, qualified_types, );
-INSTANTIATE_TYPED_TEST_SUITE_P(qualified, alphabet_tuple_base_test, qualified_types, );
+INSTANTIATE_TYPED_TEST_SUITE_P(qualified, tuple_base_test, qualified_types, );
 
 using namespace bio::alphabet::literals;
 

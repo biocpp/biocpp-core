@@ -1281,12 +1281,6 @@ public:
         return raw_data() == rhs.raw_data();
     }
 
-    //!\brief Checks whether `*this` is not equal to `rhs`.
-    constexpr bool operator!=(concatenated_sequences const & rhs) const noexcept
-    {
-        return raw_data() != rhs.raw_data();
-    }
-
     //!\brief Checks whether `*this` is less than `rhs`.
     constexpr bool operator<(concatenated_sequences const & rhs) const noexcept { return raw_data() < rhs.raw_data(); }
 

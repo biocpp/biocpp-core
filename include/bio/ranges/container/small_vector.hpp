@@ -822,13 +822,6 @@ public:
 
     //!\brief Performs element-wise comparison.
     template <size_t cap2>
-    friend constexpr bool operator!=(small_vector const & lhs, small_vector<value_type, cap2> const & rhs) noexcept
-    {
-        return !(lhs == rhs);
-    }
-
-    //!\brief Performs element-wise comparison.
-    template <size_t cap2>
     friend constexpr bool operator<(small_vector const & lhs, small_vector<value_type, cap2> const & rhs) noexcept
     {
         for (size_t i = 0; i < std::min(lhs.size(), rhs.size()); ++i)
