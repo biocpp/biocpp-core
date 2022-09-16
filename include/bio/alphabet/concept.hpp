@@ -15,8 +15,8 @@
 
 #include <type_traits>
 
-#include <bio/alphabet/biocpp.hpp>
 #include <bio/alphabet/exception.hpp>
+#include <bio/core.hpp>
 #include <bio/meta/concept/core_language.hpp>
 #include <bio/meta/detail/type_inspection.hpp>
 #include <bio/meta/tag/priority_tag.hpp>

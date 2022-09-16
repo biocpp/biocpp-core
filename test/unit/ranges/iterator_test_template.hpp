@@ -13,7 +13,7 @@
 #include <iterator>
 #include <ranges>
 
-#include <bio/meta/platform.hpp>
+#include <bio/core.hpp>
 
 template <typename T>
 struct iterator_fixture : public ::testing::Test

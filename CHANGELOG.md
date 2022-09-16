@@ -9,22 +9,26 @@ bug-fixes (not all bug-fixes will be listed).
 
 ## Features
 
-* Added bio::meta::vtag, bio::meta::ttag and bio::meta::priority_tag.
-* Added bio::views::char_strictly_to and bio::views::validate_char_for.
+* Added `bio::meta::one_of` and `bio::meta::decays_to` concepts.
+* Added `bio::meta::vtag`, `bio::meta::ttag` and `bio::meta::priority_tag`.
+* Added `bio::views::char_strictly_to` and `bio::views::validate_char_for`.
 
 ## Bug-fixes
 
+* Some edge-cases with composite alphabets were fixed.
 
 ### Misc changes
 
+* `bio::alphabet::alphabet_tuple_base` has been renamed to `bio::alphabet::tuple_base`.
+* `bio::alphabet::alphabet_variant` has been renamed to `bio::alphabet::variant`.
 * `bio::ranges::views::to()` has been renamed to `bio::ranges::to()` to be in line with C++23.
-* Cleaned up most of the concept mess in composite alphabets; all tests pass again.
+* Cleaned up most of the concept mess in composite alphabets.
 
 
 ## API
 
 * This release is not yet API-stable.
-* This release is *mostly* backwards compatible with 0.5.0.
+* This release is *mostly* backwards compatible with 0.5.0 (see changes above).
 
 
 # 0.5.0

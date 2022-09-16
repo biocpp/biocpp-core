@@ -14,48 +14,10 @@
 
 #pragma once
 
+#include <bio/core.hpp>
 #include <bio/meta/concept/all.hpp>
 #include <bio/meta/detail/all.hpp>
-#include <bio/meta/platform.hpp>
 #include <bio/meta/pod_tuple.hpp>
 #include <bio/meta/tuple_utility.hpp>
 #include <bio/meta/type_list/type_list.hpp>
 #include <bio/meta/type_traits/all.hpp>
-
-/*!\defgroup meta Meta
- * \brief Provides metaprogramming utilities, concepts and some helper classes.
- *
- * The meta module is used strongly by other modules, but the content is usually not relevant
- * to most users of the library.
- */
-
-/*!\namespace bio
- * \brief The main BioC++ namespace.
- */
-
-/*!\namespace bio::meta
- * \brief The Meta module's namespace.
- * \ingroup meta
- */
-
-/*!\namespace bio::meta::literals
- * \brief An inline namespace for meta literals. It exists to safely allow `using namespace`.
- * \ingroup meta
- */
-
-namespace bio::meta
-{
-inline namespace literals
-{}
-} // namespace bio::meta
-
-/*!\if DEV
- * \namespace bio::meta::detail
- * \ingroup meta
- * \brief The internal BioC++ namespace.
- * \details
- * The contents of this namespace are not visible to consumers of the library and the documentation is
- * only generated for developers.
- * \sa https://github.com/biocpp/biocpp-core/wiki/Documentation
- * \endif
- */

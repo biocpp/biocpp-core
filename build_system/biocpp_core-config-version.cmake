@@ -14,10 +14,10 @@
 
 # Note that biocpp-config.cmake can be standalone and thus BIOCPP_CORE_CLONE_DIR might be empty.
 find_path (BIOCPP_CORE_CLONE_DIR NAMES build_system/biocpp_core-config.cmake HINTS "${CMAKE_CURRENT_LIST_DIR}/..")
-find_path (BIOCPP_CORE_INCLUDE_DIR NAMES bio/version.hpp HINTS "${BIOCPP_CORE_CLONE_DIR}/include")
+find_path (BIOCPP_CORE_INCLUDE_DIR NAMES bio/core.hpp HINTS "${BIOCPP_CORE_CLONE_DIR}/include")
 
-# extract version from bio/version.hpp header
-file(STRINGS "${BIOCPP_CORE_INCLUDE_DIR}/bio/version.hpp" BIOCPP_CORE_VERSION_HPP REGEX "#define BIOCPP_CORE_VERSION_(MAJOR|MINOR|PATCH)")
+# extract version from bio/core.hpp header
+file(STRINGS "${BIOCPP_CORE_INCLUDE_DIR}/bio/core.hpp" BIOCPP_CORE_VERSION_HPP REGEX "#define BIOCPP_CORE_VERSION_(MAJOR|MINOR|PATCH)")
 string(REGEX REPLACE "#define BIOCPP_CORE_VERSION_(MAJOR|MINOR|PATCH) " "" PACKAGE_VERSION "${BIOCPP_CORE_VERSION_HPP}")
 string(REGEX REPLACE ";" "." PACKAGE_VERSION "${PACKAGE_VERSION}")
 

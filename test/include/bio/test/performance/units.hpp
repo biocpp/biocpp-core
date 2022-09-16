@@ -17,7 +17,7 @@
 #include <benchmark/benchmark.h>
 
 #include <bio/meta/concept/tuple.hpp>
-#include <bio/meta/platform.hpp>
+#include <bio/core.hpp>
 
 namespace bio::test
 {

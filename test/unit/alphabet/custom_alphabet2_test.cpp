@@ -6,7 +6,7 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <bio/meta/platform.hpp>
+#include <bio/core.hpp>
 
 // Tests the ADL-capabilities of the alphabet customisation point objects; type that isn't default constructible
 

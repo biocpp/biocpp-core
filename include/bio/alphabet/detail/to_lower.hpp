@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <bio/alphabet/biocpp.hpp>
+#include <bio/core.hpp>
 
 /*!\cond DEV
  * \file

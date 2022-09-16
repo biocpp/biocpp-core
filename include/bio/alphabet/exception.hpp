@@ -17,7 +17,7 @@
 #include <stdexcept>
 #include <string>
 
-#include <bio/alphabet/biocpp.hpp>
+#include <bio/core.hpp>
 
 namespace bio::alphabet
 {

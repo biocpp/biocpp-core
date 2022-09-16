@@ -26,7 +26,7 @@
 
 #include <filesystem>
 
-#include <bio/meta/platform.hpp>
+#include <bio/core.hpp>
 
 namespace bio
 {
