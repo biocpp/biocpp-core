@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <bio/alphabet/composite/alphabet_tuple_base.hpp>
+#include <bio/alphabet/composite/tuple_base.hpp>
 #include <bio/alphabet/detail/to_lower.hpp>
 #include <bio/alphabet/mask/mask.hpp>
 
@@ -31,7 +31,7 @@ namespace bio::alphabet
  * \tparam sequence_alphabet_t Type of the first letter; must satisfy bio::alphabet::writable_alphabet and std::regular.
  *
  * \details
- * The masked composite represents a bio::alphabet::alphabet_tuple_base of any given alphabet with the
+ * The masked composite represents a bio::alphabet::tuple_base of any given alphabet with the
  * masked alphabet. It allows one to specify which portions of a sequence should be masked,
  * without losing additional information by replacing the sequence directly.
  *
@@ -41,11 +41,11 @@ template <writable_alphabet sequence_alphabet_t>
     //!\cond
     requires std::regular<sequence_alphabet_t>
 //!\endcond
-class masked : public alphabet_tuple_base<masked<sequence_alphabet_t>, sequence_alphabet_t, mask>
+class masked : public tuple_base<masked<sequence_alphabet_t>, sequence_alphabet_t, mask>
 {
 private:
     //!\brief The base type.
-    using base_t = alphabet_tuple_base<masked<sequence_alphabet_t>, sequence_alphabet_t, mask>;
+    using base_t = tuple_base<masked<sequence_alphabet_t>, sequence_alphabet_t, mask>;
 
 public:
     //!\brief First template parameter as member type.

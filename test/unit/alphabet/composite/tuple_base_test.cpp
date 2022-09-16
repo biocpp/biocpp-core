@@ -8,25 +8,25 @@
 
 #include <gtest/gtest.h>
 
-#include <bio/alphabet/composite/alphabet_tuple_base.hpp>
+#include <bio/alphabet/composite/tuple_base.hpp>
 #include <bio/alphabet/nucleotide/rna4.hpp>
 #include <bio/alphabet/nucleotide/rna5.hpp>
 
 #include "../semi_alphabet_test_template.hpp"
-#include "alphabet_tuple_base_test_template.hpp"
+#include "tuple_base_test_template.hpp"
 
 using namespace bio::alphabet::literals;
 
 template <typename type1, typename type2>
-struct test_composite : public bio::alphabet::alphabet_tuple_base<test_composite<type1, type2>, type1, type2>
+struct test_composite : public bio::alphabet::tuple_base<test_composite<type1, type2>, type1, type2>
 {
-    using base_t = bio::alphabet::alphabet_tuple_base<test_composite<type1, type2>, type1, type2>;
+    using base_t = bio::alphabet::tuple_base<test_composite<type1, type2>, type1, type2>;
     using base_t::base_t;
     using base_t::operator=;
 };
 
 template <>
-class alphabet_tuple_base_test<test_composite<bio::alphabet::dna4, bio::alphabet::dna5>> : public ::testing::Test
+class tuple_base_test<test_composite<bio::alphabet::dna4, bio::alphabet::dna5>> : public ::testing::Test
 {
 public:
     using T = test_composite<bio::alphabet::dna4, bio::alphabet::dna5>;
@@ -55,4 +55,4 @@ public:
 using test_composite_types = ::testing::Types<test_composite<bio::alphabet::dna4, bio::alphabet::dna5>>;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(test_composite, semi_alphabet_test, test_composite_types, );
-INSTANTIATE_TYPED_TEST_SUITE_P(test_composite, alphabet_tuple_base_test, test_composite_types, );
+INSTANTIATE_TYPED_TEST_SUITE_P(test_composite, tuple_base_test, test_composite_types, );

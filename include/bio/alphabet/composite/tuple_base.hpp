@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides bio::alphabet::alphabet_tuple_base.
+ * \brief Provides bio::alphabet::tuple_base.
  */
 
 #pragma once
@@ -29,10 +29,10 @@
 namespace bio::alphabet::detail
 {
 
-//!\brief Prevents wrong instantiations of bio::alphabet::alphabet_tuple_base's equality comparison operators.
+//!\brief Prevents wrong instantiations of bio::alphabet::tuple_base's equality comparison operators.
 template <typename tuple_derived_t, typename rhs_t, typename... component_types>
 concept tuple_concept_guard =
-  ((!std::same_as<rhs_t, tuple_derived_t>)&&(!std::same_as<rhs_t, alphabet_tuple_base<component_types...>>)&&(
+  ((!std::same_as<rhs_t, tuple_derived_t>)&&(!std::same_as<rhs_t, tuple_base<component_types...>>)&&(
      !std::is_base_of_v<tuple_derived_t, rhs_t>)&&(!(std::same_as<rhs_t, component_types> || ...)) &&
    (!meta::list_traits::contains<tuple_derived_t, recursive_required_types_t<rhs_t>>));
 
@@ -93,7 +93,7 @@ template <typename derived_type, typename... component_types>
     requires((detail::writable_constexpr_semialphabet<component_types> && ...) &&
              (std::regular<component_types> && ...))
 //!\endcond
-class alphabet_tuple_base :
+class tuple_base :
   public alphabet_base<derived_type,
                        (1 * ... * size<component_types>),
                        void> // no char type, because this is only semi_alphabet
@@ -122,12 +122,12 @@ private:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr alphabet_tuple_base() noexcept                               = default; //!< Defaulted.
-    constexpr alphabet_tuple_base(alphabet_tuple_base const &)             = default; //!< Defaulted.
-    constexpr alphabet_tuple_base(alphabet_tuple_base &&)                  = default; //!< Defaulted.
-    constexpr alphabet_tuple_base & operator=(alphabet_tuple_base const &) = default; //!< Defaulted.
-    constexpr alphabet_tuple_base & operator=(alphabet_tuple_base &&)      = default; //!< Defaulted.
-    ~alphabet_tuple_base()                                                 = default; //!< Defaulted.
+    constexpr tuple_base() noexcept                      = default; //!< Defaulted.
+    constexpr tuple_base(tuple_base const &)             = default; //!< Defaulted.
+    constexpr tuple_base(tuple_base &&)                  = default; //!< Defaulted.
+    constexpr tuple_base & operator=(tuple_base const &) = default; //!< Defaulted.
+    constexpr tuple_base & operator=(tuple_base &&)      = default; //!< Defaulted.
+    ~tuple_base()                                        = default; //!< Defaulted.
 
     using base_t::base_t;
     //!\}
@@ -165,7 +165,7 @@ public:
      *            bio::alphabet::structure_aa).
      */
     //!\brief Construction from initialiser-list.
-    constexpr alphabet_tuple_base(component_types... components) noexcept
+    constexpr tuple_base(component_types... components) noexcept
     {
         assign_rank(rank_sum_helper(components..., std::make_index_sequence<sizeof...(component_types)>{}));
     }
@@ -174,16 +174,16 @@ public:
      * \tparam component_type Must be one uniquely contained in the type list of the composite.
      * \param  alph           The value of a component that should be assigned.
      *
-     * Note: Since the alphabet_tuple_base is a CRTP base class, we show the working examples
+     * Note: Since the tuple_base is a CRTP base class, we show the working examples
      * with one of its derived classes (bio::alphabet::qualified).
-     * \include test/snippet/alphabet/composite/alphabet_tuple_base_value_construction.cpp
+     * \include test/snippet/alphabet/composite/tuple_base_value_construction.cpp
      *
      */
     template <typename component_type>
         //!\cond
-        requires((!std::is_base_of_v<alphabet_tuple_base, component_type>)&&is_unique_component<component_type>)
+        requires((!std::is_base_of_v<tuple_base, component_type>)&&is_unique_component<component_type>)
     //!\endcond
-    constexpr explicit alphabet_tuple_base(component_type const alph) noexcept : alphabet_tuple_base{}
+    constexpr explicit tuple_base(component_type const alph) noexcept : tuple_base{}
     {
         get<component_type>(*this) = alph;
     }
@@ -197,9 +197,9 @@ public:
      * `assignable_from<T, indirect_component_type>`, regardless if other types are also
      * fit for assignment.
      *
-     * Note: Since the alphabet_tuple_base is a CRTP base class, we show the working examples
+     * Note: Since the tuple_base is a CRTP base class, we show the working examples
      * with one of its derived classes (bio::alphabet::qualified).
-     * \include test/snippet/alphabet/composite/alphabet_tuple_base_subtype_construction.cpp
+     * \include test/snippet/alphabet/composite/tuple_base_subtype_construction.cpp
      *
      */
     template <typename indirect_component_type>
@@ -207,7 +207,7 @@ public:
         requires(detail::tuple_concept_guard<derived_type, indirect_component_type, component_types...> &&
                  (std::is_convertible_v<indirect_component_type, component_types> || ...))
     //!\endcond
-    constexpr explicit alphabet_tuple_base(indirect_component_type const alph) noexcept : alphabet_tuple_base{}
+    constexpr explicit tuple_base(indirect_component_type const alph) noexcept : tuple_base{}
     {
         using component_predicate = detail::implicitly_convertible_from<indirect_component_type>;
         constexpr auto component_position =
@@ -222,7 +222,7 @@ public:
         requires(detail::tuple_concept_guard<derived_type, indirect_component_type, component_types...> &&
                  (!(std::is_convertible_v<indirect_component_type, component_types> || ...)) &&
                  (std::is_constructible_v<component_types, indirect_component_type> || ...))
-    constexpr explicit alphabet_tuple_base(indirect_component_type const alph) noexcept : alphabet_tuple_base{}
+    constexpr explicit tuple_base(indirect_component_type const alph) noexcept : tuple_base{}
     {
         using component_predicate = detail::constructible_from<indirect_component_type>;
         constexpr auto component_position =
@@ -237,14 +237,14 @@ public:
      * \tparam component_type One of the component types. Must be uniquely contained in the type list of the composite.
      * \param  alph           The value of a component that should be assigned.
      *
-     * Note: Since the alphabet_tuple_base is a CRTP base class, we show the working examples
+     * Note: Since the tuple_base is a CRTP base class, we show the working examples
      * with one of its derived classes (bio::alphabet::qualified).
-     * \include test/snippet/alphabet/composite/alphabet_tuple_base_value_assignment.cpp
+     * \include test/snippet/alphabet/composite/tuple_base_value_assignment.cpp
      *
      */
     template <typename component_type>
         //!\cond
-        requires((!std::derived_from<component_type, alphabet_tuple_base>)&&is_unique_component<component_type>)
+        requires((!std::derived_from<component_type, tuple_base>)&&is_unique_component<component_type>)
     //!\endcond
     constexpr derived_type & operator=(component_type const alph) noexcept
     {
@@ -257,17 +257,16 @@ public:
      *                                 one of the component types.
      * \param  alph                    The value of a component that should be assigned.
      *
-     * Note: Since the alphabet_tuple_base is a CRTP base class, we show the working examples
+     * Note: Since the tuple_base is a CRTP base class, we show the working examples
      * with one of its derived classes (bio::alphabet::qualified).
-     * \include test/snippet/alphabet/composite/alphabet_tuple_base_subtype_assignment.cpp
+     * \include test/snippet/alphabet/composite/tuple_base_subtype_assignment.cpp
      *
      */
     template <typename indirect_component_type>
         //!\cond
-        requires((!std::derived_from<indirect_component_type, alphabet_tuple_base>)&&(
-          !is_unique_component<indirect_component_type>)&&(std::assignable_from<component_types,
-                                                                                indirect_component_type> ||
-                                                           ...))
+        requires(
+          (!std::derived_from<indirect_component_type, tuple_base>)&&(!is_unique_component<indirect_component_type>)&&(
+            std::assignable_from<component_types, indirect_component_type> || ...))
     //!\endcond
     constexpr derived_type & operator=(indirect_component_type const alph) noexcept
     {
@@ -281,11 +280,10 @@ public:
     //!\cond
     // If not assignable but implicit convertible, convert first and assign afterwards
     template <typename indirect_component_type>
-        requires((!std::derived_from<indirect_component_type, alphabet_tuple_base>)&&(
-                   !is_unique_component<indirect_component_type>)&&(!(std::assignable_from<component_types,
-                                                                                           indirect_component_type> ||
-                                                                      ...)) &&
-                 (std::convertible_to<indirect_component_type, component_types> || ...))
+        requires(
+          (!std::derived_from<indirect_component_type, tuple_base>)&&(!is_unique_component<indirect_component_type>)&&(
+            !(std::assignable_from<component_types, indirect_component_type> || ...)) &&
+          (std::convertible_to<indirect_component_type, component_types> || ...))
     constexpr derived_type & operator=(indirect_component_type const alph) noexcept
     {
         using component_predicate = detail::implicitly_convertible_from<indirect_component_type>;
@@ -298,12 +296,11 @@ public:
     }
 
     template <typename indirect_component_type>
-        requires((!std::derived_from<indirect_component_type, alphabet_tuple_base>)&&(
-                   !is_unique_component<indirect_component_type>)&&(!(std::assignable_from<component_types,
-                                                                                           indirect_component_type> ||
-                                                                      ...)) &&
-                 (!(std::convertible_to<indirect_component_type, component_types> || ...)) &&
-                 (std::constructible_from<component_types, indirect_component_type> || ...))
+        requires(
+          (!std::derived_from<indirect_component_type, tuple_base>)&&(!is_unique_component<indirect_component_type>)&&(
+            !(std::assignable_from<component_types, indirect_component_type> || ...)) &&
+          (!(std::convertible_to<indirect_component_type, component_types> || ...)) &&
+          (std::constructible_from<component_types, indirect_component_type> || ...))
     constexpr derived_type & operator=(indirect_component_type const alph) noexcept
     {
         using component_predicate = detail::constructible_from<indirect_component_type>;
@@ -327,7 +324,7 @@ public:
      *
      */
     template <size_t index>
-    friend constexpr auto get(alphabet_tuple_base & l) noexcept
+    friend constexpr auto get(tuple_base & l) noexcept
     {
         static_assert(index < sizeof...(component_types), "Index out of range.");
 
@@ -345,7 +342,7 @@ public:
      *
      */
     template <typename type>
-    friend constexpr auto get(alphabet_tuple_base & l) noexcept
+    friend constexpr auto get(tuple_base & l) noexcept
       //!\cond
       requires is_unique_component<type>
     //!\endcond
@@ -359,7 +356,7 @@ public:
      *
      */
     template <size_t index>
-    friend constexpr auto get(alphabet_tuple_base const & l) noexcept
+    friend constexpr auto get(tuple_base const & l) noexcept
     {
         static_assert(index < sizeof...(component_types), "Index out of range.");
 
@@ -374,7 +371,7 @@ public:
      *
      */
     template <typename type>
-    friend constexpr type get(alphabet_tuple_base const & l) noexcept
+    friend constexpr type get(tuple_base const & l) noexcept
       //!\cond
       requires is_unique_component<type>
     //!\endcond
@@ -523,7 +520,7 @@ private:
     ();
 };
 
-/*!\brief Specialisation of bio::alphabet::alphabet_proxy that updates the rank of the alphabet_tuple_base.
+/*!\brief Specialisation of bio::alphabet::alphabet_proxy that updates the rank of the tuple_base.
  * \tparam alphabet_type The type of the emulated component.
  * \tparam index         The index of the emulated component.
  *
@@ -534,17 +531,17 @@ template <typename derived_type, typename... component_types>
              (std::regular<component_types> && ...))
 //!\endcond
 template <typename alphabet_type, size_t index>
-class alphabet_tuple_base<derived_type, component_types...>::component_proxy :
+class tuple_base<derived_type, component_types...>::component_proxy :
   public alphabet_proxy<component_proxy<alphabet_type, index>, alphabet_type>
 {
 private:
     //!\brief The base type.
     using base_t = alphabet_proxy<component_proxy<alphabet_type, index>, alphabet_type>;
-    //!\brief Befriend the base type so it can call our bio::alphabet::alphabet_tuple_base::component_proxy::on_update().
+    //!\brief Befriend the base type so it can call our bio::alphabet::tuple_base::component_proxy::on_update().
     friend base_t;
 
     //!\brief Store a pointer to the parent object so we can update it.
-    alphabet_tuple_base * parent;
+    tuple_base * parent;
 
 public:
     //Import from base type:
@@ -560,7 +557,7 @@ public:
     ~component_proxy()                                 = default; //!< Defaulted.
 
     //!\brief Construct from a reference to the parent object.
-    constexpr component_proxy(alphabet_tuple_base & p) : parent{&p} {}
+    constexpr component_proxy(tuple_base & p) : parent{&p} {}
 
     //!\brief Assignment does not change `this`, instead it updates the referenced value.
     constexpr component_proxy & operator=(component_proxy const & rhs) { return assign_rank(rhs.to_rank()); }
@@ -590,7 +587,7 @@ public:
     }
 
     /*!\name Comparison operators (proxy type against parent)
-     * \brief Comparison against the bio::alphabet::alphabet_tuple_base that this proxy originates from (necessary
+     * \brief Comparison against the bio::alphabet::tuple_base that this proxy originates from (necessary
      *        to prevent recursive template instantiation in the tuple).
      * \{
      */
@@ -603,7 +600,7 @@ public:
         return get<index>(lhs) == static_cast<alphabet_type>(rhs);
     }
 
-    //!\copydoc bio::alphabet::alphabet_tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
+    //!\copydoc bio::alphabet::tuple_base::component_proxy::operator==(derived_type const, component_proxy const)
     friend constexpr auto operator<=>(derived_type const lhs, component_proxy const rhs) noexcept
     {
         return get<index>(lhs) <=> static_cast<alphabet_type>(rhs);

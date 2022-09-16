@@ -17,7 +17,7 @@
 
 #include <bio/alphabet/adaptation/uint.hpp>
 #include <bio/alphabet/cigar/cigar_op.hpp>
-#include <bio/alphabet/composite/alphabet_tuple_base.hpp>
+#include <bio/alphabet/composite/tuple_base.hpp>
 #include <bio/ranges/container/small_string.hpp>
 
 // ------------------------------------------------------------------
@@ -52,13 +52,13 @@ namespace bio::alphabet
  *
  * \include test/snippet/alphabet/cigar/cigar.cpp
  */
-class cigar : public alphabet_tuple_base<cigar, uint32_t, cigar_op>
+class cigar : public tuple_base<cigar, uint32_t, cigar_op>
 {
 private:
     //!\brief The base class.
-    using base_t = alphabet_tuple_base<cigar, uint32_t, cigar_op>;
+    using base_t = tuple_base<cigar, uint32_t, cigar_op>;
 
-    //!\cond \brief Befriend bio::alphabet::alphabet_tuple_base.
+    //!\cond \brief Befriend bio::alphabet::tuple_base.
     friend base_t;
     //!\endcond
 
@@ -148,7 +148,7 @@ public:
     /*!\name Get functions
      * \{
      */
-    /*!\copydoc alphabet_tuple_base::get(alphabet_tuple_base & l)
+    /*!\copydoc tuple_base::get(tuple_base & l)
      *
      * \include test/snippet/alphabet/cigar/cigar_get_index.cpp
      */

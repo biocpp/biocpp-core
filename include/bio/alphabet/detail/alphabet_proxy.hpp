@@ -55,7 +55,7 @@ namespace bio::alphabet
  * to implement "assign-through" and to also provide a `const`-qualified overload
  * of the same.
  *
- * See bio::ranges::bitcompressed_vector or bio::alphabet::alphabet_tuple_base for examples of how this class is used.
+ * See bio::ranges::bitcompressed_vector or bio::alphabet::tuple_base for examples of how this class is used.
  */
 template <typename derived_type, writable_semialphabet alphabet_type>
     //!\cond

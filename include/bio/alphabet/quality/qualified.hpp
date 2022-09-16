@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <bio/alphabet/composite/alphabet_tuple_base.hpp>
+#include <bio/alphabet/composite/tuple_base.hpp>
 #include <bio/alphabet/nucleotide/concept.hpp>
 #include <bio/alphabet/quality/concept.hpp>
 
@@ -45,24 +45,22 @@ namespace bio::alphabet
  * while the character values are taken from the sequence alphabet and the phred
  * values are taken from the quality alphabet.
  *
- * As with all `bio::alphabet::alphabet_tuple_base` s you may access the individual
+ * As with all `bio::alphabet::tuple_base` s you may access the individual
  * alphabet letters in regular c++ tuple notation, i.e. `get<0>(t)` and objects
  * can be brace-initialised with the individual members.
  *
  * \include test/snippet/alphabet/quality/qualified.cpp
  *
- * This bio::alphabet::alphabet_tuple_base itself fulfils both bio::alphabet::writable_alphabet and bio::alphabet::writable_quality_alphabet.
+ * This bio::alphabet::tuple_base itself fulfils both bio::alphabet::writable_alphabet and bio::alphabet::writable_quality_alphabet.
  */
 template <writable_alphabet sequence_alphabet_t, writable_quality_alphabet quality_alphabet_t>
 class qualified :
-  public alphabet_tuple_base<qualified<sequence_alphabet_t, quality_alphabet_t>,
-                             sequence_alphabet_t,
-                             quality_alphabet_t>
+  public tuple_base<qualified<sequence_alphabet_t, quality_alphabet_t>, sequence_alphabet_t, quality_alphabet_t>
 {
 private:
     //!\brief The base type.
     using base_type =
-      alphabet_tuple_base<qualified<sequence_alphabet_t, quality_alphabet_t>, sequence_alphabet_t, quality_alphabet_t>;
+      tuple_base<qualified<sequence_alphabet_t, quality_alphabet_t>, sequence_alphabet_t, quality_alphabet_t>;
 
 public:
     //!\brief First template parameter as member type.
@@ -91,13 +89,13 @@ public:
     using base_type::to_rank;
     using base_type::operator=;
 
-    //!\copydoc alphabet_tuple_base::alphabet_tuple_base(component_type const alph)
+    //!\copydoc tuple_base::tuple_base(component_type const alph)
     BIOCPP_DOXYGEN_ONLY((constexpr qualified(component_type const alph) noexcept {}))
-    //!\copydoc alphabet_tuple_base::alphabet_tuple_base(indirect_component_type const alph)
+    //!\copydoc tuple_base::tuple_base(indirect_component_type const alph)
     BIOCPP_DOXYGEN_ONLY((constexpr qualified(indirect_component_type const alph) noexcept {}))
-    //!\copydoc alphabet_tuple_base::operator=(component_type const alph)
+    //!\copydoc tuple_base::operator=(component_type const alph)
     BIOCPP_DOXYGEN_ONLY((constexpr qualified & operator=(component_type const alph) noexcept {}))
-    //!\copydoc alphabet_tuple_base::operator=(indirect_component_type const alph)
+    //!\copydoc tuple_base::operator=(indirect_component_type const alph)
     BIOCPP_DOXYGEN_ONLY((constexpr qualified & operator=(indirect_component_type const alph) noexcept {}))
     //!\}
 

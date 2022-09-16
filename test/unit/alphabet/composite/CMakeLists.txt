@@ -1,4 +1,4 @@
-biocpp_test(alphabet_tuple_base_test.cpp)
+biocpp_test(tuple_base_test.cpp)
 biocpp_test(variant_test.cpp)
 biocpp_test(variant_detail_test.cpp)
 biocpp_test(composite_integration_test.cpp)

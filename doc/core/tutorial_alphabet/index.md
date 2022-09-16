@@ -159,7 +159,7 @@ properties of the respective sequence.
 The values are produced by sequencing machines and represent the probability
 that a nucleobase was recorded incorrectly. The characters are most commonly found in FASTQ files. See \ref quality for details.
 
-You can build an [Alphabet Tuple Composite](\ref bio::alphabet::alphabet_tuple_base) with a nucleotide and quality
+You can build an [Alphabet Tuple Composite](\ref bio::alphabet::tuple_base) with a nucleotide and quality
 alphabet that stores both information together.
 For the use cases just described we offer a pre-defined composite (bio::alphabet::qualified). See our API documentation for a detailed description of each.
 
