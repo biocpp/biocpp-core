@@ -24,29 +24,18 @@
 #include <bio/alphabet/alphabet_base.hpp>
 #include <bio/alphabet/composite/detail.hpp>
 #include <bio/meta/type_list/traits.hpp>
-#include <bio/meta/type_traits/lazy.hpp>
 
 namespace bio::alphabet::detail
 {
 
 //!\brief Prevents wrong instantiations of std::alphabet_variant's constructors.
 template <typename other_t, typename... alternative_types>
-inline constexpr bool variant_general_guard =
+concept variant_general_guard =
   ((!std::same_as<other_t, alphabet_variant<alternative_types...>>)&&(
      !std::is_base_of_v<alphabet_variant<alternative_types...>,
                         other_t>)&&(!(std::same_as<other_t, alternative_types> || ...)) &&
    (!meta::list_traits::contains<alphabet_variant<alternative_types...>, recursive_required_types_t<other_t>>));
 
-//!\brief Prevents wrong instantiations of std::alphabet_variant's comparison operators.
-template <typename lhs_t, typename rhs_t, bool lhs_rhs_switched, typename... alternative_types>
-inline constexpr bool variant_comparison_guard =
-  (meta::detail::instantiate_if_v<
-     meta::detail::lazy<weakly_equality_comparable_with_trait, rhs_t, alternative_types>,
-     (std::same_as<lhs_t, alphabet_variant<alternative_types...>>)&&(
-       variant_general_guard<rhs_t, alternative_types...>)&&!(lhs_rhs_switched &&
-                                                              meta::is_type_specialisation_of_v<rhs_t,
-                                                                                                alphabet_variant>)> ||
-   ...);
 } // namespace bio::alphabet::detail
 
 namespace bio::alphabet
@@ -191,12 +180,7 @@ public:
      */
     template <typename alternative_t>
         //!\cond
-        requires(
-          (!std::same_as<alternative_t, alphabet_variant>)&&(!std::is_base_of_v<alphabet_variant, alternative_t>)&&(
-            !meta::list_traits::contains<
-              alphabet_variant,
-              meta::transformation_trait_or_t<detail::recursive_required_types<alternative_t>,
-                                              meta::type_list<>>>)&&(is_alternative<alternative_t>()))
+        requires(is_alternative<alternative_t>())
     //!\endcond
     constexpr alphabet_variant(alternative_t const alternative) noexcept { assign_rank(rank_by_type_(alternative)); }
 
@@ -219,10 +203,8 @@ public:
      */
     template <typename indirect_alternative_t>
         //!\cond
-        requires((meta::detail::instantiate_if_v<
-                    meta::detail::lazy<std::is_convertible, indirect_alternative_t, alternative_types>,
-                    detail::variant_general_guard<indirect_alternative_t, alternative_types...>> ||
-                  ...))
+        requires(detail::variant_general_guard<indirect_alternative_t, alternative_types...> &&
+                 (std::is_convertible_v<indirect_alternative_t, alternative_types> || ...))
     //!\endcond
     constexpr alphabet_variant(indirect_alternative_t const rhs) noexcept
     {
@@ -250,14 +232,9 @@ public:
      */
     template <typename indirect_alternative_t>
         //!\cond
-        requires((!(meta::detail::instantiate_if_v<
-                      meta::detail::lazy<std::is_convertible, indirect_alternative_t, alternative_types>,
-                      detail::variant_general_guard<indirect_alternative_t, alternative_types...>> ||
-                    ...)) &&
-                 (meta::detail::instantiate_if_v<
-                    meta::detail::lazy<std::is_constructible, alternative_types, indirect_alternative_t>,
-                    detail::variant_general_guard<indirect_alternative_t, alternative_types...>> ||
-                  ...))
+        requires(detail::variant_general_guard<indirect_alternative_t, alternative_types...> &&
+                 !(std::is_convertible_v<indirect_alternative_t, alternative_types> || ...) &&
+                 (std::is_constructible_v<alternative_types, indirect_alternative_t> || ...))
     //!\endcond
     constexpr explicit alphabet_variant(indirect_alternative_t const rhs) noexcept
     {
@@ -401,11 +378,12 @@ public:
      * to `true`; else `false` is returned.
      * \details
      */
-    template <typename alphabet_variant_t, typename indirect_alternative_type>
-    friend constexpr auto operator==(alphabet_variant_t const lhs, indirect_alternative_type const rhs) noexcept
-      -> std::enable_if_t<
-        detail::variant_comparison_guard<alphabet_variant_t, indirect_alternative_type, false, alternative_types...>,
-        bool>
+    template <std::same_as<alphabet_variant> alphabet_variant_t, typename indirect_alternative_type>
+        //!\cond
+        requires((detail::variant_general_guard<indirect_alternative_type, alternative_types...>)&&(
+          meta::weakly_equality_comparable_with<indirect_alternative_type, alternative_types> || ...))
+    //!\endcond
+    friend constexpr bool operator==(alphabet_variant_t const lhs, indirect_alternative_type const rhs) noexcept
     {
         using alternative_predicate = detail::weakly_equality_comparable_with_<indirect_alternative_type>;
         constexpr auto alternative_position =
@@ -416,33 +394,14 @@ public:
     }
 
     //!\copydoc operator==(alphabet_variant_t const lhs, indirect_alternative_type const rhs)
-    template <typename alphabet_variant_t, typename indirect_alternative_type>
+    template <std::same_as<alphabet_variant> alphabet_variant_t, typename indirect_alternative_type>
+        //!\cond
+        requires((detail::variant_general_guard<indirect_alternative_type, alternative_types...>)&&(
+          meta::weakly_equality_comparable_with<indirect_alternative_type, alternative_types> || ...))
+    //!\endcond
     friend constexpr auto operator!=(alphabet_variant_t const lhs, indirect_alternative_type const rhs) noexcept
-      -> std::enable_if_t<
-        detail::variant_comparison_guard<alphabet_variant_t, indirect_alternative_type, false, alternative_types...>,
-        bool>
     {
         return !(lhs == rhs);
-    }
-
-    //!\copydoc operator==(alphabet_variant_t const lhs, indirect_alternative_type const rhs)
-    template <typename alphabet_variant_t, typename indirect_alternative_type, typename = void>
-    friend constexpr auto operator==(indirect_alternative_type const lhs, alphabet_variant_t const rhs) noexcept
-      -> std::enable_if_t<
-        detail::variant_comparison_guard<alphabet_variant_t, indirect_alternative_type, true, alternative_types...>,
-        bool>
-    {
-        return rhs == lhs;
-    }
-
-    //!\copydoc operator==(alphabet_variant_t const lhs, indirect_alternative_type const rhs)
-    template <typename alphabet_variant_t, typename indirect_alternative_type, typename = void>
-    friend constexpr auto operator!=(indirect_alternative_type const lhs, alphabet_variant_t const rhs) noexcept
-      -> std::enable_if_t<
-        detail::variant_comparison_guard<alphabet_variant_t, indirect_alternative_type, true, alternative_types...>,
-        bool>
-    {
-        return rhs != lhs;
     }
     //!\}
 

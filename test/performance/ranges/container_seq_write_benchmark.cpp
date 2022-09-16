@@ -90,12 +90,10 @@ BENCHMARK_TEMPLATE(sequential_write, sdsl_int_vec, uint64_t);
 BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, char);
 BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::gap);
 BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::dna4);
-//TODO(bio): works on gcc10, fails on gc11
-// BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::gapped<bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::gapped<bio::alphabet::dna4>);
 BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::dna15);
 BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::aa27);
-//TODO(bio): works on gcc10, fails on gc11
-// BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::alphabet_variant<char, bio::alphabet::dna4>);
+BENCHMARK_TEMPLATE(sequential_write, bio::ranges::bitcompressed_vector, bio::alphabet::alphabet_variant<char, bio::alphabet::dna4>);
 
 BENCHMARK_TEMPLATE(sequential_write, small_vec, char);
 BENCHMARK_TEMPLATE(sequential_write, small_vec, bio::alphabet::gap);
