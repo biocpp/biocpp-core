@@ -18,7 +18,6 @@
 #include <bio/ranges/views/complement.hpp>
 #include <bio/ranges/views/convert.hpp>
 #include <bio/ranges/views/deep.hpp>
-#include <bio/ranges/views/get.hpp>
 #include <bio/ranges/views/interleave.hpp>
 #include <bio/ranges/views/move.hpp>
 #include <bio/ranges/views/pairwise_combine.hpp>
