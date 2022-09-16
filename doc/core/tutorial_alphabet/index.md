@@ -166,7 +166,7 @@ For the use cases just described we offer a pre-defined composite (bio::alphabet
 ## Gap alphabet
 
 The bio::alphabet::gap alphabet is the smallest alphabet in BioC++, consisting only of the gap character.
-It is most often used in an [Alphabet Variant](\ref bio::alphabet::alphabet_variant) with a nucleotide or amino acid alphabet
+It is most often used in an [Alphabet Variant](\ref bio::alphabet::variant) with a nucleotide or amino acid alphabet
 to represent gapped sequences, e.g. in alignments. To create a gapped alphabet simply use bio::alphabet::gapped<> with
 the alphabet type you want to refine.
 

@@ -23,21 +23,21 @@
 
 using namespace bio::alphabet::literals;
 
-// tests various combinations of alphabet_variant and alphabet_tuple
+// tests various combinations of variant and alphabet_tuple
 using qualified_dna_phred42 = bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>;
 using qualified_gapped_dna_phred42 =
   bio::alphabet::qualified<bio::alphabet::gapped<bio::alphabet::dna4>, bio::alphabet::phred42>;
 using gapped_qualified_dna_phred42 = bio::alphabet::gapped<qualified_dna_phred42>;
 using qualified_qualified_gapped_dna_phred42_phred42 =
   bio::alphabet::qualified<qualified_gapped_dna_phred42, bio::alphabet::phred42>;
-using gapped_alphabet_variant_dna_phred42 =
-  bio::alphabet::gapped<bio::alphabet::alphabet_variant<bio::alphabet::dna4, bio::alphabet::phred42>>;
+using gapped_variant_dna_phred42 =
+  bio::alphabet::gapped<bio::alphabet::variant<bio::alphabet::dna4, bio::alphabet::phred42>>;
 
 using alphabet_types = ::testing::Types<qualified_dna_phred42,
                                         qualified_gapped_dna_phred42,
                                         gapped_qualified_dna_phred42,
                                         qualified_qualified_gapped_dna_phred42_phred42,
-                                        gapped_alphabet_variant_dna_phred42>;
+                                        gapped_variant_dna_phred42>;
 
 INSTANTIATE_TYPED_TEST_SUITE_P(alphabet_composite_integration, alphabet, alphabet_types, );
 INSTANTIATE_TYPED_TEST_SUITE_P(alphabet_composite_integration, semi_alphabet_test, alphabet_types, );
@@ -80,11 +80,11 @@ TEST(composite, custom_constructors)
     qualified_qualified_gapped_dna_phred42_phred42 t56{
       bio::alphabet::gapped<bio::alphabet::dna4>(bio::alphabet::gap{})};
 
-    gapped_alphabet_variant_dna_phred42 t61{'C'_dna4};
-    gapped_alphabet_variant_dna_phred42 t62{'C'_rna4};
-    gapped_alphabet_variant_dna_phred42 t63{'$'_phred42};
-    gapped_alphabet_variant_dna_phred42 t64{bio::alphabet::gap{}};
-    gapped_alphabet_variant_dna_phred42 t65{
+    gapped_variant_dna_phred42 t61{'C'_dna4};
+    gapped_variant_dna_phred42 t62{'C'_rna4};
+    gapped_variant_dna_phred42 t63{'$'_phred42};
+    gapped_variant_dna_phred42 t64{bio::alphabet::gap{}};
+    gapped_variant_dna_phred42 t65{
       qualified_dna_phred42{'C'_dna4, '!'_phred42}
     };
 
@@ -152,11 +152,11 @@ TEST(composite_constexpr, custom_constructor)
     constexpr qualified_qualified_gapped_dna_phred42_phred42 t56{
       bio::alphabet::gapped<bio::alphabet::dna4>(bio::alphabet::gap{})};
 
-    constexpr gapped_alphabet_variant_dna_phred42 t61{'C'_dna4};
-    constexpr gapped_alphabet_variant_dna_phred42 t62{'C'_rna4};
-    constexpr gapped_alphabet_variant_dna_phred42 t63{'$'_phred42};
-    constexpr gapped_alphabet_variant_dna_phred42 t64{bio::alphabet::gap{}};
-    constexpr gapped_alphabet_variant_dna_phred42 t65{
+    constexpr gapped_variant_dna_phred42 t61{'C'_dna4};
+    constexpr gapped_variant_dna_phred42 t62{'C'_rna4};
+    constexpr gapped_variant_dna_phred42 t63{'$'_phred42};
+    constexpr gapped_variant_dna_phred42 t64{bio::alphabet::gap{}};
+    constexpr gapped_variant_dna_phred42 t65{
       qualified_dna_phred42{'C'_dna4, '!'_phred42}
     };
 }
@@ -242,11 +242,11 @@ TEST(composite, custom_assignment)
     t51 = bio::alphabet::gapped<bio::alphabet::dna4>(bio::alphabet::gap{});
     EXPECT_EQ(t51, t54);
 
-    gapped_alphabet_variant_dna_phred42 t61{};
-    gapped_alphabet_variant_dna_phred42 t62{'C'_dna4};
-    gapped_alphabet_variant_dna_phred42 t63{'$'_phred42};
-    gapped_alphabet_variant_dna_phred42 t64{bio::alphabet::gap{}};
-    gapped_alphabet_variant_dna_phred42 t65{
+    gapped_variant_dna_phred42 t61{};
+    gapped_variant_dna_phred42 t62{'C'_dna4};
+    gapped_variant_dna_phred42 t63{'$'_phred42};
+    gapped_variant_dna_phred42 t64{bio::alphabet::gap{}};
+    gapped_variant_dna_phred42 t65{
       qualified_dna_phred42{'C'_dna4, '!'_phred42}
     };
     t61 = 'C'_dna4;
@@ -296,7 +296,7 @@ constexpr bool do_assignment()
     t51 = bio::alphabet::gapped<bio::alphabet::dna4>('C'_dna4);
     t51 = bio::alphabet::gapped<bio::alphabet::dna4>(bio::alphabet::gap{});
 
-    gapped_alphabet_variant_dna_phred42 t61{};
+    gapped_variant_dna_phred42 t61{};
     t61 = 'C'_rna4;
     t61 = '$'_phred42;
     t61 = bio::alphabet::gap{};
@@ -312,7 +312,7 @@ TEST(composite_constexpr, custom_assignment)
 
 TEST(composite, custom_comparison)
 {
-    /* Tests marked with "// *" would not be possible if all single argument constructors of alphabet_variant
+    /* Tests marked with "// *" would not be possible if all single argument constructors of variant
      * are made explicit */
 
     qualified_dna_phred42 t11{'C'_dna4, '$'_phred42};
@@ -426,7 +426,7 @@ TEST(composite, custom_comparison)
     EXPECT_GT('"'_phred42, t51);
     EXPECT_GT((qualified_gapped_dna_phred42{'C'_dna4, '%'_phred42}), t51);
 
-    gapped_alphabet_variant_dna_phred42 t61{'C'_rna4};
+    gapped_variant_dna_phred42 t61{'C'_rna4};
     EXPECT_EQ(t61, 'C'_rna4);
     EXPECT_EQ(t61, 'C'_dna4);
     EXPECT_NE(t61, bio::alphabet::gap{});

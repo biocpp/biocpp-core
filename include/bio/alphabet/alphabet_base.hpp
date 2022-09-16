@@ -327,9 +327,6 @@ public:
     //!\brief Letters are always equal.
     friend constexpr bool operator==(derived_type const, derived_type const) noexcept { return true; }
 
-    //!\brief Letters are never unequal.
-    friend constexpr bool operator!=(derived_type const, derived_type const) noexcept { return false; }
-
     //!\brief One letter cannot be smaller than another.
     friend constexpr bool operator<(derived_type const, derived_type const) noexcept { return false; }
 

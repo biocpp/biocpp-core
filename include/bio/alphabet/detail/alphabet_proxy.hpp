@@ -254,7 +254,7 @@ public:
 
     /*!\name Comparison operators
      * \brief These are only required if the emulated type allows comparison with types it is not convertible to,
-     *        e.g. bio::alphabet::alphabet_variant.
+     *        e.g. bio::alphabet::variant.
      * \{
      */
     //!\brief Checks whether the letters `lhs` and `rhs` are equal.

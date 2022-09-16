@@ -10,7 +10,7 @@
  * \author Marcel Ehrhardt <marcel.ehrhardt AT fu-berlin.de>
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  * \author David Heller <david.heller AT fu-berlin.de>
- * \brief Provides bio::alphabet::alphabet_variant.
+ * \brief Provides bio::alphabet::variant.
  */
 
 #pragma once
@@ -28,13 +28,13 @@
 namespace bio::alphabet::detail
 {
 
-//!\brief Prevents wrong instantiations of std::alphabet_variant's constructors.
+//!\brief Prevents wrong instantiations of std::variant's constructors.
 template <typename other_t, typename... alternative_types>
 concept variant_general_guard =
-  ((!std::same_as<other_t, alphabet_variant<alternative_types...>>)&&(
-     !std::is_base_of_v<alphabet_variant<alternative_types...>,
-                        other_t>)&&(!(std::same_as<other_t, alternative_types> || ...)) &&
-   (!meta::list_traits::contains<alphabet_variant<alternative_types...>, recursive_required_types_t<other_t>>));
+  ((!std::same_as<other_t, variant<alternative_types...>>)&&(
+     !std::is_base_of_v<variant<alternative_types...>, other_t>)&&(!(std::same_as<other_t, alternative_types> ||
+                                                                     ...)) &&
+   (!meta::list_traits::contains<variant<alternative_types...>, recursive_required_types_t<other_t>>));
 
 } // namespace bio::alphabet::detail
 
@@ -58,7 +58,7 @@ namespace bio::alphabet
 
  * \details
  *
- * The alphabet_variant represents the union of two or more alternative alphabets (e.g. the
+ * The variant represents the union of two or more alternative alphabets (e.g. the
  * four letter DNA alternative + the gap alternative). It behaves similar to a
  * [variant](https://en.cppreference.com/w/cpp/utility/variant) or std::variant, but it preserves the
  * bio::alphabet::alphabet.
@@ -74,29 +74,29 @@ namespace bio::alphabet
  *
  * ### Example
  *
- * \include test/snippet/alphabet/composite/alphabet_variant.cpp
+ * \include test/snippet/alphabet/composite/variant.cpp
  *
- * ### The `char` representation of an alphabet_variant
+ * ### The `char` representation of an variant
  *
- * Part of the bio::alphabet::alphabet concept requires that the alphabet_variant provides a char representation in addition
- * to the rank representation. For an object of bio::alphabet::alphabet_variant, the `to_char()` member function will always
+ * Part of the bio::alphabet::alphabet concept requires that the variant provides a char representation in addition
+ * to the rank representation. For an object of bio::alphabet::variant, the `to_char()` member function will always
  * return the same character as if invoked on the respective alternative.
  * In contrast, the `assign_char()` member function might be ambiguous between the alternative alphabets in a variant.
  *
  * For example, assigning a '!' to bio::alphabet::dna15 resolves to an object of rank 8 with char representation 'N' while
  * assigning '!' to bio::alphabet::gap always resolves to rank 0, the gap symbol itself ('-'_gap).
  * We tackle this ambiguousness by **defaulting unknown characters to the representation of the first alternative**
- * (e.g. `alphabet_variant<dna15, gap>{}.assign_char('!')` resolves to rank 8, representing `N`_dna15).
+ * (e.g. `variant<dna15, gap>{}.assign_char('!')` resolves to rank 8, representing `N`_dna15).
  *
  * On the other hand, two alternative alphabets might have the same char representation (e.g if
  * you combine dna4 with dna5, 'A', 'C', 'G' and 'T' are ambiguous).
  * We tackle this ambiguousness by **always choosing the first valid char representation** (e.g.
- * `alphabet_variant<dna4, dna5>{}.assign_char('A')` resolves to rank 0, representing an `A`_dna4).
+ * `variant<dna4, dna5>{}.assign_char('A')` resolves to rank 0, representing an `A`_dna4).
  *
  * To explicitly assign via the character representation of a specific alphabet,
  * assign to that type first and then assign to the variant, e.g.
  *
- * \include test/snippet/alphabet/composite/alphabet_variant_char_representation.cpp
+ * \include test/snippet/alphabet/composite/variant_char_representation.cpp
  *
  */
 template <typename... alternative_types>
@@ -104,18 +104,16 @@ template <typename... alternative_types>
     requires((detail::writable_constexpr_alphabet<alternative_types> && ...) &&
              (std::regular<alternative_types> && ...) && (sizeof...(alternative_types) >= 2))
 //!\endcond
-class alphabet_variant :
-  public alphabet_base<alphabet_variant<alternative_types...>,
-                       (static_cast<size_t>(size<alternative_types>) + ...),
-                       char>
+class variant :
+  public alphabet_base<variant<alternative_types...>, (static_cast<size_t>(size<alternative_types>) + ...), char>
 {
 private:
     //!\brief The base type.
     using base_t =
-      alphabet_base<alphabet_variant<alternative_types...>, (static_cast<size_t>(size<alternative_types>) + ...), char>;
+      alphabet_base<variant<alternative_types...>, (static_cast<size_t>(size<alternative_types>) + ...), char>;
 
     static_assert((std::is_same_v<char_t<alternative_types>, char> && ...),
-                  "The alphabet_variant is currently only tested for alphabets with char_type char. "
+                  "The variant is currently only tested for alphabets with char_type char. "
                   "Contact us on GitHub if you have a different use case: https://github.com/biocpp/biocpp-core .");
 
     //!\brief Befriend the base type.
@@ -125,7 +123,7 @@ private:
     using alternatives = meta::type_list<alternative_types...>;
 
     static_assert(((meta::list_traits::count<alternative_types, alternatives> == 1) && ... && true),
-                  "All types in a alphabet_variant must be distinct.");
+                  "All types in a variant must be distinct.");
 
     using typename base_t::char_type;
     using typename base_t::rank_type;
@@ -152,7 +150,7 @@ public:
     /*!\brief Returns true if alternative_t is one of the given alternative types.
      * \tparam alternative_t The type to check.
      *
-     * \include test/snippet/alphabet/composite/alphabet_variant_is_alternative.cpp
+     * \include test/snippet/alphabet/composite/variant_is_alternative.cpp
      *
      */
     template <typename alternative_t>
@@ -164,25 +162,25 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr alphabet_variant() noexcept                                     = default; //!< Defaulted.
-    constexpr alphabet_variant(alphabet_variant const &) noexcept             = default; //!< Defaulted.
-    constexpr alphabet_variant(alphabet_variant &&) noexcept                  = default; //!< Defaulted.
-    constexpr alphabet_variant & operator=(alphabet_variant const &) noexcept = default; //!< Defaulted.
-    constexpr alphabet_variant & operator=(alphabet_variant &&) noexcept      = default; //!< Defaulted.
-    ~alphabet_variant() noexcept                                              = default; //!< Defaulted.
+    constexpr variant() noexcept                            = default; //!< Defaulted.
+    constexpr variant(variant const &) noexcept             = default; //!< Defaulted.
+    constexpr variant(variant &&) noexcept                  = default; //!< Defaulted.
+    constexpr variant & operator=(variant const &) noexcept = default; //!< Defaulted.
+    constexpr variant & operator=(variant &&) noexcept      = default; //!< Defaulted.
+    ~variant() noexcept                                     = default; //!< Defaulted.
 
     /*!\brief Construction via the value of an alternative.
      * \tparam alternative_t One of the alternative types.
      * \param  alternative   The value of a alternative that should be assigned.
      *
-     * \include test/snippet/alphabet/composite/alphabet_variant_value_construction.cpp
+     * \include test/snippet/alphabet/composite/variant_value_construction.cpp
      *
      */
     template <typename alternative_t>
         //!\cond
         requires(is_alternative<alternative_t>())
     //!\endcond
-    constexpr alphabet_variant(alternative_t const alternative) noexcept { assign_rank(rank_by_type_(alternative)); }
+    constexpr variant(alternative_t const alternative) noexcept { assign_rank(rank_by_type_(alternative)); }
 
     /*!\brief Constructor for arguments implicitly convertible to an alternative.
      * \tparam indirect_alternative_t A type that is implicitly convertible to an alternative type.
@@ -194,7 +192,7 @@ public:
      *
      * ### Example
      *
-     * \include test/snippet/alphabet/composite/alphabet_variant_conversion.cpp
+     * \include test/snippet/alphabet/composite/variant_conversion.cpp
      *
      *   * bio::alphabet::dna4 and bio::alphabet::rna4 are implicitly convertible to each other so the variant accepts either.
      *   * Construction via `{}` considers implicit and explicit conversions.
@@ -206,7 +204,7 @@ public:
         requires(detail::variant_general_guard<indirect_alternative_t, alternative_types...> &&
                  (std::is_convertible_v<indirect_alternative_t, alternative_types> || ...))
     //!\endcond
-    constexpr alphabet_variant(indirect_alternative_t const rhs) noexcept
+    constexpr variant(indirect_alternative_t const rhs) noexcept
     {
         using alternative_predicate = detail::implicitly_convertible_from<indirect_alternative_t>;
         constexpr auto alternative_position =
@@ -223,7 +221,7 @@ public:
      *
      * ### Example
      *
-     * \include test/snippet/alphabet/composite/alphabet_variant_conversion_explicit.cpp
+     * \include test/snippet/alphabet/composite/variant_conversion_explicit.cpp
      *
      *   * bio::alphabet::dna4 and bio::alphabet::dna5 are not implicitly convertible to each other, only explicitly.
      *   * Construction via `{}` considers implicit and explicit conversions so this works.
@@ -236,7 +234,7 @@ public:
                  !(std::is_convertible_v<indirect_alternative_t, alternative_types> || ...) &&
                  (std::is_constructible_v<alternative_types, indirect_alternative_t> || ...))
     //!\endcond
-    constexpr explicit alphabet_variant(indirect_alternative_t const rhs) noexcept
+    constexpr explicit variant(indirect_alternative_t const rhs) noexcept
     {
         using alternative_predicate = detail::constructible_from<indirect_alternative_t>;
         constexpr auto alternative_position =
@@ -260,7 +258,7 @@ public:
         requires(detail::variant_general_guard<indirect_alternative_t, alternative_types...> &&
                  (meta::weakly_assignable_from<alternative_types, indirect_alternative_t> || ...))
     //!\endcond
-    constexpr alphabet_variant & operator=(indirect_alternative_t const & rhs) noexcept
+    constexpr variant & operator=(indirect_alternative_t const & rhs) noexcept
     {
         using alternative_predicate = detail::assignable_from<indirect_alternative_t>;
         constexpr auto alternative_position =
@@ -284,7 +282,7 @@ public:
     template <size_t index>
     constexpr bool holds_alternative() const noexcept
     {
-        static_assert(index < alphabet_size, "The alphabet_variant contains less alternatives than you are checking.");
+        static_assert(index < alphabet_size, "The variant contains less alternatives than you are checking.");
         return (to_rank() >= partial_sum_sizes[index]) && (to_rank() < partial_sum_sizes[index + 1]);
     }
 
@@ -359,13 +357,13 @@ public:
 
     /*!\name Comparison operators (against indirect alternatives)
      * \brief Defines comparison against types that are not subject to implicit construction/conversion but are
-     *        comparable against alternatives, e.g. `alphabet_variant<bio::alphabet::rna4, bio::alphabet::gap>` vs
-     *        `alphabet_variant<bio::alphabet::dna4, bio::alphabet::gap>`. Only (in-)equality comparison is defined as reasoning
+     *        comparable against alternatives, e.g. `variant<bio::alphabet::rna4, bio::alphabet::gap>` vs
+     *        `variant<bio::alphabet::dna4, bio::alphabet::gap>`. Only (in-)equality comparison is defined as reasoning
      *        about order of variants is inherently difficult.
      * \{
      */
     /*!\brief (In-)Equality comparison against types comparable with alternatives but not convertible to the variant.
-     * \tparam alphabet_variant_t The type of the variant; given as template parameter to prevent conversion.
+     * \tparam variant_t The type of the variant; given as template parameter to prevent conversion.
      * \tparam indirect_alternative_type Must be comparable with an alternative's type.
      * \param lhs Left-hand-side of comparison.
      * \param rhs Right-hand-side of comparison.
@@ -378,12 +376,12 @@ public:
      * to `true`; else `false` is returned.
      * \details
      */
-    template <std::same_as<alphabet_variant> alphabet_variant_t, typename indirect_alternative_type>
+    template <std::same_as<variant> variant_t, typename indirect_alternative_type>
         //!\cond
         requires((detail::variant_general_guard<indirect_alternative_type, alternative_types...>)&&(
           meta::weakly_equality_comparable_with<indirect_alternative_type, alternative_types> || ...))
     //!\endcond
-    friend constexpr bool operator==(alphabet_variant_t const lhs, indirect_alternative_type const rhs) noexcept
+    friend constexpr bool operator==(variant_t const lhs, indirect_alternative_type const rhs) noexcept
     {
         using alternative_predicate = detail::weakly_equality_comparable_with_<indirect_alternative_type>;
         constexpr auto alternative_position =
@@ -413,7 +411,7 @@ protected:
     template <size_t index, bool throws>
     constexpr auto convert_impl() const noexcept(!throws) -> meta::list_traits::at<index, alternatives>
     {
-        static_assert(index < alphabet_size, "The alphabet_variant contains less alternatives than you are checking.");
+        static_assert(index < alphabet_size, "The variant contains less alternatives than you are checking.");
         using alternative_t = meta::list_traits::at<index, alternatives>;
 
         if constexpr (throws)

@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <bio/alphabet/composite/alphabet_variant.hpp>
+#include <bio/alphabet/composite/variant.hpp>
 #include <bio/alphabet/gap/gap.hpp>
 
 namespace bio::alphabet
@@ -33,13 +33,13 @@ namespace bio::alphabet
  *
  * \include test/snippet/alphabet/gap/gapped.cpp
  *
- * \sa For more details see alphabet_variant, which is the base class and more general than the gapped alphabet.
+ * \sa For more details see variant, which is the base class and more general than the gapped alphabet.
  */
 template <typename alphabet_t>
     //!\cond
     requires writable_alphabet<alphabet_t>
 //!\endcond
-using gapped = alphabet_variant<alphabet_t, gap>;
+using gapped = variant<alphabet_t, gap>;
 
 } // namespace bio::alphabet
 

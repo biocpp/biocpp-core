@@ -71,9 +71,9 @@ BENCHMARK_TEMPLATE(to_char, char);
 BENCHMARK_TEMPLATE(to_char, char32_t);
 /* alphabet variant */
 BENCHMARK_TEMPLATE(to_char, bio::alphabet::gapped<bio::alphabet::dna4>);
-BENCHMARK_TEMPLATE(to_char, bio::alphabet::alphabet_variant<bio::alphabet::gap, bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::dna15,
+BENCHMARK_TEMPLATE(to_char, bio::alphabet::variant<bio::alphabet::gap, bio::alphabet::dna4, bio::alphabet::dna5, bio::alphabet::dna15,
                                                      bio::alphabet::rna15, bio::alphabet::rna4, bio::alphabet::rna5>);
-BENCHMARK_TEMPLATE(to_char, bio::alphabet::alphabet_variant<bio::alphabet::dna4, char>);
+BENCHMARK_TEMPLATE(to_char, bio::alphabet::variant<bio::alphabet::dna4, char>);
 /* alphabet tuple */
 BENCHMARK_TEMPLATE(to_char, bio::alphabet::masked<bio::alphabet::dna4>);
 BENCHMARK_TEMPLATE(to_char, bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>);
