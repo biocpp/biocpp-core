@@ -163,6 +163,23 @@ template <typename t, typename u>
 concept weakly_assignable_from = std::is_assignable_v<t, u>;
 //!\endcond
 
+/*!\interface   bio::meta::decays_to
+ * \brief       Resolves to std::same_as<std::decay_t<t>, std::decay_t<u>>.
+ */
+//!\cond
+template <typename from_t, typename to_t>
+concept decays_to = std::same_as<std::decay_t<from_t>, std::decay_t<to_t>>;
+//!\endcond
+
+/*!\interface   bio::meta::one_of
+ * \brief       Resolves to (std::same_as<query_t, other_types> || ...).
+ */
+//!\cond
+template <typename query_t, typename... other_types>
+concept one_of = (std::same_as<query_t, other_types> || ...);
+//!\endcond
+
+
 //!\}
 
 } // namespace bio::meta
