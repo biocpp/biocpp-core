@@ -6,7 +6,7 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <bio/meta/platform.hpp>
+#include <bio/core.hpp>
 
 #include "alphabet_constexpr_test_template.hpp"
 #include "alphabet_test_template.hpp"

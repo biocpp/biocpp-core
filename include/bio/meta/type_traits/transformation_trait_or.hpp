@@ -16,7 +16,6 @@
 #include <type_traits>
 
 #include <bio/meta/type_traits/concept.hpp>
-#include <type_traits>
 
 namespace bio::meta
 {

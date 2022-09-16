@@ -12,7 +12,7 @@
 #include <limits>
 #include <type_traits>
 
-#include <bio/meta/platform.hpp>
+#include <bio/core.hpp>
 
 /*!\file
  * \brief Provides metaprogramming utilities for integer types.

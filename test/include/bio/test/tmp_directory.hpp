@@ -29,7 +29,7 @@
 #include <optional>
 #include <utility>
 
-#include <bio/meta/platform.hpp>
+#include <bio/core.hpp>
 
 namespace bio::test
 {

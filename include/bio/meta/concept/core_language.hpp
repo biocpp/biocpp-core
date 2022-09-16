@@ -15,7 +15,7 @@
 
 #include <type_traits>
 
-#include <bio/meta/platform.hpp>
+#include <bio/core.hpp>
 #include <concepts>
 
 namespace bio::meta
@@ -178,7 +178,6 @@ concept decays_to = std::same_as<std::decay_t<from_t>, std::decay_t<to_t>>;
 template <typename query_t, typename... other_types>
 concept one_of = (std::same_as<query_t, other_types> || ...);
 //!\endcond
-
 
 //!\}
 

@@ -17,8 +17,8 @@
 #include <tuple>
 #include <type_traits>
 
+#include <bio/core.hpp>
 #include <bio/meta/concept/core_language.hpp>
-#include <bio/meta/platform.hpp>
 #include <bio/ranges/container/small_string.hpp>
 
 namespace bio::meta::detail

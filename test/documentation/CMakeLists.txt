@@ -8,7 +8,7 @@ project(biocpp_core_documentation NONE)
 include (../../build_system/biocpp_core-config-version.cmake)
 set (BIOCPP_VERSION "${PACKAGE_VERSION}")
 
-if (NOT EXISTS "${BIOCPP_CORE_INCLUDE_DIR}/bio/version.hpp")
+if (NOT EXISTS "${BIOCPP_CORE_INCLUDE_DIR}/bio/core.hpp")
     message (FATAL_ERROR "Could not find BioC++ Core. Not building documentation.")
 endif ()
 message (STATUS "Found: ${BIOCPP_CORE_INCLUDE_DIR} (${BIOCPP_VERSION})")

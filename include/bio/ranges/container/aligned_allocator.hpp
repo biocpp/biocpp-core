@@ -17,7 +17,7 @@
 #include <memory>
 #include <type_traits>
 
-#include <bio/ranges/biocpp.hpp>
+#include <bio/core.hpp>
 
 namespace bio::ranges
 {

@@ -188,11 +188,11 @@ else ()
 endif ()
 
 # ----------------------------------------------------------------------------
-# Perform compilability test of platform.hpp (tests some requirements)
+# Perform compilability test of core.hpp (tests some requirements)
 # ----------------------------------------------------------------------------
 
 set (CXXSTD_TEST_SOURCE
-     "#include <bio/meta/platform.hpp>
+     "#include <bio/core.hpp>
      int main() {}")
 
 # using try_compile instead of check_cxx_source_compiles to capture output in case of failure

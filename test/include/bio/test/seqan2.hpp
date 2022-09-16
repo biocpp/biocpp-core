@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <bio/meta/platform.hpp>
+#include <bio/core.hpp>
 
 // SeqAn 2 [optional]
 /*!\def BIOCPP_HAS_SEQAN2

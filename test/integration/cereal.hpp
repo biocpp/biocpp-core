@@ -16,7 +16,6 @@
 
 #include <fstream>
 
-#include <bio/meta/platform.hpp>
 #include <bio/meta/type_traits/basic.hpp>
 #include <bio/test/tmp_filename.hpp>
 

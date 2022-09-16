@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <bio/alphabet/biocpp.hpp>
+#include <bio/core.hpp>
 
 namespace bio::alphabet
 {
