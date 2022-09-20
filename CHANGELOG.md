@@ -12,6 +12,7 @@ bug-fixes (not all bug-fixes will be listed).
 * Added `bio::meta::one_of` and `bio::meta::decays_to` concepts.
 * Added `bio::meta::vtag`, `bio::meta::ttag` and `bio::meta::priority_tag`.
 * Added `bio::views::char_strictly_to` and `bio::views::validate_char_for`.
+* Added `bio::views::transform_by_pos`, a more flexible version of `std::views::transform`.
 
 ## Bug-fixes
 
@@ -22,6 +23,7 @@ bug-fixes (not all bug-fixes will be listed).
 * `bio::alphabet::alphabet_tuple_base` has been renamed to `bio::alphabet::tuple_base`.
 * `bio::alphabet::alphabet_variant` has been renamed to `bio::alphabet::variant`.
 * `bio::ranges::views::to()` has been renamed to `bio::ranges::to()` to be in line with C++23.
+* `bio::views::get` has been removed. Use `std::views::elements` instead.
 * Cleaned up most of the concept mess in composite alphabets.
 
 
