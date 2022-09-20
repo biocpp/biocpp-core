@@ -19,239 +19,26 @@
 #include <bio/ranges/container/small_string.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
 #include <bio/ranges/type_traits.hpp>
-#include <bio/ranges/views/translate.hpp>
+#include <bio/ranges/views/translate_single.hpp>
 #include <concepts>
 #include <ranges>
+
+// ============================================================================
+//  translate_fn (adaptor definition )
+// ============================================================================
 
 namespace bio::ranges::detail
 {
 
-// ============================================================================
-//  view_translate_join (range definition)
-// ============================================================================
-
-/*!\brief The return type of bio::views::translate_join.
- * \implements std::ranges::view
- * \implements std::ranges::sized_range
- * \implements std::ranges::random_access_range
- * \tparam urng_t The type of the range being translated.
- * \param[in] tf Translation frames to be used.
- * \ingroup views
+/*!\brief Definition of the range adaptor object type for bio::views::translate.
  */
-template <std::ranges::view urng_t>
-class view_translate_join : public std::ranges::view_base
-{
-private:
-    //!\brief The data members of view_translate_join.
-    urng_t                                        urange;
-    //!\brief The frames that should be used for translation.
-    alphabet::translation_frames                  tf;
-    //!\brief The selected frames corresponding to the frames required.
-    small_vector<alphabet::translation_frames, 6> selected_frames{};
-
-    /*!\name Associated types iterator
-     * \brief These associated types are needed in bio::ranges::detail::random_access_iterator.
-     * \{
-     */
-    //!\brief The reference_type.
-    using reference       = view_translate_single<std::views::all_t<std::ranges::range_reference_t<urng_t>>>;
-    //!\brief The const_reference type.
-    using const_reference = reference;
-    //!\brief The value_type (which equals the reference_type with any references removed).
-    using value_type      = reference;
-    //!\brief The size_type.
-    using size_type       = std::ranges::range_size_t<std::ranges::range_reference_t<urng_t>>;
-    //!\brief A signed integer type, usually std::ptrdiff_t.
-    using difference_type = std::ranges::range_difference_t<std::ranges::range_reference_t<urng_t>>;
-    //!\brief The iterator type of this view (a random access iterator).
-    using iterator        = detail::random_access_iterator<view_translate_join>;
-    //!\brief The const iterator type of this view (same as iterator, because it's a view).
-    using const_iterator  = detail::random_access_iterator<view_translate_join const>;
-    //!\}
-
-    //!\brief Befriend the following class s.t. iterator and const_iterator can be defined for this type.
-    template <typename, typename>
-    friend class detail::random_access_iterator_base;
-
-public:
-    static_assert(range_dimension_v<urng_t> == 2,
-                  "This adaptor only handles range-of-range (two dimensions) as input.");
-    static_assert(std::ranges::viewable_range<urng_t>,
-                  "The range parameter to views::translate_join cannot be a temporary of a non-view range.");
-    static_assert(std::ranges::viewable_range<std::ranges::range_reference_t<urng_t>>,
-                  "The inner range of the range parameter to views::translate_join cannot be a temporary of "
-                  "a non-view range.");
-    static_assert(std::ranges::sized_range<urng_t>,
-                  "The range parameter to views::translate_join must model std::ranges::sized_range.");
-    static_assert(std::ranges::sized_range<std::ranges::range_reference_t<urng_t>>,
-                  "The inner range of the range parameter to views::translate_join must model "
-                  "std::ranges::sized_range.");
-    static_assert(std::ranges::random_access_range<urng_t>,
-                  "The range parameter to views::translate_join must model std::ranges::random_access_range.");
-    static_assert(std::ranges::random_access_range<std::ranges::range_reference_t<urng_t>>,
-                  "The inner range of the range parameter to views::translate_join must model "
-                  "std::ranges::random_access_range.");
-    static_assert(alphabet::nucleotide_alphabet<std::ranges::range_reference_t<std::ranges::range_reference_t<urng_t>>>,
-                  "The range parameter to views::translate_join must be over a range over elements of "
-                  "bio::alphabet::nucleotide_alphabet.");
-
-    /*!\name Constructors, destructor and assignment
-     * \{
-     */
-    view_translate_join() noexcept                                                      = default; //!< Defaulted.
-    constexpr view_translate_join(view_translate_join const & rhs) noexcept             = default; //!< Defaulted.
-    constexpr view_translate_join(view_translate_join && rhs) noexcept                  = default; //!< Defaulted.
-    constexpr view_translate_join & operator=(view_translate_join const & rhs) noexcept = default; //!< Defaulted.
-    constexpr view_translate_join & operator=(view_translate_join && rhs) noexcept      = default; //!< Defaulted.
-    ~view_translate_join() noexcept                                                     = default; //!< Defaulted.
-
-    /*!\brief Construct from another view.
-     * \param[in] _urange The underlying range (of ranges).
-     * \param[in] _tf The frames that should be used for translation.
-     */
-    view_translate_join(urng_t                             _urange,
-                        alphabet::translation_frames const _tf = alphabet::translation_frames::SIX_FRAME) :
-      urange{std::move(_urange)}, tf{_tf}
-    {
-        if ((_tf & alphabet::translation_frames::FWD_FRAME_0) == alphabet::translation_frames::FWD_FRAME_0)
-            selected_frames.push_back(alphabet::translation_frames::FWD_FRAME_0);
-        if ((_tf & alphabet::translation_frames::FWD_FRAME_1) == alphabet::translation_frames::FWD_FRAME_1)
-            selected_frames.push_back(alphabet::translation_frames::FWD_FRAME_1);
-        if ((_tf & alphabet::translation_frames::FWD_FRAME_2) == alphabet::translation_frames::FWD_FRAME_2)
-            selected_frames.push_back(alphabet::translation_frames::FWD_FRAME_2);
-        if ((_tf & alphabet::translation_frames::REV_FRAME_0) == alphabet::translation_frames::REV_FRAME_0)
-            selected_frames.push_back(alphabet::translation_frames::REV_FRAME_0);
-        if ((_tf & alphabet::translation_frames::REV_FRAME_1) == alphabet::translation_frames::REV_FRAME_1)
-            selected_frames.push_back(alphabet::translation_frames::REV_FRAME_1);
-        if ((_tf & alphabet::translation_frames::REV_FRAME_2) == alphabet::translation_frames::REV_FRAME_2)
-            selected_frames.push_back(alphabet::translation_frames::REV_FRAME_2);
-    }
-
-    /*!\brief Construct from another range.
-     * \param[in] _urange The underlying range (of ranges).
-     * \param[in] _tf The frames that should be used for translation.
-     */
-    template <typename rng_t>
-        //!\cond
-        requires((!std::same_as<std::remove_cvref_t<rng_t>, view_translate_join>)&&std::ranges::viewable_range<rng_t> &&
-                   std::constructible_from<urng_t, std::ranges::ref_view<std::remove_reference_t<rng_t>>>)
-    //!\endcond
-    view_translate_join(rng_t &&                           _urange,
-                        alphabet::translation_frames const _tf = alphabet::translation_frames::SIX_FRAME) :
-      view_translate_join{std::views::all(std::forward<rng_t>(_urange)), _tf}
-    {}
-    //!\}
-
-    /*!\name Iterators
-     * \{
-     */
-    /*!\brief Returns an iterator to the first element of the container.
-     * \returns Iterator to the first element.
-     *
-     * If the container is empty, the returned iterator will be equal to end().
-     *
-     * ### Complexity
-     *
-     * Constant.
-     *
-     * ### Exceptions
-     *
-     * No-throw guarantee.
-     */
-    iterator begin() noexcept { return {*this, 0}; }
-
-    //!\overload
-    const_iterator begin() const noexcept requires const_iterable_range<urng_t> { return {*this, 0}; }
-
-    /*!\brief Returns an iterator to the element following the last element of the container.
-     * \returns Iterator to the first element.
-     *
-     * This element acts as a placeholder; attempting to dereference it results in undefined behaviour.
-     *
-     * ### Complexity
-     *
-     * Constant.
-     *
-     * ### Exceptions
-     *
-     * No-throw guarantee.
-     */
-    iterator end() noexcept { return {*this, size()}; }
-
-    //!\overload
-    const_iterator end() const noexcept requires const_iterable_range<urng_t> { return {*this, size()}; }
-    //!\}
-
-    /*!\brief Returns the number of elements in the view.
-     * \returns The number of elements in the container.
-     *
-     * ### Complexity
-     *
-     * Constant.
-     *
-     * ### Exceptions
-     *
-     * No-throw guarantee.
-     */
-    size_type size() noexcept { return (size_type)std::ranges::size(urange) * selected_frames.size(); }
-
-    //!\overload
-    size_type size() const noexcept requires const_iterable_range<urng_t>
-    {
-        return (size_type)std::ranges::size(urange) * selected_frames.size();
-    }
-
-    /*!\name Element access
-     * \{
-     */
-    /*!\brief Return the n-th element.
-     * \param[in] n The element to retrieve.
-     * \returns Either a writable proxy to the element or a copy (if called in const context).
-     *
-     * Accessing an element behind the last causes undefined behaviour. In debug mode an assertion checks the size of
-     * the container.
-     *
-     * ### Exceptions
-     *
-     * Strong exception guarantee (never modifies data).
-     *
-     * ### Complexity
-     *
-     * Constant.
-     */
-    reference operator[](size_type const n)
-    {
-        assert(n < size());
-        size_type index_frame  = n % selected_frames.size();
-        size_type index_urange = (n - index_frame) / selected_frames.size();
-        return urange[index_urange] | views::translate_single(selected_frames[index_frame]);
-    }
-
-    //!\overload
-    const_reference operator[](size_type const n) const requires const_iterable_range<urng_t>
-    {
-        assert(n < size());
-        size_type index_frame  = n % selected_frames.size();
-        size_type index_urange = (n - index_frame) / selected_frames.size();
-        return urange[index_urange] | views::translate_single(selected_frames[index_frame]);
-    }
-    //!\}
-};
-
-//!\brief Class template argument deduction for view_translate_join.
-template <typename urng_t>
-view_translate_join(urng_t &&, alphabet::translation_frames const = alphabet::translation_frames{})
-  -> view_translate_join<std::views::all_t<urng_t>>;
-
-// ============================================================================
-//  translate_fn (adaptor definition for both views)
-// ============================================================================
-
-//!\brief Definition of the range adaptor object type for bio::views::translate_join.
 struct translate_join_fn
 {
+    //!\brief The default frames parameter for the translation view adaptors.
+    static constexpr alphabet::translation_frames default_frames = alphabet::translation_frames::SIX_FRAME;
+
     //!\brief Store the argument and return a range adaptor closure object.
-    constexpr auto operator()(alphabet::translation_frames const tf = alphabet::translation_frames::SIX_FRAME) const
+    constexpr auto operator()(alphabet::translation_frames const tf = default_frames) const
     {
         return detail::adaptor_from_functor{*this, tf};
     }
@@ -262,16 +49,14 @@ struct translate_join_fn
      * \returns          A range of translated sequence(s).
      */
     template <std::ranges::range urng_t>
-    constexpr auto operator()(urng_t &&                          urange,
-                              alphabet::translation_frames const tf = alphabet::translation_frames::SIX_FRAME) const
+    constexpr auto operator()(urng_t && urange, alphabet::translation_frames const tf = default_frames) const
     {
         static_assert(range_dimension_v<urng_t> == 2,
                       "This adaptor only handles range-of-range (two dimensions) as input.");
         static_assert(std::ranges::viewable_range<urng_t>,
-                      "The range parameter to views::translate_join cannot be a temporary of a non-view range.");
+                      "The range parameter to views::translate_join must be viewable.");
         static_assert(std::ranges::viewable_range<std::ranges::range_reference_t<urng_t>>,
-                      "The inner range of the range parameter to views::translate_join cannot be a "
-                      "temporary of a non-view range.");
+                      "The inner range of the range parameter to views::translate_join must be viewable.");
         static_assert(std::ranges::sized_range<urng_t>,
                       "The range parameter to views::translate_join must model std::ranges::sized_range.");
         static_assert(std::ranges::sized_range<std::ranges::range_reference_t<urng_t>>,
@@ -287,7 +72,27 @@ struct translate_join_fn
           "The range parameter to views::translate_join must be over a range over elements of "
           "bio::alphabet::nucleotide_alphabet.");
 
-        return detail::view_translate_join{std::forward<urng_t>(urange), tf};
+        /* frames */
+        small_vector<alphabet::translation_frames, 6> selected_frames{};
+        if ((tf & alphabet::translation_frames::FWD_FRAME_0) == alphabet::translation_frames::FWD_FRAME_0)
+            selected_frames.push_back(alphabet::translation_frames::FWD_FRAME_0);
+        if ((tf & alphabet::translation_frames::FWD_FRAME_1) == alphabet::translation_frames::FWD_FRAME_1)
+            selected_frames.push_back(alphabet::translation_frames::FWD_FRAME_1);
+        if ((tf & alphabet::translation_frames::FWD_FRAME_2) == alphabet::translation_frames::FWD_FRAME_2)
+            selected_frames.push_back(alphabet::translation_frames::FWD_FRAME_2);
+        if ((tf & alphabet::translation_frames::REV_FRAME_0) == alphabet::translation_frames::REV_FRAME_0)
+            selected_frames.push_back(alphabet::translation_frames::REV_FRAME_0);
+        if ((tf & alphabet::translation_frames::REV_FRAME_1) == alphabet::translation_frames::REV_FRAME_1)
+            selected_frames.push_back(alphabet::translation_frames::REV_FRAME_1);
+        if ((tf & alphabet::translation_frames::REV_FRAME_2) == alphabet::translation_frames::REV_FRAME_2)
+            selected_frames.push_back(alphabet::translation_frames::REV_FRAME_2);
+
+        size_t size = std::ranges::size(urange) * selected_frames.size();
+        return detail::view_transform_by_pos{
+          std::forward<urng_t>(urange),
+          trans_fn{.size = size, .selected_frames = selected_frames},
+          size
+        };
     }
 
     //!\brief This adaptor is usable without setting the frames parameter in which case the default is chosen.
@@ -296,6 +101,25 @@ struct translate_join_fn
     {
         return me(std::forward<urng_t>(urange));
     }
+
+private:
+    //!\brief Auxilliary functor.
+    struct trans_fn
+    {
+        //!\brief Size of the range.
+        size_t                                        size{};
+        //!\brief Selected frames.
+        small_vector<alphabet::translation_frames, 6> selected_frames{};
+
+        //!\brief The operator invoked by the view on element access.
+        auto operator()(auto && urange, size_t const n) const
+        {
+            assert(n < size);
+            size_t index_frame  = n % selected_frames.size();
+            size_t index_urange = (n - index_frame) / selected_frames.size();
+            return urange[index_urange] | views::translate_single(selected_frames[index_frame]);
+        }
+    };
 };
 
 } // namespace bio::ranges::detail
@@ -314,7 +138,7 @@ namespace bio::ranges::views
 /*!\brief A view that translates nucleotide into aminoacid alphabet with 1, 2, 3 or 6 frames. Input and output range are always two-dimensional.
  * \tparam urng_t The type of the range being processed.
  * \param[in] urange The range being processed. Needs to be a range of ranges (two-dimensional).
- * \param[in] tf A value of bio::alphabet::tanslation_frames that indicates the desired frames.
+ * \param[in] tf A value of bio::alphabet::tanslation_frames that indicates the desired frames. [optional, SIX_FRAME by default]
  * \returns A range of ranges containing frames with aminoacid sequence. See below for the properties of the returned range.
  * \ingroup views
  *
@@ -337,6 +161,12 @@ namespace bio::ranges::views
  * auto v = vec | bio::views::translate | std::views::join;
  * Except that the performance is better and the returned range still models std::ranges::random_access_range and std::ranges::sized_range.
  * ```
+ *
+ * There are also two other views for creating translations:
+ *
+ * 1. bio::views::translate_single: 1 sequence → 1 frame [range → range OR range-of-ranges → range-of-ranges]
+ * 2. bio::views::translate: 1 sequence → n frames [range → range-of-ranges OR range-of-ranges → range-of-ranges-of-ranges]]
+ * 3. bio::views::translate_join: n sequences → n*m frames [range-of-ranges → range-of-ranges]
  *
  * ### View properties
  *

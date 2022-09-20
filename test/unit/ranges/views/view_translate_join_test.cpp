@@ -181,8 +181,8 @@ TYPED_TEST(nucleotide, view_translate)
         EXPECT_RANGE_EQ(v10[i], cmp7[i]);
 
     // combinability and function syntax
-    auto v11 = bio::ranges::detail::view_translate_join(bio::ranges::views::complement(vec),
-                                                        bio::alphabet::translation_frames::FWD_REV_0);
+    auto v11 =
+      bio::views::translate_join(bio::ranges::views::complement(vec), bio::alphabet::translation_frames::FWD_REV_0);
     // == [[C,M,H,A],[M,H,A,C],[S,S,R,N],[R,F,R,E]]
     EXPECT_EQ(v11.size(), cmp6.size());
     for (unsigned i = 0; i < v11.size(); i++)

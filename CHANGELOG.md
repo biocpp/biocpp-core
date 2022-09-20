@@ -24,6 +24,7 @@ bug-fixes (not all bug-fixes will be listed).
 * `bio::alphabet::alphabet_variant` has been renamed to `bio::alphabet::variant`.
 * `bio::ranges::views::to()` has been renamed to `bio::ranges::to()` to be in line with C++23.
 * `bio::views::get` has been removed. Use `std::views::elements` instead.
+* `bio::views::translate*` have been redefined in terms of `bio::views::transform_by_pos` (much less code); `bio::views::translate_single` is now in `include/bio/ranges/views/translate_single.hpp`.
 * Cleaned up most of the concept mess in composite alphabets.
 
 

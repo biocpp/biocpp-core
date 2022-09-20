@@ -21,27 +21,22 @@
 #include <bio/alphabet/aminoacid/aa27.hpp>
 #include <bio/alphabet/aminoacid/translation.hpp>
 #include <bio/alphabet/nucleotide/dna5.hpp>
-#include <bio/ranges/container/concept.hpp>
-#include <bio/ranges/container/small_string.hpp>
-#include <bio/ranges/detail/random_access_iterator.hpp>
-#include <bio/ranges/type_traits.hpp>
 #include <bio/ranges/views/deep.hpp>
-#include <bio/ranges/views/detail.hpp>
-#include <bio/ranges/views/translate_single.hpp>
+#include <bio/ranges/views/transform_by_pos.hpp>
 
 // ============================================================================
-//  translate_fn (adaptor definition )
+//  translate_fn (adaptor definition for both views)
 // ============================================================================
 
 namespace bio::ranges::detail
 {
 
-/*!\brief Definition of the range adaptor object type for bio::views::translate.
+/*!\brief Definition of the range adaptor object type for bio::views::translate_single.
  */
-struct translate_fn
+struct translate_single_fn
 {
     //!\brief The default frames parameter for the translation view adaptors.
-    static constexpr alphabet::translation_frames default_frames = alphabet::translation_frames::SIX_FRAME;
+    static constexpr alphabet::translation_frames default_frames = alphabet::translation_frames::FWD_FRAME_0;
 
     //!\brief Store the argument and return a range adaptor closure object.
     constexpr auto operator()(alphabet::translation_frames const tf = default_frames) const
@@ -68,44 +63,98 @@ struct translate_fn
                       "bio::alphabet::alphabet::nucleotide_alphabet.");
 
         /* frames */
-        small_vector<alphabet::translation_frames, 6> selected_frames{};
-        if ((tf & alphabet::translation_frames::FWD_FRAME_0) == alphabet::translation_frames::FWD_FRAME_0)
-            selected_frames.push_back(alphabet::translation_frames::FWD_FRAME_0);
-        if ((tf & alphabet::translation_frames::FWD_FRAME_1) == alphabet::translation_frames::FWD_FRAME_1)
-            selected_frames.push_back(alphabet::translation_frames::FWD_FRAME_1);
-        if ((tf & alphabet::translation_frames::FWD_FRAME_2) == alphabet::translation_frames::FWD_FRAME_2)
-            selected_frames.push_back(alphabet::translation_frames::FWD_FRAME_2);
-        if ((tf & alphabet::translation_frames::REV_FRAME_0) == alphabet::translation_frames::REV_FRAME_0)
-            selected_frames.push_back(alphabet::translation_frames::REV_FRAME_0);
-        if ((tf & alphabet::translation_frames::REV_FRAME_1) == alphabet::translation_frames::REV_FRAME_1)
-            selected_frames.push_back(alphabet::translation_frames::REV_FRAME_1);
-        if ((tf & alphabet::translation_frames::REV_FRAME_2) == alphabet::translation_frames::REV_FRAME_2)
-            selected_frames.push_back(alphabet::translation_frames::REV_FRAME_2);
+        if (size_t const num_frames = std::popcount(static_cast<uint8_t>(tf));
+            num_frames > 1 ||
+            static_cast<uint8_t>(tf) > static_cast<uint8_t>(alphabet::translation_frames::REV_FRAME_2))
+        {
+            throw std::invalid_argument{
+              "Error: Invalid type of frame. Choose one out of FWD_FRAME_0, "
+              "REV_FRAME_0, FWD_FRAME_1, REV_FRAME_1, FWD_FRAME_2 and "
+              "REV_FRAME_2."};
+        }
 
-        return detail::view_transform_by_pos{std::forward<urng_t>(urange),
-                                             trans_fn{.selected_frames = selected_frames},
-                                             selected_frames.size()};
+        /* size */
+        size_t const old_size = std::ranges::size(urange);
+        size_t const new_size = comp_new_size(old_size, tf);
+
+        return detail::view_transform_by_pos{
+          std::forward<urng_t>(urange),
+          trans_fn{.old_size = old_size, .new_size = new_size, .tf = tf},
+          new_size
+        };
     }
 
     //!\brief This adaptor is usable without setting the frames parameter in which case the default is chosen.
     template <std::ranges::range urng_t>
-    constexpr friend auto operator|(urng_t && urange, translate_fn const & me)
+    constexpr friend auto operator|(urng_t && urange, translate_single_fn const & me)
     {
         return me(std::forward<urng_t>(urange));
     }
 
 private:
+    //!\brief Compute the new size.
+    static size_t comp_new_size(size_t const old_size, alphabet::translation_frames const tf)
+    {
+        switch (tf)
+        {
+            case alphabet::translation_frames::FWD_FRAME_0:
+                [[fallthrough]];
+            case alphabet::translation_frames::REV_FRAME_0:
+                return old_size / 3;
+            case alphabet::translation_frames::FWD_FRAME_1:
+                [[fallthrough]];
+            case alphabet::translation_frames::REV_FRAME_1:
+                return (std::max<size_t>(old_size, 1) - 1) / 3;
+            case alphabet::translation_frames::FWD_FRAME_2:
+                [[fallthrough]];
+            case alphabet::translation_frames::REV_FRAME_2:
+                return (std::max<size_t>(old_size, 2) - 2) / 3;
+            default:
+                break;
+        }
+
+        __builtin_unreachable();
+    }
+
     //!\brief Auxilliary functor.
     struct trans_fn
     {
-        //!\brief The selected frames.
-        small_vector<alphabet::translation_frames, 6> selected_frames{};
+        //!\brief The size of the underlying range.
+        size_t                       old_size{};
+        //!\brief The size of the returned range.
+        size_t                       new_size{};
+        //!\brief The selected frame.
+        alphabet::translation_frames tf{};
 
         //!\brief The operator invoked by the view on element access.
-        auto operator()(auto && urange, size_t const n) const
+        auto operator()(auto && urange2, size_t const n) const
         {
-            assert(n < selected_frames.size());
-            return urange | views::translate_single(selected_frames[n]);
+            assert(n < new_size);
+            switch (tf) //TODO create function ptr so we do not need to switch every time? → benchmark
+            {
+                case alphabet::translation_frames::FWD_FRAME_0:
+                    return alphabet::translate_triplet(urange2[n * 3], urange2[n * 3 + 1], urange2[n * 3 + 2]);
+                case alphabet::translation_frames::REV_FRAME_0:
+                    return alphabet::translate_triplet(alphabet::complement(urange2[old_size - n * 3 - 1]),
+                                                       alphabet::complement(urange2[old_size - n * 3 - 2]),
+                                                       alphabet::complement(urange2[old_size - n * 3 - 3]));
+                case alphabet::translation_frames::FWD_FRAME_1:
+                    return alphabet::translate_triplet(urange2[n * 3 + 1], urange2[n * 3 + 2], urange2[n * 3 + 3]);
+                case alphabet::translation_frames::REV_FRAME_1:
+                    return alphabet::translate_triplet(alphabet::complement(urange2[old_size - n * 3 - 2]),
+                                                       alphabet::complement(urange2[old_size - n * 3 - 3]),
+                                                       alphabet::complement(urange2[old_size - n * 3 - 4]));
+                case alphabet::translation_frames::FWD_FRAME_2:
+                    return alphabet::translate_triplet(urange2[n * 3 + 2], urange2[n * 3 + 3], urange2[n * 3 + 4]);
+                case alphabet::translation_frames::REV_FRAME_2:
+                    return alphabet::translate_triplet(alphabet::complement(urange2[old_size - n * 3 - 3]),
+                                                       alphabet::complement(urange2[old_size - n * 3 - 4]),
+                                                       alphabet::complement(urange2[old_size - n * 3 - 5]));
+                default:
+                    __builtin_unreachable();
+                    break;
+            }
+            __builtin_unreachable();
         }
     };
 };
@@ -113,7 +162,7 @@ private:
 } // namespace bio::ranges::detail
 
 // ============================================================================
-//  translate (adaptor object)
+//  translate_single (adaptor object)
 // ============================================================================
 
 namespace bio::ranges::views
@@ -123,27 +172,25 @@ namespace bio::ranges::views
  * \{
  */
 
-/*!\brief A view that translates nucleotide into aminoacid alphabet with 1, 2, 3 or 6 frames.
+/*!\brief A view that translates nucleotide into aminoacid alphabet for one of the six frames.
  * \tparam urng_t The type of the range being processed.
  * \param[in] urange The range being processed.
- * \param[in] tf A value of bio::alphabet::tanslation_frames that indicates the desired frames. [optional, SIX_FRAME by default]
- * \returns A range of ranges containing frames with aminoacid sequence. See below for the properties of the returned range.
+ * \param[in] tf A value of bio::alphabet::alphabet::translation_frames that indicates the desired frames. [optional, FWD_FRAME_0 by default]
+ * \returns A range containing frames with aminoacid sequence. See below for the properties of the returned range.
  * \ingroup views
  *
  * \details
  *
- * \header_file{bio/ranges/views/translate.hpp}
+ * \header_file{bio/ranges/views/translate_single.hpp}
  *
- * This view can be used to translate nucleotide sequences into aminoacid sequences (see alphabet::translation_frames for possible combination of frames).
- *
- * Note that the *dimension* of the input is always increased by one, i.e. if you pass a single sequence,
- * you will get multiple frames; if you pass muliple sequences, you get a as many ranges of frames.
+ * This view can be used to translate nucleotide sequences into aminoacid sequences (see alphabet::translation_frames for possible frames).
+ * Note that only single frames values are are valid here.
  *
  * There are also two other views for creating translations:
  *
  * 1. bio::views::translate_single: 1 sequence → 1 frame [range → range OR range-of-ranges → range-of-ranges]
- * 2. bio::views::translate: 1 sequence → n frames [range → range-of-ranges OR range-of-ranges → ranges-of-ranges-of-ranges]]
- * 3. bio::views::translate_join: n sequences → n*m frames [range-of-ranges → range-of-ranges]
+ * 2. bio::views::translate: 1 sequence → `m` frames [range → range-of-ranges OR range-of-ranges → ranges-of-ranges-of-ranges]]
+ * 3. bio::views::translate_join: `n` sequences → `n*m` frames [range-of-ranges → range-of-ranges]
  *
  * ### View properties
  *
@@ -162,7 +209,7 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *lost*                                             |
  * | bio::ranges::const_iterable_range     | *required*                            | *preserved*                                        |
  * |                                  |                                       |                                                    |
- * | std::ranges::range_reference_t   | bio::alphabet::alphabet::nucleotide_alphabet            | std::ranges::view && std::ranges::random_access_range && std::ranges::sized_range |
+ * | std::ranges::range_reference_t   | bio::alphabet::alphabet::nucleotide_alphabet            | bio::alphabet::aa27                                       |
  *
  * * `urng_t` is the type of the range modified by this view (input).
  * * `rrng_type` is the type of the range returned by this view.
@@ -171,10 +218,9 @@ namespace bio::ranges::views
  * ### Example
  *
  * Operating on a range of bio::alphabet::dna5:
- * \include test/snippet/ranges/views/translate_usage.cpp
+ * \include test/snippet/ranges/views/translate_dna5.cpp
  * \hideinitializer
  */
-inline constexpr auto translate = deep{detail::translate_fn{}};
-//!\}
+inline constexpr auto translate_single = deep{detail::translate_single_fn{}};
 
 } // namespace bio::ranges::views

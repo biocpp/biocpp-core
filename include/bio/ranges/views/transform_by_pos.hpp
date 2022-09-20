@@ -13,6 +13,8 @@
 
 #pragma once
 
+#include <utility>
+
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
 #include <bio/ranges/views/detail.hpp>

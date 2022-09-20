@@ -21,6 +21,7 @@
 #include <bio/ranges/views/char_to.hpp>
 #include <bio/ranges/views/complement.hpp>
 #include <bio/ranges/views/translate.hpp>
+#include <bio/ranges/views/translate_single.hpp>
 #include <bio/test/expect_range_eq.hpp>
 #include <ranges>
 
@@ -173,8 +174,7 @@ TYPED_TEST(nucleotide, view_translate)
         EXPECT_RANGE_EQ(v10[i], cmp7[i]);
 
     // combinability and function syntax
-    auto v11 = bio::ranges::detail::view_translate(bio::ranges::views::complement(vec),
-                                                   bio::alphabet::translation_frames::FWD_REV_0);
+    auto v11 = bio::views::translate(bio::ranges::views::complement(vec), bio::alphabet::translation_frames::FWD_REV_0);
     // == [[C,M,H,A],[M,H,A,C]]
     EXPECT_EQ(v11.size(), cmp6.size());
     for (unsigned i = 0; i < v11.size(); i++)
