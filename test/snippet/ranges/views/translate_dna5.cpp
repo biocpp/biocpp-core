@@ -1,7 +1,7 @@
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/views/complement.hpp>
-#include <bio/ranges/views/translate.hpp>
+#include <bio/ranges/views/translate_single.hpp>
 
 int main()
 {

@@ -13,6 +13,7 @@
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/ranges/to.hpp>
 #include <bio/ranges/views/translate.hpp>
+#include <bio/ranges/views/translate_single.hpp>
 #include <bio/test/performance/sequence_generator.hpp>
 #include <bio/test/seqan2.hpp>
 
