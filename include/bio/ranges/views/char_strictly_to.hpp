@@ -76,4 +76,9 @@ inline auto const char_strictly_to = views::validate_char_for<alphabet_type> | v
 
 //!\}
 
+//!\brief A shortcut for `decltype(std::string_view{} | bio::views::char_strictly_to<alph_t>)`.
+//!\ingroup views
+template <alphabet::alphabet alph_t>
+using char_conversion_view_t = decltype(std::string_view{} | bio::views::char_strictly_to<alph_t>);
+
 } // namespace bio::ranges::views

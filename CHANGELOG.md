@@ -12,7 +12,7 @@ bug-fixes (not all bug-fixes will be listed).
 * Added `bio::meta::one_of` and `bio::meta::decays_to` concepts.
 * Added `bio::meta::vtag`, `bio::meta::ttag` and `bio::meta::priority_tag`.
 * Added `bio::ranges::back_insertable` and `bio::ranges::back_insertable_with` as light-weight container concepts.
-* Added `bio::views::char_strictly_to` and `bio::views::validate_char_for`.
+* Added `bio::views::char_strictly_to` and `bio::views::validate_char_for`; as well as `bio::views::char_conversion_view_t`.
 * Added `bio::views::transform_by_pos`, a more flexible version of `std::views::transform`.
 
 ## Bug-fixes
