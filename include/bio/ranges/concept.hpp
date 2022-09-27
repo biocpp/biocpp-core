@@ -33,7 +33,7 @@ namespace bio::ranges
  *
  *   * a `const` range is usually not writable so std::ranges::output_range is lost; pure output ranges
  * (those that are not also input ranges) are therefore not `const`-iterable;
- *   * single-pass input ranges, like BioC++ files, are not `const`-iterable, because "single-pass-ness" implies that
+ *   * single-pass input ranges, like BioC++ readers, are not `const`-iterable, because "single-pass-ness" implies that
  * there is something in the range that changes on every iterator increment (and `const` ranges can't change);
  *   * certain views store a state with their algorithm that also changes when `begin()` is called or an
  * iterator is incremented; these may be not be `const`-iterable, because the standard library
@@ -49,92 +49,32 @@ concept const_iterable_range = std::ranges::input_range<std::remove_const_t<type
                                                     std::ranges::random_access_range<type const>);
 //!\endcond
 
-/*!\interface bio::ranges::pseudo_random_access_iterator <>
+/*!\interface bio::ranges::back_insertable_with <>
  * \ingroup range
- * \extends   std::forward_iterator
- * \brief     This concept checks if an iterator type models pseudo random access.
- *
- * \details
- *
- * A pseudo random access iterator refines the std::forward_iterator and fulfils in addition all syntactic requirements
- * of a regular std::random_access_iterator except that iterator category is weaker than
- * std::random_access_iterator_tag.
- * These iterators do allow jumping within the associated range or accessing an arbitrary element but cannot guarantee
- * constant time for these operations. Yet, the performance is sub-linear. Typical examples are range adaptors that
- * store additional information on the original sequence within a tree like data structure. Accessing a specific
- * position can be then achieved in sub-linear time. However, since pseudo-random access iterators can't guarantee
- * constant time for random access, the rule in the c++ standard is to mark them as bidirectional iterators.
- * This in turn has implications on some functions that operate on iterators. An example would be `std::distance`
- * that needs linear time for non-random access iterators (e.g. bidirectional iterators and accordingly
- * pseudo random access iterators), and constant time otherwise, although it could be computed in sub-linear time when
- * using the pseudo randomness.
- * The bio::views::enforce_random_access adaptor can redeclare a pseudo random access iterator as a random access
- * iterator (while preserving the caveat of needing more than constant time for random access).
- * A rule-of-thumb is that all operations are at least as fast as when using the non-redeclared random access iterators,
- * but be aware that runtime guarantees of some algorithms are higher than advertised due to the non-constant access
- * time.
- *
- * ### Concepts and doxygen
- *
- * The requirements for this concept are given as related functions and type traits.
- * Types that model this concept are shown as "implementing this interface".
+ * \extends std::ranges::output_range
+ * \tparam rng_t The container type.
+ * \tparam val_t The type to append to the container.
+ * \brief Describes range types that can grow in amortised constant time by appending an element of type val_t.
  */
 //!\cond
-template <typename iterator_t>
-concept pseudo_random_access_iterator =
-  std::forward_iterator<iterator_t> &&
-  !std::is_base_of_v<std::random_access_iterator_tag, typename std::iterator_traits<iterator_t>::iterator_category> &&
-  std::totally_ordered<iterator_t> && std::sized_sentinel_for<iterator_t, iterator_t> &&
-  requires(iterator_t i, iterator_t const j, std::iter_difference_t<iterator_t> const n)
+template <typename rng_t, typename val_t>
+concept back_insertable_with = std::ranges::output_range<rng_t, val_t> && requires(rng_t & v)
 {
-    requires std::same_as<decltype(i += n), iterator_t &>;
-    requires std::same_as<decltype(j + n), iterator_t>;
-    requires std::same_as<decltype(n + j), iterator_t>;
-    requires std::same_as<decltype(--i), iterator_t &>;
-    requires std::same_as<decltype(i--), iterator_t>;
-    requires std::same_as<decltype(i -= n), iterator_t &>;
-    requires std::same_as<decltype(j - n), iterator_t>;
-    requires std::same_as<decltype(j[n]), std::iter_reference_t<iterator_t>>;
+    v.push_back(std::declval<val_t>());
 };
 //!\endcond
 
-/*!\interface bio::ranges::pseudo_random_access_range <>
+/*!\interface bio::ranges::back_insertable <>
  * \ingroup range
- * \extends   std::ranges::forward_range
- * \brief     This concept checks if a type models a pseudo random access range.
- *
- * \details
- *
- * A pseudo random access range is a forward range whose iterator type models bio::ranges::pseudo_random_access_iterator.
- *
- * ### Concepts and doxygen
- *
- * The requirements for this concept are given as related functions and type traits.
- * Types that model this concept are shown as "implementing this interface".
- */
-//!\cond
-template <typename rng_t>
-concept pseudo_random_access_range =
-  std::ranges::forward_range<rng_t> && pseudo_random_access_iterator<std::ranges::iterator_t<rng_t>>;
-//!\endcond
-
-/*!\interface bio::ranges::sequence <>
- * \brief The generic concept for a sequence.
- * \ingroup range
+ * \extends std::ranges::output_range
  * \extends std::ranges::input_range
- *
- * We define a range over an bio::alphabet::alphabet as a *sequence*.
- * A type models bio::alphabet::sequence if it is at least an std::ranges::input_range
- * and its references type models bio::alphabet::alphabet.
- *
- * ### Concepts and doxygen
- *
- * The requirements for this concept are given as related functions and type traits.
- * Types that model this concept are shown as "implementing this interface".
+ * \tparam rng_t The container type.
+ * \brief Describes range types that can grow in amortised constant time by appending an element.
  */
 //!\cond
 template <typename rng_t>
-concept sequence = std::ranges::input_range<rng_t> && alphabet::alphabet<std::ranges::range_reference_t<rng_t>>;
+concept back_insertable =
+  std::ranges::input_range<rng_t> && back_insertable_with<rng_t, std::ranges::range_reference_t<rng_t>>;
 //!\endcond
 
 } // namespace bio::ranges
