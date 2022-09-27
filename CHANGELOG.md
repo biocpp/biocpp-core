@@ -11,7 +11,8 @@ bug-fixes (not all bug-fixes will be listed).
 
 * Added `bio::meta::one_of` and `bio::meta::decays_to` concepts.
 * Added `bio::meta::vtag`, `bio::meta::ttag` and `bio::meta::priority_tag`.
-* Added `bio::views::char_strictly_to` and `bio::views::validate_char_for`.
+* Added `bio::ranges::back_insertable` and `bio::ranges::back_insertable_with` as light-weight container concepts.
+* Added `bio::views::char_strictly_to` and `bio::views::validate_char_for`; as well as `bio::views::char_conversion_view_t`.
 * Added `bio::views::transform_by_pos`, a more flexible version of `std::views::transform`.
 
 ## Bug-fixes
@@ -22,8 +23,10 @@ bug-fixes (not all bug-fixes will be listed).
 
 * `bio::alphabet::alphabet_tuple_base` has been renamed to `bio::alphabet::tuple_base`.
 * `bio::alphabet::alphabet_variant` has been renamed to `bio::alphabet::variant`.
+* `bio::pseudo_random_access_iterator` and `bio::ranges::pseudo_random_access_range` have been removed (because they are not used).
 * `bio::ranges::views::to()` has been renamed to `bio::ranges::to()` to be in line with C++23.
-* `bio::views::get` has been removed. Use `std::views::elements` instead.
+* `bio::ranges::sequence` concept has been removed (because it is not used.
+* `bio::views::get` has been removed. Use `std::views::elements` instead (same functionality).
 * `bio::views::translate*` have been redefined in terms of `bio::views::transform_by_pos` (much less code); `bio::views::translate_single` is now in `include/bio/ranges/views/translate_single.hpp`.
 * Cleaned up most of the concept mess in composite alphabets.
 
