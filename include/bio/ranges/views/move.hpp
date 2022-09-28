@@ -16,7 +16,7 @@
 #include <ranges>
 
 #include <bio/core.hpp>
-#include <bio/meta/type_traits/function.hpp>
+#include <bio/meta/overloaded.hpp>
 
 namespace bio::ranges::views
 {

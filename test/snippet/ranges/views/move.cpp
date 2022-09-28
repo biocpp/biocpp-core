@@ -1,8 +1,8 @@
+#include <algorithm>
 #include <string>
+#include <vector>
 
 #include <bio/ranges/views/move.hpp>
-#include <algorithm>
-#include <ranges>
 
 int main()
 {
@@ -15,6 +15,6 @@ int main()
 
     std::vector<std::string> vec_out1{};
     vec_out1.resize(3);
-    std::ranges::copy(vec_in | bio::views::move, // moves strings from in to out
+    std::ranges::copy(vec_in | bio::views::move,    // moves strings from in to out
                       vec_out1.begin());
 }
