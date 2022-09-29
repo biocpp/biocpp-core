@@ -8,20 +8,40 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides bio::meta::ignore_t.
+ * \brief Provides bio::meta::overloaded.
  */
 
 #pragma once
-
-#include <tuple>
 
 #include <bio/core.hpp>
 
 namespace bio::meta
 {
 
-//!\brief The type of std::ignore (with cvref removed).
-//!\ingroup meta
-using ignore_t = std::remove_cvref_t<decltype(std::ignore)>;
+/*!\addtogroup meta
+ * \{
+ */
+
+/*!\brief Wrapper to create an overload set of multiple functors.
+ * \tparam functors The types of the functors (usually deduced).
+ *
+ * This helper allows creating a function object that statically dispatches between
+ * other function objects (usually provided via lambda expressions).
+ *
+ * ### Example
+ *
+ * \include test/snippet/meta/overloaded.cpp
+ */
+template <typename... functors>
+struct overloaded : functors...
+{
+    using functors::operator()...;
+};
+
+//!\brief Deduction guide for bio::meta::overloaded.
+//!\relates bio::meta::overloaded
+template <typename... functors>
+overloaded(functors...) -> overloaded<functors...>;
+//!\}
 
 } // namespace bio::meta

@@ -16,9 +16,6 @@
 #include <tuple>
 #include <type_traits>
 
-#include <bio/meta/type_traits/function.hpp>
-#include <type_traits>
-
 namespace bio::meta::detail
 {
 

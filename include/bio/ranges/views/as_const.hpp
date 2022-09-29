@@ -16,7 +16,6 @@
 #include <ranges>
 
 #include <bio/core.hpp>
-#include <bio/meta/type_traits/function.hpp>
 
 namespace bio::ranges::detail
 {
