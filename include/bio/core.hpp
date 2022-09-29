@@ -125,6 +125,32 @@ inline std::string const biocpp_core_version = std::to_string(biocpp_core_versio
 } // namespace bio
 
 // ============================================================================
+//  Macros for general use
+// ============================================================================
+
+/*!\brief A macro that behaves like std::is_same_v, except that it doesn't need to instantiate the template on GCC and
+ *        Clang.
+ * \ingroup type_traits
+ */
+#if defined(__clang__)
+#    define BIOCPP_IS_SAME(...) __is_same(__VA_ARGS__)
+#elif defined(__GNUC__)
+#    define BIOCPP_IS_SAME(...) __is_same_as(__VA_ARGS__)
+#else
+#    define BIOCPP_IS_SAME(...) std::is_same_v<__VA_ARGS__>
+#endif
+
+/*!\brief Returns true if the expression passed to this macro can be evaluated at compile time, false otherwise.
+ * \ingroup type_traits
+ * \returns true or false.
+ */
+#ifdef __clang__ // this doesn't work and is currently just a hack for clang-based tooling
+#    define BIOCPP_IS_CONSTEXPR(...) true
+#else
+#    define BIOCPP_IS_CONSTEXPR(...) std::integral_constant<bool, __builtin_constant_p((__VA_ARGS__, 0))>::value
+#endif
+
+// ============================================================================
 //  Alphabet namespaces
 // ============================================================================
 

@@ -14,10 +14,8 @@
 #pragma once
 
 #include <bio/alphabet/concept.hpp>
-// #include <bio/alphabet/detail/concept.hpp>
 #include <bio/meta/concept/core_language.hpp>
 #include <bio/meta/type_list/type_list.hpp>
-#include <bio/meta/type_traits/lazy.hpp>
 
 namespace bio::alphabet::detail
 {

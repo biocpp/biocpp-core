@@ -13,10 +13,10 @@
 
 #pragma once
 
+#include <concepts>
 #include <type_traits>
 
 #include <bio/core.hpp>
-#include <concepts>
 
 namespace bio::meta
 {
@@ -171,12 +171,28 @@ template <typename from_t, typename to_t>
 concept decays_to = std::same_as<std::decay_t<from_t>, std::decay_t<to_t>>;
 //!\endcond
 
+/*!\interface   bio::meta::different_from
+ * \brief       The negation of bio::meta::decays_to.
+ */
+//!\cond
+template <typename from_t, typename to_t>
+concept different_from = !decays_to<from_t, to_t>;
+//!\endcond
+
 /*!\interface   bio::meta::one_of
  * \brief       Resolves to (std::same_as<query_t, other_types> || ...).
  */
 //!\cond
 template <typename query_t, typename... other_types>
-concept one_of = (std::same_as<query_t, other_types> || ...);
+concept one_of = (BIOCPP_IS_SAME(query_t, other_types) || ...);
+//!\endcond
+
+/*!\interface   bio::meta::constexpr_default_initializable
+ * \brief       A type that is std::default_initializable<t> at compile-time.
+ */
+//!\cond
+template <typename t>
+concept constexpr_default_initializable = std::default_initializable<t> && BIOCPP_IS_CONSTEXPR(t{});
 //!\endcond
 
 //!\}
