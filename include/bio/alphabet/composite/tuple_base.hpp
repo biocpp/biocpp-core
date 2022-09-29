@@ -17,7 +17,7 @@
 #include <concepts>
 #include <utility>
 
-#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/base.hpp>
 #include <bio/alphabet/composite/detail.hpp>
 #include <bio/alphabet/concept.hpp>
 #include <bio/alphabet/detail/alphabet_proxy.hpp>
@@ -94,15 +94,15 @@ template <typename derived_type, typename... component_types>
              (std::regular<component_types> && ...))
 //!\endcond
 class tuple_base :
-  public alphabet_base<derived_type,
-                       (1 * ... * size<component_types>),
-                       void> // no char type, because this is only semi_alphabet
+  public base<derived_type,
+              (1 * ... * size<component_types>),
+              void> // no char type, because this is only semi_alphabet
 {
 private:
     //!\brief The base type of this class.
-    using base_t = alphabet_base<derived_type,
-                                 (1 * ... * size<component_types>),
-                                 void>; // no char type, because this is only semi_alphabet
+    using base_t = base<derived_type,
+                        (1 * ... * size<component_types>),
+                        void>; // no char type, because this is only semi_alphabet
 
     //!\brief A bio::meta::type_list The types of each component in the composite
     using component_list = meta::type_list<component_types...>;

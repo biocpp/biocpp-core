@@ -13,25 +13,25 @@
 
 #pragma once
 
-#include <bio/alphabet/alphabet_base.hpp>
 #include <bio/alphabet/aminoacid/concept.hpp>
+#include <bio/alphabet/base.hpp>
 #include <bio/alphabet/detail/convert.hpp>
 #include <bio/alphabet/detail/to_lower.hpp>
 
 namespace bio::alphabet
 {
 
-/*!\brief A CRTP-base that refines bio::alphabet::alphabet_base and is used by the amino acids.
+/*!\brief A CRTP-base that refines bio::alphabet::base and is used by the amino acids.
  * \ingroup aminoacid
  * \tparam derived_type The CRTP parameter type.
  * \tparam size         The size of the alphabet.
  */
 template <typename derived_type, auto size>
-class aminoacid_base : public aminoacid_empty_base, public alphabet_base<derived_type, size, char>
+class aminoacid_base : public aminoacid_empty_base, public base<derived_type, size, char>
 {
 private:
     //!\brief Type of the base class.
-    using base_t = alphabet_base<derived_type, size, char>;
+    using base_t = base<derived_type, size, char>;
 
     //!\brief Befriend the base class.
     friend base_t;

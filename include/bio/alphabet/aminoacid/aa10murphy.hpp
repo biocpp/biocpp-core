@@ -85,7 +85,7 @@ private:
 
     //!\brief Befriend bio::alphabet::aminoacid_base.
     friend base_t;
-    //!\cond \brief Befriend bio::alphabet::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet::base.
     friend base_t::base_t;
     //!\endcond
 

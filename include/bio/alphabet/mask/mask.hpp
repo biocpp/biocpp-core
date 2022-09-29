@@ -15,7 +15,7 @@
 
 #include <cassert>
 
-#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/base.hpp>
 
 namespace bio::alphabet
 {
@@ -33,13 +33,13 @@ namespace bio::alphabet
  *
  * \include test/snippet/alphabet/mask/mask.cpp
  */
-class mask : public alphabet_base<mask, 2, void>
+class mask : public base<mask, 2, void>
 {
 private:
     //!\brief The base class.
-    using base_t = alphabet_base<mask, 2, void>;
+    using base_t = base<mask, 2, void>;
 
-    //!\brief Befriend bio::alphabet::alphabet_base.
+    //!\brief Befriend bio::alphabet::base.
     friend base_t;
 
 public:

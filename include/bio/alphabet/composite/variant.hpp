@@ -21,7 +21,7 @@
 #include <utility>
 #include <variant>
 
-#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/base.hpp>
 #include <bio/alphabet/composite/detail.hpp>
 #include <bio/meta/type_list/traits.hpp>
 
@@ -104,13 +104,11 @@ template <typename... alternative_types>
     requires((detail::writable_constexpr_alphabet<alternative_types> && ...) &&
              (std::regular<alternative_types> && ...) && (sizeof...(alternative_types) >= 2))
 //!\endcond
-class variant :
-  public alphabet_base<variant<alternative_types...>, (static_cast<size_t>(size<alternative_types>) + ...), char>
+class variant : public base<variant<alternative_types...>, (static_cast<size_t>(size<alternative_types>) + ...), char>
 {
 private:
     //!\brief The base type.
-    using base_t =
-      alphabet_base<variant<alternative_types...>, (static_cast<size_t>(size<alternative_types>) + ...), char>;
+    using base_t = base<variant<alternative_types...>, (static_cast<size_t>(size<alternative_types>) + ...), char>;
 
     static_assert((std::is_same_v<char_t<alternative_types>, char> && ...),
                   "The variant is currently only tested for alphabets with char_type char. "

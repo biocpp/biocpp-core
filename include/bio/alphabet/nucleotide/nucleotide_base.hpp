@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/base.hpp>
 #include <bio/alphabet/detail/convert.hpp>
 #include <bio/alphabet/detail/to_lower.hpp>
 #include <bio/alphabet/nucleotide/concept.hpp>
@@ -21,7 +21,7 @@
 namespace bio::alphabet
 {
 
-/*!\brief A CRTP-base that refines bio::alphabet::alphabet_base and is used by the nucleotides.
+/*!\brief A CRTP-base that refines bio::alphabet::base and is used by the nucleotides.
  * \ingroup nucleotide
  * \tparam derived_type The CRTP parameter type.
  * \tparam size         The size of the alphabet.
@@ -31,18 +31,18 @@ namespace bio::alphabet
  * You can use this class to define your own nucleotide alphabet, but types are not required to be based on it to model
  * bio::alphabet::nucleotide_alphabet, it is purely a way to avoid code duplication.
  *
- * In addition to the requirements of bio::alphabet::alphabet_base, the derived type needs to define the following static
+ * In addition to the requirements of bio::alphabet::base, the derived type needs to define the following static
  * member variable (can be private):
  *
  *   * `static std::array<THAT_TYPE, alphabet_size> complement_table` that defines for every possible rank value
  *     the corresponding complement.
  */
 template <typename derived_type, auto size>
-class nucleotide_base : public alphabet_base<derived_type, size, char>
+class nucleotide_base : public base<derived_type, size, char>
 {
 private:
     //!\brief Type of the base class.
-    using base_t = alphabet_base<derived_type, size, char>;
+    using base_t = base<derived_type, size, char>;
 
     /*!\name Constructors, destructor and assignment
      * \{

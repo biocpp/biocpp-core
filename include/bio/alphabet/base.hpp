@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides bio::alphabet::alphabet_base.
+ * \brief Provides bio::alphabet::base.
  */
 
 #pragma once
@@ -47,11 +47,11 @@ namespace bio::alphabet
  * ### Example
  *
  * This creates an alphabet called `ab` which has size two and the two letters 'A' and 'B':
- * \include test/snippet/alphabet/detail/alphabet_base.cpp
+ * \include test/snippet/alphabet/detail/base.cpp
  *
  */
 template <typename derived_type, size_t size, typename char_t = char>
-class alphabet_base
+class base
 {
 protected:
     static_assert(size != 0, "alphabet size must be >= 1"); // == 1 is handled below in separate specialisation
@@ -69,12 +69,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr alphabet_base() noexcept                                  = default; //!< Defaulted.
-    constexpr alphabet_base(alphabet_base const &) noexcept             = default; //!< Defaulted.
-    constexpr alphabet_base(alphabet_base &&) noexcept                  = default; //!< Defaulted.
-    constexpr alphabet_base & operator=(alphabet_base const &) noexcept = default; //!< Defaulted.
-    constexpr alphabet_base & operator=(alphabet_base &&) noexcept      = default; //!< Defaulted.
-    ~alphabet_base() noexcept                                           = default; //!< Defaulted.
+    constexpr base() noexcept                         = default; //!< Defaulted.
+    constexpr base(base const &) noexcept             = default; //!< Defaulted.
+    constexpr base(base &&) noexcept                  = default; //!< Defaulted.
+    constexpr base & operator=(base const &) noexcept = default; //!< Defaulted.
+    constexpr base & operator=(base &&) noexcept      = default; //!< Defaulted.
+    ~base() noexcept                                  = default; //!< Defaulted.
     //!\}
 
     /*!\name Read functions
@@ -249,7 +249,7 @@ private:
     }
 };
 
-/*!\brief Specialisation of bio::alphabet::alphabet_base for alphabets of size 1.
+/*!\brief Specialisation of bio::alphabet::base for alphabets of size 1.
  * \ingroup alphabet
  * \tparam derived_type The CRTP parameter type.
  * \tparam char_t The character type (always set to `char` for alphabets of size 1 and to `void` for semi alphabets of
@@ -261,15 +261,15 @@ private:
  * one valid value there is no state that can be changed.
  */
 template <typename derived_type, typename char_t>
-class alphabet_base<derived_type, 1ul, char_t>
+class base<derived_type, 1ul, char_t>
 {
 protected:
     /*!\name Member types
      * \{
      */
-    //!\copybrief bio::alphabet::alphabet_base::char_type
+    //!\copybrief bio::alphabet::base::char_type
     using char_type = std::conditional_t<std::same_as<char_t, void>, char, char_t>;
-    //!\copybrief bio::alphabet::alphabet_base::rank_type
+    //!\copybrief bio::alphabet::base::rank_type
     using rank_type = uint8_t;
     //!\}
 
@@ -277,18 +277,18 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr alphabet_base() noexcept                                  = default; //!< Defaulted.
-    constexpr alphabet_base(alphabet_base const &) noexcept             = default; //!< Defaulted.
-    constexpr alphabet_base(alphabet_base &&) noexcept                  = default; //!< Defaulted.
-    constexpr alphabet_base & operator=(alphabet_base const &) noexcept = default; //!< Defaulted.
-    constexpr alphabet_base & operator=(alphabet_base &&) noexcept      = default; //!< Defaulted.
-    ~alphabet_base() noexcept                                           = default; //!< Defaulted.
+    constexpr base() noexcept                         = default; //!< Defaulted.
+    constexpr base(base const &) noexcept             = default; //!< Defaulted.
+    constexpr base(base &&) noexcept                  = default; //!< Defaulted.
+    constexpr base & operator=(base const &) noexcept = default; //!< Defaulted.
+    constexpr base & operator=(base &&) noexcept      = default; //!< Defaulted.
+    ~base() noexcept                                  = default; //!< Defaulted.
     //!\}
 
     /*!\name Read functions
      * \{
      */
-    //!\copybrief bio::alphabet::alphabet_base::to_char
+    //!\copybrief bio::alphabet::base::to_char
     constexpr char_type to_char() const noexcept
       //!\cond
       requires(!std::same_as<char_t, void>)
@@ -297,14 +297,14 @@ public:
         return derived_type::char_value;
     }
 
-    //!\copybrief bio::alphabet::alphabet_base::to_rank
+    //!\copybrief bio::alphabet::base::to_rank
     constexpr rank_type to_rank() const noexcept { return 0; }
     //!\}
 
     /*!\name Write functions
      * \{
      */
-    //!\copybrief bio::alphabet::alphabet_base::assign_char
+    //!\copybrief bio::alphabet::base::assign_char
     constexpr derived_type & assign_char(char_type const) noexcept
       //!\cond
       requires(!std::same_as<char_t, void>)
@@ -313,7 +313,7 @@ public:
         return static_cast<derived_type &>(*this);
     }
 
-    //!\copybrief bio::alphabet::alphabet_base::assign_rank
+    //!\copybrief bio::alphabet::base::assign_rank
     constexpr derived_type & assign_rank(rank_type const) noexcept { return static_cast<derived_type &>(*this); }
     //!\}
 

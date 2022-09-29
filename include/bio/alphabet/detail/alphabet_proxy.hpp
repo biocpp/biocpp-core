@@ -15,7 +15,7 @@
 
 #include <concepts>
 
-#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/base.hpp>
 #include <bio/alphabet/nucleotide/concept.hpp>
 #include <bio/alphabet/quality/concept.hpp>
 #include <bio/meta/concept/core_language.hpp>
@@ -121,7 +121,7 @@ public:
      *        the assignment operator which invokes derived behaviour.
      * \{
      */
-    //!\copydoc bio::alphabet::alphabet_base::assign_char
+    //!\copydoc bio::alphabet::base::assign_char
     constexpr derived_type & assign_char(char_type const c) noexcept
       //!\cond
       requires writable_alphabet<alphabet_type>
@@ -132,7 +132,7 @@ public:
         return operator=(tmp);
     }
 
-    //!\copydoc bio::alphabet::alphabet_base::assign_char
+    //!\copydoc bio::alphabet::base::assign_char
     constexpr derived_type const & assign_char(char_type const c) const noexcept
       //!\cond
       requires writable_alphabet<alphabet_type>
@@ -197,7 +197,7 @@ public:
     //!\endcond
     constexpr operator other_t() const noexcept { return operator alphabet_type(); }
 
-    //!\copydoc bio::alphabet::alphabet_base::to_char
+    //!\copydoc bio::alphabet::base::to_char
     constexpr auto to_char() const noexcept
       //!\cond
       requires alphabet<alphabet_type>

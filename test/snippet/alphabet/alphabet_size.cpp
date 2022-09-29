@@ -7,6 +7,6 @@ int main()
     // calls bio::alphabet::cpo::tag_invoke(bio::alphabet::cpo::size, char{}); r2 == 256
     auto r2 = bio::alphabet::size<char>;
 
-    // calls bio::alphabet::alphabet_base's friend tag_invoke() which returns dna5::alphabet_size == 5
+    // calls bio::alphabet::base's friend tag_invoke() which returns dna5::alphabet_size == 5
     auto r3 = bio::alphabet::size<bio::alphabet::dna5>;
 }

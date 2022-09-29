@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/base.hpp>
 
 namespace bio::alphabet
 {
@@ -43,11 +43,11 @@ namespace bio::alphabet
  * \include test/snippet/alphabet/composite/semialphabet_any.cpp
  */
 template <size_t size_>
-class semialphabet_any : public alphabet_base<semialphabet_any<size_>, size_, void>
+class semialphabet_any : public base<semialphabet_any<size_>, size_, void>
 {
 private:
     //!\brief Type of the base class.
-    using base_t = alphabet_base<semialphabet_any<size_>, size_, void>;
+    using base_t = base<semialphabet_any<size_>, size_, void>;
 
     //!\brief Befriend the base class.
     friend base_t;
