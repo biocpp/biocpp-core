@@ -68,7 +68,7 @@ private:
     using char_type = meta::valid_template_spec_or_t<char, char_t, alphabet_type>;
 
     //!\brief The type of the phred score.
-    using phred_type = meta::valid_template_spec_or_t<int8_t, alphabet_phred_t, alphabet_type>;
+    using phred_type = meta::valid_template_spec_or_t<int8_t, phred_t, alphabet_type>;
 
 private:
     /*!\name Constructors, destructor and assignment

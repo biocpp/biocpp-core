@@ -99,7 +99,7 @@ template <typename alphabet_type>
     //!\cond
     requires(requires { {bio::alphabet::to_phred(std::declval<alphabet_type>())}; })
 //!\endcond
-using alphabet_phred_t = decltype(bio::alphabet::to_phred(std::declval<alphabet_type>()));
+using phred_t = decltype(bio::alphabet::to_phred(std::declval<alphabet_type>()));
 
 } // namespace bio::alphabet
 
@@ -132,7 +132,7 @@ namespace bio::alphabet
 
 /*!\brief Assign a phred score to a quality alphabet object.
  * \tparam alph_type The type of the target object. Must model the bio::alphabet::quality_alphabet.
- * \param  phr       The phred score being assigned; must be of the bio::alphabet::alphabet_phred_t of the target object.
+ * \param  phr       The phred score being assigned; must be of the bio::alphabet::phred_t of the target object.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
  * \ingroup quality
  * \details
@@ -162,8 +162,8 @@ namespace bio::alphabet
  * by this function object and **do not** require an additional overload.
  * \hideinitializer
  */
-inline constexpr auto assign_phred_to = []<typename alph_t>(bio::alphabet::alphabet_phred_t<alph_t> const p,
-                                                            alph_t &&                                     a) -> alph_t
+inline constexpr auto assign_phred_to = []<typename alph_t>(bio::alphabet::phred_t<alph_t> const p,
+                                                            alph_t &&                            a) -> alph_t
   //!\cond
   requires(requires {
       {
@@ -253,7 +253,7 @@ concept quality_alphabet = alphabet<t> && requires(t qual)
  */
 //!\cond
 template <typename t>
-concept writable_quality_alphabet = writable_alphabet<t> && quality_alphabet<t> && requires(t v, alphabet_phred_t<t> c)
+concept writable_quality_alphabet = writable_alphabet<t> && quality_alphabet<t> && requires(t v, phred_t<t> c)
 {
     {bio::alphabet::assign_phred_to(c, v)};
 };
