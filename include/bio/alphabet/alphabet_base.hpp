@@ -228,23 +228,22 @@ private:
                                      char_type const c,
                                      std::type_identity<derived_type>) noexcept
       //!\cond REQ
-      requires(requires { {derived_type::char_is_valid(c)}; } &&
-               !meta::is_constexpr_default_constructible_v<derived_type>)
+      requires(requires { {derived_type::char_is_valid(c)}; } && !meta::constexpr_default_initializable<derived_type>)
     //!\endcond
     {
         return derived_type::char_is_valid(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend consteval auto tag_invoke(cpo::size, derived_type) noexcept requires
-      meta::is_constexpr_default_constructible_v<derived_type>
+    friend consteval auto tag_invoke(cpo::size,
+                                     derived_type) noexcept requires meta::constexpr_default_initializable<derived_type>
     {
         return size;
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend consteval auto tag_invoke(cpo::size, std::type_identity<derived_type>) noexcept
-      requires(!meta::is_constexpr_default_constructible_v<derived_type>)
+      requires(!meta::constexpr_default_initializable<derived_type>)
     {
         return size;
     }
@@ -379,15 +378,15 @@ private:
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend consteval auto tag_invoke(cpo::size, derived_type) noexcept requires
-      meta::is_constexpr_default_constructible_v<derived_type>
+    friend consteval auto tag_invoke(cpo::size,
+                                     derived_type) noexcept requires meta::constexpr_default_initializable<derived_type>
     {
         return alphabet_size;
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend consteval auto tag_invoke(cpo::size, std::type_identity<derived_type>) noexcept
-      requires(!meta::is_constexpr_default_constructible_v<derived_type>)
+      requires(!meta::constexpr_default_initializable<derived_type>)
     {
         return alphabet_size;
     }

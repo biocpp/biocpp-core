@@ -71,7 +71,7 @@ public:
     //!\endcond
     explicit constexpr aminoacid_base(other_aa_type const other) noexcept
     {
-        if constexpr (meta::is_constexpr_default_constructible_v<other_aa_type> &&
+        if constexpr (meta::constexpr_default_initializable<other_aa_type> &&
                       detail::writable_constexpr_alphabet<other_aa_type>)
         {
             static_cast<derived_type &>(*this) =

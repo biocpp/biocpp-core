@@ -269,28 +269,19 @@ public:
         return lhs.to_rank() <=> rhs.to_rank();
     }
 
-private:
-    //!\brief work around a gcc bug that disables short-circuiting of operator&& in an enable_if_t of a friend function
-    template <typename t>
-    static constexpr bool is_alphabet_comparable_with =
-      !std::is_same_v<derived_type, t> && meta::weakly_equality_comparable_with<alphabet_type, t>;
-
 public:
     //!\brief Allow (in-)equality comparison with types that the emulated type is comparable with.
-    template <typename t>
+    template <meta::different_from<derived_type> t>
+        requires(meta::weakly_equality_comparable_with<alphabet_type, t>)
     friend constexpr auto operator==(derived_type const lhs, t const rhs) noexcept
-      -> std::enable_if_t<is_alphabet_comparable_with<t>, bool>
     {
         return (lhs.operator alphabet_type() == rhs);
     }
 
     //!\brief Allow (in-)equality comparison with types that the emulated type is comparable with.
-    template <typename t>
-    friend constexpr auto operator==(t const lhs, derived_type const rhs) noexcept
-      -> std::enable_if_t<is_alphabet_comparable_with<t>, bool>
-    {
-        return (rhs == lhs);
-    }
+    template <meta::different_from<derived_type> t>
+        requires(meta::weakly_equality_comparable_with<alphabet_type, t>)
+    friend constexpr auto operator==(t const lhs, derived_type const rhs) noexcept { return (rhs == lhs); }
     //!\}
 
 private:
@@ -345,23 +336,22 @@ private:
                                      char_type const c,
                                      std::type_identity<derived_type>) noexcept
       //!\cond REQ
-      requires(requires { {derived_type::char_is_valid(c)}; } &&
-               !meta::is_constexpr_default_constructible_v<derived_type>)
+      requires(requires { {derived_type::char_is_valid(c)}; } && !meta::constexpr_default_initializable<derived_type>)
     //!\endcond
     {
         return derived_type::char_is_valid(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend consteval auto tag_invoke(cpo::size, derived_type) noexcept requires
-      meta::is_constexpr_default_constructible_v<derived_type>
+    friend consteval auto tag_invoke(cpo::size,
+                                     derived_type) noexcept requires meta::constexpr_default_initializable<derived_type>
     {
         return alphabet_size;
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend consteval auto tag_invoke(cpo::size, std::type_identity<derived_type>) noexcept
-      requires(!meta::is_constexpr_default_constructible_v<derived_type>)
+      requires(!meta::constexpr_default_initializable<derived_type>)
     {
         return alphabet_size;
     }
