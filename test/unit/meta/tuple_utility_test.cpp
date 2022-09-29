@@ -6,17 +6,16 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
+#include <concepts>
+#include <tuple>
 #include <type_traits>
 
 #include <gtest/gtest.h>
 
-#include <tuple>
-
-#include "my_tuple.hpp"
-
 #include <bio/meta/pod_tuple.hpp>
 #include <bio/meta/tuple_utility.hpp>
-#include <concepts>
+
+#include "my_tuple.hpp"
 
 using bar = unsigned;
 

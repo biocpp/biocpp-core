@@ -7,6 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 #include <fstream>
+
 #include <gtest/gtest.h>
 
 #include <bio/test/tmp_filename.hpp>

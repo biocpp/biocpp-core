@@ -12,18 +12,18 @@
 
 #pragma once
 
-#include <gtest/gtest.h>
-
 #include <fstream>
 
-#include <bio/meta/type_traits/basic.hpp>
-#include <bio/test/tmp_filename.hpp>
+#include <gtest/gtest.h>
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/archives/portable_binary.hpp>
 #include <cereal/archives/xml.hpp>
 #include <cereal/types/vector.hpp>
+
+#include <bio/meta/type_traits/basic.hpp>
+#include <bio/test/tmp_filename.hpp>
 
 template <typename in_archive_t, typename out_archive_t, typename value_t>
 void do_cerealisation(value_t && l)

@@ -13,8 +13,9 @@
 
 #pragma once
 
-#include <bio/alphabet/alphabet_base.hpp>
 #include <cassert>
+
+#include <bio/alphabet/alphabet_base.hpp>
 
 namespace bio::alphabet
 {

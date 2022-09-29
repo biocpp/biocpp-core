@@ -9,6 +9,7 @@
 #include <gtest/gtest.h>
 
 #include <bio/alphabet/cigar/cigar_op.hpp>
+
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"
 #include "../semi_alphabet_constexpr_test_template.hpp"

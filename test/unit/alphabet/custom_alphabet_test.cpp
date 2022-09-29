@@ -16,8 +16,9 @@
 // Tests the ADL-capabilities of the alphabet customisation point objects
 
 //![my_alph]
+#include <cstddef> // for size_t
+
 #include <bio/alphabet/concept.hpp> // for bio::alphabet::alphabet
-#include <cstddef>                  // for size_t
 
 namespace my_namespace
 {

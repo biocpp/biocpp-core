@@ -6,19 +6,19 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
+#include <algorithm>
+#include <concepts>
 #include <deque>
 #include <iostream>
 #include <list>
+#include <ranges>
 #include <string>
 #include <vector>
 
 #include <gtest/gtest.h>
 
-#include <algorithm>
 #include <bio/ranges/views/type_reduce.hpp>
 #include <bio/test/expect_range_eq.hpp>
-#include <concepts>
-#include <ranges>
 
 // ============================================================================
 //  test templates

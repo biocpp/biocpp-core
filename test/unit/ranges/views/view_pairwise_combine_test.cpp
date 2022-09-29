@@ -6,12 +6,12 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
-
 #include <forward_list>
 #include <list>
 #include <utility>
 #include <vector>
+
+#include <gtest/gtest.h>
 
 #include <bio/ranges/type_traits.hpp>
 #include <bio/ranges/views/pairwise_combine.hpp>

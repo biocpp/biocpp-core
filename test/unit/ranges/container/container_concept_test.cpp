@@ -6,14 +6,14 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
-
 #include <array>
 #include <deque>
 #include <forward_list>
 #include <list>
 #include <string>
 #include <vector>
+
+#include <gtest/gtest.h>
 
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/alphabet/quality/phred42.hpp>

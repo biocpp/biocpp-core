@@ -7,10 +7,9 @@
 // -----------------------------------------------------------------------------------------------------
 
 #include <sstream>
+#include <vector>
 
 #include <gtest/gtest.h>
-
-#include <vector>
 
 #include <bio/alphabet/gap/gapped.hpp>
 #include <bio/alphabet/nucleotide/dna15.hpp>

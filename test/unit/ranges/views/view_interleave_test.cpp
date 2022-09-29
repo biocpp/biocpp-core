@@ -7,15 +7,15 @@
 // -----------------------------------------------------------------------------------------------------
 
 #include <forward_list>
+#include <ranges>
+
+#include <gtest/gtest.h>
 
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/ranges/views/interleave.hpp>
 #include <bio/ranges/views/take.hpp>
 #include <bio/ranges/views/type_reduce.hpp>
 #include <bio/test/expect_range_eq.hpp>
-#include <ranges>
-
-#include <gtest/gtest.h>
 
 using namespace bio::alphabet::literals;
 

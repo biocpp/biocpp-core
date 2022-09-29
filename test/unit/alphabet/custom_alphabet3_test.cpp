@@ -16,8 +16,9 @@
 // Tests the capabilities of the explicit alphabet customisation
 
 //![third_party_type]
+#include <cstddef> // for size_t
+
 #include <bio/alphabet/concept.hpp> // for bio::alphabet::alphabet
-#include <cstddef>                  // for size_t
 
 // this is from some other library:
 namespace third_party_ns

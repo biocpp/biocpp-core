@@ -6,14 +6,14 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
+#include <bio/alphabet/aminoacid/aa20.hpp>
+#include <bio/ranges/views/zip.hpp>
+
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"
 #include "../semi_alphabet_constexpr_test_template.hpp"
 #include "../semi_alphabet_test_template.hpp"
 #include "aminoacid_test_template.hpp"
-
-#include <bio/alphabet/aminoacid/aa20.hpp>
-#include <bio/ranges/views/zip.hpp>
 
 using namespace bio::alphabet::literals;
 

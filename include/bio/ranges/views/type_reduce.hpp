@@ -13,14 +13,14 @@
 
 #pragma once
 
+#include <concepts>
+#include <ranges>
+#include <span>
 #include <string_view>
 
 #include <bio/meta/type_traits/template_inspection.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/views/detail.hpp>
-#include <concepts>
-#include <ranges>
-#include <span>
 
 namespace bio::ranges::detail
 {

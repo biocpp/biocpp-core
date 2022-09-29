@@ -6,11 +6,11 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <gtest/gtest-spi.h> // provides test utility to test google test itself
-#include <gtest/gtest.h>
-
 #include <span>
 #include <string_view>
+
+#include <gtest/gtest-spi.h> // provides test utility to test google test itself
+#include <gtest/gtest.h>
 
 #include <bio/test/expect_range_eq.hpp>
 

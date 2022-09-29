@@ -14,11 +14,11 @@
 #pragma once
 
 #include <cassert>
+#include <iterator>
 #include <type_traits>
 
 #include <bio/meta/detail/empty_type.hpp>
 #include <bio/ranges/type_traits.hpp>
-#include <iterator>
 
 namespace bio::ranges::detail
 {

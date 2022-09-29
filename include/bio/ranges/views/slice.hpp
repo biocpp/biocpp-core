@@ -13,16 +13,16 @@
 
 #pragma once
 
-#include <stdexcept>
-
-#include <bio/ranges/concept.hpp>
-#include <bio/ranges/views/detail.hpp>
-#include <bio/ranges/views/type_reduce.hpp>
 #include <concepts>
 #include <iterator>
 #include <ranges>
 #include <span>
+#include <stdexcept>
 #include <type_traits>
+
+#include <bio/ranges/concept.hpp>
+#include <bio/ranges/views/detail.hpp>
+#include <bio/ranges/views/type_reduce.hpp>
 
 namespace bio::ranges::detail
 {

@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include <gtest/gtest.h>
-
 #include <iterator>
 #include <ranges>
+
+#include <gtest/gtest.h>
 
 #include <bio/core.hpp>
 

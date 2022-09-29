@@ -14,14 +14,14 @@
 #pragma once
 
 #include <cmath>
+#include <concepts>
+#include <ranges>
 
 #include <bio/meta/type_traits/transformation_trait_or.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
 #include <bio/ranges/views/detail.hpp>
 #include <bio/ranges/views/persist.hpp>
 #include <bio/ranges/views/type_reduce.hpp>
-#include <concepts>
-#include <ranges>
 
 namespace bio::ranges::detail
 {

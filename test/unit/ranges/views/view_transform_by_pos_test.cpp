@@ -6,15 +6,14 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
-
 #include <iostream>
+
+#include <gtest/gtest.h>
 
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/to.hpp>
 #include <bio/ranges/views/transform_by_pos.hpp>
-
 #include <bio/test/expect_same_type.hpp>
 
 auto rev = [](auto && urange, size_t const pos) -> std::ranges::range_reference_t<decltype(urange)>
