@@ -77,7 +77,7 @@ public:
  * Similar to to_fn, but accepts a template-template as argument.
  * e.g.: to_fn<vector> instead of to_fn<vector<int>>;
  */
-template <template <class> class container_t>
+template <template <typename...> typename container_t>
 struct to_template_template_fn
 {
     /*!\brief Converts a template-template into a container.
@@ -117,7 +117,7 @@ constexpr auto to(args_t &&... args)
 }
 
 //!\overload
-template <template <class...> typename container_t, typename... args_t>
+template <template <typename...> typename container_t, typename... args_t>
 constexpr auto to(args_t &&... args)
 {
     return detail::adaptor_from_functor{detail::to_template_template_fn<container_t>{}, std::forward<args_t>(args)...};
@@ -132,7 +132,7 @@ constexpr auto to(rng_t && rng, args_t &&... args)
 }
 
 //!\overload
-template <template <class...> typename container_t, std::ranges::range rng_t, typename... args_t>
+template <template <typename...> typename container_t, std::ranges::range rng_t, typename... args_t>
 constexpr auto to(rng_t && rng, args_t &&... args)
 {
     return detail::adaptor_from_functor{detail::to_template_template_fn<container_t>{},

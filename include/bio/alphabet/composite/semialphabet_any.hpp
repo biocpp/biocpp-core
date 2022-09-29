@@ -67,17 +67,17 @@ public:
     ~semialphabet_any() noexcept                                              = default; //!< Defaulted.
 
     //!\brief Construct semialphabet_any from alphabet of the same size
-    template <semialphabet other_alph_t>
+    template <meta::different_from<semialphabet_any> other_alph_t>
         //!\cond
-        requires(size<other_alph_t> == size_)
+        requires(semialphabet<other_alph_t> && size<other_alph_t> == size_)
     //!\endcond
     explicit semialphabet_any(other_alph_t const other) { assign_rank(bio::alphabet::to_rank(other)); }
     //!\}
 
     //!\brief Enable conversion of semialphabet_any into other (semi-)alphabet of the same size
-    template <semialphabet other_alph_t>
+    template <meta::different_from<semialphabet_any> other_alph_t>
         //!\cond
-        requires((size<other_alph_t> == size_) && std::regular<other_alph_t>)
+        requires(semialphabet<other_alph_t> && (size<other_alph_t> == size_) && std::regular<other_alph_t>)
     //!\endcond
     explicit operator other_alph_t() const
     {

@@ -87,6 +87,15 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 #    endif // BIOCPP_DISABLE_LEGACY_STD_DIAGNOSTIC
 #endif     // _GLIBCXX_USE_CXX11_ABI == 0
 
+//!\brief See https://github.com/llvm/llvm-project/issues/58078
+#ifndef BIOCPP_WORKAROUND_CLANG_58078
+#    if defined(__clang__)
+#        define BIOCPP_WORKAROUND_CLANG_58078 1
+#    else
+#        define BIOCPP_WORKAROUND_CLANG_58078 0
+#    endif
+#endif
+
 // ============================================================================
 //  Define our version
 // ============================================================================
@@ -125,7 +134,7 @@ inline std::string const biocpp_core_version = std::to_string(biocpp_core_versio
 } // namespace bio
 
 // ============================================================================
-//  Macros for general use
+//  Macros for general use within libraries
 // ============================================================================
 
 /*!\brief A macro that behaves like std::is_same_v, except that it doesn't need to instantiate the template on GCC and
@@ -144,11 +153,7 @@ inline std::string const biocpp_core_version = std::to_string(biocpp_core_versio
  * \ingroup type_traits
  * \returns true or false.
  */
-#ifdef __clang__ // this doesn't work and is currently just a hack for clang-based tooling
-#    define BIOCPP_IS_CONSTEXPR(...) true
-#else
-#    define BIOCPP_IS_CONSTEXPR(...) std::integral_constant<bool, __builtin_constant_p((__VA_ARGS__, 0))>::value
-#endif
+#define BIOCPP_IS_CONSTEXPR(...) std::integral_constant<bool, __builtin_constant_p((__VA_ARGS__, 0))>::value
 
 // ============================================================================
 //  Alphabet namespaces

@@ -269,11 +269,10 @@ public:
         return lhs.to_rank() <=> rhs.to_rank();
     }
 
-public:
     //!\brief Allow (in-)equality comparison with types that the emulated type is comparable with.
     template <meta::different_from<derived_type> t>
         requires(meta::weakly_equality_comparable_with<alphabet_type, t>)
-    friend constexpr auto operator==(derived_type const lhs, t const rhs) noexcept
+    friend constexpr bool operator==(derived_type const lhs, t const rhs) noexcept
     {
         return (lhs.operator alphabet_type() == rhs);
     }
@@ -281,7 +280,7 @@ public:
     //!\brief Allow (in-)equality comparison with types that the emulated type is comparable with.
     template <meta::different_from<derived_type> t>
         requires(meta::weakly_equality_comparable_with<alphabet_type, t>)
-    friend constexpr auto operator==(t const lhs, derived_type const rhs) noexcept { return (rhs == lhs); }
+    friend constexpr bool operator==(t const lhs, derived_type const rhs) noexcept { return (rhs == lhs); }
     //!\}
 
 private:
