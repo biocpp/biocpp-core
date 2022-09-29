@@ -19,7 +19,7 @@
 #include <ranges>
 #include <type_traits>
 
-#include <bio/alphabet/detail/alphabet_proxy.hpp>
+#include <bio/alphabet/proxy_base.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
 #include <bio/ranges/views/convert.hpp>
 #include <bio/ranges/views/repeat_n.hpp>
@@ -117,11 +117,11 @@ private:
 
     //!\brief Proxy data type returned by bio::ranges::bitcompressed_vector as reference to element unless the alphabet_type
     //!       is uint8_t, uint16_t, uint32_t or uint64_t (in which case a regular & is returned).
-    class reference_proxy_type : public alphabet::alphabet_proxy<reference_proxy_type, alphabet_type>
+    class reference_proxy_type : public alphabet::proxy_base<reference_proxy_type, alphabet_type>
     {
     private:
         //!\brief The base type.
-        using base_t = alphabet::alphabet_proxy<reference_proxy_type, alphabet_type>;
+        using base_t = alphabet::proxy_base<reference_proxy_type, alphabet_type>;
 
         //!\brief Pointer to the host's storage container.
         data_type * data_ptr;
@@ -769,7 +769,7 @@ public:
         size_t const         size_of_insert = std::distance(begin_it, end_it);
         bitcompressed_vector tmp;
         tmp.resize(size() + size_of_insert);
-        //TODO use constrained algorithms here once alphabet_proxy is out-iterator-compatible
+        //TODO use constrained algorithms here once proxy_base is out-iterator-compatible
         std::copy(cbegin(), pos, tmp.begin());
         std::copy(begin_it, end_it, tmp.begin() + pos_as_num);
         std::copy(cbegin() + pos_as_num, cend(), tmp.begin() + pos_as_num + size_of_insert);
@@ -828,7 +828,7 @@ public:
         size_t const         size_of_removal      = std::distance(begin_it, end_it);
         bitcompressed_vector tmp;
         tmp.resize(size() - size_of_removal);
-        //TODO use constrained algorithms here once alphabet_proxy is out-iterator-compatible
+        //TODO use constrained algorithms here once proxy_base is out-iterator-compatible
         std::copy(cbegin(), begin_it, tmp.begin());
         std::copy(end_it, cend(), tmp.begin() + begin_pos_of_removal);
 

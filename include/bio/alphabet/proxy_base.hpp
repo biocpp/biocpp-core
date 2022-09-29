@@ -8,7 +8,7 @@
 
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
- * \brief Provides bio::alphabet::alphabet_proxy.
+ * \brief Provides bio::alphabet::proxy_base.
  */
 
 #pragma once
@@ -61,7 +61,7 @@ template <typename derived_type, writable_semialphabet alphabet_type>
     //!\cond
     requires std::regular<alphabet_type>
 //!\endcond
-class alphabet_proxy
+class proxy_base
 {
 private:
     //!\brief The type of the alphabet character.
@@ -74,12 +74,12 @@ private:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr alphabet_proxy() noexcept                          = default; //!< Defaulted.
-    constexpr alphabet_proxy(alphabet_proxy const &)             = default; //!< Defaulted.
-    constexpr alphabet_proxy(alphabet_proxy &&)                  = default; //!< Defaulted.
-    constexpr alphabet_proxy & operator=(alphabet_proxy const &) = default; //!< Defaulted.
-    constexpr alphabet_proxy & operator=(alphabet_proxy &&)      = default; //!< Defaulted.
-    ~alphabet_proxy()                                            = default; //!< Defaulted.
+    constexpr proxy_base() noexcept                      = default; //!< Defaulted.
+    constexpr proxy_base(proxy_base const &)             = default; //!< Defaulted.
+    constexpr proxy_base(proxy_base &&)                  = default; //!< Defaulted.
+    constexpr proxy_base & operator=(proxy_base const &) = default; //!< Defaulted.
+    constexpr proxy_base & operator=(proxy_base &&)      = default; //!< Defaulted.
+    ~proxy_base()                                        = default; //!< Defaulted.
 
     //!\brief Assigment from the emulated type. This function triggers the specialisation in the derived_type.
     constexpr derived_type & operator=(alphabet_type const & c) noexcept
@@ -180,13 +180,13 @@ public:
          * This prevents errors associated with using alphabet_type's constructors.
          *
          * This is one of error cases:
-         * The tuple composite bio::alphabet::qualified returns a component_proxy which inherits from alphabet_proxy_base.
+         * The tuple composite bio::alphabet::qualified returns a component_proxy which inherits from proxy_base_base.
          * The qualified alphabet itself inherits from quality_base.
          * Now when accessing get<1>(seq_qual_alph) we want to call to_phred at some point because we want the quality,
-         * therefore the to_phred function from alphabet_proxy is called, but this function did a static_cast to the
+         * therefore the to_phred function from proxy_base is called, but this function did a static_cast to the
          * derived type which is calling the constructor from quality_base. Unfortunately now, the generic quality_base
          * constructor uses `assign_phred_to(to_phred(other), static_cast<derived_type &>(*this))`; (here) which again
-         * tries to call to_phred of the alphabet_proxy => infinite loop :boom:
+         * tries to call to_phred of the proxy_base => infinite loop :boom:
          */
     }
 

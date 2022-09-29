@@ -6,36 +6,33 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <bio/alphabet/detail/alphabet_proxy.hpp>
 #include <bio/alphabet/nucleotide/dna4.hpp>
+#include <bio/alphabet/proxy_base.hpp>
 
-#include "../alphabet_proxy_test_template.hpp"
+#include "alphabet_proxy_test_template.hpp"
 
-class alphabet_proxy_example : public bio::alphabet::alphabet_proxy<alphabet_proxy_example, bio::alphabet::dna4>
+class proxy_base_example : public bio::alphabet::proxy_base<proxy_base_example, bio::alphabet::dna4>
 {
 private:
     using alphabet_type = bio::alphabet::dna4;
-    using base_t        = bio::alphabet::alphabet_proxy<alphabet_proxy_example, alphabet_type>;
+    using base_t        = bio::alphabet::proxy_base<proxy_base_example, alphabet_type>;
     friend base_t;
 
     bio::alphabet::dna4 * ptr;
 
 public:
-    constexpr alphabet_proxy_example() noexcept                      = delete;
-    constexpr alphabet_proxy_example(alphabet_proxy_example const &) = default;
-    constexpr alphabet_proxy_example(alphabet_proxy_example &&)      = default;
-    ~alphabet_proxy_example()                                        = default;
+    constexpr proxy_base_example() noexcept                  = delete;
+    constexpr proxy_base_example(proxy_base_example const &) = default;
+    constexpr proxy_base_example(proxy_base_example &&)      = default;
+    ~proxy_base_example()                                    = default;
 
-    constexpr alphabet_proxy_example(bio::alphabet::dna4 & in) : ptr{&in} {}
+    constexpr proxy_base_example(bio::alphabet::dna4 & in) : ptr{&in} {}
 
     using base_t::operator=;
 
-    constexpr alphabet_proxy_example & operator=(alphabet_proxy_example const & rhs)
-    {
-        return assign_rank(rhs.to_rank());
-    }
+    constexpr proxy_base_example & operator=(proxy_base_example const & rhs) { return assign_rank(rhs.to_rank()); }
 
-    constexpr alphabet_proxy_example const & operator=(alphabet_proxy_example const & rhs) const
+    constexpr proxy_base_example const & operator=(proxy_base_example const & rhs) const
     {
         return assign_rank(rhs.to_rank());
     }
@@ -45,13 +42,13 @@ public:
         return ptr->to_rank(); // This would have actual implementation
     }
 
-    constexpr alphabet_proxy_example & assign_rank(size_t const r) noexcept
+    constexpr proxy_base_example & assign_rank(size_t const r) noexcept
     {
         ptr->assign_rank(r);
         return *this;
     }
 
-    constexpr alphabet_proxy_example const & assign_rank(size_t const r) const noexcept
+    constexpr proxy_base_example const & assign_rank(size_t const r) const noexcept
     {
         ptr->assign_rank(r);
         return *this;
@@ -61,18 +58,18 @@ public:
 using namespace bio::alphabet::literals;
 
 template <>
-struct proxy_fixture<alphabet_proxy_example> : public ::testing::Test
+struct proxy_fixture<proxy_base_example> : public ::testing::Test
 {
     bio::alphabet::dna4 def{};
     bio::alphabet::dna4 a0 = 'A'_dna4;
     bio::alphabet::dna4 a1 = 'C'_dna4;
 
-    alphabet_proxy_example default_init{def};
-    alphabet_proxy_example t0{a0};
-    alphabet_proxy_example t1{a1};
+    proxy_base_example default_init{def};
+    proxy_base_example t0{a0};
+    proxy_base_example t1{a1};
 };
 
-INSTANTIATE_TYPED_TEST_SUITE_P(proxy1_test, proxy_fixture, ::testing::Types<alphabet_proxy_example>, );
+INSTANTIATE_TYPED_TEST_SUITE_P(proxy1_test, proxy_fixture, ::testing::Types<proxy_base_example>, );
 
 // -----------------------------------------------------------------------------------------------------
 // check handling of external types that do not provide members
@@ -140,42 +137,39 @@ static_assert(bio::alphabet::size<my_namespace::my_alph> == 2);
 static_assert(bio::alphabet::semialphabet<my_namespace::my_alph>);
 static_assert(bio::alphabet::alphabet<my_namespace::my_alph>);
 
-class alphabet_proxy_example2 : public bio::alphabet::alphabet_proxy<alphabet_proxy_example2, my_namespace::my_alph>
+class proxy_base_example2 : public bio::alphabet::proxy_base<proxy_base_example2, my_namespace::my_alph>
 {
 private:
     using alphabet_type = my_namespace::my_alph;
-    using base_t        = bio::alphabet::alphabet_proxy<alphabet_proxy_example2, alphabet_type>;
+    using base_t        = bio::alphabet::proxy_base<proxy_base_example2, alphabet_type>;
     friend base_t;
 
     my_namespace::my_alph * ptr;
 
 public:
-    constexpr alphabet_proxy_example2() noexcept                       = default;
-    constexpr alphabet_proxy_example2(alphabet_proxy_example2 const &) = default;
-    constexpr alphabet_proxy_example2(alphabet_proxy_example2 &&)      = default;
-    ~alphabet_proxy_example2()                                         = default;
+    constexpr proxy_base_example2() noexcept                   = default;
+    constexpr proxy_base_example2(proxy_base_example2 const &) = default;
+    constexpr proxy_base_example2(proxy_base_example2 &&)      = default;
+    ~proxy_base_example2()                                     = default;
 
-    constexpr alphabet_proxy_example2(my_namespace::my_alph & val) : ptr{&val} {}
+    constexpr proxy_base_example2(my_namespace::my_alph & val) : ptr{&val} {}
 
-    constexpr alphabet_proxy_example2 & operator=(alphabet_proxy_example2 const & rhs)
-    {
-        return assign_rank(rhs.to_rank());
-    }
+    constexpr proxy_base_example2 & operator=(proxy_base_example2 const & rhs) { return assign_rank(rhs.to_rank()); }
 
-    constexpr alphabet_proxy_example2 const & operator=(alphabet_proxy_example2 const & rhs) const
+    constexpr proxy_base_example2 const & operator=(proxy_base_example2 const & rhs) const
     {
         return assign_rank(rhs.to_rank());
     }
 
     constexpr size_t to_rank() const noexcept { return ptr->rank; }
 
-    constexpr alphabet_proxy_example2 & assign_rank(size_t const r) noexcept
+    constexpr proxy_base_example2 & assign_rank(size_t const r) noexcept
     {
         ptr->rank = r;
         return *this;
     }
 
-    constexpr alphabet_proxy_example2 const & assign_rank(size_t const r) const noexcept
+    constexpr proxy_base_example2 const & assign_rank(size_t const r) const noexcept
     {
         ptr->rank = r;
         return *this;
@@ -183,15 +177,15 @@ public:
 };
 
 template <>
-struct proxy_fixture<alphabet_proxy_example2> : public ::testing::Test
+struct proxy_fixture<proxy_base_example2> : public ::testing::Test
 {
     my_namespace::my_alph def{};
     my_namespace::my_alph a0{0};
     my_namespace::my_alph a1{1};
 
-    alphabet_proxy_example2 default_init{def};
-    alphabet_proxy_example2 t0{a0};
-    alphabet_proxy_example2 t1{a1};
+    proxy_base_example2 default_init{def};
+    proxy_base_example2 t0{a0};
+    proxy_base_example2 t1{a1};
 };
 
-INSTANTIATE_TYPED_TEST_SUITE_P(proxy2_test, proxy_fixture, ::testing::Types<alphabet_proxy_example2>, );
+INSTANTIATE_TYPED_TEST_SUITE_P(proxy2_test, proxy_fixture, ::testing::Types<proxy_base_example2>, );
