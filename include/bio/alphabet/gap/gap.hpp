@@ -16,7 +16,7 @@
 
 #include <cassert>
 
-#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/base.hpp>
 
 namespace bio::alphabet
 {
@@ -34,13 +34,13 @@ namespace bio::alphabet
  * \include test/snippet/alphabet/gap/gap.cpp
  */
 
-class gap : public alphabet_base<gap, 1ull, char>
+class gap : public base<gap, 1ull, char>
 {
 private:
     //!\brief The base class.
-    using base_t = alphabet_base<gap, 1ull, char>;
+    using base_t = base<gap, 1ull, char>;
 
-    //!\brief Befriend bio::alphabet::alphabet_base.
+    //!\brief Befriend bio::alphabet::base.
     friend base_t;
 
     //!\brief The character that will be printed.

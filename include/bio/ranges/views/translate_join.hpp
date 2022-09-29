@@ -13,6 +13,8 @@
 
 #pragma once
 
+#include <concepts>
+#include <ranges>
 #include <stdexcept>
 #include <vector>
 
@@ -20,8 +22,6 @@
 #include <bio/ranges/detail/random_access_iterator.hpp>
 #include <bio/ranges/type_traits.hpp>
 #include <bio/ranges/views/translate_single.hpp>
-#include <concepts>
-#include <ranges>
 
 // ============================================================================
 //  translate_fn (adaptor definition )

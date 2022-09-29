@@ -6,12 +6,12 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
-
 #include <iostream>
 #include <ranges>
 #include <string>
 #include <vector>
+
+#include <gtest/gtest.h>
 
 #include <bio/alphabet/aminoacid/aa27.hpp>
 #include <bio/alphabet/nucleotide/all.hpp>

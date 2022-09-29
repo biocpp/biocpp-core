@@ -6,17 +6,17 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
+#include <algorithm>
 #include <iostream>
+#include <ranges>
 
 #include <gtest/gtest.h>
 
-#include <algorithm>
 #include <bio/alphabet/nucleotide/dna5.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/to.hpp>
 #include <bio/ranges/views/char_to.hpp>
 #include <bio/test/expect_range_eq.hpp>
-#include <ranges>
 
 using namespace bio::alphabet::literals;
 

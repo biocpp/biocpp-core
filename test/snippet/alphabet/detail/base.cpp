@@ -1,7 +1,7 @@
-#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/base.hpp>
 #include <bio/alphabet/concept.hpp>
 
-class ab : public bio::alphabet::alphabet_base<ab, 2>
+class ab : public bio::alphabet::base<ab, 2>
 {
 private:
     // map 0 -> A and 1 -> B
@@ -22,7 +22,7 @@ private:
         }();
 
     // make the base class a friend so it can access the tables:
-    friend alphabet_base<ab, 2>;
+    friend base<ab, 2>;
 };
 
 static_assert(bio::alphabet::alphabet<ab>);

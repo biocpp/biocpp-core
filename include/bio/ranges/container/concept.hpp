@@ -18,10 +18,9 @@
 #include <type_traits>
 
 // remove if is_basic_string is not needed anymore
-#include <string>
-
 #include <concepts>
 #include <iterator>
+#include <string>
 
 #include <bio/core.hpp>
 

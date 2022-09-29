@@ -13,9 +13,10 @@
 
 #pragma once
 
+#include <ranges>
+
 #include <bio/alphabet/quality/qualified.hpp>
 #include <bio/ranges/views/deep.hpp>
-#include <ranges>
 
 namespace bio::ranges::detail
 {
@@ -84,7 +85,7 @@ namespace bio::ranges::views
 /*!\brief               A view that does quality-threshold trimming on a range of bio::alphabet::quality_alphabet.
  * \tparam urng_t       The type of the range being processed. See below for requirements.
  * \tparam threshold_t  Either std::ranges::range_value_t<urng_t> or
- *                      bio::alphabet::alphabet_phred_t<std::ranges::range_value_t<urng_t>>.
+ *                      bio::alphabet::phred_t<std::ranges::range_value_t<urng_t>>.
  * \param[in] urange    The range being processed. [parameter is omitted in pipe notation]
  * \param[in] threshold The minimum quality.
  * \returns             A trimmed range. See below for the properties of the returned range.

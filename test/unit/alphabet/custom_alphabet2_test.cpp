@@ -11,9 +11,10 @@
 // Tests the ADL-capabilities of the alphabet customisation point objects; type that isn't default constructible
 
 //![my_alph]
+#include <cstddef>     // for size_t
+#include <type_traits> // for std::type_identity
+
 #include <bio/alphabet/concept.hpp> // for bio::alphabet::alphabet
-#include <cstddef>                  // for size_t
-#include <type_traits>              // for std::type_identity
 
 namespace my_namespace
 {

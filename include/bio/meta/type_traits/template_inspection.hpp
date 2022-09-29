@@ -13,9 +13,9 @@
 
 #pragma once
 
-#include <bio/meta/type_traits/transformation_trait_or.hpp>
-
 #include <concepts>
+
+#include <bio/meta/type_traits/transformation_trait_or.hpp>
 
 namespace bio::meta
 {

@@ -6,15 +6,16 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
+#include <algorithm>
+#include <ranges>
+
 #include <gtest/gtest.h>
 
-#include <algorithm>
 #include <bio/ranges/type_traits.hpp>
 #include <bio/ranges/views/persist.hpp>
 #include <bio/ranges/views/repeat_n.hpp>
 #include <bio/ranges/views/take.hpp>
 #include <bio/test/expect_range_eq.hpp>
-#include <ranges>
 
 TEST(general, construction)
 {

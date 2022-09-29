@@ -17,10 +17,10 @@
 #include <concepts>
 #include <utility>
 
-#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/base.hpp>
 #include <bio/alphabet/composite/detail.hpp>
 #include <bio/alphabet/concept.hpp>
-#include <bio/alphabet/detail/alphabet_proxy.hpp>
+#include <bio/alphabet/proxy_base.hpp>
 #include <bio/meta/type_list/function.hpp>
 #include <bio/meta/type_list/traits.hpp>
 #include <bio/meta/type_list/type_list.hpp>
@@ -94,15 +94,15 @@ template <typename derived_type, typename... component_types>
              (std::regular<component_types> && ...))
 //!\endcond
 class tuple_base :
-  public alphabet_base<derived_type,
-                       (1 * ... * size<component_types>),
-                       void> // no char type, because this is only semi_alphabet
+  public base<derived_type,
+              (1 * ... * size<component_types>),
+              void> // no char type, because this is only semi_alphabet
 {
 private:
     //!\brief The base type of this class.
-    using base_t = alphabet_base<derived_type,
-                                 (1 * ... * size<component_types>),
-                                 void>; // no char type, because this is only semi_alphabet
+    using base_t = base<derived_type,
+                        (1 * ... * size<component_types>),
+                        void>; // no char type, because this is only semi_alphabet
 
     //!\brief A bio::meta::type_list The types of each component in the composite
     using component_list = meta::type_list<component_types...>;
@@ -520,7 +520,7 @@ private:
     ();
 };
 
-/*!\brief Specialisation of bio::alphabet::alphabet_proxy that updates the rank of the tuple_base.
+/*!\brief Specialisation of bio::alphabet::proxy_base that updates the rank of the tuple_base.
  * \tparam alphabet_type The type of the emulated component.
  * \tparam index         The index of the emulated component.
  *
@@ -532,11 +532,11 @@ template <typename derived_type, typename... component_types>
 //!\endcond
 template <typename alphabet_type, size_t index>
 class tuple_base<derived_type, component_types...>::component_proxy :
-  public alphabet_proxy<component_proxy<alphabet_type, index>, alphabet_type>
+  public proxy_base<component_proxy<alphabet_type, index>, alphabet_type>
 {
 private:
     //!\brief The base type.
-    using base_t = alphabet_proxy<component_proxy<alphabet_type, index>, alphabet_type>;
+    using base_t = proxy_base<component_proxy<alphabet_type, index>, alphabet_type>;
     //!\brief Befriend the base type so it can call our bio::alphabet::tuple_base::component_proxy::on_update().
     friend base_t;
 

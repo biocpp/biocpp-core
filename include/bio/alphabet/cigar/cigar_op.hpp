@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/base.hpp>
 
 // ------------------------------------------------------------------
 // cigar_op
@@ -50,13 +50,13 @@ namespace bio::alphabet
  *       bio::meta::get_cigar_vector for how to convert two aligned sequences into
  *       a cigar_vector.
  */
-class cigar_op : public alphabet_base<cigar_op, 9, char>
+class cigar_op : public base<cigar_op, 9, char>
 {
 private:
     //!\brief The base class.
-    using base_t = alphabet_base<cigar_op, 9, char>;
+    using base_t = base<cigar_op, 9, char>;
 
-    //!\cond \brief Befriend bio::alphabet::alphabet_base.
+    //!\cond \brief Befriend bio::alphabet::base.
     friend base_t;
     //!\endcond
 

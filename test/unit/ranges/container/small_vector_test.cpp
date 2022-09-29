@@ -6,14 +6,14 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
-
+#include <ranges>
 #include <string>
 #include <utility>
 
+#include <gtest/gtest.h>
+
 #include <bio/ranges/container/concept.hpp>
 #include <bio/ranges/container/small_vector.hpp>
-#include <ranges>
 
 #include "container_test_template.hpp"
 

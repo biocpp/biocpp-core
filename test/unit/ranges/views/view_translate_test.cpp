@@ -6,13 +6,14 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
-
+#include <algorithm>
 #include <iostream>
+#include <ranges>
 #include <string>
 #include <vector>
 
-#include <algorithm>
+#include <gtest/gtest.h>
+
 #include <bio/alphabet/aminoacid/aa27.hpp>
 #include <bio/alphabet/nucleotide/all.hpp>
 #include <bio/ranges/concept.hpp>
@@ -23,7 +24,6 @@
 #include <bio/ranges/views/translate.hpp>
 #include <bio/ranges/views/translate_single.hpp>
 #include <bio/test/expect_range_eq.hpp>
-#include <ranges>
 
 using namespace bio::alphabet::literals;
 

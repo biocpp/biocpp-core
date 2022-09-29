@@ -14,8 +14,9 @@
 
 #pragma once
 
-#include <bio/alphabet/concept.hpp>
 #include <concepts>
+
+#include <bio/alphabet/concept.hpp>
 
 // ============================================================================
 // complement()

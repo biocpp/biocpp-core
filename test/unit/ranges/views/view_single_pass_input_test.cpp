@@ -6,16 +6,16 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
-
+#include <ranges>
 #include <type_traits>
 #include <vector>
+
+#include <gtest/gtest.h>
 
 #include <bio/ranges/views/persist.hpp>
 #include <bio/ranges/views/single_pass_input.hpp>
 #include <bio/ranges/views/take.hpp>
 #include <bio/ranges/views/zip.hpp>
-#include <ranges>
 
 template <typename rng_type>
 class single_pass_input : public ::testing::Test

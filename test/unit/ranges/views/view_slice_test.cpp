@@ -6,15 +6,17 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
+#include <algorithm>
+#include <concepts>
 #include <deque>
 #include <iostream>
 #include <list>
+#include <ranges>
 #include <string>
 #include <vector>
 
 #include <gtest/gtest.h>
 
-#include <algorithm>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/container/concept.hpp>
 #include <bio/ranges/to.hpp>
@@ -22,8 +24,6 @@
 #include <bio/ranges/views/slice.hpp>
 #include <bio/test/expect_range_eq.hpp>
 #include <bio/test/expect_same_type.hpp>
-#include <concepts>
-#include <ranges>
 
 TEST(view_slice, regular)
 {

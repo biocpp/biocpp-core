@@ -7,11 +7,11 @@
 
 //! [dna2]
 #include <array>                                            // std::array
-#include <bio/alphabet/alphabet_base.hpp>                   // alphabet_base
+#include <bio/alphabet/base.hpp>                   // base
 #include <bio/alphabet/concept.hpp>                         // alphabet concept checks
 
-// derive from alphabet_base
-struct dna2 : public bio::alphabet::alphabet_base<dna2, 2>
+// derive from base
+struct dna2 : public bio::alphabet::base<dna2, 2>
 {
 private:
     // map 0 => 'S' and 1 => 'W'
@@ -28,7 +28,7 @@ private:
     } ();
 
     // make the base class a friend so it can access the tables:
-    friend bio::alphabet::alphabet_base<dna2, 2>;
+    friend bio::alphabet::base<dna2, 2>;
 };
 
 // check the concepts

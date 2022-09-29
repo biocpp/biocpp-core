@@ -13,10 +13,11 @@
 
 #pragma once
 
+#include <ranges>
+
 #include <bio/alphabet/hash.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/type_traits.hpp>
-#include <ranges>
 
 namespace std
 {

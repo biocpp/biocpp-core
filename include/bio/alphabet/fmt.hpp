@@ -17,11 +17,11 @@
 
 #if __has_include(<fmt/format.h>)
 
-#    include <bio/alphabet/composite/detail.hpp>
-#    include <bio/ranges/views/to_char.hpp>
-
 #    include <fmt/format.h>
 #    include <fmt/ranges.h>
+
+#    include <bio/alphabet/composite/detail.hpp>
+#    include <bio/ranges/views/to_char.hpp>
 
 template <typename alph_t>
     requires((!std::integral<alph_t>)&&bio::alphabet::alphabet<alph_t>)

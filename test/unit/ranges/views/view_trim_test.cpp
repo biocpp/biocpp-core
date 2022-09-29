@@ -7,6 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 #include <iostream>
+#include <ranges>
 
 #include <gtest/gtest.h>
 
@@ -15,7 +16,6 @@
 #include <bio/ranges/to.hpp>
 #include <bio/ranges/views/to_char.hpp>
 #include <bio/ranges/views/trim_quality.hpp>
-#include <ranges>
 
 using namespace bio::alphabet::literals;
 

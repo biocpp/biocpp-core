@@ -6,8 +6,9 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <bio/meta/detail/int_types.hpp>
 #include <gtest/gtest.h>
+
+#include <bio/meta/detail/int_types.hpp>
 
 TEST(int_types_test, min_viable_uint_t)
 {

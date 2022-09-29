@@ -6,10 +6,11 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
+#include <ranges>
+
 #include <gtest/gtest.h>
 
 #include <bio/test/seqan2.hpp>
-#include <ranges>
 
 // Note: this file will only test regressions encountered with seqan2 compatibility and has no claim to be complete
 

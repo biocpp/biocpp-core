@@ -13,9 +13,10 @@
 
 #pragma once
 
+#include <concepts>
+
 #include <bio/ranges/views/repeat.hpp>
 #include <bio/ranges/views/take_exactly.hpp>
-#include <concepts>
 
 namespace bio::ranges::detail
 {

@@ -6,13 +6,13 @@
 // shipped with this file and also available at: https://github.com/biocpp/biocpp-core/blob/main/LICENSE.md
 // -----------------------------------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
-
 #include <bit>
 #include <deque>
 #include <list>
 #include <map>
 #include <vector>
+
+#include <gtest/gtest.h>
 
 #include <bio/ranges/container/aligned_allocator.hpp>
 

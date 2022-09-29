@@ -13,20 +13,20 @@
 
 #pragma once
 
-#include <bio/alphabet/alphabet_base.hpp>
+#include <bio/alphabet/base.hpp>
 #include <bio/alphabet/detail/convert.hpp>
 #include <bio/alphabet/quality/concept.hpp>
 
 namespace bio::alphabet
 {
 
-/*!\brief A CRTP-base that refines bio::alphabet::alphabet_base and is used by the quality alphabets.
+/*!\brief A CRTP-base that refines bio::alphabet::base and is used by the quality alphabets.
  * \ingroup quality
  * \tparam derived_type The CRTP parameter type.
  * \tparam size         The size of the alphabet.
  */
 template <typename derived_type, auto size>
-class quality_base : public alphabet_base<derived_type, size, char>
+class quality_base : public base<derived_type, size, char>
 {
 public:
     /*!\name Member types
@@ -38,7 +38,7 @@ public:
 
 private:
     //!\brief The base type.
-    using base_t = alphabet_base<derived_type, size, char>;
+    using base_t = base<derived_type, size, char>;
 
     /*!\name Constructors, destructor and assignment
      * \{

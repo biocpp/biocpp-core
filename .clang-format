@@ -74,13 +74,24 @@ ForEachMacros:
   - BOOST_FOREACH
 IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex:           '^<seqan/'
-    Priority:        3
   - Regex:           '^".*\.hpp"'
+    Priority:        20
+  - Regex:           '^<bio/io'
+    Priority:        10
+  - Regex:           '^<bio/'
+    Priority:        9
+  - Regex:           '^<fmt'
+    Priority:        7
+  - Regex:           '^<cereal'
+    Priority:        6
+  - Regex:           '^<seqan3/'
+    Priority:        4
+  - Regex:           '^<seqan2/'
+    Priority:        3
+  - Regex:           '^<gtest/'
     Priority:        2
   - Regex:           '.*'
     Priority:        1
-IncludeBlocks: Preserve
 IncludeIsMainRegex: '(Test)?$'
 IndentAccessModifiers: false
 IndentCaseBlocks: true

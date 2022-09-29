@@ -119,9 +119,9 @@ is fine because we implemented `assign_char` and `char_is_valid`.
 
 ## Shortcut: alphabet base template
 
-Often it is not required to implement the entire class yourself, instead you can derive from bio::alphabet::alphabet_base.
+Often it is not required to implement the entire class yourself, instead you can derive from bio::alphabet::base.
 The base class defines both members and tag_invoke() overloads for you––if you provide certain conversion tables. Read the documentation of
-bio::alphabet::alphabet_base for details.
+bio::alphabet::base for details.
 \snippet dna2_derive_from_base.cpp dna2
 
 # Further examples
