@@ -50,7 +50,11 @@ file(MAKE_DIRECTORY ${BIOCPP_TEST_CLONE_DIR}/googletest/include/)
 # biocpp::test exposes a base set of required flags, includes, definitions and
 # libraries which are in common for **all** bio tests
 add_library (biocpp_test INTERFACE)
-target_compile_options (biocpp_test INTERFACE "-pedantic"  "-Wall" "-Wextra" "-Werror")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options (biocpp_test INTERFACE "-pedantic"  "-Wall" "-Wextra" "-Werror" "-Wno-missing-braces" "-Wno-unused-variable")
+else ()
+    target_compile_options (biocpp_test INTERFACE "-pedantic"  "-Wall" "-Wextra" "-Werror")
+endif ()
 target_link_libraries (biocpp_test INTERFACE "biocpp::core" "pthread")
 target_include_directories (biocpp_test INTERFACE "${BIOCPP_TEST_INCLUDE_DIR}")
 add_library (biocpp::test ALIAS biocpp_test)
