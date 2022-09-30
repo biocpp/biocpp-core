@@ -255,6 +255,8 @@ TYPED_TEST_P(container_over_dna4_test, insert)
     t0.insert(t0.cend(), 1, 'T'_dna4);
     t0.insert(t0.cbegin(), 1, 'A'_dna4);
     EXPECT_EQ(t0, t1);
+    t0.insert(t0.cbegin(), 0, 'A'_dna4);
+    EXPECT_EQ(t0, t1);
 
     // iterator pair
     t0.clear();
@@ -262,6 +264,8 @@ TYPED_TEST_P(container_over_dna4_test, insert)
 
     t0.insert(t0.cend(), t1.cend() - 2, t1.cend());
     t0.insert(t0.cbegin(), t1.cbegin(), t1.cbegin() + 1);
+    EXPECT_EQ(t0, t1);
+    t0.insert(t0.cbegin(), t1.cbegin(), t1.cbegin());
     EXPECT_EQ(t0, t1);
 
     // initializer list

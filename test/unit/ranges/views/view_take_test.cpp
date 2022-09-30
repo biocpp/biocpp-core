@@ -137,6 +137,7 @@ TEST(view_take_exactly, underlying_is_shorter)
 {
     std::string vec{"foo"};
     EXPECT_NO_THROW((bio::ranges::views::take_exactly(vec, 4))); // no parsing
+    EXPECT_EQ((bio::ranges::views::take_exactly(vec, 4).size()), 3ul);
 
     std::string v;
     EXPECT_NO_THROW((v = vec | bio::ranges::views::single_pass_input | bio::ranges::views::take_exactly(4) |
@@ -165,6 +166,15 @@ TEST(view_take_exactly, shrink_size_on_input_ranges)
     ++it;
 
     EXPECT_EQ(std::ranges::size(v), 0u); // view is empty now
+}
+
+TEST(view_take_exactly, list)
+{
+    std::list l{1, 2, 3, 4, 5};
+    auto      v = l | bio::ranges::views::take_exactly(3);
+    EXPECT_RANGE_EQ(v, (std::vector{1, 2, 3}));
+
+    EXPECT_EQ((bio::ranges::views::take_exactly(l, 10).size()), 5ul);
 }
 
 // ============================================================================

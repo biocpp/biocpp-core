@@ -47,6 +47,11 @@ TYPED_TEST(container_of_container, construction)
     // from another TypeParam's sub-range
     TypeParam t6{t3.begin(), t3.begin() + 2};
     EXPECT_EQ(t5, t6);
+    TypeParam t5b{0, "ACGT"_dna4};
+    // from another TypeParam's sub-range
+    TypeParam t6b{t3.begin(), t3.begin()};
+    EXPECT_EQ(t5b, t6b);
+    EXPECT_TRUE(t5b.empty());
 
     std::vector<std::vector<bio::alphabet::dna4>> other_vector{"ACGT"_dna4, "ACGT"_dna4, "GAGGA"_dna4};
     // direct from another container-of-container
@@ -124,7 +129,8 @@ TYPED_TEST(container_of_container, element_access)
     // at
     EXPECT_RANGE_EQ(t1.at(0), "ACGT"_dna4);
     EXPECT_RANGE_EQ(t2.at(0), "ACGT"_dna4);
-    //TODO once we have throwing assert, check at's ability to throw
+    EXPECT_THROW(t1.at(5), std::out_of_range);
+    EXPECT_THROW(t2.at(5), std::out_of_range);
 
     // []
     EXPECT_RANGE_EQ(t1[0], "ACGT"_dna4);
@@ -236,18 +242,19 @@ TYPED_TEST(container_of_container, insert)
     t0.insert(t0.cend(), 1, "GAGGA"_dna4);
     t0.insert(t0.cbegin(), 1, "GAGGA"_dna4);
     EXPECT_EQ(t0, t1);
+    // NOP
+    t0.insert(t0.cend(), 0, "A"_dna4);
+    EXPECT_EQ(t0, t1);
 
     // iterator pair
     t0.clear();
     t1 = {"GAGGA"_dna4, "ACGT"_dna4, "ACGT"_dna4, "GAGGA"_dna4};
     t0.insert(t0.cend(), t1.begin() + 1, t1.begin() + 3);
-
-// remove the following after range-v3 is updated to 1.0
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     t0.insert(t0.cend(), t1.cend() - 1, t1.cend());
-#pragma GCC diagnostic pop
     t0.insert(t0.cbegin(), t1.cend() - 1, t1.cend());
+    EXPECT_EQ(t0, t1);
+    // NOP
+    t0.insert(t0.cend(), t1.begin(), t1.begin());
     EXPECT_EQ(t0, t1);
 
     // initializer list
@@ -269,6 +276,9 @@ TYPED_TEST(container_of_container, erase)
     // range
     t1 = {"GAGGA"_dna4, "ACGT"_dna4, "ACGT"_dna4, "GAGGA"_dna4};
     t1.erase(t1.begin() + 1, t1.begin() + 3);
+    EXPECT_EQ(t1, (TypeParam{"GAGGA"_dna4, "GAGGA"_dna4}));
+    // NOP
+    t1.erase(t1.begin(), t1.begin());
     EXPECT_EQ(t1, (TypeParam{"GAGGA"_dna4, "GAGGA"_dna4}));
 }
 

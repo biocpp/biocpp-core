@@ -109,11 +109,12 @@ private:
                 [[fallthrough]];
             case alphabet::translation_frames::REV_FRAME_2:
                 return (std::max<size_t>(old_size, 2) - 2) / 3;
-            default:
-                break;
+            default: /* GCOVR_EXCL_LINE */
+                BIOCPP_UNREACHABLE
+                break; /* GCOVR_EXCL_LINE */
         }
 
-        __builtin_unreachable();
+        BIOCPP_UNREACHABLE
     }
 
     //!\brief Auxilliary functor.
@@ -150,11 +151,11 @@ private:
                     return alphabet::translate_triplet(alphabet::complement(urange2[old_size - n * 3 - 3]),
                                                        alphabet::complement(urange2[old_size - n * 3 - 4]),
                                                        alphabet::complement(urange2[old_size - n * 3 - 5]));
-                default:
-                    __builtin_unreachable();
-                    break;
+                default: /* GCOVR_EXCL_LINE */
+                    BIOCPP_UNREACHABLE
+                    break; /* GCOVR_EXCL_LINE */
             }
-            __builtin_unreachable();
+            BIOCPP_UNREACHABLE
         }
     };
 };
