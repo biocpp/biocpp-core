@@ -43,18 +43,21 @@ list (APPEND BIOCPP_GCOVR_ARGUMENTS "${PROJECT_BINARY_DIR}")
 list (APPEND BIOCPP_GCOVR_ARGUMENTS "--filter;\'${BIOCPP_CORE_CLONE_DIR}/include/bio/.*\'")
 # Include all files whose path match '${BIOCPP_CORE_CLONE_DIR}/test/include/biocpp/test/.*'.
 list (APPEND BIOCPP_GCOVR_ARGUMENTS "--filter;\'${BIOCPP_CORE_CLONE_DIR}/test/include/bio/test/.*\'")
-# Remove line coverage for all lines that match '^\s*$', i.e. empty lines.
-list (APPEND BIOCPP_GCOVR_ARGUMENTS "--exclude-lines-by-pattern;\\\'^\\\\s*$$\\\'")
-# Remove line coverage for all lines that match "^\s*[\{\}]\s*\;*\s*(//.*)?$", i.e. lines with a single '{' or '}' which
-# might be followed by a semicolon or a comment '//'.
-list (APPEND BIOCPP_GCOVR_ARGUMENTS
-      "--exclude-lines-by-pattern;\\\'^\\\\s*[\\{\\}]\\\\s*\\\\\\;*\\\\s*\\(//.*\\)?$$\\\'")
 # Will exclude branches that are unreachable.
 list (APPEND BIOCPP_GCOVR_ARGUMENTS "--exclude-unreachable-branches")
 # Will exclude branches that are only generated for exception handling.
 list (APPEND BIOCPP_GCOVR_ARGUMENTS "--exclude-throw-branches")
 # Run up to this many gcov instances in parallel.
 list (APPEND BIOCPP_GCOVR_ARGUMENTS "-j;${BIOCPP_COVERAGE_PARALLEL_LEVEL}")
+
+set (BIOCPP_GCOVR_EXCLUDE_PATTERNS "")
+list(APPEND BIOCPP_GCOVR_EXCLUDE_PATTERNS "^\\s*assert\\(.*$$")             # assert()
+list(APPEND BIOCPP_GCOVR_EXCLUDE_PATTERNS "^.*GCOVR_EXCL_LINE.*$$")         # should be default but isnt
+list(APPEND BIOCPP_GCOVR_EXCLUDE_PATTERNS "^\\s*BIOCPP_UNREACHABLE\\s*$$")  # unreachables
+
+set(BIOCPP_GCOVR_EXCLUDE_PATTERNS_JOINED "")
+list(JOIN BIOCPP_GCOVR_EXCLUDE_PATTERNS ")|(" BIOCPP_GCOVR_EXCLUDE_PATTERNS_JOINED)
+list (APPEND BIOCPP_GCOVR_ARGUMENTS "--exclude-lines-by-pattern;'(${BIOCPP_GCOVR_EXCLUDE_PATTERNS_JOINED})'")
 
 add_custom_command (OUTPUT ${PROJECT_BINARY_DIR}/biocpp_coverage.xml
                     # Run tests.
