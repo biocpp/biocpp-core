@@ -81,6 +81,13 @@ TYPED_TEST(nucleotide, view_translate_single)
               std::views::reverse;
     // == [A,H,M,C]
     EXPECT_RANGE_EQ(v6, cmp3);
+
+    // invalid frames
+    EXPECT_THROW(vec | bio::ranges::views::translate_single(bio::alphabet::translation_frames::SIX_FRAME),
+                 std::invalid_argument);
+    EXPECT_THROW(vec | bio::ranges::views::translate_single(bio::alphabet::translation_frames::FWD_FRAME_0 |
+                                                            bio::alphabet::translation_frames::FWD_FRAME_1),
+                 std::invalid_argument);
 }
 
 TYPED_TEST(nucleotide, view_translate)

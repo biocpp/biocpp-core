@@ -155,6 +155,10 @@ inline std::string const biocpp_core_version = std::to_string(biocpp_core_versio
  */
 #define BIOCPP_IS_CONSTEXPR(...) std::integral_constant<bool, __builtin_constant_p((__VA_ARGS__, 0))>::value
 
+/*!\brief A macro to mark unreachable code.
+ */
+#define BIOCPP_UNREACHABLE __builtin_unreachable(); /* GCOVR_EXCL_LINE */
+
 // ============================================================================
 //  Alphabet namespaces
 // ============================================================================
