@@ -35,8 +35,8 @@ enum class third_party_type
 
 // ------------------------------------------------------------------------------------
 
-// in this case, overloads for tag_invoke are defined within bio::*::cpo
-namespace bio::alphabet::cpo
+// in this case, overloads for tag_invoke are defined within bio::*::custom
+namespace bio::alphabet::custom
 {
 
 consteval size_t tag_invoke(size, third_party_ns::third_party_type) noexcept
@@ -98,7 +98,7 @@ constexpr third_party_ns::third_party_type & tag_invoke(assign_char_to,
     }
 }
 
-} // namespace bio::alphabet::cpo
+} // namespace bio::alphabet::custom
 
 static_assert(bio::alphabet::alphabet<third_party_ns::third_party_type>);
 //![third_party_type]

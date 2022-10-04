@@ -173,10 +173,15 @@ protected:
     ();
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr phred_type tag_invoke(cpo::to_phred, derived_type const alph) noexcept { return alph.to_phred(); }
+    friend constexpr phred_type tag_invoke(custom::to_phred, derived_type const alph) noexcept
+    {
+        return alph.to_phred();
+    }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr derived_type & tag_invoke(cpo::assign_phred_to, phred_type const p, derived_type & alph) noexcept
+    friend constexpr derived_type & tag_invoke(custom::assign_phred_to,
+                                               phred_type const p,
+                                               derived_type &   alph) noexcept
     {
         return alph.assign_phred(p);
     }

@@ -39,7 +39,7 @@ struct aminoacid_empty_base
 // enable_aminoacid
 // ============================================================================
 
-namespace bio::alphabet::cpo
+namespace bio::alphabet::custom
 {
 
 /*!\brief A trait that indicates whether a type shall model bio::alphabet::aminoacid_alphabet.
@@ -69,7 +69,7 @@ namespace bio::alphabet::cpo
 template <typename t>
 inline constexpr bool enable_aminoacid = std::derived_from<t, aminoacid_empty_base>;
 
-} // namespace bio::alphabet::cpo
+} // namespace bio::alphabet::custom
 
 namespace bio::alphabet
 {
@@ -93,7 +93,7 @@ namespace bio::alphabet
  */
 //!\cond
 template <typename type>
-concept aminoacid_alphabet = alphabet<type> && cpo::enable_aminoacid<std::remove_cvref_t<type>>;
+concept aminoacid_alphabet = alphabet<type> && custom::enable_aminoacid<std::remove_cvref_t<type>>;
 //!\endcond
 
 } // namespace bio::alphabet

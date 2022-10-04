@@ -22,7 +22,7 @@
 // complement()
 // ============================================================================
 
-namespace bio::alphabet::cpo
+namespace bio::alphabet::custom
 {
 
 /*!\name Customisation tag types
@@ -36,7 +36,7 @@ struct complement
 
 //!\}
 
-} // namespace bio::alphabet::cpo
+} // namespace bio::alphabet::custom
 
 namespace bio::alphabet
 {
@@ -68,7 +68,7 @@ namespace bio::alphabet
  * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```c++
- * constexpr alph_type tag_invoke(bio::alphabet::cpo::complement, alph_type const alph) noexcept
+ * constexpr alph_type tag_invoke(bio::alphabet::custom::complement, alph_type const alph) noexcept
  * {}
  * ```
  *
@@ -84,16 +84,16 @@ namespace bio::alphabet
 inline constexpr auto complement = []<typename alph_t>(alph_t const a)
   //!\cond
   requires(requires {
-      {tag_invoke(cpo::complement{}, a)};
+      {tag_invoke(custom::complement{}, a)};
       // NOTE we are using the trait here and not the concept, because the concept
       // also checks explicit convertibility but we don't want to substitute into
       // explicit constructors/conversion operators to prevent loops
-      requires std::is_convertible_v<alph_t, decltype(tag_invoke(cpo::complement{}, a))>;
-      requires noexcept(tag_invoke(cpo::complement{}, a));
+      requires std::is_convertible_v<alph_t, decltype(tag_invoke(custom::complement{}, a))>;
+      requires noexcept(tag_invoke(custom::complement{}, a));
   })
 //!\endcond
 {
-    return tag_invoke(cpo::complement{}, a);
+    return tag_invoke(custom::complement{}, a);
 };
 //!\}
 

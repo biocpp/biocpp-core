@@ -172,13 +172,13 @@ inline std::string const biocpp_core_version = std::to_string(biocpp_core_versio
 namespace bio::alphabet
 {}
 
-/*!\namespace bio::alphabet::cpo
+/*!\namespace bio::alphabet::custom
  * \brief A namespace for third party and standard library specialisations of BioC++ customisation points.
  * \ingroup alphabet
  * \see \ref biocpp_customisation
  */
 
-namespace bio::alphabet::cpo
+namespace bio::alphabet::custom
 {}
 
 /*!\namespace bio::alphabet::literals

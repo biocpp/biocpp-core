@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 
-#include <bio/alphabet/adaptation/all.hpp>
+#include <bio/alphabet/custom/all.hpp>
 
 #include "../alphabet_constexpr_test_template.hpp"
 #include "../alphabet_test_template.hpp"

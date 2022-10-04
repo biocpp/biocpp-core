@@ -15,9 +15,9 @@ struct non_writeable_alphabet
     using rank_t = uint8_t;
     using char_t = char;
 
-    friend rank_t           tag_invoke(bio::alphabet::cpo::to_rank, non_writeable_alphabet) noexcept;
-    friend char_t           tag_invoke(bio::alphabet::cpo::to_char, non_writeable_alphabet) noexcept;
-    friend consteval rank_t tag_invoke(bio::alphabet::cpo::size, non_writeable_alphabet) noexcept { return 1; }
+    friend rank_t           tag_invoke(bio::alphabet::custom::to_rank, non_writeable_alphabet) noexcept;
+    friend char_t           tag_invoke(bio::alphabet::custom::to_char, non_writeable_alphabet) noexcept;
+    friend consteval rank_t tag_invoke(bio::alphabet::custom::size, non_writeable_alphabet) noexcept { return 1; }
 
     friend auto operator<=>(non_writeable_alphabet, non_writeable_alphabet) = default;
 };
