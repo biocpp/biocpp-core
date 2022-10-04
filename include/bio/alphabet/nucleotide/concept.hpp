@@ -22,22 +22,6 @@
 // complement()
 // ============================================================================
 
-namespace bio::alphabet::custom
-{
-
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::complement.
-//!\ingroup nucleotide
-struct complement
-{};
-
-//!\}
-
-} // namespace bio::alphabet::custom
-
 namespace bio::alphabet
 {
 
@@ -109,7 +93,7 @@ inline constexpr auto complement = []<typename alph_t>(alph_t const a)
  * \details
  *
  * In addition to the requirements for bio::alphabet::alphabet, the nucleotide_alphabet introduces
- * a requirement for a complement function: bio::alphabet::nucleotide_alphabet::complement.
+ * a requirement for a complement function: bio::alphabet::complement.
  *
  * ### Requirements
  *

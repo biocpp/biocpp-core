@@ -21,22 +21,6 @@
 // to_phred()
 // ============================================================================
 
-namespace bio::alphabet::custom
-{
-
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::assign_char_to.
-//!\ingroup quality
-struct to_phred
-{};
-
-//!\}
-
-} // namespace bio::alphabet::custom
-
 namespace bio::alphabet
 {
 
@@ -101,30 +85,9 @@ template <typename alphabet_type>
 //!\endcond
 using phred_t = decltype(bio::alphabet::to_phred(std::declval<alphabet_type>()));
 
-} // namespace bio::alphabet
-
 // ============================================================================
 // assign_phred_to()
 // ============================================================================
-
-namespace bio::alphabet::custom
-{
-
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::assign_char_to.
-//!\ingroup quality
-struct assign_phred_to
-{};
-
-//!\}
-
-} // namespace bio::alphabet::custom
-
-namespace bio::alphabet
-{
 
 /*!\name Function objects (Quality)
  * \{
@@ -177,14 +140,9 @@ inline constexpr auto assign_phred_to = []<typename alph_t>(bio::alphabet::phred
 };
 //!\}
 
-} // namespace bio::alphabet
-
 // ============================================================================
 // bio::alphabet::quality_alphabet
 // ============================================================================
-
-namespace bio::alphabet
-{
 
 /*!\interface bio::alphabet::quality_alphabet <>
  * \extends bio::alphabet::alphabet

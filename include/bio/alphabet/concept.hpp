@@ -15,6 +15,7 @@
 
 #include <type_traits>
 
+#include <bio/alphabet/custom/tag.hpp>
 #include <bio/alphabet/exception.hpp>
 #include <bio/core.hpp>
 #include <bio/meta/concept/core_language.hpp>
@@ -25,20 +26,6 @@
 // ============================================================================
 // to_rank()
 // ============================================================================
-
-namespace bio::alphabet::custom
-{
-
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::to_rank.
-//!\ingroup alphabet
-struct to_rank
-{};
-//!\}
-} // namespace bio::alphabet::custom
 
 namespace bio::alphabet
 {
@@ -102,30 +89,9 @@ template <typename semi_alphabet_type>
 //!\endcond
 using rank_t = decltype(bio::alphabet::to_rank(std::declval<semi_alphabet_type>()));
 
-} // namespace bio::alphabet
-
 // ============================================================================
 // assign_rank_to()
 // ============================================================================
-
-namespace bio::alphabet::custom
-{
-
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::assign_rank_to.#
-//!\ingroup alphabet
-struct assign_rank_to
-{};
-
-//!\}
-
-} // namespace bio::alphabet::custom
-
-namespace bio::alphabet
-{
 
 /*!\name Function objects
  * \{
@@ -183,28 +149,11 @@ inline constexpr auto assign_rank_to = []<typename alph_t>(bio::alphabet::rank_t
     return tag_invoke(custom::assign_rank_to{}, r, a);
 };
 //!\}
-} // namespace bio::alphabet
 
 // ============================================================================
 // to_char()
 // ============================================================================
 
-namespace bio::alphabet::custom
-{
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::to_char.
-//!\ingroup alphabet
-struct to_char
-{};
-//!\}
-
-} // namespace bio::alphabet::custom
-
-namespace bio::alphabet
-{
 /*!\name Function objects
  * \{
  */
@@ -264,30 +213,9 @@ template <typename alphabet_type>
 //!\endcond
 using char_t = decltype(bio::alphabet::to_char(std::declval<alphabet_type const>()));
 
-} // namespace bio::alphabet
-
 // ============================================================================
 // assign_char_to()
 // ============================================================================
-
-namespace bio::alphabet::custom
-{
-
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::assign_char_to.
-//!\ingroup alphabet
-struct assign_char_to
-{};
-
-//!\}
-
-} // namespace bio::alphabet::custom
-
-namespace bio::alphabet
-{
 
 /*!\name Function objects
  * \{
@@ -351,24 +279,11 @@ inline constexpr auto assign_char_to = []<typename alph_t>(bio::alphabet::char_t
 // char_is_valid_for()
 // ============================================================================
 
-namespace bio::alphabet::custom
-{
-
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::assign_char_to.
-//!\ingroup alphabet
-struct char_is_valid_for
-{};
-
-} // namespace bio::alphabet::custom
-
 namespace bio::alphabet::detail
 {
 
 //!\brief Functor definition for bio::alphabet::char_is_valid_for
+//!\ingroup alphabet
 template <typename alph_t>
 struct char_is_valid_for_fn
 {
@@ -400,8 +315,6 @@ struct char_is_valid_for_fn
         return impl<std::remove_cvref_t<alph_t>>(chr, meta::priority_tag<1>{});
     }
 };
-
-//!\}
 
 } // namespace bio::alphabet::detail
 
@@ -555,24 +468,10 @@ namespace bio::alphabet
  */
 inline constexpr auto assign_char_strictly_to = detail::assign_char_strictly_to_fn{};
 //!\}
-} // namespace bio::alphabet
 
 // ============================================================================
 // size
 // ============================================================================
-
-namespace bio::alphabet::custom
-{
-
-//!\brief CPO tag definition for bio::alphabet::size.
-//!\ingroup alphabet
-struct size
-{};
-
-} // namespace bio::alphabet::custom
-
-namespace bio::alphabet
-{
 
 /*!\brief A type trait that holds the size of a (semi-)alphabet.
  * \tparam alph_type The (semi-)alphabet type being queried.

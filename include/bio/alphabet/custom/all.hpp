@@ -17,6 +17,6 @@
 #include <bio/alphabet/custom/uint.hpp>
 
 /*!\defgroup alphabet_custom Custom
- * \brief Provides alphabet adaptations of some standard char and uint types.
+ * \brief Provides customisation tags and alphabet adaptations of standard char and uint types.
  * \ingroup alphabet
  */

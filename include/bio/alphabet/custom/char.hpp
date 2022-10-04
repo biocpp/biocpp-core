@@ -32,6 +32,11 @@
 namespace bio::alphabet::custom
 {
 
+/*!\name Adapt builtin character types as alphabets.
+ * \brief These overloads make `char`, `wchar_t`, `char16_t` and `char32_t` (but not `signed char` and `unsigned char`!) satisfy bio::alphabet::alphabet.
+ * \{
+ */
+
 //!\brief The number of values the char type can take (e.g. 256 for `char`).
 //!\ingroup alphabet_custom
 template <bio::meta::nonint_character char_type>
@@ -93,5 +98,7 @@ constexpr char_type & tag_invoke(assign_char_to  BIOCPP_DOXYGEN_ONLY(tag),
 {
     return chr = chr2;
 }
+
+//!\}
 
 } // namespace bio::alphabet::custom
