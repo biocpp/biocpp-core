@@ -15,9 +15,9 @@
 
 #include <charconv>
 
-#include <bio/alphabet/adaptation/uint.hpp>
 #include <bio/alphabet/cigar/cigar_op.hpp>
 #include <bio/alphabet/composite/tuple_base.hpp>
+#include <bio/alphabet/custom/uint.hpp>
 #include <bio/ranges/container/small_string.hpp>
 
 // ------------------------------------------------------------------

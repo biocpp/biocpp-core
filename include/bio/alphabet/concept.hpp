@@ -15,6 +15,7 @@
 
 #include <type_traits>
 
+#include <bio/alphabet/custom/tag.hpp>
 #include <bio/alphabet/exception.hpp>
 #include <bio/core.hpp>
 #include <bio/meta/concept/core_language.hpp>
@@ -25,20 +26,6 @@
 // ============================================================================
 // to_rank()
 // ============================================================================
-
-namespace bio::alphabet::cpo
-{
-
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::to_rank.
-//!\ingroup alphabet
-struct to_rank
-{};
-//!\}
-} // namespace bio::alphabet::cpo
 
 namespace bio::alphabet
 {
@@ -70,7 +57,7 @@ namespace bio::alphabet
  * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```cpp
- * constexpr rank_type tag_invoke(bio::alphabet::cpo::to_rank, alph_type const alph) noexcept
+ * constexpr rank_type tag_invoke(bio::alphabet::custom::to_rank, alph_type const alph) noexcept
  * ```
  *
  * Implementations are found via ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
@@ -84,13 +71,13 @@ inline constexpr auto to_rank = []<typename alph_t>(alph_t const a) noexcept
   //!\cond
   requires(requires {
       {
-          tag_invoke(cpo::to_rank{}, a)
+          tag_invoke(custom::to_rank{}, a)
           } -> std::integral;
-      requires noexcept(tag_invoke(cpo::to_rank{}, a));
+      requires noexcept(tag_invoke(custom::to_rank{}, a));
   })
 //!\endcond
 {
-    return tag_invoke(cpo::to_rank{}, a);
+    return tag_invoke(custom::to_rank{}, a);
 };
 //!\}
 
@@ -102,30 +89,9 @@ template <typename semi_alphabet_type>
 //!\endcond
 using rank_t = decltype(bio::alphabet::to_rank(std::declval<semi_alphabet_type>()));
 
-} // namespace bio::alphabet
-
 // ============================================================================
 // assign_rank_to()
 // ============================================================================
-
-namespace bio::alphabet::cpo
-{
-
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::assign_rank_to.#
-//!\ingroup alphabet
-struct assign_rank_to
-{};
-
-//!\}
-
-} // namespace bio::alphabet::cpo
-
-namespace bio::alphabet
-{
 
 /*!\name Function objects
  * \{
@@ -156,7 +122,7 @@ namespace bio::alphabet
  * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```cpp
- * cosntexpr alph_type & tag_invoke(bio::alphabet::assign_rank_to_cpo, rank_type const rank, alph_type & alph) noexcept
+ * cosntexpr alph_type & tag_invoke(bio::alphabet::custom::assign_rank_to, rank_type const rank, alph_type & alph) noexcept
  * ```
  *
  * Implementations are found via ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
@@ -174,37 +140,20 @@ inline constexpr auto assign_rank_to = []<typename alph_t>(bio::alphabet::rank_t
   //!\cond
   requires(requires {
       {
-          tag_invoke(cpo::assign_rank_to{}, r, a)
+          tag_invoke(custom::assign_rank_to{}, r, a)
           } -> std::same_as<alph_t &>;
-      requires noexcept(tag_invoke(cpo::assign_rank_to{}, r, a));
+      requires noexcept(tag_invoke(custom::assign_rank_to{}, r, a));
   })
 //!\endcond
 {
-    return tag_invoke(cpo::assign_rank_to{}, r, a);
+    return tag_invoke(custom::assign_rank_to{}, r, a);
 };
 //!\}
-} // namespace bio::alphabet
 
 // ============================================================================
 // to_char()
 // ============================================================================
 
-namespace bio::alphabet::cpo
-{
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::to_char.
-//!\ingroup alphabet
-struct to_char
-{};
-//!\}
-
-} // namespace bio::alphabet::cpo
-
-namespace bio::alphabet
-{
 /*!\name Function objects
  * \{
  */
@@ -232,7 +181,7 @@ namespace bio::alphabet
  * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```cpp
- * constexpr char_type tag_invoke(bio::alphabet::cpo::to_char, alph_type const alph) noexcept
+ * constexpr char_type tag_invoke(bio::alphabet::custom::to_char, alph_type const alph) noexcept
  * ```
  *
  * Implementations are found via ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
@@ -246,13 +195,13 @@ inline constexpr auto to_char = []<typename alph_t>(alph_t const a) noexcept
   //!\cond
   requires(requires {
       {
-          tag_invoke(cpo::to_char{}, a)
+          tag_invoke(custom::to_char{}, a)
           } -> std::integral;
-      requires noexcept(tag_invoke(cpo::to_char{}, a));
+      requires noexcept(tag_invoke(custom::to_char{}, a));
   })
 //!\endcond
 {
-    return tag_invoke(cpo::to_char{}, a);
+    return tag_invoke(custom::to_char{}, a);
 };
 //!\}
 
@@ -264,30 +213,9 @@ template <typename alphabet_type>
 //!\endcond
 using char_t = decltype(bio::alphabet::to_char(std::declval<alphabet_type const>()));
 
-} // namespace bio::alphabet
-
 // ============================================================================
 // assign_char_to()
 // ============================================================================
-
-namespace bio::alphabet::cpo
-{
-
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::assign_char_to.
-//!\ingroup alphabet
-struct assign_char_to
-{};
-
-//!\}
-
-} // namespace bio::alphabet::cpo
-
-namespace bio::alphabet
-{
 
 /*!\name Function objects
  * \{
@@ -318,7 +246,7 @@ namespace bio::alphabet
  * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```cpp
- * constexpr alph_type & tag_invoke(bio::alphabet::assign_char_to_cpo, char_type const char, alph_type & alph) noexcept
+ * constexpr alph_type & tag_invoke(bio::alphabet::custom::assign_char_to, char_type const char, alph_type & alph) noexcept
  * ```
  *
  * Functions are found via ADL and considered only if they are marked `noexcept` (`constexpr` is not required,
@@ -336,13 +264,13 @@ inline constexpr auto assign_char_to = []<typename alph_t>(bio::alphabet::char_t
   //!\cond
   requires(requires {
       {
-          tag_invoke(cpo::assign_char_to{}, c, a)
+          tag_invoke(custom::assign_char_to{}, c, a)
           } -> std::same_as<alph_t &>;
-      requires noexcept(tag_invoke(cpo::assign_char_to{}, c, a));
+      requires noexcept(tag_invoke(custom::assign_char_to{}, c, a));
   })
 //!\endcond
 {
-    return tag_invoke(cpo::assign_char_to{}, c, a);
+    return tag_invoke(custom::assign_char_to{}, c, a);
 };
 //!\}
 } // namespace bio::alphabet
@@ -351,24 +279,11 @@ inline constexpr auto assign_char_to = []<typename alph_t>(bio::alphabet::char_t
 // char_is_valid_for()
 // ============================================================================
 
-namespace bio::alphabet::cpo
-{
-
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::assign_char_to.
-//!\ingroup alphabet
-struct char_is_valid_for
-{};
-
-} // namespace bio::alphabet::cpo
-
 namespace bio::alphabet::detail
 {
 
 //!\brief Functor definition for bio::alphabet::char_is_valid_for
+//!\ingroup alphabet
 template <typename alph_t>
 struct char_is_valid_for_fn
 {
@@ -384,13 +299,13 @@ struct char_is_valid_for_fn
     template <typename alph2_t, typename wrap_t = meta::default_initialisable_wrap_t<alph2_t>>
         requires(requires(char_t<alph2_t> const c) {
             {
-                tag_invoke(std::declval<cpo::char_is_valid_for>(), c, wrap_t{})
+                tag_invoke(std::declval<custom::char_is_valid_for>(), c, wrap_t{})
                 } -> std::same_as<bool>;
-            requires noexcept(tag_invoke(std::declval<cpo::char_is_valid_for>(), c, wrap_t{}));
+            requires noexcept(tag_invoke(std::declval<custom::char_is_valid_for>(), c, wrap_t{}));
         })
     static constexpr bool impl(char_t<alph2_t> const chr, meta::priority_tag<1>) noexcept
     {
-        return tag_invoke(cpo::char_is_valid_for{}, chr, wrap_t{});
+        return tag_invoke(custom::char_is_valid_for{}, chr, wrap_t{});
     }
 
     //!\brief Operator definition.
@@ -400,8 +315,6 @@ struct char_is_valid_for_fn
         return impl<std::remove_cvref_t<alph_t>>(chr, meta::priority_tag<1>{});
     }
 };
-
-//!\}
 
 } // namespace bio::alphabet::detail
 
@@ -452,7 +365,7 @@ namespace bio::alphabet
  * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```cpp
- * constexpr bool tag_invoke(bio::alphabet::cpo::char_is_valid_for, char_type const char, alph_type) noexcept
+ * constexpr bool tag_invoke(bio::alphabet::custom::char_is_valid_for, char_type const char, alph_type) noexcept
  * ```
  *
  * If no implementation is found, it behaves as specified above.
@@ -469,7 +382,7 @@ namespace bio::alphabet
  * object will instead look for:
  *
  * ```cpp
- * constexpr bool tag_invoke(bio::alphabet::cpo::char_is_valid_for, char_type const char, std::type_identity<alph_type>) noexcept
+ * constexpr bool tag_invoke(bio::alphabet::custom::char_is_valid_for, char_type const char, std::type_identity<alph_type>) noexcept
  * ```
  *
  * i.e. the type will be wrapped in std::type_identity so it can still be passed as a tag.
@@ -555,24 +468,10 @@ namespace bio::alphabet
  */
 inline constexpr auto assign_char_strictly_to = detail::assign_char_strictly_to_fn{};
 //!\}
-} // namespace bio::alphabet
 
 // ============================================================================
 // size
 // ============================================================================
-
-namespace bio::alphabet::cpo
-{
-
-//!\brief CPO tag definition for bio::alphabet::size.
-//!\ingroup alphabet
-struct size
-{};
-
-} // namespace bio::alphabet::cpo
-
-namespace bio::alphabet
-{
 
 /*!\brief A type trait that holds the size of a (semi-)alphabet.
  * \tparam alph_type The (semi-)alphabet type being queried.
@@ -596,7 +495,7 @@ namespace bio::alphabet
  * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```cpp
- * consteval size_t tag_invoke(bio::alphabet::cpo::size, alph_type) noexcept
+ * consteval size_t tag_invoke(bio::alphabet::custom::size, alph_type) noexcept
  * ```
  *
  * Implementations are found via ADL and considered only if they are marked `noexcept`, if they return
@@ -610,7 +509,7 @@ namespace bio::alphabet
  * **at compile-time**, this function object will instead look for:
  *
  * ```cpp
- * consteval size_t tag_invoke(bio::alphabet::cpo::size, std::type_identity<alph_type>) noexcept
+ * consteval size_t tag_invoke(bio::alphabet::custom::size, std::type_identity<alph_type>) noexcept
  * ```
  *
  * i.e. the type will be wrapped in std::type_identity so it can still be passed as a tag.
@@ -620,12 +519,12 @@ template <typename alph_t, typename wrap_t = meta::default_initialisable_wrap_t<
     //!\cond
     requires(requires {
         {
-            tag_invoke(cpo::size{}, wrap_t{})
+            tag_invoke(custom::size{}, wrap_t{})
             } -> std::integral;
-        requires BIOCPP_IS_CONSTEXPR(tag_invoke(cpo::size{}, wrap_t{}));
+        requires BIOCPP_IS_CONSTEXPR(tag_invoke(custom::size{}, wrap_t{}));
     })
 //!\endcond
-inline constexpr auto size = tag_invoke(cpo::size{}, wrap_t{});
+inline constexpr auto size = tag_invoke(custom::size{}, wrap_t{});
 
 // ============================================================================
 // semialphabet

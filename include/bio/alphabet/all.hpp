@@ -173,10 +173,10 @@
 
 #pragma once
 
-#include <bio/alphabet/adaptation/all.hpp>
 #include <bio/alphabet/aminoacid/all.hpp>
 #include <bio/alphabet/composite/all.hpp>
 #include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/custom/all.hpp>
 #include <bio/alphabet/gap/all.hpp>
 #include <bio/alphabet/mask/all.hpp>
 #include <bio/alphabet/nucleotide/all.hpp>

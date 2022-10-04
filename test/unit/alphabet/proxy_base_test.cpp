@@ -92,23 +92,23 @@ public:
     constexpr friend auto operator<=>(my_alph, my_alph) = default;
 };
 
-consteval size_t tag_invoke(bio::alphabet::cpo::size, my_alph const &) noexcept
+consteval size_t tag_invoke(bio::alphabet::custom::size, my_alph const &) noexcept
 {
     return 2;
 }
 
-constexpr uint8_t tag_invoke(bio::alphabet::cpo::to_rank, my_alph const a) noexcept
+constexpr uint8_t tag_invoke(bio::alphabet::custom::to_rank, my_alph const a) noexcept
 {
     return a.rank;
 }
 
-constexpr my_alph & tag_invoke(bio::alphabet::cpo::assign_rank_to, uint8_t const r, my_alph & a) noexcept
+constexpr my_alph & tag_invoke(bio::alphabet::custom::assign_rank_to, uint8_t const r, my_alph & a) noexcept
 {
     a.rank = r;
     return a;
 }
 
-constexpr char tag_invoke(bio::alphabet::cpo::to_char, my_alph const a) noexcept
+constexpr char tag_invoke(bio::alphabet::custom::to_char, my_alph const a) noexcept
 {
     if (a.rank)
         return '1';
@@ -116,7 +116,7 @@ constexpr char tag_invoke(bio::alphabet::cpo::to_char, my_alph const a) noexcept
         return '0';
 }
 
-constexpr my_alph & tag_invoke(bio::alphabet::cpo::assign_char_to, char const c, my_alph & a) noexcept
+constexpr my_alph & tag_invoke(bio::alphabet::custom::assign_char_to, char const c, my_alph & a) noexcept
 {
     switch (c)
     {

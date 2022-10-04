@@ -29,11 +29,16 @@
 #include <bio/alphabet/concept.hpp>
 #include <bio/meta/detail/int_types.hpp>
 
-namespace bio::alphabet::cpo
+namespace bio::alphabet::custom
 {
 
+/*!\name Adapt builtin character types as alphabets.
+ * \brief These overloads make `char`, `wchar_t`, `char16_t` and `char32_t` (but not `signed char` and `unsigned char`!) satisfy bio::alphabet::alphabet.
+ * \{
+ */
+
 //!\brief The number of values the char type can take (e.g. 256 for `char`).
-//!\ingroup adaptation
+//!\ingroup alphabet_custom
 template <bio::meta::nonint_character char_type>
 consteval auto tag_invoke(size, char_type const) noexcept
 {
@@ -41,7 +46,7 @@ consteval auto tag_invoke(size, char_type const) noexcept
 }
 
 /*!\brief Convert char to rank by casting to an unsigned integral type of same size.
- * \ingroup adaptation
+ * \ingroup alphabet_custom
  * \param[in] tag The tag for tag_invoke().
  * \param[in] chr The alphabet letter that you wish to convert to rank.
  * \returns The letter's value in the alphabet's rank type (usually a `uint*_t`).
@@ -53,7 +58,7 @@ constexpr auto tag_invoke(to_rank BIOCPP_DOXYGEN_ONLY(tag), char_type const chr)
 }
 
 /*!\brief Assigning a rank to a char is the same as assigning it a numeric value.
- * \ingroup adaptation
+ * \ingroup alphabet_custom
  * \param[in] tag The tag for tag_invoke().
  * \param[in] rank The `rank` value you wish to assign.
  * \param[in,out] chr The alphabet letter that you wish to assign to.
@@ -68,7 +73,7 @@ constexpr char_type & tag_invoke(assign_rank_to                                 
 }
 
 /*!\brief Converting char to char is no-op (it will just return the value you pass in).
- * \ingroup adaptation
+ * \ingroup alphabet_custom
  * \param[in] tag The tag for tag_invoke().
  * \param[in] chr The alphabet letter that you wish to convert to char (no-op).
  * \returns `chr`.
@@ -80,7 +85,7 @@ constexpr char_type tag_invoke(to_char BIOCPP_DOXYGEN_ONLY(tag), char_type const
 }
 
 /*!\brief Assign a char to the char type (same as calling `=`).
- * \ingroup adaptation
+ * \ingroup alphabet_custom
  * \param[in] tag The tag for tag_invoke().
  * \param[in] chr2 The `char` value you wish to assign.
  * \param[in,out] chr The alphabet letter that you wish to assign to.
@@ -94,4 +99,6 @@ constexpr char_type & tag_invoke(assign_char_to  BIOCPP_DOXYGEN_ONLY(tag),
     return chr = chr2;
 }
 
-} // namespace bio::alphabet::cpo
+//!\}
+
+} // namespace bio::alphabet::custom

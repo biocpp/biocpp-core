@@ -194,37 +194,38 @@ private:
     rank_type rank;
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr auto tag_invoke(cpo::to_rank, derived_type const a) noexcept { return a.to_rank(); }
+    friend constexpr auto tag_invoke(custom::to_rank, derived_type const a) noexcept { return a.to_rank(); }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr derived_type & tag_invoke(cpo::assign_rank_to, rank_type const r, derived_type & a) noexcept
+    friend constexpr derived_type & tag_invoke(custom::assign_rank_to, rank_type const r, derived_type & a) noexcept
       requires(requires { {a.assign_rank(r)}; })
     {
         return a.assign_rank(r);
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr auto tag_invoke(cpo::to_char, derived_type const a) noexcept requires(requires { {a.to_char()}; })
+    friend constexpr auto tag_invoke(custom::to_char, derived_type const a) noexcept
+      requires(requires { {a.to_char()}; })
     {
         return a.to_char();
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr derived_type & tag_invoke(cpo::assign_char_to, char_type const c, derived_type & a) noexcept
+    friend constexpr derived_type & tag_invoke(custom::assign_char_to, char_type const c, derived_type & a) noexcept
       requires(requires { {a.assign_char(c)}; })
     {
         return a.assign_char(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr bool tag_invoke(cpo::char_is_valid_for, char_type const c, derived_type) noexcept
+    friend constexpr bool tag_invoke(custom::char_is_valid_for, char_type const c, derived_type) noexcept
       requires(requires { {derived_type::char_is_valid(c)}; })
     {
         return derived_type::char_is_valid(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr bool tag_invoke(cpo::char_is_valid_for,
+    friend constexpr bool tag_invoke(custom::char_is_valid_for,
                                      char_type const c,
                                      std::type_identity<derived_type>) noexcept
       //!\cond REQ
@@ -235,14 +236,14 @@ private:
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend consteval auto tag_invoke(cpo::size,
+    friend consteval auto tag_invoke(custom::size,
                                      derived_type) noexcept requires meta::constexpr_default_initializable<derived_type>
     {
         return size;
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend consteval auto tag_invoke(cpo::size, std::type_identity<derived_type>) noexcept
+    friend consteval auto tag_invoke(custom::size, std::type_identity<derived_type>) noexcept
       requires(!meta::constexpr_default_initializable<derived_type>)
     {
         return size;
@@ -340,36 +341,37 @@ public:
     //!\}
 private:
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr rank_type tag_invoke(cpo::to_rank, derived_type) noexcept { return 0; }
+    friend constexpr rank_type tag_invoke(custom::to_rank, derived_type) noexcept { return 0; }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr derived_type & tag_invoke(cpo::assign_rank_to, rank_type const, derived_type & a) noexcept
+    friend constexpr derived_type & tag_invoke(custom::assign_rank_to, rank_type const, derived_type & a) noexcept
     {
         return a;
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr auto tag_invoke(cpo::to_char, derived_type const a) noexcept requires(requires { {a.to_char()}; })
+    friend constexpr auto tag_invoke(custom::to_char, derived_type const a) noexcept
+      requires(requires { {a.to_char()}; })
     {
         return a.to_char();
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr derived_type & tag_invoke(cpo::assign_char_to, char_type const c, derived_type & a) noexcept
+    friend constexpr derived_type & tag_invoke(custom::assign_char_to, char_type const c, derived_type & a) noexcept
       requires(requires { {a.assign_char(c)}; })
     {
         return a;
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr bool tag_invoke(cpo::char_is_valid_for, char_type const c, derived_type) noexcept
+    friend constexpr bool tag_invoke(custom::char_is_valid_for, char_type const c, derived_type) noexcept
       requires(requires { {derived_type::char_is_valid(c)}; } && std::is_nothrow_default_constructible_v<derived_type>)
     {
         return derived_type::char_is_valid(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr bool tag_invoke(cpo::char_is_valid_for,
+    friend constexpr bool tag_invoke(custom::char_is_valid_for,
                                      char_type const c,
                                      std::type_identity<derived_type>) noexcept
       requires(requires { {derived_type::char_is_valid(c)}; } && !std::is_nothrow_default_constructible_v<derived_type>)
@@ -378,14 +380,14 @@ private:
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend consteval auto tag_invoke(cpo::size,
+    friend consteval auto tag_invoke(custom::size,
                                      derived_type) noexcept requires meta::constexpr_default_initializable<derived_type>
     {
         return alphabet_size;
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend consteval auto tag_invoke(cpo::size, std::type_identity<derived_type>) noexcept
+    friend consteval auto tag_invoke(custom::size, std::type_identity<derived_type>) noexcept
       requires(!meta::constexpr_default_initializable<derived_type>)
     {
         return alphabet_size;

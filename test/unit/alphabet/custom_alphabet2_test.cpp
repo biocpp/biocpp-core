@@ -32,17 +32,17 @@ public:
 
     constexpr friend auto operator<=>(my_alph lhs, my_alph rhs) = default;
 
-    consteval friend size_t tag_invoke(bio::alphabet::cpo::size, std::type_identity<my_alph>) noexcept { return 2; }
+    consteval friend size_t tag_invoke(bio::alphabet::custom::size, std::type_identity<my_alph>) noexcept { return 2; }
 
-    constexpr friend uint8_t tag_invoke(bio::alphabet::cpo::to_rank, my_alph const a) noexcept { return a.rank; }
+    constexpr friend uint8_t tag_invoke(bio::alphabet::custom::to_rank, my_alph const a) noexcept { return a.rank; }
 
-    constexpr friend my_alph & tag_invoke(bio::alphabet::cpo::assign_rank_to, uint8_t const r, my_alph & a) noexcept
+    constexpr friend my_alph & tag_invoke(bio::alphabet::custom::assign_rank_to, uint8_t const r, my_alph & a) noexcept
     {
         a.rank = r;
         return a;
     }
 
-    constexpr friend char tag_invoke(bio::alphabet::cpo::to_char, my_alph const a) noexcept
+    constexpr friend char tag_invoke(bio::alphabet::custom::to_char, my_alph const a) noexcept
     {
         if (a.rank)
             return '1';
@@ -50,7 +50,7 @@ public:
             return '0';
     }
 
-    constexpr friend my_alph & tag_invoke(bio::alphabet::cpo::assign_char_to, char const c, my_alph & a) noexcept
+    constexpr friend my_alph & tag_invoke(bio::alphabet::custom::assign_char_to, char const c, my_alph & a) noexcept
     {
         switch (c)
         {
@@ -65,7 +65,7 @@ public:
         }
     }
 
-    constexpr friend bool tag_invoke(bio::alphabet::cpo::char_is_valid_for,
+    constexpr friend bool tag_invoke(bio::alphabet::custom::char_is_valid_for,
                                      char const c,
                                      std::type_identity<my_alph>) noexcept
     {

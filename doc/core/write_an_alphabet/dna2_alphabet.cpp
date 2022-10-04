@@ -18,19 +18,19 @@ struct dna2
     constexpr friend auto operator<=>(dna2 const & lhs, dna2 const & rhs) noexcept = default;
 
     /* Semialphabet */
-    consteval friend size_t tag_invoke(bio::alphabet::cpo::size,
+    consteval friend size_t tag_invoke(bio::alphabet::custom::size,
                                        dna2) noexcept
     {
         return 2;
     }
 
-    constexpr friend uint8_t tag_invoke(bio::alphabet::cpo::to_rank,
+    constexpr friend uint8_t tag_invoke(bio::alphabet::custom::to_rank,
                                         dna2 const & d) noexcept
     {
         return d.rank;
     }
 
-    constexpr friend dna2 & tag_invoke(bio::alphabet::cpo::assign_rank_to,
+    constexpr friend dna2 & tag_invoke(bio::alphabet::custom::assign_rank_to,
                                        uint8_t rk,
                                        dna2 & d) noexcept
     {
@@ -40,14 +40,14 @@ struct dna2
     }
 
     /* Alphabet */
-    constexpr friend char tag_invoke(bio::alphabet::cpo::to_char,
+    constexpr friend char tag_invoke(bio::alphabet::custom::to_char,
                                      dna2 const & d) noexcept
     {
         // map 0 => 'S' and 1 => 'W'
         return d.rank == 0 ? 'S' : 'W';
     }
 
-    constexpr friend dna2 & tag_invoke(bio::alphabet::cpo::assign_char_to,
+    constexpr friend dna2 & tag_invoke(bio::alphabet::custom::assign_char_to,
                                        char ch,
                                        dna2 & d) noexcept
     {
@@ -63,7 +63,7 @@ struct dna2
     }
 
     // Optional: make lower-case letters valid
-    constexpr friend bool tag_invoke(bio::alphabet::cpo::char_is_valid_for,
+    constexpr friend bool tag_invoke(bio::alphabet::custom::char_is_valid_for,
                                      char ch,
                                      dna2) noexcept
     {
