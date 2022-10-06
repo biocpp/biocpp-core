@@ -120,29 +120,27 @@ inline namespace literals
  * \relates bio::alphabet::rna5
  * \returns bio::alphabet::rna5
  */
-consteval rna5 operator""_rna5(char const c) noexcept
+consteval rna5 operator""_rna5(char const c)
 {
+    if (!char_is_valid_for<rna5>(c))
+        throw std::invalid_argument{"Illegal character in character literal."};
+
     return rna5{}.assign_char(c);
 }
 
 /*!\brief The bio::alphabet::rna5 string literal.
  * \relates bio::alphabet::rna5
- * \returns bio::alphabet::rna5_vector
+ * \returns std::vector<bio::alphabet::rna5>
  *
- * You can use this string literal to easily assign to rna5_vector:
+ * You can use this string literal to easily create a std::vector<bio::alphabet::rna5>:
  *
  * \include test/snippet/alphabet/nucleotide/rna5_literal.cpp
  *
  */
-inline rna5_vector operator""_rna5(char const * s, std::size_t n)
+template <meta::detail::literal_buffer_string str>
+constexpr std::vector<rna5> operator""_rna5()
 {
-    rna5_vector r;
-    r.resize(n);
-
-    for (size_t i = 0; i < n; ++i)
-        r[i].assign_char(s[i]);
-
-    return r;
+    return detail::string_literal<str, rna5>();
 }
 //!\}
 

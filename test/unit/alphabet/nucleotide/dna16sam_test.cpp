@@ -89,7 +89,6 @@ TEST(dna16sam, char_literal)
     EXPECT_EQ(bio::alphabet::to_char('='_dna16sam), '=');
 
     EXPECT_EQ(bio::alphabet::to_char('N'_dna16sam), 'N');
-    EXPECT_EQ(bio::alphabet::to_char('!'_dna16sam), 'N');
 }
 
 TEST(dna16sam, string_literal)

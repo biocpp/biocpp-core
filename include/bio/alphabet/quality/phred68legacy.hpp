@@ -95,34 +95,32 @@ inline namespace literals
 /*!\name Literals
  * \{
  */
+
 /*!\brief The bio::alphabet::phred68legacy char literal.
  * \relates bio::alphabet::phred68legacy
  * \returns bio::alphabet::phred68legacy
  */
-consteval phred68legacy operator""_phred68legacy(char const c) noexcept
+consteval phred68legacy operator""_phred68legacy(char const c)
 {
+    if (!char_is_valid_for<phred68legacy>(c))
+        throw std::invalid_argument{"Illegal character in character literal."};
+
     return phred68legacy{}.assign_char(c);
 }
 
 /*!\brief The bio::alphabet::phred68legacy string literal.
- * \param[in] s A pointer to the character sequence to assign from.
- * \param[in] n The length of the character sequence to assign from.
  * \relates bio::alphabet::phred68legacy
- * \returns bio::alphabet::std::vector<bio::alphabet::phred68legacy>
+ * \returns std::vector<bio::alphabet::phred68legacy>
  *
- * You can use this string literal to easily assign to std::vector<bio::alphabet::phred68legacy>:
+ * You can use this string literal to easily create a std::vector<bio::alphabet::phred68legacy>:
  *
  * \include test/snippet/alphabet/quality/phred68legacy_literal.cpp
+ *
  */
-inline std::vector<phred68legacy> operator""_phred68legacy(char const * s, std::size_t n)
+template <meta::detail::literal_buffer_string str>
+constexpr std::vector<phred68legacy> operator""_phred68legacy()
 {
-    std::vector<phred68legacy> r;
-    r.resize(n);
-
-    for (size_t i = 0; i < n; ++i)
-        r[i].assign_char(s[i]);
-
-    return r;
+    return detail::string_literal<str, phred68legacy>();
 }
 //!\}
 

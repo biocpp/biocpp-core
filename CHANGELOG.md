@@ -7,6 +7,8 @@ bug-fixes (not all bug-fixes will be listed).
 
 # 0.6.0
 
+Summary: The alphabet module is almost *stable*. Several things in meta and ranges were cleaned up.
+
 ## Features
 
 * Added `bio::meta::one_of`, `bio::meta::decays_to` and `bio::meta::different_from` concepts.
@@ -14,6 +16,7 @@ bug-fixes (not all bug-fixes will be listed).
 * Added `bio::ranges::back_insertable` and `bio::ranges::back_insertable_with` as light-weight "container" concepts.
 * Added `bio::views::char_strictly_to` and `bio::views::validate_char_for`; as well as `bio::views::char_conversion_view_t`.
 * Added `bio::views::transform_by_pos`, a more flexible version of `std::views::transform`.
+* All alphabet literals (e.g. 'C'_dna4, "GATTACA"_dna4) are now strict and validated at compile-time. Character literals are `consteval`. This prevents bugs early on.
 
 ## Bug-fixes
 
@@ -38,7 +41,7 @@ bug-fixes (not all bug-fixes will be listed).
 * This release is *mostly* backwards compatible with 0.5.0 (see changes above).
 
 
-# 0.5.0
+# 0.5.0 – "less is more"
 
 ## Features
 
