@@ -14,6 +14,7 @@ bug-fixes (not all bug-fixes will be listed).
 * Added `bio::ranges::back_insertable` and `bio::ranges::back_insertable_with` as light-weight "container" concepts.
 * Added `bio::views::char_strictly_to` and `bio::views::validate_char_for`; as well as `bio::views::char_conversion_view_t`.
 * Added `bio::views::transform_by_pos`, a more flexible version of `std::views::transform`.
+* Added `bio::views::add_reverse_complement` which turns a range of sequences into range of sequences with their reverse complements interleaved as every second element.
 
 ## Bug-fixes
 
@@ -60,4 +61,3 @@ bug-fixes (not all bug-fixes will be listed).
 
 * This release is not yet API-stable.
 * This release is not backwards compatible with any BioC++ or SeqAn version.
-
