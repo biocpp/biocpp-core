@@ -171,7 +171,7 @@ struct vtag_t<v, more_vs...>
  * Using this template, you can easily turn a value, e.g. a literal value, into a compile-time constant with a unique
  * type.
  *
- * ### Examples
+ * ### Example
  *
  * Dispatching between two overloads:
  * \snippet test/snippet/meta/tag/vtag.cpp dispatch
@@ -188,12 +188,10 @@ inline namespace literals
  * \ingroup meta_tag
  * \details
  *
- * Creates bio::meta::vtag from a string literal. Only string-literals
- * up to length 100 are supported!
+ * Creates bio::meta::vtag from a string literal.
  *
  * The returned tag will be of type
- * `bio::meta::vtag<bio::ranges::small_string<str.size()>{str}>`, i.e.
- * the length of the small string in the tag is the actual size.
+ * `bio::meta::vtag_t<bio::ranges::small_string<str.size()>{str}>`.
  *
  * ### Example
  *
@@ -202,10 +200,8 @@ inline namespace literals
  *
  * The allows very self-descriptive dispatching.
  *
- * ---
- *
  */
-template <detail::literal_buffer_string<100> str>
+template <detail::literal_buffer_string str>
 consteval auto operator""_vtag() noexcept
 {
     return vtag<ranges::small_string<str.size()>{str}>;
