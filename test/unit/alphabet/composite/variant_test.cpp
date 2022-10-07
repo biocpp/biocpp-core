@@ -10,8 +10,8 @@
 
 #include <gtest/gtest.h>
 
-#include <bio/alphabet/adaptation/char.hpp>
 #include <bio/alphabet/composite/variant.hpp>
+#include <bio/alphabet/custom/char.hpp>
 #include <bio/alphabet/gap/gap.hpp>
 #include <bio/alphabet/nucleotide/dna4.hpp>
 #include <bio/alphabet/nucleotide/dna5.hpp>

@@ -144,29 +144,27 @@ inline namespace literals
  * \relates bio::alphabet::dna15
  * \returns bio::alphabet::dna15
  */
-consteval dna15 operator""_dna15(char const c) noexcept
+consteval dna15 operator""_dna15(char const c)
 {
+    if (!char_is_valid_for<dna15>(c))
+        throw std::invalid_argument{"Illegal character in character literal."};
+
     return dna15{}.assign_char(c);
 }
 
 /*!\brief The bio::alphabet::dna15 string literal.
  * \relates bio::alphabet::dna15
- * \returns bio::alphabet::dna15_vector
+ * \returns std::vector<bio::alphabet::dna15>
  *
- * You can use this string literal to easily assign to dna15_vector:
+ * You can use this string literal to easily create a std::vector<bio::alphabet::dna15>:
  *
  * \include test/snippet/alphabet/nucleotide/dna15_literal.cpp
  *
  */
-inline dna15_vector operator""_dna15(char const * s, std::size_t n)
+template <meta::detail::literal_buffer_string str>
+constexpr std::vector<dna15> operator""_dna15()
 {
-    dna15_vector r;
-    r.resize(n);
-
-    for (size_t i = 0; i < n; ++i)
-        r[i].assign_char(s[i]);
-
-    return r;
+    return detail::string_literal<str, dna15>();
 }
 //!\}
 

@@ -114,8 +114,10 @@ inline namespace literals
  * \relates bio::alphabet::cigar_op
  * \returns bio::alphabet::cigar_op
  */
-inline cigar_op operator""_cigar_op(char const c) noexcept
+consteval cigar_op operator""_cigar_op(char const c)
 {
+    if (!char_is_valid_for<cigar_op>(c))
+        throw std::invalid_argument{"Illegal character in character literal."};
     return cigar_op{}.assign_char(c);
 }
 //!\}

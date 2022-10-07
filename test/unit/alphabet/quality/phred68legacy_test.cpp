@@ -99,14 +99,14 @@ TEST(phred68legacy, char_literal)
 TEST(phred68legacy, string_literal)
 {
     std::vector<bio::alphabet::phred68legacy> v;
-    v.resize(5, '#'_phred68legacy);
-    EXPECT_EQ(v, "#####"_phred68legacy);
+    v.resize(5, ';'_phred68legacy);
+    EXPECT_EQ(v, ";;;;;"_phred68legacy);
 
-    std::vector<bio::alphabet::phred68legacy> w{'#'_phred68legacy,
-                                                '#'_phred68legacy,
-                                                '!'_phred68legacy,
-                                                '!'_phred68legacy,
-                                                '!'_phred68legacy,
-                                                '#'_phred68legacy};
-    EXPECT_EQ(w, "##!!!#"_phred68legacy);
+    std::vector<bio::alphabet::phred68legacy> w{';'_phred68legacy,
+                                                '<'_phred68legacy,
+                                                ';'_phred68legacy,
+                                                '?'_phred68legacy,
+                                                'a'_phred68legacy,
+                                                'b'_phred68legacy};
+    EXPECT_EQ(w, ";<;?ab"_phred68legacy);
 }

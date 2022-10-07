@@ -21,22 +21,6 @@
 // to_phred()
 // ============================================================================
 
-namespace bio::alphabet::cpo
-{
-
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::assign_char_to.
-//!\ingroup quality
-struct to_phred
-{};
-
-//!\}
-
-} // namespace bio::alphabet::cpo
-
 namespace bio::alphabet
 {
 
@@ -66,7 +50,7 @@ namespace bio::alphabet
  * This object acts as a wrapper and looks for an implementation with the following signature:
  *
  * ```c++
- * constexpr phred_type tag_invoke(bio::alphabet::cpo::to_phred, alph_type const alph) noexcept
+ * constexpr phred_type tag_invoke(bio::alphabet::custom::to_phred, alph_type const alph) noexcept
  * {}
  * ```
  *
@@ -82,13 +66,13 @@ inline constexpr auto to_phred = []<typename alph_t>(alph_t const a)
   //!\cond
   requires(requires {
       {
-          tag_invoke(cpo::to_phred{}, a)
+          tag_invoke(custom::to_phred{}, a)
           } -> std::integral;
-      requires noexcept(tag_invoke(cpo::to_phred{}, a));
+      requires noexcept(tag_invoke(custom::to_phred{}, a));
   })
 //!\endcond
 {
-    return tag_invoke(cpo::to_phred{}, a);
+    return tag_invoke(custom::to_phred{}, a);
 };
 //!\}
 
@@ -101,30 +85,9 @@ template <typename alphabet_type>
 //!\endcond
 using phred_t = decltype(bio::alphabet::to_phred(std::declval<alphabet_type>()));
 
-} // namespace bio::alphabet
-
 // ============================================================================
 // assign_phred_to()
 // ============================================================================
-
-namespace bio::alphabet::cpo
-{
-
-/*!\name Customisation tag types
- * \{
- */
-
-//!\brief Customisation tag for bio::alphabet::assign_char_to.
-//!\ingroup quality
-struct assign_phred_to
-{};
-
-//!\}
-
-} // namespace bio::alphabet::cpo
-
-namespace bio::alphabet
-{
 
 /*!\name Function objects (Quality)
  * \{
@@ -167,24 +130,19 @@ inline constexpr auto assign_phred_to = []<typename alph_t>(bio::alphabet::phred
   //!\cond
   requires(requires {
       {
-          tag_invoke(cpo::assign_phred_to{}, p, a)
+          tag_invoke(custom::assign_phred_to{}, p, a)
           } -> std::same_as<alph_t &>;
-      requires noexcept(tag_invoke(cpo::assign_phred_to{}, p, a));
+      requires noexcept(tag_invoke(custom::assign_phred_to{}, p, a));
   })
 //!\endcond
 {
-    return tag_invoke(cpo::assign_phred_to{}, p, a);
+    return tag_invoke(custom::assign_phred_to{}, p, a);
 };
 //!\}
-
-} // namespace bio::alphabet
 
 // ============================================================================
 // bio::alphabet::quality_alphabet
 // ============================================================================
-
-namespace bio::alphabet
-{
 
 /*!\interface bio::alphabet::quality_alphabet <>
  * \extends bio::alphabet::alphabet

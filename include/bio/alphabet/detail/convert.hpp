@@ -18,6 +18,7 @@
 #include <array>
 
 #include <bio/alphabet/concept.hpp>
+#include <bio/meta/tag/vtag.hpp>
 
 // ============================================================================
 // conversion to/from char/rank types
@@ -42,5 +43,31 @@ constexpr std::array<out_t, size<in_t>> convert_through_char_representation = []
     return ret;
 }
 ();
+
+/*!\brief Helper function for defining string literal operators.
+ * \ingroup alphabet
+ * \tparam str The literal string.
+ * \tparam alph_t The target alphabet type.
+ */
+template <meta::detail::literal_buffer_string str, typename alphabet_t>
+constexpr std::vector<alphabet_t> string_literal()
+{
+    auto illegal_char_at = []() consteval->int32_t
+    {
+        for (int32_t i = 0; i < (int32_t)str.size(); ++i)
+            if (!char_is_valid_for<alphabet_t>(str[i]))
+                return i;
+        return -1;
+    };
+    static_assert(illegal_char_at() == -1, "Illegal character in string literal.");
+
+    std::vector<alphabet_t> r;
+    r.resize(str.size());
+
+    for (size_t i = 0; i < str.size(); ++i)
+        r[i].assign_char(str[i]);
+
+    return r;
+}
 
 } // namespace bio::alphabet::detail

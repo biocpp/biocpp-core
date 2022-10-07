@@ -26,23 +26,27 @@
 
 #pragma once
 
-#include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/custom/tag.hpp>
 #include <bio/meta/detail/int_types.hpp>
 
 namespace bio::alphabet::detail
 {
 //!\brief Whether a type is `uint8_t`, `uint16_t` or `uint32_t`.
-//!\ingroup adaptation
+//!\ingroup alphabet_custom
 //!\hideinitializer
 template <typename type>
 concept uint_adaptation = std::same_as<type, uint8_t> || std::same_as<type, uint16_t> || std::same_as<type, uint32_t>;
 } // namespace bio::alphabet::detail
 
-namespace bio::alphabet::cpo
+namespace bio::alphabet::custom
 {
 
+/*!\name Adapt unsigned integral types as semialphabets.
+ * \brief These overloads make `uint8_t`, `uint16_t` and `uint32_t` (but not `uint64_t`!) satisfy bio::alphabet::semialphabet.
+ * \{
+ */
 //!\brief The number of values the uint type can take (e.g. 256 for `uint8_t`).
-//!\ingroup adaptation
+//!\ingroup alphabet_custom
 template <alphabet::detail::uint_adaptation uint_type>
 consteval auto tag_invoke(size BIOCPP_DOXYGEN_ONLY(tag), uint_type const) noexcept
 {
@@ -50,22 +54,22 @@ consteval auto tag_invoke(size BIOCPP_DOXYGEN_ONLY(tag), uint_type const) noexce
 }
 
 /*!\brief Assign a rank to to the uint (same as calling `=`).
- * \ingroup adaptation
+ * \ingroup alphabet_custom
  * \param[in] tag The tag for tag_invoke().
  * \param[in] intgr2 The `rank` value you wish to assign.
  * \param[in,out] intgr The alphabet letter that you wish to assign to.
  * \returns A reference to the modified alphabet letter you passed in.
  */
 template <alphabet::detail::uint_adaptation uint_type>
-static constexpr uint_type & tag_invoke(assign_rank_to  BIOCPP_DOXYGEN_ONLY(tag),
-                                        uint_type const intgr2,
-                                        uint_type &     intgr) noexcept
+constexpr uint_type & tag_invoke(assign_rank_to  BIOCPP_DOXYGEN_ONLY(tag),
+                                 uint_type const intgr2,
+                                 uint_type &     intgr) noexcept
 {
     return intgr = intgr2;
 }
 
 /*!\brief Converting uint to rank is a no-op (it will just return the value you pass in).
- * \ingroup adaptation
+ * \ingroup alphabet_custom
  * \param[in] tag The tag for tag_invoke().
  * \param[in] intgr The alphabet letter that you wish to convert to rank.
  * \returns `intgr`.
@@ -76,4 +80,6 @@ constexpr auto tag_invoke(to_rank BIOCPP_DOXYGEN_ONLY(tag), uint_type const intg
     return intgr;
 }
 
-} // namespace bio::alphabet::cpo
+//!\}
+
+} // namespace bio::alphabet::custom

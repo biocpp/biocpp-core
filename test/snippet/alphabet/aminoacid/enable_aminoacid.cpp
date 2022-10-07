@@ -25,5 +25,5 @@ struct your_aa
 } // namespace your_namespace2
 
 template <>
-inline constexpr bool bio::alphabet::cpo::enable_aminoacid<your_namespace2::your_aa> = true;
+inline constexpr bool bio::alphabet::custom::enable_aminoacid<your_namespace2::your_aa> = true;
 

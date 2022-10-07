@@ -67,7 +67,6 @@ TEST(dna15, char_literal)
     EXPECT_EQ(bio::alphabet::to_char('V'_dna15), 'V');
 
     EXPECT_EQ(bio::alphabet::to_char('N'_dna15), 'N');
-    EXPECT_EQ(bio::alphabet::to_char('!'_dna15), 'N');
 }
 
 TEST(dna15, string_literal)

@@ -199,36 +199,30 @@ inline namespace literals
  */
 
 /*!\brief The bio::alphabet::aa10murphy char literal.
- * \param[in] c The character to assign.
  * \relates bio::alphabet::aa10murphy
  * \returns bio::alphabet::aa10murphy
  */
-consteval aa10murphy operator""_aa10murphy(char const c) noexcept
+consteval aa10murphy operator""_aa10murphy(char const c)
 {
+    if (!char_is_valid_for<aa10murphy>(c))
+        throw std::invalid_argument{"Illegal character in character literal."};
+
     return aa10murphy{}.assign_char(c);
 }
 
-/*!\brief The bio::alphabet::aa10murphy  string literal.
- * \param[in] s A pointer to the character string to assign.
- * \param[in] n The size of the character string to assign.
+/*!\brief The bio::alphabet::aa10murphy string literal.
  * \relates bio::alphabet::aa10murphy
- * \returns bio::alphabet::aa10murphy_vector
+ * \returns std::vector<bio::alphabet::aa10murphy>
  *
- * You can use this string literal to easily assign to aa10murphy_vector:
+ * You can use this string literal to easily create a std::vector<bio::alphabet::aa10murphy>:
  *
- * \attention
- * All BioC++ literals are in the namespace bio::alphabet!
+ * \include test/snippet/alphabet/aminoacid/aa10murphy.cpp
+ *
  */
-
-inline aa10murphy_vector operator""_aa10murphy(char const * s, std::size_t n)
+template <meta::detail::literal_buffer_string str>
+constexpr std::vector<aa10murphy> operator""_aa10murphy()
 {
-    aa10murphy_vector r;
-    r.resize(n);
-
-    for (size_t i = 0; i < n; ++i)
-        r[i].assign_char(s[i]);
-
-    return r;
+    return detail::string_literal<str, aa10murphy>();
 }
 //!\}
 

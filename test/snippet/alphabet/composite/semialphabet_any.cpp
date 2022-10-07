@@ -4,6 +4,8 @@
 // character representation (your equivalent of `algorithm()`) is substantially larger than the specific parts – and
 // if compile-time and/or size of the exectuble are a concern.
 
+// READ THE FUNCTIONS FROM BUTTOM TO TOP!
+
 #include <iostream>
 
 #include <bio/alphabet/aminoacid/all.hpp>
@@ -14,7 +16,7 @@
 
 using namespace bio::alphabet::literals;
 
-// Print is a template and gets instantiated two times because the behaviour is different for both types
+// Print is a template again; you could do further processing of the reified types here
 template <typename rng_t>
 void print(rng_t && r)
 {
@@ -55,9 +57,9 @@ void algo_pre(bio::alphabet::aa10murphy_vector const & v)
 
 int main()
 {
-    bio::alphabet::aa10li_vector v1{"AVRSTXOUB"_aa10li};
-    algo_pre(v1); // BIKBBBKCB
+    bio::alphabet::aa10li_vector v1{"AIKAAAKCB"_aa10li};
+    algo_pre(v1); // AIKAAAKCB
 
-    bio::alphabet::aa10murphy_vector v2{"AVRSTXOUB"_aa10murphy};
-    algo_pre(v2); // BIKSSSKCB
+    bio::alphabet::aa10murphy_vector v2{"FIKAFAKCB"_aa10murphy};
+    algo_pre(v2); // FIKAFAKCB
 }

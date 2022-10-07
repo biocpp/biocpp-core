@@ -47,9 +47,9 @@ TEST(aa10li, to_char)
                             'B', 'K', 'A', 'A', 'I', 'F', 'F', 'B', 'J', 'K', 'C', 'A', 'B'};
 
     std::vector<bio::alphabet::aa10li> alphabets{
-      'A'_aa10li, 'C'_aa10li, 'D'_aa10li, 'E'_aa10li, 'F'_aa10li, 'G'_aa10li, 'H'_aa10li, 'I'_aa10li, 'K'_aa10li,
-      'L'_aa10li, 'M'_aa10li, 'N'_aa10li, 'P'_aa10li, 'Q'_aa10li, 'R'_aa10li, 'S'_aa10li, 'T'_aa10li, 'V'_aa10li,
-      'W'_aa10li, 'Y'_aa10li, 'B'_aa10li, 'J'_aa10li, 'O'_aa10li, 'U'_aa10li, 'X'_aa10li, 'Z'_aa10li};
+      'A'_aa10li, 'C'_aa10li, 'B'_aa10li, 'B'_aa10li, 'F'_aa10li, 'G'_aa10li, 'H'_aa10li, 'I'_aa10li, 'K'_aa10li,
+      'J'_aa10li, 'J'_aa10li, 'H'_aa10li, 'P'_aa10li, 'B'_aa10li, 'K'_aa10li, 'A'_aa10li, 'A'_aa10li, 'I'_aa10li,
+      'F'_aa10li, 'F'_aa10li, 'B'_aa10li, 'J'_aa10li, 'K'_aa10li, 'C'_aa10li, 'A'_aa10li, 'B'_aa10li};
 
     for (auto [chr, alp] : bio::ranges::views::zip(chars, alphabets))
         EXPECT_EQ(bio::alphabet::to_char(alp), chr);
@@ -73,28 +73,25 @@ TEST(literals, char_literal)
     EXPECT_EQ(bio::alphabet::to_char('J'_aa10li), 'J');
     EXPECT_EQ(bio::alphabet::to_char('K'_aa10li), 'K');
     EXPECT_EQ(bio::alphabet::to_char('P'_aa10li), 'P');
-
-    EXPECT_EQ(bio::alphabet::to_char('*'_aa10li), 'F');
-    EXPECT_EQ(bio::alphabet::to_char('!'_aa10li), 'A');
 }
 
 TEST(literals, vector)
 {
     bio::alphabet::aa10li_vector v20;
-    v20.resize(5, 'D'_aa10li);
+    v20.resize(5, 'B'_aa10li);
     EXPECT_EQ(v20, "BBBBB"_aa10li);
 
     std::vector<bio::alphabet::aa10li> w20{'A'_aa10li,
-                                           'D'_aa10li,
-                                           'N'_aa10li,
-                                           'O'_aa10li,
-                                           'U'_aa10li,
-                                           'X'_aa10li,
-                                           'R'_aa10li,
-                                           '!'_aa10li,
-                                           '*'_aa10li,
-                                           '*'_aa10li};
-    EXPECT_EQ(w20, "ABHKCAKAF*"_aa10li);
+                                           'B'_aa10li,
+                                           'C'_aa10li,
+                                           'F'_aa10li,
+                                           'G'_aa10li,
+                                           'H'_aa10li,
+                                           'I'_aa10li,
+                                           'J'_aa10li,
+                                           'K'_aa10li,
+                                           'P'_aa10li};
+    EXPECT_EQ(w20, "ABCFGHIJKP"_aa10li);
 }
 
 TEST(aa10li, char_is_valid)

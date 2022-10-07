@@ -7,6 +7,8 @@ bug-fixes (not all bug-fixes will be listed).
 
 # 0.6.0
 
+Summary: The alphabet module is almost *stable*. Several things in meta and ranges were cleaned up.
+
 ## Features
 
 * Added `bio::meta::one_of`, `bio::meta::decays_to` and `bio::meta::different_from` concepts.
@@ -15,6 +17,7 @@ bug-fixes (not all bug-fixes will be listed).
 * Added `bio::views::char_strictly_to` and `bio::views::validate_char_for`; as well as `bio::views::char_conversion_view_t`.
 * Added `bio::views::transform_by_pos`, a more flexible version of `std::views::transform`.
 * Added `bio::views::add_reverse_complement` which turns a range of sequences into range of sequences with their reverse complements interleaved as every second element.
+* All alphabet literals (e.g. 'C'_dna4, "GATTACA"_dna4) are now strict and validated at compile-time. Character literals are `consteval`. This prevents bugs early on.
 
 ## Bug-fixes
 
@@ -23,6 +26,7 @@ bug-fixes (not all bug-fixes will be listed).
 ### Misc changes
 
 * rename `bio::alphabet::alphabet_*` to `bio::alphabet::*`, e.g. `bio::alphabet::alphabet_variant` to `bio::alphabet::variant`.
+* rename `bio::alphabet::cpo::` to `bio::alphabet::custom::`; rename `bio/alphabet/adaptation` to `bio/alphabet/custom` and move customisation tags to that folder.
 * `bio::meta::*` several unused traits were removed.
 * `bio::ranges::pseudo_random_access_iterator` and `bio::ranges::pseudo_random_access_range` have been removed (because they are not used).
 * `bio::ranges::views::to()` has been renamed to `bio::ranges::to()` to be in line with C++23.
@@ -38,7 +42,7 @@ bug-fixes (not all bug-fixes will be listed).
 * This release is *mostly* backwards compatible with 0.5.0 (see changes above).
 
 
-# 0.5.0
+# 0.5.0 – "less is more"
 
 ## Features
 

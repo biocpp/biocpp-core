@@ -8,7 +8,7 @@
 
 #include <gtest/gtest.h>
 
-#include <bio/alphabet/adaptation/char.hpp>
+#include <bio/alphabet/custom/char.hpp>
 #include <bio/alphabet/gap/gap.hpp>
 #include <bio/alphabet/nucleotide/concept.hpp>
 #include <bio/alphabet/nucleotide/dna4.hpp>

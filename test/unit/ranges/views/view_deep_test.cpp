@@ -131,7 +131,7 @@ TEST(view_deep_take, basic)
 
 TEST(view_deep_take, deep)
 {
-    std::vector<bio::alphabet::dna5_vector> foo{"ACGTA"_dna5, "TGCAT"_dna5, "FOO"_dna5};
+    std::vector<bio::alphabet::dna5_vector> foo{"ACGTA"_dna5, "TGCAT"_dna5, "NNT"_dna5};
 
     auto v = foo | bio::ranges::views::deep_take(2);
 
@@ -178,7 +178,7 @@ TEST(view_deep_take2, basic)
 
 TEST(view_deep_take2, deep)
 {
-    std::vector<bio::alphabet::dna5_vector> foo{"ACGTA"_dna5, "TGCAT"_dna5, "FOO"_dna5};
+    std::vector<bio::alphabet::dna5_vector> foo{"ACGTA"_dna5, "TGCAT"_dna5, "NNT"_dna5};
 
     auto v = foo | bio::ranges::views::deep_take2;
 

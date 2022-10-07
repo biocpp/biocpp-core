@@ -35,19 +35,19 @@ To customise one of our customisation points, follow the instructions in its API
 have to add a `tag_invoke()` function for your type. This can happen as a friend or as a free function in your
 type's namespace. The lookup happens via [argument dependent lookup](https://en.cppreference.com/w/cpp/language/adl).
 The first argument of `tag_invoke()` is the "tag" used to select the implementation. In BioC++, these are named
-exactly like the function that you otherwise call, except that they are in a `cpo` subnamespace.
-E.g. bio::alphabet::to_rank looks for `tag_invoke(bio::alphabet::cpo::to_rank, YOUR_TYPE)`.
+exactly like the function that you otherwise call, except that they are in a `custom` subnamespace.
+E.g. bio::alphabet::to_rank looks for `tag_invoke(bio::alphabet::custom::to_rank, YOUR_TYPE)`.
 
 If you need to specialise the behaviour for a third party type, and you cannot open that type's namespace (or it doesn't have
-one), you can also add your overload of `tag_invoke()` to our customisation namespace, e.g. `bio::alphabet::cpo`.
+one), you can also add your overload of `tag_invoke()` to our customisation namespace, e.g. `bio::alphabet::custom`.
 Only do this, if there is no other solution.
 
-In some cases, e.g. bio::alphabet::cpo::enable_aminoacid, we also provide variable templates that you can specialise
+In some cases, e.g. bio::alphabet::custom::enable_aminoacid, we also provide variable templates that you can specialise
 directly.
 
 \warning
-**Never** add anything (types, functions, variables...) to any of our namespaces (except those named `cpo`)
-and never explicitly specialise one of our templates (except those in `cpo` namespaces) or overload one of our functions.
+**Never** add anything (types, functions, variables...) to any of our namespaces (except those named `custom`)
+and never explicitly specialise one of our templates (except those in `custom` namespaces) or overload one of our functions.
 
 The \link core_custom_alphabet HowTo on creating your own alphabet \endlink provides many examples of how to
 satisfy the requirements of customisation point objects.

@@ -1,11 +1,11 @@
 #include <bio/alphabet/concept.hpp>
-#include <bio/alphabet/adaptation/char.hpp>
+#include <bio/alphabet/custom/char.hpp>
 #include <bio/alphabet/nucleotide/dna5.hpp>
 
 int main()
 {
     char c = '!';
-    bio::alphabet::assign_char_strictly_to('?', c);     // calls bio::alphabet::cpo::tag_invoke(bio::alphabet::cpo::assign_char_strictly_to, 'A', c)
+    bio::alphabet::assign_char_strictly_to('?', c);     // calls bio::alphabet::custom::tag_invoke(bio::alphabet::custom::assign_char_strictly_to, 'A', c)
 
     bio::alphabet::dna5 d{};
     bio::alphabet::assign_char_strictly_to('A', d);     // calls .assign_char('A') member

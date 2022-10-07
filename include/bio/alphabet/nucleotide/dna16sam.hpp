@@ -133,32 +133,28 @@ inline namespace literals
 /*!\brief The bio::alphabet::dna16sam char literal.
  * \relates bio::alphabet::dna16sam
  * \returns bio::alphabet::dna16sam
- * \param[in] c The character to assign from.
  */
-consteval dna16sam operator""_dna16sam(char const c) noexcept
+consteval dna16sam operator""_dna16sam(char const c)
 {
+    if (!char_is_valid_for<dna16sam>(c))
+        throw std::invalid_argument{"Illegal character in character literal."};
+
     return dna16sam{}.assign_char(c);
 }
 
 /*!\brief The bio::alphabet::dna16sam string literal.
  * \relates bio::alphabet::dna16sam
- * \returns bio::alphabet::dna16sam_vector
- * \param[in] s The string literal to assign from.
- * \param[in] n The length of the string literal s.
+ * \returns std::vector<bio::alphabet::dna16sam>
  *
- * You can use this string literal to easily assign to bio::alphabet::dna16sam_vector:
+ * You can use this string literal to easily create a std::vector<bio::alphabet::dna16sam>:
  *
  * \include test/snippet/alphabet/nucleotide/dna16sam_literal.cpp
+ *
  */
-inline dna16sam_vector operator""_dna16sam(char const * s, size_t n)
+template <meta::detail::literal_buffer_string str>
+constexpr std::vector<dna16sam> operator""_dna16sam()
 {
-    dna16sam_vector r;
-    r.resize(n);
-
-    for (size_t i = 0; i < n; ++i)
-        r[i].assign_char(s[i]);
-
-    return r;
+    return detail::string_literal<str, dna16sam>();
 }
 //!\}
 
