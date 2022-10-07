@@ -162,29 +162,27 @@ inline namespace literals
  * \relates bio::alphabet::dna4
  * \returns bio::alphabet::dna4
  */
-consteval dna4 operator""_dna4(char const c) noexcept
+consteval dna4 operator""_dna4(char const c)
 {
+    if (!char_is_valid_for<dna4>(c))
+        throw std::invalid_argument{"Illegal character in character literal."};
+
     return dna4{}.assign_char(c);
 }
 
 /*!\brief The bio::alphabet::dna4 string literal.
  * \relates bio::alphabet::dna4
- * \returns bio::alphabet::dna4_vector
+ * \returns std::vector<bio::alphabet::dna4>
  *
- * You can use this string literal to easily assign to dna4_vector:
+ * You can use this string literal to easily create a std::vector<bio::alphabet::dna4>:
  *
  * \include test/snippet/alphabet/nucleotide/dna4_literal.cpp
  *
  */
-inline dna4_vector operator""_dna4(char const * s, std::size_t n)
+template <meta::detail::literal_buffer_string str>
+constexpr std::vector<dna4> operator""_dna4()
 {
-    dna4_vector r;
-    r.resize(n);
-
-    for (size_t i = 0; i < n; ++i)
-        r[i].assign_char(s[i]);
-
-    return r;
+    return detail::string_literal<str, dna4>();
 }
 //!\}
 

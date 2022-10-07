@@ -97,34 +97,32 @@ inline namespace literals
 /*!\name Literals
  * \{
  */
+
 /*!\brief The bio::alphabet::phred42 char literal.
  * \relates bio::alphabet::phred42
  * \returns bio::alphabet::phred42
  */
-consteval phred42 operator""_phred42(char const c) noexcept
+consteval phred42 operator""_phred42(char const c)
 {
+    if (!char_is_valid_for<phred42>(c))
+        throw std::invalid_argument{"Illegal character in character literal."};
+
     return phred42{}.assign_char(c);
 }
 
 /*!\brief The bio::alphabet::phred42 string literal.
- * \param[in] s A pointer to the character sequence to assign from.
- * \param[in] n The length of the character sequence to assign from.
  * \relates bio::alphabet::phred42
- * \returns bio::alphabet::std::vector<bio::alphabet::phred42>
+ * \returns std::vector<bio::alphabet::phred42>
  *
- * You can use this string literal to easily assign to std::vector<bio::alphabet::phred42>:
+ * You can use this string literal to easily create a std::vector<bio::alphabet::phred42>:
  *
  * \include test/snippet/alphabet/quality/phred42_literal.cpp
+ *
  */
-inline std::vector<phred42> operator""_phred42(char const * s, std::size_t n)
+template <meta::detail::literal_buffer_string str>
+constexpr std::vector<phred42> operator""_phred42()
 {
-    std::vector<phred42> r;
-    r.resize(n);
-
-    for (size_t i = 0; i < n; ++i)
-        r[i].assign_char(s[i]);
-
-    return r;
+    return detail::string_literal<str, phred42>();
 }
 //!\}
 

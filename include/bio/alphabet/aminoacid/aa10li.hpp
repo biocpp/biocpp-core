@@ -200,36 +200,30 @@ inline namespace literals
  */
 
 /*!\brief The bio::alphabet::aa10li char literal.
- * \param[in] c The character to assign.
  * \relates bio::alphabet::aa10li
  * \returns bio::alphabet::aa10li
  */
-consteval aa10li operator""_aa10li(char const c) noexcept
+consteval aa10li operator""_aa10li(char const c)
 {
+    if (!char_is_valid_for<aa10li>(c))
+        throw std::invalid_argument{"Illegal character in character literal."};
+
     return aa10li{}.assign_char(c);
 }
 
-/*!\brief The bio::alphabet::aa10li  string literal.
- * \param[in] s A pointer to the character string to assign.
- * \param[in] n The size of the character string to assign.
+/*!\brief The bio::alphabet::aa10li string literal.
  * \relates bio::alphabet::aa10li
- * \returns bio::alphabet::aa10li_vector
+ * \returns std::vector<bio::alphabet::aa10li>
  *
- * You can use this string literal to easily assign to aa10li_vector:
+ * You can use this string literal to easily create a std::vector<bio::alphabet::aa10li>:
  *
- * \attention
- * All BioC++ literals are in the namespace bio::alphabet!
+ * \include test/snippet/alphabet/aminoacid/aa10li.cpp
+ *
  */
-
-inline aa10li_vector operator""_aa10li(char const * const s, size_t const n)
+template <meta::detail::literal_buffer_string str>
+constexpr std::vector<aa10li> operator""_aa10li()
 {
-    aa10li_vector r;
-    r.resize(n);
-
-    for (size_t i = 0; i < n; ++i)
-        r[i].assign_char(s[i]);
-
-    return r;
+    return detail::string_literal<str, aa10li>();
 }
 //!\}
 

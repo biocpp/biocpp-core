@@ -55,19 +55,7 @@ TEST(dna5, char_literal)
     EXPECT_EQ(bio::alphabet::to_char('U'_dna5), 'T');
     EXPECT_EQ(bio::alphabet::to_char('T'_dna5), 'T');
 
-    EXPECT_EQ(bio::alphabet::to_char('R'_dna5), 'N');
-    EXPECT_EQ(bio::alphabet::to_char('Y'_dna5), 'N');
-    EXPECT_EQ(bio::alphabet::to_char('S'_dna5), 'N');
-    EXPECT_EQ(bio::alphabet::to_char('W'_dna5), 'N');
-    EXPECT_EQ(bio::alphabet::to_char('K'_dna5), 'N');
-    EXPECT_EQ(bio::alphabet::to_char('M'_dna5), 'N');
-    EXPECT_EQ(bio::alphabet::to_char('B'_dna5), 'N');
-    EXPECT_EQ(bio::alphabet::to_char('D'_dna5), 'N');
-    EXPECT_EQ(bio::alphabet::to_char('H'_dna5), 'N');
-    EXPECT_EQ(bio::alphabet::to_char('V'_dna5), 'N');
-
     EXPECT_EQ(bio::alphabet::to_char('N'_dna5), 'N');
-    EXPECT_EQ(bio::alphabet::to_char('!'_dna5), 'N');
 }
 
 TEST(dna5, string_literal)

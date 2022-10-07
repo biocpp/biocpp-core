@@ -119,41 +119,30 @@ inline namespace literals
  */
 
 /*!\brief The bio::alphabet::aa27 char literal.
- * \param[in] c The character to assign.
  * \relates bio::alphabet::aa27
  * \returns bio::alphabet::aa27
- *
- * \include test/snippet/alphabet/aminoacid/aa27_char_literal.cpp
- *
  */
-consteval aa27 operator""_aa27(char const c) noexcept
+consteval aa27 operator""_aa27(char const c)
 {
+    if (!char_is_valid_for<aa27>(c))
+        throw std::invalid_argument{"Illegal character in character literal."};
+
     return aa27{}.assign_char(c);
 }
 
 /*!\brief The bio::alphabet::aa27 string literal.
- * \param[in] s A pointer to the character string to assign.
- * \param[in] n The size of the character string to assign.
  * \relates bio::alphabet::aa27
- * \returns bio::alphabet::aa27_vector
+ * \returns std::vector<bio::alphabet::aa27>
  *
- * You can use this string literal to easily assign to aa27_vector:
+ * You can use this string literal to easily create a std::vector<bio::alphabet::aa27>:
  *
  * \include test/snippet/alphabet/aminoacid/aa27_literal.cpp
  *
- * \attention
- * All BioC++ literals are in the namespace bio::alphabet!
  */
-
-inline aa27_vector operator""_aa27(char const * s, std::size_t n)
+template <meta::detail::literal_buffer_string str>
+constexpr std::vector<aa27> operator""_aa27()
 {
-    aa27_vector r;
-    r.resize(n);
-
-    for (size_t i = 0; i < n; ++i)
-        r[i].assign_char(s[i]);
-
-    return r;
+    return detail::string_literal<str, aa27>();
 }
 //!\}
 

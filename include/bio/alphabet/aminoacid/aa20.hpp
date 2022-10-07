@@ -150,41 +150,30 @@ inline namespace literals
  */
 
 /*!\brief The bio::alphabet::aa20 char literal.
- * \param[in] c The character to assign.
  * \relates bio::alphabet::aa20
  * \returns bio::alphabet::aa20
- *
- * \include test/snippet/alphabet/aminoacid/aa20_char_literal.cpp
- *
  */
-consteval aa20 operator""_aa20(char const c) noexcept
+consteval aa20 operator""_aa20(char const c)
 {
+    if (!char_is_valid_for<aa20>(c))
+        throw std::invalid_argument{"Illegal character in character literal."};
+
     return aa20{}.assign_char(c);
 }
 
-/*!\brief The bio::alphabet::aa20  string literal.
- * \param[in] s A pointer to the character string to assign.
- * \param[in] n The size of the character string to assign.
+/*!\brief The bio::alphabet::aa20 string literal.
  * \relates bio::alphabet::aa20
- * \returns bio::alphabet::aa20_vector
+ * \returns std::vector<bio::alphabet::aa20>
  *
- * You can use this string literal to easily assign to aa20_vector:
+ * You can use this string literal to easily create a std::vector<bio::alphabet::aa20>:
  *
  * \include test/snippet/alphabet/aminoacid/aa20_literal.cpp
  *
- * \attention
- * All BioC++ literals are in the namespace bio::alphabet!
  */
-
-inline aa20_vector operator""_aa20(char const * s, std::size_t n)
+template <meta::detail::literal_buffer_string str>
+constexpr std::vector<aa20> operator""_aa20()
 {
-    aa20_vector r;
-    r.resize(n);
-
-    for (size_t i = 0; i < n; ++i)
-        r[i].assign_char(s[i]);
-
-    return r;
+    return detail::string_literal<str, aa20>();
 }
 //!\}
 

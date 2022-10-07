@@ -47,8 +47,8 @@ TEST(aa20, to_char)
 
     std::vector<bio::alphabet::aa20> alphabets{'A'_aa20, 'C'_aa20, 'D'_aa20, 'E'_aa20, 'F'_aa20, 'G'_aa20, 'H'_aa20,
                                                'I'_aa20, 'K'_aa20, 'L'_aa20, 'M'_aa20, 'N'_aa20, 'P'_aa20, 'Q'_aa20,
-                                               'R'_aa20, 'S'_aa20, 'T'_aa20, 'V'_aa20, 'W'_aa20, 'Y'_aa20, 'B'_aa20,
-                                               'J'_aa20, 'O'_aa20, 'U'_aa20, 'X'_aa20, 'Z'_aa20, 'W'_aa20, 'S'_aa20};
+                                               'R'_aa20, 'S'_aa20, 'T'_aa20, 'V'_aa20, 'W'_aa20, 'Y'_aa20, 'D'_aa20,
+                                               'L'_aa20, 'L'_aa20, 'C'_aa20, 'S'_aa20, 'E'_aa20, 'W'_aa20, 'S'_aa20};
 
     for (auto [chr, alp] : bio::ranges::views::zip(chars, alphabets))
         EXPECT_EQ(bio::alphabet::to_char(alp), chr);
@@ -80,20 +80,17 @@ TEST(literals, char_literal)
     EXPECT_EQ(bio::alphabet::to_char('V'_aa20), 'V');
     EXPECT_EQ(bio::alphabet::to_char('W'_aa20), 'W');
     EXPECT_EQ(bio::alphabet::to_char('Y'_aa20), 'Y');
-
-    EXPECT_EQ(bio::alphabet::to_char('*'_aa20), 'W');
-    EXPECT_EQ(bio::alphabet::to_char('!'_aa20), 'S');
 }
 
 TEST(literals, vector)
 {
     bio::alphabet::aa20_vector v20;
-    v20.resize(5, 'B'_aa20);
+    v20.resize(5, 'D'_aa20);
     EXPECT_EQ(v20, "DDDDD"_aa20);
 
     std::vector<bio::alphabet::aa20>
-      w20{'A'_aa20, 'B'_aa20, 'J'_aa20, 'O'_aa20, 'U'_aa20, 'X'_aa20, 'Z'_aa20, '!'_aa20, '*'_aa20, '*'_aa20};
-    EXPECT_EQ(w20, "ADLLCSESW*"_aa20);
+      w20{'A'_aa20, 'D'_aa20, 'L'_aa20, 'L'_aa20, 'C'_aa20, 'S'_aa20, 'E'_aa20, 'S'_aa20, 'W'_aa20, 'K'_aa20};
+    EXPECT_EQ(w20, "ADLLCSESWK"_aa20);
 }
 
 TEST(aa20, char_is_valid)

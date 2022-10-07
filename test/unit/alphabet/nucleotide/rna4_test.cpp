@@ -54,20 +54,6 @@ TEST(rna4, char_literal)
 
     EXPECT_EQ(bio::alphabet::to_char('U'_rna4), 'U');
     EXPECT_EQ(bio::alphabet::to_char('T'_rna4), 'U');
-
-    EXPECT_EQ(bio::alphabet::to_char('R'_rna4), 'A');
-    EXPECT_EQ(bio::alphabet::to_char('Y'_rna4), 'C');
-    EXPECT_EQ(bio::alphabet::to_char('S'_rna4), 'C');
-    EXPECT_EQ(bio::alphabet::to_char('W'_rna4), 'A');
-    EXPECT_EQ(bio::alphabet::to_char('K'_rna4), 'G');
-    EXPECT_EQ(bio::alphabet::to_char('M'_rna4), 'A');
-    EXPECT_EQ(bio::alphabet::to_char('B'_rna4), 'C');
-    EXPECT_EQ(bio::alphabet::to_char('D'_rna4), 'A');
-    EXPECT_EQ(bio::alphabet::to_char('H'_rna4), 'A');
-    EXPECT_EQ(bio::alphabet::to_char('V'_rna4), 'A');
-
-    EXPECT_EQ(bio::alphabet::to_char('N'_rna4), 'A');
-    EXPECT_EQ(bio::alphabet::to_char('!'_rna4), 'A');
 }
 
 TEST(rna4, string_literal)
@@ -76,8 +62,8 @@ TEST(rna4, string_literal)
     v.resize(5, 'A'_rna4);
     EXPECT_EQ(v, "AAAAA"_rna4);
 
-    std::vector<bio::alphabet::rna4> w{'A'_rna4, 'C'_rna4, 'G'_rna4, 'T'_rna4, 'U'_rna4, 'N'_rna4};
-    EXPECT_EQ(w, "ACGUUA"_rna4);
+    std::vector<bio::alphabet::rna4> w{'A'_rna4, 'C'_rna4, 'G'_rna4, 'T'_rna4, 'U'_rna4};
+    EXPECT_EQ(w, "ACGUU"_rna4);
 }
 
 TEST(rna4, char_is_valid)

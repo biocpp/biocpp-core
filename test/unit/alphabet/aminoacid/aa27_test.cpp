@@ -89,8 +89,6 @@ TEST(literals, char_literal)
     EXPECT_EQ(bio::alphabet::to_char('Y'_aa27), 'Y');
     EXPECT_EQ(bio::alphabet::to_char('Z'_aa27), 'Z');
     EXPECT_EQ(bio::alphabet::to_char('*'_aa27), '*');
-
-    EXPECT_EQ(bio::alphabet::to_char('!'_aa27), 'X');
 }
 
 TEST(literals, vector)
@@ -100,8 +98,8 @@ TEST(literals, vector)
     EXPECT_EQ(v27, "AAAAA"_aa27);
 
     std::vector<bio::alphabet::aa27>
-      w27{'A'_aa27, 'Y'_aa27, 'P'_aa27, 'T'_aa27, 'U'_aa27, 'N'_aa27, 'X'_aa27, '!'_aa27, '*'_aa27};
-    EXPECT_EQ(w27, "AYPTUNXX*"_aa27);
+      w27{'A'_aa27, 'Y'_aa27, 'P'_aa27, 'T'_aa27, 'U'_aa27, 'N'_aa27, 'X'_aa27, 'P'_aa27, '*'_aa27};
+    EXPECT_EQ(w27, "AYPTUNXP*"_aa27);
 }
 
 TEST(aa27, char_is_valid)
