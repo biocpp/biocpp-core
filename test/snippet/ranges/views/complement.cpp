@@ -6,7 +6,7 @@ int main()
 {
     using namespace bio::alphabet::literals;
 
-    bio::alphabet::dna5_vector foo{"ACGTA"_dna5};
+    std::vector<bio::alphabet::dna5> foo{"ACGTA"_dna5};
 
     // pipe notation
     auto v = foo | bio::views::complement;                        // == "TGCAT"

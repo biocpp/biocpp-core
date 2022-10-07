@@ -22,22 +22,22 @@ using namespace bio::alphabet::literals;
 
 TEST(view_char_to, basic)
 {
-    std::string                vec{"ACTTTGATA"};
-    bio::alphabet::dna5_vector cmp{"ACTTTGATA"_dna5};
+    std::string                      vec{"ACTTTGATA"};
+    std::vector<bio::alphabet::dna5> cmp{"ACTTTGATA"_dna5};
 
     // pipe notation
-    bio::alphabet::dna5_vector v =
+    std::vector<bio::alphabet::dna5> v =
       vec | bio::ranges::views::char_to<bio::alphabet::dna5> | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp, v);
 
     // function notation
-    bio::alphabet::dna5_vector v2(bio::ranges::views::char_to<bio::alphabet::dna5>(vec) |
-                                  bio::ranges::to<std::vector>());
+    std::vector<bio::alphabet::dna5> v2(bio::ranges::views::char_to<bio::alphabet::dna5>(vec) |
+                                        bio::ranges::to<std::vector>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
-    bio::alphabet::dna5_vector cmp2{"ATAGTTTCA"_dna5};
-    bio::alphabet::dna5_vector v3 =
+    std::vector<bio::alphabet::dna5> cmp2{"ATAGTTTCA"_dna5};
+    std::vector<bio::alphabet::dna5> v3 =
       vec | bio::ranges::views::char_to<bio::alphabet::dna5> | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp2, v3);
 }
@@ -46,8 +46,8 @@ TEST(view_char_to, deep_view)
 {
     std::vector<std::string> foo{"ACGTA", "TGCAT"};
 
-    std::vector<bio::alphabet::dna5_vector> v = foo | bio::ranges::views::char_to<bio::alphabet::dna5> |
-                                                bio::ranges::to<std::vector<bio::alphabet::dna5_vector>>();
+    std::vector<std::vector<bio::alphabet::dna5>> v = foo | bio::ranges::views::char_to<bio::alphabet::dna5> |
+                                                      bio::ranges::to<std::vector<std::vector<bio::alphabet::dna5>>>();
 
     ASSERT_EQ(size(v), 2u);
     EXPECT_RANGE_EQ(v[0], "ACGTA"_dna5);

@@ -20,22 +20,22 @@ TEST(view_rank_to, basic)
 {
     using namespace bio::alphabet::literals;
 
-    std::vector<unsigned>      vec{0, 1, 4, 4, 4, 2, 0, 4, 0};
-    bio::alphabet::dna5_vector cmp{"ACTTTGATA"_dna5};
+    std::vector<unsigned>            vec{0, 1, 4, 4, 4, 2, 0, 4, 0};
+    std::vector<bio::alphabet::dna5> cmp{"ACTTTGATA"_dna5};
 
     // pipe notation
-    bio::alphabet::dna5_vector v =
+    std::vector<bio::alphabet::dna5> v =
       vec | bio::ranges::views::rank_to<bio::alphabet::dna5> | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp, v);
 
     // function notation
-    bio::alphabet::dna5_vector v2(bio::ranges::views::rank_to<bio::alphabet::dna5>(vec) |
-                                  bio::ranges::to<std::vector>());
+    std::vector<bio::alphabet::dna5> v2(bio::ranges::views::rank_to<bio::alphabet::dna5>(vec) |
+                                        bio::ranges::to<std::vector>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
-    bio::alphabet::dna5_vector cmp2{"ATAGTTTCA"_dna5};
-    bio::alphabet::dna5_vector v3 =
+    std::vector<bio::alphabet::dna5> cmp2{"ATAGTTTCA"_dna5};
+    std::vector<bio::alphabet::dna5> v3 =
       vec | bio::ranges::views::rank_to<bio::alphabet::dna5> | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp2, v3);
 }

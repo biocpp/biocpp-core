@@ -77,7 +77,7 @@ TEST(literals, char_literal)
 
 TEST(literals, vector)
 {
-    bio::alphabet::aa10li_vector v20;
+    std::vector<bio::alphabet::aa10li> v20;
     v20.resize(5, 'B'_aa10li);
     EXPECT_EQ(v20, "BBBBB"_aa10li);
 

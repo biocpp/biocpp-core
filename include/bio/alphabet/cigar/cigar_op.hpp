@@ -76,7 +76,7 @@ protected:
     //!\privatesection
 
     //!\brief Value to char conversion table.
-    static constexpr char_type rank_to_char[alphabet_size]{'M', 'D', 'I', 'S', 'H', 'N', 'P', 'X', '='};
+    static constexpr std::array<char_type, alphabet_size> rank_to_char{'M', 'D', 'I', 'S', 'H', 'N', 'P', 'X', '='};
 
     //!\brief Char to value conversion table.
     static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr

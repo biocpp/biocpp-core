@@ -13,7 +13,7 @@ int main()
 {
     using namespace bio::alphabet::literals;
 
-    std::vector<bio::alphabet::dna5_vector> foo{"AAATTT"_dna5, "CCCGGG"_dna5};
+    std::vector<std::vector<bio::alphabet::dna5>> foo{"AAATTT"_dna5, "CCCGGG"_dna5};
 
     int i = 3;
     auto f = foo | my::deep_take(i); // takes `i` as a reference!

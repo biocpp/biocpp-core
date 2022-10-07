@@ -4,7 +4,7 @@ int main()
 {
     using namespace bio::alphabet::literals;
 
-    bio::alphabet::aa27_vector foo{"ABFUYR"_aa27};
-    bio::alphabet::aa27_vector bar = "ABFUYR"_aa27;
+    std::vector<bio::alphabet::aa27> foo{"ABFUYR"_aa27};
+    std::vector<bio::alphabet::aa27> bar = "ABFUYR"_aa27;
     auto bax = "ABFUYR"_aa27;
 }

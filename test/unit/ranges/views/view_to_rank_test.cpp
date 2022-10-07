@@ -20,8 +20,8 @@ using namespace bio::alphabet::literals;
 
 TEST(view_to_rank, basic)
 {
-    bio::alphabet::dna5_vector vec{"ACTTTGATA"_dna5};
-    std::vector<uint8_t>       cmp{0, 1, 4, 4, 4, 2, 0, 4, 0};
+    std::vector<bio::alphabet::dna5> vec{"ACTTTGATA"_dna5};
+    std::vector<uint8_t>             cmp{0, 1, 4, 4, 4, 2, 0, 4, 0};
 
     // pipe notation
     std::vector<uint8_t> v = vec | bio::ranges::views::to_rank | bio::ranges::to<std::vector>();
@@ -39,7 +39,7 @@ TEST(view_to_rank, basic)
 
 TEST(view_to_rank, concepts)
 {
-    bio::alphabet::dna5_vector vec{"ACTTTGATA"_dna5};
+    std::vector<bio::alphabet::dna5> vec{"ACTTTGATA"_dna5};
     EXPECT_TRUE(std::ranges::input_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(vec)>);

@@ -17,7 +17,7 @@ int main()
         fmt::print("{}", "yeah\n"); // "yeah";
 
     // Convert aa27 alphabet to aa10_murphy
-    bio::alphabet::aa27_vector v1{"AVRSTXOUB"_aa27};
+    std::vector<bio::alphabet::aa27> v1{"AVRSTXOUB"_aa27};
     auto v2 = v1 | bio::views::convert<bio::alphabet::aa10murphy>; // AIKSSSKCB
 
     fmt::print("{}\n", v2);

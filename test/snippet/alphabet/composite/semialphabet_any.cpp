@@ -41,14 +41,14 @@ void algorithm(std::vector<bio::alphabet::semialphabet_any<10> > & r, bool is_mu
 
 // Two instances of algo_pre exist
 // They type erase the different arguments to the same type and encode the type information as a run-time parameter
-void algo_pre(bio::alphabet::aa10li_vector const & v)
+void algo_pre(std::vector<bio::alphabet::aa10li> const & v)
 {
     std::vector<bio::alphabet::semialphabet_any<10> > tmp = v | bio::views::convert<bio::alphabet::semialphabet_any<10>>
                                                        | bio::ranges::to<std::vector>();
     algorithm(tmp, false);
 }
 
-void algo_pre(bio::alphabet::aa10murphy_vector const & v)
+void algo_pre(std::vector<bio::alphabet::aa10murphy> const & v)
 {
     std::vector<bio::alphabet::semialphabet_any<10> > tmp = v | bio::views::convert<bio::alphabet::semialphabet_any<10>>
                                                        | bio::ranges::to<std::vector>();
@@ -57,9 +57,9 @@ void algo_pre(bio::alphabet::aa10murphy_vector const & v)
 
 int main()
 {
-    bio::alphabet::aa10li_vector v1{"AIKAAAKCB"_aa10li};
+    std::vector<bio::alphabet::aa10li> v1{"AIKAAAKCB"_aa10li};
     algo_pre(v1); // AIKAAAKCB
 
-    bio::alphabet::aa10murphy_vector v2{"FIKAFAKCB"_aa10murphy};
+    std::vector<bio::alphabet::aa10murphy> v2{"FIKAFAKCB"_aa10murphy};
     algo_pre(v2); // FIKAFAKCB
 }

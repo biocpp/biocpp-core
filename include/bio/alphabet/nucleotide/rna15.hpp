@@ -72,21 +72,15 @@ public:
     using base_t::base_t;
 
     //!\brief Allow implicit construction from dna/rna of the same size.
-    constexpr rna15(dna15 const & r) noexcept
-#if BIOCPP_WORKAROUND_GCC_90897
-      requires true
-#endif
-    {
-        assign_rank(r.to_rank());
-    }
+    constexpr rna15(dna15 const & r) noexcept { assign_rank(r.to_rank()); }
     //!\}
 
 protected:
     //!\privatesection
 
     //!\copydoc bio::alphabet::dna4::rank_to_char
-    static constexpr char_type
-      rank_to_char[alphabet_size]{'A', 'B', 'C', 'D', 'G', 'H', 'K', 'M', 'N', 'R', 'S', 'U', 'V', 'W', 'Y'};
+    static constexpr std::array<char_type, alphabet_size>
+      rank_to_char{'A', 'B', 'C', 'D', 'G', 'H', 'K', 'M', 'N', 'R', 'S', 'U', 'V', 'W', 'Y'};
 
     //!\copydoc bio::alphabet::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank = dna15::char_to_rank;
@@ -94,14 +88,6 @@ protected:
     //!\brief The complement table.
     static const std::array<rna15, alphabet_size> complement_table;
 };
-
-// ------------------------------------------------------------------
-// containers
-// ------------------------------------------------------------------
-
-//!\brief Alias for an std::vector of bio::alphabet::rna15.
-//!\relates rna15
-using rna15_vector = std::vector<rna15>;
 
 } // namespace bio::alphabet
 

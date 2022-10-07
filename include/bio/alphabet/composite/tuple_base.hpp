@@ -31,10 +31,8 @@ namespace bio::alphabet::detail
 
 //!\brief Prevents wrong instantiations of bio::alphabet::tuple_base's equality comparison operators.
 template <typename tuple_derived_t, typename rhs_t, typename... component_types>
-concept tuple_concept_guard =
-  ((!std::same_as<rhs_t, tuple_derived_t>)&&(!std::same_as<rhs_t, tuple_base<component_types...>>)&&(
-     !std::is_base_of_v<tuple_derived_t, rhs_t>)&&(!(std::same_as<rhs_t, component_types> || ...)) &&
-   (!meta::list_traits::contains<tuple_derived_t, recursive_required_types_t<rhs_t>>));
+concept tuple_concept_guard = !meta::one_of<rhs_t, tuple_derived_t, component_types...> &&
+                              !meta::list_traits::contains<tuple_derived_t, recursive_required_types_t<rhs_t>>;
 
 } // namespace bio::alphabet::detail
 

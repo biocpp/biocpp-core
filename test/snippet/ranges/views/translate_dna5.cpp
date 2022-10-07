@@ -7,7 +7,7 @@ int main()
 {
     using namespace bio::alphabet::literals;
 
-    bio::alphabet::dna5_vector vec{"ACGTACGTACGTA"_dna5};
+    std::vector<bio::alphabet::dna5> vec{"ACGTACGTACGTA"_dna5};
 
     // Default (first forward frame)
     auto v1 = vec | bio::views::translate_single;

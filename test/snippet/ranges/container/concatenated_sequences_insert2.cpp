@@ -6,7 +6,7 @@ int main()
 {
     using namespace bio::alphabet::literals;
 
-    bio::ranges::concatenated_sequences<bio::alphabet::dna4_vector> foobar;
+    bio::ranges::concatenated_sequences<std::vector<bio::alphabet::dna4>> foobar;
     foobar.insert(foobar.end(), 2, "ACGT"_dna4);
     fmt::print("{}\n", foobar[0]); // "ACGT"
     fmt::print("{}\n", foobar[1]); // "ACGT"

@@ -40,29 +40,29 @@ TEST(view_convert, basic)
 
 TEST(view_convert, explicit_conversion)
 {
-    bio::alphabet::dna5_vector vec{"ACGNTNGGN"_dna5};
-    bio::alphabet::dna4_vector cmp{"ACGATAGGA"_dna4};
+    std::vector<bio::alphabet::dna5> vec{"ACGNTNGGN"_dna5};
+    std::vector<bio::alphabet::dna4> cmp{"ACGATAGGA"_dna4};
 
     // pipe notation
-    bio::alphabet::dna4_vector v =
+    std::vector<bio::alphabet::dna4> v =
       vec | bio::ranges::views::convert<bio::alphabet::dna4> | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp, v);
 
     // function notation
-    bio::alphabet::dna4_vector v2(bio::ranges::views::convert<bio::alphabet::dna4>(vec) |
-                                  bio::ranges::to<std::vector>());
+    std::vector<bio::alphabet::dna4> v2(bio::ranges::views::convert<bio::alphabet::dna4>(vec) |
+                                        bio::ranges::to<std::vector>());
     EXPECT_EQ(cmp, v2);
 
     // combinability
-    bio::alphabet::dna4_vector cmp2{"AGGATAGCA"_dna4};
-    bio::alphabet::dna4_vector v3 =
+    std::vector<bio::alphabet::dna4> cmp2{"AGGATAGCA"_dna4};
+    std::vector<bio::alphabet::dna4> v3 =
       vec | bio::ranges::views::convert<bio::alphabet::dna4> | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(cmp2, v3);
 }
 
 TEST(view_convert, concepts)
 {
-    bio::alphabet::dna5_vector vec{"ACGNTNGGN"_dna5};
+    std::vector<bio::alphabet::dna5> vec{"ACGNTNGGN"_dna5};
     EXPECT_TRUE(std::ranges::input_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(vec)>);

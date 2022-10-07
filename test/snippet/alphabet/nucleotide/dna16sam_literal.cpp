@@ -5,7 +5,7 @@ int main()
 {
     using namespace bio::alphabet::literals;
 
-    bio::alphabet::dna16sam_vector foo = "ACG==A"_dna16sam;
+    std::vector<bio::alphabet::dna16sam> foo = "ACG==A"_dna16sam;
     auto bar = "A=GTTC"_dna16sam;
 
     fmt::print("{}\n{}\n", foo, bar);

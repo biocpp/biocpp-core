@@ -4,6 +4,6 @@ int main()
 {
     using namespace bio::alphabet::literals;
 
-    bio::alphabet::aa20_vector bar = "ADFCYR"_aa20;
+    std::vector<bio::alphabet::aa20> bar = "ADFCYR"_aa20;
     auto bax = "ADFCYR"_aa20;
 }

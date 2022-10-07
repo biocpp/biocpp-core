@@ -5,7 +5,7 @@ int main()
 {
     using namespace bio::alphabet::literals;
 
-    bio::alphabet::dna4_vector vec{"ACGGTC"_dna4};
+    std::vector<bio::alphabet::dna4> vec{"ACGGTC"_dna4};
 
     // these are synonymous:
     auto vec_view1 = vec | bio::views::complement;

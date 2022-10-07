@@ -4,7 +4,7 @@ int main()
 {
     using namespace bio::alphabet::literals;
 
-    bio::alphabet::dna15_vector foo{"ACGTTA"_dna15};
-    bio::alphabet::dna15_vector bar = "ACGTTA"_dna15;
+    std::vector<bio::alphabet::dna15> foo{"ACGTTA"_dna15};
+    std::vector<bio::alphabet::dna15> bar = "ACGTTA"_dna15;
     auto bax = "ACGTTA"_dna15;
 }

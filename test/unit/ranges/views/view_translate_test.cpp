@@ -43,11 +43,11 @@ TYPED_TEST_SUITE(nucleotide, nucleotide_types, );
 
 TYPED_TEST(nucleotide, view_translate_single)
 {
-    std::string const          in{"ACGTACGTACGTA"};
-    std::vector<TypeParam>     vec = in | bio::ranges::views::char_to<TypeParam> | bio::ranges::to<std::vector>();
-    bio::alphabet::aa27_vector cmp1{"TYVR"_aa27};
-    bio::alphabet::aa27_vector cmp2{"CMHA"_aa27};
-    bio::alphabet::aa27_vector cmp3{"AHMC"_aa27};
+    std::string const                in{"ACGTACGTACGTA"};
+    std::vector<TypeParam>           vec = in | bio::ranges::views::char_to<TypeParam> | bio::ranges::to<std::vector>();
+    std::vector<bio::alphabet::aa27> cmp1{"TYVR"_aa27};
+    std::vector<bio::alphabet::aa27> cmp2{"CMHA"_aa27};
+    std::vector<bio::alphabet::aa27> cmp3{"AHMC"_aa27};
 
     // default parameter translation_frames
     auto v1 = vec | bio::ranges::views::translate_single;
@@ -190,9 +190,9 @@ TYPED_TEST(nucleotide, view_translate)
 
 TYPED_TEST(nucleotide, view_translate_single_container_conversion)
 {
-    std::string const          in{"ACGTACGTACGTA"};
-    std::vector<TypeParam>     vec = in | bio::ranges::views::char_to<TypeParam> | bio::ranges::to<std::vector>();
-    bio::alphabet::aa27_vector cmp1{"TYVR"_aa27};
+    std::string const                in{"ACGTACGTACGTA"};
+    std::vector<TypeParam>           vec = in | bio::ranges::views::char_to<TypeParam> | bio::ranges::to<std::vector>();
+    std::vector<bio::alphabet::aa27> cmp1{"TYVR"_aa27};
 
     // default parameter translation_frames
     auto v1 = vec | bio::ranges::views::translate_single | bio::ranges::to<std::vector>();

@@ -10,7 +10,7 @@ int main()
 {
     using namespace bio::alphabet::literals;
 
-    bio::alphabet::dna4_vector vec = "ACTTTGATA"_dna4;
+    std::vector<bio::alphabet::dna4> vec = "ACTTTGATA"_dna4;
     auto v = vec | bio::views::to_char;
     fmt::print("{}\n", v); // [A,C,T,T,T,G,A,T,A]
 

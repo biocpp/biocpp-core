@@ -19,7 +19,7 @@
 
 namespace bio::alphabet
 {
-/*!\brief Implementation of a masked alphabet to be used for tuple composites.
+/*!\brief Implementation of a masked semialphabet to be used for tuple composites.
  * \ingroup mask
  * \implements bio::alphabet::writable_semialphabet
  * \if DEV \implements bio::alphabet::detail::Constexprwritable_semialphabet \endif

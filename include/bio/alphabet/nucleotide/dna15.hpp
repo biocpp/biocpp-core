@@ -85,17 +85,16 @@ protected:
     //!\privatesection
 
     //!\copydoc bio::alphabet::dna4::rank_to_char
-    static constexpr char_type
-      rank_to_char[alphabet_size]{'A', 'B', 'C', 'D', 'G', 'H', 'K', 'M', 'N', 'R', 'S', 'T', 'V', 'W', 'Y'};
+    static constexpr std::array<char_type, alphabet_size>
+      rank_to_char{'A', 'B', 'C', 'D', 'G', 'H', 'K', 'M', 'N', 'R', 'S', 'T', 'V', 'W', 'Y'};
 
     //!\copydoc bio::alphabet::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
     {
         std::array<rank_type, 256> ret{};
 
-        // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
-        for (auto & c : ret)
-            c = 8; // rank of 'N'
+        // initialize with UNKNOWN
+        ret.fill(8); // rank of 'N'
 
         // reverse mapping for characters and their lowercase
         for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
@@ -115,14 +114,6 @@ protected:
     //!\brief The complement table.
     static const std::array<dna15, alphabet_size> complement_table;
 };
-
-// ------------------------------------------------------------------
-// containers
-// ------------------------------------------------------------------
-
-//!\brief Alias for an std::vector of bio::alphabet::dna15.
-//!\relates dna15
-using dna15_vector = std::vector<dna15>;
 
 } // namespace bio::alphabet
 

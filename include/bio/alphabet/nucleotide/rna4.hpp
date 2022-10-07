@@ -70,40 +70,23 @@ public:
     using base_t::base_t;
 
     //!\brief Allow implicit construction from dna/rna of the same size.
-    constexpr rna4(dna4 const & r) noexcept
-#if BIOCPP_WORKAROUND_GCC_90897
-      requires true
-#endif
-    {
-        assign_rank(r.to_rank());
-    }
+    constexpr rna4(dna4 const & r) noexcept { assign_rank(r.to_rank()); }
     //!\}
 
     /*!\brief Convert to complement. Faster implementation than the default-generated.
      * \private
      */
-    constexpr rna4 complement() const noexcept
-    {
-        return rna4{}.assign_rank(to_rank() ^ 0b11);
-    }
+    constexpr rna4 complement() const noexcept { return rna4{}.assign_rank(to_rank() ^ 0b11); }
 
 protected:
     //!\privatesection
 
     //!\copydoc bio::alphabet::dna4::rank_to_char
-    static constexpr char_type rank_to_char[alphabet_size]{'A', 'C', 'G', 'U'};
+    static constexpr std::array<char_type, alphabet_size> rank_to_char{'A', 'C', 'G', 'U'};
 
     //!\copydoc bio::alphabet::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank = dna4::char_to_rank;
 };
-
-// ------------------------------------------------------------------
-// containers
-// ------------------------------------------------------------------
-
-//!\brief Alias for an std::vector of bio::alphabet::rna4.
-//!\relates rna4
-using rna4_vector = std::vector<rna4>;
 
 } // namespace bio::alphabet
 

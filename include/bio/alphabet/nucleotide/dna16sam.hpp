@@ -75,17 +75,16 @@ protected:
     //!\privatesection
 
     //!\brief The representation is the same as in the SAM specifications (which is NOT in alphabetical order).
-    static constexpr char_type
-      rank_to_char[alphabet_size]{'=', 'A', 'C', 'M', 'G', 'R', 'S', 'V', 'T', 'W', 'Y', 'H', 'K', 'D', 'B', 'N'};
+    static constexpr std::array<char_type, alphabet_size>
+      rank_to_char{'=', 'A', 'C', 'M', 'G', 'R', 'S', 'V', 'T', 'W', 'Y', 'H', 'K', 'D', 'B', 'N'};
 
     //!\copydoc bio::alphabet::dna4::char_to_rank
     static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
     {
         std::array<rank_type, 256> ret{};
 
-        // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
-        for (auto & c : ret)
-            c = 15; // rank of 'N'
+        // initialize with UNKNOWN
+        ret.fill(15); // rank of 'N'
 
         // reverse mapping for characters and their lowercase
         for (size_t rnk = 0u; rnk < alphabet_size; ++rnk)
@@ -105,14 +104,6 @@ protected:
     //!\brief The complement table.
     static const std::array<dna16sam, alphabet_size> complement_table;
 };
-
-// ------------------------------------------------------------------
-// containers
-// ------------------------------------------------------------------
-
-//!\brief Alias for an std::vector of bio::alphabet::dna16sam.
-//!\relates dna16sam
-using dna16sam_vector = std::vector<dna16sam>;
 
 } // namespace bio::alphabet
 

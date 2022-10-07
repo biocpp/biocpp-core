@@ -27,6 +27,7 @@
 #pragma once
 
 #include <bio/alphabet/custom/tag.hpp>
+#include <bio/meta/concept/core_language.hpp>
 #include <bio/meta/detail/int_types.hpp>
 
 namespace bio::alphabet::detail
@@ -35,7 +36,7 @@ namespace bio::alphabet::detail
 //!\ingroup alphabet_custom
 //!\hideinitializer
 template <typename type>
-concept uint_adaptation = std::same_as<type, uint8_t> || std::same_as<type, uint16_t> || std::same_as<type, uint32_t>;
+concept uint_adaptation = meta::one_of<type, uint8_t, uint16_t, uint32_t>;
 } // namespace bio::alphabet::detail
 
 namespace bio::alphabet::custom

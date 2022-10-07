@@ -51,9 +51,9 @@ void sequential_read(benchmark::State & state)
 
     if constexpr (std::is_same_v<tag_t, baseline_tag>)
     {
-        std::vector<bio::alphabet::aa27_vector> translated_aa_sequences = dna_sequence_collection
+        std::vector<std::vector<bio::alphabet::aa27>> translated_aa_sequences = dna_sequence_collection
                                                                  | bio::ranges::views::translate_join
-                                                                 | bio::ranges::to<std::vector<bio::alphabet::aa27_vector>>();
+                                                                 | bio::ranges::to<std::vector<std::vector<bio::alphabet::aa27>>>();
         sequential_read_impl(state, translated_aa_sequences);
     }
     else if constexpr (std::is_same_v<tag_t, translate_tag>)
@@ -103,9 +103,9 @@ void random_access(benchmark::State & state)
 
     if constexpr (std::is_same_v<tag_t, baseline_tag>)
     {
-        std::vector<bio::alphabet::aa27_vector> translated_aa_sequences = dna_sequence_collection
+        std::vector<std::vector<bio::alphabet::aa27>> translated_aa_sequences = dna_sequence_collection
                                                                  | bio::ranges::views::translate_join
-                                                                 | bio::ranges::to<std::vector<bio::alphabet::aa27_vector>>();
+                                                                 | bio::ranges::to<std::vector<std::vector<bio::alphabet::aa27>>>();
         random_access_impl(state, translated_aa_sequences, access_positions);
     }
     else

@@ -70,10 +70,9 @@ public:
      */
     // This constructor needs to be public, because constructor templates are not inherited otherwise
     //!\brief Allow explicit construction from any other quality type by means of the phred representation.
-    template <typename other_qual_type>
+    template <meta::different_from<derived_type> other_qual_type>
         //!\cond
-        requires((!std::same_as<quality_base, other_qual_type>)&&(
-          !std::same_as<derived_type, other_qual_type>)&&quality_alphabet<other_qual_type>)
+        requires quality_alphabet<other_qual_type>
     //!\endcond
     explicit constexpr quality_base(other_qual_type const & other) noexcept
     {

@@ -31,10 +31,8 @@ namespace bio::alphabet::detail
 //!\brief Prevents wrong instantiations of std::variant's constructors.
 template <typename other_t, typename... alternative_types>
 concept variant_general_guard =
-  ((!std::same_as<other_t, variant<alternative_types...>>)&&(
-     !std::is_base_of_v<variant<alternative_types...>, other_t>)&&(!(std::same_as<other_t, alternative_types> ||
-                                                                     ...)) &&
-   (!meta::list_traits::contains<variant<alternative_types...>, recursive_required_types_t<other_t>>));
+  !meta::one_of<other_t, variant<alternative_types...>, alternative_types...> &&
+  !meta::list_traits::contains<variant<alternative_types...>, recursive_required_types_t<other_t>>;
 
 } // namespace bio::alphabet::detail
 
@@ -524,16 +522,8 @@ protected:
 
             std::array<bool, alternative_size> valid_chars{char_is_valid_for<alternative_types>(chr)...};
 
-#if defined(__cpp_lib_constexpr_algorithms) && __cpp_lib_constexpr_algorithms >= 201806L
-            // the following lines only works beginning from c++20
             auto found_it   = std::find(valid_chars.begin(), valid_chars.end(), true);
             lookup_table[i] = found_it - valid_chars.begin();
-#else
-            size_t found_index = 0u;
-            for (; found_index < valid_chars.size() && !valid_chars[found_index]; ++found_index)
-                ;
-            lookup_table[i] = found_index;
-#endif // defined(__cpp_lib_constexpr_algorithms) && __cpp_lib_constexpr_algorithms >= 201806L
         }
 
         return lookup_table;

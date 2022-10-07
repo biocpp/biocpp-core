@@ -93,7 +93,7 @@ TEST(dna16sam, char_literal)
 
 TEST(dna16sam, string_literal)
 {
-    bio::alphabet::dna16sam_vector v;
+    std::vector<bio::alphabet::dna16sam> v;
     v.resize(5, 'A'_dna16sam);
     EXPECT_EQ(v, "AAAAA"_dna16sam);
 

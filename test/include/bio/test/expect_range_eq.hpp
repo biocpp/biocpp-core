@@ -32,12 +32,7 @@ struct expect_range_eq
     {
         using value_t = std::ranges::range_value_t<rng_t>;
         std::vector<value_t> rng_copy{};
-#if BIOCPP_WORKAROUND_GCC_95578
-        for (auto && v : rng)
-            rng_copy.push_back(std::move(v));
-#else // ^^^ workaround / no workaround vvv
         std::ranges::copy(rng, std::back_inserter(rng_copy));
-#endif // BIOCPP_WORKAROUND_GCC_95578
         return rng_copy;
     }
 

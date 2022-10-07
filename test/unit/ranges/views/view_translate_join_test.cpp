@@ -27,7 +27,7 @@
 using namespace bio::alphabet::literals;
 
 using iterator_type =
-  decltype(bio::ranges::views::translate_join(std::declval<std::vector<bio::alphabet::dna4_vector> &>()).begin());
+  decltype(bio::ranges::views::translate_join(std::declval<std::vector<std::vector<bio::alphabet::dna4>> &>()).begin());
 
 template <>
 struct iterator_fixture<iterator_type> : public ::testing::Test
@@ -35,7 +35,7 @@ struct iterator_fixture<iterator_type> : public ::testing::Test
     using iterator_tag                   = std::random_access_iterator_tag;
     static constexpr bool const_iterable = true;
 
-    std::vector<bio::alphabet::dna4_vector>           vec{"ACGTACGTACGTA"_dna4, "TCGAGAGCTTTAGC"_dna4};
+    std::vector<std::vector<bio::alphabet::dna4>>     vec{"ACGTACGTACGTA"_dna4, "TCGAGAGCTTTAGC"_dna4};
     std::vector<std::vector<bio::alphabet::aa27>>     expected_range{{"TYVR"_aa27},
                                                                  {"RTYV"_aa27},
                                                                  {"VRT"_aa27},

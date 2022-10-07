@@ -107,7 +107,7 @@ public:
 
 protected:
     //!\brief Value to char conversion table.
-    static constexpr char_type rank_to_char[alphabet_size]{
+    static constexpr std::array<char_type, alphabet_size> rank_to_char{
       'A',
       'B',
       'C',
@@ -124,10 +124,6 @@ protected:
     static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
     {
         std::array<rank_type, 256> ret{};
-
-        // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
-        for (auto & c : ret)
-            c = 0; // value of 'A', because S appears most frequently and gets converted to A in this alphabet
 
         // reverse mapping for characters and their lowercase
         for (rank_type rnk = 0u; rnk < alphabet_size; ++rnk)
@@ -174,14 +170,6 @@ protected:
     }
     ();
 };
-
-// ------------------------------------------------------------------
-// containers
-// ------------------------------------------------------------------
-
-//!\brief Alias for an std::vector of bio::alphabet::aa10li.
-//!\relates aa10li
-using aa10li_vector = std::vector<aa10li>;
 
 } // namespace bio::alphabet
 
