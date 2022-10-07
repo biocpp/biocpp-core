@@ -1,6 +1,7 @@
 add_subdirectories()
 
 biocpp_test(adaptor_base_test.cpp)
+biocpp_test(view_add_reverse_complement_test.cpp)
 biocpp_test(view_as_const_test.cpp)
 biocpp_test(view_char_to_test.cpp)
 biocpp_test(view_char_strictly_to_test.cpp)
