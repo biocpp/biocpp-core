@@ -87,7 +87,7 @@ public:
 
 protected:
     //!\brief Value to char conversion table.
-    static constexpr char_type rank_to_char[alphabet_size]{
+    static constexpr std::array<char_type, alphabet_size> rank_to_char{
       'A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y',
     };
 
@@ -96,9 +96,8 @@ protected:
     {
         std::array<rank_type, 256> ret{};
 
-        // initialize with UNKNOWN (std::array::fill unfortunately not constexpr)
-        for (auto & c : ret)
-            c = 15; // value of 'S', because that appears most frequently
+        // initialize with UNKNOWN
+        ret.fill(15); // value of 'S', because that appears most frequently
 
         // reverse mapping for characters and their lowercase
         for (rank_type rnk = 0u; rnk < alphabet_size; ++rnk)

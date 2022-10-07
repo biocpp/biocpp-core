@@ -15,7 +15,7 @@ struct dna2 : public bio::alphabet::base<dna2, 2>
 {
 private:
     // map 0 => 'S' and 1 => 'W'
-    static constexpr char_type rank_to_char[alphabet_size] {'S', 'W'};
+    static constexpr std::array<char_type, alphabet_size> rank_to_char {'S', 'W'};
 
     static constexpr std::array<rank_type, 256> char_to_rank =
     // initialise with an immediately evaluated lambda expression:

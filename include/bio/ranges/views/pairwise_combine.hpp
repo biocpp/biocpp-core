@@ -138,12 +138,10 @@ public:
      *
      * Constant if `other_range_t` models std::ranges::bidirectional_range, otherwise linear.
      */
-    template <typename other_range_t>
+    template <meta::different_from<pairwise_combine_view> other_range_t>
         //!\cond
-        requires(
-          (!std::same_as<std::remove_cvref_t<other_range_t>, pairwise_combine_view>)&&std::ranges::viewable_range<
-            other_range_t> && // Must come after self type check to avoid conflicts with the move constructor.
-            std::constructible_from<underlying_range_type, std::views::all_t<other_range_t>>)
+        requires(std::ranges::viewable_range<other_range_t> &&
+                   std::constructible_from<underlying_range_type, std::views::all_t<other_range_t>>)
     //!\endcond
     explicit constexpr pairwise_combine_view(other_range_t && range) :
       pairwise_combine_view{std::views::all(std::forward<other_range_t>(range))}

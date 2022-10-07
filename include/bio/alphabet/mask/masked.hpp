@@ -19,8 +19,7 @@
 
 namespace bio::alphabet
 {
-/*!\brief Implementation of a masked composite, which extends a given alphabet
- * with a mask.
+/*!\brief A template for composite alphabets that differentiate between upper and lower case characters.
  * \ingroup mask
  * \implements bio::alphabet::writable_alphabet
  * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
@@ -31,9 +30,10 @@ namespace bio::alphabet
  * \tparam sequence_alphabet_t Type of the first letter; must satisfy bio::alphabet::writable_alphabet and std::regular.
  *
  * \details
- * The masked composite represents a bio::alphabet::tuple_base of any given alphabet with the
- * masked alphabet. It allows one to specify which portions of a sequence should be masked,
- * without losing additional information by replacing the sequence directly.
+ * The masked composite is an alphabet tuple over the given alphabet and bio::alphabet::mask.
+ * It creates distinct states for upper and lower case letters, thus allowing to
+ * differentiate between symbols in masked regions and those outside.
+ * Otherwise, it models the behaviour of the given alphabet.
  *
  * \include test/snippet/alphabet/mask/masked.cpp
  */

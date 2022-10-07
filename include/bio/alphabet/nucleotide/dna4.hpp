@@ -89,7 +89,7 @@ protected:
     //!\privatesection
 
     //!\brief Value to char conversion table.
-    static constexpr char_type rank_to_char[alphabet_size]{'A', 'C', 'G', 'T'};
+    static constexpr std::array<char_type, alphabet_size> rank_to_char{'A', 'C', 'G', 'T'};
 
     //!\brief Char to value conversion table.
     static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr

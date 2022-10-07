@@ -53,12 +53,12 @@ class rna15;
 template <genetic_code gc = genetic_code::CANONICAL, nucleotide_alphabet nucl_type>
 constexpr aa27 translate_triplet(nucl_type const & n1, nucl_type const & n2, nucl_type const & n3) noexcept
 {
-    if constexpr (std::same_as<nucl_type, dna4> || std::same_as<nucl_type, dna5> || std::same_as<nucl_type, dna15>)
+    if constexpr (meta::one_of<nucl_type, dna4, dna5, dna15>)
     {
         // table exists for dna15 and is generated for dna4 and dna5 (compile time ok, because small)
         return detail::translation_table<nucl_type, gc>::VALUE[to_rank(n1)][to_rank(n2)][to_rank(n3)];
     }
-    else if constexpr (std::same_as<nucl_type, rna4> || std::same_as<nucl_type, rna5> || std::same_as<nucl_type, rna15>)
+    else if constexpr (meta::one_of<nucl_type, rna4, rna5, rna15>)
     {
         using rna2dna_t =
           std::conditional_t<std::same_as<nucl_type, rna4>,

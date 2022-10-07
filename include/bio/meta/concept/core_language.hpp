@@ -82,6 +82,14 @@ template <typename t>
 concept floating_point = arithmetic<t> && std::is_floating_point_v<t>;
 //!\endcond
 
+/*!\interface   bio::meta::one_of
+ * \brief       Resolves to (std::same_as<query_t, other_types> || ...).
+ */
+//!\cond
+template <typename query_t, typename... other_types>
+concept one_of = (BIOCPP_IS_SAME(query_t, other_types) || ...);
+//!\endcond
+
 /*!\interface   bio::meta::builtin_character <>
  * \extends     std::integral
  * \brief       This concept encompasses exactly the types `char`, `signed char`, `unsigned char`, `wchar_t`,
@@ -90,12 +98,8 @@ concept floating_point = arithmetic<t> && std::is_floating_point_v<t>;
 //!\cond
 
 template <typename t>
-concept builtin_character = std::integral<t> &&
-  (std::same_as<t, char> || std::same_as<t, unsigned char> || std::same_as<t, signed char> ||
-#ifdef __cpp_char8_t
-   std::same_as<t, char8_t> ||
-#endif
-   std::same_as<t, char16_t> || std::same_as<t, char32_t> || std::same_as<t, wchar_t>);
+concept builtin_character =
+  std::integral<t> && one_of<t, char, unsigned char, signed char, char8_t, char16_t, char32_t, wchar_t>;
 //!\endcond
 
 /*!\interface   bio::meta::nonint_character <>
@@ -105,8 +109,7 @@ concept builtin_character = std::integral<t> &&
  */
 //!\cond
 template <typename type>
-concept nonint_character = std::same_as<type, char> || std::same_as<type, char16_t> || std::same_as<type, char32_t> ||
-  std::same_as<type, wchar_t>;
+concept nonint_character = one_of<type, char, char16_t, char32_t, wchar_t>;
 //!\endcond
 
 /*!\interface   bio::meta::trivially_destructible <>
@@ -177,14 +180,6 @@ concept decays_to = std::same_as<std::decay_t<from_t>, std::decay_t<to_t>>;
 //!\cond
 template <typename from_t, typename to_t>
 concept different_from = !decays_to<from_t, to_t>;
-//!\endcond
-
-/*!\interface   bio::meta::one_of
- * \brief       Resolves to (std::same_as<query_t, other_types> || ...).
- */
-//!\cond
-template <typename query_t, typename... other_types>
-concept one_of = (BIOCPP_IS_SAME(query_t, other_types) || ...);
 //!\endcond
 
 /*!\interface   bio::meta::constexpr_default_initializable
