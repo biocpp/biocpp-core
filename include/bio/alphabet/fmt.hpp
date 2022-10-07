@@ -59,13 +59,13 @@ template <bio_range rng_t>
 struct fmt::is_range<rng_t, bio::alphabet::char_t<std::ranges::range_reference_t<rng_t>>> : std::false_type
 {};
 
-template <bio_range rng_t, typename char_t>
-struct fmt::formatter<rng_t, char_t> :
+template <bio_range rng_t, typename _char_t>
+struct fmt::formatter<rng_t, _char_t> :
   fmt::formatter<
     fmt::join_view<std::ranges::iterator_t<decltype(std::declval<rng_t const &>() | bio::ranges::views::to_char)>,
                    std::ranges::sentinel_t<decltype(std::declval<rng_t const &>() | bio::ranges::views::to_char)>,
                    bio::alphabet::char_t<std::ranges::range_reference_t<rng_t const>>>,
-    char_t>
+    _char_t>
 {
     // TODO const & is not ideal here, but some fmt-bug breaks other solutions
     // all our formattable ranges are also const-formattable, so it should be OK

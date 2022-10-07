@@ -21,10 +21,10 @@ private:
     bio::alphabet::dna4 * ptr;
 
 public:
-    constexpr proxy_base_example() noexcept                  = delete;
-    constexpr proxy_base_example(proxy_base_example const &) = default;
-    constexpr proxy_base_example(proxy_base_example &&)      = default;
-    ~proxy_base_example()                                    = default;
+    constexpr proxy_base_example() noexcept                      = delete;
+    constexpr proxy_base_example(proxy_base_example const &)     = default;
+    constexpr proxy_base_example(proxy_base_example &&) noexcept = default;
+    ~proxy_base_example()                                        = default;
 
     constexpr proxy_base_example(bio::alphabet::dna4 & in) : ptr{&in} {}
 
@@ -147,10 +147,10 @@ private:
     my_namespace::my_alph * ptr;
 
 public:
-    constexpr proxy_base_example2() noexcept                   = default;
-    constexpr proxy_base_example2(proxy_base_example2 const &) = default;
-    constexpr proxy_base_example2(proxy_base_example2 &&)      = default;
-    ~proxy_base_example2()                                     = default;
+    constexpr proxy_base_example2() noexcept                       = default;
+    constexpr proxy_base_example2(proxy_base_example2 const &)     = default;
+    constexpr proxy_base_example2(proxy_base_example2 &&) noexcept = default;
+    ~proxy_base_example2()                                         = default;
 
     constexpr proxy_base_example2(my_namespace::my_alph & val) : ptr{&val} {}
 

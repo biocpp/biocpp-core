@@ -83,11 +83,11 @@ public:
     //!\brief Copy constructor.
     tmp_filename(tmp_filename const &) = delete;  // NOTE: We could store the path in a shared_ptr and by thus reactivating the .
     //!\brief Move constructor.
-    tmp_filename(tmp_filename &&) = default;
+    tmp_filename(tmp_filename &&) noexcept = default;
     //!\brief Copy assignment.
     tmp_filename & operator=(tmp_filename const &) = delete;
     //!\brief Move assignment.
-    tmp_filename & operator=(tmp_filename &&) = default;
+    tmp_filename & operator=(tmp_filename &&) noexcept = default;
 
     /*!\brief Constructs temp path with given file name.
      * \param f_name The name of the file.

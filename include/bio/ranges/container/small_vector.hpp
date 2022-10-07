@@ -178,10 +178,9 @@ public:
      *
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
-    template <std::ranges::input_range other_range_t>
+    template <meta::different_from<small_vector> other_range_t>
         //!\cond
-        requires(!std::is_same_v<std::remove_cvref_t<other_range_t>, small_vector>)
-    /*ICE: && std::constructible_from<value_type, std::ranges::range_reference_t<other_range_t>>*/
+        requires(std::ranges::input_range<other_range_t>)
     //!\endcond
     explicit constexpr small_vector(other_range_t && range) noexcept(is_noexcept) :
       small_vector{std::ranges::begin(range), std::ranges::end(range)}

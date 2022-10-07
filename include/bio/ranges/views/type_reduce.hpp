@@ -77,11 +77,6 @@ private:
               std::ranges::begin(urange) + std::ranges::size(urange),
               std::ranges::size(urange)};
         }
-        // views are always passed as-is
-        else if constexpr (std::ranges::view<std::remove_cvref_t<urng_t>>)
-        {
-            return std::views::all(std::forward<urng_t>(urange));
-        }
         // pass to std::views::all (will return ref-view)
         else
         {

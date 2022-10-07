@@ -39,7 +39,7 @@ public:
     /*!\name Constructors, destructor and assignment
         * \{
         */
-    constexpr dynamic_bitset_reference_proxy() noexcept                                       = default; //!< Defaulted.
+    constexpr dynamic_bitset_reference_proxy()                                                = delete;  //!< Deleted.
     constexpr dynamic_bitset_reference_proxy(dynamic_bitset_reference_proxy const &) noexcept = default; //!< Defaulted.
     constexpr dynamic_bitset_reference_proxy(dynamic_bitset_reference_proxy &&) noexcept      = default; //!< Defaulted.
 
@@ -1423,9 +1423,10 @@ public:
      */
     constexpr void swap(dynamic_bitset & rhs) noexcept
     {
-        detail::dynamic_bitset_bitfield tmp = std::move(data);
-        data                                = std::move(rhs.data);
-        rhs.data                            = std::move(tmp);
+        static_assert(meta::trivial<decltype(data)>); // if type is no longer trivially copyable, do actual moves:
+        detail::dynamic_bitset_bitfield tmp = data;
+        data                                = rhs.data;
+        rhs.data                            = tmp;
     }
 
     //!\overload

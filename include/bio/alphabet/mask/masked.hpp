@@ -60,12 +60,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr masked()                           = default; //!< Defaulted.
-    constexpr masked(masked const &)             = default; //!< Defaulted.
-    constexpr masked(masked &&)                  = default; //!< Defaulted.
-    constexpr masked & operator=(masked const &) = default; //!< Defaulted.
-    constexpr masked & operator=(masked &&)      = default; //!< Defaulted.
-    ~masked()                                    = default; //!< Defaulted.
+    constexpr masked()                               = default; //!< Defaulted.
+    constexpr masked(masked const &)                 = default; //!< Defaulted.
+    constexpr masked(masked &&) noexcept             = default; //!< Defaulted.
+    constexpr masked & operator=(masked const &)     = default; //!< Defaulted.
+    constexpr masked & operator=(masked &&) noexcept = default; //!< Defaulted.
+    ~masked()                                        = default; //!< Defaulted.
 
     using base_t::base_t; // Inherit non-default constructors
     //!\}

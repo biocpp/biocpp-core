@@ -88,12 +88,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    aligned_allocator()                                      = default; //!< Defaulted.
-    aligned_allocator(aligned_allocator const &)             = default; //!< Defaulted.
-    aligned_allocator(aligned_allocator &&)                  = default; //!< Defaulted.
-    aligned_allocator & operator=(aligned_allocator const &) = default; //!< Defaulted.
-    aligned_allocator & operator=(aligned_allocator &&)      = default; //!< Defaulted.
-    ~aligned_allocator()                                     = default; //!< Defaulted.
+    aligned_allocator() noexcept                                      = default; //!< Defaulted.
+    aligned_allocator(aligned_allocator const &) noexcept             = default; //!< Defaulted.
+    aligned_allocator(aligned_allocator &&) noexcept                  = default; //!< Defaulted.
+    aligned_allocator & operator=(aligned_allocator const &) noexcept = default; //!< Defaulted.
+    aligned_allocator & operator=(aligned_allocator &&) noexcept      = default; //!< Defaulted.
+    ~aligned_allocator() noexcept                                     = default; //!< Defaulted.
 
     //!\brief Copy constructor with different value type and alignment.
     template <class other_value_type, size_t other_alignment>

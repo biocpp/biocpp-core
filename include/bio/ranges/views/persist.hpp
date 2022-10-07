@@ -160,7 +160,7 @@ private:
     static auto impl(urng_t && urange)
     {
         static_assert(!std::is_lvalue_reference_v<urng_t>, "BUG: lvalue-reference in persist_fn::impl().");
-        return view_persist{std::move(urange)};
+        return view_persist{std::forward<urng_t>(urange)};
     }
 };
 //![adaptor_def]

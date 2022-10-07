@@ -63,12 +63,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    pairwise_combine_view()                                          = default; //!< Defaulted.
-    pairwise_combine_view(pairwise_combine_view const &)             = default; //!< Defaulted.
-    pairwise_combine_view(pairwise_combine_view &&)                  = default; //!< Defaulted.
-    pairwise_combine_view & operator=(pairwise_combine_view const &) = default; //!< Defaulted.
-    pairwise_combine_view & operator=(pairwise_combine_view &&)      = default; //!< Defaulted.
-    ~pairwise_combine_view()                                         = default; //!< Defaulted.
+    pairwise_combine_view()                                              = default; //!< Defaulted.
+    pairwise_combine_view(pairwise_combine_view const &)                 = default; //!< Defaulted.
+    pairwise_combine_view(pairwise_combine_view &&) noexcept             = default; //!< Defaulted.
+    pairwise_combine_view & operator=(pairwise_combine_view const &)     = default; //!< Defaulted.
+    pairwise_combine_view & operator=(pairwise_combine_view &&) noexcept = default; //!< Defaulted.
+    ~pairwise_combine_view()                                             = default; //!< Defaulted.
 
     /*!\brief Constructs from a view.
      * \param[in] range The underlying range to be wrapped. Of type `underlying_range_type`.
@@ -289,12 +289,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    basic_iterator()                                   = default; //!< Defaulted.
-    basic_iterator(basic_iterator const &)             = default; //!< Defaulted.
-    basic_iterator(basic_iterator &&)                  = default; //!< Defaulted.
-    basic_iterator & operator=(basic_iterator const &) = default; //!< Defaulted.
-    basic_iterator & operator=(basic_iterator &&)      = default; //!< Defaulted.
-    ~basic_iterator()                                  = default; //!< Defaulted.
+    basic_iterator()                                       = default; //!< Defaulted.
+    basic_iterator(basic_iterator const &)                 = default; //!< Defaulted.
+    basic_iterator(basic_iterator &&) noexcept             = default; //!< Defaulted.
+    basic_iterator & operator=(basic_iterator const &)     = default; //!< Defaulted.
+    basic_iterator & operator=(basic_iterator &&) noexcept = default; //!< Defaulted.
+    ~basic_iterator()                                      = default; //!< Defaulted.
 
     /*!\brief Constructs the iterator from the current underlying iterator and the end iterator of the underlying
      *        range.
@@ -540,7 +540,7 @@ private:
     {
         size_t src_size = end_it - begin_it;
         size_t index_i =
-          src_size - 2 - std::floor(std::sqrt(-8 * index + 4 * src_size * (src_size - 1) - 7) / 2.0 - 0.5);
+          src_size - 2 - static_cast<size_t>(std::sqrt(-8 * index + 4 * src_size * (src_size - 1) - 7) / 2.0 - 0.5);
         size_t index_j =
           index + index_i + 1 - src_size * (src_size - 1) / 2 + (src_size - index_i) * ((src_size - index_i) - 1) / 2;
         first_it  = begin_it + index_i;
