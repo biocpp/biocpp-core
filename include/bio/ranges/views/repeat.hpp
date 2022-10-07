@@ -88,12 +88,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    repeat_view()                                = default; //!< Defaulted.
-    repeat_view(repeat_view const &)             = default; //!< Defaulted.
-    repeat_view & operator=(repeat_view const &) = default; //!< Defaulted.
-    repeat_view(repeat_view &&)                  = default; //!< Defaulted.
-    repeat_view & operator=(repeat_view &&)      = default; //!< Defaulted.
-    ~repeat_view()                               = default; //!< Defaulted.
+    repeat_view()                                    = default; //!< Defaulted.
+    repeat_view(repeat_view const &)                 = default; //!< Defaulted.
+    repeat_view & operator=(repeat_view const &)     = default; //!< Defaulted.
+    repeat_view(repeat_view &&) noexcept             = default; //!< Defaulted.
+    repeat_view & operator=(repeat_view &&) noexcept = default; //!< Defaulted.
+    ~repeat_view()                                   = default; //!< Defaulted.
 
     //!\brief Construct from any type (Note: the value will be copied into views::single).
     constexpr explicit repeat_view(value_t const & value) requires std::copy_constructible<value_t> :
@@ -208,12 +208,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    basic_iterator()                                   = default; //!< Defaulted.
-    basic_iterator(basic_iterator const &)             = default; //!< Defaulted.
-    basic_iterator & operator=(basic_iterator const &) = default; //!< Defaulted.
-    basic_iterator(basic_iterator &&)                  = default; //!< Defaulted.
-    basic_iterator & operator=(basic_iterator &&)      = default; //!< Defaulted.
-    ~basic_iterator()                                  = default; //!< Defaulted.
+    basic_iterator()                                       = default; //!< Defaulted.
+    basic_iterator(basic_iterator const &)                 = default; //!< Defaulted.
+    basic_iterator & operator=(basic_iterator const &)     = default; //!< Defaulted.
+    basic_iterator(basic_iterator &&) noexcept             = default; //!< Defaulted.
+    basic_iterator & operator=(basic_iterator &&) noexcept = default; //!< Defaulted.
+    ~basic_iterator()                                      = default; //!< Defaulted.
 
     /*!\brief Construct by host range.
      * \param host The host range.

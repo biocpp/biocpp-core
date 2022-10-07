@@ -109,11 +109,13 @@ private:
     //!\brief Implementation of #char_is_valid().
     static constexpr std::array<bool, 256> valid_char_table = []() constexpr
     {
+        static_assert(sizeof(char_type) == 1, "This table is unusable for char types larger than 1 byte.");
+
         // init with false
         std::array<bool, 256> ret{};
 
         // the original valid chars and their lower cases
-        for (uint8_t c : derived_type::rank_to_char)
+        for (char_type c : derived_type::rank_to_char)
         {
             ret[c]                   = true;
             ret[detail::to_lower(c)] = true;

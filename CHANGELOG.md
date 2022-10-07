@@ -22,6 +22,7 @@ Summary: The alphabet module is almost *stable*. Several things in meta and rang
 ## Bug-fixes
 
 * Some edge-cases with composite alphabets were fixed.
+* Many potential bugs and missed optimisations found by clang-tidy (and fixed).
 
 ### Misc changes
 

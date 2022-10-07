@@ -50,12 +50,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr gap() noexcept               = default; //!< Defaulted.
-    constexpr gap(gap const &)             = default; //!< Defaulted.
-    constexpr gap(gap &&)                  = default; //!< Defaulted.
-    constexpr gap & operator=(gap const &) = default; //!< Defaulted.
-    constexpr gap & operator=(gap &&)      = default; //!< Defaulted.
-    ~gap()                                 = default; //!< Defaulted.
+    constexpr gap() noexcept                   = default; //!< Defaulted.
+    constexpr gap(gap const &)                 = default; //!< Defaulted.
+    constexpr gap(gap &&) noexcept             = default; //!< Defaulted.
+    constexpr gap & operator=(gap const &)     = default; //!< Defaulted.
+    constexpr gap & operator=(gap &&) noexcept = default; //!< Defaulted.
+    ~gap()                                     = default; //!< Defaulted.
 
     using base_t::base_t;
     //!\}

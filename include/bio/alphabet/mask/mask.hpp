@@ -46,12 +46,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr mask()                         = default; //!< Defaulted.
-    constexpr mask(mask const &)             = default; //!< Defaulted.
-    constexpr mask(mask &&)                  = default; //!< Defaulted.
-    constexpr mask & operator=(mask const &) = default; //!< Defaulted.
-    constexpr mask & operator=(mask &&)      = default; //!< Defaulted.
-    ~mask()                                  = default; //!< Defaulted.
+    constexpr mask()                             = default; //!< Defaulted.
+    constexpr mask(mask const &)                 = default; //!< Defaulted.
+    constexpr mask(mask &&) noexcept             = default; //!< Defaulted.
+    constexpr mask & operator=(mask const &)     = default; //!< Defaulted.
+    constexpr mask & operator=(mask &&) noexcept = default; //!< Defaulted.
+    ~mask()                                      = default; //!< Defaulted.
     //!\}
 
     /*!\name Boolean values

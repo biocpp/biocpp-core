@@ -39,7 +39,7 @@ constexpr bool is_upper(char const c)
  */
 constexpr char to_lower(char const c)
 {
-    return c | 0b0010'0000;
+    return static_cast<char>(static_cast<unsigned char>(c) | 0b0010'0000);
 }
 
 /*!\brief Like std::toupper but locale independent and constexpr.
@@ -49,7 +49,7 @@ constexpr char to_lower(char const c)
  */
 constexpr char to_upper(char const c)
 {
-    return c & 0b0101'1111;
+    return static_cast<char>(static_cast<unsigned char>(c) & 0b0101'1111);
 }
 
 } // namespace bio::alphabet::detail

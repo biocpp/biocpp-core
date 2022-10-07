@@ -120,12 +120,12 @@ private:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr tuple_base() noexcept                      = default; //!< Defaulted.
-    constexpr tuple_base(tuple_base const &)             = default; //!< Defaulted.
-    constexpr tuple_base(tuple_base &&)                  = default; //!< Defaulted.
-    constexpr tuple_base & operator=(tuple_base const &) = default; //!< Defaulted.
-    constexpr tuple_base & operator=(tuple_base &&)      = default; //!< Defaulted.
-    ~tuple_base()                                        = default; //!< Defaulted.
+    constexpr tuple_base() noexcept                          = default; //!< Defaulted.
+    constexpr tuple_base(tuple_base const &)                 = default; //!< Defaulted.
+    constexpr tuple_base(tuple_base &&) noexcept             = default; //!< Defaulted.
+    constexpr tuple_base & operator=(tuple_base const &)     = default; //!< Defaulted.
+    constexpr tuple_base & operator=(tuple_base &&) noexcept = default; //!< Defaulted.
+    ~tuple_base()                                            = default; //!< Defaulted.
 
     using base_t::base_t;
     //!\}
@@ -549,19 +549,23 @@ public:
      * \{
      */
     //!\brief Deleted, because using this proxy without parent would be undefined behaviour.
-    component_proxy()                                  = delete;
-    constexpr component_proxy(component_proxy const &) = default; //!< Defaulted.
-    constexpr component_proxy(component_proxy &&)      = default; //!< Defaulted.
-    ~component_proxy()                                 = default; //!< Defaulted.
+    component_proxy()                                           = delete;
+    constexpr component_proxy(component_proxy const &) noexcept = default; //!< Defaulted.
+    constexpr component_proxy(component_proxy &&) noexcept      = default; //!< Defaulted.
+    ~component_proxy() noexcept                                 = default; //!< Defaulted.
 
     //!\brief Construct from a reference to the parent object.
     constexpr component_proxy(tuple_base & p) : parent{&p} {}
 
     //!\brief Assignment does not change `this`, instead it updates the referenced value.
-    constexpr component_proxy & operator=(component_proxy const & rhs) { return assign_rank(rhs.to_rank()); }
+    constexpr component_proxy & operator=(component_proxy const & rhs) // NOLINT(bugprone-unhandled-self-assignment)
+    {
+        return assign_rank(rhs.to_rank());
+    }
 
     //!\brief Assignment does not change `this`, instead it updates the referenced value (also works on `const` objects).
-    constexpr component_proxy const & operator=(component_proxy const & rhs) const
+    constexpr component_proxy const & operator=(
+      component_proxy const & rhs) const // NOLINT(bugprone-unhandled-self-assignment)
     {
         return assign_rank(rhs.to_rank());
     }

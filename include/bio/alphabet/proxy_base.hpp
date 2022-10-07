@@ -74,12 +74,14 @@ private:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    constexpr proxy_base() noexcept                      = default; //!< Defaulted.
-    constexpr proxy_base(proxy_base const &)             = default; //!< Defaulted.
-    constexpr proxy_base(proxy_base &&)                  = default; //!< Defaulted.
-    constexpr proxy_base & operator=(proxy_base const &) = default; //!< Defaulted.
-    constexpr proxy_base & operator=(proxy_base &&)      = default; //!< Defaulted.
-    ~proxy_base()                                        = default; //!< Defaulted.
+    constexpr proxy_base() noexcept                          = default; //!< Defaulted.
+    constexpr proxy_base(proxy_base const &)                 = default; //!< Defaulted.
+    constexpr proxy_base(proxy_base &&) noexcept             = default; //!< Defaulted.
+    constexpr proxy_base & operator=(proxy_base const &)     = default; //!< Defaulted.
+    constexpr proxy_base & operator=(proxy_base &&) noexcept = default; //!< Defaulted.
+    ~proxy_base()                                            = default; //!< Defaulted.
+
+    //TODO the assignment operators should not be defaulted and shouls assign-through!
 
     //!\brief Assigment from the emulated type. This function triggers the specialisation in the derived_type.
     constexpr derived_type & operator=(alphabet_type const & c) noexcept

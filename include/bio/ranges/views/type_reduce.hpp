@@ -51,9 +51,9 @@ private:
     template <std::ranges::range urng_t>
     static constexpr auto impl(urng_t && urange)
     {
-        static_assert(
-          std::ranges::viewable_range<urng_t>,
-          "The views::type_reduce adaptor can only be passed viewable_ranges, i.e. Views or &-to-non-View.");
+        static_assert(std::ranges::viewable_range<urng_t>,
+                      "The views::type_reduce adaptor can only be passed viewable_ranges, i.e. Views or "
+                      "&-to-non-View.");
 
         // string const &
         if constexpr (std::ranges::borrowed_range<urng_t> && std::ranges::contiguous_range<urng_t> &&
@@ -76,11 +76,6 @@ private:
               std::ranges::begin(urange),
               std::ranges::begin(urange) + std::ranges::size(urange),
               std::ranges::size(urange)};
-        }
-        // views are always passed as-is
-        else if constexpr (std::ranges::view<std::remove_cvref_t<urng_t>>)
-        {
-            return std::views::all(std::forward<urng_t>(urange));
         }
         // pass to std::views::all (will return ref-view)
         else

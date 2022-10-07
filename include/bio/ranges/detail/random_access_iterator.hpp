@@ -75,17 +75,17 @@ public:
      * \{
      */
     //!\brief Default constructor.
-    constexpr random_access_iterator_base()                                                = default;
+    constexpr random_access_iterator_base() noexcept                                                = default;
     //!\brief Copy constructor.
-    constexpr random_access_iterator_base(random_access_iterator_base const &)             = default;
+    constexpr random_access_iterator_base(random_access_iterator_base const &) noexcept             = default;
     //!\brief Copy construction via assignment.
-    constexpr random_access_iterator_base & operator=(random_access_iterator_base const &) = default;
+    constexpr random_access_iterator_base & operator=(random_access_iterator_base const &) noexcept = default;
     //!\brief Move constructor.
-    constexpr random_access_iterator_base(random_access_iterator_base &&)                  = default;
+    constexpr random_access_iterator_base(random_access_iterator_base &&) noexcept                  = default;
     //!\brief Move assignment.
-    constexpr random_access_iterator_base & operator=(random_access_iterator_base &&)      = default;
+    constexpr random_access_iterator_base & operator=(random_access_iterator_base &&) noexcept      = default;
     //!\brief Use default deconstructor.
-    ~random_access_iterator_base()                                                         = default;
+    ~random_access_iterator_base() noexcept                                                         = default;
 
     //!\brief Construct by host, default position pointer with 0.
     explicit constexpr random_access_iterator_base(range_type & host) noexcept : host{&host} {}

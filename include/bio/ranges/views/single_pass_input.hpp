@@ -77,17 +77,17 @@ public:
      * \brief All standard functions are explicitly defaulted.
      */
     //!\brief Default default-constructor.
-    constexpr single_pass_input_view()                                           = default;
+    constexpr single_pass_input_view()                                               = default;
     //!\brief Default copy-constructor.
-    constexpr single_pass_input_view(single_pass_input_view const &)             = default;
+    constexpr single_pass_input_view(single_pass_input_view const &)                 = default;
     //!\brief Default move-constructor.
-    constexpr single_pass_input_view(single_pass_input_view &&)                  = default;
+    constexpr single_pass_input_view(single_pass_input_view &&) noexcept             = default;
     //!\brief Default copy-assignment.
-    constexpr single_pass_input_view & operator=(single_pass_input_view const &) = default;
+    constexpr single_pass_input_view & operator=(single_pass_input_view const &)     = default;
     //!\brief Default move-assignment
-    constexpr single_pass_input_view & operator=(single_pass_input_view &&)      = default;
+    constexpr single_pass_input_view & operator=(single_pass_input_view &&) noexcept = default;
     //!\brief Default destructor.
-    ~single_pass_input_view()                                                    = default;
+    ~single_pass_input_view()                                                        = default;
 
     //!\brief Construction from the underlying view.
     explicit single_pass_input_view(urng_t _urng) : state_ptr{new state{std::move(_urng)}} {}
@@ -186,17 +186,17 @@ public:
      * \{
      */
     //!\brief Default construction.
-    basic_iterator()                                                 = default;
+    basic_iterator() noexcept                                                 = default;
     //!\brief Copy construction.
-    constexpr basic_iterator(basic_iterator const & rhs)             = default;
+    constexpr basic_iterator(basic_iterator const & rhs) noexcept             = default;
     //!\brief Move construction.
-    constexpr basic_iterator(basic_iterator && rhs)                  = default;
+    constexpr basic_iterator(basic_iterator && rhs) noexcept                  = default;
     //!\brief Copy assignment.
-    constexpr basic_iterator & operator=(basic_iterator const & rhs) = default;
+    constexpr basic_iterator & operator=(basic_iterator const & rhs) noexcept = default;
     //!\brief Move assignment.
-    constexpr basic_iterator & operator=(basic_iterator && rhs)      = default;
+    constexpr basic_iterator & operator=(basic_iterator && rhs) noexcept      = default;
     //!\brief Destruction.
-    ~basic_iterator()                                                = default;
+    ~basic_iterator() noexcept                                                = default;
 
     //!\brief Constructing from the underlying bio::alphabet::single_pass_input_view.
     basic_iterator(single_pass_input_view<view_type> & view) noexcept : view_ptr{&view} {}

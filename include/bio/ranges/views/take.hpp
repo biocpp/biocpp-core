@@ -80,12 +80,12 @@ public:
     /*!\name Constructors, destructor and assignment
      * \{
      */
-    view_take()                                  = default; //!< Defaulted.
-    view_take(view_take const & rhs)             = default; //!< Defaulted.
-    view_take(view_take && rhs)                  = default; //!< Defaulted.
-    view_take & operator=(view_take const & rhs) = default; //!< Defaulted.
-    view_take & operator=(view_take && rhs)      = default; //!< Defaulted.
-    ~view_take()                                 = default; //!< Defaulted.
+    view_take()                                      = default; //!< Defaulted.
+    view_take(view_take const & rhs)                 = default; //!< Defaulted.
+    view_take(view_take && rhs) noexcept             = default; //!< Defaulted.
+    view_take & operator=(view_take const & rhs)     = default; //!< Defaulted.
+    view_take & operator=(view_take && rhs) noexcept = default; //!< Defaulted.
+    ~view_take()                                     = default; //!< Defaulted.
 
     /*!\brief Construct from another View.
      * \param[in] _urange The underlying range.
@@ -244,12 +244,12 @@ public:
      * \brief Exceptions specification is implicitly inherited.
      * \{
      */
-    basic_iterator()                                       = default; //!< Defaulted.
-    basic_iterator(basic_iterator const & rhs)             = default; //!< Defaulted.
-    basic_iterator(basic_iterator && rhs)                  = default; //!< Defaulted.
-    basic_iterator & operator=(basic_iterator const & rhs) = default; //!< Defaulted.
-    basic_iterator & operator=(basic_iterator && rhs)      = default; //!< Defaulted.
-    ~basic_iterator()                                      = default; //!< Defaulted.
+    basic_iterator()                                           = default; //!< Defaulted.
+    basic_iterator(basic_iterator const & rhs)                 = default; //!< Defaulted.
+    basic_iterator(basic_iterator && rhs) noexcept             = default; //!< Defaulted.
+    basic_iterator & operator=(basic_iterator const & rhs)     = default; //!< Defaulted.
+    basic_iterator & operator=(basic_iterator && rhs) noexcept = default; //!< Defaulted.
+    ~basic_iterator()                                          = default; //!< Defaulted.
 
     //!\brief Constructor that delegates to the CRTP layer.
     constexpr basic_iterator(base_base_t const & it) noexcept(noexcept(base_t{it})) : base_t{std::move(it)} {}

@@ -178,17 +178,17 @@ public:
      * \{
      */
     //!\brief Default constructors.
-    concatenated_sequences()                                                     = default;
+    concatenated_sequences()                                                         = default;
     //!\brief Default constructors.
-    constexpr concatenated_sequences(concatenated_sequences const &)             = default;
+    constexpr concatenated_sequences(concatenated_sequences const &)                 = default;
     //!\brief Default constructors.
-    constexpr concatenated_sequences(concatenated_sequences &&)                  = default;
+    constexpr concatenated_sequences(concatenated_sequences &&) noexcept             = default;
     //!\brief Default constructors.
-    constexpr concatenated_sequences & operator=(concatenated_sequences const &) = default;
+    constexpr concatenated_sequences & operator=(concatenated_sequences const &)     = default;
     //!\brief Default constructors.
-    constexpr concatenated_sequences & operator=(concatenated_sequences &&)      = default;
+    constexpr concatenated_sequences & operator=(concatenated_sequences &&) noexcept = default;
     //!\brief Default constructors.
-    ~concatenated_sequences()                                                    = default;
+    ~concatenated_sequences()                                                        = default;
 
     /*!\brief Construct/assign from a different range.
      * \tparam rng_of_rng_type The type of range to be inserted; must satisfy
@@ -203,11 +203,12 @@ public:
      *
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
-    template <std::ranges::input_range rng_of_rng_type>
-    concatenated_sequences(rng_of_rng_type && rng_of_rng)
-      //!\cond
-      requires range_value_t_is_compatible_with_value_type<rng_of_rng_type>
+    template <meta::different_from<concatenated_sequences> rng_of_rng_type>
+        //!\cond
+        requires(
+          std::ranges::input_range<rng_of_rng_type> && range_value_t_is_compatible_with_value_type<rng_of_rng_type>)
     //!\endcond
+    concatenated_sequences(rng_of_rng_type && rng_of_rng)
     {
         if constexpr (std::ranges::sized_range<rng_of_rng_type>)
             data_delimiters.reserve(std::ranges::size(rng_of_rng) + 1);

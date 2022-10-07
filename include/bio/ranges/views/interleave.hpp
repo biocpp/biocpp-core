@@ -263,9 +263,9 @@ struct interleave_fn
     template <std::ranges::range urng_t, std::ranges::range inserted_rng_t, std::integral size_type>
     constexpr auto operator()(urng_t && urange, size_type const size, inserted_rng_t && i) const noexcept
     {
-        static_assert(
-          std::ranges::random_access_range<urng_t>,
-          "The underlying range parameter in views::interleave must model std::ranges::random_access_range.");
+        static_assert(std::ranges::random_access_range<urng_t>,
+                      "The underlying range parameter in views::interleave must model "
+                      "std::ranges::random_access_range.");
         static_assert(std::ranges::viewable_range<urng_t>,
                       "The underlying range parameter in views::interleave must model std::ranges::viewable_range.");
         static_assert(std::ranges::sized_range<urng_t>,

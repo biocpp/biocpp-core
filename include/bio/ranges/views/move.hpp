@@ -67,9 +67,10 @@ namespace bio::ranges::views
  *
  * \hideinitializer
  */
-inline auto const move = std::views::transform(
-  meta::overloaded{[](auto && arg) -> std::remove_cvref_t<decltype(arg)> { return std::move(arg); },
-                   [](auto & arg) -> decltype(auto) { return std::move(arg); }});
+inline auto const move =
+  std::views::transform(meta::overloaded{[](auto && arg) -> std::remove_cvref_t<decltype(arg)>
+                                         { return std::move(arg); }, // NOLINT(bugprone-move-forwarding-reference)
+                                         [](auto & arg) -> decltype(auto) { return std::move(arg); }});
 //!\}
 
 } // namespace bio::ranges::views

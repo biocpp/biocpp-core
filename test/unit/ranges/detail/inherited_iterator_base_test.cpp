@@ -25,12 +25,12 @@ private:
     using base_t      = bio::ranges::detail::inherited_iterator_base<skip_odd_numbers_it, std::vector<int>::iterator>;
 
 public:
-    skip_odd_numbers_it()                                            = default;
-    skip_odd_numbers_it(skip_odd_numbers_it const & rhs)             = default;
-    skip_odd_numbers_it(skip_odd_numbers_it && rhs)                  = default;
-    skip_odd_numbers_it & operator=(skip_odd_numbers_it const & rhs) = default;
-    skip_odd_numbers_it & operator=(skip_odd_numbers_it && rhs)      = default;
-    ~skip_odd_numbers_it()                                           = default;
+    skip_odd_numbers_it()                                                = default;
+    skip_odd_numbers_it(skip_odd_numbers_it const & rhs)                 = default;
+    skip_odd_numbers_it(skip_odd_numbers_it && rhs) noexcept             = default;
+    skip_odd_numbers_it & operator=(skip_odd_numbers_it const & rhs)     = default;
+    skip_odd_numbers_it & operator=(skip_odd_numbers_it && rhs) noexcept = default;
+    ~skip_odd_numbers_it()                                               = default;
 
     skip_odd_numbers_it(base_base_t it) : base_t{it} {}
 

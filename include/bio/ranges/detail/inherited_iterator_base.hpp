@@ -78,8 +78,8 @@ public:
      * \brief The exception specification is explicitly "inherited" to also work for pointers as base.
      * \{
      */
-    constexpr inherited_iterator_base() noexcept(std::is_nothrow_default_constructible_v<base_t>) =
-      default; //!< Defaulted.
+    constexpr inherited_iterator_base() noexcept(
+      std::is_nothrow_default_constructible_v<base_t>) = default; //!< Defaulted.
     constexpr inherited_iterator_base(inherited_iterator_base const & rhs) noexcept(
       std::is_nothrow_copy_constructible_v<base_t>) = default; //!< Defaulted.
     constexpr inherited_iterator_base(inherited_iterator_base && rhs) noexcept(
@@ -231,8 +231,8 @@ public:
     //!\cond
     template <typename base_t_ = base_t>
     //!\endcond
-    constexpr derived_t operator--(int) noexcept(noexcept(std::declval<base_t &>()--) && noexcept(derived_t{
-      std::declval<base_t &>()}))
+    constexpr derived_t operator--(int) noexcept(
+      noexcept(std::declval<base_t &>()--) && noexcept(derived_t{std::declval<base_t &>()}))
       //!\cond
       requires(requires(base_t_ i) { i--; } && std::constructible_from<derived_t, base_t_>)
     //!\endcond
