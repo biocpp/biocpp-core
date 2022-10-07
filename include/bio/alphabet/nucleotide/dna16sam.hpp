@@ -106,14 +106,6 @@ protected:
     static const std::array<dna16sam, alphabet_size> complement_table;
 };
 
-// ------------------------------------------------------------------
-// containers
-// ------------------------------------------------------------------
-
-//!\brief Alias for an std::vector of bio::alphabet::dna16sam.
-//!\relates dna16sam
-using dna16sam_vector = std::vector<dna16sam>;
-
 } // namespace bio::alphabet
 
 // ------------------------------------------------------------------

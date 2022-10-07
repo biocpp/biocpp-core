@@ -95,14 +95,6 @@ protected:
     static const std::array<rna15, alphabet_size> complement_table;
 };
 
-// ------------------------------------------------------------------
-// containers
-// ------------------------------------------------------------------
-
-//!\brief Alias for an std::vector of bio::alphabet::rna15.
-//!\relates rna15
-using rna15_vector = std::vector<rna15>;
-
 } // namespace bio::alphabet
 
 // ------------------------------------------------------------------

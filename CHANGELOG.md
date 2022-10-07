@@ -27,6 +27,7 @@ Summary: The alphabet module is almost *stable*. Several things in meta and rang
 
 * rename `bio::alphabet::alphabet_*` to `bio::alphabet::*`, e.g. `bio::alphabet::alphabet_variant` to `bio::alphabet::variant`.
 * rename `bio::alphabet::cpo::` to `bio::alphabet::custom::`; rename `bio/alphabet/adaptation` to `bio/alphabet/custom` and move customisation tags to that folder.
+* `bio::alphabet::*_vector` aliases were removed; just use `std::vector<alphabet>` instead.
 * `bio::meta::*` several unused traits were removed.
 * `bio::ranges::pseudo_random_access_iterator` and `bio::ranges::pseudo_random_access_range` have been removed (because they are not used).
 * `bio::ranges::views::to()` has been renamed to `bio::ranges::to()` to be in line with C++23.

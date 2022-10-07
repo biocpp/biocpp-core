@@ -97,14 +97,6 @@ protected:
     static constexpr std::array<rank_type, 256> char_to_rank = dna4::char_to_rank;
 };
 
-// ------------------------------------------------------------------
-// containers
-// ------------------------------------------------------------------
-
-//!\brief Alias for an std::vector of bio::alphabet::rna4.
-//!\relates rna4
-using rna4_vector = std::vector<rna4>;
-
 } // namespace bio::alphabet
 
 // ------------------------------------------------------------------

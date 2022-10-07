@@ -35,10 +35,10 @@ TEST(view_move, basic)
     EXPECT_RANGE_EQ(vec, v2); // equality comparison does not move
 
     // combinability
-    bio::alphabet::dna5_vector vec2{"ACGTA"_dna5};
-    bio::alphabet::dna5_vector v3 = vec2 | bio::ranges::views::complement |
-                                    bio::ranges::views::move // NOP, because already temporaries
-                                    | bio::ranges::to<std::vector>();
+    std::vector<bio::alphabet::dna5> vec2{"ACGTA"_dna5};
+    std::vector<bio::alphabet::dna5> v3 = vec2 | bio::ranges::views::complement |
+                                          bio::ranges::views::move // NOP, because already temporaries
+                                          | bio::ranges::to<std::vector>();
     EXPECT_EQ("TGCAT"_dna5, v3);
 }
 

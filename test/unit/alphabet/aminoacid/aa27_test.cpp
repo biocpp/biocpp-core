@@ -93,7 +93,7 @@ TEST(literals, char_literal)
 
 TEST(literals, vector)
 {
-    bio::alphabet::aa27_vector v27;
+    std::vector<bio::alphabet::aa27> v27;
     v27.resize(5, 'A'_aa27);
     EXPECT_EQ(v27, "AAAAA"_aa27);
 

@@ -8,10 +8,10 @@ int main()
 {
     using namespace bio::alphabet::literals;
 
-    bio::ranges::concatenated_sequences<bio::alphabet::dna4_vector> concat1{"ACGT"_dna4, "GAGGA"_dna4};
+    bio::ranges::concatenated_sequences<std::vector<bio::alphabet::dna4>> concat1{"ACGT"_dna4, "GAGGA"_dna4};
     fmt::print("{}\n", concat1[0]); // "ACGT"
 
-    std::vector<bio::alphabet::dna4_vector> concat2{"ACTA"_dna4, "AGGA"_dna4};
+    std::vector<std::vector<bio::alphabet::dna4>> concat2{"ACTA"_dna4, "AGGA"_dna4};
 
     concat1 = concat2;               // you can assign from other ranges
 

@@ -40,7 +40,7 @@ TEST(bitcompressed_vector_test, issue1743_view_combinability)
     auto                                                   complement = v | bio::ranges::views::complement;
 
     EXPECT_EQ(v.size(), complement.size());
-    EXPECT_RANGE_EQ(complement, (bio::alphabet::dna4_vector{'T'_dna4, 'G'_dna4, 'C'_dna4, 'A'_dna4}));
+    EXPECT_RANGE_EQ(complement, (std::vector<bio::alphabet::dna4>{'T'_dna4, 'G'_dna4, 'C'_dna4, 'A'_dna4}));
 }
 
 TEST(bitcompressed_vector_test, char_compatibility)

@@ -7,14 +7,14 @@ int main()
 {
     using namespace bio::alphabet::literals;
 
-    bio::alphabet::dna4_vector vec{"ACGGTC"_dna4};
+    std::vector<bio::alphabet::dna4> vec{"ACGGTC"_dna4};
     auto vec_view2 = bio::views::complement(vec);
 
     // re-convert to container
-    bio::alphabet::dna4_vector complemented = vec_view2 | bio::ranges::to<bio::alphabet::dna4_vector>();
+    std::vector<bio::alphabet::dna4> complemented = vec_view2 | bio::ranges::to<std::vector<bio::alphabet::dna4>>();
     assert(complemented == "TGCCAG"_dna4);
 
     // also possible in one step
-    bio::alphabet::dna4_vector reversed = vec | std::views::reverse | bio::ranges::to<bio::alphabet::dna4_vector>();
+    std::vector<bio::alphabet::dna4> reversed = vec | std::views::reverse | bio::ranges::to<std::vector<bio::alphabet::dna4>>();
     assert(reversed == "CTGGCA"_dna4);
 }

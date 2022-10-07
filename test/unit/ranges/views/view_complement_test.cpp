@@ -22,40 +22,40 @@ using namespace bio::alphabet::literals;
 
 TEST(view_complement, basic)
 {
-    bio::alphabet::dna5_vector foo{"ACGTA"_dna5};
+    std::vector<bio::alphabet::dna5> foo{"ACGTA"_dna5};
 
     // pipe notation
-    bio::alphabet::dna5_vector v = foo | bio::ranges::views::complement | bio::ranges::to<std::vector>();
+    std::vector<bio::alphabet::dna5> v = foo | bio::ranges::views::complement | bio::ranges::to<std::vector>();
     EXPECT_EQ(v, "TGCAT"_dna5);
 
     // function notation
-    bio::alphabet::dna5_vector v2(bio::ranges::views::complement(foo) | bio::ranges::to<std::vector>());
+    std::vector<bio::alphabet::dna5> v2(bio::ranges::views::complement(foo) | bio::ranges::to<std::vector>());
     EXPECT_EQ(v2, "TGCAT"_dna5);
 
     // combinability
-    bio::alphabet::dna5_vector v3 =
+    std::vector<bio::alphabet::dna5> v3 =
       foo | bio::ranges::views::complement | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(v3, "TACGT"_dna5);
 
-    bio::alphabet::dna5_vector const bar{"ACGTA"_dna5};
+    std::vector<bio::alphabet::dna5> const bar{"ACGTA"_dna5};
 
     // const pipe notation
-    bio::alphabet::dna5_vector v4 = bar | bio::ranges::views::complement | bio::ranges::to<std::vector>();
+    std::vector<bio::alphabet::dna5> v4 = bar | bio::ranges::views::complement | bio::ranges::to<std::vector>();
     EXPECT_EQ(v4, "TGCAT"_dna5);
 
     // const function notation
-    bio::alphabet::dna5_vector v5(bio::ranges::views::complement(bar) | bio::ranges::to<std::vector>());
+    std::vector<bio::alphabet::dna5> v5(bio::ranges::views::complement(bar) | bio::ranges::to<std::vector>());
     EXPECT_EQ(v5, "TGCAT"_dna5);
 
     // const combinability
-    bio::alphabet::dna5_vector v6 =
+    std::vector<bio::alphabet::dna5> v6 =
       bar | bio::ranges::views::complement | std::views::reverse | bio::ranges::to<std::vector>();
     EXPECT_EQ(v6, "TACGT"_dna5);
 }
 
 TEST(view_complement, deep_view)
 {
-    std::vector<bio::alphabet::dna5_vector> foo{"ACGTA"_dna5, "TGCAT"_dna5};
+    std::vector<std::vector<bio::alphabet::dna5>> foo{"ACGTA"_dna5, "TGCAT"_dna5};
 
     auto v = foo | bio::ranges::views::complement;
 
@@ -63,7 +63,7 @@ TEST(view_complement, deep_view)
     EXPECT_RANGE_EQ(v[0], "TGCAT"_dna5);
     EXPECT_RANGE_EQ(v[1], "ACGTA"_dna5);
 
-    std::vector<bio::alphabet::dna5_vector> const bar{"ACGTA"_dna5, "TGCAT"_dna5};
+    std::vector<std::vector<bio::alphabet::dna5>> const bar{"ACGTA"_dna5, "TGCAT"_dna5};
 
     auto v2 = bar | bio::ranges::views::complement;
 
@@ -74,7 +74,7 @@ TEST(view_complement, deep_view)
 
 TEST(view_complement, concepts)
 {
-    bio::alphabet::dna5_vector vec{"ACGTA"_dna5};
+    std::vector<bio::alphabet::dna5> vec{"ACGTA"_dna5};
     EXPECT_TRUE(std::ranges::input_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(vec)>);
@@ -97,7 +97,7 @@ TEST(view_complement, concepts)
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), bio::alphabet::dna5>));
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), char>));
 
-    bio::alphabet::dna5_vector const vec2{"ACGTA"_dna5};
+    std::vector<bio::alphabet::dna5> const vec2{"ACGTA"_dna5};
     EXPECT_TRUE(std::ranges::input_range<decltype(vec2)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec2)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(vec2)>);

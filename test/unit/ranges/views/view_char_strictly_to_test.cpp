@@ -20,8 +20,8 @@ using namespace bio::alphabet::literals;
 
 TEST(view_char_strictly_to, basic)
 {
-    std::string                vec{"ACTTTGATA"};
-    bio::alphabet::dna5_vector cmp{"ACTTTGATA"_dna5};
+    std::string                      vec{"ACTTTGATA"};
+    std::vector<bio::alphabet::dna5> cmp{"ACTTTGATA"_dna5};
 
     // pipe notation
     EXPECT_RANGE_EQ(cmp, vec | bio::ranges::views::char_strictly_to<bio::alphabet::dna5>);
@@ -30,7 +30,7 @@ TEST(view_char_strictly_to, basic)
     EXPECT_RANGE_EQ(cmp, bio::ranges::views::char_strictly_to<bio::alphabet::dna5>(vec));
 
     // combinability
-    bio::alphabet::dna5_vector cmp2{"ATAGTTTCA"_dna5};
+    std::vector<bio::alphabet::dna5> cmp2{"ATAGTTTCA"_dna5};
     EXPECT_RANGE_EQ(cmp2, vec | bio::ranges::views::char_strictly_to<bio::alphabet::dna5> | std::views::reverse);
 }
 

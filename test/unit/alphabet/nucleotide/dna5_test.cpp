@@ -60,7 +60,7 @@ TEST(dna5, char_literal)
 
 TEST(dna5, string_literal)
 {
-    bio::alphabet::dna5_vector v;
+    std::vector<bio::alphabet::dna5> v;
     v.resize(5, 'A'_dna5);
     EXPECT_EQ(v, "AAAAA"_dna5);
 

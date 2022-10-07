@@ -20,8 +20,8 @@ using namespace bio::alphabet::literals;
 
 TEST(view_to_char, basic)
 {
-    bio::alphabet::dna5_vector vec{"ACTTTGATA"_dna5};
-    std::string                cmp{"ACTTTGATA"};
+    std::vector<bio::alphabet::dna5> vec{"ACTTTGATA"_dna5};
+    std::string                      cmp{"ACTTTGATA"};
 
     // pipe notation
     std::string v = vec | bio::ranges::views::to_char | bio::ranges::to<std::string>();
@@ -39,7 +39,7 @@ TEST(view_to_char, basic)
 
 TEST(view_to_char, concepts)
 {
-    bio::alphabet::dna5_vector vec{"ACTTTGATA"_dna5};
+    std::vector<bio::alphabet::dna5> vec{"ACTTTGATA"_dna5};
     EXPECT_TRUE(std::ranges::input_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(vec)>);

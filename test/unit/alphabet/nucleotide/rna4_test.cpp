@@ -58,7 +58,7 @@ TEST(rna4, char_literal)
 
 TEST(rna4, string_literal)
 {
-    bio::alphabet::rna4_vector v;
+    std::vector<bio::alphabet::rna4> v;
     v.resize(5, 'A'_rna4);
     EXPECT_EQ(v, "AAAAA"_rna4);
 

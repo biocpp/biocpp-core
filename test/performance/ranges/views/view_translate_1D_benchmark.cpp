@@ -46,8 +46,8 @@ void sequential_read(benchmark::State & state)
 
     if constexpr (std::is_same_v<tag_t, baseline_tag>)
     {
-        bio::alphabet::aa27_vector translated_aa_sequence = dna_sequence | bio::ranges::views::translate_single
-                                                                  | bio::ranges::to<bio::alphabet::aa27_vector>();
+        std::vector<bio::alphabet::aa27> translated_aa_sequence = dna_sequence | bio::ranges::views::translate_single
+                                                                  | bio::ranges::to<std::vector<bio::alphabet::aa27>>();
         sequential_read_impl(state, translated_aa_sequence);
     }
     else if constexpr (std::is_same_v<tag_t, translate_tag>)
@@ -87,8 +87,8 @@ void random_access(benchmark::State & state)
 
     if constexpr (std::is_same_v<tag_t, baseline_tag>)
     {
-        bio::alphabet::aa27_vector translated_aa_sequence = dna_sequence | bio::ranges::views::translate_single
-                                                                  | bio::ranges::to<bio::alphabet::aa27_vector>();
+        std::vector<bio::alphabet::aa27> translated_aa_sequence = dna_sequence | bio::ranges::views::translate_single
+                                                                  | bio::ranges::to<std::vector<bio::alphabet::aa27>>();
         random_access_impl(state, translated_aa_sequence, access_positions);
     }
     else
@@ -110,9 +110,9 @@ void copy_impl(benchmark::State & state, std::vector<bio::alphabet::dna4> const 
 {
     for (auto _ : state)
     {
-        bio::alphabet::aa27_vector translated_aa_sequence{};
+        std::vector<bio::alphabet::aa27> translated_aa_sequence{};
         benchmark::DoNotOptimize(translated_aa_sequence = dna_sequence | adaptor
-                                                                       | bio::ranges::to<bio::alphabet::aa27_vector>());
+                                                                       | bio::ranges::to<std::vector<bio::alphabet::aa27>>());
     }
 }
 

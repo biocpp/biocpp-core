@@ -175,14 +175,6 @@ protected:
     ();
 };
 
-// ------------------------------------------------------------------
-// containers
-// ------------------------------------------------------------------
-
-//!\brief Alias for an std::vector of bio::alphabet::aa10li.
-//!\relates aa10li
-using aa10li_vector = std::vector<aa10li>;
-
 } // namespace bio::alphabet
 
 // ------------------------------------------------------------------

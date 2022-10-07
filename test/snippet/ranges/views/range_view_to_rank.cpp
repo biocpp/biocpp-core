@@ -11,7 +11,7 @@ int main()
 {
     using namespace bio::alphabet::literals;
 
-    bio::alphabet::dna4_vector vec = "ACTTTGATA"_dna4;
+    std::vector<bio::alphabet::dna4> vec = "ACTTTGATA"_dna4;
     auto v = vec | bio::views::to_rank | bio::views::convert<unsigned>;
     fmt::print("{}\n", v); // [0,1,3,3,3,2,0,3,0]
 

@@ -116,14 +116,6 @@ protected:
     static const std::array<dna15, alphabet_size> complement_table;
 };
 
-// ------------------------------------------------------------------
-// containers
-// ------------------------------------------------------------------
-
-//!\brief Alias for an std::vector of bio::alphabet::dna15.
-//!\relates dna15
-using dna15_vector = std::vector<dna15>;
-
 } // namespace bio::alphabet
 
 // ------------------------------------------------------------------
