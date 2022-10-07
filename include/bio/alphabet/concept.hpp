@@ -830,7 +830,7 @@ concept constexpr_semialphabet = semialphabet<t> && requires
 template <typename t>
 concept writable_constexpr_semialphabet = constexpr_semialphabet<t> && writable_semialphabet<t> && requires
 {
-    // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
+// currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
 #if BIOCPP_WORKAROUND_CLANG_58078
     requires true;
 #else
@@ -881,7 +881,7 @@ template <typename t>
 concept writable_constexpr_alphabet =
   constexpr_alphabet<t> && writable_constexpr_semialphabet<t> && writable_alphabet<t> && requires
 {
-    // currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
+// currently only tests rvalue interfaces, because we have no constexpr values in this scope to get references to
 #if !BIOCPP_WORKAROUND_CLANG_58078
     requires BIOCPP_IS_CONSTEXPR(bio::alphabet::assign_char_to(char_t<t>{}, std::remove_reference_t<t>{}));
 #endif

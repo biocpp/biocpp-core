@@ -37,8 +37,8 @@ TYPED_TEST_SUITE(ranges_1d_generic, ranges_1d_types, );
 TYPED_TEST(ranges_1d_generic, short)
 {
     TypeParam t1;
-    if constexpr (std::same_as<TypeParam,
-                               std::vector<bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>>>)
+    if constexpr (
+      std::same_as<TypeParam, std::vector<bio::alphabet::qualified<bio::alphabet::dna4, bio::alphabet::phred42>>>)
     {
         t1.emplace_back('A'_dna4);
         t1.emplace_back('C'_dna4);

@@ -52,14 +52,14 @@ public:
     template <std::ranges::range urng_t>
     constexpr auto operator()(urng_t && urange, bool const transform) const
     {
-        static_assert(
-          std::ranges::viewable_range<urng_t>,
-          "The range parameter to views::reverse_complement_or_not cannot be a temporary of a non-view range.");
+        static_assert(std::ranges::viewable_range<urng_t>,
+                      "The range parameter to views::reverse_complement_or_not cannot be a temporary of a non-view "
+                      "range.");
         static_assert(std::ranges::sized_range<urng_t>,
                       "The range parameter to views::reverse_complement_or_not must model std::ranges::sized_range.");
-        static_assert(
-          std::ranges::random_access_range<urng_t>,
-          "The range parameter to views::reverse_complement_or_not must model std::ranges::random_access_range.");
+        static_assert(std::ranges::random_access_range<urng_t>,
+                      "The range parameter to views::reverse_complement_or_not must model "
+                      "std::ranges::random_access_range.");
         static_assert(alphabet::nucleotide_alphabet<std::ranges::range_reference_t<urng_t>>,
                       "The range parameter to views::reverse_complement_or_not must be over elements of "
                       "bio::alphabet::nucleotide_alphabet.");
@@ -145,21 +145,21 @@ private:
     {
         static_assert(range_dimension_v<urng_t> == 2,
                       "This adaptor only handles range-of-range (two dimensions) as input.");
-        static_assert(
-          std::ranges::viewable_range<urng_t>,
-          "The range parameter to views::add_reverse_complement cannot be a temporary of a non-view range.");
-        static_assert(
-          std::ranges::viewable_range<std::ranges::range_reference_t<urng_t>>,
-          "The inner range of the range parameter to views::add_reverse_complement cannot be a temporary of "
-          "a non-view range.");
+        static_assert(std::ranges::viewable_range<urng_t>,
+                      "The range parameter to views::add_reverse_complement cannot be a temporary of a non-view "
+                      "range.");
+        static_assert(std::ranges::viewable_range<std::ranges::range_reference_t<urng_t>>,
+                      "The inner range of the range parameter to views::add_reverse_complement cannot be a temporary "
+                      "of "
+                      "a non-view range.");
         static_assert(std::ranges::sized_range<urng_t>,
                       "The range parameter to views::add_reverse_complement must model std::ranges::sized_range.");
         static_assert(std::ranges::sized_range<std::ranges::range_reference_t<urng_t>>,
                       "The inner range of the range parameter to views::add_reverse_complement must model "
                       "std::ranges::sized_range.");
-        static_assert(
-          std::ranges::random_access_range<urng_t>,
-          "The range parameter to views::add_reverse_complement must model std::ranges::random_access_range.");
+        static_assert(std::ranges::random_access_range<urng_t>,
+                      "The range parameter to views::add_reverse_complement must model "
+                      "std::ranges::random_access_range.");
         static_assert(std::ranges::random_access_range<std::ranges::range_reference_t<urng_t>>,
                       "The inner range of the range parameter to views::add_reverse_complement must model "
                       "std::ranges::random_access_range.");

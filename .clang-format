@@ -100,6 +100,7 @@ IndentExternBlock: false
 IndentGotoLabels: false
 IndentPPDirectives: AfterHash
 IndentRequires: true
+#IndentRequiresClause: true
 IndentWidth:     4
 IndentWrappedFunctionNames: false
 InsertTrailingCommas: None
@@ -115,14 +116,18 @@ PenaltyBreakAssignment: 2
 PenaltyBreakBeforeFirstCallParameter: 19
 PenaltyBreakComment: 300
 PenaltyBreakFirstLessLess: 120
-PenaltyBreakString: 1000
-PenaltyExcessCharacter: 1000000
+PenaltyBreakOpenParenthesis: 50
+PenaltyBreakString: 1
+PenaltyBreakTemplateDeclaration: 10
+PenaltyExcessCharacter: 1000
+PenaltyIndentedWhitespace: 0
 PenaltyReturnTypeOnItsOwnLine: 200
 PointerAlignment: Middle
 QualifierAlignment: Custom
 QualifierOrder: ['static', 'inline', 'constexpr', 'type', 'const', 'volatile', 'restrict' ]
 ReferenceAlignment: Middle
 ReflowComments:  false
+#RequiresClausePosition: OwnLine
 SeparateDefinitionBlocks: Leave
 SortIncludes:    CaseInsensitive
 SortIncludes: true
