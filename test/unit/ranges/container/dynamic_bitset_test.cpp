@@ -36,6 +36,7 @@ TEST(dynamic_bitset, concepts)
 {
     EXPECT_TRUE((bio::ranges::detail::reservible_container<bio::ranges::dynamic_bitset<58>>));
     EXPECT_TRUE((std::ranges::random_access_range<bio::ranges::dynamic_bitset<58>>));
+    EXPECT_TRUE((std::ranges::output_range<bio::ranges::dynamic_bitset<58>, bool>));
 }
 
 constexpr bool comparison_test()

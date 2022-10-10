@@ -23,6 +23,7 @@ Summary: The alphabet module is almost *stable*. Several things in meta and rang
 
 * Some edge-cases with composite alphabets were fixed.
 * Many potential bugs and missed optimisations found by clang-tidy (and fixed).
+* `bio::ranges::dynamic_bitset` was not an `output_range<bool>` because of incomplete proxy types.
 
 ### Misc changes
 
