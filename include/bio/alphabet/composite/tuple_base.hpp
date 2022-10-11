@@ -564,8 +564,8 @@ public:
     }
 
     //!\brief Assignment does not change `this`, instead it updates the referenced value (also works on `const` objects).
-    constexpr component_proxy const & operator=(
-      component_proxy const & rhs) const // NOLINT(bugprone-unhandled-self-assignment)
+    // NOLINTNEXTLINE(bugprone-unhandled-self-assignment)
+    constexpr component_proxy const & operator=(component_proxy const & rhs) const
     {
         return assign_rank(rhs.to_rank());
     }
