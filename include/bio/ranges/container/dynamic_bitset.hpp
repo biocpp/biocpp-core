@@ -44,14 +44,14 @@ public:
     constexpr dynamic_bitset_reference_proxy(dynamic_bitset_reference_proxy &&) noexcept      = default; //!< Defaulted.
 
     //!\brief Assign the value of the bit.
-    constexpr dynamic_bitset_reference_proxy & operator=(dynamic_bitset_reference_proxy const rhs) noexcept
+    constexpr dynamic_bitset_reference_proxy const & operator=(dynamic_bitset_reference_proxy const rhs) const noexcept
     {
         rhs ? set() : reset();
         return *this;
     }
 
     //!\brief Sets the referenced bit to `value`.
-    constexpr dynamic_bitset_reference_proxy & operator=(bool const value) noexcept
+    constexpr dynamic_bitset_reference_proxy const & operator=(bool const value) const noexcept
     {
         value ? set() : reset();
         return *this;
@@ -72,7 +72,7 @@ public:
     constexpr bool operator~() const noexcept { return !static_cast<bool>(internal.bits & mask); }
 
     //!\brief Sets the referenced bit to the result of a binary OR with `value`.
-    constexpr dynamic_bitset_reference_proxy & operator|=(bool const value)
+    constexpr dynamic_bitset_reference_proxy const & operator|=(bool const value) const noexcept
     {
         if (value)
             set();
@@ -81,7 +81,7 @@ public:
     }
 
     //!\brief Sets the referenced bit to the result of a binary AND with `value`.
-    constexpr dynamic_bitset_reference_proxy & operator&=(bool const value)
+    constexpr dynamic_bitset_reference_proxy const & operator&=(bool const value) const noexcept
     {
         if (!value)
             reset();
@@ -90,7 +90,7 @@ public:
     }
 
     //!\brief Sets the referenced bit to the result of a binary XOR with `value`.
-    constexpr dynamic_bitset_reference_proxy & operator^=(bool const value)
+    constexpr dynamic_bitset_reference_proxy const & operator^=(bool const value) const noexcept
     {
         operator bool() && value ? reset() : set();
         return *this;
@@ -103,10 +103,10 @@ private:
     uint64_t                  mask;
 
     //!\brief Sets the referenced bit to `1`.
-    constexpr void set() noexcept { internal.bits |= mask; }
+    constexpr void set() const noexcept { internal.bits |= mask; }
 
     //!\brief Sets the referenced bit to `0`.
-    constexpr void reset() noexcept { internal.bits &= ~mask; }
+    constexpr void reset() const noexcept { internal.bits &= ~mask; }
 };
 
 } // namespace bio::ranges::detail
