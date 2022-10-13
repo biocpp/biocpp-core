@@ -71,7 +71,7 @@ private:
     //!\}
 
     //!\brief Befriend the iterators so they can instantiate.
-    template <typename, typename>
+    template <typename, template <typename...> typename>
     friend class detail::random_access_iterator_base;
 
 public:
