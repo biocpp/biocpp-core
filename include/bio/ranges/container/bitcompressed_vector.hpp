@@ -142,15 +142,15 @@ private:
         using base_t::operator=;
 
         //!\brief Assignment does not change `this`, instead it updates the referenced value.
-        constexpr reference_proxy_type & operator=(
-          reference_proxy_type const & rhs) // NOLINT(bugprone-unhandled-self-assignment)
+        // NOLINTNEXTLINE(bugprone-unhandled-self-assignment)
+        constexpr reference_proxy_type & operator=(reference_proxy_type const & rhs)
         {
             return assign_rank(rhs.to_rank());
         }
 
         //!\brief Assignment does not change `this`, instead it updates the referenced value (also works on `const` objects).
-        constexpr reference_proxy_type const & operator=(
-          reference_proxy_type const & rhs) const // NOLINT(bugprone-unhandled-self-assignment)
+        // NOLINTNEXTLINE(bugprone-unhandled-self-assignment)
+        constexpr reference_proxy_type const & operator=(reference_proxy_type const & rhs) const
         {
             return assign_rank(rhs.to_rank());
         }

@@ -50,7 +50,7 @@ protected:
     position_type pos{static_cast<position_type>(0)};
 
     //!\brief This friend declaration is required to allow non-const to const-construction.
-    template <typename range_type2, template <typename...> typename derived_t_template2>
+    template <typename, template <typename...> typename>
     friend class random_access_iterator_base;
 
     //!\brief Because this is CRTP, we know the full derived type:
