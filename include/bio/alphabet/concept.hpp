@@ -392,11 +392,7 @@ namespace bio::alphabet
  */
 template <typename alph_t>
     //!\cond
-    requires(requires(char_t<alph_t> a) {
-        {
-            detail::char_is_valid_for_fn<alph_t>{}(a)
-            } -> std::same_as<bool>;
-    })
+    requires(requires(char_t<alph_t> a) { {detail::char_is_valid_for_fn<alph_t>{}(a)}; })
 //!\endcond
 inline constexpr auto char_is_valid_for = detail::char_is_valid_for_fn<alph_t>{};
 
@@ -419,12 +415,8 @@ struct assign_char_strictly_to_fn
     template <typename alph_t>
         //!\cond
         requires(requires(alph_t a, bio::alphabet::char_t<alph_t> r) {
-            {
-                bio::alphabet::assign_char_to(r, a)
-                } -> std::convertible_to<alph_t>;
-            {
-                bio::alphabet::char_is_valid_for<alph_t>(r)
-                } -> std::same_as<bool>;
+            {bio::alphabet::assign_char_to(r, a)};
+            {bio::alphabet::char_is_valid_for<alph_t>(r)};
         })
     //!\endcond
     auto operator()(bio::alphabet::char_t<alph_t> const r, alph_t && a) const -> alph_t
