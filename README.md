@@ -9,7 +9,7 @@ This is the core library of the [BioC++ project](https://github.com/biocpp/biocp
   * Meta: metaprogramming utilities and auxilliary data structures.
 
 The design of this module is heavily influenced by **C++ Ranges** and **C++ Concepts**.
-A short introduction into the topic can be found [here](https://hannes.hauswedell.net/post/2019/11/30/range_intro/).
+An introduction into the topic can be found [here](https://biocpp.github.io/core_ranges.html).
 
 General information on the **BioC++ project** can be found in the [main repository](https://github.com/biocpp/biocpp).
 The **full documention** (all BioC++ modules) can found [here](https://biocpp.github.io).
@@ -44,7 +44,7 @@ constant-time random access like a vector.
   * Zero dependencies → keep complexity low!
   * No build-system and no configure steps required.
   * Optional CMake support available.
-  * Integrates well with the standard library and [{fmt}](https://github.com/fmtlib/fmt).
+  * Integrates well with the standard library, [{fmt}](https://github.com/fmtlib/fmt) and [cereal](https://github.com/USCiLab/cereal).
 
 ## Quick-Setup
 

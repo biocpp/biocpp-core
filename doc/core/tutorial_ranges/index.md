@@ -71,22 +71,14 @@ std::ranges::sized_range which requires that the size of a range can be computed
 **Containers** are the ranges most well known, they own their elements. BioC++ makes use of standard STL containers
 like `std::vector`, but also implements some custom containers.
 
-**Decorators** are ranges that are always defined on another range and decorate/annotate the underlying range
-with additional information. They do not own the underlying range, but can contain member data of their own.
-
 **Views** are ranges that are usually defined on another range and transform the underlying range
 via some algorithm or operation.
-Views do not own any data beyond their algorithm and the time it takes to construct, destruct or copy them should not
-depend on the number of elements they represent. The algorithm is required to be lazy-evaluated so it is feasible to
-combine multiple views. More on this below.
-
-If you are confused about *decorators* vs *views*, think of decorators as "underlying range + data" and
-views as "underlying range + algorithm".
+The exact definition of what a view is, has changed over time and is not covered here, but many of the key features
+are described below.
 
 The storage behaviour is orthogonal to the range concepts defined by the iterators mentioned above, i.e. you
 can have a container that satisfies std::ranges::random_access_range (e.g. `std::vector` does, but `std::list`
-does not) and you can have views or decorators that do so or don't. For some combinations of iterator capabilities
-and storage behaviour there are extra concept definitions, e.g. bio::ranges::detail::random_access_container.
+does not) and you can have views that do so or don't.
 
 # Views
 
@@ -257,20 +249,19 @@ Use views to implement steps 2.-4.
 
 # Containers
 
-containers are ranges that own their data.
-BioC++ uses the standard library containers, like std::vector and std::list to store elements.
+Containers are ranges that own their data.
+BioC++ uses the standard library containers, like std::vector and std::string to store elements.
 For certain use-cases we have introduced our own containers, though.
 
-All standard library containers model std::ranges::forward_range (see above), but we have introduced container
-concepts that encompass more of a containers interface.
-Have a look at the API documentation of bio::ranges::detail::container and unfold the inheritance diagram.
-What can you learn about the different refinements and their relation to the range concepts?
+All standard library containers model std::ranges::forward_range (see above), but these concepts do not cover adding/removing elements.
+Surprisingly little generic code requires functionality like random inserts, but for back insertion ("appending an element")
+we have introduced the concepts bio::ranges::back_insertable and bio::ranges::back_insertable_with.
 
 ## The bitcompressed vector
 
 If you followed the alphabet tutorial closely, you will know that bio::alphabet::dna4 needs only two bits to represent its state.
 However, single objects are always at least a byte (eight bits) big in C++.
-To store sequences of small alphabets more space-efficiently, we have developed bio::ranges::bitcompressed_vector.
+To store sequences of small alphabets more space-efficiently, we developed bio::ranges::bitcompressed_vector.
 
 Open the API documentation of bio::ranges::bitcompressed_vector, display the inheritance diagram and read through the
 interface overview and the detailed description.
