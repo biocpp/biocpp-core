@@ -12,8 +12,8 @@ Many of the rules on this page are derived from the [abseil library](https://abs
 # API stability
 
 In general, you can expect all entities within the `bio` namespace to be usable throughout the entire
-release cycle of BioC++, i.e. if you write an application that includes `biocpp-core-3.1.1`, you should be able
-to re-compile it against `biocpp-core-3.4.5` without errors.
+release cycle of BioC++, i.e. if you write an application that includes `biocpp-core-1.1.0`, you should be able
+to re-compile it against `biocpp-core-1.4.5` without errors.
 
 Exceptions to the previous rule:
   1. **Do not depend upon internal details.** If something is in a namespace or filename/path that includes the word
