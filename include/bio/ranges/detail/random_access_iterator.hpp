@@ -234,7 +234,7 @@ private:
     //!\brief Cast this to derived type.
     constexpr derived_t * this_derived() { return static_cast<derived_t *>(this); }
 
-    //!\copydoc this_derived
+    //!\overload
     constexpr derived_t const * this_derived() const { return static_cast<derived_t const *>(this); }
 };
 

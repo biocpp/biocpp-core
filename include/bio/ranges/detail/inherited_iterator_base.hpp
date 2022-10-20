@@ -391,7 +391,7 @@ private:
     //!\brief Cast this to derived type.
     constexpr derived_t * this_derived() { return static_cast<derived_t *>(this); }
 
-    //!\copydoc this_derived
+    //!\overload
     constexpr derived_t const * this_derived() const { return static_cast<derived_t const *>(this); }
 
     //!\brief Cast this to base type.
@@ -403,7 +403,7 @@ private:
             return static_cast<base_t *>(this);
     }
 
-    //!\copydoc this_to_base
+    //!\overload
     constexpr base_t const * this_to_base() const
     {
         if constexpr (wrap_base)

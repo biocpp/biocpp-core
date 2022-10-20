@@ -304,7 +304,7 @@ public:
     /*!\name Iterators
      * \{
      */
-    //!\brief Returns the begin to the string.
+    //!\brief Returns the begin iterator of the vector.
     constexpr iterator begin() noexcept { return &data_[0]; }
 
     //!\copydoc bio::ranges::small_vector::begin()
@@ -350,7 +350,7 @@ public:
         return (*this)[i];
     }
 
-    //!\copydoc at()
+    //!\copydoc bio::ranges::small_vector::at()
     const_reference at(size_type const i) const
     {
         if (i >= size()) // [[unlikely]]
@@ -381,7 +381,7 @@ public:
         return data_[i];
     }
 
-    //!\copydoc operator[]()
+    //!\copydoc bio::ranges::small_vector::operator[]()
     constexpr const_reference operator[](size_type const i) const noexcept
     {
         assert(i < size());
@@ -407,7 +407,7 @@ public:
         return (*this)[0];
     }
 
-    //!\copydoc front()
+    //!\copydoc bio::ranges::small_vector::front()
     constexpr const_reference front() const noexcept
     {
         assert(size() > 0);
@@ -433,7 +433,7 @@ public:
         return (*this)[size() - 1];
     }
 
-    //!\copydoc back()
+    //!\copydoc bio::ranges::small_vector::back()
     constexpr const_reference back() const noexcept
     {
         assert(size() > 0);
@@ -443,7 +443,7 @@ public:
     //!\brief Direct access to the underlying array.
     constexpr value_type * data() noexcept { return data_.data(); }
 
-    //!\copydoc data()
+    //!\copydoc bio::ranges::small_vector::data()
     constexpr value_type const * data() const noexcept { return data_.data(); }
     //!\}
 
@@ -750,9 +750,9 @@ public:
         sz = count;
     }
 
-    /*!\copybrief resize()
-     * \param value Append copies of value when resizing.
-     * \copydetails resize()
+    /*!\copybrief bio::ranges::small_vector::resize
+     * \param[in] value Append copies of value when resizing.
+     * \copydetails bio::ranges::small_vector::resize
      */
     constexpr void resize(size_type const count, value_type const value) noexcept
     {

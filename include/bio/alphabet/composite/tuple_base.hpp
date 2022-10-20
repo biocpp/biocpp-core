@@ -159,8 +159,7 @@ public:
      * \{
      * \attention Please do not directly use the CRTP base class. The functions
      *            are only public for the usage in their derived classes (e.g.
-     *            bio::alphabet::qualified, bio::alphabet::masked, bio::alphabet::structure_rna and
-     *            bio::alphabet::structure_aa).
+     *            bio::alphabet::qualified, bio::alphabet::masked).
      */
     //!\brief Construction from initialiser-list.
     constexpr tuple_base(component_types... components) noexcept
@@ -171,9 +170,11 @@ public:
     /*!\brief Construction via a value of one of the components.
      * \tparam component_type Must be one uniquely contained in the type list of the composite.
      * \param  alph           The value of a component that should be assigned.
+     * \details
      *
      * Note: Since the tuple_base is a CRTP base class, we show the working examples
      * with one of its derived classes (bio::alphabet::qualified).
+     *
      * \include test/snippet/alphabet/composite/tuple_base_value_construction.cpp
      *
      */
@@ -190,6 +191,7 @@ public:
      * \tparam indirect_component_type Type that models bio::alphabet::weakly_assignable_from for
      *                                 one of the component types.
      * \param  alph                    The value that should be assigned.
+     * \details
      *
      * Note that the value will be assigned to the **FIRST** type T that fulfils
      * `assignable_from<T, indirect_component_type>`, regardless if other types are also
@@ -197,6 +199,7 @@ public:
      *
      * Note: Since the tuple_base is a CRTP base class, we show the working examples
      * with one of its derived classes (bio::alphabet::qualified).
+     *
      * \include test/snippet/alphabet/composite/tuple_base_subtype_construction.cpp
      *
      */
@@ -234,9 +237,11 @@ public:
     /*!\brief Assignment via a value of one of the components.
      * \tparam component_type One of the component types. Must be uniquely contained in the type list of the composite.
      * \param  alph           The value of a component that should be assigned.
+     * \details
      *
      * Note: Since the tuple_base is a CRTP base class, we show the working examples
      * with one of its derived classes (bio::alphabet::qualified).
+     *
      * \include test/snippet/alphabet/composite/tuple_base_value_assignment.cpp
      *
      */
@@ -254,9 +259,11 @@ public:
      * \tparam indirect_component_type Type that models bio::alphabet::weakly_assignable_from for
      *                                 one of the component types.
      * \param  alph                    The value of a component that should be assigned.
+     * \details
      *
      * Note: Since the tuple_base is a CRTP base class, we show the working examples
      * with one of its derived classes (bio::alphabet::qualified).
+     *
      * \include test/snippet/alphabet/composite/tuple_base_subtype_assignment.cpp
      *
      */
@@ -334,7 +341,7 @@ public:
         return component_proxy<t, index>{l};
     }
 
-    /*!\copybrief get
+    /*!\brief Tuple-like access to the contained components.
      * \tparam type Return the element of specified type; only available if the type is unique in the set of components.
      * \returns A proxy to the contained element that models the same alphabets concepts and supports assignment.
      *
@@ -348,7 +355,7 @@ public:
         return get<meta::list_traits::find<type, component_list>>(l);
     }
 
-    /*!\copybrief get
+    /*!\brief Tuple-like access to the contained components.
      * \tparam index Return the i-th element.
      * \returns A copy of the contained element.
      *
@@ -363,7 +370,7 @@ public:
         return bio::alphabet::assign_rank_to(l.to_component_rank<index>(), t{});
     }
 
-    /*!\copybrief get
+    /*!\brief Tuple-like access to the contained components.
      * \tparam type Return the element of specified type; only available if the type is unique in the set of components.
      * \returns A copy of the contained element.
      *
@@ -420,7 +427,7 @@ public:
         return get<component_type>(lhs) == rhs;
     }
 
-    //!\copydoc operator==(derived_type_t const lhs, indirect_component_type const rhs)
+    //!\copydoc bio::alphabet::tuple_base::operator==(derived_type_t const lhs, indirect_component_type const rhs)
     template <std::same_as<derived_type> derived_type_t, typename indirect_component_type>
         //!\cond
         requires(detail::tuple_concept_guard<derived_type, indirect_component_type, component_types...> &&
