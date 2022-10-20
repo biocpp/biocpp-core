@@ -179,7 +179,7 @@ public:
         data_[0] = '\0';
     }
 
-    //!\copydoc bio::ranges::small_vector::push_back(value_type const value)
+    //!\copydoc bio::ranges::small_vector::push_back
     constexpr void push_back(char const value) noexcept
     {
         assert(sz < capacity_);
@@ -196,10 +196,11 @@ public:
         data_[sz] = '\0';
     }
 
-    //!\copydoc bio::ranges::small_vector::resize(size_type const)
+    //!\copydoc bio::ranges::small_vector::resize
     constexpr void resize(size_type const count) noexcept { resize(count, '\0'); }
 
-    //!\copydoc bio::ranges::small_vector::resize(size_type const, value_type const value)
+    //!\copydoc bio::ranges::small_vector::resize
+    //!\param[in] value Append copies of value when resizing.
     constexpr void resize(size_type const count, char const value) noexcept
     {
         assert(count <= capacity_);

@@ -964,7 +964,7 @@ public:
      */
     constexpr void swap(bitcompressed_vector & rhs) noexcept { std::swap(*this, rhs); }
 
-    //!\copydoc swap()
+    //!\copydoc #swap(bitcompressed_vector & rhs)
     constexpr void swap(bitcompressed_vector && rhs) noexcept { std::swap(*this, rhs); }
 
     /*!\brief Swap contents with another instance.

@@ -134,7 +134,7 @@ public:
     }
 
 private:
-    //!\brief Implementation of #char_is_valid().
+    //!\brief Implementation of char_is_valid().
     static constexpr std::array<bool, 256> valid_char_table = []() constexpr
     {
         static_assert(sizeof(char_type) == 1, "This table is unusable for char types larger than 1 byte.");
