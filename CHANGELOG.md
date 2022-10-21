@@ -5,39 +5,52 @@
 This changelog contains a top-level entry for each release with sections on new features, API changes and notable
 bug-fixes (not all bug-fixes will be listed).
 
+# 0.7.0
+
+## API
+
+* This release is not yet API-stable.
+* This release is *mostly* backwards compatible with 0.6.0 (see changes above).
+
+
 # 0.6.0
 
-Summary: The alphabet module is almost *stable*. Several things in meta and ranges were cleaned up.
+Summary: The alphabet module is almost API-stable. Several things in meta and ranges were cleaned up.
 
-## Features
+## Added
 
-* Added `bio::meta::one_of`, `bio::meta::decays_to` and `bio::meta::different_from` concepts.
-* Added `bio::meta::vtag`, `bio::meta::ttag` and `bio::meta::priority_tag`.
-* Added `bio::ranges::back_insertable` and `bio::ranges::back_insertable_with` as light-weight "container" concepts.
-* Added `bio::views::char_strictly_to` and `bio::views::validate_char_for`; as well as `bio::views::char_conversion_view_t`.
-* Added `bio::views::transform_by_pos`, a more flexible version of `std::views::transform`.
-* Added `bio::views::add_reverse_complement` which turns a range of sequences into range of sequences with their reverse complements interleaved as every second element.
-* All alphabet literals (e.g. 'C'_dna4, "GATTACA"_dna4) are now strict and validated at compile-time. Character literals are `consteval`. This prevents bugs early on.
+* `bio::meta::one_of`, `bio::meta::decays_to` and `bio::meta::different_from` concepts.
+* `bio::meta::vtag`, `bio::meta::ttag` and `bio::meta::priority_tag`.
+* `bio::ranges::back_insertable` and `bio::ranges::back_insertable_with` as light-weight "container" concepts.
+* `bio::views::char_strictly_to` and `bio::views::validate_char_for`; as well as `bio::views::char_conversion_view_t`.
+* `bio::views::transform_by_pos`, a more flexible version of `std::views::transform`.
+* `bio::views::add_reverse_complement` which turns a range of sequences into range of sequences with their reverse complements interleaved as every second element.
 
-## Bug-fixes
+## Fixed
 
 * Some edge-cases with composite alphabets were fixed.
 * Many potential bugs and missed optimisations found by clang-tidy (and fixed).
 * `bio::ranges::dynamic_bitset` was not an `output_range<bool>` because of incomplete proxy types.
 
-## Misc changes
+## Maintained
 
-* rename `bio::alphabet::alphabet_*` to `bio::alphabet::*`, e.g. `bio::alphabet::alphabet_variant` to `bio::alphabet::variant`.
-* rename `bio::alphabet::cpo::` to `bio::alphabet::custom::`; rename `bio/alphabet/adaptation` to `bio/alphabet/custom` and move customisation tags to that folder.
+* `bio::views::translate*` have been redefined in terms of `bio::views::transform_by_pos` (much less code); `bio::views::translate_single` is now in `include/bio/ranges/views/translate_single.hpp`.
+* Cleaned up most of the concept mess in composite alphabets.
+* All alphabet literals (e.g. 'C'_dna4, "GATTACA"_dna4) are now strict and validated at compile-time. Character literals are `consteval`. This prevents bugs early on.
+
+## Renamed
+
+* `bio::alphabet::alphabet_*` to `bio::alphabet::*`, e.g. `bio::alphabet::alphabet_variant` to `bio::alphabet::variant`.
+* `bio::alphabet::cpo::` to `bio::alphabet::custom::`; rename `bio/alphabet/adaptation` to `bio/alphabet/custom` and move customisation tags to that folder.
+* `bio::ranges::views::to()` has been renamed to `bio::ranges::to()` to be in line with C++23.
+
+## Removed
+
 * `bio::alphabet::*_vector` aliases were removed; just use `std::vector<alphabet>` instead.
 * `bio::meta::*` several unused traits were removed.
 * `bio::ranges::pseudo_random_access_iterator` and `bio::ranges::pseudo_random_access_range` have been removed (because they are not used).
-* `bio::ranges::views::to()` has been renamed to `bio::ranges::to()` to be in line with C++23.
 * `bio::ranges::sequence` concept has been removed (because it is not used).
 * `bio::views::get` has been removed. Use `std::views::elements` instead (same functionality).
-* `bio::views::translate*` have been redefined in terms of `bio::views::transform_by_pos` (much less code); `bio::views::translate_single` is now in `include/bio/ranges/views/translate_single.hpp`.
-* Cleaned up most of the concept mess in composite alphabets.
-
 
 ## API
 
