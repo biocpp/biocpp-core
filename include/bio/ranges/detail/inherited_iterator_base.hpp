@@ -91,12 +91,21 @@ public:
     ~inherited_iterator_base() noexcept(std::is_nothrow_destructible_v<base_t>) = default; //!< Defaulted.
 
     //!\brief Delegate to base class if inheriting from non-pointer iterator.
-    constexpr inherited_iterator_base(base_t it) noexcept(std::is_nothrow_move_constructible_v<base_t>)
+    constexpr inherited_iterator_base(base_t && it) noexcept(std::is_nothrow_move_constructible_v<base_t>)
       //!\cond
       requires(!wrap_base)
       //!\endcond
       :
       base_t{std::move(it)}
+    {}
+
+    //!\brief Delegate to base class if inheriting from non-pointer iterator.
+    constexpr inherited_iterator_base(base_t const & it) noexcept(std::is_copy_constructible_v<base_t>)
+      //!\cond
+      requires(!wrap_base)
+      //!\endcond
+      :
+      base_t{it}
     {}
 
     //!\brief Initialise member if deriving from pointer.
@@ -114,13 +123,13 @@ public:
      */
 
     //!\brief Checks whether `*this` is equal to `rhs`.
-    constexpr bool operator==(derived_t const & rhs) const
-      noexcept(noexcept(std::declval<base_t &>() == std::declval<base_t &>()))
+    constexpr friend bool operator==(derived_t const & lhs, derived_t const & rhs) noexcept(
+      noexcept(std::declval<base_t &>() == std::declval<base_t &>()))
       //!\cond
       requires std::equality_comparable<base_t>
     //!\endcond
     {
-        return *this_to_base() == *rhs.this_to_base();
+        return *lhs.this_to_base() == *rhs.this_to_base();
     }
 
     //!\brief Checks whether `*this` is less than `rhs`.

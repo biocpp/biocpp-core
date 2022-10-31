@@ -68,7 +68,7 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 
 //!\brief See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96070 and https://github.com/seqan/product_backlog/issues/151
 #ifndef BIOCPP_WORKAROUND_GCC_96070 // fixed since gcc10.4
-#    if defined(__GNUC__) && (__GNUC__ == 10 && __GNUC_MINOR__ < 4)
+#    if (defined(__GNUC__) && (__GNUC__ == 10 && __GNUC_MINOR__ < 4)) || defined(__clang__)
 #        define BIOCPP_WORKAROUND_GCC_96070 1
 #    else
 #        define BIOCPP_WORKAROUND_GCC_96070 0

@@ -112,23 +112,15 @@ public:
      */
 
     //!\brief Checks whether `*this` is equal to `rhs`.
-    template <typename range_type2>
-        //!\cond
-        requires std::is_same_v<std::remove_const_t<range_type>, std::remove_const_t<range_type2>>
-    //!\endcond
-    constexpr bool operator==(random_access_iterator_base<range_type2, derived_t_template> const & rhs) const noexcept
+    constexpr friend bool operator==(derived_t const & lhs, derived_t const & rhs) noexcept
     {
-        return pos == rhs.pos;
+        return lhs.pos == rhs.pos;
     }
 
-    //!\brief Checks whether `*this` is less than `rhs`.
-    template <typename range_type2>
-        //!\cond
-        requires std::is_same_v<std::remove_const_t<range_type>, std::remove_const_t<range_type2>>
-    //!\endcond
-    constexpr auto operator<=>(random_access_iterator_base<range_type2, derived_t_template> const & rhs) const noexcept
+    //!\brief Checks whether `*this` is equal to `rhs`.
+    constexpr friend auto operator<=>(derived_t const & lhs, derived_t const & rhs) noexcept
     {
-        return pos <=> rhs.pos;
+        return lhs.pos <=> rhs.pos;
     }
     //!\}
 
