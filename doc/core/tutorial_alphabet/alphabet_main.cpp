@@ -76,7 +76,7 @@ int main ()
     assert(eq && neq && geq && gt && seq && st);
     assert(some_nucl == "AGT"_dna4);
 
-//! [gapped]
+//! [gapped]core/tutorial_alphabet/alphabet_gc_content_snippet
     // Assign a gap symbol to a gapped RNA alphabet.
     bio::alphabet::gapped<bio::alphabet::rna5> sym = bio::alphabet::gap{};                         // => -
 
