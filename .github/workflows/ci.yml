@@ -53,6 +53,13 @@ jobs:
             build: unit
             build_type: Debug
 
+          - name: "Unit Clang-16 Debug"
+            cxx: "clang++-16"
+            cc: "clang-16"
+            os: "ubuntu-22.04"
+            build: unit
+            build_type: Debug
+
           - name: "Integration gcc12"
             cxx: "g++-12"
             cc: "gcc-12"
@@ -85,11 +92,17 @@ jobs:
             cxx: "g++-10"
             cc: "gcc-10"
             build: snippet
-            build_type: Release
+            build_type: Debug
 
           - name: "Snippet gcc12"
             cxx: "g++-12"
             cc: "gcc-12"
+            build: snippet
+            build_type: Release
+
+          - name: "Snippet Clang-16"
+            cxx: "clang++-16"
+            cc: "clang-16"
             build: snippet
             build_type: Release
 
@@ -121,6 +134,13 @@ jobs:
           #path: biocpp-core/submodules/seqan
           #fetch-depth: 2
 
+      - name: Configure APT (llvm)
+        continue-on-error: true
+        if: matrix.cc == 'clang-16'
+        run: |
+          sudo apt-add-repository --no-update --yes "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy main"
+          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
+
       - name: Configure APT
         continue-on-error: true
         run: |
@@ -136,7 +156,12 @@ jobs:
         run: sudo apt-get install --yes ccache
 
       - name: Install compiler ${{ matrix.cxx }}
+        if: matrix.cc != 'clang-16'
         run: sudo apt-get install --yes ${{ matrix.cxx }}
+
+      - name: Install compiler ${{ matrix.cxx }}
+        if: matrix.cc == 'clang-16'
+        run: sudo apt-get install --yes g++-12 ${{ matrix.cc }}
 
       - name: Install documentation deps
         if: matrix.build == 'documentation'
