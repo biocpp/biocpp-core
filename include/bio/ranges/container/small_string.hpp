@@ -157,16 +157,30 @@ public:
         base_t::assign(begin_it, end_it);
         data_[sz] = '\0';
     }
+
+#ifdef __clang__
+    constexpr void assign(char const * const begin_it, char const * const end_it) noexcept
+    {
+        base_t::assign(begin_it, end_it);
+        data_[sz] = '\0';
+    }
+#endif
     //!\}
 
     /*!\name Capacity
      * \{
      */
     //!\brief Returns the maximal size which equals the capacity.
-    static constexpr size_type max_size() noexcept { return capacity_; }
+    static constexpr size_type max_size() noexcept
+    {
+        return capacity_;
+    }
 
     //!\brief Returns the maximal capacity.
-    static constexpr size_type capacity() noexcept { return capacity_; }
+    static constexpr size_type capacity() noexcept
+    {
+        return capacity_;
+    }
     //!\}
 
     /*!\name Modifiers
@@ -197,7 +211,10 @@ public:
     }
 
     //!\copydoc bio::ranges::small_vector::resize
-    constexpr void resize(size_type const count) noexcept { resize(count, '\0'); }
+    constexpr void resize(size_type const count) noexcept
+    {
+        resize(count, '\0');
+    }
 
     //!\copydoc bio::ranges::small_vector::resize
     //!\param[in] value Append copies of value when resizing.
@@ -282,7 +299,10 @@ public:
      *
      * Linear in the size of the string.
      */
-    std::string str() const { return std::string{this->cbegin(), this->cend()}; }
+    std::string str() const
+    {
+        return std::string{this->cbegin(), this->cend()};
+    }
 
     /*!\brief Returns the content represented as std::string_view.
      *
@@ -296,7 +316,10 @@ public:
      *
      * Constant.
      */
-    std::string_view view() const { return std::string_view{data_.data(), this->size()}; }
+    std::string_view view() const
+    {
+        return std::string_view{data_.data(), this->size()};
+    }
 
     /*!\brief Returns the content represented as 0-terminated c-style string.
      *
@@ -310,7 +333,10 @@ public:
      *
      * Constant.
      */
-    constexpr char const * c_str() const noexcept { return data_.data(); }
+    constexpr char const * c_str() const noexcept
+    {
+        return data_.data();
+    }
 
     /*!\brief Implicit conversion to std::string_view (same as calling bio::ranges::small_string::view() ).
      *
@@ -322,7 +348,10 @@ public:
      *
      * Constant.
      */
-    operator std::string_view() const { return view(); }
+    operator std::string_view() const
+    {
+        return view();
+    }
     //!\}
 
     /*!\name Input/output

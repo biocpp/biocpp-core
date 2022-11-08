@@ -3,28 +3,21 @@
 #include <string>    // std::string
 #include <vector>    // std::vector
 
-#include <sharg/all.hpp>
-
 #include <bio/alphabet/all.hpp>
 #include <bio/alphabet/fmt.hpp>
 #include <bio/ranges/views/all.hpp>       // optional: use views to convert the input string to a dna5 sequence
 
 using namespace bio::alphabet::literals;
 
+/* call with single argument: SEQUENCE  */
 int main (int argc, char * argv[])
 {
-    std::string input{};
-    sharg::argument_parser parser("GC-Content", argc, argv);
-    parser.add_positional_option(input, "Specify an input sequence.");
-    try
+    if (argc != 2)
     {
-        parser.parse();
-    }
-    catch (sharg::argument_parser_error const & ext) // the input is invalid
-    {
-        fmt::print(stderr, "[PARSER ERROR] {}\n", ext.what());
+        // add error handling here
         return 0;
     }
+    std::string input = argv[1];
 
     // Option1: Convert the input to a dna5 sequence by copy-conversion
     std::vector<bio::alphabet::dna5> sequence;

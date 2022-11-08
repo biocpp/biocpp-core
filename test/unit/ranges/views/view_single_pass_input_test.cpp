@@ -26,7 +26,7 @@ class single_pass_input : public ::testing::Test
         cmp_data = get_data();
     }
 
-    auto get_data()
+    static auto get_data()
     {
         if constexpr (std::is_same_v<std::remove_cv_t<rng_type>, std::vector<char>>)
         {
@@ -48,8 +48,8 @@ class single_pass_input : public ::testing::Test
     }
 
 public:
-    decltype(std::declval<single_pass_input>().get_data()) data;
-    decltype(std::declval<single_pass_input>().get_data()) cmp_data;
+    decltype(get_data()) data;
+    decltype(get_data()) cmp_data;
 };
 
 // add all <out_rng,in_rng> pairs here.

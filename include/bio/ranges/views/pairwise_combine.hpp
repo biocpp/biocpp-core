@@ -45,7 +45,7 @@ class pairwise_combine_view : public std::ranges::view_interface<pairwise_combin
 {
 private:
     //!\brief The forward declared iterator type for pairwise_combine_view.
-    template <typename range_type>
+    template <typename range_type2>
     class basic_iterator;
 
     /*!\name Associated types
@@ -220,9 +220,9 @@ public:
 
 private:
     //!\brief The underling range.
-    underlying_range_type                          u_range{};
+    underlying_range_type                          u_range;
     //!\brief The cached iterator pointing to the last element of the underlying range.
-    std::ranges::iterator_t<underlying_range_type> back_iterator{};
+    std::ranges::iterator_t<underlying_range_type> back_iterator;
 };
 
 /*!\name Type deduction guides
@@ -256,8 +256,7 @@ class pairwise_combine_view<underlying_range_type>::basic_iterator
 {
 private:
     //!\brief Friend declaration for iterator with different range const-ness.
-    template <typename other_range_type>
-        requires std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>
+    template <typename range_type2>
     friend class basic_iterator;
 
     //!\brief Alias type for the iterator over the passed range type.

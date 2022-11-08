@@ -155,9 +155,9 @@ public:
     constexpr auto begin() const noexcept requires const_iterable_range<urng_t>
     {
         if constexpr (std::ranges::random_access_range<urng_t> && (std::ranges::sized_range<urng_t> || exactly))
-            return std::ranges::cbegin(urange);
+            return std::ranges::begin(urange);
         else
-            return const_iterator{std::ranges::cbegin(urange), 0, target_size};
+            return const_iterator{std::ranges::begin(urange), 0, target_size};
     }
 
     /*!\brief Returns an iterator to the element following the last element of the range.
@@ -185,9 +185,9 @@ public:
     constexpr auto end() const noexcept requires const_iterable_range<urng_t>
     {
         if constexpr (std::ranges::random_access_range<urng_t> && (std::ranges::sized_range<urng_t> || exactly))
-            return std::ranges::cbegin(urange) + target_size;
+            return std::ranges::begin(urange) + target_size;
         else
-            return std::ranges::cend(urange);
+            return std::ranges::end(urange);
     }
     //!\}
 
@@ -371,14 +371,14 @@ public:
         return *base_t::this_to_base() == *rhs.this_to_base();
     }
 
-    //!\copydoc operator==()
-    constexpr bool operator==(sentinel_type const & rhs) const
-      noexcept(!or_throw && noexcept(std::declval<base_base_t const &>() == std::declval<sentinel_type const &>()))
+    //!\brief Checks whether `lhs` is equal to `rhs`.
+    constexpr friend bool operator==(basic_iterator const & lhs, sentinel_type const & rhs) noexcept(
+      !or_throw && noexcept(std::declval<base_base_t const &>() == std::declval<sentinel_type const &>()))
     {
-        if (pos >= max_pos)
+        if (lhs.pos >= lhs.max_pos)
             return true;
 
-        if (*base_t::this_to_base() == rhs)
+        if (static_cast<base_base_t>(lhs) == rhs)
         {
             if constexpr (or_throw)
                 throw std::runtime_error{"Reached end of input before designated size."};
@@ -389,13 +389,6 @@ public:
         {
             return false;
         }
-    }
-
-    //!\brief Checks whether `lhs` is equal to `rhs`.
-    constexpr friend bool operator==(sentinel_type const &  lhs,
-                                     basic_iterator const & rhs) noexcept(noexcept(rhs == lhs))
-    {
-        return rhs == lhs;
     }
     //!\}
 

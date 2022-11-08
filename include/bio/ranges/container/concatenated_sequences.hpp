@@ -953,12 +953,10 @@ public:
             data_delimiters[pos_as_num + 1 + i] += full_len;
         }
 
-        // adapt values of inserted region
-        auto placeholder = views::repeat_n(std::ranges::range_value_t<value_type>{}, full_len) | std::views::common;
         // insert placeholder so the tail is moved only once:
         data_values.insert(data_values.begin() + data_delimiters[pos_as_num],
-                           std::ranges::begin(placeholder),
-                           std::ranges::end(placeholder));
+                           full_len,
+                           std::ranges::range_value_t<value_type>{});
 
         // assign the actual values to the placeholder:
         size_t i = data_delimiters[pos_as_num];

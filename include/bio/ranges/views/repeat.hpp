@@ -234,14 +234,8 @@ public:
     /*!\name Comparison operators
      * \{
      */
-    //!\brief Inherit the equality comparison (same type) from base type.
-    using base_t::operator==;
-
     //!\brief Equality comparison to the sentinel always returns false on an infinite view.
-    constexpr bool operator==(std::default_sentinel_t const &) const noexcept { return false; }
-
-    //!\brief Equality comparison to the sentinel always returns false on an infinite view.
-    friend constexpr bool operator==(std::default_sentinel_t const &, basic_iterator const &) noexcept { return false; }
+    friend constexpr bool operator==(basic_iterator const &, std::default_sentinel_t const &) noexcept { return false; }
     //!\}
 };
 
