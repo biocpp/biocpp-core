@@ -42,17 +42,23 @@ endif ()
 
 list(REMOVE_DUPLICATES ${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS)
 
+set(QUIET_STRING "")
+if (${CMAKE_FIND_PACKAGE_NAME}_FIND_QUIETLY)
+    set(QUIET_STRING "QUIET")
+endif ()
+
+set(REQUIRED_STRING "")
+if (${CMAKE_FIND_PACKAGE_NAME}_FIND_REQUIRED)
+    set(REQUIRED_STRING "REQUIRED")
+endif ()
+
 # ----------------------------------------------------------------------------
 # Core library
 # ----------------------------------------------------------------------------
 
 if (EXISTS "${CMAKE_CURRENT_LIST_DIR}/${CMAKE_FIND_PACKAGE_NAME}_core-config-version.cmake" AND
     EXISTS "${CMAKE_CURRENT_LIST_DIR}/${CMAKE_FIND_PACKAGE_NAME}_core-config.cmake")
-    include("${CMAKE_CURRENT_LIST_DIR}/${CMAKE_FIND_PACKAGE_NAME}_core-config-version.cmake")
-    include("${CMAKE_CURRENT_LIST_DIR}/${CMAKE_FIND_PACKAGE_NAME}_core-config.cmake")
-    if (NOT ${CMAKE_FIND_PACKAGE_NAME}_FIND_QUIETLY)
-        message (STATUS "${ColourBold}Core library loaded.${ColourReset}")
-    endif ()
+    find_package(biocpp_core ${QUIET_STRING} ${REQUIRED_STRING} HINTS ${CMAKE_CURRENT_LIST_DIR})
 else ()
     set(${CMAKE_FIND_PACKAGE_NAME}_FOUND False)
     set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE "Core library not found.")
@@ -65,6 +71,7 @@ list(REMOVE_ITEM ${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS "core")
 # I/O library
 # ----------------------------------------------------------------------------
 
+# TODO make a loop out of this once we have more optional pkgs
 set (_comp "io")
 if (_comp IN_LIST ${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS)
     set (COMP_PATH "")
@@ -82,8 +89,7 @@ if (_comp IN_LIST ${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS)
         set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE "ERROR: library '${_comp}' requested, but not found.")
         return()
     else ()
-        include("${COMP_PATH}/${CMAKE_FIND_PACKAGE_NAME}_${_comp}-config-version.cmake")
-        include("${COMP_PATH}/${CMAKE_FIND_PACKAGE_NAME}_${_comp}-config.cmake")
+        find_package(biocpp_${_comp} ${QUIET_STRING} ${REQUIRED_STRING} HINTS ${COMP_PATH})
     endif ()
     list(REMOVE_ITEM ${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS ${_comp})
 endif ()
@@ -96,4 +102,12 @@ if (${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS)
     set(${CMAKE_FIND_PACKAGE_NAME}_FOUND False)
     set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE "ERROR: the following requested library(s) are unknown: ${${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS} ")
     return()
+endif ()
+
+# ----------------------------------------------------------------------------
+# end
+# ----------------------------------------------------------------------------
+
+if (NOT ${CMAKE_FIND_PACKAGE_NAME}_FIND_QUIETLY)
+    message (STATUS "${ColourBold}All requested BioC++ libraries loaded.${ColourReset}")
 endif ()
