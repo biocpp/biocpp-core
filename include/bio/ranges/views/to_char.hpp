@@ -16,7 +16,11 @@
 #include <ranges>
 
 #include <bio/alphabet/concept.hpp>
+#include <bio/alphabet/custom/all.hpp>
+#include <bio/meta/overloaded.hpp>
+#include <bio/ranges/type_traits.hpp>
 #include <bio/ranges/views/deep.hpp>
+#include <bio/ranges/views/type_reduce.hpp>
 
 namespace bio::ranges::views
 {
@@ -47,30 +51,51 @@ namespace bio::ranges::views
  * | std::ranges::forward_range       |                                       | *preserved*                                                   |
  * | std::ranges::bidirectional_range |                                       | *preserved*                                                   |
  * | std::ranges::random_access_range |                                       | *preserved*                                                   |
- * | std::ranges::contiguous_range    |                                       | *lost*                                                        |
+ * | std::ranges::contiguous_range    |                                       | *lost*¹                                                       |
  * |                                  |                                       |                                                               |
  * | std::ranges::viewable_range      | *required*                            | *guaranteed*                                                  |
  * | std::ranges::view                |                                       | *guaranteed*                                                  |
  * | std::ranges::sized_range         |                                       | *preserved*                                                   |
  * | std::ranges::common_range        |                                       | *preserved*                                                   |
- * | std::ranges::output_range        |                                       | *lost*                                                        |
- * | bio::ranges::const_iterable_range     |                                       | *preserved*                                                   |
+ * | std::ranges::output_range        |                                       | *lost*¹                                                       |
+ * | bio::ranges::const_iterable_range|                                       | *preserved*                                                   |
  * |                                  |                                       |                                                               |
- * | std::ranges::range_reference_t   | bio::alphabet::alphabet                      | bio::alphabet::char_t<std::ranges::range_value_t<urng_t>>   |
+ * | std::ranges::range_reference_t   | bio::alphabet::alphabet               | bio::alphabet::char_t<std::ranges::range_value_t<urng_t>>     |
+ *
+ * ¹ See exceptions below.
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
+ *
+ * ### Special cases
+ *
+ * **Strings:** ¹ If range is given whose value_type is the same it's alphabet type (e.g. std::string), a simple view to the range
+ * is returned and no transformation happens. In that case, both, contiguous-ness and writeability are preserved.
+ * Thus, there is no overhead when applying this adaptor to strings or string_views.
  *
  * ### Example
  * \include test/snippet/ranges/views/range_view_to_char.cpp
  * \hideinitializer
  */
-inline auto const to_char = deep{std::views::transform(
-  [](auto const in) noexcept
-  {
-      static_assert(alphabet::alphabet<std::remove_cvref_t<decltype(in)>>,
-                    "The value type of bio::views::to_char must model the bio::alphabet::alphabet.");
-      return alphabet::to_char(in);
-  })};
+inline auto const to_char = detail::adaptor_from_functor{meta::overloaded{
+  // clang-format off
+    []<std::ranges::input_range rng_t>(rng_t && range)
+        requires(alphabet::alphabet<ranges::range_innermost_value_t<rng_t>> &&
+                 std::same_as<ranges::range_innermost_value_t<rng_t>,
+                              alphabet::char_t<ranges::range_innermost_value_t<rng_t>>>)
+    {
+        return std::forward<rng_t>(range) | views::type_reduce; // NOP
+    },
+    []<std::ranges::input_range rng_t>(rng_t && range)
+        requires(alphabet::alphabet<ranges::range_innermost_value_t<rng_t>>)
+    {
+        return std::forward<rng_t>(range) | deep{std::views::transform(alphabet::to_char)};
+    },
+    []<typename rng_t>(rng_t &&)
+    {
+        static_assert(meta::always_false<rng_t>,
+                      "bio::views::to_char can only be invoked with ranges over an alphabet.");
+    }}};
+// clang-format on
 
 //!\}
 

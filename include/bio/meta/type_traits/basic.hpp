@@ -54,6 +54,14 @@ using ignore_t = std::remove_cvref_t<decltype(std::ignore)>;
 template <typename t>
 inline constexpr bool decays_to_ignore_v = std::is_same_v<std::remove_cvref_t<t>, ignore_t>;
 
+// ----------------------------------------------------------------------------
+// always_false
+// ----------------------------------------------------------------------------
+
+//!\brief A trait that is always false. Can be used for `static_assert(false)`. DO NOT SPECIALISE!
+template <typename... t>
+inline constexpr bool always_false = false;
+
 //!\}
 
 } // namespace bio::meta

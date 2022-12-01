@@ -7,6 +7,10 @@ bug-fixes (not all bug-fixes will be listed).
 
 # 0.7.0
 
+## Fixed
+
+* `bio::views::to_char`, `bio::views::char_to<>` and `bio::views::char_strictly_to<>` are now "no-op" views if no transformation needs to happen (e.g. when input *and* output alphabet would be `char`).
+
 ## Renamed
 
 * `bio::alphabet::nucleotide_alphabet` → `bio::alphabet::nucleotide` (same for `aminoacid_alphabet`, `quality_alphabet` and `writable_quality_alphabet`).

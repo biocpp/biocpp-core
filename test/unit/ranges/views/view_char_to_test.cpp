@@ -54,6 +54,16 @@ TEST(view_char_to, deep_view)
     EXPECT_RANGE_EQ(v[1], "TGCAT"_dna5);
 }
 
+TEST(view_char_to, preserve_string)
+{
+    std::string const s{"ACTTTGATA"};
+
+    auto v = s | bio::ranges::views::char_to<char>;
+
+    EXPECT_EQ(v, s);
+    EXPECT_TRUE((std::same_as<decltype(v), std::string_view>));
+}
+
 TEST(view_char_to, concepts)
 {
     std::string vec{"ACTTTGATA"};
@@ -61,6 +71,7 @@ TEST(view_char_to, concepts)
     EXPECT_TRUE(std::ranges::forward_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::random_access_range<decltype(vec)>);
+    EXPECT_TRUE(std::ranges::contiguous_range<decltype(vec)>);
     EXPECT_FALSE(std::ranges::view<decltype(vec)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(vec)>);
@@ -72,10 +83,32 @@ TEST(view_char_to, concepts)
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::random_access_range<decltype(v1)>);
+    EXPECT_FALSE(std::ranges::contiguous_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::view<decltype(v1)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::common_range<decltype(v1)>);
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(v1)>);
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), bio::alphabet::dna5>));
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), char>));
+
+    auto v2 = vec | bio::ranges::views::char_to<char>;
+    EXPECT_TRUE(std::ranges::input_range<decltype(v2)>);
+    EXPECT_TRUE(std::ranges::forward_range<decltype(v2)>);
+    EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v2)>);
+    EXPECT_TRUE(std::ranges::random_access_range<decltype(v2)>);
+    EXPECT_TRUE(std::ranges::contiguous_range<decltype(v2)>);
+    EXPECT_TRUE(std::ranges::view<decltype(v2)>);
+    EXPECT_TRUE(std::ranges::sized_range<decltype(v2)>);
+    EXPECT_TRUE(std::ranges::common_range<decltype(v2)>);
+    EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(v2)>);
+    EXPECT_FALSE((std::ranges::output_range<decltype(v2), bio::alphabet::dna5>));
+    EXPECT_TRUE((std::ranges::output_range<decltype(v2), char>));
+}
+
+TEST(view_char_to, exception)
+{
+    std::string foo = "ACGPTA";
+
+    auto v = foo | bio::ranges::views::char_to<bio::alphabet::dna5>;
+    EXPECT_NO_THROW((std::ranges::equal(v, "ACGNTA"_dna5)));
 }
