@@ -50,7 +50,7 @@ class rna15;
  *
  * No-throw guarantee.
  */
-template <genetic_code gc = genetic_code::CANONICAL, nucleotide_alphabet nucl_type>
+template <genetic_code gc = genetic_code::CANONICAL, nucleotide nucl_type>
 constexpr aa27 translate_triplet(nucl_type const & n1, nucl_type const & n2, nucl_type const & n3) noexcept
 {
     if constexpr (meta::one_of<nucl_type, dna4, dna5, dna15>)

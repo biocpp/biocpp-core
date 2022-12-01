@@ -14,7 +14,7 @@ class my_iterator : public bio::ranges::detail::inherited_iterator_base<my_itera
                                                                 std::ranges::iterator_t<urng_t>>
 {
 private:
-    static_assert(bio::alphabet::nucleotide_alphabet<std::ranges::range_reference_t<urng_t>>,
+    static_assert(bio::alphabet::nucleotide<std::ranges::range_reference_t<urng_t>>,
                   "You can only iterate over ranges of nucleotides!");
 
     // the immediate base type is the CRTP-layer

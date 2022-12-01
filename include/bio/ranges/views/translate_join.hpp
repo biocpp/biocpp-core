@@ -67,10 +67,9 @@ struct translate_join_fn
         static_assert(std::ranges::random_access_range<std::ranges::range_reference_t<urng_t>>,
                       "The inner range of the range parameter to views::translate_join must model "
                       "std::ranges::random_access_range.");
-        static_assert(
-          alphabet::nucleotide_alphabet<std::ranges::range_reference_t<std::ranges::range_reference_t<urng_t>>>,
-          "The range parameter to views::translate_join must be over a range over elements of "
-          "bio::alphabet::nucleotide_alphabet.");
+        static_assert(alphabet::nucleotide<std::ranges::range_reference_t<std::ranges::range_reference_t<urng_t>>>,
+                      "The range parameter to views::translate_join must be over a range over elements of "
+                      "bio::alphabet::nucleotide.");
 
         /* frames */
         small_vector<alphabet::translation_frames, 6> selected_frames{};
@@ -185,7 +184,7 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *lost*                                             |
  * | bio::ranges::const_iterable_range     | *required*                            | *preserved*                                        |
  * |                                  |                                       |                                                    |
- * | std::ranges::range_reference_t   | bio::alphabet::nucleotide_alphabet            | std::ranges::view && std::ranges::random_access_range && std::ranges::sized_range |
+ * | std::ranges::range_reference_t   | bio::alphabet::nucleotide            | std::ranges::view && std::ranges::random_access_range && std::ranges::sized_range |
  *
  * * `urng_t` is the type of the range modified by this view (input).
  * * `rrng_t` is the type of the range returned by this view.

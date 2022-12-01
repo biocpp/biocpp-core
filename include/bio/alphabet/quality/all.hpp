@@ -71,11 +71,11 @@
  *
  * ### Concept
  *
- * The quality submodule defines the bio::alphabet::writable_quality_alphabet which encompasses
+ * The quality submodule defines the bio::alphabet::writable_quality which encompasses
  * all the alphabets, defined in the submodule, and refines the
  * bio::alphabet::writable_alphabet by providing Phred score assignment and conversion
  * operations.
- * Additionally, this submodule defines the bio::alphabet::quality_alphabet, which only requires
+ * Additionally, this submodule defines the bio::alphabet::quality, which only requires
  * readablity and not assignability.
  *
  * ### Assignment and Conversion

@@ -42,7 +42,7 @@ namespace bio::alphabet
  * details.
  *
  * This class ensures that the proxy itself also models bio::alphabet::semialphabet, bio::alphabet::alphabet,
- * bio::alphabet::quality_alphabet, bio::alphabet::nucleotide_alphabet and/or bio::alphabet::aminoacid_alphabet if the emulated type models
+ * bio::alphabet::quality, bio::alphabet::nucleotide and/or bio::alphabet::aminoacid if the emulated type models
  * these. This makes sure that function templates which accept the original, also accept the proxy.
  *
  * ### Implementation notes
@@ -160,7 +160,7 @@ public:
     //!\copydoc bio::alphabet::quality_base::assign_phred
     constexpr derived_type & assign_phred(phred_type const c) noexcept
       //!\cond
-      requires writable_quality_alphabet<alphabet_type>
+      requires writable_quality<alphabet_type>
     //!\endcond
     {
         alphabet_type tmp;
@@ -171,7 +171,7 @@ public:
     //!\copydoc bio::alphabet::quality_base::assign_phred
     constexpr derived_type const & assign_phred(phred_type const c) const noexcept
       //!\cond
-      requires writable_quality_alphabet<alphabet_type>
+      requires writable_quality<alphabet_type>
     //!\endcond
     {
         alphabet_type tmp;
@@ -223,7 +223,7 @@ public:
     //!\copydoc bio::alphabet::quality_base::to_phred
     constexpr auto to_phred() const noexcept
       //!\cond
-      requires quality_alphabet<alphabet_type>
+      requires quality<alphabet_type>
     //!\endcond
     {
         return bio::alphabet::to_phred(operator alphabet_type());
@@ -232,7 +232,7 @@ public:
     //!\copydoc bio::alphabet::nucleotide_base::complement
     constexpr alphabet_type complement() const noexcept
       //!\cond
-      requires nucleotide_alphabet<alphabet_type>
+      requires nucleotide<alphabet_type>
     //!\endcond
     {
         return bio::alphabet::complement(operator alphabet_type());

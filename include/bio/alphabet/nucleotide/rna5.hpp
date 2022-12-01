@@ -27,7 +27,7 @@ namespace bio::alphabet
 
 /*!\brief The five letter RNA alphabet of A,C,G,U and the unknown character N.
  * \ingroup nucleotide
- * \implements bio::alphabet::nucleotide_alphabet
+ * \implements bio::alphabet::nucleotide
  * \implements bio::alphabet::writable_alphabet
  * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable

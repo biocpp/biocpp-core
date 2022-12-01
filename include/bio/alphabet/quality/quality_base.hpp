@@ -72,7 +72,7 @@ public:
     //!\brief Allow explicit construction from any other quality type by means of the phred representation.
     template <meta::different_from<derived_type> other_qual_type>
         //!\cond
-        requires quality_alphabet<other_qual_type>
+        requires quality<other_qual_type>
     //!\endcond
     explicit constexpr quality_base(other_qual_type const & other) noexcept
     {
@@ -95,7 +95,7 @@ public:
      *
      * \details
      *
-     * Satisfies the bio::alphabet::writable_quality_alphabet::assign_phred() requirement via the bio::alphabet::assign_rank() wrapper.
+     * Satisfies the bio::alphabet::writable_quality::assign_phred() requirement via the bio::alphabet::assign_rank() wrapper.
      *
      * ### Complexity
      *

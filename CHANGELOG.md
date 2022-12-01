@@ -7,6 +7,10 @@ bug-fixes (not all bug-fixes will be listed).
 
 # 0.7.0
 
+## Renamed
+
+* `bio::alphabet::nucleotide_alphabet` → `bio::alphabet::nucleotide` (same for `aminoacid_alphabet`, `quality_alphabet` and `writable_quality_alphabet`).
+
 ## API
 
 * This release is not yet API-stable.

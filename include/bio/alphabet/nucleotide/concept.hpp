@@ -9,7 +9,7 @@
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  * \author Jörg Winkler <j.winkler AT fu-berlin.de>
- * \brief Provides bio::alphabet::nucleotide_alphabet.
+ * \brief Provides bio::alphabet::nucleotide.
  */
 
 #pragma once
@@ -82,17 +82,17 @@ inline constexpr auto complement = []<typename alph_t>(alph_t const a)
 //!\}
 
 // ============================================================================
-// nucleotide_alphabet concept
+// nucleotide concept
 // ============================================================================
 
-/*!\interface bio::alphabet::nucleotide_alphabet <>
+/*!\interface bio::alphabet::nucleotide <>
  * \extends bio::alphabet::alphabet
  * \brief A concept that indicates whether an alphabet represents nucleotides.
  * \ingroup nucleotide
  *
  * \details
  *
- * In addition to the requirements for bio::alphabet::alphabet, the nucleotide_alphabet introduces
+ * In addition to the requirements for bio::alphabet::alphabet, the nucleotide concept introduces
  * a requirement for a complement function: bio::alphabet::complement.
  *
  * ### Requirements
@@ -104,7 +104,7 @@ inline constexpr auto complement = []<typename alph_t>(alph_t const a)
  *
  * ### Related types
  *
- * If a given type `t` models this concept, the following types typically do so, as well:
+ * If an object type `t` models this concept, the following types typically do so, as well:
  *
  *   * `t &`
  *   * `t const`
@@ -112,7 +112,7 @@ inline constexpr auto complement = []<typename alph_t>(alph_t const a)
  */
 //!\cond
 template <typename t>
-concept nucleotide_alphabet = alphabet<t> && requires(t val)
+concept nucleotide = alphabet<t> && requires(t val)
 {
     {bio::alphabet::complement(val)};
 };

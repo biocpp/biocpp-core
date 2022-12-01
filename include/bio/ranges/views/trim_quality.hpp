@@ -32,7 +32,7 @@ struct trim_fn
     template <typename threshold_t>
     constexpr auto operator()(threshold_t const threshold) const
     {
-        static_assert(alphabet::quality_alphabet<threshold_t> || std::integral<threshold_t>,
+        static_assert(alphabet::quality<threshold_t> || std::integral<threshold_t>,
                       "The threshold must either be a quality alphabet or an integral type "
                       "in which case it is compared with the underlying phred type.");
 
@@ -47,8 +47,8 @@ struct trim_fn
     template <std::ranges::input_range irng_t, typename threshold_t>
     constexpr auto operator()(irng_t && irange, threshold_t const threshold) const
     {
-        static_assert(alphabet::quality_alphabet<std::ranges::range_reference_t<irng_t>>,
-                      "views::trim_quality can only operate on ranges over bio::alphabet::quality_alphabet.");
+        static_assert(alphabet::quality<std::ranges::range_reference_t<irng_t>>,
+                      "views::trim_quality can only operate on ranges over bio::alphabet::quality.");
         static_assert(
           std::same_as<std::remove_cvref_t<threshold_t>, std::remove_cvref_t<std::ranges::range_reference_t<irng_t>>> ||
             std::integral<std::remove_cvref_t<threshold_t>>,
@@ -82,7 +82,7 @@ namespace bio::ranges::views
  * \{
  */
 
-/*!\brief               A view that does quality-threshold trimming on a range of bio::alphabet::quality_alphabet.
+/*!\brief               A view that does quality-threshold trimming on a range of bio::alphabet::quality.
  * \tparam urng_t       The type of the range being processed. See below for requirements.
  * \tparam threshold_t  Either std::ranges::range_value_t<urng_t> or
  *                      bio::alphabet::phred_t<std::ranges::range_value_t<urng_t>>.
@@ -115,7 +115,7 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *preserved*                            |
  * | bio::ranges::const_iterable_range     |                                       | *preserved*                            |
  * |                                  |                                       |                                        |
- * | std::ranges::range_reference_t   | bio::alphabet::quality_alphabet              | std::ranges::range_reference_t<urng_t> |
+ * | std::ranges::range_reference_t   | bio::alphabet::quality              | std::ranges::range_reference_t<urng_t> |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *

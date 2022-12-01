@@ -29,7 +29,7 @@ namespace bio::alphabet
  */
 
 /*!\brief The public getter function for the phred representation of a quality score.
- * \tparam your_type The type of alphabet. Must model the bio::alphabet::quality_alphabet.
+ * \tparam your_type The type of alphabet. Must model the bio::alphabet::quality.
  * \param  chr       The quality value to convert into the phred score.
  * \returns the phred representation of a quality score.
  * \ingroup quality
@@ -94,7 +94,7 @@ using phred_t = decltype(bio::alphabet::to_phred(std::declval<alphabet_type>()))
  */
 
 /*!\brief Assign a phred score to a quality alphabet object.
- * \tparam alph_type The type of the target object. Must model the bio::alphabet::quality_alphabet.
+ * \tparam alph_type The type of the target object. Must model the bio::alphabet::quality.
  * \param  phr       The phred score being assigned; must be of the bio::alphabet::phred_t of the target object.
  * \returns Reference to `alph` if `alph` was given as lvalue, otherwise a copy.
  * \ingroup quality
@@ -141,10 +141,10 @@ inline constexpr auto assign_phred_to = []<typename alph_t>(bio::alphabet::phred
 //!\}
 
 // ============================================================================
-// bio::alphabet::quality_alphabet
+// bio::alphabet::quality
 // ============================================================================
 
-/*!\interface bio::alphabet::quality_alphabet <>
+/*!\interface bio::alphabet::quality <>
  * \extends bio::alphabet::alphabet
  * \brief A concept that indicates whether an alphabet represents quality scores.
  * \ingroup quality
@@ -152,7 +152,7 @@ inline constexpr auto assign_phred_to = []<typename alph_t>(bio::alphabet::phred
  * \details
  *
  * In addition to the requirements for bio::alphabet::alphabet, the
- * quality_alphabet introduces a requirement for conversion functions from and to
+ * quality concept introduces a requirement for conversion functions from and to
  * a Phred score.
  *
  * ### Requirements
@@ -164,7 +164,7 @@ inline constexpr auto assign_phred_to = []<typename alph_t>(bio::alphabet::phred
  *
  * ### Related types
  *
- * If a given type `t` models this concept, the following types typically do so, as well:
+ * If an object type `t` models this concept, the following types typically do so, as well:
  *
  *   * `t &`
  *   * `t const`
@@ -172,38 +172,38 @@ inline constexpr auto assign_phred_to = []<typename alph_t>(bio::alphabet::phred
  */
 //!\cond
 template <typename t>
-concept quality_alphabet = alphabet<t> && requires(t qual)
+concept quality = alphabet<t> && requires(t qual)
 {
     {bio::alphabet::to_phred(qual)};
 };
 //!\endcond
 
 // ============================================================================
-// bio::alphabet::writable_quality_alphabet
+// bio::alphabet::writable_quality
 // ============================================================================
 
-/*!\interface bio::alphabet::writable_quality_alphabet <>
+/*!\interface bio::alphabet::writable_quality <>
  * \extends bio::alphabet::alphabet
- * \extends bio::alphabet::quality_alphabet
+ * \extends bio::alphabet::quality
  * \brief A concept that indicates whether a writable alphabet represents quality scores.
  * \ingroup quality
  *
  * \details
  *
- * In addition to the requirements for bio::alphabet::writable_alphabet, the bio::alphabet::writable_quality_alphabet
- * introduces the requirements of bio::alphabet::quality_alphabet.
+ * In addition to the requirements for bio::alphabet::writable_alphabet, the writable_quality concept
+ * introduces the requirements of bio::alphabet::quality.
  *
  * ### Requirements
  *
  *   1. `t` shall model bio::alphabet::writable_alphabet
- *   2. `t` shall model bio::alphabet::quality_alphabet
+ *   2. `t` shall model bio::alphabet::quality
  *   3. bio::alphabet::assign_phred_to needs to be defined for objects of type `t`
  *
  * See the documentation pages for the respective requirements.
  *
  * ### Related types
  *
- * If a given type `t` models this concept, the following types typically do so, as well:
+ * If an object type `t` models this concept, the following types typically do so, as well:
  *
  *   * `t &`
  *
@@ -211,7 +211,7 @@ concept quality_alphabet = alphabet<t> && requires(t qual)
  */
 //!\cond
 template <typename t>
-concept writable_quality_alphabet = writable_alphabet<t> && quality_alphabet<t> && requires(t v, phred_t<t> c)
+concept writable_quality = writable_alphabet<t> && quality<t> && requires(t v, phred_t<t> c)
 {
     {bio::alphabet::assign_phred_to(c, v)};
 };

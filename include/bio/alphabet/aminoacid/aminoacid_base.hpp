@@ -66,7 +66,7 @@ public:
     //!\brief Allow explicit construction from any other aminoacid type and convert via the character representation.
     template <meta::different_from<derived_type> other_aa_type>
         //!\cond
-        requires aminoacid_alphabet<other_aa_type>
+        requires aminoacid<other_aa_type>
     //!\endcond
     explicit constexpr aminoacid_base(other_aa_type const other) noexcept
     {

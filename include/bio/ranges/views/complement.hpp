@@ -36,7 +36,7 @@ namespace bio::ranges::views
  *
  * \header_file{bio/ranges/views/complement.hpp}
  *
- * Calls bio::alphabet::nucleotide_alphabet::complement() on every element of the input range.
+ * Calls bio::alphabet::nucleotide::complement() on every element of the input range.
  *
  * ### View properties
  *
@@ -58,7 +58,7 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *lost*                                                          |
  * | bio::ranges::const_iterable_range     |                                       | *preserved*                                                     |
  * |                                  |                                       |                                                                 |
- * | std::ranges::range_reference_t   | bio::alphabet::nucleotide_alphabet           | std::remove_reference_t<std::ranges::range_reference_t<urng_t>> |
+ * | std::ranges::range_reference_t   | bio::alphabet::nucleotide           | std::remove_reference_t<std::ranges::range_reference_t<urng_t>> |
  *
  * See the \link views views submodule documentation \endlink for detailed descriptions of the view properties.
  *
@@ -71,9 +71,9 @@ namespace bio::ranges::views
 inline auto const complement = deep{std::views::transform(
   [](auto const in)
   {
-      static_assert(alphabet::nucleotide_alphabet<decltype(in)>,
-                    "The innermost value type must satisfy the alphabet::nucleotide_alphabet.");
-      // call element-wise complement from the nucleotide_alphabet
+      static_assert(alphabet::nucleotide<decltype(in)>,
+                    "The innermost value type must satisfy the alphabet::nucleotide.");
+      // call element-wise complement from the nucleotide
       return bio::alphabet::complement(in);
   })};
 

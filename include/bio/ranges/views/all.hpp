@@ -153,7 +153,7 @@
  * (since dereferencing an iterator or calling operator[] returns the reference type). The reference type may or may
  * not actually contain a `&` (see below). For many BioC++ specific views additional concept requirements are defined
  * for the input range's reference type, e.g. bio::views::complement can only operate on ranges whose elements are
- * nucleotides (meet bio::alphabet::nucleotide_alphabet_check). In some case the type may even be a specific type or the result
+ * nucleotides (meet bio::alphabet::nucleotide_check). In some case the type may even be a specific type or the result
  * of a type trait.
  *
  * **Returned range's reference type:** Conversely certain views make guarantees on the concepts satisfied by the

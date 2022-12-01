@@ -9,7 +9,7 @@
 /*!\file
  * \author Hannes Hauswedell <hannes.hauswedell AT decode.is>
  * \author Joshua Kim <joshua.kim AT fu-berlin.de>
- * \brief Provides bio::alphabet::aminoacid_alphabet.
+ * \brief Provides bio::alphabet::aminoacid.
  */
 
 #pragma once
@@ -26,7 +26,7 @@
 namespace bio::alphabet
 {
 
-/*!\brief This is an empty base class that can be inherited by types that shall model bio::alphabet::aminoacid_alphabet.
+/*!\brief This is an empty base class that can be inherited by types that shall model bio::alphabet::aminoacid.
  * \ingroup aminoacid
  * \see bio::alphabet::enable_aminoacid
  */
@@ -42,14 +42,14 @@ struct aminoacid_empty_base
 namespace bio::alphabet::custom
 {
 
-/*!\brief A trait that indicates whether a type shall model bio::alphabet::aminoacid_alphabet.
+/*!\brief A trait that indicates whether a type shall model bio::alphabet::aminoacid.
  * \tparam t Type of the argument.
  * \ingroup aminoacid
  * \details
  *
- * This is an auxiliary trait that is checked by bio::alphabet::aminoacid_alphabet to verify that a type is an amino acid.
- * This trait should never be read from, instead use bio::alphabet::aminoacid_alphabet.
- * However, user-defined alphabets that want to model bio::alphabet::aminoacid_alphabet need to specialise it.
+ * This is an auxiliary trait that is checked by bio::alphabet::aminoacid to verify that a type is an amino acid.
+ * This trait should never be read from, instead use bio::alphabet::aminoacid.
+ * However, user-defined alphabets that want to model bio::alphabet::aminoacid need to specialise it.
  *
  * ### Customisation point
  *
@@ -78,22 +78,25 @@ namespace bio::alphabet
 // concept
 // ============================================================================
 
-/*!\interface bio::alphabet::aminoacid_alphabet <>
+/*!\interface bio::alphabet::aminoacid <>
  * \extends bio::alphabet::alphabet
  * \brief A concept that indicates whether an alphabet represents amino acids.
  * \ingroup aminoacid
  *
  * Since an amino acid alphabet has no specific characteristics (like the complement
  * function for nucleotide alphabets), we distinguish an amino acid alphabet by
- * the bio::alphabet::is_aminoacid type trait.
+ * an extra trait.
  *
- * ### Concepts and doxygen
- * The requirements for this concept are given as related functions and type traits.
- * Types that satisfy this concept are shown as "implementing this interface".
+ * ### Requirements
+ *
+ *   1. `t` shall model bio::alphabet::alphabet
+ *   2. bio::alphabet::custom::enable_aminoacid<t> needs to evalute to true.
+ *
+ * See the documentation pages for the respective requirements.
  */
 //!\cond
 template <typename type>
-concept aminoacid_alphabet = alphabet<type> && custom::enable_aminoacid<std::remove_cvref_t<type>>;
+concept aminoacid = alphabet<type> && custom::enable_aminoacid<std::remove_cvref_t<type>>;
 //!\endcond
 
 } // namespace bio::alphabet
