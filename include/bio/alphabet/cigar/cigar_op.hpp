@@ -22,7 +22,7 @@
 namespace bio::alphabet
 {
 
-/*!\brief The (extended) cigar operation alphabet of M,D,I,H,N,P,S,X,=.
+/*!\brief The cigar operation alphabet.
  * \ingroup cigar
  * \implements bio::alphabet::writable_alphabet
  * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
@@ -32,29 +32,34 @@ namespace bio::alphabet
  *
  * \details
  *
- * The CIGAR string can be either basic or extended. The only difference in the
- * extended cigar alphabet is that aligned bases are classified as an actual
- * match ('=') or mismatch ('X'). In contrast, the basic cigar alphabet
- * only indicated the aligned status with an 'M', without further
- * information if the bases are actually equal or not.
- *
  * The main purpose of the bio::alphabet::cigar_op alphabet is to be used in the
  * bio::alphabet::cigar composition, where a cigar operation is paired with a count
  * value.
  *
- * Example usage:
- * \include test/snippet/alphabet/cigar/cigar_op.cpp
+ * | Op | Rank |Description                                             | Consumes query    | Consumes reference    |
+ * |:--:|:----:|:-------------------------------------------------------|:-----------------:|:---------------------:|
+ * | M  | 0    | alignment match (can be a sequence match or mismatch)  | yes               | yes                   |
+ * | I  | 1    | insertion to the reference                             | yes               | no                    |
+ * | D  | 2    | deletion from the reference                            | no                | yes                   |
+ * | N  | 3    | skipped region from the reference                      | no                | yes                   |
+ * | S  | 4    | soft clipping (clipped sequences present in SEQ)       | yes               | no                    |
+ * | H  | 5    | hard clipping (clipped sequences NOT present in SEQ)   | no                | no                    |
+ * | P  | 6    | padding (silent deletion from padded reference)        | no                | no                    |
+ * | =  | 7    | sequence match                                         | yes               | yes                   |
+ * | X  | 8    | sequence mismatch                                      | yes               | yes                   |
+ * | B  | 9    | ?                                                      | ?                 | ?                     |
  *
- * \note Usually you do not want to manipulate cigar elements and vectors on
- *       your own but convert an alignment to a cigar and back. See
- *       bio::meta::get_cigar_vector for how to convert two aligned sequences into
- *       a cigar_vector.
+ * This table is reproduced from the SAM standard. The B operation is used internally and not documented.
+ *
+ * ### Example
+ *
+ * \include test/snippet/alphabet/cigar/cigar_op.cpp
  */
-class cigar_op : public base<cigar_op, 9, char>
+class cigar_op : public base<cigar_op, 10, char>
 {
 private:
     //!\brief The base class.
-    using base_t = base<cigar_op, 9, char>;
+    using base_t = base<cigar_op, 10, char>;
 
     //!\cond \brief Befriend bio::alphabet::base.
     friend base_t;
@@ -76,7 +81,8 @@ protected:
     //!\privatesection
 
     //!\brief Value to char conversion table.
-    static constexpr std::array<char_type, alphabet_size> rank_to_char{'M', 'D', 'I', 'S', 'H', 'N', 'P', 'X', '='};
+    static constexpr std::array<char_type, alphabet_size>
+      rank_to_char{'M', 'I', 'D', 'N', 'S', 'H', 'P', '=', 'X', 'B'};
 
     //!\brief Char to value conversion table.
     static constexpr std::array<rank_type, 256> char_to_rank = []() constexpr
