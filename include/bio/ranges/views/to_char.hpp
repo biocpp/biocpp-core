@@ -97,16 +97,15 @@ namespace bio::ranges::views
  * \include test/snippet/ranges/views/range_view_to_char.cpp
  * \hideinitializer
  */
-inline auto const to_char = detail::adaptor_from_functor{meta::overloaded{
-  // clang-format off
+inline auto const to_char = detail::adaptor_from_functor{
+  meta::overloaded{// clang-format off
     // cigar special case
     []<std::ranges::input_range rng_t>(rng_t && range)
         requires(std::same_as<ranges::range_innermost_value_t<rng_t>, bio::alphabet::cigar>)
     {
-        //TODO we should mark small_strings <= 32 bytes as views and just return them here
-        auto fn = [sbuf = small_string<10>{} ] (bio::alphabet::cigar const c) mutable
+        auto fn = [] (bio::alphabet::cigar const c)
         {
-            return c.to_string(sbuf);
+            return c.to_string();
         };
         return std::forward<rng_t>(range) | deep{std::views::transform(fn) | std::views::join};
     },

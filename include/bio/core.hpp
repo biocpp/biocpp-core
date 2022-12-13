@@ -96,6 +96,15 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 #    endif
 #endif
 
+//!\brief See https://github.com/llvm/llvm-project/issues/59501
+#ifndef BIOCPP_WORKAROUND_CLANG_59501
+#    if defined(__clang__)
+#        define BIOCPP_WORKAROUND_CLANG_59501 1
+#    else
+#        define BIOCPP_WORKAROUND_CLANG_59501 0
+#    endif
+#endif
+
 // ============================================================================
 //  Define our version
 // ============================================================================
