@@ -20,10 +20,10 @@ TYPED_TEST_SUITE_P(nucleotide);
 
 TYPED_TEST_P(nucleotide, concept_check)
 {
-    EXPECT_TRUE(bio::alphabet::nucleotide_alphabet<TypeParam>);
-    EXPECT_TRUE(bio::alphabet::nucleotide_alphabet<TypeParam &>);
-    EXPECT_TRUE(bio::alphabet::nucleotide_alphabet<TypeParam const>);
-    EXPECT_TRUE(bio::alphabet::nucleotide_alphabet<TypeParam const &>);
+    EXPECT_TRUE(bio::alphabet::nucleotide<TypeParam>);
+    EXPECT_TRUE(bio::alphabet::nucleotide<TypeParam &>);
+    EXPECT_TRUE(bio::alphabet::nucleotide<TypeParam const>);
+    EXPECT_TRUE(bio::alphabet::nucleotide<TypeParam const &>);
 }
 
 TYPED_TEST_P(nucleotide, complement)

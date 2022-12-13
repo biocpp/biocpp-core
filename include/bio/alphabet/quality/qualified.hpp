@@ -23,8 +23,8 @@ namespace bio::alphabet
 /*!\brief Joins an arbitrary alphabet with a quality alphabet.
  * \ingroup quality
  * \tparam sequence_alphabet_t Type of the alphabet; must satisfy bio::alphabet::writable_alphabet.
- * \tparam quality_alphabet_t  Type of the quality; must satisfy bio::alphabet::writable_quality_alphabet.
- * \implements bio::alphabet::writable_quality_alphabet
+ * \tparam quality_alphabet_t  Type of the quality; must satisfy bio::alphabet::writable_quality.
+ * \implements bio::alphabet::writable_quality
  * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
@@ -51,9 +51,9 @@ namespace bio::alphabet
  *
  * \include test/snippet/alphabet/quality/qualified.cpp
  *
- * This bio::alphabet::tuple_base itself fulfils both bio::alphabet::writable_alphabet and bio::alphabet::writable_quality_alphabet.
+ * This bio::alphabet::tuple_base itself fulfils both bio::alphabet::writable_alphabet and bio::alphabet::writable_quality.
  */
-template <writable_alphabet sequence_alphabet_t, writable_quality_alphabet quality_alphabet_t>
+template <writable_alphabet sequence_alphabet_t, writable_quality quality_alphabet_t>
 class qualified :
   public tuple_base<qualified<sequence_alphabet_t, quality_alphabet_t>, sequence_alphabet_t, quality_alphabet_t>
 {
@@ -134,9 +134,9 @@ public:
 
     /*!\brief Return a qualified where the quality is preserved, but the sequence letter is complemented.
      * \sa bio::alphabet::complement
-     * \sa bio::alphabet::nucleotide_alphabet::complement
+     * \sa bio::alphabet::nucleotide::complement
      */
-    constexpr qualified complement() const noexcept requires nucleotide_alphabet<sequence_alphabet_t>
+    constexpr qualified complement() const noexcept requires nucleotide<sequence_alphabet_t>
     {
         return qualified{bio::alphabet::complement(get<0>(*this)), get<1>(*this)};
     }

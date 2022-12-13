@@ -23,7 +23,7 @@ namespace bio::alphabet
 {
 
 /*!\brief Quality type for traditional Sanger and modern Illumina Phred scores (typical range).
- * \implements bio::alphabet::writable_quality_alphabet
+ * \implements bio::alphabet::writable_quality
  * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout

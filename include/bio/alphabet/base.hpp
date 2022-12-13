@@ -65,6 +65,13 @@ protected:
     using rank_type = meta::detail::min_viable_uint_t<size - 1>;
     //!\}
 
+    //!\privatesection
+    //!\brief Befriend the derived type, so it can access the rank directly.
+    friend derived_type;
+
+    //!\brief Expose construction of the rank to derived types.
+    explicit constexpr base(rank_type r) noexcept : rank{r} {}
+
 public:
     /*!\name Constructors, destructor and assignment
      * \{

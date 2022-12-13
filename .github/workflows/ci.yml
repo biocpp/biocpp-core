@@ -175,7 +175,7 @@ jobs:
           sudo apt-get install --yes gcovr
           sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/${CC/gcc/gcov} 100
       - name: Load ccache
-        if: matrix.build == 'documentation'
+        if: matrix.build != 'documentation'
         uses: actions/cache@v2
         with:
           path: .ccache

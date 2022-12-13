@@ -18,15 +18,15 @@ TYPED_TEST_SUITE_P(phred);
 // test provision of data type `phred_type` and phred converter.
 TYPED_TEST_P(phred, concept_check)
 {
-    EXPECT_TRUE(bio::alphabet::quality_alphabet<TypeParam>);
-    EXPECT_TRUE(bio::alphabet::quality_alphabet<TypeParam &>);
-    EXPECT_TRUE(bio::alphabet::quality_alphabet<TypeParam const>);
-    EXPECT_TRUE(bio::alphabet::quality_alphabet<TypeParam const &>);
+    EXPECT_TRUE(bio::alphabet::quality<TypeParam>);
+    EXPECT_TRUE(bio::alphabet::quality<TypeParam &>);
+    EXPECT_TRUE(bio::alphabet::quality<TypeParam const>);
+    EXPECT_TRUE(bio::alphabet::quality<TypeParam const &>);
 
-    EXPECT_TRUE(bio::alphabet::writable_quality_alphabet<TypeParam>);
-    EXPECT_TRUE(bio::alphabet::writable_quality_alphabet<TypeParam &>);
-    EXPECT_FALSE(bio::alphabet::writable_quality_alphabet<TypeParam const>);
-    EXPECT_FALSE(bio::alphabet::writable_quality_alphabet<TypeParam const &>);
+    EXPECT_TRUE(bio::alphabet::writable_quality<TypeParam>);
+    EXPECT_TRUE(bio::alphabet::writable_quality<TypeParam &>);
+    EXPECT_FALSE(bio::alphabet::writable_quality<TypeParam const>);
+    EXPECT_FALSE(bio::alphabet::writable_quality<TypeParam const &>);
 }
 
 // more elaborate test of assign_char and to_char, basic test is in alphabet_test.cpp

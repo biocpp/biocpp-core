@@ -60,9 +60,9 @@ public:
         static_assert(std::ranges::random_access_range<urng_t>,
                       "The range parameter to views::reverse_complement_or_not must model "
                       "std::ranges::random_access_range.");
-        static_assert(alphabet::nucleotide_alphabet<std::ranges::range_reference_t<urng_t>>,
+        static_assert(alphabet::nucleotide<std::ranges::range_reference_t<urng_t>>,
                       "The range parameter to views::reverse_complement_or_not must be over elements of "
-                      "bio::alphabet::nucleotide_alphabet.");
+                      "bio::alphabet::nucleotide.");
 
         auto l = &func_nop<std::views::all_t<urng_t> const &>;
         if (transform)
@@ -112,7 +112,7 @@ public:
  * | std::ranges::output_range        |                                       | *lost*                                             |
  * | bio::ranges::const_iterable_range     |  *required*                           | *preserved*                                        |
  * |                                  |                                       |                                                    |
- * | std::ranges::range_reference_t   | bio::alphabet::alphabet::nucleotide_alphabet            | std::remove_reference_t<std::ranges::range_reference_t<urng_t>> |
+ * | std::ranges::range_reference_t   | bio::alphabet::alphabet::nucleotide            | std::remove_reference_t<std::ranges::range_reference_t<urng_t>> |
  *
  * * `urng_t` is the type of the range modified by this view (input).
  * * `rrng_type` is the type of the range returned by this view.
@@ -163,10 +163,9 @@ private:
         static_assert(std::ranges::random_access_range<std::ranges::range_reference_t<urng_t>>,
                       "The inner range of the range parameter to views::add_reverse_complement must model "
                       "std::ranges::random_access_range.");
-        static_assert(
-          alphabet::nucleotide_alphabet<std::ranges::range_reference_t<std::ranges::range_reference_t<urng_t>>>,
-          "The range parameter to views::add_reverse_complement must be over elements of "
-          "bio::alphabet::nucleotide_alphabet.");
+        static_assert(alphabet::nucleotide<std::ranges::range_reference_t<std::ranges::range_reference_t<urng_t>>>,
+                      "The range parameter to views::add_reverse_complement must be over elements of "
+                      "bio::alphabet::nucleotide.");
 
         return std::forward<urng_t>(urange) |
                views::transform_by_pos([](auto && urange, size_t pos)
@@ -238,7 +237,7 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *lost*                                             |
  * | bio::ranges::const_iterable_range     | *required*                            | *preserved*                                        |
  * |                                  |                                       |                                                    |
- * | std::ranges::range_reference_t   | bio::alphabet::alphabet::nucleotide_alphabet            | std::remove_reference_t<std::ranges::range_reference_t<urng_t>> |
+ * | std::ranges::range_reference_t   | bio::alphabet::alphabet::nucleotide            | std::remove_reference_t<std::ranges::range_reference_t<urng_t>> |
  *
  * * `urng_t` is the type of the range modified by this view (input).
  * * `rrng_type` is the type of the range returned by this view.

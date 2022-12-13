@@ -7,7 +7,7 @@ void print(t const v)
     std::cout << "I am an alphabet and my value as char is: " << bio::alphabet::to_char(v) << '\n';
 }
 
-template <bio::alphabet::nucleotide_alphabet t>
+template <bio::alphabet::nucleotide t>
 void print(t const v)
 {
     std::cout << "I am a nucleotide, my value as char is: " << bio::alphabet::to_char(v)

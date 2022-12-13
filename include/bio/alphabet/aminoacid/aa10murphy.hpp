@@ -24,7 +24,7 @@ namespace bio::alphabet
 
 /*!\brief The reduced Murphy amino acid alphabet.
  * \ingroup aminoacid
- * \implements bio::alphabet::aminoacid_alphabet
+ * \implements bio::alphabet::aminoacid
  * \implements bio::alphabet::writable_alphabet
  * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif
  * \implements bio::meta::trivially_copyable

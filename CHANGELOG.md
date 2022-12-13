@@ -7,6 +7,18 @@ bug-fixes (not all bug-fixes will be listed).
 
 # 0.7.0
 
+## Added
+
+* New implementation for `bio::alphabet::cigar`. This is now 32bits in size (instead of 64bit) and binary-compatible to BAM/htslib.
+
+## Fixed
+
+* `bio::views::to_char`, `bio::views::char_to<>` and `bio::views::char_strictly_to<>` are now "no-op" views if no transformation needs to happen (e.g. when input *and* output alphabet would be `char`).
+
+## Renamed
+
+* `bio::alphabet::nucleotide_alphabet` → `bio::alphabet::nucleotide` (same for `aminoacid_alphabet`, `quality_alphabet` and `writable_quality_alphabet`).
+
 ## API
 
 * This release is not yet API-stable.

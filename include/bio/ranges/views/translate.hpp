@@ -63,9 +63,9 @@ struct translate_fn
                       "The range parameter to views::translate_single must model std::ranges::sized_range.");
         static_assert(std::ranges::random_access_range<urng_t>,
                       "The range parameter to views::translate_single must model std::ranges::random_access_range.");
-        static_assert(alphabet::nucleotide_alphabet<std::ranges::range_reference_t<urng_t>>,
+        static_assert(alphabet::nucleotide<std::ranges::range_reference_t<urng_t>>,
                       "The range parameter to views::translate_single must be over elements of "
-                      "bio::alphabet::alphabet::nucleotide_alphabet.");
+                      "bio::alphabet::alphabet::nucleotide.");
 
         /* frames */
         small_vector<alphabet::translation_frames, 6> selected_frames{};
@@ -162,7 +162,7 @@ namespace bio::ranges::views
  * | std::ranges::output_range        |                                       | *lost*                                             |
  * | bio::ranges::const_iterable_range     | *required*                            | *preserved*                                        |
  * |                                  |                                       |                                                    |
- * | std::ranges::range_reference_t   | bio::alphabet::alphabet::nucleotide_alphabet            | std::ranges::view && std::ranges::random_access_range && std::ranges::sized_range |
+ * | std::ranges::range_reference_t   | bio::alphabet::alphabet::nucleotide            | std::ranges::view && std::ranges::random_access_range && std::ranges::sized_range |
  *
  * * `urng_t` is the type of the range modified by this view (input).
  * * `rrng_type` is the type of the range returned by this view.

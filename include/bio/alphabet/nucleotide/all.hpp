@@ -108,7 +108,7 @@
  *
  * ### Concept
  *
- * The nucleotide submodule defines bio::alphabet::nucleotide_alphabet which encompasses all the alphabets defined in the
+ * The nucleotide submodule defines bio::alphabet::nucleotide which encompasses all the alphabets defined in the
  * submodule and refines bio::alphabet::alphabet. The only additional requirement is that their values can be
  * complemented, see below.
  *
@@ -135,7 +135,7 @@
  *
  * In the typical structure of DNA molecules (or double-stranded RNA), each nucleotide has a complement that it
  * pairs with. To generate the complement value of a nucleotide letter, you can call an implementation of
- * bio::alphabet::nucleotide_alphabet::complement() on it.
+ * bio::alphabet::nucleotide::complement() on it.
  *
  *
  * For the ambiguous letters, the complement is the (possibly also ambiguous) letter representing the variant of the

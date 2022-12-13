@@ -29,7 +29,7 @@ namespace bio::alphabet
  * \details
  *
  * You can use this class to define your own nucleotide alphabet, but types are not required to be based on it to model
- * bio::alphabet::nucleotide_alphabet, it is purely a way to avoid code duplication.
+ * bio::alphabet::nucleotide, it is purely a way to avoid code duplication.
  *
  * In addition to the requirements of bio::alphabet::base, the derived type needs to define the following static
  * member variable (can be private):
@@ -74,7 +74,7 @@ public:
     //!\brief Allow explicit construction from any other nucleotide type and convert via the character representation.
     template <meta::different_from<derived_type> other_nucl_type>
         //!\cond
-        requires nucleotide_alphabet<other_nucl_type>
+        requires nucleotide<other_nucl_type>
     //!\endcond
     explicit constexpr nucleotide_base(other_nucl_type const & other) noexcept
     {
@@ -93,7 +93,7 @@ public:
      *
      * See \ref nucleotide for the actual values.
      *
-     * Provides an implementation for bio::alphabet::complement, required to model bio::alphabet::nucleotide_alphabet.
+     * Provides an implementation for bio::alphabet::complement, required to model bio::alphabet::nucleotide.
      *
      * ### Complexity
      *

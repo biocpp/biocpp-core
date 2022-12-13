@@ -555,7 +555,7 @@ inline constexpr auto size = tag_invoke(custom::size{}, wrap_t{});
  *
  * ### Related types
  *
- * If a given type `t` models this concept, the following types typically do so, as well:
+ * If an object type `t` models this concept, the following types typically do so, as well:
  *
  *   * `t &`
  *   * `t const`
@@ -595,7 +595,7 @@ concept semialphabet = std::totally_ordered<t> && std::copy_constructible<t> &&
  *
  * ### Related types
  *
- * If a given type `t` models this concept, the following types typically do so, as well:
+ * If an object type `t` models this concept, the following types typically do so, as well:
  *
  *   * `t &`
  *
@@ -638,7 +638,7 @@ concept writable_semialphabet = semialphabet<t> && requires(t v, rank_t<t> r)
  *
  * ### Related types
  *
- * If a given type `t` models this concept, the following types typically do so, as well:
+ * If an object type `t` models this concept, the following types typically do so, as well:
  *
  *   * `t &`
  *   * `t const`
@@ -679,7 +679,7 @@ concept alphabet = semialphabet<t> && requires(t v)
  *
  * ### Related types
  *
- * If a given type `t` models this concept, the following types typically do so, as well:
+ * If an object type `t` models this concept, the following types typically do so, as well:
  *
  *   * `t &`
  *

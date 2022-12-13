@@ -115,7 +115,7 @@
  *
  * All types that have valid implementations of the functions/functors described above model the concept
  * bio::alphabet::writable_alphabet. This is the strongest (i.e. most refined) *general case* concept.
- * There are more refined concepts for specific biological applications (like bio::alphabet::nucleotide_alphabet), and there are
+ * There are more refined concepts for specific biological applications (like bio::alphabet::nucleotide), and there are
  * less refined concepts that only model part of an alphabet:
  *
  *   * bio::alphabet::semialphabet and derived concepts only require the rank interface;

@@ -21,7 +21,7 @@ namespace bio::alphabet
 /*!\brief A 16 letter DNA alphabet, containing all IUPAC symbols minus the gap and plus an equality sign ('=').
  * \ingroup nucleotide
  * \implements bio::alphabet::writable_alphabet
- * \implements bio::alphabet::nucleotide_alphabet
+ * \implements bio::alphabet::nucleotide
  * \implements bio::meta::trivially_copyable
  * \implements bio::meta::standard_layout
  * \if DEV \implements bio::alphabet::detail::writable_constexpr_alphabet \endif

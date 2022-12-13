@@ -27,8 +27,8 @@ INSTANTIATE_TYPED_TEST_SUITE_P(dna16sam, semi_alphabet_constexpr, bio::alphabet:
 // nucleotide test: (because the complement is not bijective for dna16sam we need to test it manually)
 TEST(dna16sam, nucleotide)
 {
-    EXPECT_TRUE(bio::alphabet::nucleotide_alphabet<bio::alphabet::dna16sam>);
-    EXPECT_TRUE(bio::alphabet::nucleotide_alphabet<bio::alphabet::dna16sam &>);
+    EXPECT_TRUE(bio::alphabet::nucleotide<bio::alphabet::dna16sam>);
+    EXPECT_TRUE(bio::alphabet::nucleotide<bio::alphabet::dna16sam &>);
 
     EXPECT_EQ(bio::alphabet::complement('='_dna16sam), 'N'_dna16sam);
     EXPECT_EQ(bio::alphabet::complement('A'_dna16sam), 'T'_dna16sam);
