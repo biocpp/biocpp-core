@@ -28,13 +28,16 @@ namespace bio::ranges
  * The underlying data can be exposed as a null-terminated c-style string (without copying) and conversion operators to
  *  std::string are provided (this involves copying).
  *
+ * Strings with capacity 30 or less are also marked as satisfying the std::ranges::view concept,
+ * because they can still be copied efficiently.
+ *
  * ### Implementation notes
  *
  * Internally the string stores a null-terminated array of size `capacity_ + 1` and the size of the string as a member.
  * The smallest possible type is used for storage of the size. For example, `small_string<30>` uses 32bytes of memory
  * (one byte extra for the null-terminator and one byte to save the size).
  *
- * Usage:
+ * ### Example
  *
  * \include test/snippet/ranges/container/small_string.cpp
  *
@@ -412,3 +415,9 @@ struct fmt::formatter<bio::ranges::small_string<N>> : fmt::formatter<std::string
 };
 
 #endif
+
+//!\cond
+template <size_t capacity>
+    requires(capacity <= 30) // -> sizeof(small_string) <= 32
+inline constexpr bool std::ranges::enable_view<bio::ranges::small_string<capacity>> = true;
+//!\endcond

@@ -354,3 +354,10 @@ TEST(small_string, output)
     os << em;
     EXPECT_EQ(os.str(), "hello"s);
 }
+
+TEST(small_string, view_concept)
+{
+    EXPECT_EQ(sizeof(bio::ranges::small_string<30>), 32ul);
+    EXPECT_TRUE(std::ranges::view<bio::ranges::small_string<30>>);
+    EXPECT_FALSE(std::ranges::view<bio::ranges::small_string<31>>);
+}
