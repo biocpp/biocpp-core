@@ -138,7 +138,7 @@ jobs:
         continue-on-error: true
         if: matrix.cc == 'clang-16'
         run: |
-          sudo apt-add-repository --no-update --yes "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy main"
+          sudo apt-add-repository --no-update --yes "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
 
       - name: Configure APT
