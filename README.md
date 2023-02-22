@@ -55,4 +55,4 @@ g++-10 -O3 -DNDEBUG -Wall -Wextra -std=c++20 -I /path/to/biocpp-core/include you
 ```
   * If you want to use {fmt}, add `-I /path/to/fmt/include -D FMT_HEADER_ONLY=1`.
 
-**Currently, GCC ≥ 10 is the only supported compiler.** Clang support is planned.
+**Currently, GCC ≥ 10 and Clang ≥ 16 are the only supported compiler.**
