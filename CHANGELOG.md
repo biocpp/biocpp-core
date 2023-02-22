@@ -7,14 +7,19 @@ bug-fixes (not all bug-fixes will be listed).
 
 # 0.7.0
 
+Summary: we now support LLVM/clang as a compiler; CIGARs have been much improved and there is a new container.
+
 ## Added
 
+* 🐉 Full support for Clang-16 as a compiler. This is a big milestone for 1.0.0!
+* A new associative container: `bio::ranges::dictionary`. It has features of `std::vector` and `std::unordered_map` at the cost of extra size.
 * New implementation for `bio::alphabet::cigar`. This is now 32bits in size (instead of 64bit) and ABI-compatible to BAM/htslib.
 * `bio::views::to_char`, `bio::views::char_to<>` and `bio::views::char_strictly_to<>` now work for `bio::alphabet::cigar` (even though CIGARs are not full alphabets).
 
 ## Fixed
 
 * `bio::views::to_char`, `bio::views::char_to<>` and `bio::views::char_strictly_to<>` are now "no-op" views if no transformation needs to happen (e.g. when input *and* output alphabet would be `char`).
+* When using `find_package(biocpp COMPONENTS core io)`, the version strings were not set correctly.
 
 ## Maintained
 
