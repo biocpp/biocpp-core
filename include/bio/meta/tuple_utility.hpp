@@ -110,8 +110,10 @@ constexpr auto tuple_split(tuple_t<ts...> && t)
 {
     static_assert(pivot_c <= sizeof...(ts));
 
+    //NOLINTBEGIN(bugprone-use-after-move)
     return tuple_t{detail::tuple_split<0>(std::move(t), std::make_index_sequence<pivot_c>{}),
                    detail::tuple_split<pivot_c>(std::move(t), std::make_index_sequence<sizeof...(ts) - pivot_c>{})};
+    //NOLINTEND(bugprone-use-after-move)
 }
 
 /*!\brief Splits a tuple like data structure at the first position of the given type.

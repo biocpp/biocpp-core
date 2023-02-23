@@ -104,7 +104,7 @@ TEST(view_trim, concepts)
     EXPECT_TRUE((std::ranges::output_range<decltype(vec), bio::alphabet::dna5q>));
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
 
-    auto v1 = vec | bio::ranges::views::trim_quality(20u);
+    [[maybe_unused]] auto v1 = vec | bio::ranges::views::trim_quality(20u);
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::random_access_range<decltype(v1)>);

@@ -372,11 +372,11 @@ constexpr bool bitwise_and_test()
     bio::ranges::dynamic_bitset t2{0b1010'0001'0000'0011};
     bio::ranges::dynamic_bitset expected{0b1010'0001'0000'0000};
 
-    bool res = (t1 & t2) == expected;
+    bool res1 = (t1 & t2) == expected;
     t1 &= t2;
-    res = t1 == expected;
+    bool res2 = t1 == expected;
 
-    return res;
+    return res1 && res2;
 }
 
 TEST(dynamic_bitset, bitwise_and)
@@ -392,11 +392,11 @@ constexpr bool bitwise_or_test()
     bio::ranges::dynamic_bitset t2{0b1010'0001'0000'0011};
     bio::ranges::dynamic_bitset expected{0b1111'0001'0000'1111};
 
-    bool res = (t1 | t2) == expected;
+    bool res1 = (t1 | t2) == expected;
     t1 |= t2;
-    res = t1 == expected;
+    bool res2 = t1 == expected;
 
-    return res;
+    return res1 && res2;
 }
 
 TEST(dynamic_bitset, bitwise_or)
@@ -412,11 +412,11 @@ constexpr bool bitwise_xor_test()
     bio::ranges::dynamic_bitset t2{0b1010'0001'0000'0011};
     bio::ranges::dynamic_bitset expected{"0101000000001111"};
 
-    bool res = (t1 ^ t2) == expected;
+    bool res1 = (t1 ^ t2) == expected;
     t1 ^= t2;
-    res = t1 == expected;
+    bool res2 = t1 == expected;
 
-    return res;
+    return res1 && res2;
 }
 
 TEST(dynamic_bitset, bitwise_xor)
@@ -489,7 +489,7 @@ constexpr bool swap_test()
     swap(t1, t2);
     res &= t1 == expected;
 
-    t2.swap(std::move(t1));
+    t2.swap(t1);
     res &= t2 == expected;
 
     return res;

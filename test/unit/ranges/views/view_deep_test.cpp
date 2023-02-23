@@ -78,7 +78,7 @@ TEST(view_deep_reverse, concepts)
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(vec), std::vector<bio::alphabet::dna5>>));
 
-    auto v1 = vec | bio::ranges::views::deep_reverse;
+    [[maybe_unused]] auto v1 = vec | bio::ranges::views::deep_reverse;
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);
@@ -90,7 +90,7 @@ TEST(view_deep_reverse, concepts)
     EXPECT_FALSE((std::ranges::output_range<decltype(v1),
                                             std::vector<bio::alphabet::dna5>>)); // view temporary returned in deep case
 
-    auto v_elem = v1[0];
+    [[maybe_unused]] auto v_elem = v1[0];
     EXPECT_TRUE(std::ranges::input_range<decltype(v_elem)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v_elem)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v_elem)>);

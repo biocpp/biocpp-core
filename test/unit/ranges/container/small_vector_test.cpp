@@ -103,7 +103,7 @@ constexpr bool comparison_test()
     res = res && (t4 > t1);
     res = res && (t4 >= t1);
 
-    return true;
+    return res;
 }
 
 TEST(small_vector, comparison)

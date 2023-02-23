@@ -30,8 +30,10 @@ public:
 
     using base_t::operator=;
 
+    // NOLINTNEXTLINE(bugprone-unhandled-self-assignment)
     constexpr proxy_base_example & operator=(proxy_base_example const & rhs) { return assign_rank(rhs.to_rank()); }
 
+    // NOLINTNEXTLINE(bugprone-unhandled-self-assignment)
     constexpr proxy_base_example const & operator=(proxy_base_example const & rhs) const
     {
         return assign_rank(rhs.to_rank());
@@ -154,8 +156,10 @@ public:
 
     constexpr proxy_base_example2(my_namespace::my_alph & val) : ptr{&val} {}
 
+    // NOLINTNEXTLINE(bugprone-unhandled-self-assignment)
     constexpr proxy_base_example2 & operator=(proxy_base_example2 const & rhs) { return assign_rank(rhs.to_rank()); }
 
+    // NOLINTNEXTLINE(bugprone-unhandled-self-assignment)
     constexpr proxy_base_example2 const & operator=(proxy_base_example2 const & rhs) const
     {
         return assign_rank(rhs.to_rank());

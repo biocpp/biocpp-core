@@ -202,7 +202,7 @@ TYPED_TEST(nucleotide, view_translate_concepts)
     EXPECT_TRUE(std::ranges::random_access_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
 
-    auto v1 = vec | bio::ranges::views::translate_join(bio::alphabet::translation_frames::FWD_REV_0);
+    [[maybe_unused]] auto v1 = vec | bio::ranges::views::translate_join(bio::alphabet::translation_frames::FWD_REV_0);
 
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);

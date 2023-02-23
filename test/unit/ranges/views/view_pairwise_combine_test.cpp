@@ -497,9 +497,8 @@ TEST(pairwise_combine_fn_test, output)
 
 TEST(pairwise_combine_fn_test, const_source)
 {
-    std::vector             orig{'a', 'b', 'c', 'd'};
-    std::vector<char> const c_orig{orig};
-    auto                    v = c_orig | bio::ranges::views::pairwise_combine;
+    std::vector orig{'a', 'b', 'c', 'd'};
+    auto        v = std::as_const(orig) | bio::ranges::views::pairwise_combine;
 
     using ref_t = typename std::iterator_traits<std::ranges::iterator_t<decltype(v)>>::reference;
     std::vector<ref_t> cmp;

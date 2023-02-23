@@ -190,13 +190,15 @@ TEST_F(random_access_iterator_test_fixture, constructor_move)
 {
     // non-const
     bio::ranges::detail::random_access_iterator<std::vector<uint8_t>> it1(v);
+    //NOLINTNEXTLINE(performance-move-const-arg)
     bio::ranges::detail::random_access_iterator<std::vector<uint8_t>> it2(std::move(it1));
     EXPECT_EQ('a', it2[0]);
     EXPECT_EQ('t', it2[1]);
     // const
     bio::ranges::detail::random_access_iterator<std::vector<uint8_t> const> it3(v_const);
+    //NOLINTNEXTLINE(performance-move-const-arg)
     bio::ranges::detail::random_access_iterator<std::vector<uint8_t> const> it4(std::move(it3));
-    EXPECT_EQ('a', it3[0]);
+    EXPECT_EQ('a', it4[0]);
     EXPECT_EQ('t', it4[1]);
 }
 
@@ -205,9 +207,11 @@ TEST_F(random_access_iterator_test_fixture, move_assign)
 {
     // non-const
     bio::ranges::detail::random_access_iterator<std::array<long int, 3>> it1, it2;
+    //NOLINTNEXTLINE(performance-move-const-arg)
     it2 = std::move(it1);
     // const
     bio::ranges::detail::random_access_iterator<std::array<long int, 3> const> it3, it4;
+    //NOLINTNEXTLINE(performance-move-const-arg)
     it4 = std::move(it3);
 }
 

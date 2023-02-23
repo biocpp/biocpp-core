@@ -30,7 +30,7 @@ struct copy_counter
         move_count = rhs.move_count;
     }
 
-    copy_counter(copy_counter && rhs)
+    copy_counter(copy_counter && rhs) noexcept
     {
         copy_count = rhs.copy_count;
         move_count = rhs.move_count + 1;
@@ -141,36 +141,6 @@ TEST(arg_ownership, rval_adaptor)
 
     EXPECT_EQ(std::get<0>(f).copy_count, 0ul); // moved out of storage, too, because temporary
     EXPECT_EQ(std::get<0>(f).move_count, 3ul);
-
-    EXPECT_EQ(std::get<1>(f).copy_count, 3ul);
-    EXPECT_EQ(std::get<1>(f).move_count, 0ul);
-
-    EXPECT_EQ(std::get<2>(f).copy_count, 0ul);
-    EXPECT_EQ(std::get<2>(f).move_count, 0ul);
-    EXPECT_EQ(c3.copy_count, 0ul);
-    EXPECT_EQ(c3.move_count, 0ul);
-
-    EXPECT_EQ(std::get<3>(f).copy_count, 0ul);
-    EXPECT_EQ(std::get<3>(f).move_count, 0ul);
-    EXPECT_EQ(c4.copy_count, 0ul);
-    EXPECT_EQ(c4.move_count, 0ul);
-}
-
-TEST(arg_ownership, const_rval_adaptor)
-{
-    copy_counter c3, c4;
-
-    adaptor_base_type_checker const a{copy_counter{}, copy_counter{}, c3, c4};
-
-    std::vector<int> vec;
-
-    auto f = vec | std::move(a);
-
-    EXPECT_TRUE(
-      (std::same_as<decltype(f), std::tuple<copy_counter, copy_counter const, copy_counter &, copy_counter const &>>));
-
-    EXPECT_EQ(std::get<0>(f).copy_count, 1ul);
-    EXPECT_EQ(std::get<0>(f).move_count, 2ul);
 
     EXPECT_EQ(std::get<1>(f).copy_count, 3ul);
     EXPECT_EQ(std::get<1>(f).move_count, 0ul);

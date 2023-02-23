@@ -85,7 +85,7 @@ TEST(view_complement, concepts)
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(vec), bio::alphabet::dna5>));
 
-    auto v1 = vec | bio::ranges::views::complement;
+    [[maybe_unused]] auto v1 = vec | bio::ranges::views::complement;
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);
@@ -108,7 +108,7 @@ TEST(view_complement, concepts)
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec2)>);
     EXPECT_FALSE((std::ranges::output_range<decltype(vec2), bio::alphabet::dna5>));
 
-    auto v2 = vec2 | bio::ranges::views::complement;
+    [[maybe_unused]] auto v2 = vec2 | bio::ranges::views::complement;
     EXPECT_TRUE(std::ranges::input_range<decltype(v2)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v2)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v2)>);

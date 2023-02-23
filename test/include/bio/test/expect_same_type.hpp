@@ -40,17 +40,17 @@ struct expect_same_type
                                           std::type_identity<lhs_t>,
                                           std::type_identity<rhs_t>)
     {
-        auto remove_wrap_type_identity = [](std::string str)
+        auto remove_wrap_type_identity = [](std::string_view str)
         {
             // EXPECT_SAME_TYPE_DEPAREN adds a space after the prefix
-            std::string prefix = "std::type_identity< ";
-            std::string suffix = ">{}";
+            static constexpr std::string_view prefix = "std::type_identity< ";
+            static constexpr std::string_view suffix = ">{}";
 
-            size_t str_start = str.find(prefix) + prefix.size();
-            size_t str_end = str.rfind(suffix);
-            assert(str_end >= str_start);
-
-            return str.substr(str_start, str_end - str_start);
+            if (str.starts_with(prefix))
+                str.remove_prefix(prefix.size());
+            if (str.ends_with(suffix))
+                str.remove_suffix(suffix.size());
+            return static_cast<std::string>(str);
         };
 
         if (std::is_same_v<lhs_t, rhs_t>)

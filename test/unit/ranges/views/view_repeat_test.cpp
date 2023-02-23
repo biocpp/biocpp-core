@@ -33,8 +33,8 @@ TEST(repeat_view, deduction_guide)
 TEST(general, construction)
 {
     // char
-    char chr{'A'};
-    auto v = bio::ranges::views::repeat(chr);
+    char                  chr{'A'};
+    [[maybe_unused]] auto v = bio::ranges::views::repeat(chr);
 
     EXPECT_TRUE((std::is_default_constructible_v<decltype(v)>));
     EXPECT_TRUE((std::is_copy_constructible_v<decltype(v)>));
@@ -43,8 +43,8 @@ TEST(general, construction)
     EXPECT_TRUE((std::is_move_assignable_v<decltype(v)>));
 
     // char const
-    char const chr_const{'A'};
-    auto       v_const = bio::ranges::views::repeat(chr_const);
+    char const            chr_const{'A'};
+    [[maybe_unused]] auto v_const = bio::ranges::views::repeat(chr_const);
 
     EXPECT_TRUE((std::is_default_constructible_v<decltype(v_const)>));
     EXPECT_TRUE((std::is_copy_constructible_v<decltype(v_const)>));
@@ -55,8 +55,8 @@ TEST(general, construction)
 
 TEST(general, concept)
 {
-    char chr{'A'};
-    auto v = bio::ranges::views::repeat(chr);
+    char                  chr{'A'};
+    [[maybe_unused]] auto v = bio::ranges::views::repeat(chr);
 
     EXPECT_TRUE((std::ranges::range<decltype(v)>));
     EXPECT_TRUE((std::ranges::input_range<decltype(v)>));

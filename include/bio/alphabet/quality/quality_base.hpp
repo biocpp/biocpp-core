@@ -113,6 +113,7 @@ protected:
     {
         std::array<rank_type, 256> ret{};
 
+        // NOLINTNEXTLINE(bugprone-signed-char-misuse)
         for (int64_t i = std::numeric_limits<phred_type>::lowest(); i <= std::numeric_limits<phred_type>::max(); ++i)
         {
             if (i < derived_type::offset_phred) // map too-small to smallest possible
@@ -131,6 +132,7 @@ protected:
     {
         std::array<rank_type, 256> ret{};
 
+        // NOLINTNEXTLINE(bugprone-signed-char-misuse)
         for (int64_t i = std::numeric_limits<char_type>::lowest(); i <= std::numeric_limits<char_type>::max(); ++i)
         {
             if (i < derived_type::offset_char) // map too-small to smallest possible

@@ -53,7 +53,7 @@ TEST(view_rank_to, concepts)
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(vec), unsigned>));
 
-    auto v1 = vec | bio::ranges::views::rank_to<bio::alphabet::dna5>;
+    [[maybe_unused]] auto v1 = vec | bio::ranges::views::rank_to<bio::alphabet::dna5>;
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);

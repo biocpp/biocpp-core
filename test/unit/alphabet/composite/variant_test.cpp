@@ -342,11 +342,11 @@ TYPED_TEST(variant_test, char_is_valid_for)
     using gapped_alphabet_bases_t = typename gapped_alphabet_t::biocpp_required_types;
     using char_t                  = bio::alphabet::char_t<gapped_alphabet_t>;
 
-    char_t   i             = std::numeric_limits<char_t>::min();
-    char_t   end           = std::numeric_limits<char_t>::max();
-    uint64_t i_no_overflow = std::numeric_limits<char_t>::min();
+    char_t  i             = std::numeric_limits<char_t>::min();
+    int64_t end           = std::numeric_limits<char_t>::max();
+    int64_t i_no_overflow = std::numeric_limits<char_t>::min(); //NOLINT(bugprone-signed-char-misuse)
 
-    for (; i_no_overflow <= static_cast<uint64_t>(end); ++i, ++i_no_overflow)
+    for (; i_no_overflow <= end; ++i, ++i_no_overflow)
     {
         bool is_valid{};
         bio::meta::detail::for_each<gapped_alphabet_bases_t>(
