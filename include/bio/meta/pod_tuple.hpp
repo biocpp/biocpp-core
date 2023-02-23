@@ -61,7 +61,7 @@ struct pod_tuple<type0, types...>
      */
 
     //!\brief Checks whether `*this` is equal to `rhs`.
-    constexpr friend bool operator==(pod_tuple const & lhs, pod_tuple const & rhs) noexcept = default;
+    friend bool operator==(pod_tuple const & lhs, pod_tuple const & rhs) noexcept = default;
 
     //!\brief Checks whether `*this` is equal to `rhs`.
     constexpr friend auto operator<=>(pod_tuple const & lhs, pod_tuple const & rhs) noexcept
@@ -88,14 +88,12 @@ struct pod_tuple<type0>
      * \{
      */
     //!\brief Checks whether `*this` is equal to `rhs`.
-    constexpr friend bool operator==(pod_tuple const & lhs, pod_tuple const & rhs) noexcept = default;
+    friend bool operator==(pod_tuple const & lhs, pod_tuple const & rhs) noexcept = default;
 
     //!\brief Checks whether `*this` is equal to `rhs`.
     constexpr friend auto operator<=>(pod_tuple const & lhs, pod_tuple const & rhs) noexcept = default;
     //!\}
 };
-
-#undef SEQAN_NOT_POD
 
 //!\brief User defined deduction guide enables easy use.
 //!\relates pod_tuple
