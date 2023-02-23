@@ -58,7 +58,7 @@ namespace bio::alphabet
  * See bio::ranges::bitcompressed_vector or bio::alphabet::tuple_base for examples of how this class is used.
  */
 template <typename derived_type, writable_semialphabet alphabet_type>
-    //!\cond
+//!\cond
     requires std::regular<alphabet_type>
 //!\endcond
 class proxy_base
@@ -114,7 +114,7 @@ private:
     template <typename indirect_assignable_type>
     constexpr derived_type & operator=(indirect_assignable_type const & c) const noexcept
       //!\cond
-      requires meta::weakly_assignable_from<alphabet_type, indirect_assignable_type>
+        requires meta::weakly_assignable_from<alphabet_type, indirect_assignable_type>
     //!\endcond
     {
         alphabet_type a;
@@ -138,7 +138,7 @@ public:
     //!\copydoc bio::alphabet::base::assign_char
     constexpr derived_type & assign_char(char_type const c) noexcept
       //!\cond
-      requires writable_alphabet<alphabet_type>
+        requires writable_alphabet<alphabet_type>
     //!\endcond
     {
         alphabet_type tmp;
@@ -149,7 +149,7 @@ public:
     //!\copydoc bio::alphabet::base::assign_char
     constexpr derived_type const & assign_char(char_type const c) const noexcept
       //!\cond
-      requires writable_alphabet<alphabet_type>
+        requires writable_alphabet<alphabet_type>
     //!\endcond
     {
         alphabet_type tmp;
@@ -160,7 +160,7 @@ public:
     //!\copydoc bio::alphabet::quality_base::assign_phred
     constexpr derived_type & assign_phred(phred_type const c) noexcept
       //!\cond
-      requires writable_quality<alphabet_type>
+        requires writable_quality<alphabet_type>
     //!\endcond
     {
         alphabet_type tmp;
@@ -171,7 +171,7 @@ public:
     //!\copydoc bio::alphabet::quality_base::assign_phred
     constexpr derived_type const & assign_phred(phred_type const c) const noexcept
       //!\cond
-      requires writable_quality<alphabet_type>
+        requires writable_quality<alphabet_type>
     //!\endcond
     {
         alphabet_type tmp;
@@ -206,15 +206,18 @@ public:
 
     //!\brief Implicit conversion to types that the emulated type is convertible to.
     template <typename other_t>
-        //!\cond
+    //!\cond
         requires(std::convertible_to<alphabet_type, other_t>)
     //!\endcond
-    constexpr operator other_t() const noexcept { return operator alphabet_type(); }
+    constexpr operator other_t() const noexcept
+    {
+        return operator alphabet_type();
+    }
 
     //!\copydoc bio::alphabet::base::to_char
     constexpr auto to_char() const noexcept
       //!\cond
-      requires alphabet<alphabet_type>
+        requires alphabet<alphabet_type>
     //!\endcond
     {
         return bio::alphabet::to_char(operator alphabet_type());
@@ -223,7 +226,7 @@ public:
     //!\copydoc bio::alphabet::quality_base::to_phred
     constexpr auto to_phred() const noexcept
       //!\cond
-      requires quality<alphabet_type>
+        requires quality<alphabet_type>
     //!\endcond
     {
         return bio::alphabet::to_phred(operator alphabet_type());
@@ -232,7 +235,7 @@ public:
     //!\copydoc bio::alphabet::nucleotide_base::complement
     constexpr alphabet_type complement() const noexcept
       //!\cond
-      requires nucleotide<alphabet_type>
+        requires nucleotide<alphabet_type>
     //!\endcond
     {
         return bio::alphabet::complement(operator alphabet_type());
@@ -241,7 +244,7 @@ public:
     //!\brief Delegate to the emulated type's validator.
     static constexpr bool char_is_valid(char_type const c) noexcept
       //!\cond
-      requires writable_alphabet<alphabet_type>
+        requires writable_alphabet<alphabet_type>
     //!\endcond
     {
         return char_is_valid_for<alphabet_type>(c);
@@ -294,7 +297,10 @@ public:
     //!\brief Allow (in-)equality comparison with types that the emulated type is comparable with.
     template <meta::different_from<derived_type> t>
         requires(meta::weakly_equality_comparable_with<alphabet_type, t>)
-    friend constexpr bool operator==(t const lhs, derived_type const rhs) noexcept { return (rhs == lhs); }
+    friend constexpr bool operator==(t const lhs, derived_type const rhs) noexcept
+    {
+        return (rhs == lhs);
+    }
     //!\}
 
 private:
@@ -303,7 +309,11 @@ private:
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr derived_type & tag_invoke(custom::assign_rank_to, auto const r, derived_type & a) noexcept
-      requires(requires { {a.assign_rank(r)}; })
+        requires(requires {
+            {
+                a.assign_rank(r)
+            };
+        })
     {
         return a.assign_rank(r);
     }
@@ -312,21 +322,33 @@ private:
     friend constexpr derived_type const & tag_invoke(custom::assign_rank_to,
                                                      auto const           r,
                                                      derived_type const & a) noexcept
-      requires(requires { {a.assign_rank(r)}; })
+        requires(requires {
+            {
+                a.assign_rank(r)
+            };
+        })
     {
         return a.assign_rank(r);
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr auto tag_invoke(custom::to_char, derived_type const a) noexcept
-      requires(requires { {a.to_char()}; })
+        requires(requires {
+            {
+                a.to_char()
+            };
+        })
     {
         return a.to_char();
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr derived_type & tag_invoke(custom::assign_char_to, char_type const c, derived_type & a) noexcept
-      requires(requires { {a.assign_char(c)}; })
+        requires(requires {
+            {
+                a.assign_char(c)
+            };
+        })
     {
         return a.assign_char(c);
     }
@@ -335,14 +357,22 @@ private:
     friend constexpr derived_type const & tag_invoke(custom::assign_char_to,
                                                      char_type const      c,
                                                      derived_type const & a) noexcept
-      requires(requires { {a.assign_char(c)}; })
+        requires(requires {
+            {
+                a.assign_char(c)
+            };
+        })
     {
         return a.assign_char(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr bool tag_invoke(custom::char_is_valid_for, char_type const c, derived_type) noexcept
-      requires(requires { {derived_type::char_is_valid(c)}; })
+        requires(requires {
+            {
+                derived_type::char_is_valid(c)
+            };
+        })
     {
         return derived_type::char_is_valid(c);
     }
@@ -352,43 +382,59 @@ private:
                                      char_type const c,
                                      std::type_identity<derived_type>) noexcept
       //!\cond REQ
-      requires(requires { {derived_type::char_is_valid(c)}; } && !meta::constexpr_default_initializable<derived_type>)
+        requires(requires {
+            {
+                derived_type::char_is_valid(c)
+            };
+        } && !meta::constexpr_default_initializable<derived_type>)
     //!\endcond
     {
         return derived_type::char_is_valid(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend consteval auto tag_invoke(custom::size,
-                                     derived_type) noexcept requires meta::constexpr_default_initializable<derived_type>
+    friend consteval auto tag_invoke(custom::size, derived_type) noexcept
+        requires meta::constexpr_default_initializable<derived_type>
     {
         return alphabet_size;
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend consteval auto tag_invoke(custom::size, std::type_identity<derived_type>) noexcept
-      requires(!meta::constexpr_default_initializable<derived_type>)
+        requires(!meta::constexpr_default_initializable<derived_type>)
     {
         return alphabet_size;
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr auto tag_invoke(custom::complement, derived_type const a) noexcept
-      requires(requires { {a.complement()}; })
+        requires(requires {
+            {
+                a.complement()
+            };
+        })
     {
         return a.complement();
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr phred_type tag_invoke(custom::to_phred, derived_type const a) noexcept
-      requires(requires { {a.to_phred()}; })
+        requires(requires {
+            {
+                a.to_phred()
+            };
+        })
     {
         return a.to_phred();
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr derived_type & tag_invoke(custom::assign_phred_to, phred_type const p, derived_type & a) noexcept
-      requires(requires { {a.assign_phred(p)}; })
+        requires(requires {
+            {
+                a.assign_phred(p)
+            };
+        })
     {
         return a.assign_phred(p);
     }
@@ -397,7 +443,11 @@ private:
     friend constexpr derived_type const & tag_invoke(custom::assign_phred_to,
                                                      phred_type const     p,
                                                      derived_type const & a) noexcept
-      requires(requires { {a.assign_phred(p)}; })
+        requires(requires {
+            {
+                a.assign_phred(p)
+            };
+        })
     {
         return a.assign_phred(p);
     }

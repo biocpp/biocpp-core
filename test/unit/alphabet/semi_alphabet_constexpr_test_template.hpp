@@ -84,8 +84,7 @@ TYPED_TEST_P(semi_alphabet_constexpr, copy_assignment)
         t2 = t1;
 
         return t2;
-    }
-    ();
+    }();
     EXPECT_EQ(t3, t0);
 }
 
@@ -101,8 +100,7 @@ TYPED_TEST_P(semi_alphabet_constexpr, move_assignment)
         t2 = std::move(t1);
 
         return t2;
-    }
-    ();
+    }();
     EXPECT_EQ(t3, t0);
 }
 

@@ -32,14 +32,13 @@ namespace bio::meta
  */
 //!\cond
 template <class T, class U>
-concept weakly_equality_comparable_with = requires(std::remove_reference_t<T> const & t,
-                                                   std::remove_reference_t<U> const & u)
-{
-    requires std::convertible_to<decltype(t == u), bool>;
-    requires std::convertible_to<decltype(t != u), bool>;
-    requires std::convertible_to<decltype(u == t), bool>;
-    requires std::convertible_to<decltype(u != t), bool>;
-};
+concept weakly_equality_comparable_with =
+  requires(std::remove_reference_t<T> const & t, std::remove_reference_t<U> const & u) {
+      requires std::convertible_to<decltype(t == u), bool>;
+      requires std::convertible_to<decltype(t != u), bool>;
+      requires std::convertible_to<decltype(u == t), bool>;
+      requires std::convertible_to<decltype(u != t), bool>;
+  };
 //!\endcond
 
 /*!\interface   bio::meta::weakly_ordered_with <>
@@ -49,8 +48,7 @@ concept weakly_equality_comparable_with = requires(std::remove_reference_t<T> co
  */
 //!\cond
 template <typename t1, typename t2>
-concept weakly_ordered_with = requires(std::remove_reference_t<t1> const & v1, std::remove_reference_t<t2> const & v2)
-{
+concept weakly_ordered_with = requires(std::remove_reference_t<t1> const & v1, std::remove_reference_t<t2> const & v2) {
     requires std::convertible_to<decltype(v1 < v2), bool>;
     requires std::convertible_to<decltype(v1 <= v2), bool>;
     requires std::convertible_to<decltype(v1 > v2), bool>;

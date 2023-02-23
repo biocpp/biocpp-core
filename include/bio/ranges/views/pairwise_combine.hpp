@@ -38,7 +38,7 @@ namespace bio::ranges::detail
  * \include test/snippet/ranges/views/pairwise_combine.cpp
  */
 template <std::ranges::view underlying_range_type>
-    //!\cond
+//!\cond
     requires(std::ranges::forward_range<underlying_range_type> && std::ranges::common_range<underlying_range_type>)
 //!\endcond
 class pairwise_combine_view : public std::ranges::view_interface<pairwise_combine_view<underlying_range_type>>
@@ -139,9 +139,9 @@ public:
      * Constant if `other_range_t` models std::ranges::bidirectional_range, otherwise linear.
      */
     template <meta::different_from<pairwise_combine_view> other_range_t>
-        //!\cond
+    //!\cond
         requires(std::ranges::viewable_range<other_range_t> &&
-                   std::constructible_from<underlying_range_type, std::views::all_t<other_range_t>>)
+                 std::constructible_from<underlying_range_type, std::views::all_t<other_range_t>>)
     //!\endcond
     explicit constexpr pairwise_combine_view(other_range_t && range) :
       pairwise_combine_view{std::views::all(std::forward<other_range_t>(range))}
@@ -171,7 +171,7 @@ public:
     //!\copydoc begin()
     constexpr const_iterator begin() const noexcept
       //!\cond
-      requires const_iterable_range<underlying_range_type>
+        requires const_iterable_range<underlying_range_type>
     //!\endcond
     {
         return {std::ranges::cbegin(u_range), std::ranges::cbegin(u_range), std::ranges::cend(u_range)};
@@ -198,7 +198,7 @@ public:
     //!\copydoc end()
     constexpr const_iterator end() const noexcept
       //!\cond
-      requires const_iterable_range<underlying_range_type>
+        requires const_iterable_range<underlying_range_type>
     //!\endcond
     {
         return {back_iterator, std::ranges::cbegin(u_range), std::ranges::cend(u_range)};
@@ -211,7 +211,7 @@ public:
     //!\brief Computes the size based on the size of the underlying range.
     constexpr auto size() const noexcept
       //!\cond
-      requires std::ranges::sized_range<underlying_range_type>
+        requires std::ranges::sized_range<underlying_range_type>
     //!\endcond
     {
         return (std::ranges::size(u_range) * (std::ranges::size(u_range) - 1) / 2);
@@ -248,7 +248,7 @@ pairwise_combine_view(other_range_t && range) -> pairwise_combine_view<std::view
  * the ranges algorithms.
  */
 template <std::ranges::view underlying_range_type>
-    //!\cond
+//!\cond
     requires(std::ranges::forward_range<underlying_range_type> && std::ranges::common_range<underlying_range_type>)
 //!\endcond
 template <typename range_type>
@@ -322,9 +322,9 @@ public:
      * This special constructor is needed as it is not covered by the standard copy and move constructors.
      */
     template <typename other_range_type>
-        //!\cond
+    //!\cond
         requires(std::convertible_to<other_range_type, range_type &> &&
-                   std::same_as<std::remove_const_t<other_range_type>, std::remove_const_t<range_type>>)
+                 std::same_as<std::remove_const_t<other_range_type>, std::remove_const_t<range_type>>)
     //!\endcond
     constexpr basic_iterator(basic_iterator<other_range_type> other) noexcept :
       basic_iterator{std::move(other.first_it), std::move(other.begin_it), std::move(other.end_it)}
@@ -346,7 +346,7 @@ public:
     constexpr reference operator[](size_t const index) const
       noexcept(noexcept(std::declval<basic_iterator &>().from_index(1)))
       //!\cond
-      requires std::random_access_iterator<underlying_iterator_type>
+        requires std::random_access_iterator<underlying_iterator_type>
     //!\endcond
     {
         return *(*this + index);
@@ -382,7 +382,7 @@ public:
     constexpr basic_iterator & operator--(/*pre-decrement*/) noexcept(
       noexcept(--std::declval<underlying_iterator_type &>()))
       //!\cond
-      requires std::bidirectional_iterator<underlying_iterator_type>
+        requires std::bidirectional_iterator<underlying_iterator_type>
     //!\endcond
     {
         if (--second_it == first_it)
@@ -398,7 +398,7 @@ public:
     constexpr basic_iterator operator--(int /*post-decrement*/) noexcept(
       noexcept(std::declval<underlying_iterator_type &>()--))
       //!\cond
-      requires std::bidirectional_iterator<underlying_iterator_type>
+        requires std::bidirectional_iterator<underlying_iterator_type>
     //!\endcond
     {
         basic_iterator tmp{*this};
@@ -411,7 +411,7 @@ public:
     constexpr basic_iterator & operator+=(difference_type const offset) noexcept(
       noexcept(std::declval<basic_iterator &>().from_index(1)))
       //!\cond
-      requires std::random_access_iterator<underlying_iterator_type>
+        requires std::random_access_iterator<underlying_iterator_type>
     //!\endcond
     {
         from_index(to_index() + offset);
@@ -423,7 +423,7 @@ public:
     constexpr basic_iterator operator+(difference_type const offset) const
       noexcept(noexcept(std::declval<basic_iterator &>() += 1))
       //!\cond
-      requires std::random_access_iterator<underlying_iterator_type>
+        requires std::random_access_iterator<underlying_iterator_type>
     //!\endcond
     {
         basic_iterator tmp{*this};
@@ -435,7 +435,7 @@ public:
     constexpr friend basic_iterator operator+(difference_type const offset, basic_iterator iter) noexcept(
       noexcept(std::declval<basic_iterator<range_type> &>().from_index(1)))
       //!\cond
-      requires std::random_access_iterator<underlying_iterator_type>
+        requires std::random_access_iterator<underlying_iterator_type>
     //!\endcond
     {
         iter.from_index(iter.to_index() + offset);
@@ -447,7 +447,7 @@ public:
     constexpr basic_iterator & operator-=(difference_type const offset) noexcept(
       noexcept(std::declval<basic_iterator &>().from_index(1)))
       //!\cond
-      requires std::random_access_iterator<underlying_iterator_type>
+        requires std::random_access_iterator<underlying_iterator_type>
     //!\endcond
     {
         from_index(to_index() - offset);
@@ -459,7 +459,7 @@ public:
     constexpr basic_iterator operator-(difference_type const offset) const
       noexcept(noexcept(std::declval<basic_iterator &>() -= 1))
       //!\cond
-      requires std::random_access_iterator<underlying_iterator_type>
+        requires std::random_access_iterator<underlying_iterator_type>
     //!\endcond
     {
         basic_iterator tmp{*this};
@@ -469,9 +469,9 @@ public:
     //!\brief Computes the distance between two iterators; `underlying_iterator_type` must model
     //!\      std::random_access_iterator.
     template <typename other_range_type>
-        //!\cond
+    //!\cond
         requires(std::random_access_iterator<underlying_iterator_type> &&
-                   std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
+                 std::same_as<std::remove_const_t<range_type>, std::remove_const_t<other_range_type>>)
     //!\endcond
     constexpr difference_type operator-(basic_iterator<other_range_type> const & rhs) const
       noexcept(noexcept(std::declval<basic_iterator &>().to_index()))
@@ -516,7 +516,7 @@ private:
     constexpr size_t to_index() const
       noexcept(noexcept(std::declval<underlying_iterator_type &>() - std::declval<underlying_iterator_type &>()))
       //!\cond
-      requires std::random_access_iterator<underlying_iterator_type>
+        requires std::random_access_iterator<underlying_iterator_type>
     //!\endcond
     {
         size_t src_size = end_it - begin_it;
@@ -534,7 +534,7 @@ private:
       noexcept(std::declval<underlying_iterator_type &>() -
                std::declval<underlying_iterator_type &>()) && noexcept(std::declval<underlying_iterator_type &>() + 1))
       //!\cond
-      requires std::random_access_iterator<underlying_iterator_type>
+        requires std::random_access_iterator<underlying_iterator_type>
     //!\endcond
     {
         size_t src_size = end_it - begin_it;

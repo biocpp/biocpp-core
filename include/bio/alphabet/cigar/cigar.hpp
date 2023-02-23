@@ -377,7 +377,7 @@ public:
      * \include test/snippet/alphabet/cigar/cigar_get_index.cpp
      */
     template <size_t index>
-        //!\cond
+    //!\cond
         requires(index == 0 || index == 1)
     //!\endcond
     friend constexpr auto get(cigar const & l) noexcept
@@ -397,7 +397,7 @@ public:
      * \include test/snippet/alphabet/cigar/cigar_get_index.cpp
      */
     template <size_t index>
-        //!\cond
+    //!\cond
         requires(index == 0 || index == 1)
     //!\endcond
     friend constexpr auto get(cigar & l) noexcept

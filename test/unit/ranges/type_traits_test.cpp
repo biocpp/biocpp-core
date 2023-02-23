@@ -59,16 +59,11 @@ TEST(range_and_iterator, range_compatible)
 }
 
 template <typename iterator_t>
-concept iterator_traits_has_iterator_category = requires()
-{
-    typename std::iterator_traits<iterator_t>::iterator_category;
-};
+concept iterator_traits_has_iterator_category =
+  requires() { typename std::iterator_traits<iterator_t>::iterator_category; };
 
 template <typename iterator_t>
-concept has_iterator_category_tag_t = requires()
-{
-    typename bio::ranges::detail::iterator_category_tag_t<iterator_t>;
-};
+concept has_iterator_category_tag_t = requires() { typename bio::ranges::detail::iterator_category_tag_t<iterator_t>; };
 
 #if BIOCPP_WORKAROUND_GCC_96070
 template <typename base_t>
@@ -150,11 +145,8 @@ TEST(iterator_category_tag_t, input_iterator_tag)
 
     {
         // std::views::transform will drop the iterator_category if the lambda doesn't return a lvalue.
-        using range_t = std::vector<int>;
-        auto lambda   = [](auto & element) -> auto
-        {
-            return element;
-        };
+        using range_t    = std::vector<int>;
+        auto lambda      = [](auto & element) -> auto { return element; };
         using view_t     = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
         EXPECT_TRUE((std::same_as<bio::ranges::detail::iterator_category_tag_t<iterator_t>, std::input_iterator_tag>));
@@ -172,11 +164,8 @@ TEST(iterator_category_tag_t, forward_iterator_tag)
 
     {
         // std::views::transform will only keep the iterator_category if the lambda returns a lvalue.
-        using range_t = std::forward_list<int>;
-        auto lambda   = [](auto & element) -> auto &
-        {
-            return element;
-        };
+        using range_t    = std::forward_list<int>;
+        auto lambda      = [](auto & element) -> auto & { return element; };
         using view_t     = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
         EXPECT_TRUE(
@@ -195,11 +184,8 @@ TEST(iterator_category_tag_t, bidirectional_iterator_tag)
 
     {
         // std::views::transform will only keep the iterator_category if the lambda returns a lvalue.
-        using range_t = std::list<int>;
-        auto lambda   = [](auto & element) -> auto &
-        {
-            return element;
-        };
+        using range_t    = std::list<int>;
+        auto lambda      = [](auto & element) -> auto & { return element; };
         using view_t     = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
         EXPECT_TRUE(
@@ -218,11 +204,8 @@ TEST(iterator_category_tag_t, random_access_iterator_tag)
 
     {
         // std::views::transform will only keep the iterator_category if the lambda returns a lvalue.
-        using range_t = std::vector<int>;
-        auto lambda   = [](auto & element) -> auto &
-        {
-            return element;
-        };
+        using range_t    = std::vector<int>;
+        auto lambda      = [](auto & element) -> auto & { return element; };
         using view_t     = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
         EXPECT_TRUE(
@@ -260,11 +243,8 @@ TEST(iterator_concept_tag_t, forward_iterator_tag)
 
     {
         // The iterator_concept stays the same, if the lambda returns a lvalue.
-        using range_t = std::forward_list<int>;
-        auto lambda   = [](auto & element) -> auto &
-        {
-            return element;
-        };
+        using range_t    = std::forward_list<int>;
+        auto lambda      = [](auto & element) -> auto & { return element; };
         using view_t     = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
         EXPECT_TRUE((std::same_as<bio::ranges::detail::iterator_concept_tag_t<iterator_t>, std::forward_iterator_tag>));
@@ -272,11 +252,8 @@ TEST(iterator_concept_tag_t, forward_iterator_tag)
 
     {
         // Furthermore, the iterator_concept stays the same, even if the lambda doesn't return a lvalue.
-        using range_t = std::forward_list<int>;
-        auto lambda   = [](auto & element) -> auto
-        {
-            return element;
-        };
+        using range_t    = std::forward_list<int>;
+        auto lambda      = [](auto & element) -> auto { return element; };
         using view_t     = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
         EXPECT_TRUE((std::same_as<bio::ranges::detail::iterator_concept_tag_t<iterator_t>, std::forward_iterator_tag>));
@@ -294,11 +271,8 @@ TEST(iterator_concept_tag_t, bidirectional_iterator_tag)
 
     {
         // The iterator_concept stays the same, if the lambda returns a lvalue.
-        using range_t = std::list<int>;
-        auto lambda   = [](auto & element) -> auto &
-        {
-            return element;
-        };
+        using range_t    = std::list<int>;
+        auto lambda      = [](auto & element) -> auto & { return element; };
         using view_t     = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
         EXPECT_TRUE(
@@ -307,11 +281,8 @@ TEST(iterator_concept_tag_t, bidirectional_iterator_tag)
 
     {
         // Furthermore, the iterator_concept stays the same, even if the lambda doesn't return a lvalue.
-        using range_t = std::list<int>;
-        auto lambda   = [](auto & element) -> auto
-        {
-            return element;
-        };
+        using range_t    = std::list<int>;
+        auto lambda      = [](auto & element) -> auto { return element; };
         using view_t     = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
         EXPECT_TRUE(
@@ -323,11 +294,8 @@ TEST(iterator_concept_tag_t, random_access_iterator_tag)
 {
     {
         // A contiguous_iterator will be downgraded to a random_access_iterator by std::views::transform
-        using range_t = std::vector<int>; // contiguous_iterator
-        auto lambda   = [](auto & element) -> auto &
-        {
-            return element;
-        };
+        using range_t    = std::vector<int>; // contiguous_iterator
+        auto lambda      = [](auto & element) -> auto & { return element; };
         using view_t     = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
         EXPECT_TRUE(
@@ -336,11 +304,8 @@ TEST(iterator_concept_tag_t, random_access_iterator_tag)
 
     {
         // Furthermore, the iterator_concept stays the same, even if the lambda doesn't return a lvalue.
-        using range_t = std::vector<int>; // contiguous_iterator
-        auto lambda   = [](auto & element) -> auto
-        {
-            return element;
-        };
+        using range_t    = std::vector<int>; // contiguous_iterator
+        auto lambda      = [](auto & element) -> auto { return element; };
         using view_t     = decltype(std::declval<range_t &>() | std::views::transform(lambda));
         using iterator_t = std::ranges::iterator_t<view_t>;
         EXPECT_TRUE(

@@ -26,19 +26,18 @@ namespace bio::ranges::detail::zip
 
 template <class range_t>
 concept simple_view = std::ranges::view<range_t> && std::ranges::range<range_t const> &&
-  std::same_as<std::ranges::iterator_t<range_t>, std::ranges::iterator_t<range_t const>> &&
-  std::same_as<std::ranges::sentinel_t<range_t>, std::ranges::sentinel_t<range_t const>>;
+                      std::same_as<std::ranges::iterator_t<range_t>, std::ranges::iterator_t<range_t const>> &&
+                      std::same_as<std::ranges::sentinel_t<range_t>, std::ranges::sentinel_t<range_t const>>;
 
 template <bool is_const, typename t>
 using maybe_const = std::conditional_t<is_const, t const, t>;
 
 // https://eel.is/c++draft/range.zip#concept:zip-is-common
 template <typename... range_ts>
-concept zip_is_common = (sizeof...(range_ts) == 1 && (std::ranges::common_range<range_ts> && ...)) ||
-                        (!(std::ranges::bidirectional_range<range_ts> && ...) &&
-                         (std::ranges::common_range<range_ts> && ...)) ||
-                        ((std::ranges::random_access_range<range_ts> && ...) &&
-                         (std::ranges::sized_range<range_ts> && ...));
+concept zip_is_common =
+  (sizeof...(range_ts) == 1 && (std::ranges::common_range<range_ts> && ...)) ||
+  (!(std::ranges::bidirectional_range<range_ts> && ...) && (std::ranges::common_range<range_ts> && ...)) ||
+  ((std::ranges::random_access_range<range_ts> && ...) && (std::ranges::sized_range<range_ts> && ...));
 
 // std::abs has problems with ambiguous overloads
 template <typename t>
@@ -117,8 +116,8 @@ namespace bio::ranges::detail
 {
 
 template <std::ranges::input_range... Views>
-    requires(std::ranges::view<Views> &&...)
-&&(sizeof...(Views) > 0) class zip_view : public std::ranges::view_interface<zip_view<Views...>>
+    requires(std::ranges::view<Views> && ...) && (sizeof...(Views) > 0)
+class zip_view : public std::ranges::view_interface<zip_view<Views...>>
 {
     std::tuple<Views...> views_;
 
@@ -129,20 +128,25 @@ template <std::ranges::input_range... Views>
     class sentinel;
 
 public:
-    zip_view() requires(std::is_default_constructible_v<Views> &&...) = default;
+    zip_view()
+        requires(std::is_default_constructible_v<Views> && ...)
+    = default;
     constexpr explicit zip_view(Views... views) : views_(std::move(views)...) {}
 
-    constexpr auto begin() requires(!(zip::simple_view<Views> && ...))
+    constexpr auto begin()
+        requires(!(zip::simple_view<Views> && ...))
     {
         return iterator<false>(zip::tuple_transform(std::ranges::begin, views_));
     }
 
-    constexpr auto begin() const requires(std::ranges::range<Views const> &&...)
+    constexpr auto begin() const
+        requires(std::ranges::range<Views const> && ...)
     {
         return iterator<true>(zip::tuple_transform(std::ranges::begin, views_));
     }
 
-    constexpr auto end() requires(!(zip::simple_view<Views> && ...))
+    constexpr auto end()
+        requires(!(zip::simple_view<Views> && ...))
     {
         if constexpr (!zip::zip_is_common<Views...>)
             return sentinel<false>(zip::tuple_transform(std::ranges::end, views_));
@@ -152,7 +156,8 @@ public:
             return iterator<false>(zip::tuple_transform(std::ranges::end, views_));
     }
 
-    constexpr auto end() const requires(std::ranges::range<Views const> &&...)
+    constexpr auto end() const
+        requires(std::ranges::range<Views const> && ...)
     {
         if constexpr (!zip::zip_is_common<Views const...>)
             return sentinel<true>(zip::tuple_transform(std::ranges::end, views_));
@@ -162,7 +167,8 @@ public:
             return iterator<true>(zip::tuple_transform(std::ranges::end, views_));
     }
 
-    constexpr auto size() requires(std::ranges::sized_range<Views> &&...)
+    constexpr auto size()
+        requires(std::ranges::sized_range<Views> && ...)
     {
         return std::apply(
           [](auto... sizes)
@@ -173,7 +179,8 @@ public:
           zip::tuple_transform(std::ranges::size, views_));
     }
 
-    constexpr auto size() const requires(std::ranges::sized_range<Views const> &&...)
+    constexpr auto size() const
+        requires(std::ranges::sized_range<Views const> && ...)
     {
         return std::apply(
           [](auto... sizes)
@@ -189,11 +196,11 @@ template <typename... range_ts>
 zip_view(range_ts &&...) -> zip_view<std::ranges::views::all_t<range_ts>...>;
 
 template <std::ranges::input_range... Views>
-    requires(std::ranges::view<Views> &&...)
-&&(sizeof...(Views) > 0) template <bool Const>
+    requires(std::ranges::view<Views> && ...) && (sizeof...(Views) > 0)
+template <bool Const>
 #if defined(__GNUC__) && (__GNUC__ == 10) // cpp17 iterators
 class zip_view<Views...>::iterator : public zip::iterator_category_t<Const, Views...>
-#else // cpp20 iterators
+#else                                     // cpp20 iterators
 class zip_view<Views...>::iterator : public zip::iterator_category_t<zip::all_forward<Const, Views...>>
 #endif
 {
@@ -219,10 +226,11 @@ public:
     using difference_type = std::common_type_t<std::ranges::range_difference_t<zip::maybe_const<Const, Views>>...>;
 
     iterator() = default;
-    constexpr iterator(iterator<!Const> i) requires Const &&
-      (std::convertible_to<std::ranges::iterator_t<Views>,
-                           std::ranges::iterator_t<zip::maybe_const<Const, Views>>> &&...) :
-      current_(std::move(i.current))
+    constexpr iterator(iterator<!Const> i)
+        requires Const && (std::convertible_to<std::ranges::iterator_t<Views>,
+                                               std::ranges::iterator_t<zip::maybe_const<Const, Views>>> &&
+                           ...)
+      : current_(std::move(i.current))
     {}
 
     constexpr auto operator*() const
@@ -238,47 +246,53 @@ public:
 
     constexpr void operator++(int) { ++*this; }
 
-    constexpr iterator operator++(int) requires zip::all_forward<Const, Views...>
+    constexpr iterator operator++(int)
+        requires zip::all_forward<Const, Views...>
     {
         auto tmp = *this;
         ++*this;
         return tmp;
     }
 
-    constexpr iterator & operator--() requires zip::all_bidirectional<Const, Views...>
+    constexpr iterator & operator--()
+        requires zip::all_bidirectional<Const, Views...>
     {
         zip::tuple_for_each([](auto & i) { --i; }, current_);
         return *this;
     }
 
-    constexpr iterator operator--(int) requires zip::all_bidirectional<Const, Views...>
+    constexpr iterator operator--(int)
+        requires zip::all_bidirectional<Const, Views...>
     {
         auto tmp = *this;
         --*this;
         return tmp;
     }
 
-    constexpr iterator & operator+=(difference_type x) requires zip::all_random_access<Const, Views...>
+    constexpr iterator & operator+=(difference_type x)
+        requires zip::all_random_access<Const, Views...>
     {
         zip::tuple_for_each([&]<typename I>(I & i) { i += std::iter_difference_t<I>(x); }, current_);
         return *this;
     }
 
-    constexpr iterator & operator-=(difference_type x) requires zip::all_random_access<Const, Views...>
+    constexpr iterator & operator-=(difference_type x)
+        requires zip::all_random_access<Const, Views...>
     {
         zip::tuple_for_each([&]<typename I>(I & i) { i -= std::iter_difference_t<I>(x); }, current_);
         return *this;
     }
 
-    constexpr auto operator[](difference_type n) const requires zip::all_random_access<Const, Views...>
+    constexpr auto operator[](difference_type n) const
+        requires zip::all_random_access<Const, Views...>
     {
         return zip::tuple_transform([&]<typename I>(I & i) -> decltype(auto)
                                     { return i[std::iter_difference_t<I>(n)]; },
                                     current_);
     }
 
-    friend constexpr bool operator==(iterator const & x, iterator const & y) requires(
-      std::equality_comparable<std::ranges::iterator_t<zip::maybe_const<Const, Views>>> &&...)
+    friend constexpr bool operator==(iterator const & x, iterator const & y)
+        requires(std::equality_comparable<std::ranges::iterator_t<zip::maybe_const<Const, Views>>> && ...)
     {
         if constexpr (zip::all_bidirectional<Const, Views...>)
         {
@@ -286,54 +300,52 @@ public:
         }
         else
         {
-            return [&]<size_t... N>(std::integer_sequence<size_t, N...>)
-            {
+            return [&]<size_t... N>(std::integer_sequence<size_t, N...>) {
                 return ((std::get<N>(x.current_) == std::get<N>(y.current_)) || ...);
-            }
-            (std::index_sequence_for<Views...>{});
+            }(std::index_sequence_for<Views...>{});
         }
     }
 
-    friend constexpr auto operator<=>(iterator const & x,
-                                      iterator const & y) requires zip::all_random_access<Const, Views...> &&
-      (std::three_way_comparable<std::ranges::iterator_t<zip::maybe_const<Const, Views>>> &&...)
+    friend constexpr auto operator<=>(iterator const & x, iterator const & y)
+        requires zip::all_random_access<Const, Views...> &&
+                 (std::three_way_comparable<std::ranges::iterator_t<zip::maybe_const<Const, Views>>> && ...)
     {
         return x.current_ <=> y.current_;
     }
 
-    friend constexpr iterator operator+(iterator const & i,
-                                        difference_type  n) requires zip::all_random_access<Const, Views...>
+    friend constexpr iterator operator+(iterator const & i, difference_type n)
+        requires zip::all_random_access<Const, Views...>
     {
         auto r = i;
         r += n;
         return r;
     }
 
-    friend constexpr iterator operator+(difference_type  n,
-                                        iterator const & i) requires zip::all_random_access<Const, Views...>
+    friend constexpr iterator operator+(difference_type n, iterator const & i)
+        requires zip::all_random_access<Const, Views...>
     {
         return i + n;
     }
 
-    friend constexpr iterator operator-(iterator const & i,
-                                        difference_type  n) requires zip::all_random_access<Const, Views...>
+    friend constexpr iterator operator-(iterator const & i, difference_type n)
+        requires zip::all_random_access<Const, Views...>
     {
         auto r = i;
         r -= n;
         return r;
     }
 
-    friend constexpr difference_type operator-(iterator const & x, iterator const & y) requires(
-      std::sized_sentinel_for<std::ranges::iterator_t<zip::maybe_const<Const, Views>>,
-                              std::ranges::iterator_t<zip::maybe_const<Const, Views>>> &&...)
+    friend constexpr difference_type operator-(iterator const & x, iterator const & y)
+        requires(std::sized_sentinel_for<std::ranges::iterator_t<zip::maybe_const<Const, Views>>,
+                                         std::ranges::iterator_t<zip::maybe_const<Const, Views>>> &&
+                 ...)
     {
         return [&]<size_t... N>(std::integer_sequence<size_t, N...>)
         {
             return std::ranges::min(
               {static_cast<difference_type>(std::get<N>(x.current_) - std::get<N>(y.current_))...},
               [](difference_type a, difference_type b) { return zip::abs(b) < zip::abs(a); });
-        }
-        (std::index_sequence_for<Views...>{});
+        }(std::index_sequence_for<Views...>{});
     }
 
     friend constexpr auto iter_move(iterator const & i) noexcept(
@@ -350,19 +362,18 @@ public:
       (noexcept(
          std::ranges::iter_swap(std::declval<std::ranges::iterator_t<zip::maybe_const<Const, Views>> const &>(),
                                 std::declval<std::ranges::iterator_t<zip::maybe_const<Const, Views>> const &>())) &&
-       ...)) requires(std::indirectly_swappable<std::ranges::iterator_t<zip::maybe_const<Const, Views>>> &&...)
+       ...))
+        requires(std::indirectly_swappable<std::ranges::iterator_t<zip::maybe_const<Const, Views>>> && ...)
     {
-        [&]<size_t... N>(std::integer_sequence<size_t, N...>)
-        {
+        [&]<size_t... N>(std::integer_sequence<size_t, N...>) {
             (std::ranges::iter_swap(std::get<N>(l.current_), std::get<N>(r.current)), ...);
-        }
-        (std::index_sequence_for<Views...>{});
+        }(std::index_sequence_for<Views...>{});
     }
 };
 
 template <std::ranges::input_range... Views>
-    requires(std::ranges::view<Views> &&...)
-&&(sizeof...(Views) > 0) template <bool Const>
+    requires(std::ranges::view<Views> && ...) && (sizeof...(Views) > 0)
+template <bool Const>
 class zip_view<Views...>::sentinel
 {
 private:
@@ -377,27 +388,27 @@ public:
     std::tuple<std::ranges::sentinel_t<zip::maybe_const<Const, Views>>...> end_;
 
     sentinel() = default;
-    constexpr sentinel(sentinel<!Const> i) requires Const &&
-      (std::convertible_to<std::ranges::sentinel_t<Views>,
-                           std::ranges::sentinel_t<zip::maybe_const<Const, Views>>> &&...) :
-      end_(std::move(i.end_))
+    constexpr sentinel(sentinel<!Const> i)
+        requires Const && (std::convertible_to<std::ranges::sentinel_t<Views>,
+                                               std::ranges::sentinel_t<zip::maybe_const<Const, Views>>> &&
+                           ...)
+      : end_(std::move(i.end_))
     {}
 
     template <bool OtherConst>
         requires(std::sentinel_for<std::ranges::sentinel_t<zip::maybe_const<Const, Views>>,
-                                   std::ranges::iterator_t<zip::maybe_const<OtherConst, Views>>> &&...)
+                                   std::ranges::iterator_t<zip::maybe_const<OtherConst, Views>>> &&
+                 ...)
     friend constexpr bool operator==(iterator<OtherConst> const & x, sentinel const & y)
     {
         return [&]<size_t... N>(std::integer_sequence<size_t, N...>)
-        {
-            return ((std::get<N>(x.current_) == std::get<N>(y.end_)) || ...);
-        }
-        (std::index_sequence_for<Views...>{});
+        { return ((std::get<N>(x.current_) == std::get<N>(y.end_)) || ...); }(std::index_sequence_for<Views...>{});
     }
 
     template <bool OtherConst>
         requires(std::sized_sentinel_for<std::ranges::sentinel_t<zip::maybe_const<Const, Views>>,
-                                         std::ranges::iterator_t<zip::maybe_const<OtherConst, Views>>> &&...)
+                                         std::ranges::iterator_t<zip::maybe_const<OtherConst, Views>>> &&
+                 ...)
     friend constexpr std::common_type_t<std::ranges::range_difference_t<zip::maybe_const<OtherConst, Views>>...>
     operator-(iterator<OtherConst> const & x, sentinel const & y)
     {
@@ -406,13 +417,13 @@ public:
         {
             return std::ranges::min({static_cast<return_t>(std::get<N>(x.current_) - std::get<N>(y.end_))...},
                                     [](return_t a, return_t b) { return zip::abs(b) < zip::abs(a); });
-        }
-        (std::index_sequence_for<Views...>{});
+        }(std::index_sequence_for<Views...>{});
     }
 
     template <bool OtherConst>
         requires(std::sized_sentinel_for<std::ranges::sentinel_t<zip::maybe_const<Const, Views>>,
-                                         std::ranges::iterator_t<zip::maybe_const<OtherConst, Views>>> &&...)
+                                         std::ranges::iterator_t<zip::maybe_const<OtherConst, Views>>> &&
+                 ...)
     friend constexpr std::common_type_t<std::ranges::range_difference_t<zip::maybe_const<OtherConst, Views>>...>
     operator-(sentinel const & y, iterator<OtherConst> const & x)
     {

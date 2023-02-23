@@ -109,7 +109,7 @@ private:
                 [[fallthrough]];
             case alphabet::translation_frames::REV_FRAME_2:
                 return (std::max<size_t>(old_size, 2) - 2) / 3;
-            default: /* GCOVR_EXCL_LINE */
+            default:   /* GCOVR_EXCL_LINE */
                 BIOCPP_UNREACHABLE
                 break; /* GCOVR_EXCL_LINE */
         }
@@ -151,7 +151,7 @@ private:
                     return alphabet::translate_triplet(alphabet::complement(urange2[old_size - n * 3 - 3]),
                                                        alphabet::complement(urange2[old_size - n * 3 - 4]),
                                                        alphabet::complement(urange2[old_size - n * 3 - 5]));
-                default: /* GCOVR_EXCL_LINE */
+                default:   /* GCOVR_EXCL_LINE */
                     BIOCPP_UNREACHABLE
                     break; /* GCOVR_EXCL_LINE */
             }

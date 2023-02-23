@@ -46,11 +46,10 @@ struct iterator_fixture : public ::testing::Test
 
 // Helper concept to check whether the test fixture has a member function expect_eq.
 template <typename t>
-concept has_expect_equal_member_function = requires(t & a)
-{
+concept has_expect_equal_member_function = requires(t & a) {
     {
         t::expect_eq(*std::ranges::begin(a.test_range), *std::ranges::begin(a.expected_range))
-        } -> std::same_as<void>;
+    } -> std::same_as<void>;
 };
 
 // Delegates to the test fixture member function `expect_eq` if available and falls back to EXPECT_EQ otherwise.

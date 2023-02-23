@@ -73,7 +73,7 @@ public:
     // This constructor needs to be public, because constructor templates are not inherited otherwise
     //!\brief Allow explicit construction from any other nucleotide type and convert via the character representation.
     template <meta::different_from<derived_type> other_nucl_type>
-        //!\cond
+    //!\cond
         requires nucleotide<other_nucl_type>
     //!\endcond
     explicit constexpr nucleotide_base(other_nucl_type const & other) noexcept
@@ -103,7 +103,8 @@ public:
      *
      * Guaranteed not to throw.
      */
-    constexpr derived_type complement() const noexcept requires(requires(derived_type d) { d.complement_table; })
+    constexpr derived_type complement() const noexcept
+        requires(requires(derived_type d) { d.complement_table; })
     {
         return derived_type::complement_table[to_rank()];
     }
@@ -156,8 +157,7 @@ private:
         ret['t'] = true;
 
         return ret;
-    }
-    ();
+    }();
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr derived_type tag_invoke(custom::complement, derived_type const a) noexcept

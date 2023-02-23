@@ -169,8 +169,7 @@ protected:
         ret['*'] = ret
           ['F']; // The most common stop codon is UGA. This is most similar to a Tryptophan which in this alphabet gets converted to Phenylalanine.
         return ret;
-    }
-    ();
+    }();
 };
 
 } // namespace bio::alphabet

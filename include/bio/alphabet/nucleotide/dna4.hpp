@@ -130,8 +130,7 @@ protected:
         ret['v'] = ret['A']; // or C or G
 
         return ret;
-    }
-    ();
+    }();
 };
 
 } // namespace bio::alphabet

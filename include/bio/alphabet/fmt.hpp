@@ -24,7 +24,7 @@
 #    include <bio/ranges/views/to_char.hpp>
 
 template <typename alph_t>
-    requires((!std::integral<alph_t>)&&bio::alphabet::alphabet<alph_t>)
+    requires((!std::integral<alph_t>) && bio::alphabet::alphabet<alph_t>)
 struct fmt::formatter<alph_t> : fmt::formatter<bio::alphabet::char_t<alph_t>, bio::alphabet::char_t<alph_t>>
 {
     constexpr auto format(alph_t const a, auto & ctx) const
@@ -52,7 +52,8 @@ struct fmt::is_tuple_like<alph_t> : std::false_type
 //TODO: get rid of the following once formatting ranges as strings works in FMT via {:s}
 
 template <typename rng_t>
-concept bio_range = std::ranges::forward_range<rng_t> &&
+concept bio_range =
+  std::ranges::forward_range<rng_t> &&
   (!std::integral<std::ranges::range_value_t<rng_t>>)&&bio::alphabet::alphabet<std::ranges::range_reference_t<rng_t>>;
 
 template <bio_range rng_t>

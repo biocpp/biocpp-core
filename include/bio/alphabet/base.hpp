@@ -103,7 +103,7 @@ public:
      */
     constexpr char_type to_char() const noexcept
       //!\cond
-      requires(!std::same_as<char_t, void>)
+        requires(!std::same_as<char_t, void>)
     //!\endcond
     {
         return derived_type::rank_to_char[rank];
@@ -146,7 +146,7 @@ public:
      */
     constexpr derived_type & assign_char(char_type const c) noexcept
       //!\cond
-      requires(!std::same_as<char_t, void>)
+        requires(!std::same_as<char_t, void>)
     //!\endcond
     {
         using index_t = std::make_unsigned_t<char_type>;
@@ -205,28 +205,44 @@ private:
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr derived_type & tag_invoke(custom::assign_rank_to, rank_type const r, derived_type & a) noexcept
-      requires(requires { {a.assign_rank(r)}; })
+        requires(requires {
+            {
+                a.assign_rank(r)
+            };
+        })
     {
         return a.assign_rank(r);
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr auto tag_invoke(custom::to_char, derived_type const a) noexcept
-      requires(requires { {a.to_char()}; })
+        requires(requires {
+            {
+                a.to_char()
+            };
+        })
     {
         return a.to_char();
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr derived_type & tag_invoke(custom::assign_char_to, char_type const c, derived_type & a) noexcept
-      requires(requires { {a.assign_char(c)}; })
+        requires(requires {
+            {
+                a.assign_char(c)
+            };
+        })
     {
         return a.assign_char(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr bool tag_invoke(custom::char_is_valid_for, char_type const c, derived_type) noexcept
-      requires(requires { {derived_type::char_is_valid(c)}; })
+        requires(requires {
+            {
+                derived_type::char_is_valid(c)
+            };
+        })
     {
         return derived_type::char_is_valid(c);
     }
@@ -236,22 +252,26 @@ private:
                                      char_type const c,
                                      std::type_identity<derived_type>) noexcept
       //!\cond REQ
-      requires(requires { {derived_type::char_is_valid(c)}; } && !meta::constexpr_default_initializable<derived_type>)
+        requires(requires {
+            {
+                derived_type::char_is_valid(c)
+            };
+        } && !meta::constexpr_default_initializable<derived_type>)
     //!\endcond
     {
         return derived_type::char_is_valid(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend consteval auto tag_invoke(custom::size,
-                                     derived_type) noexcept requires meta::constexpr_default_initializable<derived_type>
+    friend consteval auto tag_invoke(custom::size, derived_type) noexcept
+        requires meta::constexpr_default_initializable<derived_type>
     {
         return size;
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend consteval auto tag_invoke(custom::size, std::type_identity<derived_type>) noexcept
-      requires(!meta::constexpr_default_initializable<derived_type>)
+        requires(!meta::constexpr_default_initializable<derived_type>)
     {
         return size;
     }
@@ -299,7 +319,7 @@ public:
     //!\copybrief bio::alphabet::base::to_char
     constexpr char_type to_char() const noexcept
       //!\cond
-      requires(!std::same_as<char_t, void>)
+        requires(!std::same_as<char_t, void>)
     //!\endcond
     {
         return derived_type::char_value;
@@ -315,7 +335,7 @@ public:
     //!\copybrief bio::alphabet::base::assign_char
     constexpr derived_type & assign_char(char_type const) noexcept
       //!\cond
-      requires(!std::same_as<char_t, void>)
+        requires(!std::same_as<char_t, void>)
     //!\endcond
     {
         return static_cast<derived_type &>(*this);
@@ -358,21 +378,33 @@ private:
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr auto tag_invoke(custom::to_char, derived_type const a) noexcept
-      requires(requires { {a.to_char()}; })
+        requires(requires {
+            {
+                a.to_char()
+            };
+        })
     {
         return a.to_char();
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr derived_type & tag_invoke(custom::assign_char_to, char_type const c, derived_type & a) noexcept
-      requires(requires { {a.assign_char(c)}; })
+        requires(requires {
+            {
+                a.assign_char(c)
+            };
+        })
     {
         return a;
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend constexpr bool tag_invoke(custom::char_is_valid_for, char_type const c, derived_type) noexcept
-      requires(requires { {derived_type::char_is_valid(c)}; } && std::is_nothrow_default_constructible_v<derived_type>)
+        requires(requires {
+            {
+                derived_type::char_is_valid(c)
+            };
+        } && std::is_nothrow_default_constructible_v<derived_type>)
     {
         return derived_type::char_is_valid(c);
     }
@@ -381,21 +413,25 @@ private:
     friend constexpr bool tag_invoke(custom::char_is_valid_for,
                                      char_type const c,
                                      std::type_identity<derived_type>) noexcept
-      requires(requires { {derived_type::char_is_valid(c)}; } && !std::is_nothrow_default_constructible_v<derived_type>)
+        requires(requires {
+            {
+                derived_type::char_is_valid(c)
+            };
+        } && !std::is_nothrow_default_constructible_v<derived_type>)
     {
         return derived_type::char_is_valid(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend consteval auto tag_invoke(custom::size,
-                                     derived_type) noexcept requires meta::constexpr_default_initializable<derived_type>
+    friend consteval auto tag_invoke(custom::size, derived_type) noexcept
+        requires meta::constexpr_default_initializable<derived_type>
     {
         return alphabet_size;
     }
 
     //!\brief tag_invoke() wrapper around member.
     friend consteval auto tag_invoke(custom::size, std::type_identity<derived_type>) noexcept
-      requires(!meta::constexpr_default_initializable<derived_type>)
+        requires(!meta::constexpr_default_initializable<derived_type>)
     {
         return alphabet_size;
     }

@@ -119,7 +119,7 @@ public:
      * \throws std::runtime_error If `exactly && or_throw && bio::alphabet::sized_range<urng_t>`.
      */
     template <std::ranges::viewable_range rng_t>
-        //!\cond
+    //!\cond
         requires std::constructible_from<rng_t, std::views::all_t<rng_t>>
     //!\endcond
     constexpr view_take(rng_t && _urange, size_t const _size) :
@@ -152,7 +152,8 @@ public:
     }
 
     //!\copydoc begin()
-    constexpr auto begin() const noexcept requires const_iterable_range<urng_t>
+    constexpr auto begin() const noexcept
+        requires const_iterable_range<urng_t>
     {
         if constexpr (std::ranges::random_access_range<urng_t> && (std::ranges::sized_range<urng_t> || exactly))
             return std::ranges::begin(urange);
@@ -182,7 +183,8 @@ public:
     }
 
     //!\copydoc end()
-    constexpr auto end() const noexcept requires const_iterable_range<urng_t>
+    constexpr auto end() const noexcept
+        requires const_iterable_range<urng_t>
     {
         if constexpr (std::ranges::random_access_range<urng_t> && (std::ranges::sized_range<urng_t> || exactly))
             return std::ranges::begin(urange) + target_size;
@@ -206,7 +208,11 @@ public:
      *
      * No-throw guarantee.
      */
-    constexpr auto size() const noexcept requires exactly || std::ranges::sized_range<urng_t> { return target_size; }
+    constexpr auto size() const noexcept
+        requires exactly || std::ranges::sized_range<urng_t>
+    {
+        return target_size;
+    }
 };
 
 //!\brief Template argument type deduction guide that strips references.
@@ -311,7 +317,7 @@ public:
     //!\brief Decrements the iterator by one.
     constexpr basic_iterator & operator--() noexcept(noexcept(--std::declval<base_base_t &>()))
       //!\cond
-      requires std::bidirectional_iterator<base_base_t>
+        requires std::bidirectional_iterator<base_base_t>
     //!\endcond
     {
         base_t::operator--();
@@ -323,7 +329,7 @@ public:
     constexpr basic_iterator operator--(int) noexcept(noexcept(--std::declval<basic_iterator &>()) &&
                                                       std::is_nothrow_copy_constructible_v<basic_iterator>)
       //!\cond
-      requires std::bidirectional_iterator<base_base_t>
+        requires std::bidirectional_iterator<base_base_t>
     //!\endcond
     {
         basic_iterator cpy{*this};
@@ -335,7 +341,7 @@ public:
     constexpr basic_iterator & operator+=(difference_type const skip) noexcept(noexcept(std::declval<base_t &>() +=
                                                                                         skip))
       //!\cond
-      requires std::random_access_iterator<base_base_t>
+        requires std::random_access_iterator<base_base_t>
     //!\endcond
     {
         base_t::operator+=(skip);
@@ -347,7 +353,7 @@ public:
     constexpr basic_iterator & operator-=(difference_type const skip) noexcept(noexcept(std::declval<base_t &>() -=
                                                                                         skip))
       //!\cond
-      requires std::random_access_iterator<base_base_t>
+        requires std::random_access_iterator<base_base_t>
     //!\endcond
     {
         base_t::operator-=(skip);
@@ -365,7 +371,7 @@ public:
     constexpr bool operator==(basic_iterator const & rhs) const
       noexcept(!or_throw && noexcept(std::declval<base_base_t &>() == std::declval<base_base_t &>()))
       //!\cond
-      requires std::forward_iterator<base_base_t>
+        requires std::forward_iterator<base_base_t>
     //!\endcond
     {
         return *base_t::this_to_base() == *rhs.this_to_base();
@@ -404,7 +410,7 @@ public:
     constexpr reference operator[](std::make_unsigned_t<difference_type> const n) const
       noexcept(noexcept(std::declval<base_base_t &>()[0]))
       //!\cond
-      requires std::random_access_iterator<base_base_t>
+        requires std::random_access_iterator<base_base_t>
     //!\endcond
     {
         return base_base_t::operator[](n);

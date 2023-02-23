@@ -41,8 +41,7 @@ constexpr std::array<out_t, size<in_t>> convert_through_char_representation = []
     for (auto i = decltype(size<in_t>){0}; i < size<in_t>; ++i)
         assign_char_to(to_char(assign_rank_to(i, in_t{})), ret[i]);
     return ret;
-}
-();
+}();
 
 /*!\brief Helper function for defining string literal operators.
  * \ingroup alphabet
@@ -52,7 +51,7 @@ constexpr std::array<out_t, size<in_t>> convert_through_char_representation = []
 template <meta::detail::literal_buffer_string str, typename alphabet_t>
 constexpr std::vector<alphabet_t> string_literal()
 {
-    auto illegal_char_at = []() consteval->int32_t
+    auto illegal_char_at = []() consteval -> int32_t
     {
         for (int32_t i = 0; i < (int32_t)str.size(); ++i)
             if (!char_is_valid_for<alphabet_t>(str[i]))

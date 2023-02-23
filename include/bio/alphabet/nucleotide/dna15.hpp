@@ -108,8 +108,7 @@ protected:
         ret['u'] = ret['t'];
 
         return ret;
-    }
-    ();
+    }();
 
     //!\brief The complement table.
     static const std::array<dna15, alphabet_size> complement_table;

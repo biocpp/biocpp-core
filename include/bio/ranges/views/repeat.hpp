@@ -96,8 +96,9 @@ public:
     ~repeat_view()                                   = default; //!< Defaulted.
 
     //!\brief Construct from any type (Note: the value will be copied into views::single).
-    constexpr explicit repeat_view(value_t const & value) requires std::copy_constructible<value_t> :
-      single_value{value}
+    constexpr explicit repeat_view(value_t const & value)
+        requires std::copy_constructible<value_t>
+      : single_value{value}
 
     {}
 
@@ -224,11 +225,12 @@ public:
      * \param rhs a non-const version of basic_iterator to construct from.
      */
     template <typename parent_type2>
-        //!\cond
-        requires(std::is_const_v<parent_type> &&
-                 (!std::is_const_v<parent_type2>)&&std::is_same_v<std::remove_const_t<parent_type>, parent_type2>)
+    //!\cond
+        requires(std::is_const_v<parent_type> && (!std::is_const_v<parent_type2>) &&
+                 std::is_same_v<std::remove_const_t<parent_type>, parent_type2>)
     //!\endcond
-    constexpr basic_iterator(basic_iterator<parent_type2> const & rhs) noexcept : base_t{rhs} {}
+    constexpr basic_iterator(basic_iterator<parent_type2> const & rhs) noexcept : base_t{rhs}
+    {}
     //!\}
 
     /*!\name Comparison operators

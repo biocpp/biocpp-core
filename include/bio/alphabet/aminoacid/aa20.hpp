@@ -120,8 +120,7 @@ protected:
         ret['z'] = ret['E']; // Convert z (either E/Q) to E, since E occurs more frequently.
         ret['*'] = ret['W']; // The most common stop codon is UGA. This is most similar to a Tryptophan.
         return ret;
-    }
-    ();
+    }();
 };
 
 } // namespace bio::alphabet

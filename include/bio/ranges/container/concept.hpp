@@ -45,8 +45,7 @@ namespace bio::ranges::detail
  */
 //!\cond
 template <typename type>
-concept container = requires(type val, type val2, type const cval, typename type::iterator it)
-{
+concept container = requires(type val, type val2, type const cval, typename type::iterator it) {
     // member types
     typename type::value_type;
     typename type::reference;
@@ -113,8 +112,7 @@ concept container = requires(type val, type val2, type const cval, typename type
  */
 //!\cond
 template <typename type>
-concept sequence_container = requires(type val, type val2, type const cval)
-{
+concept sequence_container = requires(type val, type val2, type const cval) {
     requires container<type>;
 
     // clang-format off
@@ -174,8 +172,7 @@ concept sequence_container = requires(type val, type val2, type const cval)
  */
 //!\cond
 template <typename type>
-concept random_access_container = requires(type val)
-{
+concept random_access_container = requires(type val) {
     requires sequence_container<type>;
 
     // clang-format off
@@ -202,8 +199,7 @@ concept random_access_container = requires(type val)
  */
 //!\cond
 template <typename type>
-concept reservible_container = requires(type val)
-{
+concept reservible_container = requires(type val) {
     requires random_access_container<type>;
 
     // clang-format off

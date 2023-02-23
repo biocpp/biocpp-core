@@ -75,8 +75,8 @@ jobs:
             build_type: Debug
 
           - name: "Clang Format"
-            cxx: "clang-format-14"
-            cc: "gcc"
+            cxx: "clang-format-16"
+            cc: "clang-16"
             os: "ubuntu-22.04"
             build: clang_format
             build_type: Debug

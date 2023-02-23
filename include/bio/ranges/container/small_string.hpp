@@ -151,9 +151,9 @@ public:
      * No-throw guarantee if value_type is std::is_nothrow_copy_constructible.
      */
     template <std::forward_iterator begin_it_type, typename end_it_type>
-        //!\cond
+    //!\cond
         requires(std::sentinel_for<end_it_type, begin_it_type> &&
-                   std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
+                 std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
     //!\endcond
     constexpr void assign(begin_it_type begin_it, end_it_type end_it) noexcept
     {
@@ -174,16 +174,10 @@ public:
      * \{
      */
     //!\brief Returns the maximal size which equals the capacity.
-    static constexpr size_type max_size() noexcept
-    {
-        return capacity_;
-    }
+    static constexpr size_type max_size() noexcept { return capacity_; }
 
     //!\brief Returns the maximal capacity.
-    static constexpr size_type capacity() noexcept
-    {
-        return capacity_;
-    }
+    static constexpr size_type capacity() noexcept { return capacity_; }
     //!\}
 
     /*!\name Modifiers
@@ -214,10 +208,7 @@ public:
     }
 
     //!\copydoc bio::ranges::small_vector::resize
-    constexpr void resize(size_type const count) noexcept
-    {
-        resize(count, '\0');
-    }
+    constexpr void resize(size_type const count) noexcept { resize(count, '\0'); }
 
     //!\copydoc bio::ranges::small_vector::resize
     //!\param[in] value Append copies of value when resizing.
@@ -302,10 +293,7 @@ public:
      *
      * Linear in the size of the string.
      */
-    std::string str() const
-    {
-        return std::string{this->cbegin(), this->cend()};
-    }
+    std::string str() const { return std::string{this->cbegin(), this->cend()}; }
 
     /*!\brief Returns the content represented as std::string_view.
      *
@@ -319,10 +307,7 @@ public:
      *
      * Constant.
      */
-    std::string_view view() const
-    {
-        return std::string_view{data_.data(), this->size()};
-    }
+    std::string_view view() const { return std::string_view{data_.data(), this->size()}; }
 
     /*!\brief Returns the content represented as 0-terminated c-style string.
      *
@@ -336,10 +321,7 @@ public:
      *
      * Constant.
      */
-    constexpr char const * c_str() const noexcept
-    {
-        return data_.data();
-    }
+    constexpr char const * c_str() const noexcept { return data_.data(); }
 
     /*!\brief Implicit conversion to std::string_view (same as calling bio::ranges::small_string::view() ).
      *
@@ -351,10 +333,7 @@ public:
      *
      * Constant.
      */
-    operator std::string_view() const
-    {
-        return view();
-    }
+    operator std::string_view() const { return view(); }
     //!\}
 
     /*!\name Input/output
@@ -395,8 +374,7 @@ small_string(std::array<char, N> const &) -> small_string<N>;
 //!\relates small_string
 template <std::same_as<char>... t>
     requires(sizeof...(t) > 0)
-small_string(t const... chars)
-->small_string<sizeof...(chars)>;
+small_string(t const... chars) -> small_string<sizeof...(chars)>;
 //!\}
 
 } // namespace bio::ranges

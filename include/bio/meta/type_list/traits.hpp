@@ -278,7 +278,7 @@ inline constexpr ptrdiff_t find_if<pred_t, type_list<pack_t...>> =
  * \include test/snippet/meta/type_list/list_traits_contains.cpp
  */
 template <typename query_t, typename list_t>
-    //!\cond
+//!\cond
     requires template_specialisation_of<list_t, meta::type_list>
 //!\endcond
 inline constexpr bool contains = (find<query_t, list_t> != -1);
@@ -306,9 +306,9 @@ inline constexpr bool contains = (find<query_t, list_t> != -1);
  * \include test/snippet/meta/type_list/list_traits_at.cpp
  */
 template <ptrdiff_t idx, typename list_t>
-    //!\cond
-    requires((template_specialisation_of<list_t, meta::type_list>)&&((idx >= 0 && idx < size<list_t>) ||
-                                                                     (-idx <= size<list_t>)))
+//!\cond
+    requires((template_specialisation_of<list_t, meta::type_list>) &&
+             ((idx >= 0 && idx < size<list_t>) || (-idx <= size<list_t>)))
 //!\endcond
 using at = typename decltype(detail::at<idx>(list_t{}))::type;
 
@@ -326,8 +326,8 @@ using at = typename decltype(detail::at<idx>(list_t{}))::type;
  * \include test/snippet/meta/type_list/list_traits_front.cpp
  */
 template <typename list_t>
-    //!\cond
-    requires((template_specialisation_of<list_t, meta::type_list>)&&(size<list_t> > 0))
+//!\cond
+    requires((template_specialisation_of<list_t, meta::type_list>) && (size<list_t> > 0))
 //!\endcond
 using front = typename decltype(detail::front(list_t{}))::type;
 
@@ -348,8 +348,8 @@ using front = typename decltype(detail::front(list_t{}))::type;
  * \include test/snippet/meta/type_list/list_traits_back.cpp
  */
 template <typename list_t>
-    //!\cond
-    requires((template_specialisation_of<list_t, meta::type_list>)&&(size<list_t> > 0))
+//!\cond
+    requires((template_specialisation_of<list_t, meta::type_list>) && (size<list_t> > 0))
 //!\endcond
 using back = typename decltype(detail::back(list_t{}))::type;
 
@@ -376,7 +376,7 @@ using back = typename decltype(detail::back(list_t{}))::type;
  * \include test/snippet/meta/type_list/list_traits_concat.cpp
  */
 template <typename... lists_t>
-    //!\cond
+//!\cond
     requires((template_specialisation_of<lists_t, meta::type_list> && ...))
 //!\endcond
 using concat = decltype(detail::concat(lists_t{}...));
@@ -395,8 +395,8 @@ using concat = decltype(detail::concat(lists_t{}...));
  * \include test/snippet/meta/type_list/list_traits_drop_front.cpp
  */
 template <typename list_t>
-    //!\cond
-    requires((template_specialisation_of<list_t, meta::type_list>)&&(size<list_t> > 0))
+//!\cond
+    requires((template_specialisation_of<list_t, meta::type_list>) && (size<list_t> > 0))
 //!\endcond
 using drop_front = decltype(detail::drop_front(list_t{}));
 
@@ -415,8 +415,8 @@ using drop_front = decltype(detail::drop_front(list_t{}));
  * \include test/snippet/meta/type_list/list_traits_take.cpp
  */
 template <ptrdiff_t i, typename list_t>
-    //!\cond
-    requires((template_specialisation_of<list_t, meta::type_list>)&&(i >= 0 && i <= size<list_t>))
+//!\cond
+    requires((template_specialisation_of<list_t, meta::type_list>) && (i >= 0 && i <= size<list_t>))
 //!\endcond
 using take = typename decltype(detail::split_after<i>(list_t{}))::first_type;
 
@@ -435,8 +435,8 @@ using take = typename decltype(detail::split_after<i>(list_t{}))::first_type;
  * \include test/snippet/meta/type_list/list_traits_drop.cpp
  */
 template <ptrdiff_t i, typename list_t>
-    //!\cond
-    requires((template_specialisation_of<list_t, meta::type_list>)&&(i >= 0 && i <= size<list_t>))
+//!\cond
+    requires((template_specialisation_of<list_t, meta::type_list>) && (i >= 0 && i <= size<list_t>))
 //!\endcond
 using drop = typename decltype(detail::split_after<i>(list_t{}))::second_type;
 
@@ -455,8 +455,8 @@ using drop = typename decltype(detail::split_after<i>(list_t{}))::second_type;
  * \include test/snippet/meta/type_list/list_traits_take_last.cpp
  */
 template <ptrdiff_t i, typename list_t>
-    //!\cond
-    requires((template_specialisation_of<list_t, meta::type_list>)&&(i >= 0 && i <= size<list_t>))
+//!\cond
+    requires((template_specialisation_of<list_t, meta::type_list>) && (i >= 0 && i <= size<list_t>))
 //!\endcond
 using take_last = drop<size<list_t> - i, list_t>;
 
@@ -475,8 +475,8 @@ using take_last = drop<size<list_t> - i, list_t>;
  * \include test/snippet/meta/type_list/list_traits_drop_last.cpp
  */
 template <ptrdiff_t i, typename list_t>
-    //!\cond
-    requires((template_specialisation_of<list_t, meta::type_list>)&&(i >= 0 && i <= size<list_t>))
+//!\cond
+    requires((template_specialisation_of<list_t, meta::type_list>) && (i >= 0 && i <= size<list_t>))
 //!\endcond
 using drop_last = take<size<list_t> - i, list_t>;
 
@@ -495,8 +495,8 @@ using drop_last = take<size<list_t> - i, list_t>;
  * \include test/snippet/meta/type_list/list_traits_drop_last.cpp
  */
 template <ptrdiff_t i, typename list_t>
-    //!\cond
-    requires((template_specialisation_of<list_t, meta::type_list>)&&(i >= 0 && i <= size<list_t>))
+//!\cond
+    requires((template_specialisation_of<list_t, meta::type_list>) && (i >= 0 && i <= size<list_t>))
 //!\endcond
 using split_after = decltype(detail::split_after<i>(list_t{}));
 
@@ -518,7 +518,7 @@ using split_after = decltype(detail::split_after<i>(list_t{}));
  * \include test/snippet/meta/type_list/list_traits_transform.cpp
  */
 template <template <typename> typename trait_t, typename list_t>
-    //!\cond
+//!\cond
     requires template_specialisation_of<list_t, meta::type_list>
 //!\endcond
 using transform = decltype(detail::transform<trait_t>(list_t{}));
@@ -539,8 +539,8 @@ using transform = decltype(detail::transform<trait_t>(list_t{}));
  * \include test/snippet/meta/type_list/list_traits_replace_at.cpp
  */
 template <typename replace_t, std::ptrdiff_t i, typename list_t>
-    //!\cond
-    requires((template_specialisation_of<list_t, meta::type_list>)&&(i >= 0 && i < size<list_t>))
+//!\cond
+    requires((template_specialisation_of<list_t, meta::type_list>) && (i >= 0 && i < size<list_t>))
 //!\endcond
 using replace_at = decltype(detail::replace_at<replace_t, i>(list_t{}));
 

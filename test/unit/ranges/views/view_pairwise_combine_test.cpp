@@ -141,12 +141,12 @@ TYPED_TEST(pairwise_combine_iterator_test, associated_types)
     { // const view over non-const range
         using u_ref_t = typename std::iterator_traits<u_iter_t>::reference;
         EXPECT_TRUE(
-          (std::is_same_v<typename std::iterator_traits<const v_iter_t>::reference, std::tuple<u_ref_t, u_ref_t>>));
+          (std::is_same_v<typename std::iterator_traits<v_iter_t const>::reference, std::tuple<u_ref_t, u_ref_t>>));
     }
 
     { // const view over const range
         using u_ref_t = typename std::iterator_traits<u_const_iter_t>::reference;
-        EXPECT_TRUE((std::is_same_v<typename std::iterator_traits<const v_const_iter_t>::reference,
+        EXPECT_TRUE((std::is_same_v<typename std::iterator_traits<v_const_iter_t const>::reference,
                                     std::tuple<u_ref_t, u_ref_t>>));
     }
 

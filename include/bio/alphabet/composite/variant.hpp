@@ -98,7 +98,7 @@ namespace bio::alphabet
  *
  */
 template <typename... alternative_types>
-    //!\cond
+//!\cond
     requires((detail::writable_constexpr_alphabet<alternative_types> && ...) &&
              (std::regular<alternative_types> && ...) && (sizeof...(alternative_types) >= 2))
 //!\endcond
@@ -173,10 +173,13 @@ public:
      *
      */
     template <typename alternative_t>
-        //!\cond
+    //!\cond
         requires(is_alternative<alternative_t>())
     //!\endcond
-    constexpr variant(alternative_t const alternative) noexcept { assign_rank(rank_by_type_(alternative)); }
+    constexpr variant(alternative_t const alternative) noexcept
+    {
+        assign_rank(rank_by_type_(alternative));
+    }
 
     /*!\brief Constructor for arguments implicitly convertible to an alternative.
      * \tparam indirect_alternative_t A type that is implicitly convertible to an alternative type.
@@ -196,7 +199,7 @@ public:
      *
      */
     template <typename indirect_alternative_t>
-        //!\cond
+    //!\cond
         requires(detail::variant_general_guard<indirect_alternative_t, alternative_types...> &&
                  (std::is_convertible_v<indirect_alternative_t, alternative_types> || ...))
     //!\endcond
@@ -225,7 +228,7 @@ public:
      *
      */
     template <typename indirect_alternative_t>
-        //!\cond
+    //!\cond
         requires(detail::variant_general_guard<indirect_alternative_t, alternative_types...> &&
                  !(std::is_convertible_v<indirect_alternative_t, alternative_types> || ...) &&
                  (std::is_constructible_v<alternative_types, indirect_alternative_t> || ...))
@@ -250,7 +253,7 @@ public:
      *
      */
     template <typename indirect_alternative_t>
-        //!\cond
+    //!\cond
         requires(detail::variant_general_guard<indirect_alternative_t, alternative_types...> &&
                  (meta::weakly_assignable_from<alternative_types, indirect_alternative_t> || ...))
     //!\endcond
@@ -314,7 +317,7 @@ public:
     template <typename alternative_t>
     constexpr bool holds_alternative() const noexcept
       //!\cond
-      requires(is_alternative<alternative_t>())
+        requires(is_alternative<alternative_t>())
     //!\endcond
     {
         constexpr size_t index = meta::list_traits::find<alternative_t, alternatives>;
@@ -329,7 +332,7 @@ public:
     template <typename alternative_t>
     constexpr alternative_t convert_to() const
       //!\cond
-      requires(is_alternative<alternative_t>())
+        requires(is_alternative<alternative_t>())
     //!\endcond
     {
         constexpr size_t index = meta::list_traits::find<alternative_t, alternatives>;
@@ -343,7 +346,7 @@ public:
     template <typename alternative_t>
     constexpr alternative_t convert_unsafely_to() const noexcept
       //!\cond
-      requires(is_alternative<alternative_t>())
+        requires(is_alternative<alternative_t>())
     //!\endcond
     {
         constexpr size_t index = meta::list_traits::find<alternative_t, alternatives>;
@@ -373,9 +376,9 @@ public:
      * \details
      */
     template <std::same_as<variant> variant_t, typename indirect_alternative_type>
-        //!\cond
-        requires((detail::variant_general_guard<indirect_alternative_type, alternative_types...>)&&(
-          meta::weakly_equality_comparable_with<indirect_alternative_type, alternative_types> || ...))
+    //!\cond
+        requires((detail::variant_general_guard<indirect_alternative_type, alternative_types...>) &&
+                 (meta::weakly_equality_comparable_with<indirect_alternative_type, alternative_types> || ...))
     //!\endcond
     friend constexpr bool operator==(variant_t const lhs, indirect_alternative_type const rhs) noexcept
     {
@@ -437,8 +440,7 @@ protected:
             partial_sum[i] += partial_sum[i - 1];
 
         return partial_sum;
-    }
-    ();
+    }();
 
     /*!\brief Compile-time generated lookup table which maps the rank to char.
      *
@@ -452,13 +454,10 @@ protected:
         // causes this bug (g++-7 and g++-8):
         // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84684
         auto assign_rank_to_char = [](auto alternative, size_t rank) constexpr
-        {
-            return bio::alphabet::to_char(bio::alphabet::assign_rank_to(rank, alternative));
-        };
+        { return bio::alphabet::to_char(bio::alphabet::assign_rank_to(rank, alternative)); };
 
-        auto assign_value_to_char = [assign_rank_to_char](auto   alternative,
-                                                          auto & value_to_char,
-                                                          auto & value) constexpr
+        auto assign_value_to_char =
+          [assign_rank_to_char](auto alternative, auto & value_to_char, auto & value) constexpr
         {
             using alternative_t = std::decay_t<decltype(alternative)>;
             for (size_t i = 0u; i < bio::alphabet::size<alternative_t>; ++i, ++value)
@@ -475,15 +474,14 @@ protected:
         ((assign_value_to_char(alternative_types{}, value_to_char, value)), ...);
 
         return value_to_char;
-    }
-    ();
+    }();
 
     //!\brief Converts an object of one of the given alternatives into the internal representation.
     //!\tparam index The position of `alternative_t` in the template pack `alternative_types`.
     //!\tparam alternative_t One of the alternative types.
     //!\param alternative The value of a alternative.
     template <size_t index, typename alternative_t>
-        //!\cond
+    //!\cond
         requires(is_alternative<alternative_t>())
     //!\endcond
     static constexpr rank_type rank_by_index_(alternative_t const & alternative) noexcept
@@ -496,7 +494,7 @@ protected:
     //!\tparam alternative_t One of the alternative types.
     //!\param alternative The value of a alternative.
     template <typename alternative_t>
-        //!\cond
+    //!\cond
         requires(is_alternative<alternative_t>())
     //!\endcond
     static constexpr rank_type rank_by_type_(alternative_t const & alternative) noexcept
@@ -527,8 +525,7 @@ protected:
         }
 
         return lookup_table;
-    }
-    ();
+    }();
 
     /*!\brief Compile-time generated lookup table which maps the char to rank.
      *
@@ -554,8 +551,7 @@ protected:
         }
 
         return char_to_rank;
-    }
-    ();
+    }();
 };
 
 } // namespace bio::alphabet

@@ -267,9 +267,9 @@ TEST(variant_test, alphabet_size)
     using alphabet2_t = bio::alphabet::variant<bio::alphabet::gap, bio::alphabet::dna5, bio::alphabet::dna4>;
     using alphabet3_t = bio::alphabet::variant<char, bio::alphabet::gap>;
 
-    EXPECT_TRUE((std::is_same_v<decltype(alphabet1_t::alphabet_size), const size_t>));
-    EXPECT_TRUE((std::is_same_v<decltype(alphabet2_t::alphabet_size), const size_t>));
-    EXPECT_TRUE((std::is_same_v<decltype(alphabet3_t::alphabet_size), const size_t>));
+    EXPECT_TRUE((std::is_same_v<decltype(alphabet1_t::alphabet_size), size_t const>));
+    EXPECT_TRUE((std::is_same_v<decltype(alphabet2_t::alphabet_size), size_t const>));
+    EXPECT_TRUE((std::is_same_v<decltype(alphabet3_t::alphabet_size), size_t const>));
 
     EXPECT_EQ(alphabet1_t::alphabet_size, 10ull);
     EXPECT_EQ(alphabet2_t::alphabet_size, 10ull);

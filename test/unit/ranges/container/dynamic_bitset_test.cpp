@@ -295,12 +295,12 @@ TEST(dynamic_bitset, reset)
 
 constexpr bool flip_test()
 {
-    bio::ranges::dynamic_bitset t1{0b1111111111111111111111111111111111111111111111111111111111};
+    bio::ranges::dynamic_bitset t1{0b11'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111};
     bool                        res = t1.all();
     t1.flip();
     res &= t1.none();
 
-    bio::ranges::dynamic_bitset t2{0b1111111111111111111111111111111111111111111111111111111111};
+    bio::ranges::dynamic_bitset t2{0b11'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111'1111};
     res &= t2.all();
     t2.flip(0);
     res &= !t2.all();
@@ -621,7 +621,7 @@ TEST(dynamic_bitset, clear)
 constexpr bool insert_test()
 {
     bio::ranges::dynamic_bitset t0{};
-    bio::ranges::dynamic_bitset t1{0b100101};
+    bio::ranges::dynamic_bitset t1{0b10'0101};
 
     t0.insert(t0.cend(), 1);
     t0.insert(t0.cend(), 0);
@@ -650,10 +650,10 @@ TEST(dynamic_bitset, insert)
 
 constexpr bool erase_test()
 {
-    bio::ranges::dynamic_bitset t1{0b100101};
+    bio::ranges::dynamic_bitset t1{0b10'0101};
 
     t1.erase(t1.begin());
-    bool res = t1 == bio::ranges::dynamic_bitset{0b10010};
+    bool res = t1 == bio::ranges::dynamic_bitset{0b1'0010};
 
     t1.erase(t1.begin() + 1, t1.begin() + 3);
     res &= t1 == bio::ranges::dynamic_bitset{0b100};
@@ -707,7 +707,7 @@ constexpr bool resize_test()
     bool res = !t1.at(0) && !t1.at(1);
 
     t1.resize(5, true);
-    res &= t1 == bio::ranges::dynamic_bitset{0b11100};
+    res &= t1 == bio::ranges::dynamic_bitset{0b1'1100};
 
     t1.resize(4, true);
     res &= t1 == bio::ranges::dynamic_bitset{0b1100};
@@ -728,7 +728,7 @@ TEST(dynamic_bitset, resize)
 constexpr bool to_ulong_test()
 {
     bio::ranges::dynamic_bitset t1{"0011000"};
-    bio::ranges::dynamic_bitset t2{0b001100};
+    bio::ranges::dynamic_bitset t2{0b00'1100};
 
     return t1.to_ulong() == 24UL && t2.to_ulong() == 12UL;
 }
@@ -748,7 +748,7 @@ TEST(dynamic_bitset, to_ulong)
 constexpr bool to_ullong_test()
 {
     bio::ranges::dynamic_bitset t1{"0011000"};
-    bio::ranges::dynamic_bitset t2{0b001100};
+    bio::ranges::dynamic_bitset t2{0b00'1100};
 
     return t1.to_ullong() == 24ULL && t2.to_ullong() == 12ULL;
 }
@@ -768,7 +768,7 @@ TEST(dynamic_bitset, to_ullong)
 TEST(dynamic_bitset, std_hash)
 {
     bio::ranges::dynamic_bitset                t1{"0011000"};
-    bio::ranges::dynamic_bitset                t2{0b001100};
+    bio::ranges::dynamic_bitset                t2{0b00'1100};
     std::hash<bio::ranges::dynamic_bitset<58>> hasher{};
 
     EXPECT_EQ(hasher(t1), 24ULL);

@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.10)
 
 project(biocpp_clang_format NONE)
 
-find_program(CLANG_FORMAT "clang-format-14")
+find_program(CLANG_FORMAT "clang-format-16")
 
 if (CLANG_FORMAT STREQUAL "CLANG_FORMAT-NOTFOUND")
     find_program(CLANG_FORMAT "clang-format")

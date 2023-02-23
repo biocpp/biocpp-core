@@ -108,8 +108,7 @@ protected:
 
         // iupac characters are implicitly "UNKNOWN"
         return ret;
-    }
-    ();
+    }();
 
     //!\brief The complement table.
     static const std::array<dna5, alphabet_size> complement_table;
