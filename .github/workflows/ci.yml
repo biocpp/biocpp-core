@@ -32,9 +32,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - name: "Unit clang16 + clang-tidy"
+            cxx: "clang++-16"
+            cc: "clang-16"
+            pkg: "clang-16 clang-tidy-16 g++-12"
+            os: "ubuntu-22.04"
+            build: clang_tidy
+            build_type: Debug
+
           - name: "Unit gcc10 Debug"
             cxx: "g++-10"
             cc: "gcc-10"
+            pkg: "gcc-10 g++-10"
             os: "ubuntu-22.04"
             build: unit
             build_type: Debug
@@ -42,6 +51,7 @@ jobs:
           - name: "Unit gcc11"
             cxx: "g++-11"
             cc: "gcc-11"
+            pkg: "gcc-11 g++-11"
             os: "ubuntu-22.04"
             build: unit
             build_type: Release
@@ -49,13 +59,7 @@ jobs:
           - name: "Unit gcc12 Debug"
             cxx: "g++-12"
             cc: "gcc-12"
-            os: "ubuntu-22.04"
-            build: unit
-            build_type: Debug
-
-          - name: "Unit Clang-16 Debug"
-            cxx: "clang++-16"
-            cc: "clang-16"
+            pkg: "gcc-12 g++-12"
             os: "ubuntu-22.04"
             build: unit
             build_type: Debug
@@ -63,20 +67,19 @@ jobs:
           - name: "Integration gcc12"
             cxx: "g++-12"
             cc: "gcc-12"
+            pkg: "gcc-12 g++-12"
             os: "ubuntu-22.04"
             build: integration
             build_type: Debug
 
           - name: "Documentation"
-            cxx: "doxygen"
-            cc: "doxygen"
+            pkg: "doxygen"
             os: "ubuntu-22.04"
             build: documentation
             build_type: Debug
 
           - name: "Clang Format"
-            cxx: "clang-format-14"
-            cc: "gcc"
+            pkg: "clang-format-16"
             os: "ubuntu-22.04"
             build: clang_format
             build_type: Debug
@@ -84,6 +87,7 @@ jobs:
           - name: "Coverage gcc12"
             cxx: "g++-12"
             cc: "gcc-12"
+            pkg: "gcc-12 g++-12"
             os: "ubuntu-22.04"
             build: coverage
             build_type: Debug
@@ -91,30 +95,35 @@ jobs:
           - name: "Snippet gcc10"
             cxx: "g++-10"
             cc: "gcc-10"
+            pkg: "gcc-10 g++-10"
             build: snippet
             build_type: Debug
 
           - name: "Snippet gcc12"
             cxx: "g++-12"
             cc: "gcc-12"
+            pkg: "gcc-12 g++-12"
             build: snippet
             build_type: Release
 
           - name: "Snippet Clang-16"
             cxx: "clang++-16"
             cc: "clang-16"
+            pkg: "clang-16 g++-12"
             build: snippet
             build_type: Release
 
           - name: "Performance gcc12"
             cxx: "g++-12"
             cc: "gcc-12"
+            pkg: "gcc-12 g++-12"
             build: performance
             build_type: Release
 
           - name: "Header gcc12"
             cxx: "g++-12"
             cc: "gcc-12"
+            pkg: "gcc-12 g++-12"
             build: header
             build_type: Release
 
@@ -136,7 +145,7 @@ jobs:
 
       - name: Configure APT (llvm)
         continue-on-error: true
-        if: matrix.cc == 'clang-16'
+        if: contains(matrix.pkg, 'clang')
         run: |
           sudo apt-add-repository --no-update --yes "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
@@ -155,13 +164,8 @@ jobs:
       - name: Install ccache
         run: sudo apt-get install --yes ccache
 
-      - name: Install compiler ${{ matrix.cxx }}
-        if: matrix.cc != 'clang-16'
-        run: sudo apt-get install --yes ${{ matrix.cxx }}
-
-      - name: Install compiler ${{ matrix.cxx }}
-        if: matrix.cc == 'clang-16'
-        run: sudo apt-get install --yes g++-12 ${{ matrix.cc }}
+      - name: Install compiler/tool ${{ matrix.pkg }}
+        run: sudo apt-get install --yes ${{ matrix.pkg }}
 
       - name: Install documentation deps
         if: matrix.build == 'documentation'
@@ -211,7 +215,7 @@ jobs:
           make -k -j2
           ccache -sv
       - name: Run tests
-        if: matrix.build != 'coverage'
+        if: ${{ matrix.build != 'coverage' && matrix.build != 'clang_format' }}
         run: |
           cd biocpp-core-build
           ctest . -j2 --output-on-failure

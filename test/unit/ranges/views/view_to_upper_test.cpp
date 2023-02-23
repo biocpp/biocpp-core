@@ -62,9 +62,9 @@ TEST(view_to_upper, deep)
 
 TEST(view_to_upper, concepts)
 {
-    std::string   input_string{"aeiou"};
-    std::string & input_string_ref = input_string;
-    auto          upper_view       = input_string | bio::ranges::views::to_upper;
+    std::string           input_string{"aeiou"};
+    std::string &         input_string_ref = input_string;
+    [[maybe_unused]] auto upper_view       = input_string | bio::ranges::views::to_upper;
 
     // Required
     EXPECT_TRUE(std::ranges::input_range<decltype(input_string)>);

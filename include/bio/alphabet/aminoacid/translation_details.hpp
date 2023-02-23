@@ -52,8 +52,7 @@ struct translation_table
             }
         }
         return table;
-    }
-    ();
+    }();
 };
 
 //!\brief Translation table for canonical genetic code and dna15 alphabet.

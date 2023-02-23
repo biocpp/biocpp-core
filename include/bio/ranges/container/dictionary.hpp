@@ -110,10 +110,13 @@ public:
      * Basic exception gurantee.
      */
     template <typename... value_type_>
-        //!\cond
+    //!\cond
         requires((std::convertible_to<value_type_, value_type> && ...) && sizeof...(value_type_) > 0)
     //!\endcond
-    explicit dictionary(value_type_ &&... args) { assign(std::forward<value_type_>(args)...); }
+    explicit dictionary(value_type_ &&... args)
+    {
+        assign(std::forward<value_type_>(args)...);
+    }
 
     /*!\brief Construct from two iterators.
      * \tparam begin_it_type Must model std::forward_iterator and `value_type` must be constructible from
@@ -131,12 +134,15 @@ public:
      * Basic exception gurantee.
      */
     template <meta::different_from<iterator> begin_it_type, typename end_it_type>
-        //!\cond
+    //!\cond
         requires(meta::different_from<const_iterator, begin_it_type> && std::forward_iterator<begin_it_type> &&
-                                                                        std::sentinel_for<end_it_type, begin_it_type> &&
-                     std::convertible_to<std::iter_reference_t<begin_it_type>, value_type>)
+                 std::sentinel_for<end_it_type, begin_it_type> &&
+                 std::convertible_to<std::iter_reference_t<begin_it_type>, value_type>)
     //!\endcond
-    dictionary(begin_it_type const begin_it, end_it_type const end_it) : dictionary{} { assign(begin_it, end_it); }
+    dictionary(begin_it_type const begin_it, end_it_type const end_it) : dictionary{}
+    {
+        assign(begin_it, end_it);
+    }
 
     //!\overload
     dictionary(iterator const begin_it, iterator const end_it) : dictionary{} { assign(begin_it, end_it); }
@@ -158,10 +164,11 @@ public:
      * Basic exception gurantee.
      */
     template <meta::different_from<dictionary> other_range_t>
-        //!\cond
+    //!\cond
         requires(std::ranges::input_range<other_range_t>)
     //!\endcond
-    explicit dictionary(other_range_t && range) : dictionary{std::ranges::begin(range), std::ranges::end(range)} {}
+    explicit dictionary(other_range_t && range) : dictionary{std::ranges::begin(range), std::ranges::end(range)}
+    {}
 
     /*!\brief Assign from multiple elements.
      * \param[in] args Multiple elements of value_type; must be at least one.
@@ -177,7 +184,7 @@ public:
      * Basic exception gurantee.
      */
     template <typename... value_type_>
-        //!\cond
+    //!\cond
         requires((meta::different_from<dictionary, value_type_> && ...) &&
                  (meta::different_from<iterator, value_type_> && ...) &&
                  (meta::different_from<const_iterator, value_type_> && ...) &&
@@ -205,7 +212,7 @@ public:
      * Basic exception gurantee.
      */
     template <std::ranges::input_range other_range_t>
-        //!\cond
+    //!\cond
         requires std::convertible_to<std::ranges::range_reference_t<other_range_t>, value_type>
     //!\endcond
     void assign(other_range_t && range)
@@ -230,12 +237,15 @@ public:
      * Basic exception gurantee.
      */
     template <meta::different_from<iterator> begin_it_type, typename end_it_type>
-        //!\cond
+    //!\cond
         requires(meta::different_from<const_iterator, begin_it_type> && std::forward_iterator<begin_it_type> &&
-                                                                        std::sentinel_for<end_it_type, begin_it_type> &&
-                     std::convertible_to<std::iter_reference_t<begin_it_type>, value_type>)
+                 std::sentinel_for<end_it_type, begin_it_type> &&
+                 std::convertible_to<std::iter_reference_t<begin_it_type>, value_type>)
     //!\endcond
-    void assign(begin_it_type begin_it, end_it_type end_it) { assign_impl(begin_it, end_it); }
+    void assign(begin_it_type begin_it, end_it_type end_it)
+    {
+        assign_impl(begin_it, end_it);
+    }
 
     //!\overload
     void assign(iterator begin_it, iterator end_it) { assign_impl(begin_it, end_it); }
@@ -412,10 +422,7 @@ public:
      *
      * No-throw guarantee.
      */
-    bool contains(het_key_t key) const
-    {
-        return key_to_index.contains(key);
-    }
+    bool contains(het_key_t key) const { return key_to_index.contains(key); }
 
     /*!\brief The number of elements in the container with the specified key.
      * \param[in] key The key to lookup.
@@ -431,10 +438,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_t count(het_key_t key) const
-    {
-        return key_to_index.count(key);
-    }
+    size_t count(het_key_t key) const { return key_to_index.count(key); }
 
     /*!\brief Find an element with the given key.
      * \param[in] key The key to lookup.
@@ -513,16 +517,10 @@ public:
      *
      * Basic exception guarantee.
      */
-    mapped_t & operator[](het_key_t key)
-    {
-        return at(key);
-    }
+    mapped_t & operator[](het_key_t key) { return at(key); }
 
     //!\overload
-    mapped_t const & operator[](het_key_t key) const
-    {
-        return at(key);
-    }
+    mapped_t const & operator[](het_key_t key) const { return at(key); }
     //!\}
 
     /*!\name Capacity
@@ -539,10 +537,7 @@ public:
      *
      * No-throw guarantee.
      */
-    bool empty() const noexcept
-    {
-        return size() == 0;
-    }
+    bool empty() const noexcept { return size() == 0; }
 
     /*!\brief Returns the number of elements in the container.
      * \returns The number of elements in the container.
@@ -555,10 +550,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type size() const noexcept
-    {
-        return storage.size();
-    }
+    size_type size() const noexcept { return storage.size(); }
 
     /*!\brief Returns the maximum number of elements the container is able to hold.
      * \returns The number of elements in the container.
@@ -574,10 +566,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type max_size() const noexcept
-    {
-        return storage.max_size();
-    }
+    size_type max_size() const noexcept { return storage.max_size(); }
 
     /*!\brief Returns the number of elements that the container is able to hold without reallocating (*see below*).
      * \returns The capacity of the currently allocated storage.
@@ -595,10 +584,7 @@ public:
      *
      * No-throw guarantee.
      */
-    size_type capacity() const noexcept
-    {
-        return storage.capacity();
-    }
+    size_type capacity() const noexcept { return storage.capacity(); }
 
     /*!\brief Reserve storage in the underlying data types to accomodate for future inserts.
      * \param[in] new_cap The desired capacity.
@@ -633,10 +619,7 @@ public:
      *
      * Basic exception guarantee.
      */
-    void shrink_to_fit()
-    {
-        storage.shrink_to_fit();
-    }
+    void shrink_to_fit() { storage.shrink_to_fit(); }
     //!\}
 
     /*!\name Modifiers
@@ -691,7 +674,8 @@ public:
      *
      * Basic exception guarantee.
      */
-    void emplace_back(auto &&... args) requires(std::constructible_from<value_type, decltype(args)...>)
+    void emplace_back(auto &&... args)
+        requires(std::constructible_from<value_type, decltype(args)...>)
     {
         storage.emplace_back(std::forward<decltype(args)>(args)...);
         if (key_to_index.contains(get<0>(storage.back())))

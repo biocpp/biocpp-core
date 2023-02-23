@@ -28,10 +28,7 @@ namespace bio::meta
  */
 //!\cond
 template <typename t>
-concept transformation_trait = requires
-{
-    typename t::type;
-};
+concept transformation_trait = requires { typename t::type; };
 //!\endcond
 
 /*!\interface bio::meta::unary_type_trait

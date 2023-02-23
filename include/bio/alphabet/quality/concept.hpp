@@ -64,12 +64,12 @@ namespace bio::alphabet
  */
 inline constexpr auto to_phred = []<typename alph_t>(alph_t const a)
   //!\cond
-  requires(requires {
-      {
-          tag_invoke(custom::to_phred{}, a)
-          } -> std::integral;
-      requires noexcept(tag_invoke(custom::to_phred{}, a));
-  })
+    requires(requires {
+        {
+            tag_invoke(custom::to_phred{}, a)
+        } -> std::integral;
+        requires noexcept(tag_invoke(custom::to_phred{}, a));
+    })
 //!\endcond
 {
     return tag_invoke(custom::to_phred{}, a);
@@ -80,8 +80,12 @@ inline constexpr auto to_phred = []<typename alph_t>(alph_t const a)
  * \ingroup quality
  */
 template <typename alphabet_type>
-    //!\cond
-    requires(requires { {bio::alphabet::to_phred(std::declval<alphabet_type>())}; })
+//!\cond
+    requires(requires {
+                {
+                    bio::alphabet::to_phred(std::declval<alphabet_type>())
+                };
+            })
 //!\endcond
 using phred_t = decltype(bio::alphabet::to_phred(std::declval<alphabet_type>()));
 
@@ -125,15 +129,15 @@ using phred_t = decltype(bio::alphabet::to_phred(std::declval<alphabet_type>()))
  * by this function object and **do not** require an additional overload.
  * \hideinitializer
  */
-inline constexpr auto assign_phred_to = []<typename alph_t>(bio::alphabet::phred_t<alph_t> const p,
-                                                            alph_t &&                            a) -> alph_t
+inline constexpr auto assign_phred_to =
+  []<typename alph_t>(bio::alphabet::phred_t<alph_t> const p, alph_t && a) -> alph_t
   //!\cond
-  requires(requires {
-      {
-          tag_invoke(custom::assign_phred_to{}, p, a)
-          } -> std::same_as<alph_t &>;
-      requires noexcept(tag_invoke(custom::assign_phred_to{}, p, a));
-  })
+    requires(requires {
+        {
+            tag_invoke(custom::assign_phred_to{}, p, a)
+        } -> std::same_as<alph_t &>;
+        requires noexcept(tag_invoke(custom::assign_phred_to{}, p, a));
+    })
 //!\endcond
 {
     return tag_invoke(custom::assign_phred_to{}, p, a);
@@ -172,9 +176,10 @@ inline constexpr auto assign_phred_to = []<typename alph_t>(bio::alphabet::phred
  */
 //!\cond
 template <typename t>
-concept quality = alphabet<t> && requires(t qual)
-{
-    {bio::alphabet::to_phred(qual)};
+concept quality = alphabet<t> && requires(t qual) {
+    {
+        bio::alphabet::to_phred(qual)
+    };
 };
 //!\endcond
 
@@ -211,9 +216,10 @@ concept quality = alphabet<t> && requires(t qual)
  */
 //!\cond
 template <typename t>
-concept writable_quality = writable_alphabet<t> && quality<t> && requires(t v, phred_t<t> c)
-{
-    {bio::alphabet::assign_phred_to(c, v)};
+concept writable_quality = writable_alphabet<t> && quality<t> && requires(t v, phred_t<t> c) {
+    {
+        bio::alphabet::assign_phred_to(c, v)
+    };
 };
 //!\endcond
 

@@ -136,7 +136,8 @@ public:
      * \sa bio::alphabet::complement
      * \sa bio::alphabet::nucleotide::complement
      */
-    constexpr qualified complement() const noexcept requires nucleotide<sequence_alphabet_t>
+    constexpr qualified complement() const noexcept
+        requires nucleotide<sequence_alphabet_t>
     {
         return qualified{bio::alphabet::complement(get<0>(*this)), get<1>(*this)};
     }
@@ -164,8 +165,7 @@ protected:
         }
 
         return ret;
-    }
-    ();
+    }();
 
     //!\brief Rank to phred conversion table.
     static constexpr std::array<char_type, alphabet_size> rank_to_phred = []() constexpr
@@ -180,8 +180,7 @@ protected:
         }
 
         return ret;
-    }
-    ();
+    }();
 };
 
 //!\brief Type deduction guide enables usage of qualified without specifying template args.

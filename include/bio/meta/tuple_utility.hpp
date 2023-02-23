@@ -36,7 +36,7 @@ namespace bio::meta::detail
  * \returns A new tuple with the extracted elements.
  */
 template <size_t beg, template <typename...> typename tuple_t, size_t... Is, typename... ts>
-    //!\cond
+//!\cond
     requires(tuple_like<tuple_t<ts...>> && tuple_like<tuple_t<>>)
 //!\endcond
 constexpr auto tuple_split(tuple_t<ts...> const & t, std::index_sequence<Is...> const & BIOCPP_DOXYGEN_ONLY(idx))
@@ -46,7 +46,7 @@ constexpr auto tuple_split(tuple_t<ts...> const & t, std::index_sequence<Is...> 
 
 //!\copydoc bio::meta::detail::tuple_split
 template <size_t beg, template <typename...> typename tuple_t, size_t... Is, typename... ts>
-    //!\cond
+//!\cond
     requires(tuple_like<tuple_t<ts...>> && tuple_like<tuple_t<>>)
 //!\endcond
 constexpr auto tuple_split(tuple_t<ts...> && t, std::index_sequence<Is...> const & BIOCPP_DOXYGEN_ONLY(idx))
@@ -90,7 +90,7 @@ namespace bio::meta
  * Concurrent invocations of this functions are thread safe.
  */
 template <size_t pivot_c, template <typename...> typename tuple_t, typename... ts>
-    //!\cond
+//!\cond
     requires tuple_like<tuple_t<ts...>>
 //!\endcond
 constexpr auto tuple_split(tuple_t<ts...> const & t)
@@ -103,15 +103,17 @@ constexpr auto tuple_split(tuple_t<ts...> const & t)
 
 //!\copydoc bio::meta::tuple_split
 template <size_t pivot_c, template <typename...> typename tuple_t, typename... ts>
-    //!\cond
+//!\cond
     requires tuple_like<tuple_t<ts...>>
 //!\endcond
 constexpr auto tuple_split(tuple_t<ts...> && t)
 {
     static_assert(pivot_c <= sizeof...(ts));
 
+    //NOLINTBEGIN(bugprone-use-after-move)
     return tuple_t{detail::tuple_split<0>(std::move(t), std::make_index_sequence<pivot_c>{}),
                    detail::tuple_split<pivot_c>(std::move(t), std::make_index_sequence<sizeof...(ts) - pivot_c>{})};
+    //NOLINTEND(bugprone-use-after-move)
 }
 
 /*!\brief Splits a tuple like data structure at the first position of the given type.

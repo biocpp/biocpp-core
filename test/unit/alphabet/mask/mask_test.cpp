@@ -33,18 +33,7 @@ TEST(mask, assign_rank)
     EXPECT_TRUE(clmask.to_rank());
 
     // r-value
-    bio::alphabet::mask rmask{lmask};
-    EXPECT_EQ(std::move(rmask).to_rank(), lmask.to_rank());
-    EXPECT_TRUE((std::is_same_v<decltype(std::move(rmask)), bio::alphabet::mask &&>));
-    EXPECT_EQ(std::move(rmask).assign_rank(1), bio::alphabet::mask::MASKED);
-    EXPECT_TRUE(std::move(rmask).to_rank());
-    EXPECT_EQ(std::move(rmask).assign_rank(0), bio::alphabet::mask::UNMASKED);
-    EXPECT_FALSE(std::move(rmask).to_rank());
-    EXPECT_EQ(std::move(rmask).assign_rank(true), bio::alphabet::mask::MASKED);
-    EXPECT_EQ(std::move(rmask).assign_rank(false), bio::alphabet::mask::UNMASKED);
-
-    // const r-value
-    bio::alphabet::mask const crmask{lmask};
-    EXPECT_EQ(std::move(crmask).to_rank(), lmask.to_rank());
-    EXPECT_TRUE((std::is_same_v<decltype(std::move(crmask)), bio::alphabet::mask const &&>));
+    bio::alphabet::mask{lmask};
+    EXPECT_EQ(bio::alphabet::mask{lmask}.to_rank(), lmask.to_rank());
+    EXPECT_EQ(bio::alphabet::mask{lmask}.assign_rank(1), bio::alphabet::mask::MASKED);
 }

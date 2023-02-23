@@ -95,9 +95,9 @@ public:
 
     //!\brief Constructor for const version from non-const version.
     template <typename range_type2>
-        //!\cond
-        requires(std::is_const_v<range_type> &&
-                 (!std::is_const_v<range_type2>)&&std::is_same_v<std::remove_const_t<range_type>, range_type2>)
+    //!\cond
+        requires(std::is_const_v<range_type> && (!std::is_const_v<range_type2>) &&
+                 std::is_same_v<std::remove_const_t<range_type>, range_type2>)
     //!\endcond
     constexpr random_access_iterator_base(
       random_access_iterator_base<range_type2, derived_t_template> const & rhs) noexcept :

@@ -152,7 +152,7 @@ public:
      * Recurses and calls std::views::transform if the underlying range is a range-of-ranges.
      */
     template <std::ranges::input_range urng_t>
-        //!\cond
+    //!\cond
         requires std::ranges::input_range<std::ranges::range_reference_t<urng_t>>
     //!\endcond
     constexpr auto operator()(urng_t && urange) const &
@@ -163,7 +163,7 @@ public:
 
     //!\overload
     template <std::ranges::input_range urng_t>
-        //!\cond
+    //!\cond
         requires std::ranges::input_range<std::ranges::range_reference_t<urng_t>>
     //!\endcond
     constexpr auto operator()(urng_t && urange) &&
@@ -181,7 +181,7 @@ public:
      * \returns A views::deep specialisation of a closure object, i.e. with stored arguments.
      */
     template <typename first_arg_t, typename... stored_arg_types>
-        //!\cond
+    //!\cond
         requires(!std::ranges::input_range<first_arg_t>)
     //!\endcond
     constexpr auto operator()(first_arg_t && first, stored_arg_types &&... args) const
@@ -219,7 +219,7 @@ public:
      * Recurses and calls std::views::transform if the underlying range is a range-of-ranges.
      */
     template <std::ranges::input_range urng_t, typename... stored_arg_types>
-        //!\cond
+    //!\cond
         requires(sizeof...(stored_arg_types) > 0)
     //!\endcond
     constexpr auto operator()(urng_t && urange, stored_arg_types &&... args) const

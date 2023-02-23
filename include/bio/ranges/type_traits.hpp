@@ -70,7 +70,7 @@ using iterator_category_tag_t = typename iterator_category_tag<it_t>::type;
  * If not, this means that `it_t` is no "legacy" iterator and this transformation trait will give a substitution error.
  */
 template <typename it_t>
-    //!\cond
+//!\cond
     requires(requires { typename std::iterator_traits<it_t>::iterator_category; })
 //!\endcond
 using iterator_category_tag_t = typename std::iterator_traits<it_t>::iterator_category;
@@ -87,7 +87,7 @@ using iterator_category_tag_t = typename std::iterator_traits<it_t>::iterator_ca
  * \ingroup range
  */
 template <typename it_t>
-    //!\cond
+//!\cond
     requires std::input_or_output_iterator<it_t>
 //!\endcond
 // clang-format off
@@ -141,10 +141,7 @@ using iter_pointer_t = typename iter_pointer<it_t>::type;
 
 //!\cond
 template <typename t>
-concept has_range_value_type = requires
-{
-    typename std::ranges::range_value_t<std::remove_cvref_t<t>>;
-};
+concept has_range_value_type = requires { typename std::ranges::range_value_t<std::remove_cvref_t<t>>; };
 //!\endcond
 
 } // namespace bio::ranges::detail
@@ -171,7 +168,7 @@ namespace bio::ranges
  * Attention, this transformation trait implicitly removes cv-qualifiers on all value_types except the one returned.
  */
 template <typename t>
-    //!\cond
+//!\cond
     requires detail::has_range_value_type<t>
 //!\endcond
 struct range_innermost_value
@@ -183,7 +180,7 @@ struct range_innermost_value
 //!\cond
 template <typename t>
     requires(detail::has_range_value_type<t> &&
-               detail::has_range_value_type<std::ranges::range_value_t<std::remove_cvref_t<t>>>)
+             detail::has_range_value_type<std::ranges::range_value_t<std::remove_cvref_t<t>>>)
 struct range_innermost_value<t>
 {
     using type = typename range_innermost_value<std::ranges::range_value_t<std::remove_cvref_t<t>>>::type;
@@ -208,7 +205,7 @@ using range_innermost_value_t = typename range_innermost_value<t>::type;
  * returns.
  */
 template <typename t>
-    //!\cond
+//!\cond
     requires detail::has_range_value_type<t>
 //!\endcond
 constexpr size_t range_dimension_v = 1;
@@ -216,7 +213,7 @@ constexpr size_t range_dimension_v = 1;
 //!\cond
 template <typename t>
     requires(detail::has_range_value_type<t> &&
-               detail::has_range_value_type<std::ranges::range_value_t<std::remove_cvref_t<t>>>)
+             detail::has_range_value_type<std::ranges::range_value_t<std::remove_cvref_t<t>>>)
 constexpr size_t range_dimension_v<t> = range_dimension_v<std::ranges::range_value_t<std::remove_cvref_t<t>>> + 1;
 //!\endcond
 
@@ -237,8 +234,7 @@ constexpr size_t range_dimension_v<t> = range_dimension_v<std::ranges::range_val
  */
 //!\cond
 template <typename t1, typename t2>
-concept range_compatible = requires(t1, t2)
-{
+concept range_compatible = requires(t1, t2) {
     requires(range_dimension_v<t1> == range_dimension_v<t2>);
 
     requires std::is_same_v<range_innermost_value_t<t1>, range_innermost_value_t<t2>>;

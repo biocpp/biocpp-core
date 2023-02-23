@@ -65,7 +65,7 @@ public:
     // This constructor needs to be public, because constructor templates are not inherited otherwise
     //!\brief Allow explicit construction from any other aminoacid type and convert via the character representation.
     template <meta::different_from<derived_type> other_aa_type>
-        //!\cond
+    //!\cond
         requires aminoacid<other_aa_type>
     //!\endcond
     explicit constexpr aminoacid_base(other_aa_type const other) noexcept
@@ -122,8 +122,7 @@ private:
         }
 
         return ret;
-    }
-    ();
+    }();
 };
 
 } // namespace bio::alphabet

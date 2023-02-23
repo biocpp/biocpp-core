@@ -32,11 +32,10 @@ namespace bio::meta::detail
  */
 //!\cond
 template <typename tuple_t>
-concept tuple_size = requires(tuple_t v)
-{
+concept tuple_size = requires(tuple_t v) {
     {
         std::tuple_size<tuple_t>::value
-        } -> std::convertible_to<size_t>;
+    } -> std::convertible_to<size_t>;
 };
 //!\endcond
 
@@ -47,29 +46,27 @@ concept tuple_size = requires(tuple_t v)
  */
 //!\cond
 template <typename tuple_t>
-concept tuple_get = requires(tuple_t & v, tuple_t const & v_c)
-{
-    requires std::tuple_size_v<tuple_t> >
-    0;
+concept tuple_get = requires(tuple_t & v, tuple_t const & v_c) {
+    requires std::tuple_size_v<tuple_t> > 0;
 
     typename std::tuple_element<0, tuple_t>::type;
 
     {
         get<0>(v)
-        } -> std::convertible_to<typename std::tuple_element<0, tuple_t>::type>;
+    } -> std::convertible_to<typename std::tuple_element<0, tuple_t>::type>;
     //     requires weakly_assignable_from<decltype(get<0>(v)), typename std::tuple_element<0, tuple_t>::type>;
     //TODO check that the previous returns something that can be assigned to
     // unfortunately std::assignable_from requires lvalue-reference, but we want to accept xvalues too (returned
     // proxies)
     {
         get<0>(v_c)
-        } -> std::convertible_to<typename std::tuple_element<0, tuple_t>::type>;
+    } -> std::convertible_to<typename std::tuple_element<0, tuple_t>::type>;
     {
         get<0>(std::move(v))
-        } -> std::convertible_to<typename std::tuple_element<0, tuple_t>::type>;
+    } -> std::convertible_to<typename std::tuple_element<0, tuple_t>::type>;
     {
         get<0>(std::move(v_c))
-        } -> std::convertible_to<typename std::tuple_element<0, tuple_t>::type const &&>;
+    } -> std::convertible_to<typename std::tuple_element<0, tuple_t>::type const &&>;
 };
 //!\endcond
 
@@ -116,8 +113,12 @@ inline constexpr auto all_elements_model_totally_ordered(meta::type_list<element
  * \ingroup utility_tuple
  */
 template <typename tuple_t>
-    //!\cond
-    requires(requires { {detail::all_elements_model_totally_ordered(tuple_type_list_t<tuple_t>{})}; })
+//!\cond
+    requires(requires {
+                {
+                    detail::all_elements_model_totally_ordered(tuple_type_list_t<tuple_t>{})
+                };
+            })
 //!\endcond
 static constexpr bool all_elements_model_totally_ordered_v =
   decltype(detail::all_elements_model_totally_ordered(tuple_type_list_t<tuple_t>{}))::value;
@@ -180,8 +181,7 @@ namespace bio::meta
 //!\}
 //!\cond
 template <typename t>
-concept tuple_like = detail::tuple_size<std::remove_reference_t<t>> && requires(t v)
-{
+concept tuple_like = detail::tuple_size<std::remove_reference_t<t>> && requires(t v) {
     typename detail::tuple_type_list<std::remove_cvref_t<t>>::type;
 
     // NOTE(rrahn): To check the full tuple_concept including the get interface and the std::totally_ordered
@@ -189,9 +189,9 @@ concept tuple_like = detail::tuple_size<std::remove_reference_t<t>> && requires(
     //              empty. Furthermore, the std::totally_ordered can only be checked if all elements in the
     //              tuple are strict_totally_ordered. This is done, by the fold expression in the second part.
     requires(std::tuple_size<std::remove_reference_t<t>>::value == 0) ||
-      (detail::tuple_get<std::remove_cvref_t<t>> &&
-       (!detail::all_elements_model_totally_ordered_v<std::remove_cvref_t<t>> ||
-        std::totally_ordered<std::remove_cvref_t<t>>));
+              (detail::tuple_get<std::remove_cvref_t<t>> &&
+               (!detail::all_elements_model_totally_ordered_v<std::remove_cvref_t<t>> ||
+                std::totally_ordered<std::remove_cvref_t<t>>));
 };
 //!\endcond
 
@@ -207,8 +207,7 @@ concept tuple_like = detail::tuple_size<std::remove_reference_t<t>> && requires(
  */
 //!\cond
 template <typename t>
-concept pair_like = tuple_like<t> && std::tuple_size_v<std::remove_reference_t<t>>
-== 2;
+concept pair_like = tuple_like<t> && std::tuple_size_v<std::remove_reference_t<t>> == 2;
 //!\endcond
 
 } // namespace bio::meta

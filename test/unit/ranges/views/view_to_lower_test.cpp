@@ -62,9 +62,9 @@ TEST(view_to_lower, deep)
 
 TEST(view_to_lower, concepts)
 {
-    std::string   input_string{"AEIOU"};
-    std::string & input_string_ref = input_string;
-    auto          lower_view       = input_string | bio::ranges::views::to_lower;
+    std::string           input_string{"AEIOU"};
+    std::string &         input_string_ref = input_string;
+    [[maybe_unused]] auto lower_view       = input_string | bio::ranges::views::to_lower;
 
     // Required
     EXPECT_TRUE(std::ranges::input_range<decltype(input_string)>);

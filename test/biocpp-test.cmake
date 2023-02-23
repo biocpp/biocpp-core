@@ -51,6 +51,7 @@ file(MAKE_DIRECTORY ${BIOCPP_TEST_CLONE_DIR}/googletest/include/)
 # libraries which are in common for **all** bio tests
 add_library (biocpp_test INTERFACE)
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    #TODO we should remove and fix "-Wno-unused-variable" "-Wno-unused-local-typedef"
     target_compile_options (biocpp_test INTERFACE "-pedantic"  "-fsized-deallocation" "-Wall" "-Wextra" "-Werror" "-Wno-missing-braces" "-Wno-unused-variable" "-Wno-unused-local-typedef")
 else ()
     target_compile_options (biocpp_test INTERFACE "-pedantic"  "-Wall" "-Wextra" "-Werror")

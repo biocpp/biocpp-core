@@ -46,11 +46,11 @@ TEST(pod_tuple_cp_ctr, cp_ctr)
 // move construction
 TEST(pod_tuple_mv_ctr, mv_ctr)
 {
-    bio::meta::pod_tuple<int, long, float> t0{4, 7l, 3.0f};
-    bio::meta::pod_tuple<int, long, float> t1{4, 7l, 3.0f};
-    bio::meta::pod_tuple<int, long, float> t2{std::move(t1)};
+    bio::meta::pod_tuple<int, long, std::string> t0{4, 7l, "foo"};
+    bio::meta::pod_tuple<int, long, std::string> t1{4, 7l, "foo"};
+    bio::meta::pod_tuple<int, long, std::string> t2{std::move(t1)};
     EXPECT_EQ(t2, t0);
-    bio::meta::pod_tuple<int, long, float> t3(std::move(t2));
+    bio::meta::pod_tuple<int, long, std::string> t3(std::move(t2));
     EXPECT_EQ(t3, t0);
 }
 
@@ -70,10 +70,10 @@ TEST(pod_tuple_cp_assgn, cp_assgn)
 // move assignment
 TEST(pod_tuple_mv_assgn, mv_assgn)
 {
-    bio::meta::pod_tuple<int, long, float> t0{4, 7l, 3.0f};
-    bio::meta::pod_tuple<int, long, float> t1{4, 7l, 3.0f};
-    bio::meta::pod_tuple<int, long, float> t2;
-    bio::meta::pod_tuple<int, long, float> t3;
+    bio::meta::pod_tuple<int, long, std::string> t0{4, 7l, "foo"};
+    bio::meta::pod_tuple<int, long, std::string> t1{4, 7l, "foo"};
+    bio::meta::pod_tuple<int, long, std::string> t2;
+    bio::meta::pod_tuple<int, long, std::string> t3;
     t2 = std::move(t1);
     EXPECT_EQ(t2, t0);
     t3 = std::move(t2);

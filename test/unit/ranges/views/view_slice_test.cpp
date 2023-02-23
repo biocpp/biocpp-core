@@ -69,7 +69,7 @@ TEST(view_slice, concepts)
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(vec), int>));
 
-    auto v1 = vec | bio::ranges::views::slice(1, 4);
+    [[maybe_unused]] auto v1 = vec | bio::ranges::views::slice(1, 4);
 
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
@@ -81,7 +81,7 @@ TEST(view_slice, concepts)
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(v1)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(v1), int>));
 
-    auto v2 = vec | bio::ranges::views::single_pass_input | bio::ranges::views::slice(1, 4);
+    [[maybe_unused]] auto v2 = vec | bio::ranges::views::single_pass_input | bio::ranges::views::slice(1, 4);
 
     EXPECT_TRUE(std::ranges::input_range<decltype(v2)>);
     EXPECT_FALSE(std::ranges::forward_range<decltype(v2)>);

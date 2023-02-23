@@ -60,10 +60,10 @@ TEST(view_interleave, basic)
 TEST(view_interleave, concepts)
 {
     // random_access_range, viewable_range, sized_range
-    std::string u{"FOOBARBAXBAT"};
-    std::string i{"in"};
-    size_t      s = 3;
-    auto        v1 =
+    std::string           u{"FOOBARBAXBAT"};
+    std::string           i{"in"};
+    size_t                s = 3;
+    [[maybe_unused]] auto v1 =
       bio::ranges::detail::view_interleave(bio::ranges::views::type_reduce(u), s, bio::ranges::views::type_reduce(i));
 
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);

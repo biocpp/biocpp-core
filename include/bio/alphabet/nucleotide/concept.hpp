@@ -67,14 +67,16 @@ namespace bio::alphabet
  */
 inline constexpr auto complement = []<typename alph_t>(alph_t const a)
   //!\cond
-  requires(requires {
-      {tag_invoke(custom::complement{}, a)};
-      // NOTE we are using the trait here and not the concept, because the concept
-      // also checks explicit convertibility but we don't want to substitute into
-      // explicit constructors/conversion operators to prevent loops
-      requires std::is_convertible_v<alph_t, decltype(tag_invoke(custom::complement{}, a))>;
-      requires noexcept(tag_invoke(custom::complement{}, a));
-  })
+    requires(requires {
+        {
+            tag_invoke(custom::complement{}, a)
+        };
+        // NOTE we are using the trait here and not the concept, because the concept
+        // also checks explicit convertibility but we don't want to substitute into
+        // explicit constructors/conversion operators to prevent loops
+        requires std::is_convertible_v<alph_t, decltype(tag_invoke(custom::complement{}, a))>;
+        requires noexcept(tag_invoke(custom::complement{}, a));
+    })
 //!\endcond
 {
     return tag_invoke(custom::complement{}, a);
@@ -112,9 +114,10 @@ inline constexpr auto complement = []<typename alph_t>(alph_t const a)
  */
 //!\cond
 template <typename t>
-concept nucleotide = alphabet<t> && requires(t val)
-{
-    {bio::alphabet::complement(val)};
+concept nucleotide = alphabet<t> && requires(t val) {
+    {
+        bio::alphabet::complement(val)
+    };
 };
 //!\endcond
 

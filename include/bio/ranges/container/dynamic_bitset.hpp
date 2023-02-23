@@ -231,9 +231,9 @@ public:
      * No-throw guarantee.
      */
     template <std::forward_iterator begin_it_type, typename end_it_type>
-        //!\cond
+    //!\cond
         requires(std::sentinel_for<end_it_type, begin_it_type> &&
-                   std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
+                 std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
     //!\endcond
     constexpr dynamic_bitset(begin_it_type begin_it, end_it_type end_it) noexcept : dynamic_bitset{}
     {
@@ -256,7 +256,7 @@ public:
      * No-throw guarantee.
      */
     template <meta::different_from<dynamic_bitset> other_range_t>
-        //!\cond
+    //!\cond
         requires std::ranges::input_range<other_range_t>
     //!\endcond
     explicit constexpr dynamic_bitset(other_range_t && range) noexcept :
@@ -454,7 +454,7 @@ public:
      * No-throw guarantee.
      */
     template <std::ranges::input_range other_range_t>
-        //!\cond
+    //!\cond
         requires std::constructible_from<value_type, std::ranges::range_reference_t<other_range_t>>
     //!\endcond
     constexpr void assign(other_range_t && range) noexcept
@@ -480,9 +480,9 @@ public:
      * No-throw guarantee.
      */
     template <std::forward_iterator begin_it_type, typename end_it_type>
-        //!\cond
+    //!\cond
         requires(std::sentinel_for<end_it_type, begin_it_type> &&
-                   std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
+                 std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
     //!\endcond
     constexpr void assign(begin_it_type begin_it, end_it_type end_it) noexcept
     {
@@ -1224,9 +1224,9 @@ public:
      * No-throw guarantee.
      */
     template <std::forward_iterator begin_it_type, typename end_it_type>
-        //!\cond
+    //!\cond
         requires(std::sentinel_for<end_it_type, begin_it_type> &&
-                   std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
+                 std::constructible_from<value_type, std::iter_reference_t<begin_it_type>>)
     //!\endcond
     constexpr iterator insert(const_iterator pos, begin_it_type begin_it, end_it_type end_it) noexcept
     {
@@ -1462,7 +1462,7 @@ public:
      * Both dynamic_bitsets must have the same size. In debug mode an assertion checks this constraint.
      */
     template <size_t cap>
-        //!\cond
+    //!\cond
         requires(cap <= bit_capacity)
     //!\endcond
     friend constexpr dynamic_bitset operator&(dynamic_bitset const & lhs, dynamic_bitset<cap> const & rhs) noexcept
@@ -1482,7 +1482,7 @@ public:
      * Both dynamic_bitsets must have the same size. In debug mode an assertion checks this constraint.
      */
     template <size_t cap>
-        //!\cond
+    //!\cond
         requires(cap <= bit_capacity)
     //!\endcond
     friend constexpr dynamic_bitset operator^(dynamic_bitset const & lhs, dynamic_bitset<cap> const & rhs) noexcept
@@ -1502,7 +1502,7 @@ public:
      * Both dynamic_bitsets must have the same size. In debug mode an assertion checks this constraint.
      */
     template <size_t cap>
-        //!\cond
+    //!\cond
         requires(cap <= bit_capacity)
     //!\endcond
     friend constexpr dynamic_bitset operator|(dynamic_bitset const & lhs, dynamic_bitset<cap> const & rhs) noexcept

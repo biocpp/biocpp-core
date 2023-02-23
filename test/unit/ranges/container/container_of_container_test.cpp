@@ -55,6 +55,7 @@ TYPED_TEST(container_of_container, construction)
 
     std::vector<std::vector<bio::alphabet::dna4>> other_vector{"ACGT"_dna4, "ACGT"_dna4, "GAGGA"_dna4};
     // direct from another container-of-container
+    //NOLINTNEXTLINE(performance-unnecessary-copy-initialization)
     TypeParam                                     t7{other_vector};
     // from another container-of-container's sub-range
     TypeParam                                     t8{other_vector.cbegin(), other_vector.cend()};
@@ -129,8 +130,8 @@ TYPED_TEST(container_of_container, element_access)
     // at
     EXPECT_RANGE_EQ(t1.at(0), "ACGT"_dna4);
     EXPECT_RANGE_EQ(t2.at(0), "ACGT"_dna4);
-    EXPECT_THROW(t1.at(5), std::out_of_range);
-    EXPECT_THROW(t2.at(5), std::out_of_range);
+    EXPECT_THROW((void)t1.at(5), std::out_of_range);
+    EXPECT_THROW((void)t2.at(5), std::out_of_range);
 
     // []
     EXPECT_RANGE_EQ(t1[0], "ACGT"_dna4);

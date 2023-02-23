@@ -69,7 +69,7 @@ TEST(view_char_strictly_to, concepts)
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(vec), char>));
 
-    auto v1 = vec | bio::ranges::views::char_strictly_to<bio::alphabet::dna5>;
+    [[maybe_unused]] auto v1 = vec | bio::ranges::views::char_strictly_to<bio::alphabet::dna5>;
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);
@@ -82,7 +82,7 @@ TEST(view_char_strictly_to, concepts)
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), bio::alphabet::dna5>));
     EXPECT_FALSE((std::ranges::output_range<decltype(v1), char>));
 
-    auto v2 = vec | bio::ranges::views::char_strictly_to<char>;
+    [[maybe_unused]] auto v2 = vec | bio::ranges::views::char_strictly_to<char>;
     EXPECT_TRUE(std::ranges::input_range<decltype(v2)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v2)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v2)>);

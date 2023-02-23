@@ -96,8 +96,7 @@ protected:
         }
 
         return ret;
-    }
-    ();
+    }();
 };
 
 } // namespace bio::alphabet

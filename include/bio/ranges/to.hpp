@@ -42,8 +42,8 @@ private:
      * \tparam rng_t       type of the range
      * \tparam container_t type of the target container
      */
-    auto impl(std::ranges::range auto && rng,
-              container_t & container) const requires std::ranges::range<std::decay_t<decltype(*rng.begin())>>
+    auto impl(std::ranges::range auto && rng, container_t & container) const
+        requires std::ranges::range<std::decay_t<decltype(*rng.begin())>>
     {
         auto adapter   = to_fn<typename container_t::value_type>{};
         auto inner_rng = rng | std::views::transform(adapter);

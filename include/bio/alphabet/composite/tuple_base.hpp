@@ -87,7 +87,7 @@ decltype(auto) get();
  *
  */
 template <typename derived_type, typename... component_types>
-    //!\cond
+//!\cond
     requires((detail::writable_constexpr_semialphabet<component_types> && ...) &&
              (std::regular<component_types> && ...))
 //!\endcond
@@ -179,8 +179,8 @@ public:
      *
      */
     template <typename component_type>
-        //!\cond
-        requires((!std::is_base_of_v<tuple_base, component_type>)&&is_unique_component<component_type>)
+    //!\cond
+        requires((!std::is_base_of_v<tuple_base, component_type>) && is_unique_component<component_type>)
     //!\endcond
     constexpr explicit tuple_base(component_type const alph) noexcept : tuple_base{}
     {
@@ -204,7 +204,7 @@ public:
      *
      */
     template <typename indirect_component_type>
-        //!\cond
+    //!\cond
         requires(detail::tuple_concept_guard<derived_type, indirect_component_type, component_types...> &&
                  (std::is_convertible_v<indirect_component_type, component_types> || ...))
     //!\endcond
@@ -246,8 +246,8 @@ public:
      *
      */
     template <typename component_type>
-        //!\cond
-        requires((!std::derived_from<component_type, tuple_base>)&&is_unique_component<component_type>)
+    //!\cond
+        requires((!std::derived_from<component_type, tuple_base>) && is_unique_component<component_type>)
     //!\endcond
     constexpr derived_type & operator=(component_type const alph) noexcept
     {
@@ -268,10 +268,10 @@ public:
      *
      */
     template <typename indirect_component_type>
-        //!\cond
-        requires(
-          (!std::derived_from<indirect_component_type, tuple_base>)&&(!is_unique_component<indirect_component_type>)&&(
-            std::assignable_from<component_types, indirect_component_type> || ...))
+    //!\cond
+        requires((!std::derived_from<indirect_component_type, tuple_base>) &&
+                 (!is_unique_component<indirect_component_type>) &&
+                 (std::assignable_from<component_types, indirect_component_type> || ...))
     //!\endcond
     constexpr derived_type & operator=(indirect_component_type const alph) noexcept
     {
@@ -285,10 +285,10 @@ public:
     //!\cond
     // If not assignable but implicit convertible, convert first and assign afterwards
     template <typename indirect_component_type>
-        requires(
-          (!std::derived_from<indirect_component_type, tuple_base>)&&(!is_unique_component<indirect_component_type>)&&(
-            !(std::assignable_from<component_types, indirect_component_type> || ...)) &&
-          (std::convertible_to<indirect_component_type, component_types> || ...))
+        requires((!std::derived_from<indirect_component_type, tuple_base>) &&
+                 (!is_unique_component<indirect_component_type>) &&
+                 (!(std::assignable_from<component_types, indirect_component_type> || ...)) &&
+                 (std::convertible_to<indirect_component_type, component_types> || ...))
     constexpr derived_type & operator=(indirect_component_type const alph) noexcept
     {
         using component_predicate = detail::implicitly_convertible_from<indirect_component_type>;
@@ -301,11 +301,11 @@ public:
     }
 
     template <typename indirect_component_type>
-        requires(
-          (!std::derived_from<indirect_component_type, tuple_base>)&&(!is_unique_component<indirect_component_type>)&&(
-            !(std::assignable_from<component_types, indirect_component_type> || ...)) &&
-          (!(std::convertible_to<indirect_component_type, component_types> || ...)) &&
-          (std::constructible_from<component_types, indirect_component_type> || ...))
+        requires((!std::derived_from<indirect_component_type, tuple_base>) &&
+                 (!is_unique_component<indirect_component_type>) &&
+                 (!(std::assignable_from<component_types, indirect_component_type> || ...)) &&
+                 (!(std::convertible_to<indirect_component_type, component_types> || ...)) &&
+                 (std::constructible_from<component_types, indirect_component_type> || ...))
     constexpr derived_type & operator=(indirect_component_type const alph) noexcept
     {
         using component_predicate = detail::constructible_from<indirect_component_type>;
@@ -349,7 +349,7 @@ public:
     template <typename type>
     friend constexpr auto get(tuple_base & l) noexcept
       //!\cond
-      requires is_unique_component<type>
+        requires is_unique_component<type>
     //!\endcond
     {
         return get<meta::list_traits::find<type, component_list>>(l);
@@ -378,7 +378,7 @@ public:
     template <typename type>
     friend constexpr type get(tuple_base const & l) noexcept
       //!\cond
-      requires is_unique_component<type>
+        requires is_unique_component<type>
     //!\endcond
     {
         return get<meta::list_traits::find<type, component_list>>(l);
@@ -390,7 +390,7 @@ public:
     template <typename type>
     constexpr operator type() const noexcept
       //!\cond
-      requires is_unique_component<type>
+        requires is_unique_component<type>
     //!\endcond
     {
         return get<type>(*this);
@@ -414,7 +414,7 @@ public:
      *
      */
     template <std::same_as<derived_type> derived_type_t, typename indirect_component_type>
-        //!\cond
+    //!\cond
         requires(detail::tuple_concept_guard<derived_type, indirect_component_type, component_types...> &&
                  (meta::weakly_equality_comparable_with<indirect_component_type, component_types> || ...))
     //!\endcond
@@ -429,7 +429,7 @@ public:
 
     //!\copydoc bio::alphabet::tuple_base::operator==(derived_type_t const lhs, indirect_component_type const rhs)
     template <std::same_as<derived_type> derived_type_t, typename indirect_component_type>
-        //!\cond
+    //!\cond
         requires(detail::tuple_concept_guard<derived_type, indirect_component_type, component_types...> &&
                  (meta::weakly_ordered_with<indirect_component_type, component_types> || ...))
     //!\endcond
@@ -475,11 +475,13 @@ private:
         ret[0]               = 1;
         size_t count         = 1;
         using reverse_list_t = decltype(meta::list_traits::detail::reverse(component_list{}));
-        bio::meta::detail::for_each<reverse_list_t>([&](auto alphabet_type_identity) constexpr {
-            using alphabet_t = typename decltype(alphabet_type_identity)::type;
-            ret[count]       = static_cast<rank_type>(bio::alphabet::size<alphabet_t> * ret[count - 1]);
-            ++count;
-        });
+        bio::meta::detail::for_each<reverse_list_t>(
+          [&](auto alphabet_type_identity) constexpr
+          {
+              using alphabet_t = typename decltype(alphabet_type_identity)::type;
+              ret[count]       = static_cast<rank_type>(bio::alphabet::size<alphabet_t> * ret[count - 1]);
+              ++count;
+          });
 
         // reverse and strip one: (|sigma1|*...*|sigmaN-1|, ... |sigma1|*|sigma2|, |sigma1|, 1)
         // reverse order guarantees that the first alphabet is the most significant rank contributer
@@ -489,8 +491,7 @@ private:
             ret2[i] = ret[component_list::size() - i - 1];
 
         return ret2;
-    }
-    ();
+    }();
 
     //!\brief For the given components, compute the combined rank.
     template <std::size_t... idx>
@@ -521,8 +522,7 @@ private:
         }
 
         return ret;
-    }
-    ();
+    }();
 };
 
 /*!\brief Specialisation of bio::alphabet::proxy_base that updates the rank of the tuple_base.
@@ -531,7 +531,7 @@ private:
  *
  */
 template <typename derived_type, typename... component_types>
-    //!\cond
+//!\cond
     requires((detail::writable_constexpr_semialphabet<component_types> && ...) &&
              (std::regular<component_types> && ...))
 //!\endcond

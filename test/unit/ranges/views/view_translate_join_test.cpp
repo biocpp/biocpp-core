@@ -37,17 +37,17 @@ struct iterator_fixture<iterator_type> : public ::testing::Test
 
     std::vector<std::vector<bio::alphabet::dna4>>     vec{"ACGTACGTACGTA"_dna4, "TCGAGAGCTTTAGC"_dna4};
     std::vector<std::vector<bio::alphabet::aa27>>     expected_range{{"TYVR"_aa27},
-                                                                 {"RTYV"_aa27},
-                                                                 {"VRT"_aa27},
-                                                                 {"YVRT"_aa27},
-                                                                 {"TYVR"_aa27},
-                                                                 {"RTY"_aa27},
-                                                                 {"SRAL"_aa27},
-                                                                 {"REL*"_aa27},
-                                                                 {"ESFS"_aa27},
-                                                                 {"AKAL"_aa27},
-                                                                 {"LKLS"_aa27},
-                                                                 {"*SSR"_aa27}};
+                                                                     {"RTYV"_aa27},
+                                                                     {"VRT"_aa27},
+                                                                     {"YVRT"_aa27},
+                                                                     {"TYVR"_aa27},
+                                                                     {"RTY"_aa27},
+                                                                     {"SRAL"_aa27},
+                                                                     {"REL*"_aa27},
+                                                                     {"ESFS"_aa27},
+                                                                     {"AKAL"_aa27},
+                                                                     {"LKLS"_aa27},
+                                                                     {"*SSR"_aa27}};
     decltype(bio::ranges::views::translate_join(vec)) test_range = bio::ranges::views::translate_join(vec);
 
     template <typename A, typename B>
@@ -202,7 +202,7 @@ TYPED_TEST(nucleotide, view_translate_concepts)
     EXPECT_TRUE(std::ranges::random_access_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
 
-    auto v1 = vec | bio::ranges::views::translate_join(bio::alphabet::translation_frames::FWD_REV_0);
+    [[maybe_unused]] auto v1 = vec | bio::ranges::views::translate_join(bio::alphabet::translation_frames::FWD_REV_0);
 
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);

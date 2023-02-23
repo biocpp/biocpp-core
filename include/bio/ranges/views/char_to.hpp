@@ -101,7 +101,8 @@ public:
     }
 
     //!\copydoc begin()
-    constexpr auto begin() const noexcept requires const_iterable_range<urng_t>
+    constexpr auto begin() const noexcept
+        requires const_iterable_range<urng_t>
     {
         return ++const_it_t{std::ranges::begin(urange), std::ranges::begin(urange), std::ranges::end(urange)};
     }
@@ -130,7 +131,8 @@ public:
     }
 
     //!\copydoc end()
-    constexpr auto end() const noexcept requires const_iterable_range<urng_t>
+    constexpr auto end() const noexcept
+        requires const_iterable_range<urng_t>
     {
         if constexpr (std::ranges::common_range<urng_t>)
             return const_it_t{std::ranges::end(urange), std::ranges::begin(urange), std::ranges::end(urange)};
@@ -243,7 +245,7 @@ public:
     constexpr friend bool operator==(iterator const & lhs, usen_t const & rhs) noexcept(
       noexcept(std::declval<uit_t &>() == std::declval<usen_t &>()))
       //!\cond
-      requires(!std::same_as<uit_t, usen_t>)
+        requires(!std::same_as<uit_t, usen_t>)
     //!\endcond
     {
         return lhs.uit_left == rhs;
@@ -253,7 +255,7 @@ public:
     constexpr friend auto operator<=>(iterator const & lhs, iterator const & rhs) noexcept(
       noexcept(std::declval<uit_t &>() < std::declval<uit_t &>()))
       //!\cond
-      requires std::totally_ordered<uit_t>
+        requires std::totally_ordered<uit_t>
     //!\endcond
     {
         return lhs.uit_left <=> rhs.uit_left;
@@ -298,7 +300,7 @@ public:
     //!\brief Pre-decrement, return updated iterator.
     constexpr iterator & operator--()
       //!\cond
-      requires(requires(uit_t i) { --i; })
+        requires(requires(uit_t i) { --i; })
     //!\endcond
     {
         assert(uit_left != ubeg);
@@ -325,7 +327,7 @@ public:
     //!\brief Post-decrement, return previous iterator state.
     constexpr auto operator--(int)
       //!\cond
-      requires(requires(uit_t i) { --i; })
+        requires(requires(uit_t i) { --i; })
     //!\endcond
     {
         auto copy = *this;
@@ -379,7 +381,7 @@ public:
     //!\brief Return pointer to this iterator.
     constexpr pointer operator->() noexcept(noexcept(*std::declval<uit_t &>()))
       //!\cond
-      requires std::input_iterator<uit_t>
+        requires std::input_iterator<uit_t>
     //!\endcond
     {
         return this;
@@ -388,7 +390,7 @@ public:
     //!\brief Return pointer to this iterator.
     constexpr decltype(auto) operator->() const noexcept(noexcept(*std::declval<uit_t const &>()))
       //!\cond
-      requires std::input_iterator<uit_t>
+        requires std::input_iterator<uit_t>
     //!\endcond
     {
         return this;
@@ -497,7 +499,7 @@ namespace bio::ranges::views
  * \hideinitializer
  */
 template <typename alphabet_type>
-    //!\cond
+//!\cond
     requires(alphabet::alphabet<alphabet_type> || std::same_as<alphabet_type, alphabet::cigar>)
 //!\endcond
 inline constexpr auto char_to = detail::adaptor_from_functor{meta::overloaded{

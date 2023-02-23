@@ -267,9 +267,9 @@ TEST(variant_test, alphabet_size)
     using alphabet2_t = bio::alphabet::variant<bio::alphabet::gap, bio::alphabet::dna5, bio::alphabet::dna4>;
     using alphabet3_t = bio::alphabet::variant<char, bio::alphabet::gap>;
 
-    EXPECT_TRUE((std::is_same_v<decltype(alphabet1_t::alphabet_size), const size_t>));
-    EXPECT_TRUE((std::is_same_v<decltype(alphabet2_t::alphabet_size), const size_t>));
-    EXPECT_TRUE((std::is_same_v<decltype(alphabet3_t::alphabet_size), const size_t>));
+    EXPECT_TRUE((std::is_same_v<decltype(alphabet1_t::alphabet_size), size_t const>));
+    EXPECT_TRUE((std::is_same_v<decltype(alphabet2_t::alphabet_size), size_t const>));
+    EXPECT_TRUE((std::is_same_v<decltype(alphabet3_t::alphabet_size), size_t const>));
 
     EXPECT_EQ(alphabet1_t::alphabet_size, 10ull);
     EXPECT_EQ(alphabet2_t::alphabet_size, 10ull);
@@ -342,11 +342,11 @@ TYPED_TEST(variant_test, char_is_valid_for)
     using gapped_alphabet_bases_t = typename gapped_alphabet_t::biocpp_required_types;
     using char_t                  = bio::alphabet::char_t<gapped_alphabet_t>;
 
-    char_t   i             = std::numeric_limits<char_t>::min();
-    char_t   end           = std::numeric_limits<char_t>::max();
-    uint64_t i_no_overflow = std::numeric_limits<char_t>::min();
+    char_t  i             = std::numeric_limits<char_t>::min();
+    int64_t end           = std::numeric_limits<char_t>::max();
+    int64_t i_no_overflow = std::numeric_limits<char_t>::min(); //NOLINT(bugprone-signed-char-misuse)
 
-    for (; i_no_overflow <= static_cast<uint64_t>(end); ++i, ++i_no_overflow)
+    for (; i_no_overflow <= end; ++i, ++i_no_overflow)
     {
         bool is_valid{};
         bio::meta::detail::for_each<gapped_alphabet_bases_t>(

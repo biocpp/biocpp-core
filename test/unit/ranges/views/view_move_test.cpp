@@ -44,8 +44,8 @@ TEST(view_move, basic)
 
 TEST(view_move, concepts)
 {
-    std::string vec{"ACTTTGATA"};
-    auto        v1 = vec | bio::ranges::views::move;
+    std::string           vec{"ACTTTGATA"};
+    [[maybe_unused]] auto v1 = vec | bio::ranges::views::move;
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);
@@ -58,7 +58,8 @@ TEST(view_move, concepts)
 
     EXPECT_TRUE((std::is_same_v<decltype(v1[0]), char &&>));
 
-    auto v2 = vec | bio::ranges::views::to_lower | bio::ranges::views::move; // to_lower generates values
+    [[maybe_unused]] auto v2 =
+      vec | bio::ranges::views::to_lower | bio::ranges::views::move; // to_lower generates values
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::bidirectional_range<decltype(v1)>);

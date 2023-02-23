@@ -230,7 +230,8 @@ TYPED_TEST(nucleotide, view_translate_single_concepts)
     EXPECT_TRUE(std::ranges::random_access_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
 
-    auto v1 = vec | bio::ranges::views::translate_single(bio::alphabet::translation_frames::FWD_FRAME_0);
+    [[maybe_unused]] auto v1 =
+      vec | bio::ranges::views::translate_single(bio::alphabet::translation_frames::FWD_FRAME_0);
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::random_access_range<decltype(v1)>);
@@ -248,7 +249,7 @@ TYPED_TEST(nucleotide, view_translate_concepts)
     EXPECT_TRUE(std::ranges::random_access_range<decltype(vec)>);
     EXPECT_TRUE(std::ranges::sized_range<decltype(vec)>);
 
-    auto v1 = vec | bio::ranges::views::translate(bio::alphabet::translation_frames::FWD_REV_0);
+    [[maybe_unused]] auto v1 = vec | bio::ranges::views::translate(bio::alphabet::translation_frames::FWD_REV_0);
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::random_access_range<decltype(v1)>);

@@ -38,7 +38,7 @@ namespace bio::alphabet
  * \include test/snippet/alphabet/mask/masked.cpp
  */
 template <writable_alphabet sequence_alphabet_t>
-    //!\cond
+//!\cond
     requires std::regular<sequence_alphabet_t>
 //!\endcond
 class masked : public tuple_base<masked<sequence_alphabet_t>, sequence_alphabet_t, mask>
@@ -67,7 +67,7 @@ public:
     constexpr masked & operator=(masked &&) noexcept = default; //!< Defaulted.
     ~masked()                                        = default; //!< Defaulted.
 
-    using base_t::base_t; // Inherit non-default constructors
+    using base_t::base_t;                                       // Inherit non-default constructors
     //!\}
 
     // Inherit operators from base

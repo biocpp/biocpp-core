@@ -68,7 +68,7 @@ void do_concepts(adaptor_t && adaptor, bool const exactly)
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(vec)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(vec), int>));
 
-    auto v1 = vec | adaptor;
+    [[maybe_unused]] auto v1 = vec | adaptor;
 
     EXPECT_TRUE(std::ranges::input_range<decltype(v1)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v1)>);
@@ -80,7 +80,7 @@ void do_concepts(adaptor_t && adaptor, bool const exactly)
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(v1)>);
     EXPECT_TRUE((std::ranges::output_range<decltype(v1), int>));
 
-    auto v3 = vec | std::views::transform([](auto && v) { return v; }) | adaptor;
+    [[maybe_unused]] auto v3 = vec | std::views::transform([](auto && v) { return v; }) | adaptor;
 
     EXPECT_TRUE(std::ranges::input_range<decltype(v3)>);
     EXPECT_TRUE(std::ranges::forward_range<decltype(v3)>);
@@ -92,7 +92,7 @@ void do_concepts(adaptor_t && adaptor, bool const exactly)
     EXPECT_TRUE(bio::ranges::const_iterable_range<decltype(v3)>);
     EXPECT_FALSE((std::ranges::output_range<decltype(v3), int>));
 
-    auto v2 = vec | bio::ranges::views::single_pass_input | adaptor;
+    [[maybe_unused]] auto v2 = vec | bio::ranges::views::single_pass_input | adaptor;
 
     EXPECT_TRUE(std::ranges::input_range<decltype(v2)>);
     EXPECT_FALSE(std::ranges::forward_range<decltype(v2)>);
@@ -106,7 +106,7 @@ void do_concepts(adaptor_t && adaptor, bool const exactly)
 
     // explicit test for non const-iterable views
     // https://github.com/seqan/seqan3/pull/1734#discussion_r408829267
-    auto const & v2_cref = v2;
+    [[maybe_unused]] auto const & v2_cref = v2;
 
     EXPECT_FALSE(std::ranges::input_range<decltype(v2_cref)>);
     EXPECT_FALSE(std::ranges::forward_range<decltype(v2_cref)>);

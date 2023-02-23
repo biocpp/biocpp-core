@@ -41,8 +41,8 @@ namespace bio::ranges
  */
 //!\cond
 template <typename type>
-concept const_iterable_range = std::ranges::input_range<std::remove_const_t<type>> &&
-  std::ranges::input_range<type const> &&
+concept const_iterable_range =
+  std::ranges::input_range<std::remove_const_t<type>> && std::ranges::input_range<type const> &&
   (std::ranges::forward_range<std::remove_const_t<type>> == std::ranges::forward_range<type const>)&&(
     std::ranges::bidirectional_range<std::remove_const_t<type>> ==
     std::ranges::bidirectional_range<type const>)&&(std::ranges::random_access_range<std::remove_const_t<type>> ==
@@ -57,10 +57,7 @@ concept const_iterable_range = std::ranges::input_range<std::remove_const_t<type
  */
 //!\cond
 template <typename rng_t, typename val_t>
-concept back_insertable_with = requires(rng_t & v)
-{
-    v.push_back(std::declval<val_t>());
-};
+concept back_insertable_with = requires(rng_t & v) { v.push_back(std::declval<val_t>()); };
 //!\endcond
 
 /*!\interface bio::ranges::back_insertable <>
@@ -83,10 +80,7 @@ concept back_insertable =
  */
 //!\cond
 template <typename rng_t, typename... args_t>
-concept back_emplaceable_with = requires(rng_t & v)
-{
-    v.emplace_back(std::declval<args_t>()...);
-};
+concept back_emplaceable_with = requires(rng_t & v) { v.emplace_back(std::declval<args_t>()...); };
 //!\endcond
 
 } // namespace bio::ranges

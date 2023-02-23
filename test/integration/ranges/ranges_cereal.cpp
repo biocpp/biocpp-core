@@ -75,7 +75,7 @@ TEST(range_cereal_smallstring, simple)
 
 TEST(range_cereal_dynamic_bitset, simple)
 {
-    bio::ranges::dynamic_bitset t1{0b100101};
+    bio::ranges::dynamic_bitset t1{0b10'0101};
     do_serialisation(t1);
 }
 

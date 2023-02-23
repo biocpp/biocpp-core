@@ -31,11 +31,11 @@ class view_transform_by_pos : public std::ranges::view_base
 {
 private:
     //!\brief The input range.
-    std::optional<urng_t>             urange;
+    urng_t             urange;
     //!\brief The invocable.
-    std::optional<transform_by_pos_t> transform_by_pos;
+    transform_by_pos_t transform_by_pos;
     //!\brief The size of this range.
-    size_t                            _size = 0;
+    size_t             _size = 0;
 
     static_assert(std::ranges::sized_range<urng_t>,
                   "The range parameter to views::transform_by_pos must model std::ranges::sized_range.");
@@ -55,9 +55,9 @@ private:
      * \{
      */
     //!\brief The reference_type.
-    using reference       = decltype((*transform_by_pos)(*urange, 0ull));
+    using reference       = decltype(transform_by_pos(urange, 0ull));
     //!\brief The const_reference type.
-    using const_reference = decltype(std::as_const(*transform_by_pos)(std::as_const(*urange), 0ull));
+    using const_reference = decltype(std::as_const(transform_by_pos)(std::as_const(urange), 0ull));
     //!\brief The value_type (which equals the reference_type with any cvref removed).
     using value_type      = std::remove_cvref_t<reference>;
     //!\brief A signed integer type, usually std::ptrdiff_t.
@@ -100,7 +100,7 @@ public:
      * \param[in] s                 Size of the returned view.
      */
     template <typename rng_t>
-        //!\cond
+    //!\cond
         requires(!meta::decays_to<rng_t, view_transform_by_pos> &&
                  (std::ranges::viewable_range<rng_t> &&
                   std::constructible_from<urng_t, std::ranges::ref_view<std::remove_reference_t<rng_t>>>))
@@ -128,7 +128,11 @@ public:
      */
     auto begin() noexcept { return iterator{*this, 0}; }
     //!\overload
-    auto begin() const noexcept requires const_invocable { return const_iterator{*this, 0}; }
+    auto begin() const noexcept
+        requires const_invocable
+    {
+        return const_iterator{*this, 0};
+    }
 
     /*!\brief Returns an iterator to the element following the last element of the container.
      * \returns Iterator to the first element.
@@ -145,7 +149,11 @@ public:
      */
     auto end() noexcept { return iterator{*this, size()}; }
     //!\overload
-    auto end() const noexcept requires const_invocable { return const_iterator{*this, size()}; }
+    auto end() const noexcept
+        requires const_invocable
+    {
+        return const_iterator{*this, size()};
+    }
     //!\}
 
     /*!\brief Returns the number of elements in the view.
@@ -182,14 +190,15 @@ public:
     decltype(auto) operator[](size_t const n)
     {
         assert(n < size());
-        return (*transform_by_pos)(*urange, n);
+        return transform_by_pos(urange, n);
     }
 
     //!\overload
-    decltype(auto) operator[](size_t const n) const requires const_invocable
+    decltype(auto) operator[](size_t const n) const
+        requires const_invocable
     {
         assert(n < size());
-        return (*transform_by_pos)(*urange, n);
+        return transform_by_pos(urange, n);
     }
     //!\}
 };

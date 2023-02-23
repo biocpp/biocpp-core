@@ -22,7 +22,7 @@ namespace std
  * \tparam alphabet_t The type of character to hash; must model bio::alphabet::semialphabet.
  */
 template <typename alphabet_t>
-    //!\cond
+//!\cond
     requires bio::alphabet::semialphabet<alphabet_t>
 //!\endcond
 struct hash<alphabet_t>

@@ -64,11 +64,11 @@ TEST(range_cereal_smallstring, short)
 
 TEST(range_cereal_dynamic_bitset, short)
 {
-    bio::ranges::dynamic_bitset t1{0b100101};
+    bio::ranges::dynamic_bitset t1{0b10'0101};
     std::string                 buf = fmt::format("{}", t1);
     EXPECT_EQ(buf, "0b10'0101");
 
-    bio::ranges::dynamic_bitset t2{0b1100101101010111};
+    bio::ranges::dynamic_bitset t2{0b1100'1011'0101'0111};
     buf = fmt::format("{}", t2);
     EXPECT_EQ(buf, "0b1100'1011'0101'0111");
 }
