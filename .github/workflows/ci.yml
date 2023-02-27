@@ -36,7 +36,6 @@ jobs:
             cxx: "clang++-16"
             cc: "clang-16"
             pkg: "clang-16 clang-tidy-16 g++-12"
-            os: "ubuntu-22.04"
             build: clang_tidy
             build_type: Debug
 
@@ -44,43 +43,38 @@ jobs:
             cxx: "g++-10"
             cc: "gcc-10"
             pkg: "gcc-10 g++-10"
-            os: "ubuntu-22.04"
             build: unit
             build_type: Debug
 
-          - name: "Unit gcc11"
+          - name: "Unit gcc11 Release"
             cxx: "g++-11"
             cc: "gcc-11"
             pkg: "gcc-11 g++-11"
-            os: "ubuntu-22.04"
             build: unit
             build_type: Release
 
-          - name: "Unit gcc12 Debug"
+          - name: "Unit gcc12 ASAN+UBSAN"
             cxx: "g++-12"
             cc: "gcc-12"
             pkg: "gcc-12 g++-12"
-            os: "ubuntu-22.04"
             build: unit
             build_type: Debug
+            cxx_flags: "-fsanitize=address,undefined"
 
           - name: "Integration gcc12"
             cxx: "g++-12"
             cc: "gcc-12"
             pkg: "gcc-12 g++-12"
-            os: "ubuntu-22.04"
             build: integration
             build_type: Debug
 
           - name: "Documentation"
             pkg: "doxygen"
-            os: "ubuntu-22.04"
             build: documentation
             build_type: Debug
 
           - name: "Clang Format"
             pkg: "clang-format-16"
-            os: "ubuntu-22.04"
             build: clang_format
             build_type: Debug
 
@@ -88,7 +82,6 @@ jobs:
             cxx: "g++-12"
             cc: "gcc-12"
             pkg: "gcc-12 g++-12"
-            os: "ubuntu-22.04"
             build: coverage
             build_type: Debug
 
@@ -200,7 +193,7 @@ jobs:
         run: |
           mkdir biocpp-core-build
           cd biocpp-core-build
-          cmake ../biocpp-core/test/${{ matrix.build }} -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}"
+          cmake ../biocpp-core/test/${{ matrix.build }} -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}" -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}"
       - name: Build tests
         env:
           CCACHE_BASEDIR: ${{ github.workspace }}

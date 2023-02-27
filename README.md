@@ -46,13 +46,22 @@ constant-time random access like a vector.
   * Optional CMake support available.
   * Integrates well with the standard library, [{fmt}](https://github.com/fmtlib/fmt) and [cereal](https://github.com/USCiLab/cereal).
 
+## State-of-the-art software engineering
+
+  * C++20 with good forward compatibility.
+  * GCC≥10 and Clang≥16 are supported.
+  * No warnings on `-Wall -Wextra -pedantic`.
+  * >97% code coverage.
+  * Automatic code-formatting with `clang_format`.
+  * Static analysis with `clang_tidy`.
+  * Runtime analysis with ASAN and UBSAN.
+  * No `new` or `malloc` in the entire codebase.
+
 ## Quick-Setup
 
   * Clone the repository: `git clone https://github.com/biocpp/biocpp-core.git`
   * Add the include directory of BioC++, activate C++20 and you are good to go:
 ```sh
-g++-10 -O3 -DNDEBUG -Wall -Wextra -std=c++20 -I /path/to/biocpp-core/include your_file.cpp
+g++ -O3 -DNDEBUG -Wall -Wextra -std=c++20 -I /path/to/biocpp-core/include your_file.cpp
 ```
   * If you want to use {fmt}, add `-I /path/to/fmt/include -D FMT_HEADER_ONLY=1`.
-
-**Currently, GCC ≥ 10 and Clang ≥ 16 are the only supported compiler.**
