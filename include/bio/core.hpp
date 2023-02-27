@@ -120,7 +120,23 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 #define BIOCPP_CORE_VERSION                                                                                            \
     (BIOCPP_CORE_VERSION_MAJOR * 10000 + BIOCPP_CORE_VERSION_MINOR * 100 + BIOCPP_CORE_VERSION_PATCH)
 
-#include <string>
+/*!\brief Converts a number to a string. Preprocessor needs this indirection to
+ * properly expand the values to strings.
+ */
+#define BIOCPP_CORE_VERSION_CSTRING_HELPER_STR(str) #str
+
+//!\brief Converts version numbers to string.
+#define BIOCPP_CORE_VERSION_CSTRING_HELPER_FUNC(MAJOR, MINOR, PATCH)                                                   \
+    BIOCPP_CORE_VERSION_CSTRING_HELPER_STR(MAJOR)                                                                      \
+    "." BIOCPP_CORE_VERSION_CSTRING_HELPER_STR(MINOR) "." BIOCPP_CORE_VERSION_CSTRING_HELPER_STR(PATCH)
+
+//!\brief The full version as null terminated string.
+#define BIOCPP_CORE_VERSION_CSTRING                                                                                    \
+    BIOCPP_CORE_VERSION_CSTRING_HELPER_FUNC(BIOCPP_CORE_VERSION_MAJOR,                                                 \
+                                            BIOCPP_CORE_VERSION_MINOR,                                                 \
+                                            BIOCPP_CORE_VERSION_PATCH)
+
+#include <string_view>
 
 /*!\namespace bio
  * \brief The main BioC++ namespace.
@@ -135,12 +151,13 @@ inline constexpr size_t biocpp_core_version_minor = BIOCPP_CORE_VERSION_MINOR;
 //!\brief The patch version.
 inline constexpr size_t biocpp_core_version_patch = BIOCPP_CORE_VERSION_PATCH;
 
-//!\brief The full version as `std::string`.
-inline std::string const biocpp_core_version = std::to_string(biocpp_core_version_major) + "." +
-                                               std::to_string(biocpp_core_version_minor) + "." +
-                                               std::to_string(biocpp_core_version_patch);
+//!\brief The full version as `std::string_view`.
+inline constexpr std::string_view biocpp_core_version = BIOCPP_CORE_VERSION_CSTRING;
 
 } // namespace bio
+
+#undef BIOCPP_CORE_VERSION_CSTRING_HELPER_STR
+#undef BIOCPP_CORE_VERSION_CSTRING_HELPER_FUNC
 
 // ============================================================================
 //  Macros for general use within libraries
