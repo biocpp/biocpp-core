@@ -31,6 +31,11 @@ Summary: we now support LLVM/clang as a compiler; CIGARs have been much improved
 
 * `bio::alphabet::nucleotide_alphabet` → `bio::alphabet::nucleotide` (same for `aminoacid_alphabet`, `quality_alphabet` and `writable_quality_alphabet`).
 
+## Removed
+
+* `bio::views::as_const` has been removed, use C++23's `std::views::as_const` instead.
+* `bio::views::move` has been removed, use C++23's `std::views::as_rvalue` instead.
+
 ## API
 
 * This release is not yet API-stable.
