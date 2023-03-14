@@ -17,17 +17,13 @@
 #include <functional>
 #include <ranges>
 
+#include <bio/ranges/concept.hpp>
 #include <bio/ranges/views/detail.hpp>
 
 //!\cond
 // Contains helpers for bio::views::zip.
 namespace bio::ranges::detail::zip
 {
-
-template <class range_t>
-concept simple_view = std::ranges::view<range_t> && std::ranges::range<range_t const> &&
-                      std::same_as<std::ranges::iterator_t<range_t>, std::ranges::iterator_t<range_t const>> &&
-                      std::same_as<std::ranges::sentinel_t<range_t>, std::ranges::sentinel_t<range_t const>>;
 
 template <bool is_const, typename t>
 using maybe_const = std::conditional_t<is_const, t const, t>;
@@ -134,7 +130,7 @@ public:
     constexpr explicit zip_view(Views... views) : views_(std::move(views)...) {}
 
     constexpr auto begin()
-        requires(!(zip::simple_view<Views> && ...))
+        requires(!(simple_view<Views> && ...))
     {
         return iterator<false>(zip::tuple_transform(std::ranges::begin, views_));
     }
@@ -146,7 +142,7 @@ public:
     }
 
     constexpr auto end()
-        requires(!(zip::simple_view<Views> && ...))
+        requires(!(simple_view<Views> && ...))
     {
         if constexpr (!zip::zip_is_common<Views...>)
             return sentinel<false>(zip::tuple_transform(std::ranges::end, views_));

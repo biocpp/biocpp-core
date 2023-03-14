@@ -51,7 +51,7 @@ constant-time random access like a vector.
   * C++20 with good forward compatibility.
   * GCC≥10 and Clang≥16 are supported.
   * No warnings on `-Wall -Wextra -pedantic`.
-  * >97% code coverage.
+  * More than 97% code coverage.
   * Automatic code-formatting with `clang_format`.
   * Static analysis with `clang_tidy`.
   * Runtime analysis with ASAN and UBSAN.
