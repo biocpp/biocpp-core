@@ -17,6 +17,17 @@
 
 #include <bio/alphabet/concept.hpp>
 
+namespace bio::ranges::detail
+{
+
+//!\brief Auxilliary concept that check's whether a view and its const version have the same iterator types.
+template <class range_t>
+concept simple_view = std::ranges::view<range_t> && std::ranges::range<range_t const> &&
+                      std::same_as<std::ranges::iterator_t<range_t>, std::ranges::iterator_t<range_t const>> &&
+                      std::same_as<std::ranges::sentinel_t<range_t>, std::ranges::sentinel_t<range_t const>>;
+
+} // namespace bio::ranges::detail
+
 namespace bio::ranges
 {
 
