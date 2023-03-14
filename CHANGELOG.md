@@ -24,6 +24,7 @@ Summary: we now support LLVM/clang as a compiler; CIGARs have been much improved
 ## Maintained
 
 * `bio::ranges::small_string` now satisfies the std::ranges::view-concept for capacities <= 30.
+* `bio::views::interleave` has been redefined in terms of `bio::views::transform_by_pos` (much less code); should also be a bit faster now.
 * Clang-tidy is automatically run as part of the CI.
 
 ## Renamed
