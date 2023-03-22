@@ -307,7 +307,7 @@ public:
      *
      * Constant.
      */
-    std::string_view view() const { return std::string_view{data_.data(), this->size()}; }
+    constexpr std::string_view view() const { return std::string_view{data_.data(), this->size()}; }
 
     /*!\brief Returns the content represented as 0-terminated c-style string.
      *
@@ -333,7 +333,36 @@ public:
      *
      * Constant.
      */
-    operator std::string_view() const { return view(); }
+    constexpr operator std::string_view() const { return view(); }
+    //!\}
+
+    //!\name Comparison operators
+    //!\{
+    //!\brief Performs element-wise comparison.
+    template <size_t cap2>
+    friend constexpr bool operator==(small_string const & lhs, small_string<cap2> const & rhs) noexcept
+    {
+        return operator==(lhs.view(), rhs.view());
+    }
+
+    //!\brief Performs element-wise comparison.
+    template <size_t cap2>
+    friend constexpr auto operator<=>(small_string const & lhs, small_string<cap2> const & rhs) noexcept
+    {
+        return operator<=>(lhs.view(), rhs.view());
+    }
+
+    //!\brief Performs element-wise comparison.
+    friend constexpr bool operator==(small_string const & lhs, std::string_view const & rhs) noexcept
+    {
+        return operator==(lhs.view(), rhs);
+    }
+
+    //!\brief Performs element-wise comparison.
+    friend constexpr auto operator<=>(small_string const & lhs, std::string_view const & rhs) noexcept
+    {
+        return operator<=>(lhs.view(), rhs);
+    }
     //!\}
 
     /*!\name Input/output
