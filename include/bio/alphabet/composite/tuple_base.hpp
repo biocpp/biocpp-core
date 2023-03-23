@@ -87,10 +87,8 @@ decltype(auto) get();
  *
  */
 template <typename derived_type, typename... component_types>
-//!\cond
     requires((detail::writable_constexpr_semialphabet<component_types> && ...) &&
              (std::regular<component_types> && ...))
-//!\endcond
 class tuple_base :
   public base<derived_type,
               (1 * ... * size<component_types>),
@@ -179,9 +177,7 @@ public:
      *
      */
     template <typename component_type>
-    //!\cond
         requires((!std::is_base_of_v<tuple_base, component_type>) && is_unique_component<component_type>)
-    //!\endcond
     constexpr explicit tuple_base(component_type const alph) noexcept : tuple_base{}
     {
         get<component_type>(*this) = alph;
@@ -204,10 +200,8 @@ public:
      *
      */
     template <typename indirect_component_type>
-    //!\cond
         requires(detail::tuple_concept_guard<derived_type, indirect_component_type, component_types...> &&
                  (std::is_convertible_v<indirect_component_type, component_types> || ...))
-    //!\endcond
     constexpr explicit tuple_base(indirect_component_type const alph) noexcept : tuple_base{}
     {
         using component_predicate = detail::implicitly_convertible_from<indirect_component_type>;
@@ -246,9 +240,7 @@ public:
      *
      */
     template <typename component_type>
-    //!\cond
         requires((!std::derived_from<component_type, tuple_base>) && is_unique_component<component_type>)
-    //!\endcond
     constexpr derived_type & operator=(component_type const alph) noexcept
     {
         get<component_type>(*this) = alph;
@@ -268,11 +260,9 @@ public:
      *
      */
     template <typename indirect_component_type>
-    //!\cond
         requires((!std::derived_from<indirect_component_type, tuple_base>) &&
                  (!is_unique_component<indirect_component_type>) &&
                  (std::assignable_from<component_types, indirect_component_type> || ...))
-    //!\endcond
     constexpr derived_type & operator=(indirect_component_type const alph) noexcept
     {
         using component_predicate = detail::assignable_from<indirect_component_type>;
@@ -348,9 +338,7 @@ public:
      */
     template <typename type>
     friend constexpr auto get(tuple_base & l) noexcept
-      //!\cond
         requires is_unique_component<type>
-    //!\endcond
     {
         return get<meta::list_traits::find<type, component_list>>(l);
     }
@@ -377,9 +365,7 @@ public:
      */
     template <typename type>
     friend constexpr type get(tuple_base const & l) noexcept
-      //!\cond
         requires is_unique_component<type>
-    //!\endcond
     {
         return get<meta::list_traits::find<type, component_list>>(l);
     }
@@ -389,9 +375,7 @@ public:
      */
     template <typename type>
     constexpr operator type() const noexcept
-      //!\cond
         requires is_unique_component<type>
-    //!\endcond
     {
         return get<type>(*this);
     }
@@ -414,10 +398,8 @@ public:
      *
      */
     template <std::same_as<derived_type> derived_type_t, typename indirect_component_type>
-    //!\cond
         requires(detail::tuple_concept_guard<derived_type, indirect_component_type, component_types...> &&
                  (meta::weakly_equality_comparable_with<indirect_component_type, component_types> || ...))
-    //!\endcond
     friend constexpr bool operator==(derived_type_t const lhs, indirect_component_type const rhs) noexcept
     {
         using component_predicate = detail::weakly_equality_comparable_with_<indirect_component_type>;
@@ -429,10 +411,8 @@ public:
 
     //!\copydoc bio::alphabet::tuple_base::operator==(derived_type_t const lhs, indirect_component_type const rhs)
     template <std::same_as<derived_type> derived_type_t, typename indirect_component_type>
-    //!\cond
         requires(detail::tuple_concept_guard<derived_type, indirect_component_type, component_types...> &&
                  (meta::weakly_ordered_with<indirect_component_type, component_types> || ...))
-    //!\endcond
     friend constexpr auto operator<=>(derived_type_t const lhs, indirect_component_type const rhs) noexcept
     {
         using component_predicate = detail::weakly_ordered_with_<indirect_component_type>;
@@ -531,10 +511,8 @@ private:
  *
  */
 template <typename derived_type, typename... component_types>
-//!\cond
     requires((detail::writable_constexpr_semialphabet<component_types> && ...) &&
              (std::regular<component_types> && ...))
-//!\endcond
 template <typename alphabet_type, size_t index>
 class tuple_base<derived_type, component_types...>::component_proxy :
   public proxy_base<component_proxy<alphabet_type, index>, alphabet_type>

@@ -119,9 +119,7 @@ public:
      * \throws std::runtime_error If `exactly && or_throw && bio::alphabet::sized_range<urng_t>`.
      */
     template <std::ranges::viewable_range rng_t>
-    //!\cond
         requires std::constructible_from<rng_t, std::views::all_t<rng_t>>
-    //!\endcond
     constexpr view_take(rng_t && _urange, size_t const _size) :
       view_take{std::views::all(std::forward<rng_t>(_urange)), _size}
     {}
@@ -316,9 +314,7 @@ public:
 
     //!\brief Decrements the iterator by one.
     constexpr basic_iterator & operator--() noexcept(noexcept(--std::declval<base_base_t &>()))
-      //!\cond
         requires std::bidirectional_iterator<base_base_t>
-    //!\endcond
     {
         base_t::operator--();
         --pos;
@@ -328,9 +324,7 @@ public:
     //!\brief Returns an iterator decremented by one.
     constexpr basic_iterator operator--(int) noexcept(noexcept(--std::declval<basic_iterator &>()) &&
                                                       std::is_nothrow_copy_constructible_v<basic_iterator>)
-      //!\cond
         requires std::bidirectional_iterator<base_base_t>
-    //!\endcond
     {
         basic_iterator cpy{*this};
         --(*this);
@@ -340,9 +334,7 @@ public:
     //!\brief Advances the iterator by skip positions.
     constexpr basic_iterator & operator+=(difference_type const skip) noexcept(noexcept(std::declval<base_t &>() +=
                                                                                         skip))
-      //!\cond
         requires std::random_access_iterator<base_base_t>
-    //!\endcond
     {
         base_t::operator+=(skip);
         pos += skip;
@@ -352,9 +344,7 @@ public:
     //!\brief Advances the iterator by -skip positions.
     constexpr basic_iterator & operator-=(difference_type const skip) noexcept(noexcept(std::declval<base_t &>() -=
                                                                                         skip))
-      //!\cond
         requires std::random_access_iterator<base_base_t>
-    //!\endcond
     {
         base_t::operator-=(skip);
         pos -= skip;
@@ -370,9 +360,7 @@ public:
     //!\brief Checks whether `*this` is equal to `rhs`.
     constexpr bool operator==(basic_iterator const & rhs) const
       noexcept(!or_throw && noexcept(std::declval<base_base_t &>() == std::declval<base_base_t &>()))
-      //!\cond
         requires std::forward_iterator<base_base_t>
-    //!\endcond
     {
         return *base_t::this_to_base() == *rhs.this_to_base();
     }
@@ -409,9 +397,7 @@ public:
      */
     constexpr reference operator[](std::make_unsigned_t<difference_type> const n) const
       noexcept(noexcept(std::declval<base_base_t &>()[0]))
-      //!\cond
         requires std::random_access_iterator<base_base_t>
-    //!\endcond
     {
         return base_base_t::operator[](n);
     }

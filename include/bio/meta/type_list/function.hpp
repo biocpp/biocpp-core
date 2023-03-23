@@ -62,9 +62,7 @@ namespace bio::meta::detail
  */
 template <typename type_list_t, typename unary_predicate_t>
 [[nodiscard]] constexpr bool all_of(unary_predicate_t && fn)
-  //!\cond
     requires template_specialisation_of<type_list_t, type_list>
-//!\endcond
 {
     return [&]<typename... ts>(type_list<ts...>) { return (fn(std::type_identity<ts>{}) && ...); }(type_list_t{});
 }
@@ -108,9 +106,7 @@ template <typename type_list_t, typename unary_predicate_t>
  * \sa bio::meta::detail::for_each
  */
 template <typename type_list_t, typename unary_function_t>
-//!\cond
     requires template_specialisation_of<type_list_t, bio::meta::type_list>
-//!\endcond
 constexpr void for_each(unary_function_t && fn)
 {
     return [&]<typename... ts>(type_list<ts...>) { (fn(std::type_identity<ts>{}), ...); }(type_list_t{});

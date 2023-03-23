@@ -109,29 +109,23 @@ struct vtag_t<v, more_vs...>
 
     //!\brief Whether all values in the tag are unique.
     static constexpr bool unique_values()
-      //!\cond REQ
         requires((weakly_equality_comparable_with<decltype(v), decltype(more_vs)> && ...))
-    //!\endcond
     {
         return ((v != more_vs) && ...);
     }
 
     //!\copybrief bio::meta::vtag_t::contains
     static constexpr bool contains(auto && s)
-      //!\cond REQ
         requires(weakly_equality_comparable_with<decltype(s), decltype(v)> &&
                  (weakly_equality_comparable_with<decltype(s), decltype(more_vs)> && ...))
-    //!\endcond
     {
         return s == v || ((s == more_vs) || ...);
     }
 
     //!\copybrief bio::meta::vtag_t::index_of
     static constexpr size_t index_of(auto && s)
-      //!\cond REQ
         requires(weakly_equality_comparable_with<decltype(s), decltype(v)> &&
                  (weakly_equality_comparable_with<decltype(s), decltype(more_vs)> && ...))
-    //!\endcond
     {
         size_t c = 0;
         ((v != s && ++c) && ((more_vs != s && ++c) && ...));

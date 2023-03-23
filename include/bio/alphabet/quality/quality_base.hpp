@@ -71,9 +71,7 @@ public:
     // This constructor needs to be public, because constructor templates are not inherited otherwise
     //!\brief Allow explicit construction from any other quality type by means of the phred representation.
     template <meta::different_from<derived_type> other_qual_type>
-    //!\cond
         requires quality<other_qual_type>
-    //!\endcond
     explicit constexpr quality_base(other_qual_type const & other) noexcept
     {
         assign_phred_to(bio::alphabet::to_phred(other), static_cast<derived_type &>(*this));

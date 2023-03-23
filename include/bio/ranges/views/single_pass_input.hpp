@@ -94,10 +94,8 @@ public:
 
     //!\brief Construction from std::ranges::viewable_range.
     template <meta::different_from<single_pass_input_view> other_urng_t>
-    //!\cond
         requires(std::ranges::viewable_range<other_urng_t> &&
                  std::constructible_from<urng_t, std::ranges::ref_view<std::remove_reference_t<other_urng_t>>>)
-    //!\endcond
     explicit single_pass_input_view(other_urng_t && _urng) : single_pass_input_view{std::views::all(_urng)}
     {}
     //!\}
@@ -211,9 +209,7 @@ public:
 
     //!\brief Returns pointer to the pointed-to object.
     pointer operator->() const noexcept
-      //!\cond
         requires(!std::is_void_v<pointer>)
-    //!\endcond
     {
         return std::addressof(*cached());
     }
