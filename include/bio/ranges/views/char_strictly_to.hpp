@@ -110,9 +110,7 @@ namespace bio::ranges::views
  * \hideinitializer
  */
 template <typename alphabet_type>
-//!\cond
     requires(alphabet::alphabet<alphabet_type> || std::same_as<alphabet_type, alphabet::cigar>)
-//!\endcond
 inline auto const char_strictly_to = detail::adaptor_from_functor{meta::overloaded{
   // clang-format off
     []<std::ranges::input_range rng_t>(rng_t && range)

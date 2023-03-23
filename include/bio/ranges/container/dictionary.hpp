@@ -148,9 +148,7 @@ public:
      * Basic exception gurantee.
      */
     template <typename... value_type_>
-    //!\cond
         requires((std::convertible_to<value_type_, value_type> && ...) && sizeof...(value_type_) > 0)
-    //!\endcond
     explicit dictionary(value_type_ &&... args)
     {
         assign(std::forward<value_type_>(args)...);
@@ -172,11 +170,9 @@ public:
      * Basic exception gurantee.
      */
     template <meta::different_from<iterator> begin_it_type, typename end_it_type>
-    //!\cond
         requires(meta::different_from<const_iterator, begin_it_type> && std::forward_iterator<begin_it_type> &&
                  std::sentinel_for<end_it_type, begin_it_type> &&
                  std::convertible_to<std::iter_reference_t<begin_it_type>, value_type>)
-    //!\endcond
     dictionary(begin_it_type const begin_it, end_it_type const end_it) : dictionary{}
     {
         assign(begin_it, end_it);
@@ -207,9 +203,7 @@ public:
      * Basic exception gurantee.
      */
     template <meta::different_from<dictionary> other_range_t>
-    //!\cond
         requires(std::ranges::input_range<other_range_t>)
-    //!\endcond
     explicit dictionary(other_range_t && range) : dictionary{std::ranges::begin(range), std::ranges::end(range)}
     {}
 
@@ -227,12 +221,10 @@ public:
      * Basic exception gurantee.
      */
     template <typename... value_type_>
-    //!\cond
         requires((meta::different_from<dictionary, value_type_> && ...) &&
                  (meta::different_from<iterator, value_type_> && ...) &&
                  (meta::different_from<const_iterator, value_type_> && ...) &&
                  (std::convertible_to<value_type_, value_type> && ...) && (sizeof...(value_type_) > 0))
-    //!\endcond
     void assign(value_type_ &&... args)
     {
         storage.clear();
@@ -255,9 +247,7 @@ public:
      * Basic exception gurantee.
      */
     template <std::ranges::input_range other_range_t>
-    //!\cond
         requires std::convertible_to<std::ranges::range_reference_t<other_range_t>, value_type>
-    //!\endcond
     void assign(other_range_t && range)
     {
         //TODO we could create move-iterators for
@@ -280,11 +270,9 @@ public:
      * Basic exception gurantee.
      */
     template <meta::different_from<iterator> begin_it_type, typename end_it_type>
-    //!\cond
         requires(meta::different_from<const_iterator, begin_it_type> && std::forward_iterator<begin_it_type> &&
                  std::sentinel_for<end_it_type, begin_it_type> &&
                  std::convertible_to<std::iter_reference_t<begin_it_type>, value_type>)
-    //!\endcond
     void assign(begin_it_type begin_it, end_it_type end_it)
     {
         assign_impl(begin_it, end_it);

@@ -58,9 +58,7 @@ namespace bio::alphabet
  * See bio::ranges::bitcompressed_vector or bio::alphabet::tuple_base for examples of how this class is used.
  */
 template <typename derived_type, writable_semialphabet alphabet_type>
-//!\cond
     requires std::regular<alphabet_type>
-//!\endcond
 class proxy_base
 {
 private:
@@ -113,9 +111,7 @@ private:
     //!\brief Assignment from any type that the emulated type is assignable from.
     template <typename indirect_assignable_type>
     constexpr derived_type & operator=(indirect_assignable_type const & c) const noexcept
-      //!\cond
         requires meta::weakly_assignable_from<alphabet_type, indirect_assignable_type>
-    //!\endcond
     {
         alphabet_type a;
         a = c;
@@ -137,9 +133,7 @@ public:
      */
     //!\copydoc bio::alphabet::base::assign_char
     constexpr derived_type & assign_char(char_type const c) noexcept
-      //!\cond
         requires writable_alphabet<alphabet_type>
-    //!\endcond
     {
         alphabet_type tmp;
         assign_char_to(c, tmp);
@@ -148,9 +142,7 @@ public:
 
     //!\copydoc bio::alphabet::base::assign_char
     constexpr derived_type const & assign_char(char_type const c) const noexcept
-      //!\cond
         requires writable_alphabet<alphabet_type>
-    //!\endcond
     {
         alphabet_type tmp;
         assign_char_to(c, tmp);
@@ -159,9 +151,7 @@ public:
 
     //!\copydoc bio::alphabet::quality_base::assign_phred
     constexpr derived_type & assign_phred(phred_type const c) noexcept
-      //!\cond
         requires writable_quality<alphabet_type>
-    //!\endcond
     {
         alphabet_type tmp;
         assign_phred_to(c, tmp);
@@ -170,9 +160,7 @@ public:
 
     //!\copydoc bio::alphabet::quality_base::assign_phred
     constexpr derived_type const & assign_phred(phred_type const c) const noexcept
-      //!\cond
         requires writable_quality<alphabet_type>
-    //!\endcond
     {
         alphabet_type tmp;
         assign_phred_to(c, tmp);
@@ -206,9 +194,7 @@ public:
 
     //!\brief Implicit conversion to types that the emulated type is convertible to.
     template <typename other_t>
-    //!\cond
         requires(std::convertible_to<alphabet_type, other_t>)
-    //!\endcond
     constexpr operator other_t() const noexcept
     {
         return operator alphabet_type();
@@ -216,36 +202,28 @@ public:
 
     //!\copydoc bio::alphabet::base::to_char
     constexpr auto to_char() const noexcept
-      //!\cond
         requires alphabet<alphabet_type>
-    //!\endcond
     {
         return bio::alphabet::to_char(operator alphabet_type());
     }
 
     //!\copydoc bio::alphabet::quality_base::to_phred
     constexpr auto to_phred() const noexcept
-      //!\cond
         requires quality<alphabet_type>
-    //!\endcond
     {
         return bio::alphabet::to_phred(operator alphabet_type());
     }
 
     //!\copydoc bio::alphabet::nucleotide_base::complement
     constexpr alphabet_type complement() const noexcept
-      //!\cond
         requires nucleotide<alphabet_type>
-    //!\endcond
     {
         return bio::alphabet::complement(operator alphabet_type());
     }
 
     //!\brief Delegate to the emulated type's validator.
     static constexpr bool char_is_valid(char_type const c) noexcept
-      //!\cond
         requires writable_alphabet<alphabet_type>
-    //!\endcond
     {
         return char_is_valid_for<alphabet_type>(c);
     }
@@ -381,13 +359,11 @@ private:
     friend constexpr bool tag_invoke(custom::char_is_valid_for,
                                      char_type const c,
                                      std::type_identity<derived_type>) noexcept
-      //!\cond REQ
         requires(requires {
             {
                 derived_type::char_is_valid(c)
             };
         } && !meta::constexpr_default_initializable<derived_type>)
-    //!\endcond
     {
         return derived_type::char_is_valid(c);
     }

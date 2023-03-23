@@ -72,7 +72,7 @@ jobs:
             pkg: "doxygen"
             build: documentation
             build_type: Debug
-            version: 1.9.4
+            version: 1.9.6
 
           - name: "Clang Format"
             pkg: "clang-format-16"
@@ -166,7 +166,7 @@ jobs:
         run: |
           sudo apt-get install --yes texlive-font-utils ghostscript texlive-latex-extra graphviz
           mkdir -p /tmp/doxygen-download
-          wget --retry-connrefused --waitretry=30 --read-timeout=30 --timeout=30 --tries=20 --no-clobber --quiet --directory-prefix=/tmp/doxygen-download/ https://sourceforge.net/projects/doxygen/files/rel-${{ matrix.version }}/doxygen-${{ matrix.version }}.linux.bin.tar.gz
+          wget --retry-connrefused --waitretry=30 --read-timeout=30 --timeout=30 --tries=20 --no-clobber --quiet --directory-prefix=/tmp/doxygen-download/ https://github.com/doxygen/doxygen/releases/download/Release_$(echo ${{ matrix.version }} | sed -e 's/\./_/g')/doxygen-${{ matrix.version }}.linux.bin.tar.gz
           tar -C /tmp/ -zxf /tmp/doxygen-download/doxygen-${{ matrix.version }}.linux.bin.tar.gz
           echo "/tmp/doxygen-${{ matrix.version }}/bin" >> $GITHUB_PATH # Only available in subsequent steps!
 

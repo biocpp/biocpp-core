@@ -73,9 +73,7 @@ public:
     // This constructor needs to be public, because constructor templates are not inherited otherwise
     //!\brief Allow explicit construction from any other nucleotide type and convert via the character representation.
     template <meta::different_from<derived_type> other_nucl_type>
-    //!\cond
         requires nucleotide<other_nucl_type>
-    //!\endcond
     explicit constexpr nucleotide_base(other_nucl_type const & other) noexcept
     {
         static_cast<derived_type &>(*this) =

@@ -100,11 +100,9 @@ public:
      * \param[in] s                 Size of the returned view.
      */
     template <typename rng_t>
-    //!\cond
         requires(!meta::decays_to<rng_t, view_transform_by_pos> &&
                  (std::ranges::viewable_range<rng_t> &&
                   std::constructible_from<urng_t, std::ranges::ref_view<std::remove_reference_t<rng_t>>>))
-    //!\endcond
     view_transform_by_pos(rng_t && _urange, transform_by_pos_t _transform_by_pos, size_t const s) :
       view_transform_by_pos{std::views::all(std::forward<rng_t>(_urange)), std::move(_transform_by_pos), s}
     {}

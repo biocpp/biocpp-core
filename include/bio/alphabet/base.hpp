@@ -102,9 +102,7 @@ public:
      * Guaranteed not to throw.
      */
     constexpr char_type to_char() const noexcept
-      //!\cond
         requires(!std::same_as<char_t, void>)
-    //!\endcond
     {
         return derived_type::rank_to_char[rank];
     }
@@ -145,9 +143,7 @@ public:
      * Guaranteed not to throw.
      */
     constexpr derived_type & assign_char(char_type const c) noexcept
-      //!\cond
         requires(!std::same_as<char_t, void>)
-    //!\endcond
     {
         using index_t = std::make_unsigned_t<char_type>;
         rank          = derived_type::char_to_rank[static_cast<index_t>(c)];
@@ -251,13 +247,11 @@ private:
     friend constexpr bool tag_invoke(custom::char_is_valid_for,
                                      char_type const c,
                                      std::type_identity<derived_type>) noexcept
-      //!\cond REQ
         requires(requires {
             {
                 derived_type::char_is_valid(c)
             };
         } && !meta::constexpr_default_initializable<derived_type>)
-    //!\endcond
     {
         return derived_type::char_is_valid(c);
     }
@@ -318,9 +312,7 @@ public:
      */
     //!\copybrief bio::alphabet::base::to_char
     constexpr char_type to_char() const noexcept
-      //!\cond
         requires(!std::same_as<char_t, void>)
-    //!\endcond
     {
         return derived_type::char_value;
     }
@@ -334,9 +326,7 @@ public:
      */
     //!\copybrief bio::alphabet::base::assign_char
     constexpr derived_type & assign_char(char_type const) noexcept
-      //!\cond
         requires(!std::same_as<char_t, void>)
-    //!\endcond
     {
         return static_cast<derived_type &>(*this);
     }

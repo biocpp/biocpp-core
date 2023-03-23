@@ -40,6 +40,8 @@
                 <tab type="hierarchy" visible="yes" title="" intro=""/>
                 <tab type="classmembers" visible="yes" title="" intro=""/>
             </tab>
+                <tab type="concepts" visible="yes" title="">
+            </tab>
             <tab type="files" visible="yes" title="">
                 <tab type="filelist" visible="yes" title="" intro=""/>
                 <tab type="globals" visible="yes" title="" intro=""/>
@@ -114,6 +116,7 @@
             <nestednamespaces visible="yes" title=""/>
             <constantgroups visible="yes" title=""/>
             <classes visible="yes" title=""/>
+            <concepts visible="yes" title=""/>
             <typedefs title=""/>
             <enums title=""/>
             <functions title=""/>
@@ -140,6 +143,7 @@
         <sourcelink visible="yes"/>
         <memberdecl>
             <classes visible="yes" title=""/>
+            <concepts visible="yes" title=""/>
             <namespaces visible="yes" title=""/>
             <constantgroups visible="yes" title=""/>
             <defines title=""/>
@@ -171,6 +175,7 @@
             <files visible="yes" title=""/>
             <namespaces visible="yes" title=""/>
             <classes visible="yes" title=""/>
+            <concepts visible="yes" title=""/>
             <defines title=""/>
             <typedefs title=""/>
             <enums title=""/>

@@ -36,9 +36,7 @@ namespace bio::alphabet
  * \sa For more details see variant, which is the base class and more general than the gapped alphabet.
  */
 template <typename alphabet_t>
-//!\cond
     requires writable_alphabet<alphabet_t>
-//!\endcond
 using gapped = variant<alphabet_t, gap>;
 
 } // namespace bio::alphabet

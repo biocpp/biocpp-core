@@ -25,12 +25,10 @@ namespace bio::meta
  * \{
  */
 
-/*!\interface   bio::meta::weakly_equality_comparable_with <>
- * \tparam t1   The first type to compare.
+/*!\tparam t1   The first type to compare.
  * \tparam t2   The second type to compare.
  * \brief       Requires the two operands to be comparable with `==` and `!=` in both directions.
  */
-//!\cond
 template <class T, class U>
 concept weakly_equality_comparable_with =
   requires(std::remove_reference_t<T> const & t, std::remove_reference_t<U> const & u) {
@@ -39,14 +37,11 @@ concept weakly_equality_comparable_with =
       requires std::convertible_to<decltype(u == t), bool>;
       requires std::convertible_to<decltype(u != t), bool>;
   };
-//!\endcond
 
-/*!\interface   bio::meta::weakly_ordered_with <>
- * \tparam t1   The first type to compare.
+/*!\tparam t1   The first type to compare.
  * \tparam t2   The second type to compare.
  * \brief       Requires the two operands to be comparable with `<`, `<=`, `>` and `>=` in both directions.
  */
-//!\cond
 template <typename t1, typename t2>
 concept weakly_ordered_with = requires(std::remove_reference_t<t1> const & v1, std::remove_reference_t<t2> const & v2) {
     requires std::convertible_to<decltype(v1 < v2), bool>;
@@ -59,99 +54,69 @@ concept weakly_ordered_with = requires(std::remove_reference_t<t1> const & v1, s
     requires std::convertible_to<decltype(v2 > v1), bool>;
     requires std::convertible_to<decltype(v2 >= v1), bool>;
 };
-//!\endcond
 
-/*!\interface   bio::meta::arithmetic <>
- * \brief       A type that satisfies std::is_arithmetic_v<t>.
+/*!\brief       A type that satisfies std::is_arithmetic_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_arithmetic
  */
-//!\cond
 template <typename t>
 concept arithmetic = std::is_arithmetic_v<t>;
-//!\endcond
 
-/*!\interface   bio::meta::floating_point <>
- * \extends     bio::meta::arithmetic
+/*!\extends     bio::meta::arithmetic
  * \brief       An arithmetic type that also satisfies std::is_floating_point_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_floating_point
  */
-//!\cond
 template <typename t>
 concept floating_point = arithmetic<t> && std::is_floating_point_v<t>;
-//!\endcond
 
-/*!\interface   bio::meta::one_of
- * \brief       Resolves to (std::same_as<query_t, other_types> || ...).
+/*!\brief       Resolves to (std::same_as<query_t, other_types> || ...).
  */
-//!\cond
 template <typename query_t, typename... other_types>
 concept one_of = (BIOCPP_IS_SAME(query_t, other_types) || ...);
-//!\endcond
 
-/*!\interface   bio::meta::builtin_character <>
- * \extends     std::integral
+/*!\extends     std::integral
  * \brief       This concept encompasses exactly the types `char`, `signed char`, `unsigned char`, `wchar_t`,
  *              `char16_t` and `char32_t`.
  */
-//!\cond
-
 template <typename t>
 concept builtin_character =
   std::integral<t> && one_of<t, char, unsigned char, signed char, char8_t, char16_t, char32_t, wchar_t>;
-//!\endcond
 
-/*!\interface   bio::meta::nonint_character <>
- * \extends     std::integral
+/*!\extends     std::integral
  * \brief       This concept encompasses exactly the types `char`, `wchar_t`,
  *              `char16_t` and `char32_t`.
  */
-//!\cond
 template <typename type>
 concept nonint_character = one_of<type, char, char16_t, char32_t, wchar_t>;
-//!\endcond
 
-/*!\interface   bio::meta::trivially_destructible <>
- * \extends     std::destructible
+/*!\extends     std::destructible
  * \brief       A type that satisfies std::is_trivially_destructible_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_destructible
  */
-//!\cond
 template <typename t>
 concept trivially_destructible = std::destructible<t> && std::is_trivially_destructible_v<t>;
-//!\endcond
 
-/*!\interface   bio::meta::trivially_copyable
- * \brief       A type that satisfies std::is_trivially_copyable_v<t>.
+/*!\brief       A type that satisfies std::is_trivially_copyable_v<t>.
  * \extends     std::copyable
  * \sa          https://en.cppreference.com/w/cpp/types/is_trivially_copyable
  */
-//!\cond
 template <typename t>
 concept trivially_copyable = std::copyable<t> && std::is_trivially_copyable_v<t>;
-//!\endcond
 
-/*!\interface   bio::meta::trivial
- * \brief       A type that satisfies bio::meta::trivially_copyable and bio::meta::trivially_destructible.
+/*!\brief       A type that satisfies bio::meta::trivially_copyable and bio::meta::trivially_destructible.
  * \extends     bio::meta::trivially_copyable
  * \extends     bio::meta::trivially_destructible
  * \sa          https://en.cppreference.com/w/cpp/types/is_trivial
  */
-//!\cond
 template <typename t>
 concept trivial = trivially_copyable<t> && trivially_destructible<t> && std::is_trivial_v<t>;
-//!\endcond
 
-/*!\interface   bio::meta::standard_layout
- * \brief       Resolves to std::is_standard_layout_v<t>.
+/*!\brief       Resolves to std::is_standard_layout_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_standard_layout
  */
-//!\cond
 template <typename t>
 concept standard_layout = std::is_standard_layout_v<t>;
-//!\endcond
 
-/*!\interface   bio::meta::weakly_assignable_from
- * \brief       Resolves to std::is_assignable_v<t>.
+/*!\brief       Resolves to std::is_assignable_v<t>.
  * \sa          https://en.cppreference.com/w/cpp/types/is_assignable
  *
  * \details
@@ -159,34 +124,23 @@ concept standard_layout = std::is_standard_layout_v<t>;
  * Note that this requires less than std::assignable_from, it simply tests if the expression
  * `std::declval<T>() = std::declval<U>()` is well-formed.
  */
-//!\cond
 template <typename t, typename u>
 concept weakly_assignable_from = std::is_assignable_v<t, u>;
-//!\endcond
 
-/*!\interface   bio::meta::decays_to
- * \brief       Resolves to std::same_as<std::decay_t<t>, std::decay_t<u>>.
+/*!\brief       Resolves to std::same_as<std::decay_t<t>, std::decay_t<u>>.
  */
-//!\cond
 template <typename from_t, typename to_t>
 concept decays_to = std::same_as<std::decay_t<from_t>, std::decay_t<to_t>>;
-//!\endcond
 
-/*!\interface   bio::meta::different_from
- * \brief       The negation of bio::meta::decays_to.
+/*!\brief       The negation of bio::meta::decays_to.
  */
-//!\cond
 template <typename from_t, typename to_t>
 concept different_from = !decays_to<from_t, to_t>;
-//!\endcond
 
-/*!\interface   bio::meta::constexpr_default_initializable
- * \brief       A type that is std::default_initializable<t> at compile-time.
+/*!\brief       A type that is std::default_initializable<t> at compile-time.
  */
-//!\cond
 template <typename t>
 concept constexpr_default_initializable = std::default_initializable<t> && BIOCPP_IS_CONSTEXPR(t{});
-//!\endcond
 
 //!\}
 

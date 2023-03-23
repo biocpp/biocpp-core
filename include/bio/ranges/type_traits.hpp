@@ -70,9 +70,7 @@ using iterator_category_tag_t = typename iterator_category_tag<it_t>::type;
  * If not, this means that `it_t` is no "legacy" iterator and this transformation trait will give a substitution error.
  */
 template <typename it_t>
-//!\cond
     requires(requires { typename std::iterator_traits<it_t>::iterator_category; })
-//!\endcond
 using iterator_category_tag_t = typename std::iterator_traits<it_t>::iterator_category;
 #endif // BIOCPP_WORKAROUND_GCC_96070
 
@@ -87,9 +85,7 @@ using iterator_category_tag_t = typename std::iterator_traits<it_t>::iterator_ca
  * \ingroup range
  */
 template <typename it_t>
-//!\cond
     requires std::input_or_output_iterator<it_t>
-//!\endcond
 // clang-format off
 using iterator_concept_tag_t = std::conditional_t<std::contiguous_iterator<it_t>,    std::contiguous_iterator_tag,
                                std::conditional_t<std::random_access_iterator<it_t>, std::random_access_iterator_tag,
@@ -139,10 +135,8 @@ struct iter_pointer<it_t>
 template <typename it_t>
 using iter_pointer_t = typename iter_pointer<it_t>::type;
 
-//!\cond
 template <typename t>
 concept has_range_value_type = requires { typename std::ranges::range_value_t<std::remove_cvref_t<t>>; };
-//!\endcond
 
 } // namespace bio::ranges::detail
 
@@ -168,9 +162,7 @@ namespace bio::ranges
  * Attention, this transformation trait implicitly removes cv-qualifiers on all value_types except the one returned.
  */
 template <typename t>
-//!\cond
     requires detail::has_range_value_type<t>
-//!\endcond
 struct range_innermost_value
 {
     //!\brief The return type (recursion not shown).
@@ -205,9 +197,7 @@ using range_innermost_value_t = typename range_innermost_value<t>::type;
  * returns.
  */
 template <typename t>
-//!\cond
     requires detail::has_range_value_type<t>
-//!\endcond
 constexpr size_t range_dimension_v = 1;
 
 //!\cond
@@ -221,8 +211,7 @@ constexpr size_t range_dimension_v<t> = range_dimension_v<std::ranges::range_val
 // range_compatible
 // ----------------------------------------------------------------------------
 
-/*!\interface bio::ranges::range_compatible <>
- * \brief Two types are "compatible" if their bio::ranges::range_dimension_v and their bio::ranges::range_innermost_value_t are
+/*!\brief Two types are "compatible" if their bio::ranges::range_dimension_v and their bio::ranges::range_innermost_value_t are
  * the same.
  *
  * \details

@@ -31,8 +31,7 @@ concept simple_view = std::ranges::view<range_t> && std::ranges::range<range_t c
 namespace bio::ranges
 {
 
-/*!\interface bio::ranges::const_iterable_range <>
- * \ingroup range
+/*!\ingroup range
  * \extends std::input_range
  * \brief Specifies requirements of an input range type for which the `const` version of that type satisfies the
  * same strength input range concept as the non-const version.
@@ -50,7 +49,6 @@ namespace bio::ranges
  * iterator is incremented; these may be not be `const`-iterable, because the standard library
  * (and also BioC++) guarantees that it is safe to call `const`-qualified functions concurrently.
  */
-//!\cond
 template <typename type>
 concept const_iterable_range =
   std::ranges::input_range<std::remove_const_t<type>> && std::ranges::input_range<type const> &&
@@ -58,40 +56,30 @@ concept const_iterable_range =
     std::ranges::bidirectional_range<std::remove_const_t<type>> ==
     std::ranges::bidirectional_range<type const>)&&(std::ranges::random_access_range<std::remove_const_t<type>> ==
                                                     std::ranges::random_access_range<type const>);
-//!\endcond
 
-/*!\interface bio::ranges::back_insertable_with <>
- * \ingroup range
+/*!\ingroup range
  * \tparam rng_t The container type.
  * \tparam val_t The type to append to the container.
  * \brief Describes range types that can grow in amortised constant time by appending an element of type val_t.
  */
-//!\cond
 template <typename rng_t, typename val_t>
 concept back_insertable_with = requires(rng_t & v) { v.push_back(std::declval<val_t>()); };
-//!\endcond
 
-/*!\interface bio::ranges::back_insertable <>
- * \ingroup range
+/*!\ingroup range
  * \extends std::ranges::input_range
  * \tparam rng_t The container type.
  * \brief Describes range types that can grow in amortised constant time by appending an element.
  */
-//!\cond
 template <typename rng_t>
 concept back_insertable =
   std::ranges::input_range<rng_t> && back_insertable_with<rng_t, std::ranges::range_reference_t<rng_t>>;
-//!\endcond
 
-/*!\interface bio::ranges::back_emplaceable_with <>
- * \ingroup range
+/*!\ingroup range
  * \tparam rng_t The container type.
  * \tparam val_t The types of initialising arguments.
  * \brief Describes range types that can grow in amortised constant time by appending an element which is constructed in place.
  */
-//!\cond
 template <typename rng_t, typename... args_t>
 concept back_emplaceable_with = requires(rng_t & v) { v.emplace_back(std::declval<args_t>()...); };
-//!\endcond
 
 } // namespace bio::ranges

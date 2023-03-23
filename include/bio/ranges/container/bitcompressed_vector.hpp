@@ -58,9 +58,7 @@ namespace bio::ranges
  * 64bit-block, i.e. if the distance between `i` and `j` is smaller than 64 / alphabet_size.
  */
 template <alphabet::writable_semialphabet alphabet_type>
-//!\cond
     requires std::regular<alphabet_type>
-//!\endcond
 class bitcompressed_vector
 {
 private:
@@ -236,9 +234,7 @@ public:
      * Strong exception guarantee (no data is modified in case an exception is thrown).
      */
     template <meta::different_from<bitcompressed_vector> other_range_t>
-    //!\cond
         requires(std::ranges::input_range<other_range_t> && has_same_value_type_v<other_range_t>)
-    //!\endcond
     explicit bitcompressed_vector(other_range_t && range) :
       bitcompressed_vector{std::ranges::begin(range), std::ranges::end(range)}
     {}
@@ -274,10 +270,8 @@ public:
      */
     template <std::forward_iterator begin_iterator_type, typename end_iterator_type>
     bitcompressed_vector(begin_iterator_type begin_it, end_iterator_type end_it)
-      //!\cond
         requires(std::sentinel_for<end_iterator_type, begin_iterator_type> &&
                  std::common_reference_with<std::iter_value_t<begin_iterator_type>, value_type>)
-    //!\endcond
     {
         insert(cend(), begin_it, end_it);
     }
@@ -329,9 +323,7 @@ public:
      */
     template <std::ranges::input_range other_range_t>
     void assign(other_range_t && range)
-      //!\cond
         requires std::common_reference_with<std::ranges::range_value_t<other_range_t>, value_type>
-    //!\endcond
     {
         bitcompressed_vector rhs{std::forward<other_range_t>(range)};
         swap(rhs);
@@ -372,10 +364,8 @@ public:
      */
     template <std::forward_iterator begin_iterator_type, typename end_iterator_type>
     void assign(begin_iterator_type begin_it, end_iterator_type end_it)
-      //!\cond
         requires(std::sentinel_for<end_iterator_type, begin_iterator_type> &&
                  std::common_reference_with<std::iter_value_t<begin_iterator_type>, value_type>)
-    //!\endcond
     {
         bitcompressed_vector rhs{begin_it, end_it};
         swap(rhs);
@@ -760,10 +750,8 @@ public:
      */
     template <std::forward_iterator begin_iterator_type, typename end_iterator_type>
     iterator insert(const_iterator pos, begin_iterator_type begin_it, end_iterator_type end_it)
-      //!\cond
         requires(std::sentinel_for<end_iterator_type, begin_iterator_type> &&
                  std::common_reference_with<std::iter_value_t<begin_iterator_type>, value_type>)
-    //!\endcond
     {
         //TODO UPDATE DOCUMENTATION TO REFLECT THIS
         //TODO this is not ideal, always linear

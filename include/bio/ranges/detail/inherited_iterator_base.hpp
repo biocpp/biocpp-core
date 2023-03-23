@@ -92,25 +92,19 @@ public:
 
     //!\brief Delegate to base class if inheriting from non-pointer iterator.
     constexpr inherited_iterator_base(base_t && it) noexcept(std::is_nothrow_move_constructible_v<base_t>)
-      //!\cond
         requires(!wrap_base)
-      //!\endcond
       : base_t{std::move(it)}
     {}
 
     //!\brief Delegate to base class if inheriting from non-pointer iterator.
     constexpr inherited_iterator_base(base_t const & it) noexcept(std::is_copy_constructible_v<base_t>)
-      //!\cond
         requires(!wrap_base)
-      //!\endcond
       : base_t{it}
     {}
 
     //!\brief Initialise member if deriving from pointer.
     constexpr inherited_iterator_base(base_t it) noexcept
-      //!\cond
         requires wrap_base
-      //!\endcond
       : member{std::move(it)}
     {}
     //!\}
@@ -123,9 +117,7 @@ public:
     //!\brief Checks whether `*this` is equal to `rhs`.
     constexpr friend bool operator==(derived_t const & lhs, derived_t const & rhs) noexcept(
       noexcept(std::declval<base_t &>() == std::declval<base_t &>()))
-      //!\cond
         requires std::equality_comparable<base_t>
-    //!\endcond
     {
         return *lhs.this_to_base() == *rhs.this_to_base();
     }
@@ -133,9 +125,7 @@ public:
     //!\brief Checks whether `*this` is less than `rhs`.
     constexpr bool operator<(derived_t const & rhs) const
       noexcept(noexcept(std::declval<base_t &>() < std::declval<base_t &>()))
-      //!\cond
         requires std::totally_ordered<base_t>
-    //!\endcond
     {
         return *this_to_base() < *rhs.this_to_base();
     }
@@ -143,9 +133,7 @@ public:
     //!\brief Checks whether `*this` is greater than `rhs`.
     constexpr bool operator>(derived_t const & rhs) const
       noexcept(noexcept(std::declval<base_t &>() > std::declval<base_t &>()))
-      //!\cond
         requires std::totally_ordered<base_t>
-    //!\endcond
     {
         return *this_to_base() > *rhs.this_to_base();
     }
@@ -153,9 +141,7 @@ public:
     //!\brief Checks whether `*this` is less than or equal to `rhs`.
     constexpr bool operator<=(derived_t const & rhs) const
       noexcept(noexcept(std::declval<base_t &>() > std::declval<base_t &>()))
-      //!\cond
         requires std::totally_ordered<base_t>
-    //!\endcond
     {
         return !(*this > rhs);
     }
@@ -163,9 +149,7 @@ public:
     //!\brief Checks whether `*this` is greater than or equal to `rhs`.
     constexpr bool operator>=(derived_t const & rhs) const
       noexcept(noexcept(std::declval<base_t &>() < std::declval<base_t &>()))
-      //!\cond
         requires std::totally_ordered<base_t>
-    //!\endcond
     {
         return !(*this < rhs);
     }
@@ -180,9 +164,7 @@ public:
     template <typename base_t_ = base_t>
     //!\endcond
     constexpr derived_t & operator++() noexcept(noexcept(++std::declval<base_t &>()))
-      //!\cond
         requires(requires(base_t_ i) { ++i; })
-    //!\endcond
     {
         ++(*this_to_base());
         return *this_derived();
@@ -193,12 +175,10 @@ public:
     template <typename base_t_ = base_t>
     //!\endcond
     constexpr auto operator++(int) noexcept(noexcept(std::declval<base_t &>()++))
-      //!\cond
         requires(requires(base_t_ i) {
             i++;
             requires !std::same_as<decltype(i++), base_t_>;
         })
-    //!\endcond
     {
         return (*this_to_base())++;
     }
@@ -226,9 +206,7 @@ public:
     template <typename base_t_ = base_t>
     //!\endcond
     constexpr derived_t & operator--() noexcept(noexcept(--std::declval<base_t &>()))
-      //!\cond
         requires(requires(base_t_ i) { --i; })
-    //!\endcond
     {
         --(*this_to_base());
         return *this_derived();
@@ -240,9 +218,7 @@ public:
     //!\endcond
     constexpr derived_t operator--(int) noexcept(
       noexcept(std::declval<base_t &>()--) && noexcept(derived_t{std::declval<base_t &>()}))
-      //!\cond
         requires(requires(base_t_ i) { i--; } && std::constructible_from<derived_t, base_t_>)
-    //!\endcond
     {
         return derived_t{(*this_to_base())--};
     }
@@ -252,9 +228,7 @@ public:
     template <typename base_t_ = base_t>
     //!\endcond
     constexpr derived_t & operator+=(difference_type const skip) noexcept(noexcept(std::declval<base_t &>() += skip))
-      //!\cond
         requires(requires(base_t_ i, difference_type const n) { i += n; })
-    //!\endcond
     {
         *this_to_base() += skip;
         return *this_derived();
@@ -266,10 +240,8 @@ public:
     //!\endcond
     constexpr derived_t operator+(difference_type const skip) const
       noexcept(noexcept(std::declval<base_t &>() + skip) && noexcept(derived_t{std::declval<base_t &>()}))
-      //!\cond
         requires(requires(base_t_ const i, difference_type const n) { i + n; } &&
                  std::constructible_from<derived_t, base_t_>)
-    //!\endcond
     {
         return derived_t{*this_to_base() + skip};
     }
@@ -277,10 +249,8 @@ public:
     //!\brief Non-member operator+ delegates to non-friend operator+.
     constexpr friend derived_t operator+(difference_type const skip,
                                          derived_t const & it) noexcept(noexcept(skip + std::declval<base_t const &>()))
-      //!\cond
         requires(requires(base_t const i, difference_type const n) { n + i; } &&
                  std::constructible_from<derived_t, base_t>)
-    //!\endcond
     {
         return derived_t{skip + static_cast<base_t const &>(it)};
     }
@@ -290,9 +260,7 @@ public:
     template <typename base_t_ = base_t>
     //!\endcond
     constexpr derived_t & operator-=(difference_type const skip) noexcept(noexcept(std::declval<base_t &>() -= skip))
-      //!\cond
         requires(requires(base_t_ i, difference_type const n) { i -= n; })
-    //!\endcond
     {
         *this_to_base() -= skip;
         return *this_derived();
@@ -304,9 +272,7 @@ public:
     //!\endcond
     constexpr derived_t operator-(difference_type const skip) const
       noexcept(noexcept(std::declval<base_t const &>() - skip) && noexcept(derived_t(std::declval<base_t &>())))
-      //!\cond
         requires(requires(base_t_ i, difference_type const n) { i - n; } && std::constructible_from<derived_t, base_t_>)
-    //!\endcond
     {
         return derived_t{*this_to_base() - skip};
     }
@@ -314,9 +280,7 @@ public:
     //!\brief Return offset between this and remote iterator's position.
     constexpr difference_type operator-(derived_t const rhs) const
       noexcept(noexcept(std::declval<base_t &>() - std::declval<base_t &>()))
-      //!\cond
         requires std::sized_sentinel_for<base_t, base_t>
-    //!\endcond
     {
         return static_cast<difference_type>(*this_to_base() - *rhs.this_to_base());
     }
@@ -327,36 +291,28 @@ public:
      */
     //!\brief Dereference operator returns element currently pointed at.
     constexpr reference operator*() noexcept(noexcept(*std::declval<base_t &>()))
-      //!\cond
         requires std::indirectly_readable<base_t>
-    //!\endcond
     {
         return **this_to_base();
     }
 
     //!\brief Dereference operator returns element currently pointed at.
     constexpr decltype(auto) operator*() const noexcept(noexcept(*std::declval<base_t const &>()))
-      //!\cond
         requires std::indirectly_readable<base_t>
-    //!\endcond
     {
         return **this_to_base();
     }
 
     //!\brief Return pointer to this iterator.
     constexpr pointer operator->() noexcept(noexcept(*std::declval<base_t &>()))
-      //!\cond
         requires std::input_iterator<base_t>
-    //!\endcond
     {
         return &*this_to_base();
     }
 
     //!\brief Return pointer to this iterator.
     constexpr decltype(auto) operator->() const noexcept(noexcept(*std::declval<base_t const &>()))
-      //!\cond
         requires std::input_iterator<base_t>
-    //!\endcond
     {
         return &*this_to_base();
     }
@@ -367,9 +323,7 @@ public:
     //!\endcond
     constexpr decltype(auto) operator[](std::make_signed_t<difference_type> const n) noexcept(
       noexcept(std::declval<base_t &>()[0]))
-      //!\cond
         requires(requires(base_t_ i, difference_type const n) { i[n]; })
-    //!\endcond
     {
         return (*this_to_base())[n];
     }
@@ -380,9 +334,7 @@ public:
     //!\endcond
     constexpr decltype(auto) operator[](std::make_signed_t<difference_type> const n) const
       noexcept(noexcept(std::declval<base_t const &>()[0]))
-      //!\cond
         requires(requires(base_t_ const i, difference_type const n) { i[n]; })
-    //!\endcond
     {
         return (*this_to_base())[n];
     }

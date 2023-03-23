@@ -38,9 +38,7 @@ namespace bio::alphabet
  * \include test/snippet/alphabet/mask/masked.cpp
  */
 template <writable_alphabet sequence_alphabet_t>
-//!\cond
     requires std::regular<sequence_alphabet_t>
-//!\endcond
 class masked : public tuple_base<masked<sequence_alphabet_t>, sequence_alphabet_t, mask>
 {
 private:

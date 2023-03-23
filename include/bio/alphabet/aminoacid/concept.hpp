@@ -78,8 +78,7 @@ namespace bio::alphabet
 // concept
 // ============================================================================
 
-/*!\interface bio::alphabet::aminoacid <>
- * \extends bio::alphabet::alphabet
+/*!\extends bio::alphabet::alphabet
  * \brief A concept that indicates whether an alphabet represents amino acids.
  * \ingroup aminoacid
  *
@@ -94,9 +93,7 @@ namespace bio::alphabet
  *
  * See the documentation pages for the respective requirements.
  */
-//!\cond
 template <typename type>
 concept aminoacid = alphabet<type> && custom::enable_aminoacid<std::remove_cvref_t<type>>;
-//!\endcond
 
 } // namespace bio::alphabet

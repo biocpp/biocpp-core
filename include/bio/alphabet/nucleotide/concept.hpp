@@ -51,7 +51,7 @@ namespace bio::alphabet
  *
  * This object acts as a wrapper and looks for an implementation with the following signature:
  *
- * ```c++
+ * ```cpp
  * constexpr alph_type tag_invoke(bio::alphabet::custom::complement, alph_type const alph) noexcept
  * {}
  * ```
@@ -66,7 +66,6 @@ namespace bio::alphabet
  * \hideinitializer
  */
 inline constexpr auto complement = []<typename alph_t>(alph_t const a)
-  //!\cond
     requires(requires {
         {
             tag_invoke(custom::complement{}, a)
@@ -77,7 +76,6 @@ inline constexpr auto complement = []<typename alph_t>(alph_t const a)
         requires std::is_convertible_v<alph_t, decltype(tag_invoke(custom::complement{}, a))>;
         requires noexcept(tag_invoke(custom::complement{}, a));
     })
-//!\endcond
 {
     return tag_invoke(custom::complement{}, a);
 };
@@ -87,8 +85,7 @@ inline constexpr auto complement = []<typename alph_t>(alph_t const a)
 // nucleotide concept
 // ============================================================================
 
-/*!\interface bio::alphabet::nucleotide <>
- * \extends bio::alphabet::alphabet
+/*!\extends bio::alphabet::alphabet
  * \brief A concept that indicates whether an alphabet represents nucleotides.
  * \ingroup nucleotide
  *
@@ -112,13 +109,11 @@ inline constexpr auto complement = []<typename alph_t>(alph_t const a)
  *   * `t const`
  *   * `t const &`
  */
-//!\cond
 template <typename t>
 concept nucleotide = alphabet<t> && requires(t val) {
     {
         bio::alphabet::complement(val)
     };
 };
-//!\endcond
 
 } // namespace bio::alphabet

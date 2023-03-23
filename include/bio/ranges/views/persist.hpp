@@ -85,9 +85,7 @@ public:
 
     //!\copydoc begin()
     auto begin() const noexcept
-      //!\cond
         requires const_iterable_range<urng_t>
-    //!\endcond
     {
         return std::ranges::cbegin(*urange);
     }
@@ -109,9 +107,7 @@ public:
 
     //!\copydoc end()
     auto end() const noexcept
-      //!\cond
         requires const_iterable_range<urng_t>
-    //!\endcond
     {
         return std::ranges::cend(*urange);
     }

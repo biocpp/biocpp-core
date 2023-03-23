@@ -245,9 +245,7 @@ inline constexpr bool contains = (find<query_t, pack_t...> != -1);
  * \include test/snippet/meta/type_list/pack_traits_at.cpp
  */
 template <ptrdiff_t idx, typename... pack_t>
-//!\cond
     requires((idx >= 0 && idx < sizeof...(pack_t)) || (-idx <= sizeof...(pack_t)))
-//!\endcond
 using at = typename decltype(detail::at<idx, pack_t...>())::type;
 
 /*!\brief Return the first type from the type pack.
@@ -264,9 +262,7 @@ using at = typename decltype(detail::at<idx, pack_t...>())::type;
  * \include test/snippet/meta/type_list/pack_traits_front.cpp
  */
 template <typename... pack_t>
-//!\cond
     requires(sizeof...(pack_t) > 0)
-//!\endcond
 using front = typename decltype(detail::front<pack_t...>())::type;
 
 /*!\brief Return the last type from the type pack.
@@ -286,9 +282,7 @@ using front = typename decltype(detail::front<pack_t...>())::type;
  * \include test/snippet/meta/type_list/pack_traits_back.cpp
  */
 template <typename... pack_t>
-//!\cond
     requires(sizeof...(pack_t) > 0)
-//!\endcond
 using back = typename decltype((std::type_identity<pack_t>{}, ...))::type; // use comma operator
 
 //!\}
@@ -311,9 +305,7 @@ using back = typename decltype((std::type_identity<pack_t>{}, ...))::type; // us
  * \include test/snippet/meta/type_list/pack_traits_drop_front.cpp
  */
 template <typename... pack_t>
-//!\cond
     requires(sizeof...(pack_t) > 0)
-//!\endcond
 using drop_front = typename decltype(detail::drop_front<pack_t...>())::type;
 
 /*!\brief Apply a transformation trait to every type in the pack and return a bio::meta::type_list of the results.
@@ -357,9 +349,7 @@ using transform = type_list<trait_t<pack_t>...>;
  * \include test/snippet/meta/type_list/pack_traits_take.cpp
  */
 template <ptrdiff_t i, typename... pack_t>
-//!\cond
     requires(i >= 0 && i <= size<pack_t...>)
-//!\endcond
 using take = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))::first_type;
 
 /*!\brief Return a bio::meta::type_list of the types in the type pack, except the first `n`.
@@ -377,9 +367,7 @@ using take = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))
  * \include test/snippet/meta/type_list/pack_traits_drop.cpp
  */
 template <ptrdiff_t i, typename... pack_t>
-//!\cond
     requires(i >= 0 && i <= size<pack_t...>)
-//!\endcond
 using drop = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))::second_type;
 
 /*!\brief Return a bio::meta::type_list of the last `n` types in the type pack.
@@ -397,9 +385,7 @@ using drop = typename decltype(detail::split_after<i, pack_t...>(type_list<>{}))
  * \include test/snippet/meta/type_list/pack_traits_take_last.cpp
  */
 template <ptrdiff_t i, typename... pack_t>
-//!\cond
     requires(i >= 0 && i <= size<pack_t...>)
-//!\endcond
 using take_last = drop<size<pack_t...> - i, pack_t...>;
 
 /*!\brief Return a bio::meta::type_list of the types the type pack, except the last `n`.
@@ -417,9 +403,7 @@ using take_last = drop<size<pack_t...> - i, pack_t...>;
  * \include test/snippet/meta/type_list/pack_traits_take_last.cpp
  */
 template <ptrdiff_t i, typename... pack_t>
-//!\cond
     requires(i >= 0 && i <= size<pack_t...>)
-//!\endcond
 using drop_last = take<size<pack_t...> - i, pack_t...>;
 
 /*!\brief Split a type pack into two parts returned as a pair of bio::meta::type_list.
@@ -437,9 +421,7 @@ using drop_last = take<size<pack_t...> - i, pack_t...>;
  * \include test/snippet/meta/type_list/pack_traits_take_last.cpp
  */
 template <ptrdiff_t i, typename... pack_t>
-//!\cond
     requires(i >= 0 && i <= size<pack_t...>)
-//!\endcond
 using split_after = decltype(detail::split_after<i, pack_t...>(type_list<>{}));
 
 /*!\brief Replace the type at the given index with the given type.
@@ -458,9 +440,7 @@ using split_after = decltype(detail::split_after<i, pack_t...>(type_list<>{}));
  * \include test/snippet/meta/type_list/pack_traits_take_last.cpp
  */
 template <typename replace_t, std::ptrdiff_t i, typename... pack_t>
-//!\cond
     requires(i >= 0 && i < size<pack_t...>)
-//!\endcond
 using replace_at = decltype(detail::replace_at<replace_t, i, pack_t...>(std::make_index_sequence<size<pack_t...>>{}));
 
 //!\}

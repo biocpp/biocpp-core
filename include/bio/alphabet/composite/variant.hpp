@@ -98,10 +98,8 @@ namespace bio::alphabet
  *
  */
 template <typename... alternative_types>
-//!\cond
     requires((detail::writable_constexpr_alphabet<alternative_types> && ...) &&
              (std::regular<alternative_types> && ...) && (sizeof...(alternative_types) >= 2))
-//!\endcond
 class variant : public base<variant<alternative_types...>, (static_cast<size_t>(size<alternative_types>) + ...), char>
 {
 private:
@@ -173,9 +171,7 @@ public:
      *
      */
     template <typename alternative_t>
-    //!\cond
         requires(is_alternative<alternative_t>())
-    //!\endcond
     constexpr variant(alternative_t const alternative) noexcept
     {
         assign_rank(rank_by_type_(alternative));
@@ -199,10 +195,8 @@ public:
      *
      */
     template <typename indirect_alternative_t>
-    //!\cond
         requires(detail::variant_general_guard<indirect_alternative_t, alternative_types...> &&
                  (std::is_convertible_v<indirect_alternative_t, alternative_types> || ...))
-    //!\endcond
     constexpr variant(indirect_alternative_t const rhs) noexcept
     {
         using alternative_predicate = detail::implicitly_convertible_from<indirect_alternative_t>;
@@ -228,11 +222,9 @@ public:
      *
      */
     template <typename indirect_alternative_t>
-    //!\cond
         requires(detail::variant_general_guard<indirect_alternative_t, alternative_types...> &&
                  !(std::is_convertible_v<indirect_alternative_t, alternative_types> || ...) &&
                  (std::is_constructible_v<alternative_types, indirect_alternative_t> || ...))
-    //!\endcond
     constexpr explicit variant(indirect_alternative_t const rhs) noexcept
     {
         using alternative_predicate = detail::constructible_from<indirect_alternative_t>;
@@ -253,10 +245,8 @@ public:
      *
      */
     template <typename indirect_alternative_t>
-    //!\cond
         requires(detail::variant_general_guard<indirect_alternative_t, alternative_types...> &&
                  (meta::weakly_assignable_from<alternative_types, indirect_alternative_t> || ...))
-    //!\endcond
     constexpr variant & operator=(indirect_alternative_t const & rhs) noexcept
     {
         using alternative_predicate = detail::assignable_from<indirect_alternative_t>;
@@ -316,9 +306,7 @@ public:
      */
     template <typename alternative_t>
     constexpr bool holds_alternative() const noexcept
-      //!\cond
         requires(is_alternative<alternative_t>())
-    //!\endcond
     {
         constexpr size_t index = meta::list_traits::find<alternative_t, alternatives>;
         return holds_alternative<index>();
@@ -331,9 +319,7 @@ public:
      */
     template <typename alternative_t>
     constexpr alternative_t convert_to() const
-      //!\cond
         requires(is_alternative<alternative_t>())
-    //!\endcond
     {
         constexpr size_t index = meta::list_traits::find<alternative_t, alternatives>;
         return convert_impl<index, true>();
@@ -345,9 +331,7 @@ public:
      */
     template <typename alternative_t>
     constexpr alternative_t convert_unsafely_to() const noexcept
-      //!\cond
         requires(is_alternative<alternative_t>())
-    //!\endcond
     {
         constexpr size_t index = meta::list_traits::find<alternative_t, alternatives>;
         return convert_impl<index, false>();
@@ -376,10 +360,8 @@ public:
      * \details
      */
     template <std::same_as<variant> variant_t, typename indirect_alternative_type>
-    //!\cond
         requires((detail::variant_general_guard<indirect_alternative_type, alternative_types...>) &&
                  (meta::weakly_equality_comparable_with<indirect_alternative_type, alternative_types> || ...))
-    //!\endcond
     friend constexpr bool operator==(variant_t const lhs, indirect_alternative_type const rhs) noexcept
     {
         using alternative_predicate = detail::weakly_equality_comparable_with_<indirect_alternative_type>;
@@ -481,9 +463,7 @@ protected:
     //!\tparam alternative_t One of the alternative types.
     //!\param alternative The value of a alternative.
     template <size_t index, typename alternative_t>
-    //!\cond
         requires(is_alternative<alternative_t>())
-    //!\endcond
     static constexpr rank_type rank_by_index_(alternative_t const & alternative) noexcept
     {
         return partial_sum_sizes[index] + static_cast<rank_type>(bio::alphabet::to_rank(alternative));
@@ -494,9 +474,7 @@ protected:
     //!\tparam alternative_t One of the alternative types.
     //!\param alternative The value of a alternative.
     template <typename alternative_t>
-    //!\cond
         requires(is_alternative<alternative_t>())
-    //!\endcond
     static constexpr rank_type rank_by_type_(alternative_t const & alternative) noexcept
     {
         constexpr size_t index = meta::list_traits::find<alternative_t, alternatives>;
