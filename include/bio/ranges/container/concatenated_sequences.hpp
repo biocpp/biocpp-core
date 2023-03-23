@@ -77,12 +77,10 @@ namespace bio::ranges
  */
 template <typename underlying_container_type,
           typename data_delimiters_type = std::vector<typename underlying_container_type::size_type>>
-//!\cond
     requires(detail::reservible_container<std::remove_reference_t<underlying_container_type>> &&
              detail::reservible_container<std::remove_reference_t<data_delimiters_type>> &&
              std::is_same_v<std::ranges::range_size_t<underlying_container_type>,
                             std::ranges::range_value_t<data_delimiters_type>>)
-//!\endcond
 class concatenated_sequences
 {
 protected:

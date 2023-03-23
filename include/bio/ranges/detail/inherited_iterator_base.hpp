@@ -175,12 +175,10 @@ public:
     template <typename base_t_ = base_t>
     //!\endcond
     constexpr auto operator++(int) noexcept(noexcept(std::declval<base_t &>()++))
-      //!\cond
         requires(requires(base_t_ i) {
             i++;
             requires !std::same_as<decltype(i++), base_t_>;
         })
-    //!\endcond
     {
         return (*this_to_base())++;
     }

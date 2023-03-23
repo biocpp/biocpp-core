@@ -157,8 +157,7 @@ inline constexpr bool is_type_specialisation_of_v = is_type_specialisation_of<so
 // template_specialisation_of
 // ----------------------------------------------------------------------------
 
-/*!\interface bio::meta::template_specialisation_of <>
- * \brief Provides concept `bio::meta::template_specialisation_of<mytype, [...]>` for checking the type specialisation of
+/*!\brief Provides concept `bio::meta::template_specialisation_of<mytype, [...]>` for checking the type specialisation of
  *        some type with a given template, for example a specialized `type_list<float>` with the `type_list` template.
  * \ingroup type_traits
  *

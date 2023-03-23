@@ -125,7 +125,7 @@
  * bio::alphabet::writable_alphabet whenever the values might be changed.
  * Semi-alphabets are less useful in application code.
  *
- * |                                | [semialphabet](\ref bio::alphabet::semialphabet) | [writable_semialphabet](\ref bio::alphabet::writable_semialphabet) | [alphabet](\ref bio::alphabet::alphabet) | [writable_alphabet](\ref bio::alphabet::writable_alphabet) | Aux |
+ * |                                | \link bio::alphabet::semialphabet semialphabet \endlink | \link bio::alphabet::writable_semialphabet writable_semialphabet \endlink | \link bio::alphabet::alphabet alphabet \endlink | \link bio::alphabet::writable_alphabet writable_alphabet \endlink) | Aux |
  * |-------------------------------:|:------------------------------------:|:------------------------------------------------------:|:----------------------------:|:----------------------------------------------:|:---:|
  * | bio::alphabet::size             | ✅                                    | ✅                                                      | ✅                            | ✅                                               |     |
  * | bio::alphabet::to_rank()                 | ✅                                    | ✅                                                      | ✅                            | ✅                                               |     |

@@ -221,12 +221,10 @@ public:
      * Basic exception gurantee.
      */
     template <typename... value_type_>
-    //!\cond
         requires((meta::different_from<dictionary, value_type_> && ...) &&
                  (meta::different_from<iterator, value_type_> && ...) &&
                  (meta::different_from<const_iterator, value_type_> && ...) &&
                  (std::convertible_to<value_type_, value_type> && ...) && (sizeof...(value_type_) > 0))
-    //!\endcond
     void assign(value_type_ &&... args)
     {
         storage.clear();

@@ -135,10 +135,8 @@ struct iter_pointer<it_t>
 template <typename it_t>
 using iter_pointer_t = typename iter_pointer<it_t>::type;
 
-//!\cond
 template <typename t>
 concept has_range_value_type = requires { typename std::ranges::range_value_t<std::remove_cvref_t<t>>; };
-//!\endcond
 
 } // namespace bio::ranges::detail
 
@@ -213,8 +211,7 @@ constexpr size_t range_dimension_v<t> = range_dimension_v<std::ranges::range_val
 // range_compatible
 // ----------------------------------------------------------------------------
 
-/*!\interface bio::ranges::range_compatible <>
- * \brief Two types are "compatible" if their bio::ranges::range_dimension_v and their bio::ranges::range_innermost_value_t are
+/*!\brief Two types are "compatible" if their bio::ranges::range_dimension_v and their bio::ranges::range_innermost_value_t are
  * the same.
  *
  * \details

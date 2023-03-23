@@ -24,8 +24,7 @@ namespace bio::alphabet::detail
 // alphabet_tuple_like
 // ------------------------------------------------------------------
 
-/*!\interface bio::alphabet::detail::alphabet_tuple_like <>
- * \brief bio::alphabet::tuple_base and its derivates model this concept.
+/*!\brief bio::alphabet::tuple_base and its derivates model this concept.
  * \ingroup alphabet_composite
  *
  * \details
@@ -33,10 +32,8 @@ namespace bio::alphabet::detail
  * This concept is necessary/helpful, because CRTP-specialisations cannot easily be tracked via regular inheritance or
  * specialisation mechanisms.
  */
-//!\cond
 template <typename t>
 concept alphabet_tuple_like = requires { requires t::biocpp_alphabet_tuple_like; };
-//!\endcond
 
 // ------------------------------------------------------------------
 // required_types

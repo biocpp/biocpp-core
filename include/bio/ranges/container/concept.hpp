@@ -29,8 +29,7 @@ namespace bio::ranges::detail
 /*!\addtogroup container
  * \{
  */
-/*!\interface bio::ranges::detail::container <>
- * \extends std::ranges::forward_range
+/*!\extends std::ranges::forward_range
  * \extends std::ranges::sized_range
  * \extends std::ranges::common_range
  * \extends bio::ranges::const_iterable_range
@@ -43,7 +42,6 @@ namespace bio::ranges::detail
  * Other than one might expect, `std::forward_list` does not satisfy this concept (because it does not provide
  * `.size()`).
  */
-//!\cond
 template <typename type>
 concept container = requires(type val, type val2, type const cval, typename type::iterator it) {
     // member types
@@ -96,10 +94,8 @@ concept container = requires(type val, type val2, type const cval, typename type
     { val.empty() } -> std::same_as<bool>;
     // clang-format on
 };
-//!\endcond
 
-/*!\interface bio::ranges::detail::sequence_container <>
- * \extends bio::ranges::detail::container
+/*!\extends bio::ranges::detail::container
  * \brief A more refined container concept than bio::ranges::detail::container.
  *
  * Includes constraints on constructors, `assign()`, `.insert()`, `.erase()`, `.push_back()`, `.pop_back`, `.clear()`,
@@ -110,7 +106,6 @@ concept container = requires(type val, type val2, type const cval, typename type
  * \attention
  * `std::array` and `std::forward_list` do not satisfy this concept.
  */
-//!\cond
 template <typename type>
 concept sequence_container = requires(type val, type val2, type const cval) {
     requires container<type>;
@@ -154,10 +149,8 @@ concept sequence_container = requires(type val, type val2, type const cval) {
     { cval.back() } -> std::same_as<typename type::const_reference>;
     // clang-format on
 };
-//!\endcond
 
-/*!\interface bio::ranges::detail::random_access_container <>
- * \extends bio::ranges::detail::sequence_container
+/*!\extends bio::ranges::detail::sequence_container
  * \extends std::ranges::random_access_range
  * \brief A more refined container concept than bio::ranges::detail::sequence_container.
  *
@@ -170,7 +163,6 @@ concept sequence_container = requires(type val, type val2, type const cval) {
  *
  * \sa
  */
-//!\cond
 template <typename type>
 concept random_access_container = requires(type val) {
     requires sequence_container<type>;
@@ -185,10 +177,8 @@ concept random_access_container = requires(type val) {
     { val.resize(0, typename type::value_type{}) } -> std::same_as<void>;
     // clang-format on
 };
-//!\endcond
 
-/*!\interface bio::ranges::detail::reservible_container <>
- * \extends bio::ranges::detail::random_access_container
+/*!\extends bio::ranges::detail::random_access_container
  * \brief A more refined container concept than bio::ranges::detail::random_access_container.
  *
  * Adds requirements for `.reserve()`, `.capacity()` and `.shrink_to_fit()`.
@@ -197,7 +187,6 @@ concept random_access_container = requires(type val) {
  * \attention
  * `std::array`, `std::forward_list`, `std::list` and `std::deque` do not satisfy this concept.
  */
-//!\cond
 template <typename type>
 concept reservible_container = requires(type val) {
     requires random_access_container<type>;
@@ -208,7 +197,6 @@ concept reservible_container = requires(type val) {
     { val.shrink_to_fit() } -> std::same_as<void>;
     // clang-format on
 };
-//!\endcond
 
 //!\}
 

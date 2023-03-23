@@ -49,7 +49,7 @@ namespace bio::alphabet
  *
  * This object acts as a wrapper and looks for an implementation with the following signature:
  *
- * ```c++
+ * ```cpp
  * constexpr phred_type tag_invoke(bio::alphabet::custom::to_phred, alph_type const alph) noexcept
  * {}
  * ```
@@ -63,14 +63,12 @@ namespace bio::alphabet
  * \hideinitializer
  */
 inline constexpr auto to_phred = []<typename alph_t>(alph_t const a)
-  //!\cond
     requires(requires {
         {
             tag_invoke(custom::to_phred{}, a)
         } -> std::integral;
         requires noexcept(tag_invoke(custom::to_phred{}, a));
     })
-//!\endcond
 {
     return tag_invoke(custom::to_phred{}, a);
 };
@@ -80,13 +78,11 @@ inline constexpr auto to_phred = []<typename alph_t>(alph_t const a)
  * \ingroup quality
  */
 template <typename alphabet_type>
-//!\cond
     requires(requires {
                 {
                     bio::alphabet::to_phred(std::declval<alphabet_type>())
                 };
             })
-//!\endcond
 using phred_t = decltype(bio::alphabet::to_phred(std::declval<alphabet_type>()));
 
 // ============================================================================
@@ -115,7 +111,7 @@ using phred_t = decltype(bio::alphabet::to_phred(std::declval<alphabet_type>()))
  *
  * This object acts as a wrapper and looks for an implementation with the following signature:
  *
- * ```c++
+ * ```cpp
  * constexpr alph_type & tag_invoke(bio::alphabet::assign_phred_to, phred_type const phr, alph_type & alph) noexcept
  * ```
  *
@@ -131,14 +127,12 @@ using phred_t = decltype(bio::alphabet::to_phred(std::declval<alphabet_type>()))
  */
 inline constexpr auto assign_phred_to =
   []<typename alph_t>(bio::alphabet::phred_t<alph_t> const p, alph_t && a) -> alph_t
-  //!\cond
     requires(requires {
         {
             tag_invoke(custom::assign_phred_to{}, p, a)
         } -> std::same_as<alph_t &>;
         requires noexcept(tag_invoke(custom::assign_phred_to{}, p, a));
     })
-//!\endcond
 {
     return tag_invoke(custom::assign_phred_to{}, p, a);
 };
@@ -148,9 +142,8 @@ inline constexpr auto assign_phred_to =
 // bio::alphabet::quality
 // ============================================================================
 
-/*!\interface bio::alphabet::quality <>
+/*!\brief A concept that indicates whether an alphabet represents quality scores.
  * \extends bio::alphabet::alphabet
- * \brief A concept that indicates whether an alphabet represents quality scores.
  * \ingroup quality
  *
  * \details
@@ -174,21 +167,18 @@ inline constexpr auto assign_phred_to =
  *   * `t const`
  *   * `t const &`
  */
-//!\cond
 template <typename t>
 concept quality = alphabet<t> && requires(t qual) {
     {
         bio::alphabet::to_phred(qual)
     };
 };
-//!\endcond
 
 // ============================================================================
 // bio::alphabet::writable_quality
 // ============================================================================
 
-/*!\interface bio::alphabet::writable_quality <>
- * \extends bio::alphabet::alphabet
+/*!\extends bio::alphabet::alphabet
  * \extends bio::alphabet::quality
  * \brief A concept that indicates whether a writable alphabet represents quality scores.
  * \ingroup quality
@@ -214,13 +204,11 @@ concept quality = alphabet<t> && requires(t qual) {
  *
  * `const`-qualified types on the other hand are not assignable.
  */
-//!\cond
 template <typename t>
 concept writable_quality = writable_alphabet<t> && quality<t> && requires(t v, phred_t<t> c) {
     {
         bio::alphabet::assign_phred_to(c, v)
     };
 };
-//!\endcond
 
 } // namespace bio::alphabet
