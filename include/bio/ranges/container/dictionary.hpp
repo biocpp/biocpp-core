@@ -29,6 +29,7 @@
 
 #include <bio/meta/concept/core_language.hpp>
 #include <bio/meta/detail/int_types.hpp>
+#include <bio/meta/tag/vtag.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
 
 namespace bio::ranges
@@ -43,43 +44,80 @@ namespace bio::ranges
  * \ingroup container
  * \tparam key_t   The key type; must be convertible to std::string_view (e.g. also std::string).
  * \tparam mapped_t The mapped type; must be an object type.
+ * \tparam mapped_t_is_context_aware See below.
  *
  * This container behaves like a mixture of std::vector and std::unordered_map.
  *
  * It has the following properties:
  *   * The element type is `std::tuple<key_t, mapped_t>`, but the reference type is `std::tuple<key_t const &, mapped_t &>`.
- *   * Contiguous storage of elements inside a std::vector (internally).
- *   * O(1) access to elements via operator[] and ~O(1) push_back (like std::vector).
+ *   * Contiguous storage of elements in the same order they are inserted.
+ *   * O(1) access to elements via `operator[size_t]` and ~O(1) #push_back (like std::vector).
  *   * ~O(1) access to mapped value via the key (like std::unordered_map).
  *   * The size overhead compared to std::vector: every key stored twice + at least one uint64_t per element.
  *   * The key_type must be convertible to std::string_view, and every key must be unique.
- *   * There is no `insert()` member, only `assign()` and `push_back()` to add elements.
- *   * There is no `erase()` member, only `clear()` and `pop_pack()` to remove elements.
- *   * There is no `resize()` member, but there is a `reserve()` member.
+ *   * There is no `insert()` member, only #assign() and #push_back() to add elements.
+ *   * There is no `erase()` member, only #clear() and #pop_back() to remove elements.
+ *   * There is no `resize()` member, but there is a #reserve() member.
  *
  * This data structure is used in several places where the order of elements must be preserved but fast random
  * access by key is still desirable. It usually makes sense when the key-string is short (less than 16 characters),
  * the value_type is large, and the data structure does not need many changes after construction.
+ *
+ * ### Element access
+ *
+ * The element type (#value_type) of the dictionary is `std::tuple<key_t, mapped_t>`. Most functions that provide
+ * access to the elements, return `std::tuple<key_t const &, mapped_t &>` (and not `std::tuple<key_t &, mapped_t &>` or
+ * `std::tuple<key_t, mapped_t> &`).
+ * This prevents changes to the key of an element (which would break the container).
+ *
+ * Functions that access an element by key, return a reference to the mapped value instead (like for
+ * std::unordered_map).
+ *
+ * \include test/snippet/ranges/container/dictionary.cpp
+ *
+ * ### Context-aware mapped value types
+ *
+ * If the template parameter `mapped_t_is_context_aware` is set to true, the #reference type of the dictionary
+ * becomes `std::tuple<key_t const &, mapped_t const &>`, i.e. the mapped value in dictionary elements cannot be
+ * changed via regular element access.
+ *
+ * Additionally, given an object `o` of type `mapped_t`, if `get<"foo">(o)` is valid,
+ * this container provides a special interface:
+ *
+ *   * A `get<"foo">(dict)` friend function that calls `get<"foo">(dict.at("foo"))`.
+ *   * The `.at("foo"_vtag)` and `operator["foo"_vtag]` member functions with identical semantics.
+ *   * These functions may or may not expose mutable references to the mapped value (or one of its members).
+ *
+ * In combination with element types that are derived from std::variant (and additionally provide the aforementioned
+ * string-based get-interface), this can be used to create heterogeneous dictionaries, i.e. transparent access
+ * to mapped values of different types by string-IDs known at compile-time.
+ *
+ * \include test/snippet/ranges/container/dictionary_het.cpp
+ *
  */
-template <typename key_t, typename mapped_t>
+template <typename key_t, typename mapped_t, bool mapped_t_is_context_aware = false>
 class dictionary
 {
 public:
+    static_assert(std::is_object_v<key_t>, "The key type may not be a reference or have const.");
     static_assert(std::convertible_to<key_t, std::string_view>,
-                  "The key type must be std::convertible_to<string_view>.");
+                  "The key type must be std::convertible_to<std::string_view>.");
     static_assert(std::is_object_v<mapped_t>, "The mapped type may not be a reference or have const.");
 
     /*!\name Associated types
      * \{
      */
-
-    using value_type      = std::tuple<key_t, mapped_t>;                      //!< The value_type type.
-    using reference       = std::tuple<key_t const &, mapped_t &>;            //!< The reference type.
-    using const_reference = std::tuple<key_t const &, mapped_t const &>;      //!< The const_reference type.
-    using difference_type = ptrdiff_t;                                        //!< The difference_type type.
-    using size_type       = size_t;                                           //!< The size_type type.
-    using iterator        = detail::random_access_iterator<dictionary>;       //!< The iterator type.
-    using const_iterator  = detail::random_access_iterator<dictionary const>; //!< The const_iterator type.
+    using mapped_ref_t =
+      std::conditional_t<mapped_t_is_context_aware, mapped_t const &, mapped_t &>; //!< Usually `mapped_t &`.
+    using value_type      = std::tuple<key_t, mapped_t>;                           //!< The value_type type.
+    using reference       = std::tuple<key_t const &, mapped_ref_t>;               //!< The reference type.
+    using const_reference = std::tuple<key_t const &, mapped_t const &>;           //!< The const_reference type.
+    using difference_type = ptrdiff_t;                                             //!< The difference_type type.
+    using size_type       = size_t;                                                //!< The size_type type.
+    using const_iterator  = detail::random_access_iterator<dictionary const>;      //!< The const_iterator type.
+    using iterator        = std::conditional_t<mapped_t_is_context_aware,
+                                        const_iterator,
+                                        detail::random_access_iterator<dictionary>>; //!< The iterator type.
     //!\}
 
     //!\cond
@@ -148,7 +186,12 @@ public:
     dictionary(iterator const begin_it, iterator const end_it) : dictionary{} { assign(begin_it, end_it); }
 
     //!\overload
-    dictionary(const_iterator const begin_it, const_iterator const end_it) : dictionary{} { assign(begin_it, end_it); }
+    dictionary(const_iterator const begin_it, const_iterator const end_it)
+        requires(!std::same_as<iterator, const_iterator>)
+      : dictionary{}
+    {
+        assign(begin_it, end_it);
+    }
 
     /*!\brief Construct from a different range.
      * \tparam other_range_t The type of range to be inserted; must satisfy std::ranges::input_range and `value_type`
@@ -251,7 +294,11 @@ public:
     void assign(iterator begin_it, iterator end_it) { assign_impl(begin_it, end_it); }
 
     //!\overload
-    void assign(const_iterator begin_it, const_iterator end_it) { assign_impl(begin_it, end_it); }
+    void assign(const_iterator begin_it, const_iterator end_it)
+        requires(!std::same_as<iterator, const_iterator>)
+    {
+        assign_impl(begin_it, end_it);
+    }
     //!\}
 
     /*!\name Iterators
@@ -460,7 +507,7 @@ public:
             return begin() + get<1>(*it);
     }
 
-    //!\overload
+    //!\copydoc find(het_key_t key)
     const_iterator find(het_key_t key) const
     {
         if (auto it = key_to_index.find(key); it == key_to_index.end())
@@ -484,7 +531,7 @@ public:
      *
      * Basic exception guarantee.
      */
-    mapped_t & at(het_key_t key)
+    mapped_ref_t at(het_key_t key)
     {
         auto it = key_to_index.find(key);
         if (it == key_to_index.end())
@@ -492,7 +539,7 @@ public:
         return get<1>(storage[it->second]);
     }
 
-    //!\overload
+    //!\copydoc at(het_key_t key)
     mapped_t const & at(het_key_t key) const
     {
         auto it = key_to_index.find(key);
@@ -506,8 +553,9 @@ public:
      * \returns The mapped value belonging to the key.
      * \throws std::out_of_range if no element is associated with the key.
      *
-     * This function is identical to at(). It never inserts elements like the respective function
-     * in std::unordered_map would do.
+     * This function is identical to `.at(key)`. It never inserts elements like the respective function
+     * in std::unordered_map would do; instead it throws an exception if an element with the given key
+     * does not exist.
      *
      * ### Complexity
      *
@@ -517,10 +565,103 @@ public:
      *
      * Basic exception guarantee.
      */
-    mapped_t & operator[](het_key_t key) { return at(key); }
+    mapped_ref_t operator[](het_key_t key) { return at(key); }
 
-    //!\overload
+    //!\copydoc operator[](het_key_t key)
     mapped_t const & operator[](het_key_t key) const { return at(key); }
+    //!\}
+
+    /*!\name Key-based element access (context-aware)
+     * \{
+     */
+    /*!\brief Access element by compile-time string and implicitly call get() on it.
+     * \tparam key The key to lookup.
+     * \param[in,out] dict An object of this type.
+     * \returns `get<key>(dict[key])`
+     * \throws std::out_of_range if no element is associated with the key.
+     *
+     * This function is only available if `mapped_t_is_context_aware` is set to true and
+     * if `get<key>()` can be called on an object of type `mapped_t`.
+     *
+     * Note that while `dict[key]` always returns a `const &` for context-aware dictionaries,
+     * this function may return a writable `&`.
+     *
+     * ### Complexity
+     *
+     * Amortized constant.
+     *
+     * ### Exceptions
+     *
+     * Basic exception guarantee.
+     */
+    template <small_string key>
+    friend decltype(auto) get(meta::decays_to<dictionary> auto && dict)
+        requires(mapped_t_is_context_aware && requires { get<key>(get<1>(dict.storage[0])); })
+    {
+#ifdef __cpp_lib_generic_unordered_lookup
+        auto it = dict.key_to_index.find(key);
+#else //TODO(GCC11): remove special case
+        auto it = dict.key_to_index.find(static_cast<key_t>(key));
+#endif
+        if (it == dict.key_to_index.end())
+            throw std::out_of_range{"Key not found in dictionary."};
+
+        if constexpr (std::is_rvalue_reference_v<decltype(dict)>)
+            return std::move(get<key>(get<1>(dict.storage[it->second])));
+        else
+            return get<key>(get<1>(dict.storage[it->second]));
+    }
+
+    /*!\brief Access element by compile-time string and implicitly call get() on it.
+     * \tparam key The key to lookup.
+     * \param[in] key_tag A tag object wrapping the compile-time string.
+     * \returns `get<key>(dict[key])`
+     * \throws std::out_of_range if no element is associated with the key.
+     *
+     * This function is only available if `mapped_t_is_context_aware` is set to true and
+     * if `get<key>()` can be called on an object of type `mapped_t`.
+     *
+     * Note that while `dict[key]` always returns a `const &` for context-aware dictionaries,
+     * this function may return a writable `&`.
+     *
+     * ### Complexity
+     *
+     * Amortized constant.
+     *
+     * ### Exceptions
+     *
+     * Basic exception guarantee.
+     */
+    template <small_string key>
+    decltype(auto) at(meta::vtag_t<key> BIOCPP_DOXYGEN_ONLY(key_tag))
+        requires(requires(dictionary d) { get<key>(d); })
+    {
+        return get<key>(*this);
+    }
+
+    //!\copydoc at(meta::vtag_t<key> key_tag)
+    template <small_string key>
+    decltype(auto) at(meta::vtag_t<key> BIOCPP_DOXYGEN_ONLY(key_tag)) const
+        requires(requires(dictionary const d) { get<key>(d); })
+    {
+        return get<key>(*this);
+    }
+
+    //!\copydoc at(meta::vtag_t<key> key_tag)
+    template <small_string key>
+    decltype(auto) operator[](meta::vtag_t<key> BIOCPP_DOXYGEN_ONLY(key_tag))
+        requires(requires(dictionary d) { get<key>(d); })
+    {
+        return get<key>(*this);
+    }
+
+    //!\copydoc at(meta::vtag_t<key> key_tag)
+    template <small_string key>
+    decltype(auto) operator[](meta::vtag_t<key> BIOCPP_DOXYGEN_ONLY(key_tag)) const
+        requires(requires(dictionary const d) { get<key>(d); })
+    {
+        return get<key>(*this);
+    }
     //!\}
 
     /*!\name Capacity
@@ -736,6 +877,7 @@ public:
         return lhs.storage == rhs.storage;
     }
 
+    //!\brief Performs element-wise comparison.
     friend bool operator<=>(dictionary const & lhs, dictionary const & rhs) noexcept
     {
         return lhs.storage <=> rhs.storage;
@@ -788,13 +930,20 @@ private:
     //!\brief Implementation function
     void assign_impl(auto begin_it, auto end_it)
     {
-        storage.clear();
+        if constexpr (requires { storage.assign(begin_it, end_it); })
+        {
+            storage.assign(begin_it, end_it);
+        }
+        else
+        {
+            storage.clear();
 
-        if constexpr (std::sized_sentinel_for<decltype(end_it), decltype(begin_it)>)
-            storage.reserve(end_it - begin_it);
+            if constexpr (std::sized_sentinel_for<decltype(end_it), decltype(begin_it)>)
+                storage.reserve(end_it - begin_it);
 
-        for (; begin_it != end_it; ++begin_it)
-            storage.push_back(*begin_it);
+            for (; begin_it != end_it; ++begin_it)
+                storage.push_back(*begin_it);
+        }
     }
 
 public:

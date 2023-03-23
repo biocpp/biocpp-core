@@ -7,6 +7,7 @@
 // -----------------------------------------------------------------------------------------------------
 
 #include <ranges>
+#include <variant>
 
 #include <gtest/gtest.h>
 
@@ -14,6 +15,7 @@
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/container/dictionary.hpp>
 #include <bio/test/expect_range_eq.hpp>
+#include <bio/test/expect_same_type.hpp>
 
 using namespace bio::alphabet::literals;
 
@@ -388,4 +390,116 @@ TEST(dictionary_test, push_pop)
 
     // duplicate ID
     EXPECT_THROW((t0.emplace_back("A", mapped)), std::runtime_error);
+}
+
+//========================================================================
+// context-aware element types
+//========================================================================
+
+using namespace std::string_literals;
+using namespace bio::meta::literals;
+
+struct elem_t : std::variant<std::string, int>
+{
+    template <bio::ranges::small_string id>
+    friend auto get(bio::meta::decays_to<elem_t> auto && e) -> decltype(auto)
+    {
+        static_assert(id == std::string_view{"string"} || id == std::string_view{"int"});
+
+        if constexpr (id == std::string_view{"string"})
+        {
+            if (!std::holds_alternative<std::string>(e))
+                throw std::bad_variant_access{};
+
+            return std::get<std::string>(e);
+        }
+        else
+        {
+            if (!std::holds_alternative<int>(e))
+                throw std::bad_variant_access{};
+
+            return std::get<int>(e);
+        }
+    }
+};
+
+inline elem_t elem1{std::string{"foobar"}};
+inline elem_t elem2{42};
+
+TEST(het_dictionary_test, elem_t_test)
+{
+    EXPECT_EQ(get<"string">(elem1), "foobar");
+    EXPECT_SAME_TYPE(decltype(get<"string">(elem1)), std::string &);
+
+    EXPECT_EQ(get<"int">(elem2), 42);
+    EXPECT_SAME_TYPE(decltype(get<"int">(elem2)), int &);
+}
+
+inline bio::ranges::dictionary<std::string, elem_t, true> dict{
+  std::tuple{"string"s, elem1},
+  std::tuple{   "int"s, elem2}
+};
+inline bio::ranges::dictionary<std::string, elem_t, true> const & cdict = dict;
+
+TEST(het_dictionary_test, associated_types)
+{
+    EXPECT_SAME_TYPE((std::tuple<std::string const &, elem_t const &>), decltype(dict[0]));
+    EXPECT_SAME_TYPE(elem_t const &, decltype(dict["foo"]));
+
+    EXPECT_SAME_TYPE(decltype(dict)::reference, decltype(dict)::const_reference);
+    EXPECT_SAME_TYPE(decltype(dict)::iterator, decltype(dict)::const_iterator);
+}
+
+TEST(het_dictionary_test, get)
+{
+    EXPECT_EQ(get<"string">(dict), "foobar");
+    EXPECT_SAME_TYPE(decltype(get<"string">(dict)), std::string &);
+
+    EXPECT_EQ(get<"int">(dict), 42);
+    EXPECT_SAME_TYPE(decltype(get<"int">(dict)), int &);
+}
+
+TEST(het_dictionary_test, get_const)
+{
+    EXPECT_EQ(get<"string">(cdict), "foobar");
+    EXPECT_SAME_TYPE(decltype(get<"string">(cdict)), std::string const &);
+
+    EXPECT_EQ(get<"int">(cdict), 42);
+    EXPECT_SAME_TYPE(decltype(get<"int">(cdict)), int const &);
+}
+
+TEST(het_dictionary_test, at)
+{
+    EXPECT_EQ(dict.at("string"_vtag), "foobar");
+    EXPECT_SAME_TYPE(decltype(dict.at("string"_vtag)), std::string &);
+
+    EXPECT_EQ(dict.at("int"_vtag), 42);
+    EXPECT_SAME_TYPE(decltype(dict.at("int"_vtag)), int &);
+}
+
+TEST(het_dictionary_test, at_const)
+{
+    EXPECT_EQ(cdict.at("string"_vtag), "foobar");
+    EXPECT_SAME_TYPE(decltype(cdict.at("string"_vtag)), std::string const &);
+
+    EXPECT_EQ(cdict.at("int"_vtag), 42);
+    EXPECT_SAME_TYPE(decltype(cdict.at("int"_vtag)), int const &);
+}
+
+TEST(het_dictionary_test, bracket)
+{
+    EXPECT_EQ(dict["string"_vtag], "foobar");
+    EXPECT_SAME_TYPE(decltype(dict.at("string"_vtag)), std::string &);
+
+    EXPECT_EQ(dict["int"_vtag], 42);
+    EXPECT_SAME_TYPE(decltype(dict.at("int"_vtag)), int &);
+}
+
+TEST(het_dictionary_test, bracket_const)
+{
+    EXPECT_EQ(cdict["string"_vtag], "foobar");
+    EXPECT_SAME_TYPE(decltype(cdict.at("string"_vtag)), std::string const &);
+
+    EXPECT_EQ(cdict["int"_vtag], 42);
+    EXPECT_SAME_TYPE(decltype(cdict.at("int"_vtag)), int const &);
 }
