@@ -33,7 +33,7 @@ TEST(vtag, size1)
     auto v = bio::meta::vtag<42>;
 
     {
-        constexpr auto _ = v.first_value;
+        constexpr auto _ = v.value;
         EXPECT_EQ(_, 42);
     }
     {
@@ -43,10 +43,6 @@ TEST(vtag, size1)
     {
         constexpr auto _ = v.as_tuple;
         EXPECT_EQ(_, std::tuple<int>{42});
-    }
-    {
-        constexpr auto _ = v.unique_values();
-        EXPECT_EQ(_, true);
     }
     {
         constexpr auto _ = v.contains(42);
@@ -79,20 +75,12 @@ TEST(vtag, size2_sametype)
     auto v = bio::meta::vtag<42, 23>;
 
     {
-        constexpr auto _ = v.first_value;
-        EXPECT_EQ(_, 42);
-    }
-    {
         constexpr auto _ = v.size;
         EXPECT_EQ(_, 2ull);
     }
     {
         constexpr auto _ = v.as_tuple;
         EXPECT_EQ(_, (std::tuple<int, int>{42, 23}));
-    }
-    {
-        constexpr auto _ = v.unique_values();
-        EXPECT_EQ(_, true);
     }
     {
         constexpr auto _ = v.contains(42);
@@ -116,10 +104,6 @@ TEST(vtag, size2_difftype)
 {
     auto v = bio::meta::vtag<42, bio::ranges::small_string{"foo"}>;
 
-    {
-        constexpr auto _ = v.first_value;
-        EXPECT_EQ(_, 42);
-    }
     {
         constexpr auto _ = v.size;
         EXPECT_EQ(_, 2ull);
