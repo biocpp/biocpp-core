@@ -354,20 +354,27 @@ public:
     //!\brief Dereference operator returns element currently pointed at.
     constexpr value_type operator*() const
     {
-        alphabet::cigar c;
-
-        if constexpr (std::contiguous_iterator<uit_t>)
+        if (value == default_value)
         {
-            std::string_view v{uit_left, uit_right};
-            c.assign_string(v);
+            alphabet::cigar c;
+
+            if constexpr (std::contiguous_iterator<uit_t>)
+            {
+                std::string_view v{uit_left, uit_right};
+                c.assign_string(v);
+            }
+            else
+            {
+                std::string s;
+                std::ranges::copy(uit_left, uit_right, std::back_inserter(s));
+                c.assign_string(s);
+            }
+            return c;
         }
         else
         {
-            std::string s;
-            std::ranges::copy(uit_left, uit_right, std::back_inserter(s));
-            c.assign_string(s);
+            return value;
         }
-        return c;
     }
 
     //!\brief Return pointer to this iterator.

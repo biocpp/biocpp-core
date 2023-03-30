@@ -195,8 +195,14 @@ TEST(view_char_to_cigar, typical_const)
     EXPECT_FALSE((std::ranges::output_range<decltype(v), bio::alphabet::cigar>));
     EXPECT_FALSE((std::ranges::output_range<decltype(v), char>));
 
-    auto const it = v.begin();
-    EXPECT_EQ(*it, (bio::alphabet::cigar{42, 'I'_cigar_op}));
+    auto it = v.begin();
+    EXPECT_EQ(*it, (bio::alphabet::cigar{42, 'I'_cigar_op}));                // updates the cache
+    EXPECT_EQ(*it, (bio::alphabet::cigar{42, 'I'_cigar_op}));                // uses the cache
+    EXPECT_EQ(*std::as_const(it), (bio::alphabet::cigar{42, 'I'_cigar_op})); // uses the cache
+
+    auto const it2 = v.begin();
+    EXPECT_EQ(*it2, (bio::alphabet::cigar{42, 'I'_cigar_op})); // does not update cache, because const
+    EXPECT_EQ(*it2, (bio::alphabet::cigar{42, 'I'_cigar_op})); // does not use cache, because it wasn't set
 }
 
 TEST(view_char_to_cigar, empty)
