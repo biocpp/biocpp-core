@@ -7,6 +7,20 @@
 
 cmake_minimum_required (VERSION 3.7)
 
+function(cat IN_FILE OUT_FILE)
+  file(READ ${IN_FILE} CONTENTS)
+  file(APPEND ${OUT_FILE} "${CONTENTS}")
+endfunction()
+
+macro(write_layout)
+    file(WRITE ${BIOCPP_DOXYGEN_OUTPUT_DIR}/DoxygenLayout.xml "")
+    cat(${BIOCPP_CORE_CLONE_DIR}/test/documentation/DoxygenLayout.xml.head ${BIOCPP_DOXYGEN_OUTPUT_DIR}/DoxygenLayout.xml)
+    foreach(MODULE ${BIOCPP_DOXYGEN_MODULE_LAYOUT})
+        cat("${MODULE}" "${BIOCPP_DOXYGEN_OUTPUT_DIR}/DoxygenLayout.xml")
+    endforeach ()
+    cat(${BIOCPP_CORE_CLONE_DIR}/test/documentation/DoxygenLayout.xml.tail ${BIOCPP_DOXYGEN_OUTPUT_DIR}/DoxygenLayout.xml)
+endmacro()
+
 ### Find doxygen and dependency to DOT tool
 message (STATUS "Searching for doxygen.")
 find_package (Doxygen REQUIRED)
@@ -24,7 +38,7 @@ else ()
 endif ()
 
 ### Configure doc/developer targets.
-set(BIOCPP_DOXYFILE_IN ${BIOCPP_DOXYGEN_INPUT_DIR}/biocpp_doxygen_cfg.in)
+set(BIOCPP_DOXYFILE_IN ${BIOCPP_CORE_CLONE_DIR}/test/documentation/biocpp_doxygen_cfg.in)
 
 option(BIOCPP_USER_DOC "Create build target and test for user documentation." ON)
 option(BIOCPP_DEV_DOC "Create build target and test for developer documentation." ON)
@@ -50,13 +64,13 @@ if (BIOCPP_USER_DOC)
     message (STATUS "Configuring user doc.")
 
     set (BIOCPP_DOXYGEN_OUTPUT_DIR "${PROJECT_BINARY_DIR}/doc_usr")
-    set (BIOCPP_DOXYGEN_SOURCE_DIR "${BIOCPP_CORE_CLONE_DIR}")
-    set (BIOCPP_DOXYGEN_EXCLUDE_SYMBOLS "detail biocpp::simd") #/""
+    set (BIOCPP_DOXYGEN_EXCLUDE_SYMBOLS "bio::*::detail") #/""
     set (BIOCPP_DOXYGEN_PREDEFINED_NDEBUG "-NDEBUG") #/""
     set (BIOCPP_DOXYGEN_ENABLED_SECTIONS "") #/"DEV"
     set (BIOCPP_DOXYGEN_EXTRACT_PRIVATE "NO") #/"YES":
 
     configure_file (${BIOCPP_DOXYFILE_IN} ${BIOCPP_DOXYGEN_OUTPUT_DIR}/Doxyfile)
+    write_layout()
 
     add_custom_target(doc_usr ALL
                       COMMAND ${DOXYGEN_EXECUTABLE}
@@ -70,13 +84,13 @@ if (BIOCPP_DEV_DOC)
     message(STATUS "Configuring devel doc.")
 
     set(BIOCPP_DOXYGEN_OUTPUT_DIR "${PROJECT_BINARY_DIR}/doc_dev")
-    set(BIOCPP_DOXYGEN_SOURCE_DIR "${BIOCPP_CORE_CLONE_DIR}")
     set(BIOCPP_DOXYGEN_EXCLUDE_SYMBOLS "")
     set(BIOCPP_DOXYGEN_PREDEFINED_NDEBUG "")
     set(BIOCPP_DOXYGEN_ENABLED_SECTIONS "DEV")
     set(BIOCPP_DOXYGEN_EXTRACT_PRIVATE "YES")
 
     configure_file(${BIOCPP_DOXYFILE_IN} ${BIOCPP_DOXYGEN_OUTPUT_DIR}/Doxyfile)
+    write_layout()
 
     add_custom_target(doc_dev ALL
                       COMMAND ${DOXYGEN_EXECUTABLE}
@@ -84,5 +98,27 @@ if (BIOCPP_DEV_DOC)
                       DEPENDS download-cppreference-doxygen-web-tag
                       COMMENT "Generating developer API documentation with Doxygen"
                       VERBATIM)
-                      message (STATUS "Add devel doc test.")
+endif ()
+
+### Enable testing
+enable_testing()
+
+# doxygen does not show any warnings (doxygen prints warnings / errors to cerr)
+set (BIOCPP_DOXYGEN_FAIL_ON_WARNINGS "
+    ${DOXYGEN_EXECUTABLE} > doxygen.cout 2> doxygen.cerr;
+    cat \"doxygen.cerr\";
+    test ! -s \"doxygen.cerr\"")
+
+if (BIOCPP_USER_DOC)
+    message (STATUS "Add user doc test.")
+    add_test(NAME doc_usr_no_warnings_test
+             COMMAND bash -c "${BIOCPP_DOXYGEN_FAIL_ON_WARNINGS}"
+             WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/doc_usr)
+endif ()
+
+if (BIOCPP_DEV_DOC)
+    message (STATUS "Add devel doc test.")
+    add_test(NAME doc_dev_no_warnings_test
+             COMMAND bash -c "${BIOCPP_DOXYGEN_FAIL_ON_WARNINGS}"
+             WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/doc_dev)
 endif ()

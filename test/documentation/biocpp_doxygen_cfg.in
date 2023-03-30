@@ -1,23 +1,18 @@
 PROJECT_NAME           = "BioC++"
 PROJECT_BRIEF          = "The Modern C++ libraries for Bioinformatics."
-PROJECT_LOGO           = ${BIOCPP_DOXYGEN_SOURCE_DIR}/test/documentation/biocpp_logo.svg
+PROJECT_LOGO           = ${BIOCPP_CORE_CLONE_DIR}/test/documentation/biocpp_logo.svg
 PROJECT_NUMBER         = ${BIOCPP_VERSION}
-LAYOUT_FILE            = ${BIOCPP_DOXYGEN_SOURCE_DIR}/test/documentation/DoxygenLayout.xml
+LAYOUT_FILE            = ${BIOCPP_DOXYGEN_OUTPUT_DIR}/DoxygenLayout.xml
 
 ## PATHS
 OUTPUT_DIRECTORY       = ${BIOCPP_DOXYGEN_OUTPUT_DIR}
-INCLUDE_PATH           = ${BIOCPP_DOXYGEN_SOURCE_DIR}/include
-INPUT                  = ${BIOCPP_DOXYGEN_SOURCE_DIR}/include               \
-                         ${BIOCPP_DOXYGEN_SOURCE_DIR}/doc                   \
-                         ${BIOCPP_DOXYGEN_SOURCE_DIR}/LICENSE.md            \
-                         ${BIOCPP_DOXYGEN_SOURCE_DIR}/CHANGELOG.md          \
-                         ${BIOCPP_DOXYGEN_SOURCE_DIR}/CODE_OF_CONDUCT.md    \
-                         ${BIOCPP_DOXYGEN_SOURCE_DIR}/CONTRIBUTING.md
-STRIP_FROM_PATH        = ${BIOCPP_DOXYGEN_SOURCE_DIR}/include
-STRIP_FROM_INC_PATH    = ${BIOCPP_DOXYGEN_SOURCE_DIR}/include
-EXAMPLE_PATH           = ${BIOCPP_DOXYGEN_SOURCE_DIR}
-IMAGE_PATH             = ${BIOCPP_DOXYGEN_SOURCE_DIR}/doc \
-                         ${BIOCPP_DOXYGEN_SOURCE_DIR}/test/documentation
+INCLUDE_PATH           = ${BIOCPP_DOXYGEN_INCLUDE_PATH}
+INPUT                  = ${BIOCPP_DOXYGEN_INPUT}
+STRIP_FROM_PATH        = ${BIOCPP_DOXYGEN_INCLUDE_PATH}
+STRIP_FROM_INC_PATH    = ${BIOCPP_DOXYGEN_INCLUDE_PATH}
+EXAMPLE_PATH           = ${BIOCPP_DOXYGEN_EXAMPLE_PATH}
+IMAGE_PATH             = ${BIOCPP_CORE_CLONE_DIR}/doc \
+                         ${BIOCPP_CORE_CLONE_DIR}/test/documentation
 
 ## DOT SUPPORT
 HAVE_DOT               = ${BIOCPP_DOXYGEN_HAVE_DOT}
@@ -42,18 +37,18 @@ EXPAND_ONLY_PREDEF     = YES
 SKIP_FUNCTION_MACROS   = NO
 SORT_BRIEF_DOCS        = YES
 TOC_INCLUDE_HEADINGS   = 2
-HTML_EXTRA_STYLESHEET  = ${BIOCPP_DOXYGEN_SOURCE_DIR}/test/documentation/biocpp.css
-HTML_FOOTER            = ${BIOCPP_DOXYGEN_SOURCE_DIR}/test/documentation/biocpp_footer.html
+HTML_EXTRA_STYLESHEET  = ${BIOCPP_CORE_CLONE_DIR}/test/documentation/biocpp.css
+HTML_FOOTER            = ${BIOCPP_CORE_CLONE_DIR}/test/documentation/biocpp_footer.html
 INPUT_ENCODING         = UTF-8
 
 PREDEFINED             = "BIOCPP_DOXYGEN_ONLY(x)= x" \
                          "${BIOCPP_DOXYGEN_PREDEFINED_NDEBUG}"
 
-EXPAND_AS_DEFINED      = BIOCPP_CPO_IMPL
+EXPAND_AS_DEFINED      =
 
 TAGFILES               += "${BIOCPP_DOXYGEN_STD_TAGFILE}=https://en.cppreference.com/w/"
 
-EXCLUDE_SYMBOLS        = bio::alphabet::contrib
+EXCLUDE_SYMBOLS        = bio::*::contrib
 
 FORMULA_FONTSIZE       = 14
 HTML_DYNAMIC_SECTIONS  = YES
@@ -90,5 +85,5 @@ ALIASES += header_file{1}="\htmlonly<b>Header File</b><br><div style='text-inden
 
 ### Extra files that we can link to
 
-HTML_EXTRA_FILES       = ${BIOCPP_DOXYGEN_SOURCE_DIR}/test/documentation/version.js
-HTML_EXTRA_FILES       += ${BIOCPP_DOXYGEN_SOURCE_DIR}/test/documentation/version.php
+HTML_EXTRA_FILES       = ${BIOCPP_CORE_CLONE_DIR}/test/documentation/version.js
+HTML_EXTRA_FILES       += ${BIOCPP_CORE_CLONE_DIR}/test/documentation/version.php
