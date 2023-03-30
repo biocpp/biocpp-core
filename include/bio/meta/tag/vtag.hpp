@@ -54,13 +54,20 @@ literal_buffer_string(char const (&)[N]) -> literal_buffer_string<N - 1>;
 namespace bio::meta
 {
 
-/*!\brief The type of bio::meta::vtag. [Default "specialisation" for 0 arguments.]
- * \tparam more_vs Any number of values [only 0 arguments pick this specialisation].
+/*!\brief The type of bio::meta::vtag. [Declaration]
+ * \tparam vs Any number of values.
  * \ingroup meta_tag
  * \see bio::meta::vtag
  */
-template <auto... more_vs>
-struct vtag_t
+template <auto... vs>
+struct vtag_t;
+
+/*!\brief The type of bio::meta::vtag. [Specialisation for 0 arguments.]
+ * \ingroup meta_tag
+ * \see bio::meta::vtag
+ */
+template <>
+struct vtag_t<>
 {
     //!\brief The number of values stored in the tag.
     static constexpr size_t size = 0;
@@ -69,67 +76,47 @@ struct vtag_t
     static constexpr auto as_tuple = std::tuple{};
 
     //!\brief A function that checks if a value is contained in the tag.
-    static constexpr bool contains(auto &&) { return false; }
+    static consteval bool contains(auto &&) { return false; }
 
     //!\brief A function that returns the index of a value or ((size_t)-1) if the value is not found.
-    static constexpr size_t index_of(auto &&) { return static_cast<size_t>(-1ULL); }
+    static consteval size_t index_of(auto &&) { return static_cast<size_t>(-1ULL); }
 
-    //!\brief Equality comparison with other vtags.
-    template <auto... v2s>
-    consteval friend bool operator==(vtag_t, vtag_t<v2s...>) noexcept
-    {
-        return vtag_t::as_tuple == vtag_t<v2s...>::as_tuple;
-    }
+    //!\brief Compare 0-element vtag against 0-element vtag.
+    consteval friend bool operator==(vtag_t, vtag_t) noexcept { return true; }
 
-    //!\brief Ordered comparison with other vtags.
-    template <auto... v2s>
-    consteval friend auto operator<=>(vtag_t, vtag_t<v2s...>) noexcept
-    {
-        return vtag_t::as_tuple <=> vtag_t<v2s...>::as_tuple;
-    }
+    //!\brief Compare 0-element vtag against 0-element vtag.
+    consteval friend auto operator<=>(vtag_t, vtag_t) noexcept { return 0 <=> 0; }
 };
 
-/*!\brief The type of bio::meta::vtag. [Specialisation for 1 or more arguments]
- * \tparam v       First value.
- * \tparam more_vs More values.
+/*!\brief The type of bio::meta::vtag. [Specialisation for 1 argument]
+ * \tparam v One value.
  * \ingroup meta_tag
  * \see bio::meta::vtag
  */
-template <auto v, auto... more_vs>
-struct vtag_t<v, more_vs...>
+template <auto v>
+struct vtag_t<v>
 {
     //!\brief The first value in the tag.
-    static constexpr auto first_value = v;
+    static constexpr auto value = v;
 
-    //!\copybrief bio::meta::vtag_t::size
-    static constexpr size_t size = sizeof...(more_vs) + 1;
+    //!\brief The number of values stored in the tag.
+    static constexpr size_t size = 1;
 
-    //!\copybrief bio::meta::vtag_t::as_tuple
-    static constexpr auto as_tuple = std::tuple{v, more_vs...};
+    //!\brief The tag converted to a tuple.
+    static constexpr auto as_tuple = std::tuple{v};
 
-    //!\brief Whether all values in the tag are unique.
-    static constexpr bool unique_values()
-        requires((weakly_equality_comparable_with<decltype(v), decltype(more_vs)> && ...))
+    //!\brief A function that checks if a value is contained in the tag.
+    static consteval bool contains(auto && s)
+        requires(weakly_equality_comparable_with<decltype(s), decltype(v)>)
     {
-        return ((v != more_vs) && ...);
+        return s == v;
     }
 
-    //!\copybrief bio::meta::vtag_t::contains
-    static constexpr bool contains(auto && s)
-        requires(weakly_equality_comparable_with<decltype(s), decltype(v)> &&
-                 (weakly_equality_comparable_with<decltype(s), decltype(more_vs)> && ...))
+    //!\brief A function that returns the index of a value or ((size_t)-1) if the value is not found.
+    static consteval size_t index_of(auto && s)
+        requires(weakly_equality_comparable_with<decltype(s), decltype(v)>)
     {
-        return s == v || ((s == more_vs) || ...);
-    }
-
-    //!\copybrief bio::meta::vtag_t::index_of
-    static constexpr size_t index_of(auto && s)
-        requires(weakly_equality_comparable_with<decltype(s), decltype(v)> &&
-                 (weakly_equality_comparable_with<decltype(s), decltype(more_vs)> && ...))
-    {
-        size_t c = 0;
-        ((v != s && ++c) && ((more_vs != s && ++c) && ...));
-        return c >= size ? static_cast<size_t>(-1ULL) : c;
+        return (s == v) ? 0ull : static_cast<size_t>(-1ull);
     }
 
     /*!\brief Turns `-vtag<3>` into `vtag<-3>`.
@@ -141,21 +128,71 @@ struct vtag_t<v, more_vs...>
      * literals.
      */
     consteval auto operator-()
-        requires(arithmetic<decltype(v)> && size == 1)
+        requires(arithmetic<decltype(v)>)
     {
         return vtag_t<-v>{};
     }
 
-    //!\copybrief bio::meta::vtag_t::operator==
+    //!\brief Compare 1-element vtag against 1-element vtag.
+    template <auto v2>
+    consteval friend bool operator==(vtag_t, vtag_t<v2>) noexcept
+        requires weakly_equality_comparable_with<decltype(v), decltype(v2)>
+    {
+        return v == v2;
+    }
+
+    //!\brief Compare 1-element vtag against 1-element vtag.
+    template <auto v2>
+    consteval friend auto operator<=>(vtag_t, vtag_t<v2>) noexcept
+        requires weakly_ordered_with<decltype(v), decltype(v2)>
+    {
+        return v <=> v2;
+    }
+};
+
+/*!\brief The type of bio::meta::vtag. [Specialisation for 2 or more arguments]
+ * \tparam vs Many values (more than 1).
+ * \ingroup meta_tag
+ * \see bio::meta::vtag
+ */
+template <auto... vs>
+    requires(sizeof...(vs) >= 2)
+struct vtag_t<vs...>
+{
+    //!\brief The number of values stored in the tag.
+    static constexpr size_t size = sizeof...(vs);
+
+    //!\brief The tag converted to a tuple.
+    static constexpr auto as_tuple = std::tuple{vs...};
+
+    //!\brief A function that checks if a value is contained in the tag.
+    static consteval bool contains(auto && s)
+        requires((weakly_equality_comparable_with<decltype(s), decltype(vs)> && ...))
+    {
+        return ((s == vs) || ...);
+    }
+
+    //!\brief A function that returns the index of a value or ((size_t)-1) if the value is not found.
+    static consteval size_t index_of(auto && s)
+        requires((weakly_equality_comparable_with<decltype(s), decltype(vs)> && ...))
+    {
+        size_t c = 0;
+        ((vs != s && ++c) && ...);
+        return c >= size ? static_cast<size_t>(-1ULL) : c;
+    }
+
+    //!\brief Compare n-element vtag against n-element vtag.
     template <auto... v2s>
     consteval friend bool operator==(vtag_t, vtag_t<v2s...>) noexcept
+        requires(sizeof...(v2s) == size && (weakly_equality_comparable_with<decltype(vs), decltype(v2s)> && ...))
     {
         return vtag_t::as_tuple == vtag_t<v2s...>::as_tuple;
     }
 
-    //!\copybrief bio::meta::vtag_t::operator<=>
+    //!\brief Compare n-element vtag against n-element vtag.
     template <auto... v2s>
     consteval friend auto operator<=>(vtag_t, vtag_t<v2s...>) noexcept
+        requires(sizeof...(v2s) == size && (weakly_ordered_with<decltype(vs), decltype(v2s)> && ...))
     {
         return vtag_t::as_tuple <=> vtag_t<v2s...>::as_tuple;
     }

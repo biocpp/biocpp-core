@@ -1,0 +1,10 @@
+        <tab type="usergroup" visible="yes" title="Core library"                                            intro="">
+            <tab type="user"  visible="yes" title="Quick-Setup"         url="\ref core_setup"               intro=""/>
+            <tab type="user"  visible="yes" title="Overview"            url="\ref core_overview"            intro=""/>
+            <tab type="user"  visible="yes" title="Changelog"           url="\ref core_changelog"           intro=""/>
+            <tab type="user"  visible="yes" title="Tutorial: Concepts"  url="\ref core_concepts"            intro=""/>
+            <tab type="user"  visible="yes" title="Tutorial: Alphabets" url="\ref core_alphabets"           intro=""/>
+            <tab type="user"  visible="yes" title="Tutorial: Ranges"    url="\ref core_ranges"              intro=""/>
+            <tab type="user"  visible="yes" title="Advanced: Create new alphabet" url="\ref core_custom_alphabet" intro=""/>
+            <tab type="user"  visible="yes" title="Advanced: Create new view" url="\ref core_custom_view"   intro=""/>
+        </tab>

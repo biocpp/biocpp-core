@@ -6,7 +6,7 @@
 
 Welcome to the BioC++ libraries!
 
-This web-site contains some general notes  the BioC++ project, library specific tutorials and the API reference of
+This web-site contains some general notes on the BioC++ project, library specific tutorials and the API reference of
 all BioC++ libraries (documentation on all the classes, functions, etc).
 The documentation here is relevant for all **users** of BioC++.
 

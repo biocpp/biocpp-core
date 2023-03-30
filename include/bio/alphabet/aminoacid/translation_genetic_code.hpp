@@ -18,7 +18,7 @@
 namespace bio::alphabet
 {
 /*!\brief Genetic codes used for translation of nucleotides into amino acids.
- *
+ * \ingroup aminoacid
  * \details
  * The numeric values of the enums correspond to the genbank transl_table values
  * (see https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi).
