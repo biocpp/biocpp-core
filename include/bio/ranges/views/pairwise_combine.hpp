@@ -16,6 +16,7 @@
 #include <cmath>
 #include <ranges>
 
+#include <bio/meta/tuple.hpp>
 #include <bio/meta/type_traits/transformation_trait_or.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/views/detail.hpp>
@@ -262,9 +263,9 @@ public:
     //!\brief The difference type.
     using difference_type   = std::ptrdiff_t;
     //!\brief The value type.
-    using value_type        = std::tuple<underlying_ref_t, underlying_ref_t>;
+    using value_type        = bio::meta::tuple<underlying_val_t, underlying_val_t>;
     //!\brief The reference type.
-    using reference         = std::tuple<underlying_ref_t, underlying_ref_t>;
+    using reference         = bio::meta::tuple<underlying_ref_t, underlying_ref_t>;
     //!\brief The pointer type.
     using pointer           = void;
     //!\brief The iterator category tag.

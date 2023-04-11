@@ -47,18 +47,18 @@ protected:
             container.push_back('c');
             container.push_back('d');
         }
-        res.push_back(std::tuple{'a', 'b'});
-        res.push_back(std::tuple{'a', 'c'});
-        res.push_back(std::tuple{'a', 'd'});
-        res.push_back(std::tuple{'b', 'c'});
-        res.push_back(std::tuple{'b', 'd'});
-        res.push_back(std::tuple{'c', 'd'});
+        res.push_back(bio::meta::tuple{'a', 'b'});
+        res.push_back(bio::meta::tuple{'a', 'c'});
+        res.push_back(bio::meta::tuple{'a', 'd'});
+        res.push_back(bio::meta::tuple{'b', 'c'});
+        res.push_back(bio::meta::tuple{'b', 'd'});
+        res.push_back(bio::meta::tuple{'c', 'd'});
     }
 
 private:
     t container;
 
-    std::vector<std::tuple<char, char>> res;
+    std::vector<bio::meta::tuple<char, char>> res;
 };
 
 template <typename t>
@@ -129,30 +129,32 @@ TYPED_TEST(pairwise_combine_iterator_test, associated_types)
 
     { // non-const view over non-const range
         using u_ref_t = typename std::iterator_traits<u_iter_t>::reference;
-        EXPECT_TRUE((std::is_same_v<typename std::iterator_traits<v_iter_t>::reference, std::tuple<u_ref_t, u_ref_t>>));
+        EXPECT_TRUE(
+          (std::is_same_v<typename std::iterator_traits<v_iter_t>::reference, bio::meta::tuple<u_ref_t, u_ref_t>>));
     }
 
     { // non-const view over const range
         using u_ref_t = typename std::iterator_traits<u_const_iter_t>::reference;
-        EXPECT_TRUE(
-          (std::is_same_v<typename std::iterator_traits<v_const_iter_t>::reference, std::tuple<u_ref_t, u_ref_t>>));
+        EXPECT_TRUE((std::is_same_v<typename std::iterator_traits<v_const_iter_t>::reference,
+                                    bio::meta::tuple<u_ref_t, u_ref_t>>));
     }
 
     { // const view over non-const range
         using u_ref_t = typename std::iterator_traits<u_iter_t>::reference;
-        EXPECT_TRUE(
-          (std::is_same_v<typename std::iterator_traits<v_iter_t const>::reference, std::tuple<u_ref_t, u_ref_t>>));
+        EXPECT_TRUE((std::is_same_v<typename std::iterator_traits<v_iter_t const>::reference,
+                                    bio::meta::tuple<u_ref_t, u_ref_t>>));
     }
 
     { // const view over const range
         using u_ref_t = typename std::iterator_traits<u_const_iter_t>::reference;
         EXPECT_TRUE((std::is_same_v<typename std::iterator_traits<v_const_iter_t const>::reference,
-                                    std::tuple<u_ref_t, u_ref_t>>));
+                                    bio::meta::tuple<u_ref_t, u_ref_t>>));
     }
 
     { // value type
-        EXPECT_TRUE((std::is_same_v<typename std::iterator_traits<v_iter_t>::value_type,
-                                    typename std::iterator_traits<v_iter_t>::reference>));
+        using u_val_t = typename std::iterator_traits<u_iter_t>::value_type;
+        EXPECT_TRUE(
+          (std::is_same_v<typename std::iterator_traits<v_iter_t>::value_type, bio::meta::tuple<u_val_t, u_val_t>>));
     }
 }
 
@@ -163,12 +165,12 @@ TYPED_TEST(pairwise_combine_iterator_test, dereference)
     auto       r = this->resource();
     iterator_t it{r.begin(), r.begin(), r.end()};
 
-    EXPECT_EQ(*it, (std::tuple{'a', 'b'}));
+    EXPECT_EQ(*it, (bio::meta::tuple{'a', 'b'}));
 
     std::get<0>(*it) = 'x';
 
     iterator_t const c_it{it};
-    EXPECT_EQ(*c_it, (std::tuple{'x', 'b'}));
+    EXPECT_EQ(*c_it, (bio::meta::tuple{'x', 'b'}));
 }
 
 TYPED_TEST(pairwise_combine_iterator_test, pre_increment)
@@ -178,7 +180,7 @@ TYPED_TEST(pairwise_combine_iterator_test, pre_increment)
     auto       r = this->resource();
     iterator_t it{r.begin(), r.begin(), r.end()};
 
-    EXPECT_EQ(*(++it), (std::tuple{'a', 'c'}));
+    EXPECT_EQ(*(++it), (bio::meta::tuple{'a', 'c'}));
 }
 
 TYPED_TEST(pairwise_combine_iterator_test, post_increment)
@@ -188,8 +190,8 @@ TYPED_TEST(pairwise_combine_iterator_test, post_increment)
     auto       r = this->resource();
     iterator_t it{r.begin(), r.begin(), r.end()};
 
-    EXPECT_EQ(*(it++), (std::tuple{'a', 'b'}));
-    EXPECT_EQ(*it, (std::tuple{'a', 'c'}));
+    EXPECT_EQ(*(it++), (bio::meta::tuple{'a', 'b'}));
+    EXPECT_EQ(*it, (bio::meta::tuple{'a', 'c'}));
 }
 
 TYPED_TEST(pairwise_combine_iterator_test, pre_decrement)
@@ -203,7 +205,7 @@ TYPED_TEST(pairwise_combine_iterator_test, pre_decrement)
 
         if constexpr (std::bidirectional_iterator<decltype(r.begin())>)
         {
-            EXPECT_EQ(*(--it), (std::tuple{'c', 'd'}));
+            EXPECT_EQ(*(--it), (bio::meta::tuple{'c', 'd'}));
         }
     }
 }
@@ -220,8 +222,8 @@ TYPED_TEST(pairwise_combine_iterator_test, post_decrement)
         if constexpr (std::bidirectional_iterator<decltype(r.begin())>)
         {
             --it;
-            EXPECT_EQ(*(it--), (std::tuple{'c', 'd'}));
-            EXPECT_EQ(*it, (std::tuple{'b', 'd'}));
+            EXPECT_EQ(*(it--), (bio::meta::tuple{'c', 'd'}));
+            EXPECT_EQ(*it, (bio::meta::tuple{'b', 'd'}));
         }
     }
 }
@@ -247,12 +249,12 @@ TYPED_TEST(pairwise_combine_iterator_test, subscript)
 
     if constexpr (std::random_access_iterator<decltype(r.begin())>)
     {
-        EXPECT_EQ(it[0], (std::tuple{'a', 'b'}));
-        EXPECT_EQ(it[1], (std::tuple{'a', 'c'}));
-        EXPECT_EQ(it[2], (std::tuple{'a', 'd'}));
-        EXPECT_EQ(it[3], (std::tuple{'b', 'c'}));
-        EXPECT_EQ(it[4], (std::tuple{'b', 'd'}));
-        EXPECT_EQ(it[5], (std::tuple{'c', 'd'}));
+        EXPECT_EQ(it[0], (bio::meta::tuple{'a', 'b'}));
+        EXPECT_EQ(it[1], (bio::meta::tuple{'a', 'c'}));
+        EXPECT_EQ(it[2], (bio::meta::tuple{'a', 'd'}));
+        EXPECT_EQ(it[3], (bio::meta::tuple{'b', 'c'}));
+        EXPECT_EQ(it[4], (bio::meta::tuple{'b', 'd'}));
+        EXPECT_EQ(it[5], (bio::meta::tuple{'c', 'd'}));
     }
 }
 
@@ -266,11 +268,11 @@ TYPED_TEST(pairwise_combine_iterator_test, advance_n)
     if constexpr (std::random_access_iterator<decltype(r.begin())>)
     {
         it = it + 1;
-        EXPECT_EQ(*it, (std::tuple{'a', 'c'}));
+        EXPECT_EQ(*it, (bio::meta::tuple{'a', 'c'}));
         it += 2;
-        EXPECT_EQ(*it, (std::tuple{'b', 'c'}));
+        EXPECT_EQ(*it, (bio::meta::tuple{'b', 'c'}));
         it = 2 + it;
-        EXPECT_EQ(*it, (std::tuple{'c', 'd'}));
+        EXPECT_EQ(*it, (bio::meta::tuple{'c', 'd'}));
     }
 }
 
@@ -284,9 +286,9 @@ TYPED_TEST(pairwise_combine_iterator_test, decrement_n)
         iterator_t it{std::ranges::prev(r.end()), r.begin(), r.end()};
 
         it = it - 2;
-        EXPECT_EQ(*it, (std::tuple{'b', 'd'}));
+        EXPECT_EQ(*it, (bio::meta::tuple{'b', 'd'}));
         it -= 3;
-        EXPECT_EQ(*it, (std::tuple{'a', 'c'}));
+        EXPECT_EQ(*it, (bio::meta::tuple{'a', 'c'}));
     }
 }
 
@@ -336,8 +338,7 @@ TYPED_TEST(pairwise_combine_test, view_concept)
     EXPECT_TRUE(std::ranges::input_range<typename TestFixture::view_t>);
     EXPECT_TRUE(std::ranges::forward_range<typename TestFixture::view_t>);
     EXPECT_TRUE(std::ranges::view<typename TestFixture::view_t>);
-    //TODO(bio): fix this later
-    //     EXPECT_TRUE((std::ranges::output_range<typename TestFixture::view_t, std::tuple<char &, char &>>));
+    EXPECT_TRUE((std::ranges::output_range<typename TestFixture::view_t, bio::meta::tuple<char &, char &>>));
     EXPECT_EQ(std::ranges::bidirectional_range<TypeParam>,
               std::ranges::bidirectional_range<typename TestFixture::view_t>);
     EXPECT_EQ(std::ranges::sized_range<TypeParam>, std::ranges::sized_range<typename TestFixture::view_t>);
@@ -347,8 +348,7 @@ TYPED_TEST(pairwise_combine_test, view_concept)
     EXPECT_TRUE(std::ranges::input_range<typename TestFixture::const_view_t>);
     EXPECT_TRUE(std::ranges::forward_range<typename TestFixture::const_view_t>);
     EXPECT_TRUE(std::ranges::view<typename TestFixture::const_view_t>);
-    //TODO: Investigate, because this should be false. It cannot be used as a output range!
-    // EXPECT_FALSE((std::ranges::output_range<typename TestFixture::const_view_t, std::tuple<char, char>>));
+    EXPECT_FALSE((std::ranges::output_range<typename TestFixture::const_view_t, bio::meta::tuple<char, char>>));
     EXPECT_EQ(std::ranges::bidirectional_range<TypeParam>,
               std::ranges::bidirectional_range<typename TestFixture::const_view_t>);
     EXPECT_EQ(std::ranges::sized_range<TypeParam>, std::ranges::sized_range<typename TestFixture::const_view_t>);
@@ -372,9 +372,9 @@ TYPED_TEST(pairwise_combine_test, begin)
     auto       v = this->create_view();
     auto const cv{v};
 
-    EXPECT_EQ(*v.begin(), (std::tuple{'a', 'b'}));
-    EXPECT_EQ(*cv.begin(), (std::tuple{'a', 'b'}));
-    EXPECT_EQ(*std::ranges::cbegin(v), (std::tuple{'a', 'b'}));
+    EXPECT_EQ(*v.begin(), (bio::meta::tuple{'a', 'b'}));
+    EXPECT_EQ(*cv.begin(), (bio::meta::tuple{'a', 'b'}));
+    EXPECT_EQ(*std::ranges::cbegin(v), (bio::meta::tuple{'a', 'b'}));
 }
 
 TYPED_TEST(pairwise_combine_test, end)
@@ -449,12 +449,12 @@ TEST(pairwise_combine_fn_test, filter_output)
         cmp.push_back(r);
 
     auto it = std::ranges::begin(cmp);
-    EXPECT_EQ(*it, (std::tuple{'a', 'b'}));
-    EXPECT_EQ(*++it, (std::tuple{'a', 'c'}));
-    EXPECT_EQ(*++it, (std::tuple{'a', 'd'}));
-    EXPECT_EQ(*++it, (std::tuple{'b', 'c'}));
-    EXPECT_EQ(*++it, (std::tuple{'b', 'd'}));
-    EXPECT_EQ(*++it, (std::tuple{'c', 'd'}));
+    EXPECT_EQ(*it, (bio::meta::tuple{'a', 'b'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'a', 'c'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'a', 'd'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'b', 'c'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'b', 'd'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'c', 'd'}));
 }
 
 TEST(pairwise_combine_fn_test, filter_input)
@@ -471,12 +471,12 @@ TEST(pairwise_combine_fn_test, filter_input)
         cmp.push_back(r);
 
     auto it = std::ranges::begin(cmp);
-    EXPECT_EQ(*it, (std::tuple{'a', 'b'}));
-    EXPECT_EQ(*++it, (std::tuple{'a', 'c'}));
-    EXPECT_EQ(*++it, (std::tuple{'a', 'd'}));
-    EXPECT_EQ(*++it, (std::tuple{'b', 'c'}));
-    EXPECT_EQ(*++it, (std::tuple{'b', 'd'}));
-    EXPECT_EQ(*++it, (std::tuple{'c', 'd'}));
+    EXPECT_EQ(*it, (bio::meta::tuple{'a', 'b'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'a', 'c'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'a', 'd'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'b', 'c'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'b', 'd'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'c', 'd'}));
 }
 
 TEST(pairwise_combine_fn_test, output)
@@ -484,15 +484,15 @@ TEST(pairwise_combine_fn_test, output)
     std::vector orig{'a', 'b', 'c', 'd'};
     auto        v = orig | bio::ranges::views::pairwise_combine;
 
-    *v.begin() = std::tuple{'x', 'y'};
+    *v.begin() = bio::meta::tuple{'x', 'y'};
 
     auto it = v.begin();
-    EXPECT_EQ(*it, (std::tuple{'x', 'y'}));
-    EXPECT_EQ(*++it, (std::tuple{'x', 'c'}));
-    EXPECT_EQ(*++it, (std::tuple{'x', 'd'}));
-    EXPECT_EQ(*++it, (std::tuple{'y', 'c'}));
-    EXPECT_EQ(*++it, (std::tuple{'y', 'd'}));
-    EXPECT_EQ(*++it, (std::tuple{'c', 'd'}));
+    EXPECT_EQ(*it, (bio::meta::tuple{'x', 'y'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'x', 'c'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'x', 'd'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'y', 'c'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'y', 'd'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'c', 'd'}));
 }
 
 TEST(pairwise_combine_fn_test, const_source)
@@ -507,10 +507,10 @@ TEST(pairwise_combine_fn_test, const_source)
         cmp.push_back(r);
 
     auto it = std::ranges::begin(cmp);
-    EXPECT_EQ(*it, (std::tuple{'a', 'b'}));
-    EXPECT_EQ(*++it, (std::tuple{'a', 'c'}));
-    EXPECT_EQ(*++it, (std::tuple{'a', 'd'}));
-    EXPECT_EQ(*++it, (std::tuple{'b', 'c'}));
-    EXPECT_EQ(*++it, (std::tuple{'b', 'd'}));
-    EXPECT_EQ(*++it, (std::tuple{'c', 'd'}));
+    EXPECT_EQ(*it, (bio::meta::tuple{'a', 'b'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'a', 'c'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'a', 'd'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'b', 'c'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'b', 'd'}));
+    EXPECT_EQ(*++it, (bio::meta::tuple{'c', 'd'}));
 }
