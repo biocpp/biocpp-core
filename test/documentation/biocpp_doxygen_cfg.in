@@ -44,7 +44,7 @@ INPUT_ENCODING         = UTF-8
 PREDEFINED             = "BIOCPP_DOXYGEN_ONLY(x)= x" \
                          "${BIOCPP_DOXYGEN_PREDEFINED_NDEBUG}"
 
-EXPAND_AS_DEFINED      =
+EXPAND_AS_DEFINED      = BIOCPP_TUPLE_REQ_EQ BIOCPP_TUPLE_REQ_THREEWAY
 
 TAGFILES               += "${BIOCPP_DOXYGEN_STD_TAGFILE}=https://en.cppreference.com/w/"
 

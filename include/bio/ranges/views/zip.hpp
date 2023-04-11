@@ -17,6 +17,7 @@
 #include <functional>
 #include <ranges>
 
+#include <bio/meta/tuple.hpp>
 #include <bio/ranges/concept.hpp>
 #include <bio/ranges/views/detail.hpp>
 
@@ -52,7 +53,7 @@ constexpr auto tuple_transform(fun_t && f, tuple_t && tuple)
 {
     return std::apply(
       [&]<typename... ts>(ts &&... elements)
-      { return std::tuple<std::invoke_result_t<fun_t &, ts>...>{std::invoke(f, std::forward<ts>(elements))...}; },
+      { return meta::tuple<std::invoke_result_t<fun_t &, ts>...>{std::invoke(f, std::forward<ts>(elements))...}; },
       std::forward<tuple_t>(tuple));
 }
 
@@ -115,7 +116,7 @@ template <std::ranges::input_range... Views>
     requires(std::ranges::view<Views> && ...) && (sizeof...(Views) > 0)
 class zip_view : public std::ranges::view_interface<zip_view<Views...>>
 {
-    std::tuple<Views...> views_;
+    meta::tuple<Views...> views_;
 
     template <bool>
     class iterator;
@@ -201,7 +202,7 @@ class zip_view<Views...>::iterator : public zip::iterator_category_t<zip::all_fo
 #endif
 {
 private:
-    constexpr explicit iterator(std::tuple<std::ranges::iterator_t<zip::maybe_const<Const, Views>>...> current) :
+    constexpr explicit iterator(meta::tuple<std::ranges::iterator_t<zip::maybe_const<Const, Views>>...> current) :
       current_(std::move(current))
     {}
 
@@ -209,7 +210,7 @@ private:
 
 public:
     // Exposition-only. Is public for access via friend operator== of the sentinel.
-    std::tuple<std::ranges::iterator_t<zip::maybe_const<Const, Views>>...> current_;
+    meta::tuple<std::ranges::iterator_t<zip::maybe_const<Const, Views>>...> current_;
 
     using iterator_concept = std::conditional_t<
       zip::all_random_access<Const, Views...>,
@@ -218,7 +219,7 @@ public:
         zip::all_bidirectional<Const, Views...>,
         std::bidirectional_iterator_tag,
         std::conditional_t<zip::all_forward<Const, Views...>, std::forward_iterator_tag, std::input_iterator_tag>>>;
-    using value_type      = std::tuple<std::ranges::range_reference_t<zip::maybe_const<Const, Views>>...>;
+    using value_type      = meta::tuple<std::ranges::range_reference_t<zip::maybe_const<Const, Views>>...>;
     using difference_type = std::common_type_t<std::ranges::range_difference_t<zip::maybe_const<Const, Views>>...>;
 
     iterator() = default;
@@ -373,7 +374,7 @@ template <bool Const>
 class zip_view<Views...>::sentinel
 {
 private:
-    constexpr explicit sentinel(std::tuple<std::ranges::sentinel_t<zip::maybe_const<Const, Views>>...> end) :
+    constexpr explicit sentinel(meta::tuple<std::ranges::sentinel_t<zip::maybe_const<Const, Views>>...> end) :
       end_(std::move(end))
     {}
 
@@ -381,7 +382,7 @@ private:
 
 public:
     // Exposition-only. Is public such that it can be accessed by friends.
-    std::tuple<std::ranges::sentinel_t<zip::maybe_const<Const, Views>>...> end_;
+    meta::tuple<std::ranges::sentinel_t<zip::maybe_const<Const, Views>>...> end_;
 
     sentinel() = default;
     constexpr sentinel(sentinel<!Const> i)
@@ -429,7 +430,7 @@ public:
 
 struct zip_fn
 {
-    constexpr auto operator()() const { return std::views::empty<std::tuple<>>; }
+    constexpr auto operator()() const { return std::views::empty<meta::tuple<>>; }
 
     template <typename... urng_ts>
         requires(sizeof...(urng_ts) >= 1)
@@ -448,7 +449,7 @@ namespace bio::ranges::views
 /*!\brief A view adaptor that produces a tuple-like value of all passed views.
  * \ingroup utility_views
  *
- * This is a implementation of the C++23 zip_view. It will be replaced with std::views::zip.
+ * This is an implementation of the C++23 zip_view. It will be replaced with std::views::zip.
  *
  * \sa https://en.cppreference.com/w/cpp/ranges/zip_view
  */

@@ -39,7 +39,7 @@ struct iterator_fixture<zip_iterator_t> : public ::testing::Test
 
     other_range_t other_range{"AA", "BBB", "CC", "DDD"};
 
-    std::vector<std::tuple<int, std::string>> expected_range{
+    std::vector<bio::meta::tuple<int, std::string>> expected_range{
       {0,  "AA"},
       {1, "BBB"},
       {2,  "CC"},
@@ -118,14 +118,12 @@ TEST_F(zip_test, concepts)
     EXPECT_TRUE(std::ranges::common_range<zip_forward_range_t>);
     EXPECT_TRUE(std::ranges::common_range<const_zip_t>);
 
-#if 0 // TODO(bio) fix output ranges later (needs common_tuple)
-    EXPECT_TRUE((std::ranges::output_range<zip_common_range_t, std::tuple<int &, std::string &>>));
-    EXPECT_TRUE((std::ranges::output_range<zip_not_common_range_t, std::tuple<int &, std::string &, char &>>));
-    EXPECT_FALSE((std::ranges::output_range<zip_const_range_t, std::tuple<int &, int &>>));
-    EXPECT_FALSE((std::ranges::output_range<zip_const_range_t, std::tuple<int &, int const &>>));
-    EXPECT_TRUE((std::ranges::output_range<zip_forward_range_t, std::tuple<int &, std::string &, int &>>));
-    EXPECT_TRUE((std::ranges::output_range<const_zip_t, std::tuple<int &, std::string &>>));
-#endif
+    EXPECT_TRUE((std::ranges::output_range<zip_common_range_t, bio::meta::tuple<int &, std::string &>>));
+    EXPECT_TRUE((std::ranges::output_range<zip_not_common_range_t, bio::meta::tuple<int &, std::string &, char &>>));
+    EXPECT_FALSE((std::ranges::output_range<zip_const_range_t, bio::meta::tuple<int &, int &>>));
+    EXPECT_FALSE((std::ranges::output_range<zip_const_range_t, bio::meta::tuple<int &, int const &>>));
+    EXPECT_TRUE((std::ranges::output_range<zip_forward_range_t, bio::meta::tuple<int &, std::string &, int &>>));
+    EXPECT_TRUE((std::ranges::output_range<const_zip_t, bio::meta::tuple<int &, std::string &>>));
 }
 
 TEST_F(zip_test, basic)
@@ -172,7 +170,7 @@ TEST_F(zip_test, combine)
 TEST_F(zip_test, use_as_output_range)
 {
     auto zip_view     = zip_common_range();
-    *zip_view.begin() = std::tuple(23, "FF");
+    *zip_view.begin() = bio::meta::tuple(23, "FF");
     EXPECT_EQ(std::get<0>(*zip_view.begin()), 23);
     EXPECT_EQ(std::get<1>(*zip_view.begin()), "FF");
 
