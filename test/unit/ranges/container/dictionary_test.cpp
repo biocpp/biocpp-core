@@ -32,6 +32,10 @@ TEST(dictionary_test, concepts)
     EXPECT_TRUE(std::ranges::sized_range<TypeParam>);
     EXPECT_TRUE(std::ranges::common_range<TypeParam>);
 
+    EXPECT_TRUE(std::ranges::random_access_range<TypeParam const>);
+    EXPECT_TRUE(std::ranges::sized_range<TypeParam const>);
+    EXPECT_TRUE(std::ranges::common_range<TypeParam const>);
+
     EXPECT_FALSE((std::ranges::output_range<TypeParam, value_t>)); // can't assign to reference
     EXPECT_TRUE((bio::ranges::back_insertable<TypeParam>));        // but can insert
     EXPECT_TRUE((bio::ranges::back_emplaceable_with<TypeParam, std::string, std::vector<bio::alphabet::dna4>>));
@@ -392,6 +396,22 @@ TEST(dictionary_test, push_pop)
     EXPECT_THROW((t0.emplace_back("A", mapped)), std::runtime_error);
 }
 
+TEST(dictionary_test, views_elements)
+{
+    TypeParam t1{
+      value_t{"A",  mapped},
+      value_t{"B", mapped2},
+      value_t{"C",  mapped},
+      value_t{"D", mapped2}
+    };
+
+    std::vector<std::string_view>                 comp1{"A", "B", "C", "D"};
+    std::vector<std::vector<bio::alphabet::dna4>> comp2{mapped, mapped2, mapped, mapped2};
+
+    EXPECT_RANGE_EQ(t1 | std::views::elements<0>, comp1);
+    EXPECT_RANGE_EQ(t1 | std::views::elements<1>, comp2);
+}
+
 //========================================================================
 // context-aware element types
 //========================================================================
@@ -436,14 +456,14 @@ TEST(het_dictionary_test, elem_t_test)
 }
 
 inline bio::ranges::dictionary<std::string, elem_t, true> dict{
-  std::tuple{"string"s, elem1},
-  std::tuple{   "int"s, elem2}
+  bio::meta::tuple{"string"s, elem1},
+  bio::meta::tuple{   "int"s, elem2}
 };
 inline bio::ranges::dictionary<std::string, elem_t, true> const & cdict = dict;
 
 TEST(het_dictionary_test, associated_types)
 {
-    EXPECT_SAME_TYPE((std::tuple<std::string const &, elem_t const &>), decltype(dict[0]));
+    EXPECT_SAME_TYPE((bio::meta::tuple<std::string const &, elem_t const &>), decltype(dict[0]));
     EXPECT_SAME_TYPE(elem_t const &, decltype(dict["foo"]));
 
     EXPECT_SAME_TYPE(decltype(dict)::reference, decltype(dict)::const_reference);

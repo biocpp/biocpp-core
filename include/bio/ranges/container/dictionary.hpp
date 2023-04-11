@@ -30,6 +30,7 @@
 #include <bio/meta/concept/core_language.hpp>
 #include <bio/meta/detail/int_types.hpp>
 #include <bio/meta/tag/vtag.hpp>
+#include <bio/meta/tuple.hpp>
 #include <bio/ranges/detail/random_access_iterator.hpp>
 
 namespace bio::ranges
@@ -49,7 +50,7 @@ namespace bio::ranges
  * This container behaves like a mixture of std::vector and std::unordered_map.
  *
  * It has the following properties:
- *   * The element type is `std::tuple<key_t, mapped_t>`, but the reference type is `std::tuple<key_t const &, mapped_t &>`.
+ *   * The element type is `meta::tuple<key_t, mapped_t>`, but the reference type is `meta::tuple<key_t const &, mapped_t &>`.
  *   * Contiguous storage of elements in the same order they are inserted.
  *   * O(1) access to elements via `operator[size_t]` and ~O(1) #push_back (like std::vector).
  *   * ~O(1) access to mapped value via the key (like std::unordered_map).
@@ -65,9 +66,9 @@ namespace bio::ranges
  *
  * ### Element access
  *
- * The element type (#value_type) of the dictionary is `std::tuple<key_t, mapped_t>`. Most functions that provide
- * access to the elements, return `std::tuple<key_t const &, mapped_t &>` (and not `std::tuple<key_t &, mapped_t &>` or
- * `std::tuple<key_t, mapped_t> &`).
+ * The element type (#value_type) of the dictionary is `meta::tuple<key_t, mapped_t>`. Most functions that provide
+ * access to the elements, return `meta::tuple<key_t const &, mapped_t &>` (and not `meta::tuple<key_t &, mapped_t &>` or
+ * `meta::tuple<key_t, mapped_t> &`).
  * This prevents changes to the key of an element (which would break the container).
  *
  * Functions that access an element by key, return a reference to the mapped value instead (like for
@@ -78,7 +79,7 @@ namespace bio::ranges
  * ### Context-aware mapped value types
  *
  * If the template parameter `mapped_t_is_context_aware` is set to true, the #reference type of the dictionary
- * becomes `std::tuple<key_t const &, mapped_t const &>`, i.e. the mapped value in dictionary elements cannot be
+ * becomes `bio::meta::tuple<key_t const &, mapped_t const &>`, i.e. the mapped value in dictionary elements cannot be
  * changed via regular element access.
  *
  * Additionally, given an object `o` of type `mapped_t`, if `get<"foo">(o)` is valid,
@@ -109,9 +110,9 @@ public:
      */
     using mapped_ref_t =
       std::conditional_t<mapped_t_is_context_aware, mapped_t const &, mapped_t &>; //!< Usually `mapped_t &`.
-    using value_type      = std::tuple<key_t, mapped_t>;                           //!< The value_type type.
-    using reference       = std::tuple<key_t const &, mapped_ref_t>;               //!< The reference type.
-    using const_reference = std::tuple<key_t const &, mapped_t const &>;           //!< The const_reference type.
+    using value_type      = meta::tuple<key_t, mapped_t>;                          //!< The value_type type.
+    using reference       = meta::tuple<key_t const &, mapped_ref_t>;              //!< The reference type.
+    using const_reference = meta::tuple<key_t const &, mapped_t const &>;          //!< The const_reference type.
     using difference_type = ptrdiff_t;                                             //!< The difference_type type.
     using size_type       = size_t;                                                //!< The size_type type.
     using const_iterator  = detail::random_access_iterator<dictionary const>;      //!< The const_iterator type.
