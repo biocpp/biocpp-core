@@ -5,6 +5,26 @@
 This changelog contains a top-level entry for each release with sections on new features, API changes and notable
 bug-fixes (not all bug-fixes will be listed).
 
+# 0.7.1
+
+Summary: fix some ranges by using our own tuple.
+
+## Added
+
+* `bio::meta::tuple` which behaves like C++23's `std::tuple`.
+
+## Fixed
+
+* `bio::views::zip` uses `bio::meta::tuple` and now also models `std::ranges::output_range`.
+* `bio::views::pairwise_combine` uses `bio::meta::tuple` and now also models `std::ranges::output_range`.
+* `bio::ranges::dictionary` uses `bio::meta::tuple`. Now `bio::ranges::dictionary<> const` works correctly.
+
+## API
+
+* This release is not yet API-stable.
+* This release is *mostly* backwards compatible with 0.7.0 (see changes above).
+
+
 # 0.7.0
 
 Summary: we now support LLVM/clang as a compiler; CIGARs have been much improved and there is a new container.

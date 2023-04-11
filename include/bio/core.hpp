@@ -112,9 +112,9 @@ static_assert(__cplusplus >= 201709, "BioCpp-Core requires C++20, make sure that
 //!\brief The major version as MACRO.
 #define BIOCPP_CORE_VERSION_MAJOR 0
 //!\brief The minor version as MACRO.
-#define BIOCPP_CORE_VERSION_MINOR 8
+#define BIOCPP_CORE_VERSION_MINOR 7
 //!\brief The patch version as MACRO.
-#define BIOCPP_CORE_VERSION_PATCH 0
+#define BIOCPP_CORE_VERSION_PATCH 1
 
 //!\brief The full version as MACRO (number).
 #define BIOCPP_CORE_VERSION                                                                                            \
