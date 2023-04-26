@@ -82,6 +82,8 @@ public:
      */
     base_t const & as_base() const noexcept { return *this; }
 
+    using base_t::base_t;
+
     /*!\name Construct from arguments.
      * \{
      */
