@@ -65,7 +65,7 @@ public:
     constexpr masked & operator=(masked &&) noexcept = default; //!< Defaulted.
     ~masked()                                        = default; //!< Defaulted.
 
-    using base_t::base_t;                                       // Inherit non-default constructors
+    using base_t::base_t; // Inherit non-default constructors
     //!\}
 
     // Inherit operators from base

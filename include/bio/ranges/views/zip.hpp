@@ -197,7 +197,7 @@ template <std::ranges::input_range... Views>
 template <bool Const>
 #if defined(__GNUC__) && (__GNUC__ == 10) // cpp17 iterators
 class zip_view<Views...>::iterator : public zip::iterator_category_t<Const, Views...>
-#else                                     // cpp20 iterators
+#else // cpp20 iterators
 class zip_view<Views...>::iterator : public zip::iterator_category_t<zip::all_forward<Const, Views...>>
 #endif
 {

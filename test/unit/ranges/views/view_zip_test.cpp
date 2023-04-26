@@ -103,7 +103,7 @@ TEST_F(zip_test, concepts)
     EXPECT_TRUE(std::ranges::sized_range<zip_common_range_t>);
     EXPECT_FALSE(std::ranges::sized_range<zip_not_common_range_t>); // bio::ranges::views::repeat has no size (infinite)
     EXPECT_TRUE(std::ranges::sized_range<zip_const_range_t>);
-    EXPECT_FALSE(std::ranges::sized_range<zip_forward_range_t>);    // std::forward_list is not sized
+    EXPECT_FALSE(std::ranges::sized_range<zip_forward_range_t>); // std::forward_list is not sized
     EXPECT_TRUE(std::ranges::sized_range<const_zip_t>);
 
     EXPECT_TRUE(std::ranges::common_range<zip_common_range_t>);

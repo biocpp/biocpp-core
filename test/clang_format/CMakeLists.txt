@@ -9,6 +9,8 @@ if (CLANG_FORMAT STREQUAL "CLANG_FORMAT-NOTFOUND")
 endif()
 
 if (NOT CLANG_FORMAT STREQUAL "CLANG_FORMAT-NOTFOUND")
+    message(STATUS "Found clang-format: ${CLANG_FORMAT}")
+
     add_custom_target (check_library ALL "find" "${CMAKE_CURRENT_SOURCE_DIR}/../../include/bio/" "-name" "'*.[ch]pp'" "-exec"
                        ${CLANG_FORMAT} "-style=file" "-n" "-Werror" "{}" "+"
                        COMMENT "Checking the library with clang-format.")

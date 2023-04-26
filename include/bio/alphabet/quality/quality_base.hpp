@@ -119,7 +119,7 @@ protected:
             else if (i >= derived_type::offset_phred +
                             static_cast<int64_t>(alphabet_size)) // map too-large to highest possible
                 ret[static_cast<rank_type>(i)] = alphabet_size - 1;
-            else                                                 // map valid range to identity
+            else // map valid range to identity
                 ret[static_cast<rank_type>(i)] = i - derived_type::offset_phred;
         }
         return ret;
@@ -138,7 +138,7 @@ protected:
             else if (i >= derived_type::offset_char +
                             static_cast<int64_t>(alphabet_size)) // map too-large to highest possible
                 ret[static_cast<rank_type>(i)] = alphabet_size - 1;
-            else                                                 // map valid range to identity
+            else // map valid range to identity
                 ret[static_cast<rank_type>(i)] = i - derived_type::offset_char;
         }
 

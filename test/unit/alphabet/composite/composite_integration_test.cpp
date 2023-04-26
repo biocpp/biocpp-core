@@ -347,8 +347,8 @@ TEST(composite, custom_comparison)
     EXPECT_EQ(t31, '$'_phred42);
     EXPECT_NE(t31, bio::alphabet::gap{});
     EXPECT_EQ(t31, bio::alphabet::gapped<bio::alphabet::dna4>('C'_dna4));
-    EXPECT_LT(t31, 'G'_dna4);             // *
-    EXPECT_LT(t31, 'G'_rna4);             // *
+    EXPECT_LT(t31, 'G'_dna4); // *
+    EXPECT_LT(t31, 'G'_rna4); // *
     EXPECT_LT(t31, '%'_phred42);
     EXPECT_LT(t31, bio::alphabet::gap{}); // *
     EXPECT_LT(t31, bio::alphabet::gapped<bio::alphabet::dna4>('G'_dna4));
@@ -358,8 +358,8 @@ TEST(composite, custom_comparison)
     EXPECT_EQ('$'_phred42, t31);
     EXPECT_NE(bio::alphabet::gap{}, t31);
     EXPECT_EQ(bio::alphabet::gapped<bio::alphabet::dna4>('C'_dna4), t31);
-    EXPECT_LT('A'_dna4, t31);             // *
-    EXPECT_LT('A'_rna4, t31);             // *
+    EXPECT_LT('A'_dna4, t31); // *
+    EXPECT_LT('A'_rna4, t31); // *
     EXPECT_LT('#'_phred42, t31);
     EXPECT_GT(bio::alphabet::gap{}, t31); // *
     EXPECT_LT(bio::alphabet::gapped<bio::alphabet::dna4>('A'_dna4), t31);
