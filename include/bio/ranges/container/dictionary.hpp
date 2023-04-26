@@ -137,8 +137,7 @@ public:
     ~dictionary()                                  = default; //!< Defaulted.
 
     /*!\brief Construct from a list of values of value_type.
-     * \tparam value_type_ A parameter pack where each type is equal to value_type.
-     * \param[in] args The values to construct from.
+     * \param[in] list The values to construct from.
      *
      * ### Complexity
      *
@@ -148,12 +147,7 @@ public:
      *
      * Basic exception gurantee.
      */
-    template <typename... value_type_>
-        requires((std::convertible_to<value_type_, value_type> && ...) && sizeof...(value_type_) > 0)
-    explicit dictionary(value_type_ &&... args)
-    {
-        assign(std::forward<value_type_>(args)...);
-    }
+    dictionary(std::initializer_list<value_type> const list) { assign(list); }
 
     /*!\brief Construct from two iterators.
      * \tparam begin_it_type Must model std::forward_iterator and `value_type` must be constructible from
@@ -231,6 +225,28 @@ public:
         storage.clear();
         storage.reserve(sizeof...(args));
         (storage.push_back(std::forward<value_type_>(args)), ...);
+        recompute_hashes(); // this validates uniqueness of keys
+    }
+
+    /*!\brief Assign from initializer_list.
+     * \param[in] list The values to assign from.
+     *
+     * This replaces the container's contents with the provided elements.
+     *
+     * ### Complexity
+     *
+     * Linear in the size of the list.
+     *
+     * ### Exceptions
+     *
+     * Basic exception gurantee.
+     */
+    void assign(std::initializer_list<value_type> const list)
+    {
+        storage.clear();
+        storage.reserve(list.size());
+        for (value_type const & val : list)
+            storage.push_back(val);
         recompute_hashes(); // this validates uniqueness of keys
     }
 

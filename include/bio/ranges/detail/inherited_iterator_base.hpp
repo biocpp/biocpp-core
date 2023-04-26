@@ -79,13 +79,13 @@ public:
      * \{
      */
     constexpr inherited_iterator_base() noexcept(
-      std::is_nothrow_default_constructible_v<base_t>) = default;                          //!< Defaulted.
+      std::is_nothrow_default_constructible_v<base_t>) = default; //!< Defaulted.
     constexpr inherited_iterator_base(inherited_iterator_base const & rhs) noexcept(
-      std::is_nothrow_copy_constructible_v<base_t>) = default;                             //!< Defaulted.
+      std::is_nothrow_copy_constructible_v<base_t>) = default; //!< Defaulted.
     constexpr inherited_iterator_base(inherited_iterator_base && rhs) noexcept(
-      std::is_nothrow_move_constructible_v<base_t>) = default;                             //!< Defaulted.
+      std::is_nothrow_move_constructible_v<base_t>) = default; //!< Defaulted.
     constexpr inherited_iterator_base & operator=(inherited_iterator_base const & rhs) noexcept(
-      std::is_nothrow_copy_assignable_v<base_t>) = default;                                //!< Defaulted.
+      std::is_nothrow_copy_assignable_v<base_t>) = default; //!< Defaulted.
     constexpr inherited_iterator_base & operator=(inherited_iterator_base && rhs) noexcept(
       std::is_nothrow_move_assignable_v<base_t>)                                = default; //!< Defaulted.
     ~inherited_iterator_base() noexcept(std::is_nothrow_destructible_v<base_t>) = default; //!< Defaulted.

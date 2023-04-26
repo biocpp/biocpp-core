@@ -19,7 +19,7 @@
 #include <bio/meta/type_list/traits_detail.hpp>
 
 //!\brief Workaround various GCC problems.
-#if defined(__GNUC__) && __GNUC__ == 10                       // undocumented ICE
+#if defined(__GNUC__) && __GNUC__ == 10 // undocumented ICE
 #    define BIOCPP_TUPLE_REQ_EQ requires(sizeof...(Types) == sizeof...(UTypes))
 #elif defined(__GNUC__) && (__GNUC__ == 11 || __GNUC__ == 12) // gcc-bug: 109425
 #    define BIOCPP_TUPLE_REQ_EQ                                                                                        \
@@ -31,7 +31,7 @@
 #endif
 
 //!\brief Workaround various GCC problems.
-#if defined(__GNUC__) && __GNUC__ == 10                       // undocumented ICE
+#if defined(__GNUC__) && __GNUC__ == 10 // undocumented ICE
 #    define BIOCPP_TUPLE_REQ_THREEWAY requires(sizeof...(Types) == sizeof...(UTypes))
 #elif defined(__GNUC__) && (__GNUC__ == 11 || __GNUC__ == 12) // gcc-bug: 109425
 #    define BIOCPP_TUPLE_REQ_THREEWAY                                                                                  \
@@ -81,6 +81,8 @@ public:
      * \private
      */
     base_t const & as_base() const noexcept { return *this; }
+
+    using base_t::base_t;
 
     /*!\name Construct from arguments.
      * \{

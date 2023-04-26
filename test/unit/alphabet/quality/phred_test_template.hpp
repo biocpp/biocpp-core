@@ -43,7 +43,7 @@ TYPED_TEST_P(phred, conversion_char)
         else if (i >=
                  TypeParam::offset_char + static_cast<c_t>(TypeParam::alphabet_size)) // too big, map to valid biggest
             EXPECT_EQ(v.to_char(), TypeParam::offset_char + static_cast<c_t>(TypeParam::alphabet_size) - 1);
-        else                                                                          // valid range, map to identity
+        else // valid range, map to identity
             EXPECT_EQ(v.to_char(), i);
     }
 }
@@ -62,7 +62,7 @@ TYPED_TEST_P(phred, conversion_phred)
         else if (i >=
                  TypeParam::offset_phred + static_cast<p_t>(TypeParam::alphabet_size)) // too big, map to valid biggest
             EXPECT_EQ(v.to_phred(), TypeParam::offset_phred + static_cast<p_t>(TypeParam::alphabet_size) - 1);
-        else                                                                           // valid range, map to identity
+        else // valid range, map to identity
             EXPECT_EQ(v.to_phred(), i);
     }
 }
