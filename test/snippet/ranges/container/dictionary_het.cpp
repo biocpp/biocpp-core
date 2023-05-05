@@ -20,6 +20,10 @@ using namespace bio::meta::literals;
  */
 struct sam_optional_field : std::variant<std::string, int32_t>
 {
+    sam_optional_field() = default;
+    using base_t = std::variant<std::string, int32_t>;
+    using base_t::base_t; // inherit constructors from variant
+
     /* Declare the get<"foo">(obj) interface; overloads for cv-qualified versions omitted here. */
     template <bio::ranges::small_string tag>
     friend decltype(auto) get(sam_optional_field const & me)
@@ -51,7 +55,7 @@ private:
 
 int main()
 {
-    bio::ranges::dictionary<std::string, sam_optional_field, true> sam_optional_fields;
+    bio::ranges::dictionary<std::string, sam_optional_field> sam_optional_fields;
 
     /* You can easily insert elements of different types, but you need to make sure they match the predefined IDs! */
     sam_optional_fields.emplace_back("CO", "This is a comment.");
@@ -59,11 +63,16 @@ int main()
     sam_optional_fields.emplace_back("NM", 23);                    // Edit distance 23
     sam_optional_fields.emplace_back("OA", "23M3I11M");            // Original cigar
 
-    // std::string s = sam_optional_fields["CO"];   // ["CO"] returns sam_optional_field
-    std::string s = sam_optional_fields["CO"_vtag]; // ["CO"_vtag] returns std::string (type "inside variant")
-    fmt::print("{}\n", s);                          // prints "This is a comment."
+    // sam_optional_field s = sam_optional_fields["CO"];    // ["CO"] returns sam_optional_field
+    std::string s = sam_optional_fields["CO"_vtag];         // ["CO"_vtag] returns std::string (type "inside variant")
+    fmt::print("{}\n", s);                                  // prints "This is a comment."
 
-    // int32_t i = sam_optional_fields["AS"];       // ["AS"] returns sam_optional_field
-    int32_t i = sam_optional_fields["AS"_vtag];     // ["AS"_vtag] returns int (type "inside variant")
-    fmt::print("{}\n", i);                          // prints "42"
+    // sam_optional_field i = sam_optional_fields["AS"];    // ["AS"] returns sam_optional_field
+    int32_t i = sam_optional_fields["AS"_vtag];             // ["AS"_vtag] returns int (type "inside variant")
+    fmt::print("{}\n", i);                                  // prints "42"
+
+    /* Do not do the following: */
+    sam_optional_fields["CO"] = 3;                          // element type changed to int
+    //std::string s2 = sam_optional_fields["CO"_vtag];      // ["CO"_vtag] still returns std::string!
+                                                            // (this throws std::bad_variant_access)
 }

@@ -455,20 +455,11 @@ TEST(het_dictionary_test, elem_t_test)
     EXPECT_SAME_TYPE(decltype(get<"int">(elem2)), int &);
 }
 
-inline bio::ranges::dictionary<std::string, elem_t, true> dict{
+inline bio::ranges::dictionary<std::string, elem_t> dict{
   bio::meta::tuple{"string"s, elem1},
   bio::meta::tuple{   "int"s, elem2}
 };
-inline bio::ranges::dictionary<std::string, elem_t, true> const & cdict = dict;
-
-TEST(het_dictionary_test, associated_types)
-{
-    EXPECT_SAME_TYPE((bio::meta::tuple<std::string const &, elem_t const &>), decltype(dict[0]));
-    EXPECT_SAME_TYPE(elem_t const &, decltype(dict["foo"]));
-
-    EXPECT_SAME_TYPE(decltype(dict)::reference, decltype(dict)::const_reference);
-    EXPECT_SAME_TYPE(decltype(dict)::iterator, decltype(dict)::const_iterator);
-}
+inline bio::ranges::dictionary<std::string, elem_t> const & cdict = dict;
 
 TEST(het_dictionary_test, get)
 {

@@ -45,7 +45,6 @@ namespace bio::ranges
  * \ingroup container
  * \tparam key_t   The key type; must be convertible to std::string_view (e.g. also std::string).
  * \tparam mapped_t The mapped type; must be an object type.
- * \tparam mapped_t_is_context_aware See below.
  *
  * This container behaves like a mixture of std::vector and std::unordered_map.
  *
@@ -76,18 +75,13 @@ namespace bio::ranges
  *
  * \include test/snippet/ranges/container/dictionary.cpp
  *
- * ### Context-aware mapped value types
+ * ### Static string element access
  *
- * If the template parameter `mapped_t_is_context_aware` is set to true, the #reference type of the dictionary
- * becomes `bio::meta::tuple<key_t const &, mapped_t const &>`, i.e. the mapped value in dictionary elements cannot be
- * changed via regular element access.
- *
- * Additionally, given an object `o` of type `mapped_t`, if `get<"foo">(o)` is valid,
+ * Given an object `o` of type `mapped_t`, if `get<"foo">(o)` is valid,
  * this container provides a special interface:
  *
  *   * A `get<"foo">(dict)` friend function that calls `get<"foo">(dict.at("foo"))`.
  *   * The `.at("foo"_vtag)` and `operator["foo"_vtag]` member functions with identical semantics.
- *   * These functions may or may not expose mutable references to the mapped value (or one of its members).
  *
  * In combination with element types that are derived from std::variant (and additionally provide the aforementioned
  * string-based get-interface), this can be used to create heterogeneous dictionaries, i.e. transparent access
@@ -96,7 +90,7 @@ namespace bio::ranges
  * \include test/snippet/ranges/container/dictionary_het.cpp
  *
  */
-template <typename key_t, typename mapped_t, bool mapped_t_is_context_aware = false>
+template <typename key_t, typename mapped_t>
 class dictionary
 {
 public:
@@ -108,17 +102,13 @@ public:
     /*!\name Associated types
      * \{
      */
-    using mapped_ref_t =
-      std::conditional_t<mapped_t_is_context_aware, mapped_t const &, mapped_t &>; //!< Usually `mapped_t &`.
-    using value_type      = meta::tuple<key_t, mapped_t>;                          //!< The value_type type.
-    using reference       = meta::tuple<key_t const &, mapped_ref_t>;              //!< The reference type.
-    using const_reference = meta::tuple<key_t const &, mapped_t const &>;          //!< The const_reference type.
-    using difference_type = ptrdiff_t;                                             //!< The difference_type type.
-    using size_type       = size_t;                                                //!< The size_type type.
-    using const_iterator  = detail::random_access_iterator<dictionary const>;      //!< The const_iterator type.
-    using iterator        = std::conditional_t<mapped_t_is_context_aware,
-                                        const_iterator,
-                                        detail::random_access_iterator<dictionary>>; //!< The iterator type.
+    using value_type      = meta::tuple<key_t, mapped_t>;                     //!< The value_type type.
+    using reference       = meta::tuple<key_t const &, mapped_t &>;           //!< The reference type.
+    using const_reference = meta::tuple<key_t const &, mapped_t const &>;     //!< The const_reference type.
+    using difference_type = ptrdiff_t;                                        //!< The difference_type type.
+    using size_type       = size_t;                                           //!< The size_type type.
+    using iterator        = detail::random_access_iterator<dictionary>;       //!< The iterator type.
+    using const_iterator  = detail::random_access_iterator<dictionary const>; //!< The const_iterator type.
     //!\}
 
     //!\cond
@@ -536,7 +526,7 @@ public:
      *
      * Basic exception guarantee.
      */
-    mapped_ref_t at(het_key_t key)
+    mapped_t & at(het_key_t key)
     {
         auto it = key_to_index.find(key);
         if (it == key_to_index.end())
@@ -570,7 +560,7 @@ public:
      *
      * Basic exception guarantee.
      */
-    mapped_ref_t operator[](het_key_t key) { return at(key); }
+    mapped_t & operator[](het_key_t key) { return at(key); }
 
     //!\copydoc operator[](het_key_t key)
     mapped_t const & operator[](het_key_t key) const { return at(key); }
@@ -601,7 +591,7 @@ public:
      */
     template <small_string key>
     friend decltype(auto) get(meta::decays_to<dictionary> auto && dict)
-        requires(mapped_t_is_context_aware && requires { get<key>(get<1>(dict.storage[0])); })
+        requires(requires { get<key>(get<1>(dict.storage[0])); })
     {
 #ifdef __cpp_lib_generic_unordered_lookup
         auto it = dict.key_to_index.find(key);
