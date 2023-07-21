@@ -61,6 +61,13 @@ jobs:
             build_type: Debug
             cxx_flags: "-fsanitize=address,undefined"
 
+          - name: "Unit gcc13 Debug"
+            cxx: "g++-13"
+            cc: "gcc-13"
+            pkg: "gcc-13 g++-13"
+            build: unit
+            build_type: Debug
+
           - name: "Integration gcc12"
             cxx: "g++-12"
             cc: "gcc-12"
