@@ -185,17 +185,17 @@ public:
 
     //!\brief Post-increment, return previous iterator state.
     //!\cond
-    template <typename base_t_ = base_t>
+    template <typename base_t_ = base_t, std::same_as<derived_t> derived_t_ = derived_t>
     //!\endcond
-    constexpr derived_t operator++(int) noexcept(
-      noexcept(std::declval<base_t &>()++) && noexcept(derived_t(std::declval<base_t &>())))
+    constexpr derived_t_ operator++(int) noexcept(
+      noexcept(std::declval<base_t &>()++) && noexcept(derived_t_(std::declval<base_t &>())))
       //!\cond
         requires(requires(base_t_ i) {
             i++;
             {
                 i++
             } -> std::same_as<base_t_>;
-        } && std::constructible_from<derived_t, base_t_>)
+        } && std::constructible_from<derived_t_, base_t_>)
     //!\endcond
     {
         return derived_t{(*this_to_base())++};
@@ -214,13 +214,13 @@ public:
 
     //!\brief Post-decrement, return previous iterator state.
     //!\cond
-    template <typename base_t_ = base_t>
+    template <typename base_t_ = base_t, std::same_as<derived_t> derived_t_ = derived_t>
     //!\endcond
-    constexpr derived_t operator--(int) noexcept(
-      noexcept(std::declval<base_t &>()--) && noexcept(derived_t{std::declval<base_t &>()}))
-        requires(requires(base_t_ i) { i--; } && std::constructible_from<derived_t, base_t_>)
+    constexpr derived_t_ operator--(int) noexcept(
+      noexcept(std::declval<base_t &>()--) && noexcept(derived_t_{std::declval<base_t &>()}))
+        requires(requires(base_t_ i) { i--; } && std::constructible_from<derived_t_, base_t_>)
     {
-        return derived_t{(*this_to_base())--};
+        return derived_t_{(*this_to_base())--};
     }
 
     //!\brief Move iterator to the right.
@@ -236,23 +236,24 @@ public:
 
     //!\brief Returns an iterator which is advanced by `skip` positions.
     //!\cond
-    template <typename base_t_ = base_t>
+    template <typename base_t_ = base_t, std::same_as<derived_t> derived_t_ = derived_t>
     //!\endcond
-    constexpr derived_t operator+(difference_type const skip) const
-      noexcept(noexcept(std::declval<base_t &>() + skip) && noexcept(derived_t{std::declval<base_t &>()}))
+    constexpr derived_t_ operator+(difference_type const skip) const
+      noexcept(noexcept(std::declval<base_t &>() + skip) && noexcept(derived_t_{std::declval<base_t &>()}))
         requires(requires(base_t_ const i, difference_type const n) { i + n; } &&
-                 std::constructible_from<derived_t, base_t_>)
+                 std::constructible_from<derived_t_, base_t_>)
     {
-        return derived_t{*this_to_base() + skip};
+        return derived_t_{*this_to_base() + skip};
     }
 
     //!\brief Non-member operator+ delegates to non-friend operator+.
-    constexpr friend derived_t operator+(difference_type const skip,
-                                         derived_t const & it) noexcept(noexcept(skip + std::declval<base_t const &>()))
+    template <std::same_as<derived_t> derived_t_ = derived_t>
+    constexpr friend derived_t_ operator+(difference_type const skip, derived_t_ const & it) noexcept(
+      noexcept(skip + std::declval<base_t const &>()))
         requires(requires(base_t const i, difference_type const n) { n + i; } &&
-                 std::constructible_from<derived_t, base_t>)
+                 std::constructible_from<derived_t_, base_t>)
     {
-        return derived_t{skip + static_cast<base_t const &>(it)};
+        return derived_t_{skip + static_cast<base_t const &>(it)};
     }
 
     //!\brief Decrement iterator by skip.
@@ -268,13 +269,14 @@ public:
 
     //!\brief Return decremented copy of this iterator.
     //!\cond
-    template <typename base_t_ = base_t>
+    template <typename base_t_ = base_t, std::same_as<derived_t> derived_t_ = derived_t>
     //!\endcond
-    constexpr derived_t operator-(difference_type const skip) const
-      noexcept(noexcept(std::declval<base_t const &>() - skip) && noexcept(derived_t(std::declval<base_t &>())))
-        requires(requires(base_t_ i, difference_type const n) { i - n; } && std::constructible_from<derived_t, base_t_>)
+    constexpr derived_t_ operator-(difference_type const skip) const
+      noexcept(noexcept(std::declval<base_t const &>() - skip) && noexcept(derived_t_(std::declval<base_t &>())))
+        requires(requires(base_t_ i, difference_type const n) { i - n; } &&
+                 std::constructible_from<derived_t_, base_t_>)
     {
-        return derived_t{*this_to_base() - skip};
+        return derived_t_{*this_to_base() - skip};
     }
 
     //!\brief Return offset between this and remote iterator's position.
