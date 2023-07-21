@@ -286,7 +286,8 @@ private:
     friend constexpr auto tag_invoke(custom::to_rank, derived_type const a) noexcept { return a.to_rank(); }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr derived_type & tag_invoke(custom::assign_rank_to, auto const r, derived_type & a) noexcept
+    template <std::same_as<derived_type> derived_type_>
+    friend constexpr derived_type_ & tag_invoke(custom::assign_rank_to, auto const r, derived_type_ & a) noexcept
         requires(requires {
             {
                 a.assign_rank(r)
@@ -297,9 +298,10 @@ private:
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr derived_type const & tag_invoke(custom::assign_rank_to,
-                                                     auto const           r,
-                                                     derived_type const & a) noexcept
+    template <std::same_as<derived_type> derived_type_>
+    friend constexpr derived_type_ const & tag_invoke(custom::assign_rank_to,
+                                                      auto const            r,
+                                                      derived_type_ const & a) noexcept
         requires(requires {
             {
                 a.assign_rank(r)
@@ -310,7 +312,8 @@ private:
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr auto tag_invoke(custom::to_char, derived_type const a) noexcept
+    template <std::same_as<derived_type> derived_type_>
+    friend constexpr auto tag_invoke(custom::to_char, derived_type_ const a) noexcept
         requires(requires {
             {
                 a.to_char()
@@ -321,7 +324,8 @@ private:
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr derived_type & tag_invoke(custom::assign_char_to, char_type const c, derived_type & a) noexcept
+    template <std::same_as<derived_type> derived_type_>
+    friend constexpr derived_type_ & tag_invoke(custom::assign_char_to, char_type const c, derived_type_ & a) noexcept
         requires(requires {
             {
                 a.assign_char(c)
@@ -332,9 +336,10 @@ private:
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr derived_type const & tag_invoke(custom::assign_char_to,
-                                                     char_type const      c,
-                                                     derived_type const & a) noexcept
+    template <std::same_as<derived_type> derived_type_>
+    friend constexpr derived_type_ const & tag_invoke(custom::assign_char_to,
+                                                      char_type const       c,
+                                                      derived_type_ const & a) noexcept
         requires(requires {
             {
                 a.assign_char(c)
@@ -345,45 +350,50 @@ private:
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr bool tag_invoke(custom::char_is_valid_for, char_type const c, derived_type) noexcept
+    template <std::same_as<derived_type> derived_type_>
+    friend constexpr bool tag_invoke(custom::char_is_valid_for, char_type const c, derived_type_) noexcept
         requires(requires {
             {
-                derived_type::char_is_valid(c)
+                derived_type_::char_is_valid(c)
             };
         })
     {
-        return derived_type::char_is_valid(c);
+        return derived_type_::char_is_valid(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
+    template <std::same_as<derived_type> derived_type_>
     friend constexpr bool tag_invoke(custom::char_is_valid_for,
                                      char_type const c,
-                                     std::type_identity<derived_type>) noexcept
+                                     std::type_identity<derived_type_>) noexcept
         requires(requires {
             {
-                derived_type::char_is_valid(c)
+                derived_type_::char_is_valid(c)
             };
-        } && !meta::constexpr_default_initializable<derived_type>)
+        } && !meta::constexpr_default_initializable<derived_type_>)
     {
-        return derived_type::char_is_valid(c);
+        return derived_type_::char_is_valid(c);
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend consteval auto tag_invoke(custom::size, derived_type) noexcept
-        requires meta::constexpr_default_initializable<derived_type>
-    {
-        return alphabet_size;
-    }
-
-    //!\brief tag_invoke() wrapper around member.
-    friend consteval auto tag_invoke(custom::size, std::type_identity<derived_type>) noexcept
-        requires(!meta::constexpr_default_initializable<derived_type>)
+    template <std::same_as<derived_type> derived_type_>
+    friend consteval auto tag_invoke(custom::size, derived_type_) noexcept
+        requires meta::constexpr_default_initializable<derived_type_>
     {
         return alphabet_size;
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr auto tag_invoke(custom::complement, derived_type const a) noexcept
+    template <std::same_as<derived_type> derived_type_>
+    friend consteval auto tag_invoke(custom::size, std::type_identity<derived_type_>) noexcept
+        requires(!meta::constexpr_default_initializable<derived_type_>)
+    {
+        return alphabet_size;
+    }
+
+    //!\brief tag_invoke() wrapper around member.
+    template <std::same_as<derived_type> derived_type_>
+    friend constexpr auto tag_invoke(custom::complement, derived_type_ const a) noexcept
         requires(requires {
             {
                 a.complement()
@@ -394,7 +404,8 @@ private:
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr phred_type tag_invoke(custom::to_phred, derived_type const a) noexcept
+    template <std::same_as<derived_type> derived_type_>
+    friend constexpr phred_type tag_invoke(custom::to_phred, derived_type_ const a) noexcept
         requires(requires {
             {
                 a.to_phred()
@@ -405,7 +416,8 @@ private:
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr derived_type & tag_invoke(custom::assign_phred_to, phred_type const p, derived_type & a) noexcept
+    template <std::same_as<derived_type> derived_type_>
+    friend constexpr derived_type_ & tag_invoke(custom::assign_phred_to, phred_type const p, derived_type_ & a) noexcept
         requires(requires {
             {
                 a.assign_phred(p)
@@ -416,9 +428,10 @@ private:
     }
 
     //!\brief tag_invoke() wrapper around member.
-    friend constexpr derived_type const & tag_invoke(custom::assign_phred_to,
-                                                     phred_type const     p,
-                                                     derived_type const & a) noexcept
+    template <std::same_as<derived_type> derived_type_>
+    friend constexpr derived_type_ const & tag_invoke(custom::assign_phred_to,
+                                                      phred_type const      p,
+                                                      derived_type_ const & a) noexcept
         requires(requires {
             {
                 a.assign_phred(p)
